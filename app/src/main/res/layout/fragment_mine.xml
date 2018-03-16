@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:background="@mipmap/mine_top_bg">
+
+        <TextView
+            android:id="@+id/tv_mine_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:text="设置"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="35dp"
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/bianmin_call" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/mine_quickly_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="立即登录"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="普通用户"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点赞"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9653"
+                android:textColor="#fe1d00"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="帖子"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
+                android:textColor="#fe1d00"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="跟帖"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="472"
+                android:textColor="#fe1d00"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_preson_data"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="个人资料" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/rl_message_gather"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="信息汇总" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/rl_mine_message"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="我的消息" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/rl_mine_collect"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="我的收藏" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/mine_fabu"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="我的发布" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+
+            <View style="@style/dividerStyle" />
+            />
+
+            <RelativeLayout
+                android:id="@+id/rl_up_step"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="会员升级" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/company_set"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="企业设置" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/hezuo_call"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="合作热线" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/write_advertise"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="植入广告" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View style="@style/dividerStyle" />
+
+            <RelativeLayout
+                android:id="@+id/rl_invite_friend"
+                style="@style/RelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="邀请好友" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

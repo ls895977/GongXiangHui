@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.gongxianghui.activity.MainActivity">
+
+    <com.gongxianghui.widget.NoScrollViewPager
+        android:background="#fff"
+        android:id="@+id/vp_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </com.gongxianghui.widget.NoScrollViewPager>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:background="@color/divider" />
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/Gxh_BG"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+
+            android:id="@+id/rb_home"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@drawable/selector_tab_home"
+            android:text="首页" />
+
+        <RadioButton
+            android:id="@+id/rb_location"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@drawable/selector_tab_find"
+            android:text="本地圈" />
+
+        <RadioButton
+            android:id="@+id/rb_fabu"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@drawable/selector_tab_journey"
+            android:text="一键发布" />
+
+        <RadioButton
+            android:id="@+id/rb_generalize"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@drawable/selector_tab_journey"
+            android:text="推广" />
+
+
+        <RadioButton
+            android:id="@+id/rb_mine"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@drawable/selector_tab_mine"
+            android:text="我的" />
+    </RadioGroup>
+
+
+</LinearLayout>

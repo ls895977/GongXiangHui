@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/ib_home_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:background="@mipmap/home_camera" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@+id/ib_home_camera"
+            android:text="爆料"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:background="@mipmap/home_logo" />
+
+
+        <ImageButton
+            android:id="@+id/ib_home_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="40dp"
+            android:background="@mipmap/home_search" />
+
+        <ImageButton
+            android:id="@+id/ib_home_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:layout_toLeftOf="@+id/ib_home_search"
+            android:background="@mipmap/home_scan" />
+    </RelativeLayout>
+
+    <View
+        android:layout_marginTop="5dp"
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <RadioGroup
+        android:id="@+id/rg_home_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/Gxh_BG"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:textColor="#000"
+            android:id="@+id/rb_home_air"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@mipmap/home_top_tianqi"
+            android:text="天气" />
+
+        <RadioButton
+            android:textColor="#000"
+            android:id="@+id/rb_home_video"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@mipmap/home_top_video"
+            android:text="视频" />
+
+        <RadioButton
+            android:textColor="#000"
+            android:id="@+id/rb_home_life_style"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@mipmap/home_top_life_circle"
+            android:text="生活圈" />
+
+        <RadioButton
+
+            android:textColor="#000"
+            android:id="@+id/rb_home_saler"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@mipmap/home_top_saler"
+            android:text="优惠" />
+
+
+        <RadioButton
+            android:textColor="#000"
+            android:id="@+id/rb_home_bianmin"
+            style="@style/MainRadioButtonStyle"
+            android:drawableTop="@mipmap/home_top_bian_min"
+            android:text="便民" />
+    </RadioGroup>
+
+
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        android:layout_marginTop="10dp"
+        android:id="@+id/viewpager_home"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:canLoop="true">
+
+    </com.bigkoo.convenientbanner.ConvenientBanner>
+</LinearLayout>
