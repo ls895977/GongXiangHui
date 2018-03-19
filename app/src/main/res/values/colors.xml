@@ -6,4 +6,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="divider">#cdcdcd</color>
     <color name="Gxh_BG">#FFFEFEFE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

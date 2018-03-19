@@ -11,24 +11,26 @@ import com.gongxianghui.widget.TitleBuilder;
  */
 
 public class BianMinActiviry extends BaseActivity {
-    @Override
-    protected int getLayoutId() {
+@Override
+protected int getLayoutId() {
         return R.layout.activity_bianmin;
-    }
+        }
 
-    @Override
-    protected void initViews() {
+@Override
+protected void initViews() {
 
-    }
+        }
 
-    @Override
-    protected void initDatas() {
+@Override
+protected void initDatas() {
         new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
+@Override
+public void onClick(View view) {
+        finish();
+
+
+        }
         });
 
-    }
-}
+        }
+        }

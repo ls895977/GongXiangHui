@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/ib_home_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:background="@mipmap/home_camera" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@+id/ib_home_camera"
+            android:text="爆料"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:background="@mipmap/home_logo" />
+
+
+        <ImageButton
+            android:id="@+id/ib_home_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="40dp"
+            android:background="@mipmap/home_search" />
+
+        <ImageButton
+            android:id="@+id/ib_home_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:layout_toLeftOf="@+id/ib_home_search"
+            android:background="@mipmap/home_scan" />
+    </RelativeLayout>
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/home_tab_layou"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="#f00"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#f00"
+        app:tabTextColor="@android:color/black"/>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/home_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

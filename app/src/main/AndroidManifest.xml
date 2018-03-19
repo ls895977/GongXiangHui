@@ -27,6 +27,8 @@
         <activity android:name=".fragments.mineFragment.activity.SettingActivity"/>
         <activity android:name=".fragments.mineFragment.activity.SeekPasswordActivity"/>
         <activity android:name=".fragments.homeFragment.activity.SalerActivity"/>
+        <activity android:name=".fragments.homeFragment.activity.SearchActivity"/>
+        <activity android:name=".fragments.homeFragment.activity.BaoLiaoActivity"/>
     </application>
 
 
