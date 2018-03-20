@@ -20,6 +20,7 @@ import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
 import com.gongxianghui.adapter.homeAdapter.HomeSalerListAdapter;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.gongxianghui.fragments.homeFragment.activity.LiftStyleActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SalerActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
 import com.gongxianghui.widget.ImageViewHolder;
@@ -65,8 +66,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
-        for(int i=0;i<50;i++){
-            mDatas.add(i,i+1+"");
+        for (int i = 0; i < 50; i++) {
+            mDatas.add(i, i + 1 + "");
         }
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
         HomeItemListAdapter adapter = new HomeItemListAdapter(mActivity, mDatas);
@@ -96,7 +97,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 }
         );
 
-        loadTestDatas();
+        // loadTestDatas();
 
 
     }
@@ -113,12 +114,12 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-
-    private void loadTestDatas() {
-        //本地图片集合
-        for (int position = 0; position < 7; position++)
-            localImages.add(getResId("ic_test_" + position, R.mipmap.class));
-    }
+//
+//    private void loadTestDatas() {
+//        //本地图片集合
+//        for (int position = 0; position < 7; position++)
+//            localImages.add(getResId("ic_test_" + position, R.mipmap.class));
+//    }
 
     /**
      * 通过文件名获取资源id 例子：getResId("icon", R.drawable.class);
@@ -161,6 +162,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             case R.id.rb_home_video:
                 break;
             case R.id.rb_home_life_style:
+
+                toActivity(LiftStyleActivity.class);
                 break;
             case R.id.rb_home_saler:
                 toActivity(SalerActivity.class);
@@ -168,7 +171,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             case R.id.rb_home_bianmin:
                 toActivity(BianMinActiviry.class);
                 break;
-
         }
 
     }

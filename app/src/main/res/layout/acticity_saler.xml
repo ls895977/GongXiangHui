@@ -7,14 +7,8 @@
 
   <include layout="@layout/activity_title"/>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/saler_tab_layou"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="#f00"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="#f00"
-        app:tabTextColor="@android:color/black"/>
+ <include layout="@layout/tablayout"
+     android:id="@+id/saler_tab_layou"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/saler_view_pager"

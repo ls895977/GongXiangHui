@@ -41,8 +41,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             "本地", "社会", "教育", "健康", "娱乐", "情感"};
     private List<Fragment> fragments = new ArrayList<>();
     private MyViewPagerAdapter viewPagerAdapter;
-    @BindView(R.id.home_tab_layou)
-    TabLayout homeTabLayou;
+    @BindView(R.id.home_tab_layout)
+    TabLayout homeTabLayout;
     @BindView(R.id.home_view_pager)
     ViewPager homeViewPager;
     Unbinder unbinder;
@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void initDatas() {
-        homeTabLayou.setOnTabSelectedListener(this);
+        homeTabLayout.setOnTabSelectedListener(this);
         fragments.add(new HotPointFragment());
         fragments.add(new HotPointFragment());
         fragments.add(new HotPointFragment());
@@ -65,15 +65,15 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         viewPagerAdapter = new MyViewPagerAdapter(mActivity.getSupportFragmentManager(), fragments, titles);
         homeViewPager.setAdapter(viewPagerAdapter);
-        homeTabLayou.setupWithViewPager(homeViewPager);
+        homeTabLayout.setupWithViewPager(homeViewPager);
 
     }
 
     @Override
     public void initViews(View view) {
-        homeTabLayou.setTabMode(TabLayout.MODE_SCROLLABLE);
+        homeTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         for (String tab : titles) {
-            homeTabLayou.addTab(homeTabLayou.newTab().setText(tab));
+            homeTabLayout.addTab(homeTabLayout.newTab().setText(tab));
         }
     }
 

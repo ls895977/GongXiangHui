@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -56,16 +56,9 @@
             android:background="@mipmap/home_scan" />
     </RelativeLayout>
 
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/home_tab_layou"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="#f00"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="#f00"
-        app:tabTextColor="@android:color/black"/>
-
+    <include
+        android:id="@+id/home_tab_layout"
+        layout="@layout/tablayout" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/home_view_pager"
