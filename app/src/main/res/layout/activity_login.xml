@@ -8,6 +8,13 @@
     <include layout="@layout/activity_title" />
 
 
+    <ImageView
+        android:layout_width="98dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@mipmap/home_logo" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,9 +29,9 @@
 
         <EditText
             android:id="@+id/et_login_phone"
-            android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:background="@null"
@@ -79,7 +86,7 @@
     <Button
         android:id="@+id/bt_login_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
@@ -138,11 +145,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:textSize="16sp"
             android:layout_centerHorizontal="true"
             android:text="立即注册 >"
-            android:textColor="#f00" />
-
+            android:textColor="#f00"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>

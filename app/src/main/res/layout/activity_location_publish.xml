@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp">
+
+        <ImageView
+            android:id="@+id/iv_publish_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="发布状态"
+            android:textColor="#000"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/iv_publish_fabu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="发布"
+            android:textColor="#f00"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/et_publish_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:gravity="top|left"
+        android:hint="发布的内容"
+        android:lines="6" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_publish_image1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name" />
+
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_publish_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_publish_image3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_publish_image4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_publish_addImage"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+      android:layout_marginLeft="20dp"
+        android:background="@mipmap/add"
+        android:padding="5dp" />
+
+
+</LinearLayout>
+
+
+
+
+
