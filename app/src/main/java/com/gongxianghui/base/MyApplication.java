@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 
-
+import com.gongxianghui.config.Constant;
 import com.gongxianghui.utils.AppManager;
-import com.gongxianghui.utils.Constant;
 import com.lzy.okgo.OkGo;
 
 import java.util.concurrent.TimeUnit;
