@@ -23,6 +23,7 @@ import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.LiftStyleActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SalerActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
+import com.gongxianghui.widget.GloriousRecyclerView;
 import com.gongxianghui.widget.ImageViewHolder;
 
 import java.lang.reflect.Field;
@@ -40,21 +41,21 @@ import kr.co.namee.permissiongen.PermissionGen;
 
 public class HotPointFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.recyclerview_list)
-    RecyclerView recyclerviewList;
+    GloriousRecyclerView recyclerviewList;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<String> mDatas;
-    @BindView(R.id.rb_home_air)
-    RadioButton rbHomeAir;
-    @BindView(R.id.rb_home_video)
-    RadioButton rbHomeVideo;
-    @BindView(R.id.rb_home_life_style)
-    RadioButton rbHomeLifeStyle;
-    @BindView(R.id.rb_home_saler)
-    RadioButton rbHomeSaler;
-    @BindView(R.id.rb_home_bianmin)
-    RadioButton rbHomeBianmin;
-    @BindView(R.id.viewpager_home)
-    ConvenientBanner viewpagerHome;
+    //    @BindView(R.id.rb_home_air)
+//    RadioButton rbHomeAir;
+//    @BindView(R.id.rb_home_video)
+//    RadioButton rbHomeVideo;
+//    @BindView(R.id.rb_home_life_style)
+//    RadioButton rbHomeLifeStyle;
+//    @BindView(R.id.rb_home_saler)
+//    RadioButton rbHomeSaler;
+//    @BindView(R.id.rb_home_bianmin)
+//    RadioButton rbHomeBianmin;
+//    @BindView(R.id.viewpager_home)
+//    ConvenientBanner viewpagerHome;
     Unbinder unbinder;
 
     @Override
@@ -71,19 +72,29 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         }
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
         HomeItemListAdapter adapter = new HomeItemListAdapter(mActivity, mDatas);
+        View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
+        View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
+        View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
+        View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
+
         recyclerviewList.setAdapter(adapter);
+        recyclerviewList.addHeaderView(headerNavigator);
+        recyclerviewList.addHeaderView2(headerVp);
+        recyclerviewList.addFooterView(footer);
+        recyclerviewList.setEmptyView(empty);
 
-        viewpagerHome.setPages(new CBViewHolderCreator<ImageViewHolder>() {
 
-            @Override
-            public ImageViewHolder createHolder() {
-                return new ImageViewHolder();
-            }
-        }, localImages)
-                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused}) //设置两个点作为指示器
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL) //设置指示器的方向水平
-                .startTurning(2000)
-                .setCanLoop(true);
+//        viewpagerHome.setPages(new CBViewHolderCreator<ImageViewHolder>() {
+//
+//            @Override
+//            public ImageViewHolder createHolder() {
+//                return new ImageViewHolder();
+//            }
+//        }, localImages)
+//                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused}) //设置两个点作为指示器
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL) //设置指示器的方向水平
+//                .startTurning(2000)
+//                .setCanLoop(true);
 
     }
 
@@ -104,11 +115,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initListeners() {
-        rbHomeAir.setOnClickListener(this);
-        rbHomeVideo.setOnClickListener(this);
-        rbHomeLifeStyle.setOnClickListener(this);
-        rbHomeSaler.setOnClickListener(this);
-        rbHomeBianmin.setOnClickListener(this);
+//        rbHomeAir.setOnClickListener(this);
+//        rbHomeVideo.setOnClickListener(this);
+//        rbHomeLifeStyle.setOnClickListener(this);
+//        rbHomeSaler.setOnClickListener(this);
+//        rbHomeBianmin.setOnClickListener(this);
 
 
     }

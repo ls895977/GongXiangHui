@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 
 public class GloriousRecyclerView extends RecyclerView {
     private View mHeaderView;
+    private View mHeaderViewViewPager;
     private View mFooterView;
     private View mEmptyView;
-//    private AutoLoadMoreListener mLoadMoreListener;
+    //    private AutoLoadMoreListener mLoadMoreListener;
 //    private boolean mIsLoadMoreEnabled;
 //    private boolean mIsLoadingMore;
     private GloriousAdapter mGloriousAdapter;
@@ -79,6 +80,11 @@ public class GloriousRecyclerView extends RecyclerView {
         mGloriousAdapter.notifyItemInserted(0);
     }
 
+    public void addHeaderView2(View view) {
+        mHeaderViewViewPager = view;
+        mGloriousAdapter.notifyItemInserted(1);
+    }
+
     public void addFooterView(View view) {
         mFooterView = view;
         mGloriousAdapter.notifyItemInserted(mGloriousAdapter.getItemCount() - 1);
@@ -109,12 +115,14 @@ public class GloriousRecyclerView extends RecyclerView {
         }
         return maxPosition;
     }
+
     private class GloriousAdapter extends RecyclerView.Adapter<ViewHolder> {
         private Adapter mOriginalAdapter;
         private int ITEM_TYPE_NORMAL = 0;
         private int ITEM_TYPE_HEADER = 1;
-        private int ITEM_TYPE_FOOTER = 2;
-        private int ITEM_TYPE_EMPTY = 3;
+        private int ITEM_TYPE_HEADER2 = 2;
+        private int ITEM_TYPE_FOOTER = 3;
+        private int ITEM_TYPE_EMPTY = 4;
 
         //聪明的人会发现我们这里用了一个装饰模式
         public GloriousAdapter(Adapter originalAdapter) {
@@ -125,6 +133,8 @@ public class GloriousRecyclerView extends RecyclerView {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == ITEM_TYPE_HEADER) {
                 return new GloriousViewHolder(mHeaderView);
+            } else if (viewType == ITEM_TYPE_HEADER2) {
+                return new GloriousViewHolder(mHeaderViewViewPager);
             } else if (viewType == ITEM_TYPE_EMPTY) {
                 return new GloriousViewHolder(mEmptyView);
             } else if (viewType == ITEM_TYPE_FOOTER) {
@@ -138,7 +148,7 @@ public class GloriousRecyclerView extends RecyclerView {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             int type = getItemViewType(position);
-            if (type == ITEM_TYPE_HEADER || type == ITEM_TYPE_FOOTER || type == ITEM_TYPE_EMPTY) {
+            if (type == ITEM_TYPE_HEADER ||type == ITEM_TYPE_HEADER2|| type == ITEM_TYPE_FOOTER || type == ITEM_TYPE_EMPTY) {
                 return;
             }
             int realPosition = getRealItemPosition(position);
@@ -151,6 +161,7 @@ public class GloriousRecyclerView extends RecyclerView {
             //加上其他各种View
             if (null != mEmptyView && itemCount == 0) itemCount++;
             if (null != mHeaderView) itemCount++;
+            if (null != mHeaderViewViewPager) itemCount++;
             if (null != mFooterView) itemCount++;
             return itemCount;
 
@@ -159,6 +170,7 @@ public class GloriousRecyclerView extends RecyclerView {
         @Override
         public int getItemViewType(int position) {
             if (null != mHeaderView && position == 0) return ITEM_TYPE_HEADER;
+            if (null != mHeaderViewViewPager && position == 1) return ITEM_TYPE_HEADER2;
             if (null != mFooterView && position == getItemCount() - 1) return ITEM_TYPE_FOOTER;
             if (null != mEmptyView && mOriginalAdapter.getItemCount() == 0) return ITEM_TYPE_EMPTY;
             return ITEM_TYPE_NORMAL;

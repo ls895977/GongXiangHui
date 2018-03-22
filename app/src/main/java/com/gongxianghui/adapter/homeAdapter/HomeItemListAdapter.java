@@ -21,10 +21,10 @@ public class HomeItemListAdapter extends BaseRecycleViewAdapter {
 
     @Override
     protected void convert(MyViewHolder holder, int position, Object o) {
-        holder.setText(R.id.tv_recycler_top_des, "今天老百姓啊，真啊真高兴");
+        holder.setText(R.id.tv_recycler_top_des, "猫眼微影票务入口彻底整合，娱票儿APP将于2月1日停止服务");
         holder.setText(R.id.tv_recycler_bottom_science, "科技");
-        holder.setText(R.id.tv_recycler_bottom_science2, "科技");
-        holder.setText(R.id.tv_recycler_bottom_science3, "科技");
+        holder.setText(R.id.tv_recycler_bottom_science2, "52万");
+        holder.setText(R.id.tv_recycler_bottom_science3, "刚刚");
     }
 
     @Override
