@@ -83,12 +83,10 @@ public class ScanActivity extends BaseActivity implements EasyPermissions.Permis
         zxingview.stopCamera();
         super.onStop();
     }
-
     @Override
     public void onScanQRCodeSuccess(String result) {
         Toast.makeText(this, "相机打开成功", Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onScanQRCodeOpenCameraError() {
         Toast.makeText(this, "打开相机出错", Toast.LENGTH_SHORT).show();

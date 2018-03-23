@@ -3,6 +3,7 @@ package com.gongxianghui.fragments.homeFragment;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -39,7 +41,7 @@ import kr.co.namee.permissiongen.PermissionGen;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HotPointFragment extends BaseFragment implements View.OnClickListener {
+public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.recyclerview_list)
     GloriousRecyclerView recyclerviewList;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
@@ -57,6 +59,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 //    @BindView(R.id.viewpager_home)
 //    ConvenientBanner viewpagerHome;
     Unbinder unbinder;
+    private RadioButton viewById;
+    private RadioButton rbHomeAir;
+    private RadioButton rbHomeVideo;
+    private RadioButton rbHomeLifeStyle;
+    private RadioButton rbHomeSaler;
+    private RadioButton rbHomeBianmin;
+    private RadioGroup rgMain;
 
     @Override
     public int getLayoutId() {
@@ -76,7 +85,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-
         recyclerviewList.setAdapter(adapter);
         recyclerviewList.addHeaderView(headerNavigator);
         recyclerviewList.addHeaderView2(headerVp);
@@ -96,6 +104,18 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 //                .startTurning(2000)
 //                .setCanLoop(true);
 
+
+//找控件
+
+
+//        rgMain = (RadioGroup) mActivity.findViewById(R.id.rg_home_main);
+//        rbHomeAir = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
+//        rbHomeVideo = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
+//        rbHomeLifeStyle = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
+//        rbHomeSaler = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
+//        rbHomeBianmin = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
+//        rgMain.setOnCheckedChangeListener(this);
+
     }
 
     @Override
@@ -113,16 +133,16 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    @Override
-    protected void initListeners() {
+//    @Override
+//    protected void initListeners() {
 //        rbHomeAir.setOnClickListener(this);
 //        rbHomeVideo.setOnClickListener(this);
 //        rbHomeLifeStyle.setOnClickListener(this);
 //        rbHomeSaler.setOnClickListener(this);
 //        rbHomeBianmin.setOnClickListener(this);
-
-
-    }
+//
+//
+//    }
 
 
 //
@@ -164,10 +184,17 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         unbinder.unbind();
     }
 
+
+
     @Override
-    public void onClick(View v) {
-        Intent intent = null;
-        switch (v.getId()) {
+    public void onDestroy() {
+        super.onDestroy();
+        mActivity.finish();
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch (checkedId){
             case R.id.rb_home_air:
                 break;
             case R.id.rb_home_video:
@@ -181,14 +208,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.rb_home_bianmin:
                 toActivity(BianMinActiviry.class);
-                break;
         }
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mActivity.finish();
     }
 }
