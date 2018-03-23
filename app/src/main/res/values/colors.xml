@@ -10,4 +10,5 @@
     <color name="black">#000000</color>
     <color name="actionsheet_blue">#2298EF</color>
     <color name="actionsheet_gray">#808080</color>
+    <color name="tab_color">#ff4049</color>
 </resources>

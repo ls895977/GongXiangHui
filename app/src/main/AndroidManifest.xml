@@ -32,6 +32,8 @@
         <activity android:name=".fragments.homeFragment.activity.BaoLiaoActivity"/>
         <activity android:name=".fragments.homeFragment.activity.LiftStyleActivity"/>
         <activity android:name=".fragments.locationFragment.activity.PublishStateActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.MessageGatherActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.MyCollectActivity"/>
     </application>
 
 

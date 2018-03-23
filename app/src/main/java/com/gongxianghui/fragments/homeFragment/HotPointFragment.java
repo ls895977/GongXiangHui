@@ -46,18 +46,6 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     GloriousRecyclerView recyclerviewList;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<String> mDatas;
-    //    @BindView(R.id.rb_home_air)
-//    RadioButton rbHomeAir;
-//    @BindView(R.id.rb_home_video)
-//    RadioButton rbHomeVideo;
-//    @BindView(R.id.rb_home_life_style)
-//    RadioButton rbHomeLifeStyle;
-//    @BindView(R.id.rb_home_saler)
-//    RadioButton rbHomeSaler;
-//    @BindView(R.id.rb_home_bianmin)
-//    RadioButton rbHomeBianmin;
-//    @BindView(R.id.viewpager_home)
-//    ConvenientBanner viewpagerHome;
     Unbinder unbinder;
     private RadioButton viewById;
     private RadioButton rbHomeAir;
@@ -106,16 +94,13 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
 
 //找控件
-
-
-//        rgMain = (RadioGroup) mActivity.findViewById(R.id.rg_home_main);
-//        rbHomeAir = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
-//        rbHomeVideo = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
-//        rbHomeLifeStyle = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
-//        rbHomeSaler = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
-//        rbHomeBianmin = (RadioButton) mActivity.findViewById(R.id.rb_home_air);
-//        rgMain.setOnCheckedChangeListener(this);
-
+        rgMain = (RadioGroup) headerNavigator.findViewById(R.id.rg_home_main);
+        rbHomeAir = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
+        rbHomeVideo = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
+        rbHomeLifeStyle = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
+        rbHomeSaler = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
+        rbHomeBianmin = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
+        rgMain.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -185,7 +170,6 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -194,7 +178,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-        switch (checkedId){
+        switch (checkedId) {
             case R.id.rb_home_air:
                 break;
             case R.id.rb_home_video:

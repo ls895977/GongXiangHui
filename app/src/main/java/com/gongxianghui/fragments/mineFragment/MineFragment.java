@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.mineFragment.activity.LoginActivity;
+import com.gongxianghui.fragments.mineFragment.activity.MessageGatherActivity;
+import com.gongxianghui.fragments.mineFragment.activity.MyCollectActivity;
 import com.gongxianghui.fragments.mineFragment.activity.PersonDataActivity;
 import com.gongxianghui.fragments.mineFragment.activity.SettingActivity;
 
@@ -86,14 +88,17 @@ public class MineFragment extends BaseFragment {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_preson_data:
-                intent = new Intent(mActivity, PersonDataActivity.class);
-                startActivity(intent);
+           toActivity(PersonDataActivity.class);
                 break;
             case R.id.rl_message_gather:
+                toActivity(MessageGatherActivity.class);
+
                 break;
             case R.id.rl_mine_message:
+
                 break;
             case R.id.rl_mine_collect:
+                toActivity(MyCollectActivity.class);
                 break;
             case R.id.mine_fabu:
                 break;
@@ -108,13 +113,10 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_invite_friend:
                 break;
             case R.id.mine_quickly_login:
-                intent = new Intent(mActivity, LoginActivity.class);
-                startActivity(intent);
-                break;
+            toActivity(LoginActivity.class);
 
             case R.id.tv_mine_set:
-                intent=new Intent(mActivity,SettingActivity.class);
-                startActivity(intent);
+                toActivity(SettingActivity.class);
                 break;
 
         }

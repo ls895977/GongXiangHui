@@ -52,7 +52,6 @@ public class LoginActivity extends BaseActivity {
     protected void initDatas() {
 
 
-
     }
 
     @Override
@@ -76,7 +75,6 @@ public class LoginActivity extends BaseActivity {
                 intent = new Intent(this, SeekPasswordActivity.class);
                 startActivity(intent);
                 break;
-
 
 
         }
