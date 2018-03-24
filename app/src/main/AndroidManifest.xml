@@ -34,6 +34,7 @@
         <activity android:name=".fragments.locationFragment.activity.PublishStateActivity"/>
         <activity android:name=".fragments.mineFragment.activity.MessageGatherActivity"/>
         <activity android:name=".fragments.mineFragment.activity.MyCollectActivity"/>
+        <activity android:name=".fragments.homeFragment.activity.ProtocolActivity"/>
     </application>
 
 
