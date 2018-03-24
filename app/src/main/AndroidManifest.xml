@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,6 +35,11 @@
         <activity android:name=".fragments.mineFragment.activity.MessageGatherActivity"/>
         <activity android:name=".fragments.mineFragment.activity.MyCollectActivity"/>
         <activity android:name=".fragments.homeFragment.activity.ProtocolActivity"/>
+        <activity android:name=".fragments.homeFragment.activity.HomeVideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
     </application>
 
 

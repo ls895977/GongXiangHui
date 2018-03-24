@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gongxianghui.bean.SigninBean;
+import com.gongxianghui.fragments.mineFragment.activity.LoginActivity;
+import com.gongxianghui.utils.SPUtils;
+
 import butterknife.ButterKnife;
 
 
@@ -47,28 +51,28 @@ public abstract class BaseFragment extends Fragment {
         initListeners();
     }
 
-//    /**
-//     * 需要登陆才能跳转的aty
-//     */
-//    protected void toActivity(Class<?> target, boolean needSignin) {
-//        toActivity(target, null, needSignin);
-//    }
-//
-//    /**
-//     * 需要登陆才能跳转的aty
-//     */
-//    protected void toActivity(Class<?> target, Bundle bundle, boolean needSignin) {
-//        MyApplication.nextBundle = bundle;
-//        if (needSignin) {
-//            final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo(mActivity);
-//            if (signInfo == null) {
-//                Toast.makeText(mActivity, "请先登录", Toast.LENGTH_SHORT).show();
-//                toActivity(LoginActivity.class, bundle);
-//                MyApplication.next = target;
-//            } else toActivity(target, bundle);
-//        } else toActivity(target, bundle);
-//    }
-//
+    /**
+     * 需要登陆才能跳转的aty
+     */
+    protected void toActivity(Class<?> target, boolean needSignin) {
+        toActivity(target, null, needSignin);
+    }
+
+    /**
+     * 需要登陆才能跳转的aty
+     */
+    protected void toActivity(Class<?> target, Bundle bundle, boolean needSignin) {
+        MyApplication.nextBundle = bundle;
+        if (needSignin) {
+          final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo(mActivity);
+            if (signInfo == null) {
+                Toast.makeText(mActivity, "请先登录", Toast.LENGTH_SHORT).show();
+                toActivity(LoginActivity.class, bundle);
+                MyApplication.next = target;
+            } else toActivity(target, bundle);
+        } else toActivity(target, bundle);
+    }
+
 
 
     protected void toActivity(Class<?> target) {
@@ -107,12 +111,12 @@ public abstract class BaseFragment extends Fragment {
     /*
      * 当Activity初始化之后可以在这里进行一些数据的初始化操作
      */
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        initDatas();
-//        initListeners();
-//    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initDatas();
+        initListeners();
+    }
 
     /**
      * 子类实现此抽象方法返回View进行展示

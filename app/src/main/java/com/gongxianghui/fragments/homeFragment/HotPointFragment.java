@@ -22,6 +22,7 @@ import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
 import com.gongxianghui.adapter.homeAdapter.HomeSalerListAdapter;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.gongxianghui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.LiftStyleActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SalerActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
@@ -182,6 +183,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
             case R.id.rb_home_air:
                 break;
             case R.id.rb_home_video:
+                toActivity(HomeVideoActivity.class);
                 break;
             case R.id.rb_home_life_style:
 

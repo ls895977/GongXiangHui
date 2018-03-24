@@ -6,7 +6,7 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.gongxianghui"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -21,32 +21,35 @@ android {
 }
 
 dependencies {
-    compile fileTree(include:['*.jar'], dir: 'libs')
-androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-})
-compile 'com.android.support:appcompat-v7:27.+'
-compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:27.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 //新添加的库
-annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-compile 'com.jakewharton:butterknife:8.4.0'
-compile 'com.lzy.net:okgo:3.0.4' //butterknife
-compile 'com.bigkoo:convenientbanner:2.0.5' //okgo网络框架
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.lzy.net:okgo:3.0.4' //butterknife
+    compile 'com.bigkoo:convenientbanner:2.0.5' //okgo网络框架
 //轮播图三方库
-compile 'pub.devrel:easypermissions:0.1.7'//用于请求相机权限
-compile 'com.google.zxing:core:3.2.1'//扫描二维码
+    compile 'pub.devrel:easypermissions:0.1.7'//用于请求相机权限
+    compile 'com.google.zxing:core:3.2.1'//扫描二维码
 //谷歌的zxing库
-compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'//bingoogolapple的库
-compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
-compile 'com.lovedise:permissiongen:0.0.6'
-compile 'com.contrarywind:Android-PickerView:3.2.6'//选择器
-compile 'com.android.support:recyclerview-v7:27.0.0-alpha1'
-compile 'com.android.support:design:27.+'//优惠横向转换条
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'//bingoogolapple的库
+    compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
+    compile 'com.lovedise:permissiongen:0.0.6'
+    compile 'com.contrarywind:Android-PickerView:3.2.6'//选择器
+    compile 'com.android.support:recyclerview-v7:27.0.0-alpha1'
+    compile 'com.android.support:design:27.+'//优惠横向转换条
     compile 'com.github.bumptech.glide:glide:4.2.0' //图片处理
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0' //图片处理
     compile 'com.android.support:cardview-v7:24.2.0'  //卡片图片
     compile 'com.google.code.gson:gson:2.8.1' //Gson解析
-testCompile 'junit:junit:4.12'
+    compile 'cn.jzvd:jiaozivideoplayer:6.2.8' //视频库
+    //相册
+    compile 'com.linchaolong.android:imagepicker:1.2'
+    testCompile 'junit:junit:4.12'
 
 
 }

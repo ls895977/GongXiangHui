@@ -76,49 +76,19 @@
 
 
         <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_test_0" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_test_0" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_test_0" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_test_0" />
+            <GridView
+                android:id="@+id/grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4" />
 
 
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@mipmap/add"
-            android:padding="5dp" />
-
 
     </LinearLayout>
 

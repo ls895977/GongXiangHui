@@ -82,13 +82,13 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect,
-            R.id.mine_fabu, R.id.rl_up_step, R.id.company_set, R.id.hezuo_call,R.id.tv_mine_set,
+            R.id.mine_fabu, R.id.rl_up_step, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set,
             R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_preson_data:
-           toActivity(PersonDataActivity.class);
+                toActivity(PersonDataActivity.class);
                 break;
             case R.id.rl_message_gather:
                 toActivity(MessageGatherActivity.class);
@@ -98,7 +98,7 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.rl_mine_collect:
-                toActivity(MyCollectActivity.class);
+                toActivity(MyCollectActivity.class,true);
                 break;
             case R.id.mine_fabu:
                 break;
@@ -113,8 +113,8 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_invite_friend:
                 break;
             case R.id.mine_quickly_login:
-            toActivity(LoginActivity.class);
-
+                toActivity(LoginActivity.class);
+                break;
             case R.id.tv_mine_set:
                 toActivity(SettingActivity.class);
                 break;

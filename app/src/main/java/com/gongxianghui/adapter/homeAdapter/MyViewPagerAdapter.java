@@ -26,14 +26,14 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.get(position);
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return titles[position];
-    }
+//    @Nullable
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        return titles[position];
+//    }
 
     @Override
     public int getCount() {
-        return fragments==null?0: fragments.size();
+        return fragments==null?0: fragments.size()-1;
     }
 }
