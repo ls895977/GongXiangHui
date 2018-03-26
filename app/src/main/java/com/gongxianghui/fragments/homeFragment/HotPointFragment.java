@@ -163,7 +163,6 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

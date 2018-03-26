@@ -63,18 +63,21 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         fragments.add(new HotPointFragment());
         fragments.add(new HotPointFragment());
 
-        viewPagerAdapter = new MyViewPagerAdapter(mActivity.getSupportFragmentManager(), fragments, titles);
+        viewPagerAdapter = new MyViewPagerAdapter(mActivity.getSupportFragmentManager(), titles, fragments);
         homeViewPager.setAdapter(viewPagerAdapter);
         homeTabLayout.setupWithViewPager(homeViewPager);
+
 
     }
 
     @Override
     public void initViews(View view) {
+
         homeTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         for (String tab : titles) {
             homeTabLayout.addTab(homeTabLayout.newTab().setText(tab));
         }
+
     }
 
     @Override

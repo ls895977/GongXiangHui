@@ -12,19 +12,22 @@ import java.util.List;
  */
 
 public class MyViewPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragments;
     private String[] titles;
+    private List<Fragment> fragments;
 
-    public MyViewPagerAdapter(FragmentManager fm, List<Fragment> fragments, String[] titles) {
+
+    public MyViewPagerAdapter(FragmentManager fm, String[] titles, List<Fragment> fragments) {
         super(fm);
-        this.fragments = fragments;
         this.titles = titles;
+        this.fragments = fragments;
+
     }
 
     @Override
     public Fragment getItem(int position) {
+
         return fragments.get(position);
-    }
+}
 
 //    @Nullable
 //    @Override

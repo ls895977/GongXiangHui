@@ -10,8 +10,13 @@ import android.widget.TextView;
 
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.fragments.mineFragment.activity.CompanySetActivity;
+import com.gongxianghui.fragments.mineFragment.activity.CooperationCallActivity;
+import com.gongxianghui.fragments.mineFragment.activity.InviteFrientActivity;
 import com.gongxianghui.fragments.mineFragment.activity.LoginActivity;
 import com.gongxianghui.fragments.mineFragment.activity.MessageGatherActivity;
+import com.gongxianghui.fragments.mineFragment.activity.MineIssueActivity;
+import com.gongxianghui.fragments.mineFragment.activity.MineMessageActivity;
 import com.gongxianghui.fragments.mineFragment.activity.MyCollectActivity;
 import com.gongxianghui.fragments.mineFragment.activity.PersonDataActivity;
 import com.gongxianghui.fragments.mineFragment.activity.SettingActivity;
@@ -95,22 +100,26 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.rl_mine_message:
-
+                toActivity(MineMessageActivity.class);
                 break;
             case R.id.rl_mine_collect:
-                toActivity(MyCollectActivity.class,true);
+                toActivity(MyCollectActivity.class);
                 break;
             case R.id.mine_fabu:
+                toActivity(MineIssueActivity.class);
                 break;
             case R.id.rl_up_step:
                 break;
             case R.id.company_set:
+                toActivity(CompanySetActivity.class);
                 break;
             case R.id.hezuo_call:
+                toActivity(CooperationCallActivity.class);
                 break;
             case R.id.write_advertise:
                 break;
             case R.id.rl_invite_friend:
+                toActivity(InviteFrientActivity.class);
                 break;
             case R.id.mine_quickly_login:
                 toActivity(LoginActivity.class);

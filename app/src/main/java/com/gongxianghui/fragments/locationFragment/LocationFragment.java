@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.gongxianghui.fragments.locationFragment.activity.PublishStateActivity;
 
 import butterknife.BindView;
@@ -61,7 +62,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_location_mine_fabu:
-                toActivity(PublishStateActivity.class);
+                toActivity(BaoLiaoActivity.class);
                 break;
         }
     }

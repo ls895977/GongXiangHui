@@ -60,7 +60,7 @@ public class SalerActivity extends BaseActivity implements TabLayout.OnTabSelect
         fragments.add(new OrderStatusFragment());
         fragments.add(new OrderStatusFragment());
         fragments.add(new OrderStatusFragment());
-        viewPagerAdapter = new MyViewPagerAdapter(this.getSupportFragmentManager(), fragments, titles);
+        viewPagerAdapter = new MyViewPagerAdapter(this.getSupportFragmentManager(), titles, fragments);
         salerViewPager.setAdapter(viewPagerAdapter);
         salerTabLayou.setupWithViewPager(salerViewPager);
 

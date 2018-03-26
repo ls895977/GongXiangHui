@@ -14,11 +14,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".activity.MainActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.BianMinActiviry"/>
         <activity android:name=".activity.ScanActivity"/>
@@ -40,6 +36,18 @@
             android:screenOrientation="portrait"/>
         <activity android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
+        <activity android:name=".activity.WelcomActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".fragments.mineFragment.activity.MineIssueActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.MineMessageActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.CompanySetActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.InviteFrientActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.CooperationCallActivity"/>
     </application>
 
 

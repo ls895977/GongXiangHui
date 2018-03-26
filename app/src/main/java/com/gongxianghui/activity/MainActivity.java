@@ -1,13 +1,18 @@
 package com.gongxianghui.activity;
+
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
 import com.gongxianghui.R;
 import com.gongxianghui.adapter.MainViewPagerAdapter;
 import com.gongxianghui.base.BaseActivity;
 import com.gongxianghui.fragments.generalizeFragment.GeneralizeFragment;
 import com.gongxianghui.fragments.homeFragment.HomeFragment;
+import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.gongxianghui.fragments.issureFragment.IssureFragment;
 import com.gongxianghui.fragments.locationFragment.LocationFragment;
 import com.gongxianghui.fragments.mineFragment.MineFragment;
 import com.gongxianghui.widget.NoScrollViewPager;
@@ -32,10 +37,12 @@ public class MainActivity extends BaseActivity {
     RadioButton rbFabu;
     @BindView(R.id.rb_generalize)
     RadioButton rbGeneralize;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
+
     @Override
     protected void initViews() {
         initViewPagers();
@@ -45,6 +52,7 @@ public class MainActivity extends BaseActivity {
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
         fragments.add(new LocationFragment());
+        fragments.add(new IssureFragment());
         fragments.add(new GeneralizeFragment());
         fragments.add(new MineFragment());
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);
@@ -69,11 +77,14 @@ public class MainActivity extends BaseActivity {
                     case R.id.rb_location:
                         vpMain.setCurrentItem(1, false);
                         break;
+                    case R.id.rb_fabu:
+                        toActivity(BaoLiaoActivity.class);
+                        break;
                     case R.id.rb_generalize:
-                        vpMain.setCurrentItem(2, false);
+                        vpMain.setCurrentItem(3, false);
                         break;
                     case R.id.rb_mine:
-                        vpMain.setCurrentItem(3, false);
+                        vpMain.setCurrentItem(4, false);
                         break;
                 }
             }
