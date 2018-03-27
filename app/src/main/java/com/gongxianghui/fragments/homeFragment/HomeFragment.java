@@ -103,7 +103,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        homeViewPager.setCurrentItem(tab.getPosition(),false);
+        homeViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override

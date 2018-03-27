@@ -22,6 +22,7 @@ import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
 import com.gongxianghui.adapter.homeAdapter.HomeSalerListAdapter;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.gongxianghui.fragments.homeFragment.activity.HomeAirActivity;
 import com.gongxianghui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.LiftStyleActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SalerActivity;
@@ -119,18 +120,6 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
     }
 
-//    @Override
-//    protected void initListeners() {
-//        rbHomeAir.setOnClickListener(this);
-//        rbHomeVideo.setOnClickListener(this);
-//        rbHomeLifeStyle.setOnClickListener(this);
-//        rbHomeSaler.setOnClickListener(this);
-//        rbHomeBianmin.setOnClickListener(this);
-//
-//
-//    }
-
-
 //
 //    private void loadTestDatas() {
 //        //本地图片集合
@@ -163,6 +152,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -180,6 +170,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId) {
             case R.id.rb_home_air:
+                toActivity(HomeAirActivity.class);
                 break;
             case R.id.rb_home_video:
                 toActivity(HomeVideoActivity.class);

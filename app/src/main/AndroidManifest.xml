@@ -48,6 +48,7 @@
         <activity android:name=".fragments.mineFragment.activity.CompanySetActivity"/>
         <activity android:name=".fragments.mineFragment.activity.InviteFrientActivity"/>
         <activity android:name=".fragments.mineFragment.activity.CooperationCallActivity"/>
+        <activity android:name=".fragments.homeFragment.activity.HomeAirActivity"/>
     </application>
 
 
