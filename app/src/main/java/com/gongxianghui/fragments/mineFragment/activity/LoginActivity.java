@@ -2,14 +2,20 @@ package com.gongxianghui.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gongxianghui.R;
+import com.gongxianghui.activity.MainActivity;
 import com.gongxianghui.base.BaseActivity;
+import com.gongxianghui.utils.REGutil;
+import com.gongxianghui.utils.UserService;
 import com.gongxianghui.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -73,6 +79,28 @@ public class LoginActivity extends BaseActivity {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.bt_login_login:
+                String phone = etLoginPhone.getText().toString().trim();
+                String password = etLoginPassword.getText().toString().trim();
+
+                if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!REGutil.checkCellphone(phone)) {
+                    Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("TAG", "登录成功");
+                    UserService userService = new UserService(mContext);
+                    boolean flag = userService.login(phone, password);
+                    if (flag) {
+                        Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
+                        toActivity(MainActivity.class);
+                    } else {
+                        Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
                 break;
             case R.id.tv_login_regist:
                 intent = new Intent(this, RegistActivity.class);
