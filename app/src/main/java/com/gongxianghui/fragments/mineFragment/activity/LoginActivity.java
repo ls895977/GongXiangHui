@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gongxianghui.R;
@@ -31,6 +32,12 @@ public class LoginActivity extends BaseActivity {
     TextView tvLoginForgetPassword;
     @BindView(R.id.et_login_phone)
     EditText etLoginPhone;
+    @BindView(R.id.iv_wx_login)
+    ImageView ivWxLogin;
+    @BindView(R.id.iv_qq_login)
+    ImageView ivQqLogin;
+    @BindView(R.id.iv_sina_login)
+    ImageView ivSinaLogin;
 
     @Override
     protected int getLayoutId() {
@@ -61,7 +68,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password})
+    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -75,9 +82,16 @@ public class LoginActivity extends BaseActivity {
                 intent = new Intent(this, SeekPasswordActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.iv_wx_login:
+                break;
+            case R.id.iv_qq_login:
+                break;
+            case R.id.iv_sina_login:
+                break;
 
 
         }
     }
+
 }
 

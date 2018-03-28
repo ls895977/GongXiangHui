@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.gongxianghui.R;
 import com.gongxianghui.activity.ScanActivity;
 import com.gongxianghui.adapter.homeAdapter.MyViewPagerAdapter;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.gongxianghui.fragments.homeFragment.activity.HomeAirActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
 
 import java.util.ArrayList;
@@ -29,16 +31,18 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener,View.OnClickListener {
+public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener {
     @BindView(R.id.ib_home_camera)
     ImageButton ibHomeCamera;
     @BindView(R.id.ib_home_search)
     ImageButton ibHomeSearch;
     @BindView(R.id.ib_home_scan)
     ImageButton ibHomeScan;
+    @BindView(R.id.iv_homepoint_add)
+    ImageView ivHomepointAdd;
     //TabLayout标签
     private String[] titles = new String[]{"热点",
-            "本地", "社会", "教育", "健康", "娱乐", "情感"};
+            "本地", "社会", "教育", "健康"};
     private List<Fragment> fragments = new ArrayList<>();
     private MyViewPagerAdapter viewPagerAdapter;
     @BindView(R.id.home_tab_layout)
@@ -60,8 +64,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         fragments.add(new HotPointFragment());
         fragments.add(new HotPointFragment());
         fragments.add(new HotPointFragment());
-        fragments.add(new HotPointFragment());
-        fragments.add(new HotPointFragment());
+
 
         viewPagerAdapter = new MyViewPagerAdapter(mActivity.getSupportFragmentManager(), titles, fragments);
         homeViewPager.setAdapter(viewPagerAdapter);
@@ -85,6 +88,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         ibHomeCamera.setOnClickListener(this);
         ibHomeSearch.setOnClickListener(this);
         ibHomeScan.setOnClickListener(this);
+        ivHomepointAdd.setOnClickListener(this);
     }
 
     @Override
@@ -118,16 +122,19 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void onClick(View v) {
-      switch (v.getId()){
-          case R.id.ib_home_camera:            //爆料
-              toActivity(BaoLiaoActivity.class);
-              break;
-          case R.id.ib_home_scan:            //扫描二维码
-              toActivity(ScanActivity.class);
-              break;
-          case R.id.ib_home_search:          //搜索
-              toActivity(SearchActivity.class);
-              break;
-      }
+        switch (v.getId()) {
+            case R.id.ib_home_camera:            //爆料
+                toActivity(BaoLiaoActivity.class);
+                break;
+            case R.id.ib_home_scan:            //扫描二维码
+                toActivity(ScanActivity.class);
+                break;
+            case R.id.ib_home_search:          //搜索
+                toActivity(SearchActivity.class);
+                break;
+                case R.id.iv_homepoint_add:
+                    toActivity(HomeAirActivity.class);
+                    break;
+        }
     }
 }

@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  */
 public class SalerActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
     //TabLayout标签
-    private String[] titles = new String[]{"全部", "租房", "二手房", "招聘", "二手车", "生活", "餐饮"};
+    private String[] titles = new String[]{"全部", "租房", "二手房", "招聘", "二手车"};
     private List<Fragment> fragments = new ArrayList<>();
     @BindView(R.id.saler_tab_layou)
     TabLayout salerTabLayou;
@@ -36,7 +36,7 @@ public class SalerActivity extends BaseActivity implements TabLayout.OnTabSelect
     @Override
     protected void initViews() {
         //设置TabLayout标签的显示方式
-        salerTabLayou.setTabMode(TabLayout.MODE_SCROLLABLE);
+        salerTabLayou.setTabMode(TabLayout.MODE_FIXED);
         //循环注入标签
         for (String tab : titles) {
             salerTabLayou.addTab(salerTabLayou.newTab().setText(tab));
@@ -58,8 +58,7 @@ public class SalerActivity extends BaseActivity implements TabLayout.OnTabSelect
         fragments.add(new OrderStatusFragment());
         fragments.add(new OrderStatusFragment());
         fragments.add(new OrderStatusFragment());
-        fragments.add(new OrderStatusFragment());
-        fragments.add(new OrderStatusFragment());
+
         viewPagerAdapter = new MyViewPagerAdapter(this.getSupportFragmentManager(), titles, fragments);
         salerViewPager.setAdapter(viewPagerAdapter);
         salerTabLayou.setupWithViewPager(salerViewPager);

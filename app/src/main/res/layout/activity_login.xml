@@ -113,21 +113,21 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_wx_signin"
+            android:id="@+id/iv_wx_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@mipmap/iv_wx" />
 
         <ImageView
-            android:id="@+id/iv_qq_sina"
+            android:id="@+id/iv_qq_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@mipmap/iv_qq" />
 
         <ImageView
-            android:id="@+id/iv_qq_signin"
+            android:id="@+id/iv_sina_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

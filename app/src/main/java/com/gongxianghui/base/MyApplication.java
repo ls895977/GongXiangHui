@@ -11,6 +11,7 @@ import com.gongxianghui.config.Constant;
 import com.gongxianghui.utils.AppManager;
 import com.lzy.okgo.OkGo;
 
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -68,10 +69,10 @@ public class MyApplication extends Application {
         OkGo.getInstance().setOkHttpClient(builder.build());
     }
 
-//    {
+    {
 //        PlatformConfig.setWeixin(Constant.WEIXIN_APP_ID, Constant.WEIXIN_APP_SECRET);
 //        PlatformConfig.setQQZone(Constant.QQZONE_APP_ID, Constant.QQZONE_APP_KEY);
 //        PlatformConfig.setSinaWeibo(Constant.SINA_APP_KEY,
 //                Constant.SINA_APP_SERCET, Constant.SINA_APP_URL);
-//    }
+    }
 }

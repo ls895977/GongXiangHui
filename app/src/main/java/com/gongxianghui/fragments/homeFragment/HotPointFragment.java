@@ -13,8 +13,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+
 import com.gongxianghui.R;
 import com.gongxianghui.activity.BianMinActiviry;
 import com.gongxianghui.activity.ScanActivity;
@@ -27,8 +26,10 @@ import com.gongxianghui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.LiftStyleActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SalerActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
+import com.gongxianghui.utils.GlideImageLoader;
 import com.gongxianghui.widget.GloriousRecyclerView;
-import com.gongxianghui.widget.ImageViewHolder;
+
+import com.youth.banner.Banner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     private RadioButton rbHomeBianmin;
     private RadioGroup rgMain;
 
+   private Banner viewpagerHome;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
@@ -82,27 +85,29 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         recyclerviewList.setEmptyView(empty);
 
 
-//        viewpagerHome.setPages(new CBViewHolderCreator<ImageViewHolder>() {
-//
-//            @Override
-//            public ImageViewHolder createHolder() {
-//                return new ImageViewHolder();
-//            }
-//        }, localImages)
-//                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused}) //设置两个点作为指示器
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL) //设置指示器的方向水平
-//                .startTurning(2000)
-//                .setCanLoop(true);
-
-
 //找控件
         rgMain = (RadioGroup) headerNavigator.findViewById(R.id.rg_home_main);
+        viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
         rbHomeAir = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
         rbHomeVideo = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
         rbHomeLifeStyle = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
         rbHomeSaler = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
         rbHomeBianmin = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
         rgMain.setOnCheckedChangeListener(this);
+
+
+        List<Integer> list=new ArrayList<>();
+
+        list.add(R.mipmap.ic_test_0);
+        list.add(R.mipmap.ic_test_1);
+        list.add(R.mipmap.ic_test_2);
+        list.add(R.mipmap.ic_test_3);
+        list.add(R.mipmap.ic_test_4);
+        list.add(R.mipmap.ic_test_5);
+        list.add(R.mipmap.ic_test_6);
+        viewpagerHome.setImages(list)
+                .setImageLoader(new GlideImageLoader())
+                .start();
     }
 
     @Override
@@ -115,35 +120,13 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
                 }
         );
 
-        // loadTestDatas();
+
 
 
     }
 
-//
-//    private void loadTestDatas() {
-//        //本地图片集合
-//        for (int position = 0; position < 7; position++)
-//            localImages.add(getResId("ic_test_" + position, R.mipmap.class));
-//    }
 
-    /**
-     * 通过文件名获取资源id 例子：getResId("icon", R.drawable.class);
-     *
-     * @param variableName
-     * @param c
-     * @return
-     */
 
-    public static int getResId(String variableName, Class<?> c) {
-        try {
-            Field idField = c.getDeclaredField(variableName);
-            return idField.getInt(idField);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
