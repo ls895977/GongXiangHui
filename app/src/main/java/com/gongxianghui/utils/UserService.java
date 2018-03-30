@@ -28,7 +28,6 @@ public class UserService {
         if (cursor.moveToFirst() == true) {
             cursor.close();
         }
-
         return true;
     }
 

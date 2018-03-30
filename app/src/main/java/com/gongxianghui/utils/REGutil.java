@@ -9,6 +9,8 @@
 
 package com.gongxianghui.utils;
 
+import com.gongxianghui.base.BaseActivity;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,4 +37,6 @@ public class REGutil {
         Matcher m = p.matcher(idcard);
         return m.matches();
     }
+
+
 }

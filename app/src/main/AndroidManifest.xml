@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gongxianghui">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+<!--高德相应权限-->
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!--获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <!--用于访问网络，网络定位需要上网-->
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <!--用于读取手机当前的状态-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <!--写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
 
     <application
         android:name=".base.MyApplication"
@@ -20,30 +39,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--高德地图-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>
+        <service android:name="com.amap.api.location.APSService"></service>
 
-        <activity android:name=".activity.MainActivity" >
+        <activity android:name=".activity.MainActivity">
 
         </activity>
-        <activity android:name=".activity.BianMinActiviry"/>
-        <activity android:name=".activity.ScanActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.PersonDataActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.LoginActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.RegistActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.SettingActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.SeekPasswordActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.SalerActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.SearchActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.BaoLiaoActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.LiftStyleActivity"/>
-        <activity android:name=".fragments.locationFragment.activity.PublishStateActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.MessageGatherActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.MyCollectActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.ProtocolActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.HomeVideoActivity"
+        <activity android:name=".activity.BianMinActiviry" />
+        <activity android:name=".activity.ScanActivity" />
+        <activity android:name=".fragments.mineFragment.activity.PersonDataActivity" />
+        <activity android:name=".fragments.mineFragment.activity.LoginActivity" />
+        <activity android:name=".fragments.mineFragment.activity.RegistActivity" />
+        <activity android:name=".fragments.mineFragment.activity.SettingActivity" />
+        <activity android:name=".fragments.mineFragment.activity.SeekPasswordActivity" />
+        <activity android:name=".fragments.homeFragment.activity.SalerActivity" />
+        <activity android:name=".fragments.homeFragment.activity.SearchActivity" />
+        <activity android:name=".fragments.homeFragment.activity.BaoLiaoActivity" />
+        <activity android:name=".fragments.homeFragment.activity.LiftStyleActivity" />
+        <activity android:name=".fragments.locationFragment.activity.PublishStateActivity" />
+        <activity android:name=".fragments.mineFragment.activity.MessageGatherActivity" />
+        <activity android:name=".fragments.mineFragment.activity.MyCollectActivity" />
+        <activity android:name=".fragments.homeFragment.activity.ProtocolActivity" />
+        <activity
+            android:name=".fragments.homeFragment.activity.HomeVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activity.WelcomActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,12 +77,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".fragments.mineFragment.activity.MineIssueActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.MineMessageActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.CompanySetActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.InviteFrientActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.CooperationCallActivity"/>
-        <activity android:name=".fragments.homeFragment.activity.HomeAirActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.MineIssueActivity" />
+        <activity android:name=".fragments.mineFragment.activity.MineMessageActivity" />
+        <activity android:name=".fragments.mineFragment.activity.CompanySetActivity" />
+        <activity android:name=".fragments.mineFragment.activity.InviteFrientActivity" />
+        <activity android:name=".fragments.mineFragment.activity.CooperationCallActivity" />
+        <activity android:name=".fragments.homeFragment.activity.HomeAddTabActivity" />
+        <activity android:name=".fragments.homeFragment.activity.HomeSeachLocationActivity"/>
 
 
     </application>

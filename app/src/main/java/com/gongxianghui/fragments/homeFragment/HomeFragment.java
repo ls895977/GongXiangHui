@@ -16,7 +16,7 @@ import com.gongxianghui.activity.ScanActivity;
 import com.gongxianghui.adapter.homeAdapter.MyViewPagerAdapter;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
-import com.gongxianghui.fragments.homeFragment.activity.HomeAirActivity;
+import com.gongxianghui.fragments.homeFragment.activity.HomeAddTabActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
 
 import java.util.ArrayList;
@@ -133,7 +133,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 toActivity(SearchActivity.class);
                 break;
                 case R.id.iv_homepoint_add:
-                    toActivity(HomeAirActivity.class);
+                    toActivity(HomeAddTabActivity.class);
                     break;
         }
     }

@@ -26,7 +26,7 @@ import java.util.logging.Handler;
  * Created by Administrator on 2018/3/27 0027.
  */
 
-public class HomeAirActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class HomeAddTabActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     private MyGridView mUserGv, mOtherGv;
     private List<String> mUserList = new ArrayList<>();
     private List<String> mOtherList = new ArrayList<>();

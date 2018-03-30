@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 
+import com.gongxianghui.base.BaseActivity;
 import com.gongxianghui.bean.SigninBean;
 import com.google.gson.Gson;
 

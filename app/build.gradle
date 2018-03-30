@@ -52,6 +52,6 @@ dependencies {
     //相册
     compile 'com.linchaolong.android:imagepicker:1.2'
     testCompile 'junit:junit:4.12'
-
+    compile 'com.github.dfqin:grantor:2.1.0' //权限库
 
 }

@@ -1,37 +1,30 @@
 package com.gongxianghui.fragments.homeFragment;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 
 import com.gongxianghui.R;
 import com.gongxianghui.activity.BianMinActiviry;
-import com.gongxianghui.activity.ScanActivity;
 import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
-import com.gongxianghui.adapter.homeAdapter.HomeSalerListAdapter;
 import com.gongxianghui.base.BaseFragment;
-import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
-import com.gongxianghui.fragments.homeFragment.activity.HomeAirActivity;
+import com.gongxianghui.fragments.homeFragment.activity.HomeAddTabActivity;
+import com.gongxianghui.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.gongxianghui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.LiftStyleActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SalerActivity;
-import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
 import com.gongxianghui.utils.GlideImageLoader;
 import com.gongxianghui.widget.GloriousRecyclerView;
 
 import com.youth.banner.Banner;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,7 +146,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId) {
             case R.id.rb_home_air:
-                toActivity(HomeAirActivity.class);
+                toActivity(HomeSeachLocationActivity.class);
                 break;
             case R.id.rb_home_video:
                 toActivity(HomeVideoActivity.class);
