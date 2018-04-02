@@ -1,8 +1,14 @@
-package com.guanggaotext;
+package com.gongxianghui.adapter.mineAdapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.gongxianghui.fragments.mineFragment.fragment.Fragment1;
+import com.gongxianghui.fragments.mineFragment.fragment.Fragment2;
+import com.gongxianghui.fragments.mineFragment.fragment.Fragment3;
+import com.gongxianghui.fragments.mineFragment.fragment.Fragment4;
+import com.gongxianghui.fragments.mineFragment.fragment.Fragment5;
 
 /**
  * Created by Administrator on 2018/4/2 0002.

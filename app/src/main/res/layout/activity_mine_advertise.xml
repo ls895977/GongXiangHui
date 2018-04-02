@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.guanggaotext.MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/activity_title" />
+
+    <RelativeLayout
+        android:id="@+id/rl_mineFragment_addTopAdver"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_mineFragment_addTopAdver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_mingFragment_addTopAdver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="增加顶部广告"
+            android:textColor="#000" />
+
+    </RelativeLayout>
+
+
+    <WebView
+        android:id="@+id/webView_mineFragment_Adver"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></WebView>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_mineFragment_addBottomAdver"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_mineFragment_addBottomAdver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_mingFragment_addBottomAdver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="增加底部广告"
+            android:textColor="#000" />
+
+    </RelativeLayout>
+
+</LinearLayout>

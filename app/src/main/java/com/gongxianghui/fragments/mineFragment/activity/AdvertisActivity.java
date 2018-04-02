@@ -1,4 +1,4 @@
-package com.guanggaotext;
+package com.gongxianghui.fragments.mineFragment.activity;
 
 
 import android.os.Bundle;
@@ -7,7 +7,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.gongxianghui.R;
+import com.gongxianghui.adapter.mineAdapter.MyFragmentPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

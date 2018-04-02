@@ -1,35 +1,34 @@
 package com.gongxianghui.activity;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseActivity;
-
-import java.util.List;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.bean.ZxingConfig;
+import com.yzq.zxinglibrary.common.Constant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.zxing.ZXingView;
-import kr.co.namee.permissiongen.PermissionGen;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by Administrator on 2018/3/10 0010.
  */
 
-public class ScanActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, QRCodeView.Delegate {
-    private static final String TAG = "ScanActivity";
-    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
-    private long clickTime = 0; //记录第一次点击的时间
-    @BindView(R.id.zxingview)
-    ZXingView zxingview;
+public class ScanActivity extends BaseActivity {
+
+    @BindView(R.id.result)
+    TextView result;
+    private int REQUEST_CODE_SCAN = 111;
 
     @Override
     protected int getLayoutId() {
@@ -37,106 +36,92 @@ public class ScanActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
 
-
     @Override
     protected void initViews() {
-        zxingview.setDelegate(this);
-
-        PermissionGen.with(ScanActivity.this)
-                .addRequestCode(105)
-                .permissions(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .request();
-
-
+        requestCamera();
     }
 
+    private void requestCamera() {
+
+        if (PermissionsUtil.hasPermission(mContext, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //有访问摄像头的权限
+            Intent intent = new Intent(mContext, CaptureActivity.class);
+              /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+                                * 也可以不传这个参数
+                                * 不传的话  默认都为默认不震动  其他都为true
+                                * */
+            ZxingConfig config = new ZxingConfig();
+            config.setPlayBeep(true);
+            config.setShake(true);
+            intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+
+            startActivityForResult(intent, REQUEST_CODE_SCAN);
+        } else {
+            PermissionsUtil.requestPermission(ScanActivity.this, new PermissionListener() {
+                @Override
+                public void permissionGranted(@NonNull String[] permissions) {
+                    //用户授予了访问摄像头的权限
+                    Intent intent = new Intent(mContext, CaptureActivity.class);
+              /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+                                * 也可以不传这个参数
+                                * 不传的话  默认都为默认不震动  其他都为true
+                                * */
+                    ZxingConfig config = new ZxingConfig();
+                    config.setPlayBeep(true);
+                    config.setShake(true);
+                    intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+
+                    startActivityForResult(intent, REQUEST_CODE_SCAN);
+                }
+                @Override
+                public void permissionDenied(@NonNull String[] permissions) {
+                    //用户拒绝了访问摄像头的申请
+                    Uri packageURI = Uri.parse("package:" + mContext.getPackageName());
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    startActivity(intent);
+
+                    Toast.makeText(mContext, "没有权限无法扫描呦", Toast.LENGTH_LONG).show();
+                }
+            }, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE});
+        }
+    }
     @Override
     protected void initDatas() {
-
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        requestCodeQRCodePermissions();
-        zxingview.startCamera();
-        zxingview.startSpot();
-    }
-    @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
-    private void requestCodeQRCodePermissions() {
-        String[] perms = {Manifest.permission.CAMERA};
-                if (!EasyPermissions.hasPermissions(this, perms)) {
-                         EasyPermissions.requestPermissions(this, getResources().getString(R.string.qrcode_permission), REQUEST_CODE_QRCODE_PERMISSIONS, perms);
-                     }
-    }
-
     @Override
     protected void onResume() {
-        zxingview.showScanRect();
+
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        zxingview.stopCamera();
+
         super.onStop();
     }
-    @Override
-    public void onScanQRCodeSuccess(String result) {
-        Toast.makeText(this, "相机打开成功", Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    public void onScanQRCodeOpenCameraError() {
-        Toast.makeText(this, "打开相机出错", Toast.LENGTH_SHORT).show();
-        Log.e(TAG, "打开相机出错");
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            exit();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-
-
-    }
-
-    private void exit() {
-        if ((System.currentTimeMillis() - clickTime) > 2000) {
-                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_message),
-                                       Toast.LENGTH_SHORT).show();
-                         clickTime = System.currentTimeMillis();
-                   } else {
-                        Log.e(TAG, "退出应用");
-                        this.finish();
-                     }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                result.setText("扫描结果为：" + content);
+            }
+        }
     }
 }

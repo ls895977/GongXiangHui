@@ -1,16 +1,25 @@
 package com.gongxianghui.fragments.homeFragment;
 
 
+import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.gongxianghui.R;
 import com.gongxianghui.activity.ScanActivity;
 import com.gongxianghui.adapter.homeAdapter.MyViewPagerAdapter;
@@ -18,6 +27,9 @@ import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.HomeAddTabActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.bean.ZxingConfig;
+import com.yzq.zxinglibrary.common.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +44,7 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+
     @BindView(R.id.ib_home_camera)
     ImageButton ibHomeCamera;
     @BindView(R.id.ib_home_search)
@@ -40,11 +53,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     ImageButton ibHomeScan;
     @BindView(R.id.iv_homepoint_add)
     ImageView ivHomepointAdd;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     //TabLayout标签
     private String[] titles = new String[]{"热点",
             "本地", "社会", "教育", "健康"};
     private List<Fragment> fragments = new ArrayList<>();
     private MyViewPagerAdapter viewPagerAdapter;
+
     @BindView(R.id.home_tab_layout)
     TabLayout homeTabLayout;
     @BindView(R.id.home_view_pager)
@@ -127,14 +143,19 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 toActivity(BaoLiaoActivity.class);
                 break;
             case R.id.ib_home_scan:            //扫描二维码
+
                 toActivity(ScanActivity.class);
+
+
                 break;
             case R.id.ib_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
-                case R.id.iv_homepoint_add:
-                    toActivity(HomeAddTabActivity.class);
-                    break;
+            case R.id.iv_homepoint_add:
+                toActivity(HomeAddTabActivity.class);
+                break;
         }
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.guanggaotext;
+package com.gongxianghui.fragments.mineFragment.fragment;
 
 
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.gongxianghui.R;
 
 /**
  * Created by Administrator on 2018/4/2 0002.

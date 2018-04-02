@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.fragments.mineFragment.activity.AddAdverActivity;
 import com.gongxianghui.fragments.mineFragment.activity.CompanySetActivity;
 import com.gongxianghui.fragments.mineFragment.activity.CooperationCallActivity;
 import com.gongxianghui.fragments.mineFragment.activity.InviteFrientActivity;
@@ -117,6 +118,7 @@ public class MineFragment extends BaseFragment {
                 toActivity(CooperationCallActivity.class);
                 break;
             case R.id.write_advertise:
+                toActivity(AddAdverActivity.class);
                 break;
             case R.id.rl_invite_friend:
                 toActivity(InviteFrientActivity.class);
@@ -127,6 +129,7 @@ public class MineFragment extends BaseFragment {
             case R.id.tv_mine_set:
                 toActivity(SettingActivity.class);
                 break;
+
 
         }
     }

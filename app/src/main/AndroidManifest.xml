@@ -84,6 +84,8 @@
         <activity android:name=".fragments.mineFragment.activity.CooperationCallActivity" />
         <activity android:name=".fragments.homeFragment.activity.HomeAddTabActivity" />
         <activity android:name=".fragments.homeFragment.activity.HomeSeachLocationActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.AddAdverActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.AdvertisActivity"/>
 
 
     </application>

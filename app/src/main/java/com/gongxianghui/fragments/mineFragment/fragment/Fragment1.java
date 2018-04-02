@@ -1,4 +1,4 @@
-package com.guanggaotext;
+package com.gongxianghui.fragments.mineFragment.fragment;
 
 
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.gongxianghui.R;
 import com.kyleduo.switchbutton.SwitchButton;
 
 /**

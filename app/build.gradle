@@ -57,6 +57,7 @@ dependencies {
     compile files('libs/fastjson-1.2.9.jar')
     /*添加依赖  android studio3.0及以上版本可用implementation代替compile*/
     compile 'com.github.yuzhiqiang1993:zxing:2.1.5'
+    compile 'com.kyleduo.switchbutton:library:1.4.1'
 
 
 
