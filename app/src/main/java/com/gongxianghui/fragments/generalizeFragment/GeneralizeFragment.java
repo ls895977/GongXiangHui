@@ -1,26 +1,26 @@
 package com.gongxianghui.fragments.generalizeFragment;
 
-import android.Manifest;
+import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.github.dfqin.grantor.PermissionListener;
-import com.github.dfqin.grantor.PermissionsUtil;
+import com.alibaba.fastjson.JSON;
 import com.gongxianghui.R;
+import com.gongxianghui.adapter.homeAdapter.TreeRecyclerAdapter;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.bean.home.CityBean;
+import com.gongxianghui.item.ItemHelperFactory;
+import com.gongxianghui.item.ProvinceItemParent;
+import com.gongxianghui.item.TreeItem;
+import com.gongxianghui.utils.GsonUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,17 +33,9 @@ import butterknife.Unbinder;
 
 public class GeneralizeFragment extends BaseFragment implements View.OnClickListener {
 
-
-    //声明mlocationClient对象
-    public AMapLocationClient mlocationClient;
-    //声明mLocationOption对象
-    public AMapLocationClientOption mLocationOption = null;
-
-
-    @BindView(R.id.tv_location)
-    TextView tvLocation;
+    @BindView(R.id.rl_content)
+    RecyclerView recyclerView;
     Unbinder unbinder;
-
 
     @Override
     public int getLayoutId() {
@@ -52,86 +44,42 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void initDatas() {
-        if (PermissionsUtil.hasPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            mlocationClient = new AMapLocationClient(mActivity);
-            //初始化AMapLocationClientOption对象
-            mLocationOption = new AMapLocationClientOption();
-            //设置定位监听
-            mlocationClient.setLocationListener(new AMapLocationListener() {
-                @Override
-                public void onLocationChanged(AMapLocation amapLocation) {
-                    if (amapLocation != null) {
-                        if (amapLocation.getErrorCode() == 0) {
-                            //定位成功回调信息，设置相关消息
-                            amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-                            amapLocation.getLatitude();//获取纬度
-                            amapLocation.getLongitude();//获取经度
-                            amapLocation.getAccuracy();//获取精度信息
-                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            Date date = new Date(amapLocation.getTime());
-                            df.format(date);//定位时间
-                            amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-                            amapLocation.getCountry();//国家信息
-                            amapLocation.getProvince();//省信息
-                            amapLocation.getCity();//城市信息
-                            amapLocation.getDistrict();//城区信息
-                            amapLocation.getStreet();//街道信息
-                            amapLocation.getStreetNum();//街道门牌号信息
-                            amapLocation.getCityCode();//城市编码
-                            amapLocation.getAdCode();//地区编码
-
-tvLocation.setText("位置是"+amapLocation);
-                        } else {
-                            //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                            Log.e("AmapError","location Error, ErrCode:"
-                                    + amapLocation.getErrorCode() + ", errInfo:"
-                                    + amapLocation.getErrorInfo());
-                        }
-                    }
-                }
-            });
-            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-//设置定位间隔,单位毫秒,默认为2000ms
-            mLocationOption.setInterval(2000);
-//设置定位参数
-            mlocationClient.setLocationOption(mLocationOption);
-// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-// 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
-// 在定位结束后，在合适的生命周期调用onDestroy()方法
-// 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
-//启动定位
-            mlocationClient.startLocation();
-
-
-        } else {
-            PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
-                @Override
-                public void permissionGranted(@NonNull String[] permission) {
-                    Toast.makeText(mActivity, "允许访问您的位置", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void permissionDenied(@NonNull String[] permission) {
-                    Toast.makeText(mActivity, "拒绝访问位置信息", Toast.LENGTH_SHORT).show();
-                }
-            }, new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
-        }
-
 
     }
 
     @Override
     public void initViews(View view) {
+        recyclerView.setLayoutManager(new GridLayoutManager(mActivity, 3));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+//                outRect.top = 10;
+                if (view.getLayoutParams() instanceof RecyclerView.LayoutParams) {
+                    GridLayoutManager.LayoutParams layoutParams = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+                    int spanIndex = layoutParams.getSpanIndex();//在一行中所在的角标 第几列
+                    if (spanIndex != ((GridLayoutManager) parent.getLayoutManager()).getSpanCount() - 1) {
+                        outRect.right = 5;
+                    }
 
+                }
+            }
+        });
+
+//        List<CityBean> cityBean = (List<CityBean>) GsonUtil.parseJsonWithGson(mActivity.getResources().getString(R.string.location),CityBean.class );
+        List<CityBean> cityBean = JSON.parseArray(getResources().getString(R.string.location), CityBean.class);
+        List<TreeItem> treeItemList = ItemHelperFactory.createTreeItemList((List) cityBean, ProvinceItemParent.class, null);
+        TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter();
+        treeRecyclerAdapter.setDatas(treeItemList);
+        recyclerView.setAdapter(treeRecyclerAdapter);
     }
-
 
     @Override
     public void onClick(View v) {
 
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,17 +89,9 @@ tvLocation.setText("位置是"+amapLocation);
         return rootView;
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
-
 }

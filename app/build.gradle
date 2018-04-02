@@ -36,7 +36,7 @@ dependencies {
 
 //轮播图三方库
     compile 'pub.devrel:easypermissions:0.1.7'//用于请求相机权限
-    compile 'com.google.zxing:core:3.2.1'//扫描二维码
+//    compile 'com.google.zxing:core:3.2.1'//扫描二维码
 //谷歌的zxing库
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'//bingoogolapple的库
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
@@ -53,5 +53,11 @@ dependencies {
     compile 'com.linchaolong.android:imagepicker:1.2'
     testCompile 'junit:junit:4.12'
     compile 'com.github.dfqin:grantor:2.1.0' //权限库
+
+    compile files('libs/fastjson-1.2.9.jar')
+    /*添加依赖  android studio3.0及以上版本可用implementation代替compile*/
+    compile 'com.github.yuzhiqiang1993:zxing:2.1.5'
+
+
 
 }
