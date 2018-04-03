@@ -113,11 +113,11 @@
             android:text="图片上传" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:background="@mipmap/ic_launcher_round" />
+            android:background="@mipmap/add" />
 
 
         <RelativeLayout

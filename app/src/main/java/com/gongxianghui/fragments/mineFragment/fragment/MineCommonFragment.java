@@ -1,7 +1,9 @@
 package com.gongxianghui.fragments.mineFragment.fragment;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.gongxianghui.config.Constant;
 import com.gongxianghui.utils.GsonUtil;
 import com.gongxianghui.utils.OkHttpUtil;
 import com.gongxianghui.widget.GloriousRecyclerView;
+import com.gongxianghui.widget.ScrollChildSwipeRefreshLayout;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -33,6 +36,8 @@ public class MineCommonFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_common)
     GloriousRecyclerView recyclerMineCommon;
     Unbinder unbinder;
+    @BindView(R.id.mycollect_refresh_layout)
+    ScrollChildSwipeRefreshLayout mycollectRefreshLayout;
 
     private List<CollectBean.ListBean> data;
 
@@ -44,12 +49,25 @@ public class MineCommonFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+        mycollectRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //这里做刷新的操作
+                Toast.makeText(mActivity, "刷新完毕", Toast.LENGTH_SHORT).show();
+                //然后调用下面这句话告诉SwipeRefreshLayout已经加载完毕
+                mycollectRefreshLayout.setRefreshing(false);
+
+            }
+        });
 
 
     }
 
+
     @Override
     public void initViews(View view) {
+
+        mycollectRefreshLayout.setScrollUpChild(recyclerMineCommon);
         recyclerMineCommon.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         String url = OkHttpUtil.obtainGetUrl(Constant.URL);
         OkGo.<String>get(url).execute(new StringCallback() {

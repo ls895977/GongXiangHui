@@ -2,7 +2,10 @@ package com.gongxianghui.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,46 +19,52 @@ public class GloriousRecyclerView extends RecyclerView {
     private View mHeaderViewViewPager;
     private View mFooterView;
     private View mEmptyView;
-    //    private AutoLoadMoreListener mLoadMoreListener;
-//    private boolean mIsLoadMoreEnabled;
-//    private boolean mIsLoadingMore;
+        private AutoLoadMoreListener mLoadMoreListener;
+    private boolean mIsLoadMoreEnabled;
+    private boolean mIsLoadingMore;
     private GloriousAdapter mGloriousAdapter;
-//    private OnScrollListener mOnScrollListener = new OnScrollListener() {
-//        @Override
-//        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//            super.onScrollStateChanged(recyclerView, newState);
-//        }
-//
-//        @Override
-//        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//
-//            super.onScrolled(recyclerView, dx, dy);
-//            if (mIsLoadMoreEnabled && !mIsLoadingMore && dy > 0) {
-//                if (findLastVisibleItemPosition() == mGloriousAdapter.getItemCount() - 1) {
-//                    mIsLoadingMore = true;
-//                    mLoadMoreListener.onLoadMore();
-//                }
-//            }
-//
-//
-//        }
-//    };
-//
-//    private int findLastVisibleItemPosition() {
-//        int position;
-//        if (getLayoutManager() instanceof LinearLayoutManager) {
-//            position = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
-//        } else if (getLayoutManager() instanceof GridLayoutManager) {
-//            position = ((GridLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
-//        } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
-//            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) getLayoutManager();
-//            int[] lastPositions = layoutManager.findLastVisibleItemPositions(new int[layoutManager.getSpanCount()]);
-//            position = findMaxPosition(lastPositions);
-//        } else {
-//            position = getLayoutManager().getItemCount() - 1;
-//        }
-//        return position;
-//    }
+
+    private void init(){
+        this.addOnScrollListener(mOnScrollListener);
+    }
+
+
+    private OnScrollListener mOnScrollListener = new OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+            super.onScrolled(recyclerView, dx, dy);
+            if (mIsLoadMoreEnabled && !mIsLoadingMore && dy > 0) {
+                if (findLastVisibleItemPosition() == mGloriousAdapter.getItemCount() - 1) {
+                    mIsLoadingMore = true;
+                    mLoadMoreListener.onLoadMore();
+                }
+            }
+
+
+        }
+    };
+
+    private int findLastVisibleItemPosition() {
+        int position;
+        if (getLayoutManager() instanceof LinearLayoutManager) {
+            position = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
+        } else if (getLayoutManager() instanceof GridLayoutManager) {
+            position = ((GridLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
+        } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) getLayoutManager();
+            int[] lastPositions = layoutManager.findLastVisibleItemPositions(new int[layoutManager.getSpanCount()]);
+            position = findMaxPosition(lastPositions);
+        } else {
+            position = getLayoutManager().getItemCount() - 1;
+        }
+        return position;
+    }
 
 
     public GloriousRecyclerView(Context context) {
