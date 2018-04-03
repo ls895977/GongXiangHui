@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#fe3d3d"
+        android:layout_marginTop="20dp"
+        android:background="@color/tab_color"
         android:orientation="vertical">
 
         <LinearLayout
@@ -15,65 +16,213 @@
             android:layout_height="50dp">
 
             <ImageView
+                android:id="@+id/iv_genera_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
                 android:background="@mipmap/icon_back" />
 
             <RadioGroup
-                android:id="@+id/rg_main"
-                android:layout_width="match_parent"
+                android:id="@+id/rg_generalize_main"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="2dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
 
 
                 <RadioButton
+                    android:id="@+id/rb_genera_personal"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_btn_generalize"
                     android:button="@null"
                     android:gravity="center"
                     android:text="个人"
-
-                    android:textColor="#fff"
-                    android:textSize="13sp" />
+                    android:textColor="#0f0"
+                    android:textSize="14sp" />
 
                 <RadioButton
+                    android:id="@+id/rb_genera_company"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_btn_generalize"
                     android:button="@null"
                     android:gravity="center"
                     android:text="企业"
-                    android:textColor="#fff"
-                    android:textSize="13sp" />
+                    android:textColor="#0f0"
+                    android:textSize="14sp" />
 
                 <RadioButton
+                    android:id="@+id/rb_genera_push"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_btn_generalize"
                     android:button="@null"
                     android:gravity="center"
                     android:text="互推"
-                    android:textColor="#fff"
-                    android:textSize="13sp" />
+                    android:textColor="#0f0"
+                    android:textSize="14sp" />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/tv_genera_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="编辑"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/tv_generalize_company_des"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="杭州共享汇信息科技有限公司"
-            android:textColor="@color/white" />
-        
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="节省广告费(元)"
+
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_generalize_company_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="8.00"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总曝光"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总点击"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总转发"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20.00%"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总点击率"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 
@@ -83,7 +232,7 @@
         android:background="@color/divider" />
 
     <com.gongxianghui.widget.NoScrollViewPager
-        android:id="@+id/vp_main"
+        android:id="@+id/vp_generalize_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
