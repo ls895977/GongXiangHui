@@ -1,21 +1,26 @@
-package com.hmy.ninegridlayout.util;
+package com.gongxianghui.fragments.locationFragment.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
-import com.hmy.ninegridlayout.R;
+import com.gongxianghui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 
 /**
  * Created by HMY
  */
 public class ImageLoaderUtil {
 
+
     public static ImageLoader getImageLoader(Context context) {
-        return ImageLoader.getInstance();
+        ImageLoader instance = ImageLoader.getInstance();
+        instance.init(ImageLoaderConfiguration.createDefault(context));
+        return instance;
     }
 
     public static DisplayImageOptions getPhotoImageOption() {

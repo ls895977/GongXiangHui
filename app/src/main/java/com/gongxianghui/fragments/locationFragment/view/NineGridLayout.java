@@ -1,4 +1,4 @@
-package com.hmy.ninegridlayout.view;
+package com.gongxianghui.fragments.locationFragment.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.hmy.ninegridlayout.R;
+import com.gongxianghui.R;
 
 import java.util.ArrayList;
 import java.util.List;

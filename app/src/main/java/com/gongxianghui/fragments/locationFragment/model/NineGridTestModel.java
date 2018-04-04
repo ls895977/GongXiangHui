@@ -1,4 +1,4 @@
-package com.hmy.ninegridlayout.model;
+package com.gongxianghui.fragments.locationFragment.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

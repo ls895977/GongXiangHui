@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv_simple_1_line"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:lines="1"
+    android:text="1111"
+    android:textColor="#000000"
+    android:textSize="15dp">
+
+</TextView>

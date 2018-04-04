@@ -1,4 +1,4 @@
-package com.hmy.ninegridlayout.view;
+package com.gongxianghui.fragments.locationFragment.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Toast;
 
-import com.hmy.ninegridlayout.util.ImageLoaderUtil;
+
+import com.gongxianghui.fragments.locationFragment.util.ImageLoaderUtil;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 

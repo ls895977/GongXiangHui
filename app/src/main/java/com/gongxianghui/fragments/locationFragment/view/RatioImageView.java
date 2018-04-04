@@ -1,5 +1,6 @@
-package com.hmy.ninegridlayout.view;
+package com.gongxianghui.fragments.locationFragment.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -9,13 +10,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import com.hmy.ninegridlayout.R;
+
+import com.gongxianghui.R;
 
 
 /**
  * 根据宽高比例自动计算高度ImageView
  * Created by HMY on 2016/4/21.
  */
+@SuppressLint("AppCompatCustomView")
 public class RatioImageView extends ImageView {
 
     /**

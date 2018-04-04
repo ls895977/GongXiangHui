@@ -1,4 +1,4 @@
-package com.hmy.ninegridlayout.adapter;
+package com.gongxianghui.fragments.locationFragment.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hmy.ninegridlayout.R;
-import com.hmy.ninegridlayout.model.NineGridTestModel;
-import com.hmy.ninegridlayout.view.NineGridTestLayout;
+
+import com.gongxianghui.R;
+import com.gongxianghui.fragments.locationFragment.model.NineGridTestModel;
+import com.gongxianghui.fragments.locationFragment.view.NineGridTestLayout;
+
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
         public ViewHolder(View itemView) {
             super(itemView);
-            layout = (NineGridTestLayout) itemView.findViewById(R.id.layout_nine_grid);
+            layout = itemView.findViewById(R.id.layout_nine_grid);
         }
     }
 
