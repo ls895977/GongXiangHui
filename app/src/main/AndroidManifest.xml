@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gongxianghui">
-<!--高德相应权限-->
+    <!--高德相应权限-->
     <!--用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <!--用于访问GPS定位-->
@@ -45,30 +45,64 @@
             android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
 
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask">
 
         </activity>
-        <activity android:name=".activity.BianMinActiviry" />
-        <activity android:name=".activity.ScanActivity" />
-        <activity android:name=".fragments.mineFragment.activity.PersonDataActivity" />
-        <activity android:name=".fragments.mineFragment.activity.LoginActivity" />
-        <activity android:name=".fragments.mineFragment.activity.RegistActivity" />
-        <activity android:name=".fragments.mineFragment.activity.SettingActivity" />
-        <activity android:name=".fragments.mineFragment.activity.SeekPasswordActivity" />
-        <activity android:name=".fragments.homeFragment.activity.SalerActivity" />
-        <activity android:name=".fragments.homeFragment.activity.SearchActivity" />
-        <activity android:name=".fragments.homeFragment.activity.BaoLiaoActivity" />
-        <activity android:name=".fragments.homeFragment.activity.LiftStyleActivity" />
-        <activity android:name=".fragments.locationFragment.activity.PublishStateActivity" />
-        <activity android:name=".fragments.mineFragment.activity.MessageGatherActivity" />
-        <activity android:name=".fragments.mineFragment.activity.MyCollectActivity" />
-        <activity android:name=".fragments.homeFragment.activity.ProtocolActivity" />
+        <activity
+            android:name=".activity.BianMinActiviry"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ScanActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.PersonDataActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.LoginActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.RegistActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.SettingActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.SeekPasswordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.SalerActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.SearchActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.BaoLiaoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.LiftStyleActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.locationFragment.activity.PublishStateActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.MessageGatherActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.MyCollectActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.ProtocolActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".fragments.homeFragment.activity.HomeVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
+            android:launchMode="singleTask"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activity.WelcomActivity">
             <intent-filter>
@@ -77,15 +111,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".fragments.mineFragment.activity.MineIssueActivity" />
-        <activity android:name=".fragments.mineFragment.activity.MineMessageActivity" />
-        <activity android:name=".fragments.mineFragment.activity.CompanySetActivity" />
-        <activity android:name=".fragments.mineFragment.activity.InviteFrientActivity" />
-        <activity android:name=".fragments.mineFragment.activity.CooperationCallActivity" />
-        <activity android:name=".fragments.homeFragment.activity.HomeAddTabActivity" />
-        <activity android:name=".fragments.homeFragment.activity.HomeSeachLocationActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.AddAdverActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.AdvertisActivity"/>
+        <activity
+            android:name=".fragments.mineFragment.activity.MineIssueActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.MineMessageActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.CompanySetActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.InviteFrientActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.CooperationCallActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.HomeAddTabActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.HomeSeachLocationActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.AddAdverActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.AdvertisActivity"
+            android:launchMode="singleTask" />
 
 
     </application>

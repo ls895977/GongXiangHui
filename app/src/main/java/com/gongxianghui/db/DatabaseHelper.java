@@ -13,16 +13,16 @@ import com.gongxianghui.base.BaseActivity;
 public class DatabaseHelper extends SQLiteOpenHelper {
     static String name = "user.db";
 
-    static int dbVersion = 1;
-
-    public DatabaseHelper(Context context) {
-        super(context, name, null, dbVersion);
+    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table user(id integer primary key autoincrement,username varchar(20),password varchar(20))");
-        db.execSQL("create table records (id integer primary key autoincrement,name verchar(200))");
+//        db.execSQL("create table user(id integer primary key autoincrement,username varchar(20),password varchar(20))");
+        db.execSQL("create table student(id integer primary key autoincrement,num varchar(5),name varchar(3))");
+
 
 
     }

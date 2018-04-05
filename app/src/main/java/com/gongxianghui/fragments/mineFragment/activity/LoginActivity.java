@@ -1,6 +1,7 @@
 package com.gongxianghui.fragments.mineFragment.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.gongxianghui.R;
 import com.gongxianghui.activity.MainActivity;
 import com.gongxianghui.base.BaseActivity;
+import com.gongxianghui.db.StudentDao;
 import com.gongxianghui.utils.REGutil;
 import com.gongxianghui.utils.UserService;
 import com.gongxianghui.widget.TitleBuilder;
@@ -44,6 +46,7 @@ public class LoginActivity extends BaseActivity {
     ImageView ivQqLogin;
     @BindView(R.id.iv_sina_login)
     ImageView ivSinaLogin;
+    private StudentDao studentDao;
 
     @Override
     protected int getLayoutId() {
@@ -59,6 +62,8 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         }).setTitleText("用户登录");
+
+        studentDao = new StudentDao(mContext);
     }
 
     @Override
@@ -89,10 +94,11 @@ public class LoginActivity extends BaseActivity {
                 if (!REGutil.checkCellphone(phone)) {
                     Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.i("TAG", "登录成功");
-                    UserService userService = new UserService(mContext);
-                    boolean flag = userService.login(phone, password);
-                    if (flag) {
+
+//                    UserService userService = new UserService(mContext);
+                    Cursor cursor = studentDao.query(phone, password);
+
+                    if (cursor.moveToNext()) {
                         Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
                         toActivity(MainActivity.class);
                     } else {
@@ -105,10 +111,15 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_login_regist:
                 intent = new Intent(this, RegistActivity.class);
                 startActivity(intent);
+
+
                 break;
             case R.id.tv_login_forget_password:
                 intent = new Intent(this, SeekPasswordActivity.class);
                 startActivity(intent);
+                phone = etLoginPhone.getText().toString();
+                password = etLoginPassword.getText().toString();
+                studentDao.query(phone, password);
                 break;
             case R.id.iv_wx_login:
                 break;
