@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@mipmap/ic_launcher" />
+    <com.gongxianghui.widget.RoundImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@mipmap/icon_headimage" />
+
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="7dp"
         android:orientation="vertical">
 
         <TextView
@@ -28,18 +30,49 @@
             android:layout_marginTop="5dp"
             android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
-        <com.gongxianghui.fragments.locationFragment.view.NineGridTestLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.gongxianghui.fragments.locationFragment.view.NineGridTestLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/layout_nine_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:sapcing="4dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="10分钟前" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="发布时间" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/icon_message"
+                android:drawablePadding="5dp"
+                android:text="评论" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/icon_good"
+                android:drawablePadding="5dp"
+                android:text="点赞" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/icon_collect"
+                android:drawablePadding="5dp"
+                android:text="收藏" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
