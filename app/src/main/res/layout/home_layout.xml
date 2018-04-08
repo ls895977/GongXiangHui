@@ -18,6 +18,7 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -54,9 +55,11 @@
             android:id="@+id/ib_home_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="40dp"
+            android:layout_alignTop="@+id/ib_home_scan"
+            android:layout_marginEnd="41dp"
+            android:layout_marginRight="41dp"
             android:background="@mipmap/home_search" />
 
         <ImageButton
@@ -69,27 +72,68 @@
             android:background="@mipmap/home_scan" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:orientation="horizontal"
+ 
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:background="#fff3f3f3"
+        android:orientation="horizontal">
 
-        <include
-            android:id="@+id/home_tab_layout"
-            layout="@layout/tablayout" />
+        <RelativeLayout
+            android:id="@+id/rl_column"
+            android:layout_width="match_parent"
+            android:layout_height="40.0dip"
+            android:layout_weight="1.0">
 
+            <com.gongxianghui.widget.ColumnHorizontalScrollView
+                android:id="@+id/mColumnHorizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="40.0dip"
+                android:scrollbars="none">
 
-        <ImageView
-            android:id="@+id/iv_homepoint_add"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-           android:layout_alignParentRight="true"
-            android:background="@drawable/subscribe_item_bg"
-            android:src="@mipmap/add" />
-    </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/mRadioGroup_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
+            </com.gongxianghui.widget.ColumnHorizontalScrollView>
 
+            <ImageView
+                android:id="@+id/shade_left"
+                android:layout_width="10.0dip"
+                android:layout_height="40.0dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/channel_leftblock"
+                android:visibility="gone" />
 
+            <ImageView
+                android:id="@+id/shade_right"
+                android:layout_width="10.0dip"
+                android:layout_height="40.0dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/channel_rightblock"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_more_columns"
+            android:layout_width="wrap_content"
+            android:layout_height="40.0dip">
+
+            <ImageView
+                android:id="@+id/button_more_columns"
+                android:layout_width="40.0dip"
+                android:layout_height="40.0dip"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/channel_glide_day_bg" />
+        </LinearLayout>
+    </LinearLayout>
 
 
     <android.support.v4.view.ViewPager

@@ -29,7 +29,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".base.MyApplication"
@@ -138,6 +139,10 @@
         <activity
             android:name=".fragments.mineFragment.activity.AdvertisActivity"
             android:launchMode="singleTask" />
+        <activity android:name=".fragments.homeFragment.activity.ChannelActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".fragments.homeFragment.activity.GestureDetectorActivity"
+            android:launchMode="singleTask"/>
 
 
     </application>

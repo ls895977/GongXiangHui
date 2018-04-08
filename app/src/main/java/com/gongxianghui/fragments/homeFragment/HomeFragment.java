@@ -1,38 +1,37 @@
 package com.gongxianghui.fragments.homeFragment;
 
 
-import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.dfqin.grantor.PermissionListener;
-import com.github.dfqin.grantor.PermissionsUtil;
 import com.gongxianghui.R;
 import com.gongxianghui.activity.ScanActivity;
-import com.gongxianghui.adapter.homeAdapter.MyViewPagerAdapter;
+import com.gongxianghui.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.base.MyApplication;
+import com.gongxianghui.db.ChannelItem;
+import com.gongxianghui.db.ChannelManage;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
-import com.gongxianghui.fragments.homeFragment.activity.HomeAddTabActivity;
+import com.gongxianghui.fragments.homeFragment.activity.ChannelActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
-import com.yzq.zxinglibrary.android.CaptureActivity;
-import com.yzq.zxinglibrary.bean.ZxingConfig;
-import com.yzq.zxinglibrary.common.Constant;
+import com.gongxianghui.utils.Utils;
+import com.gongxianghui.widget.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,51 +50,187 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     ImageButton ibHomeSearch;
     @BindView(R.id.ib_home_scan)
     ImageButton ibHomeScan;
-    @BindView(R.id.iv_homepoint_add)
-    ImageView ivHomepointAdd;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     //TabLayout标签
-    private String[] titles = new String[]{"热点",
-            "本地", "社会", "教育", "健康"};
-    private List<Fragment> fragments = new ArrayList<>();
-    private MyViewPagerAdapter viewPagerAdapter;
+    private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
+    private LinearLayout mRadioGroup_content; // 每个标题
 
-    @BindView(R.id.home_tab_layout)
-    TabLayout homeTabLayout;
-    @BindView(R.id.home_view_pager)
-    ViewPager homeViewPager;
+    private LinearLayout ll_more_columns; // 右边+号的父布局
+    private ImageView button_more_columns; // 标题右边的+号
+
+    private RelativeLayout rl_column; // +号左边的布局：包括HorizontalScrollView和左右阴影部分
+    public ImageView shade_left; // 左阴影部分
+    public ImageView shade_right; // 右阴影部分
+
+    private int columnSelectIndex = 0; // 当前选中的栏目索引
+    private int mItemWidth = 0; // Item宽度：每个标题的宽度
+
+    private int mScreenWidth = 0; // 屏幕宽度
+
+    public final static int CHANNELREQUEST = 1; // 请求码
+    public final static int CHANNELRESULT = 10; // 返回码
+
+    // tab集合：HorizontalScrollView的数据源
+    private ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
+
+    private ViewPager mViewPager;
+    private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     Unbinder unbinder;
 
     @Override
     public int getLayoutId() {
+        mScreenWidth = Utils.getWindowsWidth(mActivity);
+        mItemWidth = mScreenWidth / 7; // 一个Item宽度为屏幕的1/7
         return R.layout.home_layout;
     }
 
     @Override
     public void initDatas() {
-        homeTabLayout.setOnTabSelectedListener(this);
-        fragments.add(new HotPointFragment());
-        fragments.add(new HotPointFragment());
-        fragments.add(new HotPointFragment());
-        fragments.add(new HotPointFragment());
-        fragments.add(new HotPointFragment());
+        // + 号监听
+        button_more_columns.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
+                startActivityForResult(intent_channel, CHANNELREQUEST);
+            }
+        });
 
-        viewPagerAdapter = new MyViewPagerAdapter(mActivity.getSupportFragmentManager(), titles, fragments);
-        homeViewPager.setAdapter(viewPagerAdapter);
-        homeTabLayout.setupWithViewPager(homeViewPager);
-
-
+        setChangelView();
     }
 
     @Override
     public void initViews(View view) {
 
-        homeTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        for (String tab : titles) {
-            homeTabLayout.addTab(homeTabLayout.newTab().setText(tab));
+        mColumnHorizontalScrollView = (ColumnHorizontalScrollView) mActivity.findViewById(R.id.mColumnHorizontalScrollView);
+        mRadioGroup_content = (LinearLayout) mActivity.findViewById(R.id.mRadioGroup_content);
+        ll_more_columns = (LinearLayout) mActivity.findViewById(R.id.ll_more_columns);
+        rl_column = (RelativeLayout) mActivity.findViewById(R.id.rl_column);
+        button_more_columns = (ImageView) mActivity.findViewById(R.id.button_more_columns);
+        shade_left = (ImageView) mActivity.findViewById(R.id.shade_left);
+        shade_right = (ImageView) mActivity.findViewById(R.id.shade_right);
+
+        mViewPager = (ViewPager) mActivity.findViewById(R.id.home_view_pager);
+
+
+    }
+
+    private void setChangelView() {
+        initColumnData();
+        initTabColumn();
+        initFragment();
+    }
+
+    /**
+     * 初始化Fragment
+     */
+    private void initFragment() {
+        fragments.clear();//清空
+        int count = userChannelList.size();
+        for (int i = 0; i < count; i++) {
+            HotPointFragment newfragment = new HotPointFragment();
+            fragments.add(newfragment);
         }
+        NewsFragmentPagerAdapter mAdapetr = new NewsFragmentPagerAdapter(getChildFragmentManager(), fragments);
+        mViewPager.setAdapter(mAdapetr);
+        mViewPager.addOnPageChangeListener(pageListener);
+    }
+
+    /**
+     * ViewPager切换监听方法
+     */
+    public ViewPager.OnPageChangeListener pageListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            mViewPager.setCurrentItem(position);
+            selectTab(position);
+        }
+    };
+
+    /**
+     * 选择的Column里面的Tab
+     */
+    private void selectTab(int tab_postion) {
+        columnSelectIndex = tab_postion;
+        for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
+            View checkView = mRadioGroup_content.getChildAt(tab_postion);
+            int k = checkView.getMeasuredWidth();
+            int l = checkView.getLeft();
+            int i2 = l + k / 2 - mScreenWidth / 2;
+            mColumnHorizontalScrollView.smoothScrollTo(i2, 0);
+        }
+        //判断是否选中
+        for (int j = 0; j < mRadioGroup_content.getChildCount(); j++) {
+            View checkView = mRadioGroup_content.getChildAt(j);
+            boolean ischeck;
+            if (j == tab_postion) {
+                ischeck = true;
+            } else {
+                ischeck = false;
+            }
+            checkView.setSelected(ischeck);
+        }
+
+    }
+
+    /**
+     * 初始化Column栏目项
+     */
+    private void initTabColumn() {
+        mRadioGroup_content.removeAllViews();
+        int count = userChannelList.size();
+        mColumnHorizontalScrollView.setParam(mActivity, mScreenWidth, mRadioGroup_content, shade_left, shade_right, ll_more_columns, rl_column);
+        for (int i = 0; i < count; i++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mItemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = 5;
+            params.rightMargin = 5;
+            TextView columnTextView = new TextView(mActivity);
+            columnTextView.setGravity(Gravity.CENTER);
+            columnTextView.setPadding(5, 5, 5, 5);
+            columnTextView.setId(i);
+            columnTextView.setText(userChannelList.get(i).getName());
+            columnTextView.setTextColor(getResources().getColorStateList(R.color.top_category_scroll_text_color_day));
+            if (columnSelectIndex == i) {
+                columnTextView.setSelected(true);
+            }
+
+            // 单击监听
+            columnTextView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
+                        View localView = mRadioGroup_content.getChildAt(i);
+                        if (localView != v) {
+                            localView.setSelected(false);
+                        } else {
+                            localView.setSelected(true);
+                            mViewPager.setCurrentItem(i);
+                        }
+                    }
+                    Toast.makeText(mActivity.getApplicationContext(), userChannelList.get(v.getId()).getName(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            mRadioGroup_content.addView(columnTextView, i, params);
+        }
+    }
+
+    /**
+     * 获取Column栏目 数据
+     */
+    private void initColumnData() {
+        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
 
     }
 
@@ -104,7 +239,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         ibHomeCamera.setOnClickListener(this);
         ibHomeSearch.setOnClickListener(this);
         ibHomeScan.setOnClickListener(this);
-        ivHomepointAdd.setOnClickListener(this);
+
     }
 
     @Override
@@ -123,7 +258,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        homeViewPager.setCurrentItem(tab.getPosition());
+        mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -146,16 +281,26 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
                 toActivity(ScanActivity.class);
 
-
                 break;
             case R.id.ib_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
-            case R.id.iv_homepoint_add:
-                toActivity(HomeAddTabActivity.class);
-                break;
+
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case CHANNELREQUEST:
+                if (resultCode == CHANNELRESULT) {
+                    setChangelView();
+                }
+                break;
 
+            default:
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

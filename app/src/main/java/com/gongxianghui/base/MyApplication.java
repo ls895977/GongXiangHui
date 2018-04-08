@@ -8,6 +8,7 @@ import android.os.StrictMode;
 
 
 import com.gongxianghui.config.Constant;
+import com.gongxianghui.db.SQLHelper;
 import com.gongxianghui.utils.AppManager;
 import com.lzy.okgo.OkGo;
 
@@ -17,13 +18,13 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 
 
-
-
 public class MyApplication extends Application {
+    private static MyApplication mAppApplication;
+    private SQLHelper sqlHelper;
 
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
-//    private static IWXAPI SWXAPI;
+    //    private static IWXAPI SWXAPI;
     private static MyApplication SINSTANCE;
     public static AppManager appManager;
 
@@ -43,6 +44,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mAppApplication = this;
         SINSTANCE = this;
 //        UMShareAPI.get(this);
 //          Config.DEBUG=true;
@@ -62,6 +64,30 @@ public class MyApplication extends Application {
         }
     }
 
+    /**
+     * 获取Application
+     */
+    public static MyApplication getApp() {
+        return mAppApplication;
+    }
+
+    /**
+     * 获取数据库Helper
+     */
+    public SQLHelper getSQLHelper() {
+        if (sqlHelper == null)
+            sqlHelper = new SQLHelper(mAppApplication);
+        return sqlHelper;
+    }
+
+    @Override
+    public void onTerminate() {
+        if (sqlHelper != null)
+            sqlHelper.close();
+        super.onTerminate();
+        //整体摧毁的时候调用这个方法
+    }
+    
     private void initOkGo() {
         OkGo.getInstance().init(this);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
