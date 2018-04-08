@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import com.gongxianghui.R;
 import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.bean.home.MoreTypeBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +25,9 @@ import butterknife.Unbinder;
  */
 
 public class GeneraPersonalFragment extends BaseFragment {
-    private List<String> mDatas;
+    private List<MoreTypeBean> mDatas;
+    private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3,R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
+
     @BindView(R.id.recycler_genera_personal_list)
     RecyclerView recyclerGeneraPersonalList;
     Unbinder unbinder;
@@ -36,11 +40,17 @@ public class GeneraPersonalFragment extends BaseFragment {
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            mDatas.add(i, i + 1 + "");
+        //随机数用来标记item界面的类型
+        Random random = new Random();
+        for (int i=0;i<icons.length;i++){
+            MoreTypeBean more = new MoreTypeBean();
+            more.pic=icons[i];
+            more.type=random.nextInt(3);
+            mDatas.add(more);
         }
+
         recyclerGeneraPersonalList.setLayoutManager(new LinearLayoutManager(mActivity));
-        HomeItemListAdapter adapter = new HomeItemListAdapter(mActivity, mDatas);
+        HomeItemListAdapter adapter = new HomeItemListAdapter(mDatas);
         recyclerGeneraPersonalList.setAdapter(adapter);
     }
 

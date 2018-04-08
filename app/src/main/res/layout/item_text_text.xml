@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:padding="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="淘宝正式入局租赁市场，万物可租时代即将来临"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <LinearLayout
+
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/tv_recycler_bottom_science"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="科技" />
+
+            <TextView
+                android:id="@+id/tv_recycler_bottom_science2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+
+                android:drawableLeft="@mipmap/eye_test"
+                android:drawablePadding="3dp"
+                android:text="52万" />
+
+            <TextView
+                android:id="@+id/tv_recycler_bottom_science3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+
+                android:drawableLeft="@mipmap/eye_test"
+                android:drawablePadding="3dp"
+                android:text="刚刚" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="3dp"
+        android:background="#d3d3d3" />
+</LinearLayout>

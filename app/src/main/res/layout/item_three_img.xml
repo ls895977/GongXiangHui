@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="#fff"
+        android:padding="7sp"
+        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="朋友印象贾浩洋：小程序即可高频还能持久，用完即走无意义"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+
+                android:src="@mipmap/ic_test_2" />
+            <View
+                android:layout_width="6dp"
+                android:layout_height="0dp"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_test_0" />
+            <View
+                android:layout_width="6dp"
+                android:layout_height="0dp"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_test_1" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="3dp"
+        android:background="#d3d3d3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</LinearLayout>

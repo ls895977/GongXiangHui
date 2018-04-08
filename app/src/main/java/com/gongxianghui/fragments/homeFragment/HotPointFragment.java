@@ -15,6 +15,7 @@ import com.gongxianghui.R;
 import com.gongxianghui.activity.BianMinActiviry;
 import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.bean.home.MoreTypeBean;
 import com.gongxianghui.fragments.homeFragment.activity.HomeAddTabActivity;
 import com.gongxianghui.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.gongxianghui.fragments.homeFragment.activity.HomeVideoActivity;
@@ -27,6 +28,7 @@ import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +43,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     @BindView(R.id.recyclerview_list)
     GloriousRecyclerView recyclerviewList;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
-    private List<String> mDatas;
+    private List<MoreTypeBean> mDatas;
     Unbinder unbinder;
     private RadioButton viewById;
     private RadioButton rbHomeAir;
@@ -51,22 +53,27 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     private RadioButton rbHomeBianmin;
     private RadioGroup rgMain;
 
-   private Banner viewpagerHome;
+    private Banner viewpagerHome;
+    private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
-
-
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            mDatas.add(i, i + 1 + "");
+        //随机数用来标记item界面的类型
+        Random random = new Random();
+        for (int i = 0; i < icons.length; i++) {
+            MoreTypeBean more = new MoreTypeBean();
+            more.pic = icons[i];
+            more.type = random.nextInt(3);
+            mDatas.add(more);
         }
+
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
-        HomeItemListAdapter adapter = new HomeItemListAdapter(mActivity, mDatas);
+        HomeItemListAdapter adapter = new HomeItemListAdapter(mDatas);
         View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
         View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
@@ -89,8 +96,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         rgMain.setOnCheckedChangeListener(this);
 
 
-        List<Integer> list=new ArrayList<>();
-
+        List<Integer> list = new ArrayList<>();
         list.add(R.mipmap.ic_test_0);
         list.add(R.mipmap.ic_test_1);
         list.add(R.mipmap.ic_test_2);
@@ -114,11 +120,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         );
 
 
-
-
     }
-
-
 
 
     @Override
