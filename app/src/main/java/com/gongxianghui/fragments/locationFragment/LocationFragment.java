@@ -69,10 +69,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         NineGridTestModel model2 = new NineGridTestModel();
         model2.urlList.add(mUrls[4]);
         mList.add(model2);
-//
-//        NineGridTestModel model3 = new NineGridTestModel();
-//        model3.urlList.add(mUrls[2]);
-//        mList.add(model3);
+
+        NineGridTestModel model3 = new NineGridTestModel();
+        model3.urlList.add(mUrls[2]);
+        mList.add(model3);
 
         NineGridTestModel model4 = new NineGridTestModel();
         for (int i = 0; i < mUrls.length; i++) {

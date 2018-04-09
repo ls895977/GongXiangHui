@@ -111,7 +111,6 @@ public class BaoLiaoActivity extends BaseActivity {
                         .setAspectRatio(16, 9);
             }
             // 用户拒绝授权回调
-
             public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
 
             }

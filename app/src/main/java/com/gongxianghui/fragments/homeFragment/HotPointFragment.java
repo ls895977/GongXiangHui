@@ -78,6 +78,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
+
         recyclerviewList.setAdapter(adapter);
         recyclerviewList.addHeaderView(headerNavigator);
         recyclerviewList.addHeaderView2(headerVp);

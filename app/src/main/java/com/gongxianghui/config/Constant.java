@@ -8,18 +8,10 @@ public class Constant {
     public static final long TIME_OUT = 3000;//网络请求超时时间
     public static final String URL = "http://112.124.22.238:8081/course_api/wares/hot?pageSize=8&curPage=1";
 
-    /****************社会化组件：登录、分享****************/
-    public static final String WEIXIN_APP_ID = "wxad1065edbfa4ed3a";
-    public static final String WEIXIN_APP_SECRET = "6f506b7fa8f71f36291ea6496e325736";
+    public static final String SERVE_URL = "http://www.zzbcar.com/";
 
-    //    public static final String QQZONE_APP_ID = "100424468";
-//    public static final String QQZONE_APP_KEY = "c7394704798a158208a74ab60104f0ba";
-    public static final String QQZONE_APP_ID = "1106313801";
-    public static final String QQZONE_APP_KEY = "bz7PCjrvT9gCxCve";
-
-    public static final String SINA_APP_KEY = "3921700954";
-    public static final String SINA_APP_SERCET = "04b48b094faeb16683c32669824ebdad";
-    public static final String SINA_APP_URL = "http://sns.whalecloud.com";
+    /*主页*/
+    public static final String API_MAIN_PAGE = SERVE_URL + "zzb/app/compound/mainpage";
 
 
     //加载的网页链接

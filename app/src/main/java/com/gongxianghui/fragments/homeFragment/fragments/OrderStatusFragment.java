@@ -1,15 +1,29 @@
 package com.gongxianghui.fragments.homeFragment.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.gongxianghui.R;
+import com.gongxianghui.activity.NewsDetailActivity;
+import com.gongxianghui.activity.ProtocolActivity;
+import com.gongxianghui.adapter.MainViewPagerAdapter;
+import com.gongxianghui.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.gongxianghui.adapter.homeAdapter.HomeSalerListAdapter;
+import com.gongxianghui.adapter.homeAdapter.MarqueenMessageAdapter;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.bean.home.MainPageBean;
+import com.gongxianghui.config.Constant;
+import com.gongxianghui.utils.GsonUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +49,59 @@ public class OrderStatusFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+
+
         mDatas = new ArrayList<>();
-        for(int i=0;i<50;i++){
-            mDatas.add(i,i+1+"");
+        for (int i = 0; i < 50; i++) {
+            mDatas.add(i, i + 1 + "");
         }
         rvSalerList.setLayoutManager(new LinearLayoutManager(mActivity));
         HomeSalerListAdapter adapter = new HomeSalerListAdapter(mActivity, mDatas);
+        adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                /**
+                 * 跳转详情界面
+                 *
+                 */
+                final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", mDatas.get(position));
+                startActivity(intent);
+            }
+        });
         rvSalerList.setAdapter(adapter);
 
+//        OkGo.<String>get(Constant.API_MAIN_PAGE)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//                        parseData(response.body());
+//                    }
+//                });
+//
+//    }
+//
+//    private void parseData(String body) {
+//        MainPageBean mainPageBean = GsonUtil.parseJsonWithGson(body, MainPageBean.class);
+//        MainPageBean.DataBean dataList = mainPageBean.getData();
+//        final List<MainPageBean.DataBean.MessageBean> messageList = dataList.getMessage();
+//        MarqueenMessageAdapter marqueenMessageAdapter = new MarqueenMessageAdapter(mActivity, messageList);
+//        marqueenMessageAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View v, int position) {
+//                //跳转消息详情页面
+//                final Intent intent = new Intent(mActivity, ProtocolActivity.class);
+//                intent.putExtra("title",messageList.get(position).getTitle());
+//                intent.putExtra("url", messageList.get(position).getContent());
+//                startActivity(intent);
+//            }
+//        });
+//        rvSalerList.setAdapter(marqueenMessageAdapter);
     }
 
     @Override
     public void initViews(View view) {
-
+//        rvSalerList.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
