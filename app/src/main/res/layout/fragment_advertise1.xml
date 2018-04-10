@@ -12,12 +12,14 @@
 
 
         <RelativeLayout
+            android:id="@+id/rl_mine_addAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp">
 
             <TextView
+                android:id="@+id/tv_mine_addAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="显示位置"
@@ -88,12 +90,14 @@
 
 
         <RelativeLayout
+            android:id="@+id/rl_mine_click_attr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp">
 
             <TextView
+                android:id="@+id/tv_mine_click_attr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="点击属性"

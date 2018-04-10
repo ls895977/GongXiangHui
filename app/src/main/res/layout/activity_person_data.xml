@@ -12,28 +12,28 @@
 
         <ImageView
             android:id="@+id/iv_person_data_back"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:background="@mipmap/icon_back" />
 
         <TextView
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:text="个人资料"
             android:textColor="#000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_person_data_save"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:text="保存"
             android:textColor="#000"
@@ -48,6 +48,8 @@
         android:background="@color/divider" />
 
     <RelativeLayout
+
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp">
@@ -55,14 +57,16 @@
         <TextView
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="15dp"
             android:text="头像" />
 
-        <ImageView
+        <com.gongxianghui.widget.RoundImageView
             android:id="@+id/iv_person_data_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
+
             android:layout_marginRight="15dp"
             android:src="@mipmap/bianmin_call" />
 

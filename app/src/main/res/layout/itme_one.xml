@@ -19,7 +19,7 @@
             android:text="一级"
 
             android:textColor="#000"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <ImageView
             android:id="@+id/iv_oneStep_rightIcon"

@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:text="一级"
             android:textColor="#000"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
                     android:id="@+id/iv_twoStep_rightIcon"

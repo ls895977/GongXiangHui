@@ -2,15 +2,26 @@ package com.gongxianghui.fragments.mineFragment.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseActivity;
+import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.gongxianghui.utils.REGutil;
+import com.gongxianghui.widget.RoundImageView;
+import com.linchaolong.android.imagepicker.ImagePicker;
+import com.linchaolong.android.imagepicker.cropper.CropImage;
+import com.linchaolong.android.imagepicker.cropper.CropImageView;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +34,7 @@ import butterknife.ButterKnife;
 
 public class PersonDataActivity extends BaseActivity implements View.OnClickListener {
 
-    private  String[] sexArray=new String[]{"男","女"}; //性别选择
+    private String[] sexArray = new String[]{"男", "女"}; //性别选择
     @BindView(R.id.et_person_data_nickName)
     EditText etPersonDataNickName;
     @BindView(R.id.et_person_data_sex)
@@ -37,9 +48,10 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.tv_person_data_save)
     TextView tvPersonDataSave;
     @BindView(R.id.iv_person_data_img)
-    ImageView ivPersonDataImg;
+    RoundImageView ivPersonDataImg;
     @BindView(R.id.rl_mineData_sex)
     RelativeLayout rlMineDataSex;
+    private ImagePicker imagePicker;
 
     @Override
     protected int getLayoutId() {
@@ -48,8 +60,8 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-
-
+        imagePicker = new ImagePicker();
+        imagePicker.setCropImage(true);
     }
 
     @Override
@@ -59,6 +71,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         ivPersonDataImg.setOnClickListener(this);
         rlMineDataSex.setOnClickListener(this);
         etPersonDataSex.setOnClickListener(this);
+        tvPersonDataSave.setOnClickListener(this);
 
     }
 
@@ -72,21 +85,86 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+
+        final String mNiceName = etPersonDataNickName.getText().toString().trim();
+        final String mPhone = etPersonDataPhone.getText().toString().trim();
+        final String mAdress = etPersonDataAddress.getText().toString().trim();
+        final String mSex = etPersonDataNickName.getText().toString().trim();
+
         switch (v.getId()) {
             case R.id.iv_person_data_back:
                 finish();
                 break;
             case R.id.iv_person_data_img:
+                openPhoto();
 
                 break;
             case R.id.rl_mineData_sex:
                 showSexDialog();
-
                 break;
             case R.id.et_person_data_sex:
                 showSexDialog();
                 break;
+            case R.id.tv_person_data_save:
+                if (TextUtils.isEmpty(mNiceName) && TextUtils.isEmpty(mPhone) && TextUtils.isEmpty(mSex) && TextUtils.isEmpty(mAdress)) {
+                    Toast.makeText(mContext, "请在检查一下 是否还有没有写的", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!REGutil.checkCellphone(mPhone)) {
+                    Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+                break;
+
         }
+
+    }
+
+    private void openPhoto() {
+        imagePicker.startChooser(this, new ImagePicker.Callback() {
+            @Override
+            public void onPickImage(Uri imageUri) {
+
+
+            }
+
+            //剪裁图片回调
+
+            @Override
+            public void onCropImage(Uri imageUri) {
+                ivPersonDataImg.setImageURI(imageUri);
+            }
+
+            //自定义剪裁
+
+            @Override
+            public void cropConfig(CropImage.ActivityBuilder builder) {
+                builder
+                        // 是否启动多点触摸
+                        .setMultiTouchEnabled(false)
+                        // 设置网格显示模式
+                        .setGuidelines(CropImageView.Guidelines.OFF)
+                        // 圆形/矩形
+                        .setCropShape(CropImageView.CropShape
+                                .RECTANGLE)
+                        // 调整裁剪后的图片最终大小
+                        .setRequestedSize(150, 150)
+                        // 宽高比
+                        .setAspectRatio(1, 1);
+            }
+
+            //用户拒绝授权回调
+
+            @Override
+            public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
+                super.onPermissionDenied(requestCode, permissions, grantResults);
+            }
+        });
 
     }
 
@@ -104,5 +182,9 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        imagePicker.onActivityResult(PersonDataActivity.this, requestCode, resultCode, data);
+    }
 }
 

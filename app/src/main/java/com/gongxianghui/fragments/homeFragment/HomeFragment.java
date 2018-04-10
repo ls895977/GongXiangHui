@@ -27,6 +27,7 @@ import com.gongxianghui.db.ChannelItem;
 import com.gongxianghui.db.ChannelManage;
 import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.gongxianghui.fragments.homeFragment.activity.ChannelActivity;
+import com.gongxianghui.fragments.homeFragment.activity.LocationActivity;
 import com.gongxianghui.fragments.homeFragment.activity.SearchActivity;
 import com.gongxianghui.utils.Utils;
 import com.gongxianghui.widget.ColumnHorizontalScrollView;
@@ -45,7 +46,7 @@ import butterknife.Unbinder;
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     @BindView(R.id.ib_home_camera)
-    ImageButton ibHomeCamera;
+    TextView ibHomeCamera;
     @BindView(R.id.ib_home_search)
     ImageButton ibHomeSearch;
     @BindView(R.id.ib_home_scan)
@@ -53,6 +54,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_home_location)
+    TextView tvHomeLocation;
     //TabLayout标签
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
@@ -111,7 +114,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         button_more_columns = (ImageView) mActivity.findViewById(R.id.button_more_columns);
         shade_left = (ImageView) mActivity.findViewById(R.id.shade_left);
         shade_right = (ImageView) mActivity.findViewById(R.id.shade_right);
-
         mViewPager = (ViewPager) mActivity.findViewById(R.id.home_view_pager);
 
 
@@ -239,6 +241,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         ibHomeCamera.setOnClickListener(this);
         ibHomeSearch.setOnClickListener(this);
         ibHomeScan.setOnClickListener(this);
+        tvHomeLocation.setOnClickListener(this);
 
     }
 
@@ -284,6 +287,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case R.id.ib_home_search:          //搜索
                 toActivity(SearchActivity.class);
+                break;
+            case R.id.tv_home_location:
+             toActivity(LocationActivity.class);
                 break;
 
         }

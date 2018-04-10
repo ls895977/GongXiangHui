@@ -3,7 +3,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,12 +13,14 @@
 
 
         <RelativeLayout
+            android:id="@+id/rl_fragment2_showAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp">
 
             <TextView
+                android:id="@+id/tv_fragment2_addAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="显示位置"
@@ -133,12 +136,23 @@
                 android:text="是否显示"
                 android:textSize="15sp" />
 
-            <ImageView
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/switchButton_mine_fragment2"
+                style="@style/SwitchButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
                 android:layout_marginRight="10dp"
-                android:background="@mipmap/icon_down" />
+                android:checked="false"
+                app:kswAnimationDuration="300"
+                app:kswBackDrawable="@drawable/ios_back_drawable"
+                app:kswBackMeasureRatio="1.4"
+                app:kswThumbDrawable="@drawable/ios_thumb_selector"
+                app:kswThumbMarginBottom="-8dp"
+                app:kswThumbMarginLeft="-5dp"
+                app:kswThumbMarginRight="-5dp"
+                app:kswThumbMarginTop="-2.5dp" />
         </RelativeLayout>
 
     </LinearLayout>

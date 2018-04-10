@@ -1,54 +1,47 @@
-package com.gongxianghui.fragments.generalizeFragment;
+package com.gongxianghui.fragments.homeFragment.activity;
 
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.alibaba.fastjson.JSON;
 import com.gongxianghui.R;
 import com.gongxianghui.adapter.homeAdapter.TreeRecyclerAdapter;
-import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.base.BaseActivity;
 import com.gongxianghui.bean.home.CityBean;
 import com.gongxianghui.item.ItemHelperFactory;
 import com.gongxianghui.item.ProvinceItemParent;
 import com.gongxianghui.item.TreeItem;
+import com.gongxianghui.widget.TitleBuilder;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
- * Created by Administrator on 2018/3/9 0009.
+ * Created by Administrator on 2018/4/10 0010.
  */
 
-public class GeneralizeFragment_bak extends BaseFragment implements View.OnClickListener {
-
-    @BindView(R.id.rl_content)
-    RecyclerView recyclerView;
-    Unbinder unbinder;
+public class LocationActivity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.recycler_home_location)
+    RecyclerView recyclerHomeLocation;
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_generalize;
+    protected int getLayoutId() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        return R.layout.activity_home_location;
     }
 
     @Override
-    public void initDatas() {
-
-    }
-
-    @Override
-    public void initViews(View view) {
-        recyclerView.setLayoutManager(new GridLayoutManager(mActivity, 3));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+    protected void initViews() {
+        recyclerHomeLocation.setLayoutManager(new GridLayoutManager(mContext, 3));
+        recyclerHomeLocation.setItemAnimator(new DefaultItemAnimator());
+        recyclerHomeLocation.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
@@ -69,26 +62,29 @@ public class GeneralizeFragment_bak extends BaseFragment implements View.OnClick
         List<TreeItem> treeItemList = ItemHelperFactory.createTreeItemList((List) cityBean, ProvinceItemParent.class, null);
         TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter();
         treeRecyclerAdapter.setDatas(treeItemList);
-        recyclerView.setAdapter(treeRecyclerAdapter);
+        recyclerHomeLocation.setAdapter(treeRecyclerAdapter);
+    }
+
+    @Override
+    protected void initDatas() {
+        new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        }).setTitleText("当前地区-西湖区");
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     @Override
     public void onClick(View v) {
 
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }
