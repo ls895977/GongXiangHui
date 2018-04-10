@@ -1,22 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/progress_newsdetail"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:max="100"
-        style="?android:attr/progressBarStyleHorizontal"/>
+        android:layout_height="5dp"
+        android:max="100" />
 
-    <WebView
-        android:id="@+id/wed_news_detail"
-        android:layout_below="@+id/progress_newsdetail"
+    <include layout="@layout/activity_title" />
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <WebView
+            android:id="@+id/wed_news_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></WebView>
+
+    </ScrollView>
 
 
-</RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/et_input_discuss"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/search_background"
+                android:drawableLeft="@drawable/ic_search_24dp"
+                android:drawablePadding="3dp"
+                android:hint="请输入你想评论的内容"
+                android:imeOptions="actionSend"
+                android:lines="1"
+                android:paddingLeft="5dp"
+                android:textSize="16sp" />
+
+
+            <ImageView
+                android:id="@+id/iv_news_detail_collect"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/icon_collect" />
+
+            <ImageView
+               android:id="@+id/iv_news_detail_message"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/icon_message" />
+
+            <ImageView
+                android:id="@+id/iv_news_detail_share"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@mipmap/icon_share" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_news_detail_bigDiss"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+
+
+            <EditText
+                android:id="@+id/et_input_bigDiscuss"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/search_background"
+                android:drawableLeft="@drawable/ic_search_24dp"
+                android:drawablePadding="3dp"
+                android:hint="请输入你想评论的内容"
+                android:imeOptions="actionSend"
+                android:lines="1"
+                android:paddingLeft="5dp"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+</LinearLayout>
