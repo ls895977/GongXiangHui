@@ -151,6 +151,8 @@
             android:launchMode="singleTask" />
         <activity android:name=".fragments.homeFragment.activity.LocationActivity"
             android:launchMode="singleTask"/>
+        <activity android:name=".fragments.homeFragment.activity.CarDetailActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 

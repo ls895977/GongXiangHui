@@ -13,7 +13,7 @@ public class Constant {
     /*主页*/
     public static final String API_MAIN_PAGE = SERVE_URL + "zzb/app/compound/mainpage";
 
-
+    public static final String API_CAR_DETAIL = SERVE_URL + "zzb/app/car/queryCar";
     //加载的网页链接
     //常用电话
     public static final String COMMON_PHONE = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
