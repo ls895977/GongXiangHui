@@ -61,6 +61,7 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
         List<CityBean> cityBean = JSON.parseArray(getResources().getString(R.string.location), CityBean.class);
         List<TreeItem> treeItemList = ItemHelperFactory.createTreeItemList((List) cityBean, ProvinceItemParent.class, null);
         TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter();
+
         treeRecyclerAdapter.setDatas(treeItemList);
         recyclerHomeLocation.setAdapter(treeRecyclerAdapter);
     }

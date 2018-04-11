@@ -18,5 +18,6 @@ public class AreaItem extends TreeItem<CityBean.CitysBean.AreasBean> {
     public void onBindViewHolder(ViewHolder holder) {
         holder.setText(R.id.tv_content, data.getAreaName());
 
+
     }
 }

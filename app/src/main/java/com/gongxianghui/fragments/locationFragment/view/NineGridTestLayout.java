@@ -1,15 +1,12 @@
 package com.gongxianghui.fragments.locationFragment.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.Toast;
 
 
-import com.gongxianghui.fragments.locationFragment.util.ImageLoaderUtil;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.gongxianghui.R;
+import com.gongxianghui.utils.GlideApp;
 
 import java.util.List;
 
@@ -33,48 +30,26 @@ public class NineGridTestLayout extends NineGridLayout {
     @Override
     protected boolean displayOneImage(final RatioImageView imageView, String url, final int parentWidth) {
 
-        ImageLoaderUtil.displayImage(mContext, imageView, url, ImageLoaderUtil.getPhotoImageOption(), new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap bitmap) {
-                int w = bitmap.getWidth();
-                int h = bitmap.getHeight();
-
-                int newW;
-                int newH;
-                if (h > w * MAX_W_H_RATIO) {//h:w = 5:3
-                    newW = parentWidth / 2;
-                    newH = newW * 5 / 3;
-                } else if (h < w) {//h:w = 2:3
-                    newW = parentWidth * 2 / 3;
-                    newH = newW * 2 / 3;
-                } else {//newH:h = newW :w
-                    newW = parentWidth / 2;
-                    newH = h * newW / w;
-                }
-                setOneImageLayoutParams(imageView, newW, newH);
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-
-            }
-        });
+        GlideApp
+                .with(mContext)
+                .load(url)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(imageView);
         return false;
     }
 
     @Override
     protected void displayImage(RatioImageView imageView, String url) {
-        ImageLoaderUtil.getImageLoader(mContext).displayImage(url, imageView, ImageLoaderUtil.getPhotoImageOption());
+
+        GlideApp
+                .with(mContext)
+                .load(url)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(imageView);
     }
 
     @Override

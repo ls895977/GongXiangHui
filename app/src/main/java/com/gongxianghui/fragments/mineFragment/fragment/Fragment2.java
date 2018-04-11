@@ -35,7 +35,6 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
     SwitchButton switchButtonMineFragment2;
     private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
 
-
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);

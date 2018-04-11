@@ -26,6 +26,7 @@ public class ProvinceItemParent extends TreeItemGroup<CityBean> {
     public void onBindViewHolder(ViewHolder holder) {
         holder.setText(R.id.tv_content, data.getProvinceName());
 
+
     }
 
 }

@@ -15,13 +15,13 @@ import android.widget.Toast;
 
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseActivity;
-import com.gongxianghui.fragments.homeFragment.activity.BaoLiaoActivity;
+
 import com.gongxianghui.utils.REGutil;
 import com.gongxianghui.widget.RoundImageView;
 import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
-import com.makeramen.roundedimageview.RoundedImageView;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
