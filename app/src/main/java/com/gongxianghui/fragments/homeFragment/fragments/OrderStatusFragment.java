@@ -12,22 +12,21 @@ import android.widget.Toast;
 
 import com.gongxianghui.R;
 import com.gongxianghui.activity.NewsDetailActivity;
-import com.gongxianghui.activity.ProtocolActivity;
-import com.gongxianghui.adapter.MainViewPagerAdapter;
+
+
 import com.gongxianghui.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.gongxianghui.adapter.homeAdapter.CarListAdapter;
-import com.gongxianghui.adapter.homeAdapter.HomeSalerListAdapter;
-import com.gongxianghui.adapter.homeAdapter.MarqueenMessageAdapter;
+
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.bean.home.MainPageBean;
 import com.gongxianghui.config.Constant;
 import com.gongxianghui.fragments.homeFragment.activity.CarDetailActivity;
 import com.gongxianghui.utils.GsonUtil;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,10 +39,11 @@ import butterknife.Unbinder;
 
 public class OrderStatusFragment extends BaseFragment {
     @BindView(R.id.rv_saler_list)
-    RecyclerView rvSalerList;
+    XRecyclerView rvSalerList;
     Unbinder unbinder;
     private List<String> mDatas;
-
+//    /*参数构建*/
+//    private ParamsBuilder params = new ParamsBuilder();
     @Override
     public int getLayoutId() {
         return R.layout.fragment_saler_order_status;
@@ -80,9 +80,7 @@ public class OrderStatusFragment extends BaseFragment {
                         parseData(response.body());
                     }
                 });
-
     }
-
     private void parseData(String body) {
         MainPageBean mainPageBean = GsonUtil.parseJsonWithGson(body, MainPageBean.class);
         MainPageBean.DataBean dataList = mainPageBean.getData();
@@ -105,6 +103,23 @@ public class OrderStatusFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
        rvSalerList.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+    }
+
+    @Override
+    protected void initListeners() {
+        rvSalerList.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                rvSalerList.refreshComplete();
+
+
+            }
+
+            @Override
+            public void onLoadMore() {
+                rvSalerList.refreshComplete();
+            }
+        });
     }
 
     @Override

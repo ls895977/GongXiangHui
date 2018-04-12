@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void initDatas() {
+
+
+
+
         // + 号监听
         button_more_columns.setOnClickListener(new View.OnClickListener() {
 
@@ -98,10 +103,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             public void onClick(View v) {
                 Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
                 startActivityForResult(intent_channel, CHANNELREQUEST);
+
+
             }
         });
-
         setChangelView();
+
     }
 
     @Override
@@ -297,6 +304,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
         switch (requestCode) {
             case CHANNELREQUEST:
                 if (resultCode == CHANNELRESULT) {

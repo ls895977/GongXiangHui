@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/rv_saler_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp">
 
-    </android.support.v7.widget.RecyclerView>
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+
 
 
 </LinearLayout>

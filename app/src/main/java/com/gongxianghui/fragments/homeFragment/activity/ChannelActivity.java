@@ -272,6 +272,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
             setResult(HomeFragment.CHANNELRESULT, intent);
             finish();
+
+
         } else {
             super.onBackPressed();
         }

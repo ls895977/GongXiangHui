@@ -1,6 +1,8 @@
 package com.gongxianghui.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseActivity;
+import com.gongxianghui.fragments.homeFragment.activity.ProtocolActivity;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.bean.ZxingConfig;
 import com.yzq.zxinglibrary.common.Constant;
@@ -118,9 +121,23 @@ public class ScanActivity extends BaseActivity {
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
+                final String content = data.getStringExtra(Constant.CODED_CONTENT);
+//                result.setText("扫描结果为：" + content);
 
-                String content = data.getStringExtra(Constant.CODED_CONTENT);
-                result.setText("扫描结果为：" + content);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("跳转提示");
+                builder.setMessage("您确定要跳转此链接么？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent=new Intent(mContext, ProtocolActivity.class);
+                        intent.putExtra("url",content);
+                        startActivity(intent);
+
+                    }
+                });
+                builder.setNegativeButton("取消",null);
+              builder.show();
             }
         }
     }

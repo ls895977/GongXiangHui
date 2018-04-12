@@ -14,6 +14,11 @@ public class Constant {
     public static final String API_MAIN_PAGE = SERVE_URL + "zzb/app/compound/mainpage";
 
     public static final String API_CAR_DETAIL = SERVE_URL + "zzb/app/car/queryCar";
+
+    /*获取短信验证码*/
+    public static final String API_GET_CODE = SERVE_URL + "zzb/app/common/smscode";
+    //平台规则
+    public static final String PTGZ = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
     //加载的网页链接
     //常用电话
     public static final String COMMON_PHONE = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";

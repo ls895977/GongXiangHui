@@ -96,7 +96,6 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         rbHomeBianmin = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
         rgMain.setOnCheckedChangeListener(this);
 
-
         List<Integer> list = new ArrayList<>();
         list.add(R.mipmap.ic_test_0);
         list.add(R.mipmap.ic_test_1);
