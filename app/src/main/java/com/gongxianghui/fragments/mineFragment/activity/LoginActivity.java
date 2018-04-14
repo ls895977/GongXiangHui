@@ -30,6 +30,8 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
 
+    public static final int LOGIN_REQUEST = 1;
+    public static final int LOGIN_RESULT = 1;
     @BindView(R.id.et_login_password)
     EditText etLoginPassword;
     @BindView(R.id.bt_login_login)
@@ -47,6 +49,8 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.iv_sina_login)
     ImageView ivSinaLogin;
     private StudentDao studentDao;
+    private String phone;
+    private String password;
 
     @Override
     protected int getLayoutId() {
@@ -84,8 +88,8 @@ public class LoginActivity extends BaseActivity {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.bt_login_login:
-                String phone = etLoginPhone.getText().toString().trim();
-                String password = etLoginPassword.getText().toString().trim();
+                phone = etLoginPhone.getText().toString().trim();
+                password = etLoginPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
@@ -100,7 +104,7 @@ public class LoginActivity extends BaseActivity {
 
                     if (cursor.moveToNext()) {
                         Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
-                        toActivity(MainActivity.class);
+                        toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
                     } else {
                         Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
                     }
@@ -120,6 +124,7 @@ public class LoginActivity extends BaseActivity {
                 phone = etLoginPhone.getText().toString();
                 password = etLoginPassword.getText().toString();
                 studentDao.query(phone, password);
+
                 break;
             case R.id.iv_wx_login:
                 break;
@@ -128,9 +133,20 @@ public class LoginActivity extends BaseActivity {
             case R.id.iv_sina_login:
                 break;
 
-
         }
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode) {
+//            case LOGIN_REQUEST:
+//                if (resultCode == LOGIN_RESULT) {
+//
+//                }
+//                break;
+//
+//        }
+//    }
 }
 

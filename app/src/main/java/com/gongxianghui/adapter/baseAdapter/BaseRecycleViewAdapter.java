@@ -93,18 +93,18 @@ abstract public class BaseRecycleViewAdapter<T> extends
         }
 
         public void setText(int id, @NonNull String text) {
-            TextView tv = getView(id);
+            TextView tv =    getView(id);
             tv.setText(text == null ? "" : text);
+                    }
+
+public void setImageRes(int id, @NonNull int imgRes) {
+        ImageView iv = getView(id);
+        iv.setImageResource(imgRes);
+        }
         }
 
-        public void setImageRes(int id, @NonNull int imgRes) {
-            ImageView iv = getView(id);
-            iv.setImageResource(imgRes);
-        }
-    }
-
-    /*实现的单击事件*/
-    public interface OnItemClickListener {
-        void onItemClick(View v, int position);
-    }
+/*实现的单击事件*/
+public interface OnItemClickListener {
+    void onItemClick(View v, int position);
+}
 }

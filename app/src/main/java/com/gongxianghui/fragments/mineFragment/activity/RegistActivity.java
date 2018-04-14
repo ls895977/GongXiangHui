@@ -200,7 +200,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i("TAG", phone + "_" + pass + "_");
-
                     Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }

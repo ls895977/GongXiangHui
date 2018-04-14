@@ -17,7 +17,7 @@ public class StudentDao {
         this.context = context;
         dbHelpter=new DatabaseHelper(context,"student.db",null,1);
     }
-    //往student表中插入数据方法
+    //往user表中插入数据方法
     public void insert(String num,String name){
         //获取数据库写的权限 一般都是更新
         SQLiteDatabase sqLiteDatabase = dbHelpter.getWritableDatabase();

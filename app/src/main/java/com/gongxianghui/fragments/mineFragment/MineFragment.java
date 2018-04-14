@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseFragment;
+import com.gongxianghui.db.StudentDao;
 import com.gongxianghui.fragments.mineFragment.activity.AddAdverActivity;
 import com.gongxianghui.fragments.mineFragment.activity.CompanySetActivity;
 import com.gongxianghui.fragments.mineFragment.activity.CooperationCallActivity;
@@ -65,6 +66,7 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+
 
     }
 
