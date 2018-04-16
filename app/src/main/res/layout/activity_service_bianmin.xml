@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/activity_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+
+        android:background="@color/Gxh_BG"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_bianmin_call"
+            style="@style/bianmin_text_style"
+            android:drawableTop="@mipmap/bianmin_call"
+            android:text="常用电话"/>
+
+        <TextView
+            android:id="@+id/tv_bianmin_check_express"
+            style="@style/bianmin_text_style"
+            android:layout_width="0dp"
+            android:drawableTop="@mipmap/bianmin_check_express"
+            android:text="查快递"/>
+
+        <TextView
+            android:id="@+id/tv_bianmin_consign_express"
+            style="@style/bianmin_text_style"
+            android:layout_width="0dp"
+            android:drawableTop="@mipmap/bianmin_consign_express"
+            android:text="寄快递" />
+
+        <TextView
+            android:id="@+id/tv_bianmin_phone_dollar"
+            style="@style/bianmin_text_style"
+            android:drawableTop="@mipmap/bianmin_phone_dollar"
+            android:text="充话费"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/Gxh_BG"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_bianmin_bus_check"
+            style="@style/bianmin_text_style"
+
+            android:drawableTop="@mipmap/bianmin_bus_check"
+            android:text="公交查询"/>
+
+        <TextView
+            android:id="@+id/tv_bianmin_car_piao"
+            style="@style/bianmin_text_style"
+            android:layout_width="0dp"
+            android:drawableTop="@mipmap/bianmin_car_piao"
+            android:text="汽车票"/>
+
+        <TextView
+            android:id="@+id/tv_bianmin_train"
+            style="@style/bianmin_text_style"
+            android:layout_width="0dp"
+            android:drawableTop="@mipmap/bianmin_train"
+            android:text="火车票"/>
+
+        <TextView
+            android:id="@+id/tv_bianmin_air"
+            style="@style/bianmin_text_style"
+            android:drawableTop="@mipmap/bianmin_air"
+            android:text="飞机票"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/Gxh_BG"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_bianmin_calendar"
+            style="@style/bianmin_text_style"
+
+            android:drawableTop="@mipmap/bianmin_calendar"
+            android:text="农历黄历"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_bianmin_hotel"
+            style="@style/bianmin_text_style"
+            android:layout_width="0dp"
+            android:drawableTop="@mipmap/bianmin_hotel"
+            android:text="酒店住宿"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_bianmin_see_work"
+            style="@style/bianmin_text_style"
+            android:layout_width="0dp"
+            android:drawableTop="@mipmap/bianmin_see_work"
+            android:text="找工作"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_bianmin_bank"
+            style="@style/bianmin_text_style"
+            android:drawableTop="@mipmap/bianmin_bank"
+            android:text="常用银行"
+            />
+    </LinearLayout>
+</LinearLayout>
