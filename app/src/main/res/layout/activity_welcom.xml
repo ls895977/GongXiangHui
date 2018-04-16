@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/icon_strat_logo">
+    android:background="@mipmap/icon_starpage">
 
     <LinearLayout
         android:layout_marginTop="15dp"
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="5"
+            android:text="3"
             android:textColor="#000"
             android:textSize="14sp" />
 
