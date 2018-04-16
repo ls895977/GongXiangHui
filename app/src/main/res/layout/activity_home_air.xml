@@ -44,7 +44,7 @@
                 android:background="@color/divider" />
 
 
-            <com.gongxianghui.widget.MyGridView
+            <com.qunxianghui.gxh.widget.MyGridView
                 android:id="@+id/userGridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:verticalSpacing="14px">
 
 
-            </com.gongxianghui.widget.MyGridView>
+            </com.qunxianghui.gxh.widget.MyGridView>
 
 
             <View
@@ -80,7 +80,7 @@
                 android:text="更多频道"
                 android:textSize="13sp" />
 
-            <com.gongxianghui.widget.MyGridView
+            <com.qunxianghui.gxh.widget.MyGridView
                 android:id="@+id/otherGridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                 android:verticalSpacing="14.0px">
 
 
-            </com.gongxianghui.widget.MyGridView>
+            </com.qunxianghui.gxh.widget.MyGridView>
 
         </LinearLayout>
 

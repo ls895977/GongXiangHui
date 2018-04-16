@@ -43,7 +43,7 @@
 
     </RelativeLayout>
 
-    <com.gongxianghui.widget.MyGridView
+    <com.qunxianghui.gxh.widget.MyGridView
         android:id="@+id/list_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         android:visibility="visible"  />
 
 
-    <com.gongxianghui.widget.MyGridView
+    <com.qunxianghui.gxh.widget.MyGridView
         android:id="@+id/list_grid_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.gongxianghui.widget.ScrollChildSwipeRefreshLayout
+<com.qunxianghui.gxh.widget.ScrollChildSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mycollect_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-    <com.gongxianghui.widget.GloriousRecyclerView
+    <com.qunxianghui.gxh.widget.GloriousRecyclerView
         android:id="@+id/recycler_mine_common"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.gongxianghui.widget.GloriousRecyclerView>
+    </com.qunxianghui.gxh.widget.GloriousRecyclerView>
 
-</com.gongxianghui.widget.ScrollChildSwipeRefreshLayout >
+</com.qunxianghui.gxh.widget.ScrollChildSwipeRefreshLayout>
