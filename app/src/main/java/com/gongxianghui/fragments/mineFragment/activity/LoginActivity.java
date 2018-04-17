@@ -16,9 +16,19 @@ import com.gongxianghui.R;
 import com.gongxianghui.activity.MainActivity;
 import com.gongxianghui.base.BaseActivity;
 import com.gongxianghui.db.StudentDao;
+import com.gongxianghui.fragments.homeFragment.activity.LocationActivity;
+import com.gongxianghui.third.sina.Constants;
 import com.gongxianghui.utils.REGutil;
 import com.gongxianghui.utils.UserService;
 import com.gongxianghui.widget.TitleBuilder;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WbAuthListener;
+import com.sina.weibo.sdk.auth.WbConnectErrorMessage;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+
+import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,15 +61,21 @@ public class LoginActivity extends BaseActivity {
     private StudentDao studentDao;
     private String phone;
     private String password;
-
+    private SsoHandler mSsoHandler;
+    /** 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能  */
+    private Oauth2AccessToken mAccessToken;
     @Override
     protected int getLayoutId() {
-
+        WbSdk.install(getApplicationContext(),new AuthInfo(this, Constants.APP_KEY,Constants.REDIRECT_URL,Constants.SCOPE));
         return R.layout.activity_login;
+
+
     }
 
     @Override
     protected void initViews() {
+
+
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +88,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-
+        mSsoHandler = new SsoHandler(LoginActivity.this);
 
     }
 
@@ -131,6 +147,8 @@ public class LoginActivity extends BaseActivity {
             case R.id.iv_qq_login:
                 break;
             case R.id.iv_sina_login:
+                mSsoHandler.authorize(new SelfWbAuthListener());
+
                 break;
 
         }
@@ -148,5 +166,60 @@ public class LoginActivity extends BaseActivity {
 //
 //        }
 //    }
+
+ private  class  SelfWbAuthListener implements WbAuthListener{
+
+     @Override
+     public void onSuccess(final Oauth2AccessToken token) {
+         LoginActivity.this.runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                 mAccessToken=token;
+                 if(mAccessToken.isSessionValid()){
+                     // 显示 Token
+                     updateTokenView(false);
+                 }
+             }
+         });
+     }
+
+     @Override
+     public void cancel() {
+
+     }
+
+     @Override
+     public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
+
+     }
+ }
+
+    /**
+     * 显示当前的token信息
+     * @param hasExisted  配置文件中是否已存在 token 信息并且合法
+     */
+    private void updateTokenView(boolean hasExisted) {
+        String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
+                new java.util.Date(mAccessToken.getExpiresTime()));
+        String format = getString(R.string.weibosdk_demo_token_to_string_format_1);
+
+
+        String message = String.format(format, mAccessToken.getToken(), date);
+        if (hasExisted) {
+            message = getString(R.string.weibosdk_demo_token_has_existed) + "\n" + message;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //sso回调 必须重写
+        if (mSsoHandler != null) {
+            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+
+
+        }
+    }
 }
 

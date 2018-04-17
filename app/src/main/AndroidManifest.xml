@@ -154,6 +154,9 @@
             android:launchMode="singleTask"/>
         <activity android:name=".fragments.homeFragment.activity.CarDetailActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".activity.BianMinServiceActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.MemberUpActivity"/>
     </application>
 
 

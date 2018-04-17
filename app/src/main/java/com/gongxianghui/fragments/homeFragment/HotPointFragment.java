@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 
 import com.gongxianghui.R;
 import com.gongxianghui.activity.BianMinActiviry;
+import com.gongxianghui.activity.BianMinServiceActivity;
 import com.gongxianghui.adapter.homeAdapter.HomeItemListAdapter;
 import com.gongxianghui.base.BaseFragment;
 import com.gongxianghui.bean.home.MoreTypeBean;
@@ -161,7 +162,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
                 toActivity(SalerActivity.class);
                 break;
             case R.id.rb_home_bianmin:
-                toActivity(BianMinActiviry.class);
+                toActivity(BianMinServiceActivity.class);
         }
     }
 }

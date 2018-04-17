@@ -9,8 +9,11 @@ import android.os.StrictMode;
 
 import com.gongxianghui.config.Constant;
 import com.gongxianghui.db.SQLHelper;
+import com.gongxianghui.third.sina.Constants;
 import com.gongxianghui.utils.AppManager;
 import com.lzy.okgo.OkGo;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.auth.AuthInfo;
 
 
 import java.util.concurrent.TimeUnit;
@@ -100,5 +103,9 @@ public class MyApplication extends Application {
 //        PlatformConfig.setQQZone(Constant.QQZONE_APP_ID, Constant.QQZONE_APP_KEY);
 //        PlatformConfig.setSinaWeibo(Constant.SINA_APP_KEY,
 //                Constant.SINA_APP_SERCET, Constant.SINA_APP_URL);
+
+
+
+
     }
 }

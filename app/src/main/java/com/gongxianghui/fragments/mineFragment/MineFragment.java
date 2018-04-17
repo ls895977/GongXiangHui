@@ -16,6 +16,7 @@ import com.gongxianghui.fragments.mineFragment.activity.CompanySetActivity;
 import com.gongxianghui.fragments.mineFragment.activity.CooperationCallActivity;
 import com.gongxianghui.fragments.mineFragment.activity.InviteFrientActivity;
 import com.gongxianghui.fragments.mineFragment.activity.LoginActivity;
+import com.gongxianghui.fragments.mineFragment.activity.MemberUpActivity;
 import com.gongxianghui.fragments.mineFragment.activity.MessageGatherActivity;
 import com.gongxianghui.fragments.mineFragment.activity.MineIssueActivity;
 import com.gongxianghui.fragments.mineFragment.activity.MineMessageActivity;
@@ -112,6 +113,7 @@ public class MineFragment extends BaseFragment {
                 toActivity(MineIssueActivity.class);
                 break;
             case R.id.rl_up_step:
+                toActivity(MemberUpActivity.class);
                 break;
             case R.id.company_set:
                 toActivity(CompanySetActivity.class);

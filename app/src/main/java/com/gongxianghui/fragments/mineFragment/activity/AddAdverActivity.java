@@ -15,6 +15,10 @@ import android.widget.Toast;
 import com.gongxianghui.R;
 import com.gongxianghui.base.BaseActivity;
 import com.gongxianghui.widget.TitleBuilder;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.share.WbShareCallback;
+import com.sina.weibo.sdk.share.WbShareHandler;
 
 import butterknife.BindView;
 
@@ -22,7 +26,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class AddAdverActivity extends BaseActivity implements View.OnClickListener {
+public class AddAdverActivity extends BaseActivity implements View.OnClickListener,WbShareCallback{
     final Activity activity = this;
 
     @BindView(R.id.iv_mineFragment_addTopAdver)
@@ -39,6 +43,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout rlMineFragmentAddTopAdver;
     @BindView(R.id.rl_mineFragment_addBottomAdver)
     RelativeLayout rlMineFragmentAddBottomAdver;
+    private WbShareHandler mWbShareHandler;
 
     @Override
     protected int getLayoutId() {
@@ -47,6 +52,11 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
+
+
+        mWbShareHandler = new WbShareHandler(this);
+        mWbShareHandler.registerApp();
+
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,8 +66,11 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "跳转到分享页面", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
 
     }
 
@@ -107,6 +120,10 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
+        
+        
+        
+        
     }
 
     @Override
@@ -130,5 +147,39 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void onWbShareSuccess() {
+        WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
+
+        weiboMultiMessage.textObject = getTextObj();
+
+        mWbShareHandler.shareMessage(weiboMultiMessage,false);
+    }
+
+    @Override
+    public void onWbShareCancel() {
+        Toast.makeText(activity, "取消分享", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWbShareFail() {
+
+        Toast.makeText(activity, "分享失败", Toast.LENGTH_SHORT).show();
+    }
+
+    private TextObject getTextObj() {
+            TextObject textObject = new TextObject();
+            textObject.text = "我正在使用微博客户端发博器分享文字";
+             textObject.title = "1024wawa";
+            textObject.actionUrl = "http://www.baidu.com";
+            return textObject;
+         }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        mWbShareHandler.doResultIntent(intent,this);
     }
 }

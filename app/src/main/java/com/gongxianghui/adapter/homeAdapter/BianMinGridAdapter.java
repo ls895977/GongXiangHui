@@ -1,34 +1,72 @@
 package com.gongxianghui.adapter.homeAdapter;
 
+
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.gongxianghui.adapter.baseAdapter.BaseRecycleViewAdapter;
+import com.gongxianghui.R;
 
-import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/16 0016.
  */
 
-public class BianMinGridAdapter extends BaseRecycleViewAdapter {
-    public BianMinGridAdapter(Context context, List datas) {
-        super(context, datas);
+
+public class BianMinGridAdapter extends BaseAdapter {
+    private LayoutInflater layoutInflater;
+    private Context context;
+    private int[] images;
+    private String[] text;
+
+    public BianMinGridAdapter(Context context, int[] images, String[] text) {
+        this.context = context;
+        this.images = images;
+        this.text = text;
+        layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, Object o) {
-
+    public int getCount() {
+        return images.length;
     }
 
     @Override
-    protected int getItemView() {
-        return 0;
+    public Object getItem(int position) {
+        return images[position];
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+    public long getItemId(int position) {
+        return position;
     }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        myViewHolde holder = null;
+        if (convertView == null) {
+            holder = new myViewHolde();
+            convertView = layoutInflater.inflate(R.layout.bianmin_service_item, null);
+            holder.iv= convertView.findViewById(R.id.iv_bianmin_image);
+            holder.name  = convertView.findViewById(R.id.tv_bianmin_text);
+            convertView.setTag(holder);
+        }else {
+            holder= (myViewHolde) convertView.getTag();
+        }
+
+        holder.iv .setImageResource(images[position]);
+        holder.name.setText(text[position]);
+
+        return convertView;
+    }
+
+    private static class myViewHolde {
+        TextView name;
+        ImageView iv;
+    }
+
 }
