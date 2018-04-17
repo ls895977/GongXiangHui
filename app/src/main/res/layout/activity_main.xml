@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.gongxianghui.activity.MainActivity">
+    tools:context="com.qunxianghui.gxh.activity.MainActivity">
 
-    <com.gongxianghui.widget.NoScrollViewPager
+    <com.qunxianghui.gxh.widget.NoScrollViewPager
         android:background="#fff"
         android:id="@+id/vp_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-    </com.gongxianghui.widget.NoScrollViewPager>
+    </com.qunxianghui.gxh.widget.NoScrollViewPager>
 
     <View
         android:layout_width="match_parent"

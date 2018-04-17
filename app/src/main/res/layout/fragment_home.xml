@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.gongxianghui.widget.GloriousRecyclerView
+    <com.qunxianghui.gxh.widget.GloriousRecyclerView
         android:id="@+id/recyclerview_list"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.gongxianghui.widget.GloriousRecyclerView>
+    </com.qunxianghui.gxh.widget.GloriousRecyclerView>
 
 </LinearLayout>

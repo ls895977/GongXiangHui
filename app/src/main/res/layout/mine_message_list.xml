@@ -11,7 +11,7 @@
 
         android:orientation="horizontal">
 
-        <com.gongxianghui.widget.RoundImageView
+        <com.qunxianghui.gxh.widget.RoundImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@mipmap/icon_headimage" />

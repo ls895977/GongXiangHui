@@ -51,7 +51,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/colorAccent" />
 
-            <com.gongxianghui.widget.DragGrid
+            <com.qunxianghui.gxh.widget.DragGrid
                 android:id="@+id/userGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             </LinearLayout>
 
 
-            <com.gongxianghui.widget.OtherGridView
+            <com.qunxianghui.gxh.widget.OtherGridView
                 android:id="@+id/otherGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

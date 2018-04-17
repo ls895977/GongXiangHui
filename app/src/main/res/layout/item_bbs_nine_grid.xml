@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <com.gongxianghui.widget.RoundImageView
+    <com.qunxianghui.gxh.widget.RoundImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:background="@mipmap/icon_headimage" />
@@ -30,7 +30,7 @@
             android:layout_marginTop="5dp"
             android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
-        <com.gongxianghui.fragments.locationFragment.view.NineGridTestLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/layout_nine_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

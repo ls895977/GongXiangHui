@@ -61,7 +61,7 @@
             android:layout_marginLeft="15dp"
             android:text="头像" />
 
-        <com.gongxianghui.widget.RoundImageView
+        <com.qunxianghui.gxh.widget.RoundImageView
             android:id="@+id/iv_person_data_img"
             android:layout_width="30dp"
             android:layout_height="30dp"

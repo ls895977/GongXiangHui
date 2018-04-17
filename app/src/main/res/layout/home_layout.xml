@@ -101,7 +101,7 @@
             android:layout_height="40.0dip"
             android:layout_weight="1.0">
 
-            <com.gongxianghui.widget.ColumnHorizontalScrollView
+            <com.qunxianghui.gxh.widget.ColumnHorizontalScrollView
                 android:id="@+id/mColumnHorizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="40.0dip"
@@ -116,7 +116,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp" />
-            </com.gongxianghui.widget.ColumnHorizontalScrollView>
+            </com.qunxianghui.gxh.widget.ColumnHorizontalScrollView>
 
             <ImageView
                 android:id="@+id/shade_left"
