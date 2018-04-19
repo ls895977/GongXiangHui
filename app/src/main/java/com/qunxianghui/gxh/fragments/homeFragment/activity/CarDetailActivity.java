@@ -5,8 +5,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.CarDetailAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -14,9 +20,6 @@ import com.qunxianghui.gxh.bean.home.CarDetailBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.OkHttpUtil;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,9 +33,15 @@ public class CarDetailActivity extends BaseActivity implements ViewPager.OnPageC
     ViewPager vpCarPic;
     @BindView(R.id.tv_car_name)
     TextView tvCarName;
+    @BindView(R.id.iv_cardetail_collect)
+    ImageView ivCardetailCollect;
+    @BindView(R.id.tv_car_collect)
+    TextView tvCarCollect;
     private CarDetailBean.DataBean carDetailBean;
     private String[] mImageViews;
     private int preSelectedPoint;
+
+    private int collectFlag = 0;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -51,6 +60,7 @@ public class CarDetailActivity extends BaseActivity implements ViewPager.OnPageC
             super.handleMessage(msg);
         }
     };
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_car_detail;
@@ -74,6 +84,8 @@ public class CarDetailActivity extends BaseActivity implements ViewPager.OnPageC
                 setViewInfo(detailBean);
             }
         });
+
+
 
     }
 
@@ -99,6 +111,21 @@ public class CarDetailActivity extends BaseActivity implements ViewPager.OnPageC
         tvCarName.setText(carDetailBean.getCarName());
     }
 
+    @Override
+    protected void initListeners() {
+        ivCardetailCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectCar();
+            }
+        });
+    }
+
+    private void collectCar() {
+        collectFlag=(collectFlag==0?1:0);
+        ivCardetailCollect.setBackgroundResource(collectFlag==0?R.drawable.collect:R.drawable.collect_normal);
+        Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

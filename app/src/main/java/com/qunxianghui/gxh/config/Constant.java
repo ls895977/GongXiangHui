@@ -15,6 +15,16 @@ public class Constant {
 
     public static final String API_CAR_DETAIL = SERVE_URL + "zzb/app/car/queryCar";
 
+    /*车辆品牌*/
+    public static final String API_CAR_BRAND = SERVE_URL + "zzb/app/car/brand";
+
+    /*车系*/
+    public static final String API_CAR_SERIES = SERVE_URL + "zzb/app/car/series";
+
+
+    /*车辆筛选*/
+    public static final String API_CAR_QUERY = SERVE_URL + "zzb/app/car/queryCarByCondition";
+
     /*获取短信验证码*/
     public static final String API_GET_CODE = SERVE_URL + "zzb/app/common/smscode";
     //平台规则

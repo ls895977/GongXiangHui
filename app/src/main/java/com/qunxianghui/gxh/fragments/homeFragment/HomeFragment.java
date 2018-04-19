@@ -1,8 +1,10 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
@@ -295,11 +299,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 toActivity(SearchActivity.class);
                 break;
             case R.id.tv_home_location:
-             toActivity(LocationActivity.class);
+                toActivity(LocationActivity.class);
+
                 break;
 
         }
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -246,7 +246,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
     private int time = 60;
 
-    private class TimerHandler extends Handler {
+    public class TimerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
 

@@ -96,8 +96,6 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
-
         mlocationClient = new AMapLocationClient(this);
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
@@ -108,7 +106,7 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置定位间隔,单位毫秒,默认为2000ms
-//        mLocationOption.setInterval(2000);
+        mLocationOption.setInterval(1000);
         //设置定位参数
         mlocationClient.setLocationOption(mLocationOption);
         mlocationClient.startLocation();
@@ -121,6 +119,8 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onLocationChanged(final AMapLocation amapLocation) {
+
+
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 //定位成功回调信息，设置相关消息
@@ -144,6 +144,7 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         tv_home_preent_location.setText(amapLocation.getDistrict());
                         titleBuilder.setTitleText("当前地区-" + amapLocation.getDistrict());
                     }
@@ -158,5 +159,12 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
         }
 
         mlocationClient.stopLocation();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mlocationClient.onDestroy();
     }
 }

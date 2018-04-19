@@ -19,7 +19,7 @@ public class WelcomActivity extends BaseActivity {
     // 声明控件对象
     private TextView textView;
     private Animation animation;
-    private int count = 5;
+    private int count = 3;
 private Handler handler=new Handler(){
     @Override
     public void handleMessage(Message msg) {

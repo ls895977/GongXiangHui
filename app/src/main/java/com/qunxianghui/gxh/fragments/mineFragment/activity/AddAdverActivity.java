@@ -1,7 +1,12 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -12,9 +17,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.qunxianghui.gxh.third.sina.Constants;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.api.ImageObject;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.share.WbShareCallback;
 import com.sina.weibo.sdk.share.WbShareHandler;
 
@@ -22,10 +30,13 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import butterknife.BindView;
+import butterknife.OnLongClick;
+
 /**
  * Created by Administrator on 2018/4/2 0002.
  */
 public class AddAdverActivity extends BaseActivity implements View.OnClickListener,WbShareCallback{
+
     final Activity activity = this;
     @BindView(R.id.iv_mineFragment_addTopAdver)
     ImageView ivMineFragmentAddTopAdver;
@@ -45,14 +56,17 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected int getLayoutId() {
+
         return R.layout.activity_mine_advertise;
+
     }
 
     @Override
     protected void initViews() {
 
-
+WbSdk.install(this,new AuthInfo(this, Constants.APP_KEY,Constants.REDIRECT_URL,Constants.SCOPE));//创建微博API接口类对象
         mWbShareHandler = new WbShareHandler(this);
+
         mWbShareHandler.registerApp();
 
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -64,12 +78,25 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "跳转到分享页面", Toast.LENGTH_SHORT).show();
+                sendMessageToWb(false,true);
+
 
             }
         });
 
 
 
+    }
+
+    private void sendMessageToWb(boolean hastText, boolean hasImage) {
+        final WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
+        if(hastText){
+            weiboMultiMessage.textObject = getTextObj();
+        }
+        if(hasImage){
+            weiboMultiMessage.imageObject=getImageObj(mContext);
+        }
+        mWbShareHandler.shareMessage(weiboMultiMessage,false);
     }
 
     @Override
@@ -149,11 +176,9 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onWbShareSuccess() {
-        WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
 
-        weiboMultiMessage.textObject = getTextObj();
+        Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
 
-        mWbShareHandler.shareMessage(weiboMultiMessage,false);
     }
 
     @Override
@@ -175,9 +200,22 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             return textObject;
          }
 
+    /**
+     * 创建图片消息对象。
+     * @return 图片消息对象。
+     */
+    private ImageObject getImageObj(Context context) {
+        ImageObject imageObject = new ImageObject();
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_share);
+        imageObject.setImageObject(bitmap);
+        return imageObject;
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
         mWbShareHandler.doResultIntent(intent,this);
     }
+
+
 }

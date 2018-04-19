@@ -88,7 +88,7 @@ public class OrderStatusFragment extends BaseFragment {
             public void onItemClick(View v, int position) {
                 //跳转消息详情页面
                 final  Intent intent=new Intent(mActivity,CarDetailActivity.class);
-                intent.putExtra("carid",carList.get(position).getId());
+                intent.putExtra("carid",carList.get(position-1).getId());
                 startActivity(intent);
 
             }

@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LiftStyleActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationServiceActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.widget.GloriousRecyclerView;
@@ -157,7 +158,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
                 break;
             case R.id.rb_home_life_style:
 
-                toActivity(LiftStyleActivity.class);
+                toActivity(LocationServiceActivity.class);
                 break;
             case R.id.rb_home_saler:
                 toActivity(SalerActivity.class);
