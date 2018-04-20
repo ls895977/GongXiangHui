@@ -1,8 +1,9 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+
 import android.view.View;
 
-import com.qunxianghui.gxh.R;
+
 import com.qunxianghui.gxh.base.BaseFragment;
 
 /**
