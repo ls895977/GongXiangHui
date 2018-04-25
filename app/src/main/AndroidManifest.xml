@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qunxianghui.gxh">
     <!--高德相应权限-->
     <!--用于进行网络定位-->
@@ -152,7 +151,6 @@
 
         <activity
             android:name="com.qunxianghui.gxh.activity.NewsDetailActivity"
-            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask" />
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity"
@@ -164,8 +162,6 @@
         <activity android:name=".activity.BianMinServiceActivity" />
         <activity android:name=".fragments.mineFragment.activity.MemberUpActivity" />
         <activity android:name=".fragments.homeFragment.activity.LocationServiceActivity"/>
-
-
     </application>
 
 

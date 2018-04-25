@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,18 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-import com.qunxianghui.gxh.adapter.homeAdapter.FireSearchAdapter;
-import com.qunxianghui.gxh.adapter.homeAdapter.QueryResultAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.SimpleTextAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.FireSearchBean;
-import com.qunxianghui.gxh.bean.home.QueryBean;
-import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
@@ -75,12 +66,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ImageView ivClearHistory;
     @BindView(R.id.ll_home_search)
     LinearLayout llHomeSearch;
-    private String searchText="";
+    private String searchText;
     private List<String> historyDatas = new LinkedList<>();
     private Gson gson = new Gson();
     private SimpleTextAdapter historyAdapter;
-    private List<QueryBean.DataBean> queryResult;
-    private QueryResultAdapter resultAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -101,52 +90,27 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         StatusBarUtil.setViewTopPadding(this, R.id.top_bar);
     }
 
-
+    /**
+     * 加载历史记录
+     */
     @Override
     protected void initDatas() {
-        OkGo.<String>get(Constant.API_FIRE_SEARCH)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        final FireSearchBean searchBean = GsonUtil.parseJsonWithGson(response.body(), FireSearchBean.class);
-                        if(searchBean.getErrno()==0){
-                            final List<FireSearchBean.DataBean> data = searchBean.getData();
-                            initFireRecycle(data);
-                        }
-                    }
-                });
-
         initHistories();
     }
 
-    private void initFireRecycle(final List<FireSearchBean.DataBean> searchBean) {
-        final FireSearchAdapter adapter = new FireSearchAdapter(mContext, searchBean);
-        adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-              searchText= searchBean.get(position).getName();
-                refreshSearchText();
-            }
-        });
-        rvSearchGuess.setAdapter(adapter);
-
-
-    }
-
-    /*加载历史记录*/
     private void initHistories() {
         final String histories = SPUtils.getString(mContext, "histories", "");
         LinkedList<String> datas = (LinkedList<String>) GsonUtil.parseJsonToList(histories, new TypeToken<LinkedList<String>>() {
 
-
         }.getType());
+
 
         if (datas != null) {
             historyDatas = datas;
-            historyDatas.add("凯迪拉克");
-            historyDatas.add("赵龙涛测试数据");
         }
 
+        historyDatas.add("凯迪拉克");
+        historyDatas.add("赵龙涛测试数据");
         if (historyDatas != null && historyDatas.size() != 0) {
             historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
             historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
@@ -253,60 +217,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * @param text
      */
     private void doQueryResult(String text) {
-
-
-        OkGo.<String>get(Constant.API_CAR_QUERY)
-                .params("text",text)
-                .execute(new StringCallback() {
-
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        final QueryBean queryBean = GsonUtil.parseJsonWithGson(response.body(), QueryBean.class);
-                        if(queryBean.getErrno()==0){
-                            queryResult = queryBean.getData();
-                            if(queryResult.size()!=0){
-                                showResultView();
-                            }else {
-                                Toast.makeText(mContext, "没有找到您想要的内容", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-    }
-
-    /**
-     * 显示搜索结果列表
-     */
-    private void showResultView() {
-        if(resultAdapter!=null){
-            resultAdapter.refresh(queryResult);
-            resultAdapter.notifyDataSetChanged();
-            return;
-        }
-        handleListView();
-    }
-
-
-    /**
-     * 搜索结果列表
-     */
-    private void handleListView() {
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvSearchResult.setLayoutManager(manager);
-        resultAdapter = new QueryResultAdapter(mContext, queryResult);
-        resultAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                final QueryBean.DataBean dataBean = queryResult.get(position);
-                /**
-                 * 跳转详情页面
-                 */
-                final Intent intent = new Intent(mContext, CarDetailActivity.class);
-                intent.putExtra("carid", dataBean.getId());
-                startActivity(intent);
-            }
-        });
-        rvSearchResult.setAdapter(resultAdapter);
+        Toast.makeText(mContext, "请求搜索的操作", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -315,23 +226,18 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void doSearch() {
 
         searchText = etSearch.getText().toString().trim();
-        if (!TextUtils.isEmpty(searchText)) {
-        updateHistories(searchText, false);
+        if (TextUtils.isEmpty(searchText)) {
+            updateHistories(searchText, false);
+        }
+
     }
 
-}
-
-    /**
-     * 刷新历史记录
-     * @param item
-     * @param clear
-     */
     private void updateHistories(String item, boolean clear) {
         if (clear) {
             historyDatas.clear();
 
         } else {
-            if (!TextUtils.isEmpty(item)) {
+            if (TextUtils.isEmpty(item)) {
                 ((LinkedList<String>) historyDatas).addFirst(item);
                 final String value = gson.toJson(historyDatas);
                 Log.i(TAG, "updateHistories: " + value);

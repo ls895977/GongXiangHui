@@ -20,8 +20,7 @@ public class Constant {
 
     /*车系*/
     public static final String API_CAR_SERIES = SERVE_URL + "zzb/app/car/series";
-    /*获取热搜内容*/
-    public static final String API_FIRE_SEARCH = SERVE_URL + "zzb/app/car/searchfreq";
+
 
     /*车辆筛选*/
     public static final String API_CAR_QUERY = SERVE_URL + "zzb/app/car/queryCarByCondition";

@@ -1,8 +1,6 @@
 package com.qunxianghui.gxh.fragments.locationFragment.view;
 
 import android.content.Context;
-import android.graphics.PointF;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
@@ -43,7 +41,7 @@ public class NineGridTestLayout extends NineGridLayout {
     }
 
     @Override
-    protected void displayImage(final RatioImageView imageView, String url) {
+    protected void displayImage(RatioImageView imageView, String url) {
 
         GlideApp
                 .with(mContext)
@@ -52,11 +50,10 @@ public class NineGridTestLayout extends NineGridLayout {
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
-
     }
 
     @Override
-    protected void onClickImage(int positon, String url, List<String> urlList) {
-        Toast.makeText(mContext, "点击了图片" +positon, Toast.LENGTH_SHORT).show();
+    protected void onClickImage(int i, String url, List<String> urlList) {
+        Toast.makeText(mContext, "点击了图片" + url, Toast.LENGTH_SHORT).show();
     }
 }

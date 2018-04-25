@@ -3,30 +3,19 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Interpolator;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bm.library.Info;
-import com.bm.library.PhotoView;
-import com.kyleduo.switchbutton.SwitchButton;
-import com.linchaolong.android.imagepicker.ImagePicker;
-import com.linchaolong.android.imagepicker.cropper.CropImage;
-import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
+import com.kyleduo.switchbutton.SwitchButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,8 +30,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     TextView tvMineAddAddress;
     @BindView(R.id.tv_mine_click_attr)
     TextView tvMineClickAttr;
-    @BindView(R.id.iv_mine_addFragment1BigAdver)
-    PhotoView ivMineAddFragment1BigAdver;
     private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
     private String[] addAttrList = new String[]{"点击属性", "属性1", "属性2", "属性3"};
     @BindView(R.id.rl_mine_addAddress)
@@ -52,7 +39,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     Unbinder unbinder;
     @BindView(R.id.switchButton)
     SwitchButton mSwitchButton;
-    private ImagePicker imagePicker;
 
 
     @Override
@@ -80,8 +66,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initViews(View view) {
-        imagePicker = new ImagePicker();
-        imagePicker.setCropImage(true);
+
 
     }
 
@@ -89,7 +74,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     protected void initListeners() {
         rlMineAddAddress.setOnClickListener(this);
         rlMineClickAttr.setOnClickListener(this);
-        ivMineAddFragment1BigAdver.setOnClickListener(this);
     }
 
     @Override
@@ -118,81 +102,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                 Toast.makeText(mActivity, "添加属性", Toast.LENGTH_SHORT).show();
                 showAddClickAttr();
                 break;
-            case R.id.iv_mine_addFragment1BigAdver:
-                openPhoto();
-
-                break;
         }
-
-    }
-
-    private void openPhoto() {
-        imagePicker.startChooser(this, new ImagePicker.Callback() {
-            @Override
-            public void onPickImage(Uri imageUri) {
-                ivMineAddFragment1BigAdver.setImageURI(imageUri);
-                //启动缩放功能
-                ivMineAddFragment1BigAdver.enable();
-                //禁止缩放功能  默认禁止
-                // ivMineAddFragment1BigAdver.disenable();
-                //        使用Glide加载的gif图片同样支持缩放功能
-
-                ivMineAddFragment1BigAdver.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Toast.makeText(mActivity, "长按了", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                });
-                ivMineAddFragment1BigAdver.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ivMineAddFragment1BigAdver.enable();
-
-                    }
-                });
-//        Glide.with(this)
-//                .load(gif)
-//                .crossFade()
-//                .placeholder(R.mipmap.bbb)
-//                .into(((PhotoView) findViewById(R.id.img1)));
-            }
-
-            //剪裁图片回调
-
-            @Override
-            public void onCropImage(Uri imageUri) {
-                ivMineAddFragment1BigAdver.setImageURI(imageUri);
-
-            }
-
-            //自定义剪裁
-
-            @Override
-            public void cropConfig(CropImage.ActivityBuilder builder) {
-
-
-                builder
-                        // 是否启动多点触摸
-                        .setMultiTouchEnabled(false)
-                        // 设置网格显示模式
-                        .setGuidelines(CropImageView.Guidelines.OFF)
-                        // 圆形/矩形
-                        .setCropShape(CropImageView.CropShape
-                                .RECTANGLE)
-                        // 调整裁剪后的图片最终大小
-                        .setRequestedSize(150, 150)
-                        // 宽高比
-                        .setAspectRatio(1, 1);
-            }
-
-            //用户拒绝授权回调
-
-            @Override
-            public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
-                super.onPermissionDenied(requestCode, permissions, grantResults);
-            }
-        });
 
     }
 
@@ -225,11 +135,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         });
         builder.show();
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        imagePicker.onActivityResult(mActivity, requestCode, resultCode, data);
     }
 }
 

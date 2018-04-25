@@ -38,10 +38,9 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_baoliao_remember"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:background="#33ff454b"
 
         android:orientation="horizontal"
@@ -68,32 +67,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="10dp"
         android:orientation="vertical">
 
-        <EditText
-            android:background="@null"
-            android:textSize="14sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入标题"
-            android:singleLine="true" />
-        <View
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider"
-            />
-
-
-        <EditText
-            android:textSize="14sp"
-            android:lines="4"
+        <TextView
             android:id="@+id/iv_baoliao_fabu_content"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@null"
-            android:hint="发布内容..." />
+            android:layout_height="70dp" />
 
 
         <LinearLayout
@@ -107,6 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numColumns="4" />
+
 
         </LinearLayout>
 

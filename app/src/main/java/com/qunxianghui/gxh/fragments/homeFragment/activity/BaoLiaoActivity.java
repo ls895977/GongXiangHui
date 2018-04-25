@@ -7,16 +7,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.linchaolong.android.imagepicker.ImagePicker;
-import com.linchaolong.android.imagepicker.cropper.CropImage;
-import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.GvAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.linchaolong.android.imagepicker.ImagePicker;
+import com.linchaolong.android.imagepicker.cropper.CropImage;
+import com.linchaolong.android.imagepicker.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +27,13 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/16 0016.
  */
 
-public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListener{
+public class BaoLiaoActivity extends BaseActivity {
     @BindView(R.id.iv_baoliao_close)
     ImageView ivBaoliaoClose;
     @BindView(R.id.iv_baoliao_fabu_content)
     TextView ivBaoliaoFabuContent;
     @BindView(R.id.grid_view)
     GridView gridView;
-    @BindView(R.id.ll_baoliao_remember)
-    LinearLayout llBaoliaoRemember;
     private ImagePicker imagePicker;
     private List<String> list;
     private GvAdapter adapter;
@@ -64,6 +61,7 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
                 if (position == parent.getChildCount() - 1) {
                     if (position == 6) {
                         //不能点击了
+
                     } else {
                         openPhoto();
                     }
@@ -112,7 +110,6 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
                         // 宽高比
                         .setAspectRatio(16, 9);
             }
-
             // 用户拒绝授权回调
             public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
 
@@ -133,11 +130,6 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
     }
 
     @Override
-    protected void initListeners() {
-        ivBaoliaoClose.setOnClickListener(this);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
@@ -145,12 +137,4 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.iv_baoliao_close:
-                llBaoliaoRemember.setVisibility(View.GONE);
-                break;
-        }
-    }
 }

@@ -5,11 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.TestRecyclerAdapter;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 
 import java.util.List;
@@ -25,21 +22,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     public static final int TYPE_THREE_IMAGE = 2;
     private List<MoreTypeBean> mData;
     private View view;
-   private OnItemClickListener onItemClickListener;
 
     public HomeItemListAdapter(List<MoreTypeBean> mData) {
         this.mData = mData;
     }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public interface OnItemClickListener{
-        void onClick( int position);
-        void onLongClick( int position);
-    }
-
 
     @NonNull
     @Override
@@ -60,22 +46,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-       if(onItemClickListener!=null){
-           holder.itemView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                    onItemClickListener.onClick(position);
-               }
-           });
-           holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-               @Override
-               public boolean onLongClick(View v) {
-                   onItemClickListener.onLongClick(position);
-                   return false;
-               }
-           });
-       }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
     }
 
     @Override
@@ -98,18 +70,14 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    class PullImageHolder extends RecyclerView.ViewHolder {
-        LinearLayout ll_homelistItem_text_only;
-        TextView tv_homelistItem_text_content;
+    private class PullImageHolder extends RecyclerView.ViewHolder {
 
         public PullImageHolder(View itemView) {
             super(itemView);
-            ll_homelistItem_text_only = itemView.findViewById(R.id.ll_homelistItem_text_only);
-            tv_homelistItem_text_content = itemView.findViewById(R.id.tv_homelistItem_text_content);
         }
     }
 
-    class RightImageHolder extends RecyclerView.ViewHolder {
+    private class RightImageHolder extends RecyclerView.ViewHolder {
 
         public RightImageHolder(View itemView) {
             super(itemView);
@@ -117,7 +85,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     }
 
 
-    class ThreeImageHolder extends RecyclerView.ViewHolder {
+    private class ThreeImageHolder extends RecyclerView.ViewHolder {
 
         public ThreeImageHolder(View itemView) {
             super(itemView);

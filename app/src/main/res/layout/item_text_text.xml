@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/ll_homelistItem_text_only"
         android:layout_marginLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +13,6 @@
         android:padding="7dp">
 
         <TextView
-            android:id="@+id/tv_homelistItem_text_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="淘宝正式入局租赁市场，万物可租时代即将来临"
