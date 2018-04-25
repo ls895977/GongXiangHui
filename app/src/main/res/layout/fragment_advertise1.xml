@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
 
@@ -36,7 +37,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:background="#cdcdcd" />
 
         <TextView
@@ -50,40 +51,27 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="183dp">
+            android:layout_height="163dp"
+            android:layout_marginTop="5dp">
+
+
 
             <LinearLayout
-                android:id="@+id/rl_mine_BigAdver_first"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:layout_height="163dp" >
 
-                android:orientation="vertical">
 
-                <ImageView
-
-                    android:id="@+id/iv_mine_addBigAdver_first"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/add" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="建议规格750*36像素" />
+                <com.bm.library.PhotoView
+                    android:src="@mipmap/bg_image_75_366"
+                    android:id="@+id/iv_mine_addFragment1BigAdver"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"/>
 
 
             </LinearLayout>
-
-
-            <ImageView
-
-                android:id="@+id/iv_mine_trueBigAdver"
-                android:layout_width="match_parent"
-                android:layout_height="183dp" />
 
 
         </FrameLayout>
@@ -114,7 +102,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:background="#cdcdcd" />
 
         <TextView

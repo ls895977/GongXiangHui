@@ -1,8 +1,12 @@
 package com.qunxianghui.gxh.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -13,10 +17,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -41,10 +48,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private WebView mWebView;
     private ProgressBar mProgressBar;
     public static final String url = "http://new.qq.com/omn/20180409/20180409C0446D.html";
+    private Dialog dialog;
+    private View alertView;
+    private TextView tv_addAdver_share;
+    private TextView tv_article_share;
+    private TextView tv_bottom_alertdialog_cancle;
 
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         return R.layout.activity_news_detail;
 
     }
@@ -69,11 +82,41 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 finish();
             }
         }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
+            private View inflate;
+
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "这里是分享界面", Toast.LENGTH_SHORT).show();
+
+                showBottomAliert();
+
             }
         });
+    }
+
+    //底部弹出对话框
+    private void showBottomAliert() {
+        dialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
+        //初始化控件
+        tv_addAdver_share = alertView.findViewById(R.id.tv_addAdver_share);
+        tv_article_share = alertView.findViewById(R.id.tv_article_share);
+        tv_bottom_alertdialog_cancle = alertView.findViewById(R.id.tv_bottom_alertdialog_cancle);
+        tv_addAdver_share.setOnClickListener(this);
+        tv_article_share.setOnClickListener(this);
+        tv_bottom_alertdialog_cancle.setOnClickListener(this);
+        //将布局设置给dialog
+        dialog.setContentView(alertView);
+        //获取当前activity所在的窗体
+        final Window dialogWindow = dialog.getWindow();
+        //设置dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        //获得窗体的属性
+        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.y = 20;  //设置dialog距离底部的距离
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        dialog.show();
     }
 
     @Override
@@ -81,6 +124,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
         etInputDiscuss.setOnClickListener(this);
         llNewsDetailBigDiss.setOnClickListener(this);
+
     }
 
     private void SettingsP() {
@@ -130,6 +174,22 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 llNewsDetailBigDiss.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_news_detail_bigDiss:
+
+                break;
+
+            case R.id.tv_addAdver_share:
+                Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
+
+                toActivity(AddAdverActivity.class);
+
+
+                break;
+            case R.id.tv_article_share:
+                Toast.makeText(mContext, "文章直接分享", Toast.LENGTH_SHORT).show();
+                 dialog.dismiss();
+                break;
+            case R.id.tv_bottom_alertdialog_cancle:
+                dialog.dismiss();
                 break;
         }
 

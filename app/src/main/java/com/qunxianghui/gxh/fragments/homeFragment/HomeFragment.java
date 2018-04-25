@@ -48,14 +48,12 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener {
-
     @BindView(R.id.ib_home_camera)
     TextView ibHomeCamera;
     @BindView(R.id.ib_home_search)
     ImageButton ibHomeSearch;
     @BindView(R.id.ib_home_scan)
     ImageButton ibHomeScan;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tv_home_location)
@@ -70,12 +68,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private RelativeLayout rl_column; // +号左边的布局：包括HorizontalScrollView和左右阴影部分
     public ImageView shade_left; // 左阴影部分
     public ImageView shade_right; // 右阴影部分
-
     private int columnSelectIndex = 0; // 当前选中的栏目索引
     private int mItemWidth = 0; // Item宽度：每个标题的宽度
-
     private int mScreenWidth = 0; // 屏幕宽度
-
     public final static int CHANNELREQUEST = 1; // 请求码
     public final static int CHANNELRESULT = 10; // 返回码
 
@@ -126,9 +121,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         shade_right = (ImageView) mActivity.findViewById(R.id.shade_right);
         mViewPager = (ViewPager) mActivity.findViewById(R.id.home_view_pager);
 
-
     }
-
     private void setChangelView() {
         initColumnData();
         initTabColumn();

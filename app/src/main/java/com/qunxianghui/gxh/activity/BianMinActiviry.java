@@ -64,7 +64,6 @@ public class BianMinActiviry extends BaseActivity implements View.OnClickListene
             public void onClick(View view) {
                 finish();
 
-
             }
         });
 

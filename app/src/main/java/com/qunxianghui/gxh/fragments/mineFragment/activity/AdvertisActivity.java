@@ -35,12 +35,10 @@ public class AdvertisActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();//隐藏整个Actionbar
         setContentView(R.layout.activity_advertise);
-
         ButterKnife.bind(this);
 
         initViews();
         initData();
-
 
     }
 
