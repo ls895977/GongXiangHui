@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv_fire_search_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tv_fire_search"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:lines="2"
+    android:textSize="10dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp"
+    android:text="保时捷R911"
+    android:textColor="#000000"/>

@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
+import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinActiviry;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
+import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
@@ -28,6 +29,9 @@ import com.qunxianghui.gxh.widget.GloriousRecyclerView;
 
 
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +67,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
+
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
@@ -74,14 +79,25 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
             more.type = random.nextInt(3);
             mDatas.add(more);
         }
-
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
         HomeItemListAdapter adapter = new HomeItemListAdapter(mDatas);
         View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
         View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
+        adapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
 
+                Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
+                toActivity(NewsDetailActivity.class);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+                Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerviewList.setAdapter(adapter);
         recyclerviewList.addHeaderView(headerNavigator);
         recyclerviewList.addHeaderView2(headerVp);
@@ -107,8 +123,25 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         list.add(R.mipmap.ic_test_4);
         list.add(R.mipmap.ic_test_5);
         list.add(R.mipmap.ic_test_6);
-        viewpagerHome.setImages(list)
+        List<String> titles = new ArrayList<>();
+        titles.add("图片1");
+        titles.add("图片2");
+        titles.add("图片3");
+        titles.add("图片4");
+        titles.add("图片5");
+        titles.add("图片6");
+        titles.add("图片7");
+        viewpagerHome.setImages(list).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+                .setBannerTitles(titles)
+                .setDelayTime(3000)
+                .setBannerAnimation(Transformer.Tablet)
                 .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        Toast.makeText(mActivity, "点击了" + position + 1, Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .start();
     }
 

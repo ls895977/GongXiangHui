@@ -72,5 +72,9 @@ dependencies {
 
     //定位功能
 //    compile 'com.amap.api:location:latest.integration'
+    /* 图片放大缩小处理库*/
+    compile 'com.bm.photoview:library:1.4.1'
+
+
 
 }

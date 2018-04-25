@@ -66,7 +66,6 @@ public class MainActivity extends BaseActivity {
         /** 默认选中第一个选项卡*/
         rgMain.check(R.id.rb_home);
     }
-
     @Override
     protected void initListeners() {
         rgMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

@@ -8,10 +8,10 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <ImageView
+        <com.bm.library.PhotoView
             android:id="@+id/img"
             android:layout_width="75dp"
-            android:src="@drawable/id_photo"
+            android:src="@mipmap/image_add"
             android:layout_height="75dp"/>
     </FrameLayout>
     <FrameLayout
