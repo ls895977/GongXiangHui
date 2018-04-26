@@ -66,7 +66,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
              /* 清楚登录信息*/
-                            finish();
+                       finish();
+
                             }
                         }).setNegativeButton("否",null).show();
                 break;

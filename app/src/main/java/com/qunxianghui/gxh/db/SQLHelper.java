@@ -29,13 +29,21 @@ public class SQLHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TODO 创建数据库后，对数据库的操作
-        String sql = "create table if not exists " + TABLE_CHANNEL +
+        db.execSQL("create table if not exists " + TABLE_CHANNEL +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ID + " INTEGER , " +
                 NAME + " TEXT , " +
                 ORDERID + " INTEGER , " +
-                SELECTED + " SELECTED)";
-        db.execSQL(sql);
+                SELECTED + " SELECTED)");
+
+        db.execSQL("create table if not exists t_user(" +
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "username VARCHAR(255)," +
+                "password VARCHAR(255)," +
+                "isDel INTEGER DEFAULT 0" +
+                ")");
+
+
     }
 
     @Override

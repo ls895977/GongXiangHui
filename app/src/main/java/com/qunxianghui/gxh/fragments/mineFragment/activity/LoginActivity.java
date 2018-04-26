@@ -17,7 +17,9 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.db.StudentDao;
+import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.third.sina.Constants;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
@@ -78,6 +80,7 @@ public class LoginActivity extends BaseActivity {
      * 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
      */
     private Oauth2AccessToken mAccessToken;
+    private UserDao userDao;
 
     @Override
     protected int getLayoutId() {
@@ -88,6 +91,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+
         //微信
         api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         //将应用的appid注册到微信
@@ -102,7 +106,8 @@ public class LoginActivity extends BaseActivity {
             }
         }).setTitleText("用户登录");
 
-        studentDao = new StudentDao(mContext);
+        //数据库操作类
+        userDao = new UserDao(this);
     }
 
     @Override
@@ -128,23 +133,21 @@ public class LoginActivity extends BaseActivity {
 
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!REGutil.checkCellphone(phone)) {
-                    Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
-                } else {
-
-//                    UserService userService = new UserService(mContext);
-                    Cursor cursor = studentDao.query(phone, password);
-
-                    if (cursor.moveToNext()) {
-                        Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
-                        toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
-                    } else {
-                        Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
+                }else if (!REGutil.checkCellphone(phone)){
+                  asyncShowToast("手机号格式不正确");
+                }else {
+                    final User user = userDao.dbQueryOneByUsername(phone);
+                    if(userDao.dbQueryOneByUsername(phone)==null){
+                        Toast.makeText(mContext, "此用户不存在", Toast.LENGTH_SHORT).show();
+                    }else {
+                        if(!user.getPassword().equals(password)){
+                            Toast.makeText(mContext, "密码错误", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
+                            toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
+                        }
                     }
                 }
-
 
                 break;
             case R.id.tv_login_regist:

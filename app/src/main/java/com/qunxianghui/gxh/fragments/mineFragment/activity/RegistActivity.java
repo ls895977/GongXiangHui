@@ -15,7 +15,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,21 +24,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.db.StudentDao;
+import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.OkHttpUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.widget.NoLineClickSpan;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,12 +57,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     RelativeLayout titleBar;
     @BindView(R.id.top_bar)
     LinearLayout topBar;
-    @BindView(R.id.et_login_phone)
-    EditText etLoginPhone;
+    @BindView(R.id.et_regist_phone)
+    EditText etRegistPhone;
     @BindView(R.id.iv_login_password)
     ImageView ivLoginPassword;
-    @BindView(R.id.et_login_password)
-    EditText etLoginPassword;
 
 
     @BindView(R.id.tv_login_quickly)
@@ -79,8 +75,13 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     TextView tvProtocol;
     @BindView(R.id.tv_call)
     TextView tvCall;
-    private StudentDao studentDao;
+    @BindView(R.id.et_registerconfirm_password)
+    EditText etRegisterconfirmPassword;
+    @BindView(R.id.et_regist_code)
+    EditText etRegistCode;
+    //    private StudentDao studentDao;
     private String mPhone;
+    private UserDao userDao;
 
 
     @Override
@@ -96,11 +97,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 finish();
             }
         }).setTitleText("用户注册");
-        studentDao = new StudentDao(mContext);
+
         initProtocol();
-
         initCall();
-
+        userDao = new UserDao(mContext);
 
     }
 
@@ -183,25 +183,27 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.tv_login_quickly:
                 finish();
-
                 break;
-
             case R.id.bt_register_quickly:
-
-                String phone = etLoginPhone.getText().toString().trim();
-                String pass = etLoginPassword.getText().toString().trim();
-                studentDao.insert(phone, pass);
-                Intent intent = new Intent(this, LoginActivity.class);
+                String phone = etRegistPhone.getText().toString().trim();
+                String pass = etRegisterPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pass)) {
-                    Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!REGutil.checkCellphone(phone)) {
-                    Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.i("TAG", phone + "_" + pass + "_");
-                    Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
+                    asyncShowToast("手机号和密码不能为空");
+                } else if (!REGutil.checkCellphone(phone)){
+                    asyncShowToast("手机号格式不对");
+
+                }else {
+                    final String confirmpass = etRegisterconfirmPassword.getText().toString().trim();
+                    if (!pass.equals(confirmpass)) {
+                        asyncShowToast("两次输入的密码不一致");
+                    } else {
+                        if (userDao.dbQueryOneByUsername(phone) == null) {
+                            userDao.dbInsert(phone, pass);
+                            asyncShowToast("注册成功" + phone + ",密码:" + pass);
+                        } else {
+                            asyncShowToast("该用户已经注册");
+                        }
+                    }
                 }
                 break;
 
@@ -213,7 +215,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
     private void getVertifiCode() {
         //同步更新界面显示，倒计时验证码
-        mPhone = etLoginPhone.getText().toString().trim();
+        mPhone = etRegistPhone.getText().toString().trim();
         if (TextUtils.isEmpty(mPhone)) {
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;

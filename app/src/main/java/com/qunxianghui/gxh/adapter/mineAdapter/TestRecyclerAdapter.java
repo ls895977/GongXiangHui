@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.qunxianghui.gxh.R;
 
 import java.util.List;
 

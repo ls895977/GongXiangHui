@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.home.User;
+import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CooperationCallActivity;
@@ -24,6 +26,8 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
 
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +63,8 @@ public class MineFragment extends BaseFragment {
     TextView mineQuicklyLogin;
     @BindView(R.id.tv_mine_set)
     TextView tvMineSet;
+    private UserDao userDao;
+    private int userSize;
 
     @Override
     public int getLayoutId() {
@@ -68,12 +74,19 @@ public class MineFragment extends BaseFragment {
     @Override
     public void initDatas() {
 
-
+        if (userSize > 0) {
+            final ArrayList<User> userList = userDao.dbQueryAll();
+              for (int i=0;i<userSize;i++){
+                  final User user = userList.get(i);
+                  mineQuicklyLogin.setText(user.getUsername());
+              }
+        }
     }
 
     @Override
     public void initViews(View view) {
-
+        userDao = new UserDao(mActivity);
+        userSize = userDao.dbGetUserSize();
     }
 
     @Override
@@ -91,7 +104,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect,
-            R.id.mine_fabu,  R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set,
+            R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set,
             R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
     public void onViewClicked(View view) {
         Intent intent = null;
@@ -128,7 +141,10 @@ public class MineFragment extends BaseFragment {
                 toActivity(InviteFrientActivity.class);
                 break;
             case R.id.mine_quickly_login:
-                toActivity(LoginActivity.class);
+                if (userSize==0){
+                    toActivity(LoginActivity.class);
+                }
+
                 break;
             case R.id.tv_mine_set:
                 toActivity(SettingActivity.class);

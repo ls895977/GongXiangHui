@@ -1,19 +1,23 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.activity.BianMinActiviry;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
@@ -21,13 +25,11 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.LiftStyleActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationServiceActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.widget.GloriousRecyclerView;
-
-
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -46,9 +48,11 @@ import kr.co.namee.permissiongen.PermissionGen;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
+public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener,View.OnClickListener {
     @BindView(R.id.recyclerview_list)
     GloriousRecyclerView recyclerviewList;
+    @BindView(R.id.ll_home_paste_artical)
+    LinearLayout llHomePasteArtical;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<MoreTypeBean> mDatas;
     Unbinder unbinder;
@@ -62,9 +66,11 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
     private Banner viewpagerHome;
     private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
+    private ClipboardManager mClipboardManager;
 
     @Override
     public int getLayoutId() {
+
         return R.layout.fragment_home;
     }
 
@@ -148,6 +154,8 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     @Override
     public void initViews(View view) {
 
+
+        mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         PermissionGen.needPermission(HotPointFragment.this, 105,
                 new String[]{
                         Manifest.permission.CAMERA,
@@ -158,6 +166,10 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
     }
 
+    @Override
+    protected void initListeners() {
+        llHomePasteArtical.setOnClickListener(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -178,6 +190,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     public void onDestroy() {
         super.onDestroy();
         mActivity.finish();
+
     }
 
     @Override
@@ -198,6 +211,32 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
                 break;
             case R.id.rb_home_bianmin:
                 toActivity(BianMinServiceActivity.class);
+                break;
+
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_home_paste_artical:
+
+                //粘贴板有数据并且是文本
+                if(mClipboardManager.hasPrimaryClip()&&mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
+                    final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
+                    final CharSequence text = item.getText();
+                    if (text==null){
+                        asyncShowToast("没有找到粘贴的内容");
+                        return;
+                    }
+                    Intent intent=new Intent(mActivity,ProtocolActivity.class);
+                    intent.putExtra("url",text);
+                    startActivity(intent);
+                }
+                break;
+        }
+    }
+
+
+
 }
