@@ -291,8 +291,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             case R.id.ib_home_scan:            //扫描二维码
 
               toActivity(ScanActivity.class);
-
-
                 break;
             case R.id.ib_home_search:          //搜索
                 toActivity(SearchActivity.class);

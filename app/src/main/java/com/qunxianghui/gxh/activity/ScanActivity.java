@@ -50,10 +50,10 @@ public class ScanActivity extends BaseActivity {
         if (PermissionsUtil.hasPermission(mContext, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             //有访问摄像头的权限
             Intent intent = new Intent(mContext, CaptureActivity.class);
-              /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
-                                * 也可以不传这个参数
-                                * 不传的话  默认都为默认不震动  其他都为true
-                                * */
+            /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+             * 也可以不传这个参数
+             * 不传的话  默认都为默认不震动  其他都为true
+             * */
             ZxingConfig config = new ZxingConfig();
             config.setPlayBeep(true);
             config.setShake(true);
@@ -66,10 +66,10 @@ public class ScanActivity extends BaseActivity {
                 public void permissionGranted(@NonNull String[] permissions) {
                     //用户授予了访问摄像头的权限
                     Intent intent = new Intent(mContext, CaptureActivity.class);
-              /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
-                                * 也可以不传这个参数
-                                * 不传的话  默认都为默认不震动  其他都为true
-                                * */
+                    /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+                     * 也可以不传这个参数
+                     * 不传的话  默认都为默认不震动  其他都为true
+                     * */
                     ZxingConfig config = new ZxingConfig();
                     config.setPlayBeep(true);
                     config.setShake(true);
@@ -77,6 +77,7 @@ public class ScanActivity extends BaseActivity {
 
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                 }
+
                 @Override
                 public void permissionDenied(@NonNull String[] permissions) {
                     //用户拒绝了访问摄像头的申请
@@ -91,9 +92,11 @@ public class ScanActivity extends BaseActivity {
             }, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE});
         }
     }
+
     @Override
     protected void initDatas() {
     }
+
     @Override
     protected void onResume() {
 
@@ -106,6 +109,11 @@ public class ScanActivity extends BaseActivity {
         super.onStop();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +139,15 @@ public class ScanActivity extends BaseActivity {
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent=new Intent(mContext, ProtocolActivity.class);
-                        intent.putExtra("url",content);
+                        Intent intent = new Intent(mContext, ProtocolActivity.class);
+                        intent.putExtra("url", content);
                         startActivity(intent);
 
                     }
                 });
-                builder.setNegativeButton("取消",null);
-              builder.show();
+                builder.setNegativeButton("取消",null );
+
+                builder.show();
             }
         }
     }

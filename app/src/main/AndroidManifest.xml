@@ -80,7 +80,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name="com.qunxianghui.gxh.activity.ScanActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleTask" />
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity"
             android:launchMode="singleTask" />
