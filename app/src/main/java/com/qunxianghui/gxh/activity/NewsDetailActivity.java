@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +24,10 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +48,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailMessage;
     @BindView(R.id.iv_news_detail_share)
     ImageView ivNewsDetailShare;
+    @BindView(R.id.iv_news_detail_addAdver)
+    ImageView ivNewsDetailAddAdver;
     private WebView mWebView;
     private ProgressBar mProgressBar;
     public static final String url = "http://new.qq.com/omn/20180409/20180409C0446D.html";
@@ -53,6 +58,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_addAdver_share;
     private TextView tv_article_share;
     private TextView tv_bottom_alertdialog_cancle;
+    private Tencent mTencent;
+    private MyIUiListener mIUiListener;
 
     @Override
     protected int getLayoutId() {
@@ -70,6 +77,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
         intent.getStringExtra("url");
         mWebView.loadUrl(url);
+        if (mTencent == null) {
+            mTencent = Tencent.createInstance("1106763297", getApplicationContext());
+        }
+
     }
 
     @Override
@@ -124,6 +135,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
         etInputDiscuss.setOnClickListener(this);
         llNewsDetailBigDiss.setOnClickListener(this);
+        ivNewsDetailAddAdver.setOnClickListener(this);
 
     }
 
@@ -186,12 +198,47 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.tv_article_share:
                 Toast.makeText(mContext, "文章直接分享", Toast.LENGTH_SHORT).show();
-                 dialog.dismiss();
+                mIUiListener = new MyIUiListener();
                 break;
             case R.id.tv_bottom_alertdialog_cancle:
                 dialog.dismiss();
                 break;
+            case R.id.iv_news_detail_addAdver:
+
+                toActivity(AddAdverActivity.class);
+                break;
         }
 
+    }
+
+    class MyIUiListener implements IUiListener {
+
+        @Override
+        public void onComplete(Object o) {
+            asyncShowToast("分享成功");
+        }
+
+        @Override
+        public void onError(UiError uiError) {
+            asyncShowToast("分享失败");
+        }
+
+        @Override
+        public void onCancel() {
+            asyncShowToast("分享取消");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
+        if (requestCode == Constants.REQUEST_API ) {
+            if (resultCode == Constants.REQUEST_QQ_SHARE || resultCode == Constants.REQUEST_QZONE_SHARE || resultCode == Constants.REQUEST_OLD_SHARE) {
+                Tencent.handleResultData(data, mIUiListener);
+            }
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

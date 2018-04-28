@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
@@ -28,8 +30,8 @@ public class GeneraPersonalFragment extends BaseFragment {
     private List<MoreTypeBean> mDatas;
     private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3,R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
 
-    @BindView(R.id.recycler_genera_personal_list)
-    RecyclerView recyclerGeneraPersonalList;
+    @BindView(R.id.xrecycler_genera_personal_list)
+    XRecyclerView xrecyclerGeneraPersonalList;
     Unbinder unbinder;
 
     @Override
@@ -49,14 +51,41 @@ public class GeneraPersonalFragment extends BaseFragment {
             mDatas.add(more);
         }
 
-        recyclerGeneraPersonalList.setLayoutManager(new LinearLayoutManager(mActivity));
+        xrecyclerGeneraPersonalList.setLayoutManager(new LinearLayoutManager(mActivity));
         HomeItemListAdapter adapter = new HomeItemListAdapter(mDatas);
-        recyclerGeneraPersonalList.setAdapter(adapter);
+        adapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                toActivity(NewsDetailActivity.class);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+                asyncShowToast("处理长按的操作");
+
+            }
+        });
+        xrecyclerGeneraPersonalList.setAdapter(adapter);
     }
 
     @Override
     public void initViews(View view) {
 
+    }
+
+    @Override
+    protected void initListeners() {
+        xrecyclerGeneraPersonalList.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                xrecyclerGeneraPersonalList.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                xrecyclerGeneraPersonalList.refreshComplete();
+            }
+        });
     }
 
     @Override

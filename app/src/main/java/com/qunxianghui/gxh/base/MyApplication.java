@@ -37,7 +37,10 @@ public class MyApplication extends Application {
         return SINSTANCE;
     }
 
-    public static String APP_ID="wx8dd50e08a25101d7";
+    //微信APPID
+    public static String WeiXinAPP_ID="wx8dd50e08a25101d7";
+    //QQAppID
+    public static String QQAPP_ID="1106763297";
     public static IWXAPI api;
 
     @Override
@@ -48,8 +51,8 @@ public class MyApplication extends Application {
         initOkGo();
         appManager = AppManager.getAppManager();
         //微信
-        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
-        api.registerApp(APP_ID);
+        api = WXAPIFactory.createWXAPI(this, WeiXinAPP_ID, true);
+        api.registerApp(WeiXinAPP_ID);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

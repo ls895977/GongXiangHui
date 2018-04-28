@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.fragments.locationFragment.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
 
@@ -68,6 +70,21 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
             }
         });
+        
+        //举报
+        holder.tv_location_circle_inform.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toInformActivity();
+            }
+        });
+    }
+
+    private void toInformActivity() {
+
+        Intent intent=new Intent(mContext,InFormActivity.class);
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -79,6 +96,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         NineGridTestLayout layout;
         TextView tv_location_style_collect;
         TextView tv_location_style_pointgood;
+        TextView tv_location_circle_inform;
         ImageView iv_location_style_collect;
         LinearLayout ll_location_style_collect;
 
@@ -89,6 +107,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             tv_location_style_pointgood = itemView.findViewById(R.id.tv_location_style_pointgood);
             iv_location_style_collect = itemView.findViewById(R.id.iv_location_style_collect);
             ll_location_style_collect = itemView.findViewById(R.id.ll_location_style_collect);
+            tv_location_circle_inform = itemView.findViewById(R.id.tv_location_circle_inform);
         }
     }
 

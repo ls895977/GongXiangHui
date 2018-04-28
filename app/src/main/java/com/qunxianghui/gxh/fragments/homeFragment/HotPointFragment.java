@@ -225,13 +225,11 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
                 if(mClipboardManager.hasPrimaryClip()&&mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
                     final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
                     final CharSequence text = item.getText();
-                    if (text==null){
-                        asyncShowToast("没有找到粘贴的内容");
-                        return;
-                    }
                     Intent intent=new Intent(mActivity,ProtocolActivity.class);
                     intent.putExtra("url",text);
                     startActivity(intent);
+                }else {
+                    asyncShowToast("没有找到粘贴的内容");
                 }
                 break;
         }

@@ -15,17 +15,30 @@
     <include layout="@layout/activity_title" />
 
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
+
         <WebView
             android:id="@+id/wed_news_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></WebView>
+            android:layout_height="match_parent" />
 
-    </ScrollView>
+
+        <ImageView
+            android:id="@+id/iv_news_detail_addAdver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+             android:layout_gravity="right|center_vertical"
+
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="80dp"
+            android:src="@mipmap/iv_add_adver" />
+
+    </FrameLayout>
 
 
     <ScrollView

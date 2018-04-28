@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:layout_marginTop="10dp"
     android:padding="10dp">
 
     <com.qunxianghui.gxh.widget.RoundImageView
@@ -13,7 +14,8 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="7dp"
         android:orientation="vertical">
@@ -94,4 +96,12 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_location_circle_inform"
+        android:textColor="@color/tab_color"
+        android:text="举报"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>
