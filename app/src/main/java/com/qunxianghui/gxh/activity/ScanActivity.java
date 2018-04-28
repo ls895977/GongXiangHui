@@ -35,6 +35,7 @@ public class ScanActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
+
         return R.layout.activity_sacn;
     }
 

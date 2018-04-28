@@ -219,20 +219,6 @@ public class LoginActivity extends BaseActivity {
         req.state = "wechat_sdk_xb_live_state";
         MyApplication.api.sendReq(req);
 
-//        //初始化一个WXTextObject
-//        WXTextObject textObject = new WXTextObject();
-//      textObject.text=userText;
-//
-////用wxTextObjecet对象初始化一个WXMediaMessage对象
-//        final WXMediaMessage msg = new WXMediaMessage();
-//        msg.mediaObject=textObject;
-//        msg.description=userText;
-//        //构造一个Reg
-//        final SendMessageToWX.Req req = new SendMessageToWX.Req();
-//        req.transaction= String.valueOf(System.currentTimeMillis());  //transaction字段用于唯一标识一个请求
-//        req.message=msg;
-//        //调用api接口发送数据到微信
-//        api.sendReq(req);
 
     }
 

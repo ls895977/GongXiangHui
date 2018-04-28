@@ -3,7 +3,9 @@ package com.qunxianghui.gxh.fragments.homeFragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -35,6 +37,9 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.ColumnHorizontalScrollView;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.bean.ZxingConfig;
+import com.yzq.zxinglibrary.common.Constant;
 
 import java.util.ArrayList;
 
@@ -73,7 +78,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private int mScreenWidth = 0; // 屏幕宽度
     public final static int CHANNELREQUEST = 1; // 请求码
     public final static int CHANNELRESULT = 10; // 返回码
-
+    private int REQUEST_CODE_SCAN = 111;
     // tab集合：HorizontalScrollView的数据源
     private ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
 
@@ -285,7 +290,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case R.id.ib_home_scan:            //扫描二维码
 
-                toActivity(ScanActivity.class);
+              toActivity(ScanActivity.class);
+
 
                 break;
             case R.id.ib_home_search:          //搜索
@@ -301,6 +307,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
 
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -312,9 +319,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 }
                 break;
 
-            default:
-                break;
+
         }
         super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 }

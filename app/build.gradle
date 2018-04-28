@@ -21,10 +21,6 @@ android {
 }
 
 
-
-
-
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -112,6 +108,6 @@ dependencies {
 
     /* 图片放大缩小处理库*/
     compile 'com.bm.photoview:library:1.4.1'
-    implementation files('libs/open_sdk_r5990_lite.jar')
     implementation files('libs/mta-sdk-1.6.2.jar')
+    implementation files('libs/open_sdk_r5509.jar')
 }
