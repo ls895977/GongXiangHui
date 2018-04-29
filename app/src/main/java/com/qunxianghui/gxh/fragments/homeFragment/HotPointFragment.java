@@ -26,6 +26,7 @@ import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationServiceActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
@@ -197,7 +198,8 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId) {
             case R.id.rb_home_air:
-                toActivity(HomeSeachLocationActivity.class);
+//                toActivity(HomeSeachLocationActivity.class);
+                toActivity(NewSearchActivity.class);
                 break;
             case R.id.rb_home_video:
                 toActivity(HomeVideoActivity.class);

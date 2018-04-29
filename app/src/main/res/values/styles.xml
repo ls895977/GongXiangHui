@@ -46,6 +46,12 @@
         <item name="android:background">@color/divider</item>
     </style>
 
+    <!--新加的搜索框加的style-->
+    <style name="default_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/line</item>
+    </style>
 
     <!--//向右返回箭头-->
 

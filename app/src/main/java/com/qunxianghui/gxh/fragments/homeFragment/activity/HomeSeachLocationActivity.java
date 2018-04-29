@@ -1,23 +1,23 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.homeAdapter.SearchListAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,70 +27,20 @@ import butterknife.ButterKnife;
  */
 
 public class HomeSeachLocationActivity extends BaseActivity {
-    //声明AMapLocationClientOption对象
-    public AMapLocationClientOption mLocationOption = null;
+    private List<String> list = new ArrayList<>();
+
     @BindView(R.id.iv_search)
     ImageView ivSearch;
     @BindView(R.id.et_setaddress)
     EditText etSetaddress;
-    @BindView(R.id.tv_setaddress_cancel)
-    TextView tvSetaddressCancel;
+    @BindView(R.id.tv_setaddress_search)
+    TextView tvSetaddressSearch;
     @BindView(R.id.top_bar)
     RelativeLayout topBar;
-    @BindView(R.id.lv_setaddress)
-    ListView lvSetaddress;
-    @BindView(R.id.tv_setaddress_content)
-    TextView tvSetaddressContent;
-    @BindView(R.id.cd_setaddress)
-    CardView cdSetaddress;
-    @BindView(R.id.fl_setaddress)
-    FrameLayout flSetaddress;
-    private AMapLocationClient mLocationClient;
-    //声明定位回调监听器
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+    @BindView(R.id.lv_seerchaddress)
+    ListView lvSeerchaddress;
+    private SearchListAdapter adapter;
 
-        private String locationDetail;
-        private String address;
-        private double longitude;
-        private double latitude;
-
-        @Override
-        public void onLocationChanged(AMapLocation amapLocation) {
-            int locationType = amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-            String error = "";
-            if (!TextUtils.isEmpty(error)) {
-                if (mLocationClient != null)
-                    mLocationClient.stopLocation();
-                Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (amapLocation != null) {
-                if (amapLocation.getErrorCode() == 0) {
-                    //可在其中解析amapLocation获取相应内容。
-                    //获取纬度
-                    latitude = amapLocation.getLatitude();
-                    //获取经度
-                    longitude = amapLocation.getLongitude();
-                    //地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-                    address = amapLocation.getAddress();
-                    locationDetail = amapLocation.getLocationDetail();
-                    tvSetaddressContent.setText(address + locationDetail);
-                    if (mLocationClient.isStarted()) {
-                        // 获得位置之后停止定位
-                        mLocationClient.stopLocation();
-                    }
-                } else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError", "location Error, ErrCode:"
-                            + amapLocation.getErrorCode() + ", errInfo:"
-                            + amapLocation.getErrorInfo());
-                }
-            }
-        }
-
-
-    };
 
     @Override
     protected int getLayoutId() {
@@ -104,36 +54,65 @@ public class HomeSeachLocationActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-        initLocation();
+        list.add("看着飞舞的尘埃   掉下来");
+        list.add("没人发现它存在");
+        list.add("多自由自在");
+        list.add("可世界都爱热热闹闹");
+        list.add("容不下   我百无聊赖");
+        list.add("不应该   一个人 发呆");
+        list.add("只有我   守着安静的沙漠");
+        list.add("等待着花开");
+        list.add("只有我   看着别人的快乐");
+// 这里创建adapter的时候，构造方法参数传了一个接口对象，这很关键，回调接口中的方法来实现对过滤后的数据的获取
+        // 这里可以拿到过滤后数据，所以在这里可以对搜索后的数据进行操作
+        adapter = new SearchListAdapter(list, mContext, new SearchListAdapter.FilterListener() {
+            @Override
+            public void getFilterData(List<String> list) {
+                // 这里可以拿到过滤后数据，所以在这里可以对搜索后的数据进行操作
+                Log.e(TAG, "接口回调成功");
+                Log.e(TAG, list.toString());
+                setItemClick(list);
+
+            }
+        });
+        lvSeerchaddress.setAdapter(adapter);
+    }
+
+    //给listView添加点击事件
+    private void setItemClick(final List<String> list) {
+        lvSeerchaddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                asyncShowToast(list.get(position));
+            }
+        });
 
     }
 
-    private void initLocation() {
-        //初始化定位
-        mLocationClient = new AMapLocationClient(this.getApplicationContext());
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
+    @Override
+    protected void initListeners() {
+        //没有进行搜索时 也要对listView的item进行单机监听
+        setItemClick(list);
+        //对编辑框添加文本改变监听 搜索的具体功能在这里实现 重写onTextChange方法
+        etSetaddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-//初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-        mLocationOption.setInterval(2000);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-        //设置是否允许模拟位置,默认为true，允许模拟位置
-        mLocationOption.setMockEnable(false);
-        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(20000);
+            }
 
-//关闭缓存机制
-        mLocationOption.setLocationCacheEnable(false);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationClient.startLocation();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//如果adapter不为空的话就根据编辑框的内容来过滤数据
+                if (adapter != null) {
+                    adapter.getFilter().filter(s);
+                }
+            }
 
-        mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -141,16 +120,5 @@ public class HomeSeachLocationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //取消监听函数
-        if (mLocationClient != null) {
-            mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
-            mLocationClient.unRegisterLocationListener(mLocationListener);
-        }
-
     }
 }

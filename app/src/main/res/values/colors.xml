@@ -8,9 +8,22 @@
     <color name="Gxh_BG">#FFFEFEFE</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
     <color name="actionsheet_blue">#2298EF</color>
+
+    //新添加的搜索需要的color
+    <color name="gray_f8">#F8F8F8</color>
+    <color name="main_a8">#A8E0F5</color>
+    <color name="mainGray">#F2F6F7</color>
     <color name="actionsheet_gray">#808080</color>
     <color name="tab_color">#ff4049</color>
+    <color name="main_40">#40ACD6</color>
+    <color name="gray_9">#999999</color>
+    <color name="gray_6">#666666</color>
+    <color name="line">#E5E5E5</color>
+    <color name="mainColor">#6BC8EC</color>
+    <color name="gray_ec">#ECECEC</color>
+    <color name="light_main">#94D9F4</color>
 
     //首页横条导航栏用到的color
     <color name="subscribe_item_text_color_pressed">#ffb9b9b9</color>
