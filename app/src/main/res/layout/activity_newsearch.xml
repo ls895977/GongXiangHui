@@ -10,6 +10,7 @@
         android:background="@color/colorPrimary">
 
         <LinearLayout
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
@@ -27,7 +28,7 @@
                 android:imeOptions="actionSearch"
                 android:maxLength="16"
                 android:singleLine="true"
-                android:textColor="@color/white"
+
                 android:textColorHint="@color/main_a8"
                 android:textSize="13sp" />
 

@@ -7,12 +7,18 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -138,6 +144,84 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
     }
 
 
+    @Override
+    protected void initListeners() {
+        searchLocateContentEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String content = searchLocateContentEt.getText().toString().trim();
+                setSearchCityList(content);
+            }
+        });
+
+        searchLocateContentEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(actionId== EditorInfo.IME_ACTION_SEARCH){
+                    hideSoftInput(searchLocateContentEt.getWindowToken());
+                    String content = searchLocateContentEt.getText().toString().trim().toLowerCase();
+                    setSearchCityList(content);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 隐藏软键盘
+     * @param token
+     */
+    private void hideSoftInput(IBinder token) {
+        if (token != null) {
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(token,
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    /**
+     * 设置搜索数据展示
+     * @param content
+     */
+    private void setSearchCityList(String content) {
+        searchCityList.clear();
+        if(TextUtils.isEmpty(content)){
+            totalCityLv.setVisibility(View.VISIBLE);
+            totalCityLettersLv.setVisibility(View.VISIBLE);
+            searchCityLv.setVisibility(View.GONE);
+            noSearchResultTv.setVisibility(View.GONE);
+        }else {
+            totalCityLv.setVisibility(View.GONE);
+            totalCityLettersLv.setVisibility(View.GONE);
+            for (int i = 0; i < curCityList.size(); i++) {
+                CityEntity cityEntity = curCityList.get(i);
+                if (cityEntity.getName().contains(content) || cityEntity.getPinyin().contains(content)
+                        || cityEntity.getFirst().contains(content)) {
+                    searchCityList.add(cityEntity);
+                }
+            }
+            if (searchCityList.size() != 0) {
+                noSearchResultTv.setVisibility(View.GONE);
+                searchCityLv.setVisibility(View.VISIBLE);
+            } else {
+                noSearchResultTv.setVisibility(View.VISIBLE);
+                searchCityLv.setVisibility(View.GONE);
+            }
+            searchCityListAdapter.notifyDataSetChanged();
+        }
+    }
 
     /**
      * 初始化汉语拼音首字母弹出提示框

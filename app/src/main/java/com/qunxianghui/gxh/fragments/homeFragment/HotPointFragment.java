@@ -155,7 +155,7 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     @Override
     public void initViews(View view) {
 
-
+//这句是调取粘贴的系统服务
         mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         PermissionGen.needPermission(HotPointFragment.this, 105,
                 new String[]{
@@ -218,11 +218,14 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
         }
     }
 
+    /**
+     * 粘贴文章的处理
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_home_paste_artical:
-
                 //粘贴板有数据并且是文本
                 if(mClipboardManager.hasPrimaryClip()&&mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
                     final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
