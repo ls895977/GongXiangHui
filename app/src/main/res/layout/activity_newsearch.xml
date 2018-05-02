@@ -4,15 +4,19 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:background="@color/colorPrimary"
         android:id="@+id/tool_bar_fl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content" >
+
 
         <LinearLayout
-            android:layout_marginTop="15dp"
+
+
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
             <EditText
@@ -22,20 +26,19 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/home_head_et_style"
-                android:drawableRight="@drawable/ic_light_main_search"
+                android:drawableRight="@drawable/ic_search_24dp"
                 android:gravity="center_vertical"
                 android:hint="输入城市名或拼音查询"
                 android:imeOptions="actionSearch"
                 android:maxLength="16"
                 android:singleLine="true"
-
-                android:textColorHint="@color/main_a8"
                 android:textSize="13sp" />
 
         </LinearLayout>
     </FrameLayout>
 
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

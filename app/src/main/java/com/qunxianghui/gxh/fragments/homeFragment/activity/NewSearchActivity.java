@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -8,10 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +31,14 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.search.model.CityEntity;
@@ -49,7 +59,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewSearchActivity extends BaseActivity implements AbsListView.OnScrollListener {
+public class NewSearchActivity extends BaseActivity implements AbsListView.OnScrollListener, AMapLocationListener {
 
     //文件名称
     private final static String CityFileName = "allcity.json";
@@ -80,6 +90,9 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
     private boolean isScroll = false;
     private boolean mReady = false;
     private CityListAdapter cityListAdapter;
+    private AMapLocationClient mlocationClient;
+    public AMapLocationClientOption mLocationOption = null;
+    private TextView curCityNameTv;
 
     @Override
     protected int getLayoutId() {
@@ -89,15 +102,16 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
     @Override
     protected void initViews() {
 
-
         //默认软键盘不弹出
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setSystemBarTransparent();
+
         ViewBinder.bind(this);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//        int top = ScreenUtils.getSystemBarHeight();
-//        mToolbar.setPadding(0, top, 0, 0);
-//    }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int top = ScreenUtils.getSystemBarHeight();
+            mToolbar.setPadding(0, top, 0, 0);
+        }
         handler = new Handler();
         overlayThread = new OverlayThread();
         searchCityListAdapter = new SearchCityListAdapter(mContext, searchCityList);
@@ -105,7 +119,44 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         locationCity = "杭州";
         curSelCity = locationCity;
 
-    }
+        /**
+         * 动态手机权限
+         */
+//        if (PermissionsUtil.hasPermission(mContext, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)) {
+//
+//
+//        } else {
+            PermissionsUtil.requestPermission(NewSearchActivity.this, new PermissionListener() {
+                @Override
+                public void permissionGranted(@NonNull String[] permission) {
+                    //定位
+                    mlocationClient = new AMapLocationClient(NewSearchActivity.this);
+                    //初始化定位参数
+                    mLocationOption = new AMapLocationClientOption();
+                    //设置返回地址信息，默认为true
+                    mLocationOption.setNeedAddress(true);
+                    //设置定位监听
+                    mlocationClient.setLocationListener(NewSearchActivity.this);
+                    //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+                    mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+                    //设置定位间隔,单位毫秒,默认为2000ms
+                    mLocationOption.setInterval(2000);
+                    //设置定位参数
+                    mlocationClient.setLocationOption(mLocationOption);
+                    mlocationClient.startLocation();
+                }
+
+                @Override
+                public void permissionDenied(@NonNull String[] permission) {
+                    Toast.makeText(mContext, "你拒绝了定位权限，感觉去设置中心去设置吧", Toast.LENGTH_SHORT).show();
+
+                }
+            }, new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
+
+        }
+
+
+
 
 
     /**
@@ -146,6 +197,17 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
 
     @Override
     protected void initListeners() {
+        //对搜索的数据设置点击事件
+
+        searchCityLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CityEntity cityEntity = searchCityList.get(position);
+                showSetCityDialog(cityEntity.getName(), cityEntity.getCityCode());
+            }
+        });
+
+        //监听搜索字体变化
         searchLocateContentEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -168,7 +230,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                if(actionId== EditorInfo.IME_ACTION_SEARCH){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideSoftInput(searchLocateContentEt.getWindowToken());
                     String content = searchLocateContentEt.getText().toString().trim().toLowerCase();
                     setSearchCityList(content);
@@ -181,6 +243,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
 
     /**
      * 隐藏软键盘
+     *
      * @param token
      */
     private void hideSoftInput(IBinder token) {
@@ -193,16 +256,17 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
 
     /**
      * 设置搜索数据展示
+     *
      * @param content
      */
     private void setSearchCityList(String content) {
         searchCityList.clear();
-        if(TextUtils.isEmpty(content)){
+        if (TextUtils.isEmpty(content)) {
             totalCityLv.setVisibility(View.VISIBLE);
             totalCityLettersLv.setVisibility(View.VISIBLE);
             searchCityLv.setVisibility(View.GONE);
             noSearchResultTv.setVisibility(View.GONE);
-        }else {
+        } else {
             totalCityLv.setVisibility(View.GONE);
             totalCityLettersLv.setVisibility(View.GONE);
             for (int i = 0; i < curCityList.size(); i++) {
@@ -289,6 +353,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+
     }
 
     @Override
@@ -318,6 +383,33 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         }
     }
 
+
+    //高德定位的方法
+    @Override
+    public void onLocationChanged(final AMapLocation aMapLocation) {
+
+
+
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        curCityNameTv.setText(aMapLocation.getDistrict());
+
+                    }
+                });
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
+        }
+        mlocationClient.stopLocation();
+    }
+
     private class LetterListViewListener implements
             LetterListView.OnTouchingLetterChangedListener {
 
@@ -335,6 +427,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
             }
         }
     }
+
     /**
      * 设置overlay不可见
      */
@@ -470,7 +563,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final TextView curCityNameTv;
+
             int viewType = getItemViewType(position);
             if (viewType == 0) {
                 //定位
@@ -532,8 +625,8 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
                 if (convertView == null) {
                     searchCityHolder = new SearchCityHolder();
                     convertView = inflater.inflate(R.layout.city_list_item_layout, null);
-                    searchCityHolder.cityKeyTv=convertView.findViewById(R.id.city_key_tv);
-                    searchCityHolder.cityNameTv=convertView.findViewById(R.id.city_name_tv);
+                    searchCityHolder.cityKeyTv = convertView.findViewById(R.id.city_key_tv);
+                    searchCityHolder.cityNameTv = convertView.findViewById(R.id.city_name_tv);
                     ViewBinder.bind(searchCityHolder, convertView);
                     convertView.setTag(searchCityHolder);
                 } else {
@@ -605,7 +698,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
             if (null == convertView) {
                 holder = new HotCityViewHolder();
                 convertView = inflater.inflate(R.layout.city_list_grid_item_layout, null);
-                holder.city_list_grid_item_name_tv=convertView.findViewById(R.id.city_list_grid_item_name_tv);
+                holder.city_list_grid_item_name_tv = convertView.findViewById(R.id.city_list_grid_item_name_tv);
                 ViewBinder.bind(holder, convertView);
                 convertView.setTag(holder);
             } else {

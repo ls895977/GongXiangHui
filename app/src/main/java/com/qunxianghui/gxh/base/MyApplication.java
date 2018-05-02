@@ -13,6 +13,7 @@ import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
 
 import com.lzy.okgo.OkGo;
+import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -60,7 +61,7 @@ public class MyApplication extends Application {
             StrictMode.setVmPolicy(builder.build());
         }
 
-
+        ScreenUtils.init(this);
     }
 
     /**
