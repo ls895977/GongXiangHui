@@ -1,12 +1,281 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="企业列表" />
+        android:background="#50d7d7d7"
+        android:orientation="vertical">
+
+        <!--第一栏-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                style="@style/generaGroupLinerStyle"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="文章曝光" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="206次"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="↑ +0"
+                    android:textColor="@color/tab_color" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                style="@style/generaGroupLinerStyle"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="文章总数" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="22篇"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="↑ +0"
+                    android:textColor="@color/tab_color" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
+
+        <!--第二栏-->
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                style="@style/generaGroupLinerStyle"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="文章转发" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="0次"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="↑ +0"
+                    android:textColor="@color/tab_color" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                style="@style/generaGroupLinerStyle"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="广告点击" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="19次"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="↑ +0"
+                    android:textColor="@color/tab_color" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
+        <!--第三栏-->
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                style="@style/generaGroupLinerStyle"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="广告点击率" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="9.22%"
+                    android:textColor="#000" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                style="@style/generaGroupLinerStyle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="文章转发率" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="0.00%"
+                    android:textColor="#000" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
+
+
+        <View
+            android:id="@+id/view_company"
+            android:layout_width="4dp"
+            android:layout_height="18dp"
+            android:background="@drawable/button_red_shap" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/view_company"
+            android:text="本月员工排行榜"
+            android:textSize="15sp" />
+
+
+        <RadioGroup
+            android:background="@color/tab_color"
+            android:id="@+id/rg_genera_company_paihang"
+            android:gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_genera_company_yuebang"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_btn_generalize"
+                android:button="@null"
+                android:text="月榜" />
+
+            <RadioButton
+                android:id="@+id/rb_genera_company_zongbang"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:button="@null"
+                android:text="总榜" />
+
+        </RadioGroup>
+
+
+    </RelativeLayout>
+
+
+    <com.qunxianghui.gxh.widget.NoScrollViewPager
+        android:id="@+id/vp_generalize_company_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#fff">
+    </com.qunxianghui.gxh.widget.NoScrollViewPager>
+
+
 </LinearLayout>

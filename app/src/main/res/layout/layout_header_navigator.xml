@@ -21,12 +21,15 @@
             style="@style/MainRadioButtonStyle"
             android:drawableTop="@mipmap/home_top_tianqi"
             android:text="天气"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
             android:textColor="#000" />
 
         <RadioButton
             android:id="@+id/rb_home_video"
             style="@style/MainRadioButtonStyle"
             android:drawableTop="@mipmap/home_top_video"
+
             android:text="视频"
             android:textColor="#000" />
 

@@ -27,6 +27,7 @@ import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
+import com.qunxianghui.gxh.utils.DisplayUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -181,9 +182,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         .setCropShape(CropImageView.CropShape
                                 .RECTANGLE)
                         // 调整裁剪后的图片最终大小
-                        .setRequestedSize(150, 150)
+                        .setRequestedSize(DisplayUtil.px2dip(mActivity,750), DisplayUtil.px2dip(mActivity,366)  )
                         // 宽高比
-                        .setAspectRatio(1, 1);
+                        .setAspectRatio(16, 9);
             }
 
             //用户拒绝授权回调

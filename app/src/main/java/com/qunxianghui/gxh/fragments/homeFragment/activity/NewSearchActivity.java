@@ -304,6 +304,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         WindowManager windowManager = (WindowManager) this
                 .getSystemService(Context.WINDOW_SERVICE);
         windowManager.addView(overlay, lp);
+
     }
 
     /**

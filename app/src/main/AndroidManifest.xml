@@ -196,6 +196,8 @@
 <activity android:name=".fragments.homeFragment.activity.NewSearchActivity"
     android:launchMode="singleTask"/>
 
+
+
     </application>
 
 

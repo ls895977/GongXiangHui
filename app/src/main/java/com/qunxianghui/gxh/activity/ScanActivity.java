@@ -110,7 +110,6 @@ public class ScanActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,13 +137,23 @@ public class ScanActivity extends BaseActivity {
                         Intent intent = new Intent(mContext, ProtocolActivity.class);
                         intent.putExtra("url", content);
                         startActivity(intent);
+                        finish();
 
                     }
                 });
-                builder.setNegativeButton("取消",null );
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
 
                 builder.show();
+
             }
         }
+        finish();
     }
+
+
 }
