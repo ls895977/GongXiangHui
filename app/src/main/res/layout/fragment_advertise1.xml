@@ -49,23 +49,23 @@
             android:textSize="15sp" />
 
 
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-
-                <com.bm.library.PhotoView
-                    android:src="@mipmap/bg_image_75_366"
-                    android:id="@+id/iv_mine_addFragment1BigAdver"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerInside"   />
-
-            </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
 
+            <com.bm.library.PhotoView
+                android:id="@+id/iv_mine_addFragment1BigAdver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@mipmap/bg_image_75_366" />
 
+        </LinearLayout>
 
 
         <RelativeLayout

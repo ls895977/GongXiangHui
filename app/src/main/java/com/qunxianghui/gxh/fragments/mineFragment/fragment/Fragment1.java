@@ -38,6 +38,7 @@ import butterknife.Unbinder;
  */
 
 public class Fragment1 extends BaseFragment implements View.OnClickListener {
+
     @BindView(R.id.tv_mine_addAddress)
     TextView tvMineAddAddress;
     @BindView(R.id.tv_mine_click_attr)
@@ -83,7 +84,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     public void initViews(View view) {
         imagePicker = new ImagePicker();
         imagePicker.setCropImage(true);
-
     }
 
     @Override
@@ -132,26 +132,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             @Override
             public void onPickImage(Uri imageUri) {
                 ivMineAddFragment1BigAdver.setImageURI(imageUri);
-                //启动缩放功能
                 ivMineAddFragment1BigAdver.enable();
-                //禁止缩放功能  默认禁止
-                // ivMineAddFragment1BigAdver.disenable();
-                //        使用Glide加载的gif图片同样支持缩放功能
 
-                ivMineAddFragment1BigAdver.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Toast.makeText(mActivity, "长按了", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                });
-                ivMineAddFragment1BigAdver.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ivMineAddFragment1BigAdver.enable();
 
-                    }
-                });
 //        Glide.with(this)
 //                .load(gif)
 //                .crossFade()
@@ -160,19 +143,21 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             }
 
             //剪裁图片回调
-
             @Override
             public void onCropImage(Uri imageUri) {
                 ivMineAddFragment1BigAdver.setImageURI(imageUri);
-
+                //      使用Glide加载的gif图片同样支持缩放功能
+//        Glide.with(this)
+//                .load(gif)
+//                .crossFade()
+//                .placeholder(R.mipmap.bbb)
+//                .into(((PhotoView) findViewById(R.id.img1)));
             }
 
             //自定义剪裁
 
             @Override
             public void cropConfig(CropImage.ActivityBuilder builder) {
-
-
                 builder
                         // 是否启动多点触摸
                         .setMultiTouchEnabled(false)
@@ -182,9 +167,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         .setCropShape(CropImageView.CropShape
                                 .RECTANGLE)
                         // 调整裁剪后的图片最终大小
-                        .setRequestedSize(DisplayUtil.px2dip(mActivity,750), DisplayUtil.px2dip(mActivity,366)  )
+                        .setRequestedSize(DisplayUtil.dip2px(mActivity,1500), DisplayUtil.dip2px(mActivity,732)  )
                         // 宽高比
-                        .setAspectRatio(16, 9);
+                        .setAspectRatio(2, 1);
             }
 
             //用户拒绝授权回调
@@ -230,7 +215,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        imagePicker.onActivityResult(mActivity, requestCode, resultCode, data);
+        imagePicker.onActivityResult(this, requestCode, resultCode, data);
     }
 }
 

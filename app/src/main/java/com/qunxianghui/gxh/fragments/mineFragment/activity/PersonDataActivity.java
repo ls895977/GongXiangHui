@@ -129,14 +129,11 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         imagePicker.startChooser(this, new ImagePicker.Callback() {
             @Override
             public void onPickImage(Uri imageUri) {
-
-
             }
-
             //剪裁图片回调
-
             @Override
             public void onCropImage(Uri imageUri) {
+
                 ivPersonDataImg.setImageURI(imageUri);
             }
 
