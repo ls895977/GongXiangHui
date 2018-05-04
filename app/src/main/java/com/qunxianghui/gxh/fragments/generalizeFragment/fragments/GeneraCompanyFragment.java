@@ -64,7 +64,6 @@ public class GeneraCompanyFragment extends BaseFragment {
     public void initViews(View view) {
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(new MonthFragment());
-
         fragments.add(new GeneraPushFragment());
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
         vpGeneralizeCompanyMain.setAdapter(adapter);

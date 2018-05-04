@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
@@ -49,7 +52,7 @@ import kr.co.namee.permissiongen.PermissionGen;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener,View.OnClickListener {
+public class HotPointFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.recyclerview_list)
     GloriousRecyclerView recyclerviewList;
     @BindView(R.id.ll_home_paste_artical)
@@ -57,17 +60,14 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<MoreTypeBean> mDatas;
     Unbinder unbinder;
-    private RadioButton viewById;
-    private RadioButton rbHomeAir;
-    private RadioButton rbHomeVideo;
-    private RadioButton rbHomeLifeStyle;
-    private RadioButton rbHomeSaler;
-    private RadioButton rbHomeBianmin;
-    private RadioGroup rgMain;
-
     private Banner viewpagerHome;
     private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
     private ClipboardManager mClipboardManager;
+    private GridView grid_home_navigator;
+    //首页导航的坐标匹配
+    private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
+            , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
+    private String[] iconName = {"天气", "视频", "生活圈", "优惠", "便民"};
 
     @Override
     public int getLayoutId() {
@@ -113,14 +113,9 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
 
 //找控件
-        rgMain = (RadioGroup) headerNavigator.findViewById(R.id.rg_home_main);
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
-        rbHomeAir = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
-        rbHomeVideo = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
-        rbHomeLifeStyle = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
-        rbHomeSaler = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
-        rbHomeBianmin = (RadioButton) headerNavigator.findViewById(R.id.rb_home_air);
-        rgMain.setOnCheckedChangeListener(this);
+
+        grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
 
         List<Integer> list = new ArrayList<>();
         list.add(R.mipmap.ic_test_0);
@@ -150,6 +145,41 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
                     }
                 })
                 .start();
+
+        //加載首頁那个导航图
+        initGridHomeNavigator();
+    }
+
+    private void initGridHomeNavigator() {
+        final BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
+        grid_home_navigator.setAdapter(homegridNavigator);
+        grid_home_navigator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        //跳转天气
+                        toActivity(NewSearchActivity.class);
+                        break;
+                    case 1:
+                        //跳转视频
+                        toActivity(HomeVideoActivity.class);
+                        break;
+                    case 2:
+                        //跳转生活圈
+                        toActivity(LocationServiceActivity.class);
+                        break;
+                    case 3:
+                        //跳转优惠
+                        toActivity(SalerActivity.class);
+                        break;
+                    case 4:
+                        //跳转便民
+                        toActivity(BianMinServiceActivity.class);
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -194,52 +224,29 @@ public class HotPointFragment extends BaseFragment implements RadioGroup.OnCheck
 
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-        switch (checkedId) {
-            case R.id.rb_home_air:
-//                toActivity(HomeSeachLocationActivity.class);
-                toActivity(NewSearchActivity.class);
-                break;
-            case R.id.rb_home_video:
-                toActivity(HomeVideoActivity.class);
-                break;
-            case R.id.rb_home_life_style:
-
-                toActivity(LocationServiceActivity.class);
-                break;
-            case R.id.rb_home_saler:
-                toActivity(SalerActivity.class);
-                break;
-            case R.id.rb_home_bianmin:
-                toActivity(BianMinServiceActivity.class);
-                break;
-
-        }
-    }
 
     /**
      * 粘贴文章的处理
+     *
      * @param v
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_home_paste_artical:
                 //粘贴板有数据并且是文本
-                if(mClipboardManager.hasPrimaryClip()&&mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
+                if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
                     final CharSequence text = item.getText();
-                    Intent intent=new Intent(mActivity,ProtocolActivity.class);
-                    intent.putExtra("url",text);
+                    Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                    intent.putExtra("url", text);
                     startActivity(intent);
-                }else {
+                } else {
                     asyncShowToast("没有找到粘贴的内容");
                 }
                 break;
         }
     }
-
 
 
 }

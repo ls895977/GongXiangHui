@@ -10,7 +10,7 @@
    <GridView
        android:numColumns="4"
        android:horizontalSpacing="10dp"
-       android:verticalSpacing="10dp"
+    android:verticalSpacing="10dp"
     android:layout_marginTop="10dp"
     android:id="@+id/grid_bianmin"
     android:layout_width="wrap_content"

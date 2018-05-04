@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#50d7d7d7"
@@ -14,11 +14,10 @@
 
         <!--第一栏-->
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
             <LinearLayout
                 style="@style/generaGroupLinerStyle"
                 android:layout_marginBottom="10dp"
@@ -189,8 +188,8 @@
 
             <LinearLayout
                 style="@style/generaGroupLinerStyle"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -234,48 +233,43 @@
 
 
         <RadioGroup
-            android:background="@color/tab_color"
+
             android:id="@+id/rg_genera_company_paihang"
-            android:gravity="center"
             android:layout_width="100dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/selector_btn_generalize"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_genera_company_yuebang"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/selector_btn_generalize"
                 android:button="@null"
+                android:gravity="center"
                 android:text="月榜" />
 
             <RadioButton
                 android:id="@+id/rb_genera_company_zongbang"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
+                android:layout_weight="1"
+                android:background="@drawable/selector_btn_generalize"
                 android:button="@null"
+                android:gravity="center"
                 android:text="总榜" />
-
         </RadioGroup>
-
-
     </RelativeLayout>
-
 
     <com.qunxianghui.gxh.widget.NoScrollViewPager
         android:id="@+id/vp_generalize_company_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#fff">
-    </com.qunxianghui.gxh.widget.NoScrollViewPager>
-
+        android:background="#fff" />
 
 </LinearLayout>

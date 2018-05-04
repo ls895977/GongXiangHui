@@ -4,59 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-    <RadioGroup
-        android:id="@+id/rg_home_main"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <GridView
+        android:id="@+id/grid_home_navigator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@color/Gxh_BG"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="visible">
-
-
-        <RadioButton
-            android:id="@+id/rb_home_air"
-            style="@style/MainRadioButtonStyle"
-            android:drawableTop="@mipmap/home_top_tianqi"
-            android:text="天气"
-            android:focusableInTouchMode="false"
-            android:focusable="false"
-            android:textColor="#000" />
-
-        <RadioButton
-            android:id="@+id/rb_home_video"
-            style="@style/MainRadioButtonStyle"
-            android:drawableTop="@mipmap/home_top_video"
-
-            android:text="视频"
-            android:textColor="#000" />
-
-        <RadioButton
-            android:id="@+id/rb_home_life_style"
-            style="@style/MainRadioButtonStyle"
-            android:drawableTop="@mipmap/home_top_life_circle"
-            android:text="生活圈"
-            android:textColor="#000" />
-
-        <RadioButton
-
-            android:id="@+id/rb_home_saler"
-            style="@style/MainRadioButtonStyle"
-            android:drawableTop="@mipmap/home_top_saler"
-            android:text="优惠"
-            android:textColor="#000" />
-
-
-        <RadioButton
-            android:id="@+id/rb_home_bianmin"
-            style="@style/MainRadioButtonStyle"
-            android:drawableTop="@mipmap/home_top_bian_min"
-            android:text="便民"
-            android:textColor="#000" />
-    </RadioGroup>
-
-
-
+        android:horizontalSpacing="10dp"
+        android:numColumns="5"
+        android:verticalSpacing="10dp" />
 </LinearLayout>
