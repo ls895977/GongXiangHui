@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
@@ -25,7 +24,6 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
-
 
 import java.util.ArrayList;
 
@@ -63,6 +61,8 @@ public class MineFragment extends BaseFragment {
     TextView mineQuicklyLogin;
     @BindView(R.id.tv_mine_set)
     TextView tvMineSet;
+    @BindView(R.id.rl_up_step)
+    RelativeLayout rlUpStep;
     private UserDao userDao;
     private int userSize;
 
@@ -76,10 +76,10 @@ public class MineFragment extends BaseFragment {
 
         if (userSize > 0) {
             final ArrayList<User> userList = userDao.dbQueryAll();
-              for (int i=0;i<userSize;i++){
-                  final User user = userList.get(i);
-                  mineQuicklyLogin.setText(user.getUsername());
-              }
+            for (int i = 0; i < userSize; i++) {
+                final User user = userList.get(i);
+                mineQuicklyLogin.setText(user.getUsername());
+            }
         }
     }
 
@@ -104,7 +104,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect,
-            R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set,
+            R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set,R.id.rl_up_step,
             R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
     public void onViewClicked(View view) {
         Intent intent = null;
@@ -125,9 +125,9 @@ public class MineFragment extends BaseFragment {
             case R.id.mine_fabu:
                 toActivity(MineIssueActivity.class);
                 break;
-//            case R.id.rl_up_step:
-//                toActivity(MemberUpActivity.class);
-//                break;
+            case R.id.rl_up_step:
+                toActivity(MemberUpActivity.class);
+                break;
             case R.id.company_set:
                 toActivity(CompanySetActivity.class);
                 break;

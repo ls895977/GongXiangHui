@@ -28,7 +28,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!--蓝牙缺陷-->
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name="com.qunxianghui.gxh.base.MyApplication"
@@ -193,9 +196,11 @@
         <activity
             android:name=".fragments.locationFragment.activity.InFormActivity"
             android:launchMode="singleTask" />
-<activity android:name=".fragments.homeFragment.activity.NewSearchActivity"
-    android:launchMode="singleTask"/>
-
+        <activity
+            android:name=".fragments.homeFragment.activity.NewSearchActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".fragments.mineFragment.activity.BlueToothTim"
+            android:launchMode="singleTask"/>
 
 
     </application>

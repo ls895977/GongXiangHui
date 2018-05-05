@@ -235,24 +235,24 @@
             <View style="@style/dividerStyle" />
 
 
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/rl_up_step"-->
-                <!--style="@style/RelativeStyle">-->
+            <RelativeLayout
+                android:id="@+id/rl_up_step"
+                style="@style/RelativeStyle">
 
-                <!--<TextView-->
-                    <!--style="@style/MineListStyle"-->
-                    <!--android:layout_alignParentLeft="true"-->
-                    <!--android:layout_alignParentStart="true"-->
-                    <!--android:layout_alignParentTop="true"-->
-                    <!--android:drawableLeft="@mipmap/bianmin_call"-->
-                    <!--android:text="会员升级" />-->
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:text="会员升级" />
 
-                <!--<ImageView-->
-                    <!--style="@style/rightBackStyle"-->
-                    <!--android:layout_alignParentRight="true" />-->
-            <!--</RelativeLayout>-->
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
 
-            <!--<View style="@style/dividerStyle" />-->
+            <View style="@style/dividerStyle" />
 
             <RelativeLayout
                 android:id="@+id/company_set"
