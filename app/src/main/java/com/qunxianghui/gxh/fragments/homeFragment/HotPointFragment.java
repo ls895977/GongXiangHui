@@ -26,6 +26,7 @@ import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationServiceActivity;
@@ -67,7 +68,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
-    private String[] iconName = {"天气", "视频", "生活圈", "优惠", "便民"};
+    private String[] iconName = {"天气", "视频", "生活圈", "优选", "便民"};
 
     @Override
     public int getLayoutId() {
@@ -156,6 +157,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         grid_home_navigator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=null;
                 switch (position) {
                     case 0:
                         //跳转天气
@@ -167,11 +169,18 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-                        toActivity(LocationServiceActivity.class);
-                        break;
+//                        toActivity(LocationServiceActivity.class);
+                        intent = new Intent(mActivity, ProtocolActivity.class);
+                        intent.putExtra("title", iconName[position]);
+                        intent.putExtra("url", Constant.BenDiService);
+                        startActivity(intent);
                     case 3:
                         //跳转优惠
-                        toActivity(SalerActivity.class);
+//                        toActivity(SalerActivity.class);
+                    intent = new Intent(mActivity, ProtocolActivity.class);
+                        intent.putExtra("title", iconName[position]);
+                        intent.putExtra("url", Constant.YouXuan);
+                        startActivity(intent);
                         break;
                     case 4:
                         //跳转便民
