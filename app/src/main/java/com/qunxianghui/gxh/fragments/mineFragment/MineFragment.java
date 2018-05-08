@@ -138,7 +138,8 @@ public class MineFragment extends BaseFragment {
                 toActivity(AddAdverActivity.class);
                 break;
             case R.id.rl_invite_friend:
-                toActivity(InviteFrientActivity.class);
+               toActivity(InviteFrientActivity.class);
+
                 break;
             case R.id.mine_quickly_login:
 //                if (userSize==0){

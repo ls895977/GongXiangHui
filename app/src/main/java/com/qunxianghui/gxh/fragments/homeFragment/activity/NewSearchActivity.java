@@ -156,9 +156,6 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         }
 
 
-
-
-
     /**
      * 设置沉浸式状态栏
      */
@@ -191,7 +188,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
             }
         });
         totalCityLettersLv.setOnTouchingLetterChangedListener(new LetterListViewListener());
-        initOverlay();
+//        initOverlay();
     }
 
 
@@ -287,25 +284,27 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         }
     }
 
-    /**
-     * 初始化汉语拼音首字母弹出提示框
-     */
-    private void initOverlay() {
-        mReady = true;
-        LayoutInflater inflater = LayoutInflater.from(this);
-        overlay = (TextView) inflater.inflate(R.layout.overlay, null);
-        overlay.setVisibility(View.INVISIBLE);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                PixelFormat.TRANSLUCENT);
-        WindowManager windowManager = (WindowManager) this
-                .getSystemService(Context.WINDOW_SERVICE);
-        windowManager.addView(overlay, lp);
-
-    }
+//    /**
+//     * 初始化汉语拼音首字母弹出提示框
+//     */
+//    private void initOverlay() {
+//        mReady = true;
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//        overlay = (TextView) inflater.inflate(R.layout.overlay, null);
+//        overlay.setVisibility(View.INVISIBLE);
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.TYPE_APPLICATION,
+//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+//                PixelFormat.TRANSLUCENT);
+//        WindowManager windowManager = (WindowManager) this
+//                .getSystemService(Context.WINDOW_SERVICE);
+//        windowManager.addView(overlay, lp);
+//
+//
+//
+//    }
 
     /**
      * 初始化全部城市列表
@@ -721,7 +720,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
     /**
      * 展示设置城市对话框
      */
-    private void showSetCityDialog(String curCity, String cityCode) {
+    private void showSetCityDialog(final String curCity, String cityCode) {
         if (curCity.equals(curSelCity)) {
             asyncShowToast("当前定位城市" + curCity);
             return;
@@ -736,10 +735,13 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 //选中之后做你的方法
+                curCityNameTv.setText(curCity);
+
 
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+        builder.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() { //设置取消按钮
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

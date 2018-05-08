@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.base;
 
 
 import android.app.Application;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -27,6 +28,7 @@ public class MyApplication extends Application {
     private static MyApplication mAppApplication;
     private SQLHelper sqlHelper;
 
+
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
 
@@ -39,9 +41,9 @@ public class MyApplication extends Application {
     }
 
     //微信APPID
-    public static String WeiXinAPP_ID="wx8dd50e08a25101d7";
+    public static String WeiXinAPP_ID = "wx8dd50e08a25101d7";
     //QQAppID
-    public static String QQAPP_ID="1106763297";
+    public static String QQAPP_ID = "1106763297";
     public static IWXAPI api;
 
     @Override
@@ -62,6 +64,8 @@ public class MyApplication extends Application {
         }
 
         ScreenUtils.init(this);
+
+
     }
 
     /**
@@ -87,7 +91,8 @@ public class MyApplication extends Application {
         super.onTerminate();
         //整体摧毁的时候调用这个方法
     }
-    
+
+
     private void initOkGo() {
         OkGo.getInstance().init(this);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -97,6 +102,6 @@ public class MyApplication extends Application {
 
     {
 
-
     }
+
 }

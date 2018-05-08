@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="58dp"
     android:padding="5dp">
 
+    <ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/bluetoothicon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@mipmap/bianmin_call" />
+
     <TextView
+        android:id="@+id/bluetoothname"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/device_name"
-        android:gravity="center_vertical"
-        android:textColor="#000"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/bluetoothicon"
+        android:text="name"
+        android:textColor="#000000"
+        android:textSize="19dp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/device_info"
-        android:gravity="center_vertical|right"
-        android:textColor="#000"/>
+        android:id="@+id/uuid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bluetoothname"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/bluetoothicon"
+        android:text="uuid"
+        android:textSize="15dp" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/bluetoothname"
+        android:text=""
+        android:textColor="#ff0000" />
+
+</RelativeLayout>

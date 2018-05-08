@@ -5,39 +5,62 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/bt_open_bluetooth"
-        android:layout_width="wrap_content"
+        android:id="@+id/saomiao"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开蓝牙" />
+        android:text="扫描设备" />
 
     <Button
-        android:id="@+id/bt_search_bluetooth"
-        android:layout_width="wrap_content"
+        android:id="@+id/zhendong"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="搜索蓝牙" />
-
-    <TextView
-        android:id="@+id/text_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="链接状态" />
+        android:text="短震 / 嘿嘿嘿" />
 
     <Button
-        android:id="@+id/bt_bluetppth_send_message"
-        android:layout_width="wrap_content"
+        android:id="@+id/changzhen"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="发送消息" />
+        android:text="长震 / 呵呵呵" />
+
+    <Button
+        android:id="@+id/buting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="不要停 / 哈哈哈" />
+
+    <Button
+        android:id="@+id/tingxia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="停下来 / ～～" />
 
     <TextView
-        android:id="@+id/tv_blue_text_msgtext_msg"
-        android:layout_width="wrap_content"
+        android:id="@+id/jibu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:gravity="center"
+        android:text="走了多少步："
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/dianliang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="电池电量"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/lianjiezhuangtai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="连接状态：未连接"
+        android:textSize="20dp" />
 
     <ListView
-        android:id="@+id/lv_blue_tooth"
+        android:id="@+id/bluetooth_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp" />
+        android:layout_height="match_parent"></ListView>
 </LinearLayout>
