@@ -101,7 +101,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
                 toActivity(NewsDetailActivity.class);
             }
-
             @Override
             public void onLongClick(int position) {
                 Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
@@ -112,7 +111,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         recyclerviewList.addHeaderView2(headerVp);
         recyclerviewList.addFooterView(footer);
         recyclerviewList.setEmptyView(empty);
-
 
 //找控件
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
@@ -151,7 +149,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         //加載首頁那个导航图
         initGridHomeNavigator();
     }
-
     private void initGridHomeNavigator() {
         final BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);

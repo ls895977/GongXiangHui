@@ -200,7 +200,7 @@
             android:name=".fragments.homeFragment.activity.NewSearchActivity"
             android:launchMode="singleTask" />
 
-        <!--发送蓝牙广播-->
+
     </application>
 
 

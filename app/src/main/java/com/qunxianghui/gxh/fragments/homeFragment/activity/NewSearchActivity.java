@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -736,6 +737,10 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
                 dialog.dismiss();
                 //选中之后做你的方法
                 curCityNameTv.setText(curCity);
+                final Intent intent = new Intent();
+                intent.putExtra("cityinfo",curCity);
+                setResult(RESULT_OK,intent);
+                finish();
 
 
             }

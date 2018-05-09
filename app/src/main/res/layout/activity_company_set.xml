@@ -25,6 +25,7 @@
             android:text="企业设置" />
 
         <TextView
+         android:id="@+id/tv_mine_companyset_fabu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -84,6 +85,7 @@
                 android:background="@color/divider" />
 
             <LinearLayout
+                android:id="@+id/ll__mine_companyset_selectProvince"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -95,7 +97,7 @@
                     android:background="@null"
                     android:drawableRight="@drawable/down_icon"
                     android:focusable="true"
-                    android:hint="请选择省份"
+                    android:hint="请选择所在地区"
                     android:singleLine="true" />
 
 
@@ -109,56 +111,56 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/divider" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <EditText
-                    android:id="@+id/et_mine_companyset_selectCity"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:drawableRight="@drawable/down_icon"
-                    android:focusable="true"
-                    android:hint="请选择城市"
-                    android:singleLine="true" />
+                <!--<EditText-->
+                    <!--android:id="@+id/et_mine_companyset_selectCity"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@null"-->
+                    <!--android:drawableRight="@drawable/down_icon"-->
+                    <!--android:focusable="true"-->
+                    <!--android:hint="请选择城市"-->
+                    <!--android:singleLine="true" />-->
 
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/divider" />
+            <!--</LinearLayout>-->
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/et_mine_companyset_selectCounty"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:drawableRight="@drawable/down_icon"
-                    android:focusable="true"
-                    android:hint="请选择县/区"
-                    android:singleLine="true" />
-
-            </LinearLayout>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:background="@color/divider" />-->
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/divider" />
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_mine_companyset_selectCounty"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@null"-->
+                    <!--android:drawableRight="@drawable/down_icon"-->
+                    <!--android:focusable="true"-->
+                    <!--android:hint="请选择县/区"-->
+                    <!--android:singleLine="true" />-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:background="@color/divider" />-->
 
             <EditText
                 android:id="@+id/et_mine_companyset_detailAddress"

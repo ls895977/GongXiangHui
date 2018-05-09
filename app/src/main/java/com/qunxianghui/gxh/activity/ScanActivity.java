@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.github.dfqin.grantor.PermissionsUtil;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
+import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.bean.ZxingConfig;
 import com.yzq.zxinglibrary.common.Constant;
@@ -29,9 +32,9 @@ import butterknife.ButterKnife;
 
 public class ScanActivity extends BaseActivity {
 
-    @BindView(R.id.result)
-    TextView result;
+
     private int REQUEST_CODE_SCAN = 111;
+    private AlertDialog.Builder builder;
 
     @Override
     protected int getLayoutId() {
@@ -95,6 +98,17 @@ public class ScanActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
+//                    new TitleBuilder(ScanActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            finish();
+//                        }
+//                    }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Toast.makeText(mContext, "分享界面", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override
@@ -124,11 +138,13 @@ public class ScanActivity extends BaseActivity {
 
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
-            if (data != null) {
+            if (data == null) {
+                return;
+            } else {
                 final String content = data.getStringExtra(Constant.CODED_CONTENT);
 //                result.setText("扫描结果为：" + content);
+                builder = new AlertDialog.Builder(ScanActivity.this);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("跳转提示");
                 builder.setMessage("您确定要跳转此链接么？");
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -140,8 +156,7 @@ public class ScanActivity extends BaseActivity {
                         finish();
 
                     }
-                });
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -149,11 +164,18 @@ public class ScanActivity extends BaseActivity {
                 });
 
                 builder.show();
-
             }
+
+
         }
         finish();
+
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

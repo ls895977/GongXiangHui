@@ -93,6 +93,19 @@ public class ProtocolActivity extends BaseActivity {
         llProtocolMain.addView(webView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webView.resumeTimers();
+        webView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webView.onPause();
+        webView.pauseTimers();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,5 +123,6 @@ public class ProtocolActivity extends BaseActivity {
         webView = null;
         llProtocolMain.removeAllViews();
         llProtocolMain = null;
+
     }
 }

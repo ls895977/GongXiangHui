@@ -110,4 +110,7 @@ dependencies {
     compile 'com.bm.photoview:library:1.4.1'
     implementation files('libs/mta-sdk-1.6.2.jar')
     implementation files('libs/open_sdk_r5509.jar')
+    /* 省市区列表  滚轮 citypickew*/
+    compile 'liji.library.dev:citypickerview:3.1.7'
+
 }

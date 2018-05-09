@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 
-
+import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
@@ -64,7 +64,10 @@ public class MyApplication extends Application {
         }
 
         ScreenUtils.init(this);
-
+        /**
+         * 预先加载三级列表显示省市区的数据
+         */
+        CityListLoader.getInstance().loadProData(this);
 
     }
 

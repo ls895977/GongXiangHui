@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
+import com.lljjcoder.style.citylist.CityListSelectActivity;
+import com.lljjcoder.style.citylist.bean.CityInfoBean;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
@@ -34,7 +37,9 @@ import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
+import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.ColumnHorizontalScrollView;
 import com.yzq.zxinglibrary.android.CaptureActivity;
@@ -46,6 +51,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -78,6 +85,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private int mScreenWidth = 0; // 屏幕宽度
     public final static int CHANNELREQUEST = 1; // 请求码
     public final static int CHANNELRESULT = 10; // 返回码
+    public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     private int REQUEST_CODE_SCAN = 111;
     // tab集合：HorizontalScrollView的数据源
     private ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
@@ -95,8 +103,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void initDatas() {
-
-
 
 
         // + 号监听
@@ -127,6 +133,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         mViewPager = (ViewPager) mActivity.findViewById(R.id.home_view_pager);
 
     }
+
     private void setChangelView() {
         initColumnData();
         initTabColumn();
@@ -290,20 +297,19 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case R.id.ib_home_scan:            //扫描二维码
 
-              toActivity(ScanActivity.class);
+                toActivity(ScanActivity.class);
                 break;
             case R.id.ib_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
             case R.id.tv_home_location:
-                toActivity(LocationActivity.class);
-
+//               toActivity(LocationActivity.class);
+                Intent intent = new Intent(mActivity, NewSearchActivity.class);
+                startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
 
         }
     }
-
-
 
 
     @Override
@@ -317,10 +323,20 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 }
                 break;
 
+            case CITY_SELECT_RESULT_FRAG:
+                if (resultCode == RESULT_OK) {
+                    if (data == null) {
+                    }
+                    final String cityinfo = data.getStringExtra("cityinfo");
+                    if (cityinfo == null) {
+                        return;
+                    }
+                    tvHomeLocation.setText(cityinfo);
+                    break;
+
+                }
+                super.onActivityResult(requestCode, resultCode, data);
 
         }
-        super.onActivityResult(requestCode, resultCode, data);
-
-
     }
-}
+    }
