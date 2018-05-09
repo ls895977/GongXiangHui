@@ -54,7 +54,7 @@ public class Constant {
 
     //首页链接的跳转
 
-    public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization/#/";
-    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
+    public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
+    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice";
 
 }

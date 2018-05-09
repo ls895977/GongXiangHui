@@ -84,6 +84,7 @@ public class ProtocolActivity extends BaseActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
                 return false;
             }
         });
