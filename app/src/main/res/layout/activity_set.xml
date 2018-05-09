@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/activity_title" />
 
-    <RelativeLayout
-        android:id="@+id/rl_set_person"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            style="@style/MineListStyle"
-            android:text="个人资料" />
-
-        <ImageView
-            style="@style/rightBackStyle"
-            android:layout_alignParentRight="true" />
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_set_message"
@@ -27,15 +14,29 @@
 
         <TextView
             style="@style/MineListStyle"
+            android:layout_centerVertical="true"
             android:text="消息通知" />
 
-        <ImageView
-            style="@style/rightBackStyle"
-            android:layout_alignParentRight="true" />
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/switchButton_mine_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:checked="false"
+            app:kswAnimationDuration="300"
+            app:kswBackDrawable="@drawable/ios_back_drawable"
+            app:kswBackMeasureRatio="1.4"
+            app:kswThumbDrawable="@drawable/ios_thumb_selector"
+            app:kswThumbMarginBottom="-8dp"
+            app:kswThumbMarginLeft="-5dp"
+            app:kswThumbMarginRight="-5dp"
+            app:kswThumbMarginTop="-2.5dp" />
 
     </RelativeLayout>
 
     <RelativeLayout
+
         android:id="@+id/rl_set_cache"
         style="@style/RelativeStyle">
 
@@ -43,9 +44,12 @@
             style="@style/MineListStyle"
             android:text="清空缓存" />
 
-        <ImageView
-            style="@style/rightBackStyle"
-            android:layout_alignParentRight="true" />
+        <TextView
+            android:id="@+id/tv_mine_set_cache"
+            style="@style/MineListStyle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:text="1.5M" />
 
     </RelativeLayout>
 
@@ -55,11 +59,14 @@
 
         <TextView
             style="@style/MineListStyle"
-            android:text="版本更新" />
+            android:text="当前版本" />
 
-        <ImageView
-            style="@style/rightBackStyle"
-            android:layout_alignParentRight="true" />
+        <TextView
+            android:id="@+id/tv_mine_set_version"
+            style="@style/MineListStyle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:text="V5.0.0" />
 
     </RelativeLayout>
 
