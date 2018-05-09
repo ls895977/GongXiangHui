@@ -52,5 +52,9 @@ public class Constant {
     //酒店住宿
     public static final String HPTEL_ZHUSU = "http://app.zzbcar.com/zzb/helpcenter/user8.html";
 
+    //首页链接的跳转
+
+    public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization/#/";
+    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
 
 }
