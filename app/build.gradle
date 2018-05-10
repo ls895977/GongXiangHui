@@ -49,7 +49,6 @@ dependencies {
     //用于请求相机权限
 
     //    compile 'com.google.zxing:core:3.2.1'//扫描二维码
-
     //谷歌的zxing库
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
 
@@ -57,7 +56,6 @@ dependencies {
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
     compile 'com.lovedise:permissiongen:0.0.6'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
-
     //选择器
     compile 'com.android.support:recyclerview-v7:27.0.0-alpha1'
     compile 'com.android.support:design:27.+'
@@ -112,5 +110,6 @@ dependencies {
     implementation files('libs/open_sdk_r5509.jar')
     /* 省市区列表  滚轮 citypickew*/
     compile 'liji.library.dev:citypickerview:3.1.7'
+
 
 }

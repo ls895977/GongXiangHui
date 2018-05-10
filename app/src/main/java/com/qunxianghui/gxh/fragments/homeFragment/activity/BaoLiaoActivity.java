@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/16 0016.
  */
 
-public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListener{
+public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_baoliao_close)
     ImageView ivBaoliaoClose;
     @BindView(R.id.iv_baoliao_fabu_content)
@@ -37,6 +37,8 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
     GridView gridView;
     @BindView(R.id.ll_baoliao_remember)
     LinearLayout llBaoliaoRemember;
+    @BindView(R.id.tv_home_baoliao_fabu)
+    TextView tvHomeBaoliaoFabu;
     private ImagePicker imagePicker;
     private List<String> list;
     private GvAdapter adapter;
@@ -135,6 +137,7 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
     @Override
     protected void initListeners() {
         ivBaoliaoClose.setOnClickListener(this);
+        tvHomeBaoliaoFabu.setOnClickListener(this);
     }
 
     @Override
@@ -147,9 +150,12 @@ public class BaoLiaoActivity extends BaseActivity  implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_baoliao_close:
                 llBaoliaoRemember.setVisibility(View.GONE);
+                break;
+            case R.id.tv_home_baoliao_fabu:
+                asyncShowToast("模拟发布成功");
                 break;
         }
     }

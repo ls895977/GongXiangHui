@@ -167,21 +167,22 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-//                        toActivity(LocationServiceActivity.class);
+                      toActivity(LocationServiceActivity.class);
 
-                        Log.e(TAG,"...................本地服务怎么找不到");
-                        intent = new Intent(mActivity, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.BenDiService);
-                        startActivity(intent);
+//                        Log.e(TAG,"...................本地服务怎么找不到");
+//                        intent = new Intent(mActivity, ProtocolActivity.class);
+//                        intent.putExtra("title", iconName[position]);
+//                        intent.putExtra("url", Constant.BenDiService);
+//                        startActivity(intent);
+                        break;
                     case 3:
                         //跳转优惠
 //                        toActivity(SalerActivity.class);
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.YouXuan);
-                        startActivity(intent);
-                        break;
+                    intent.putExtra("url", Constant.YouXuan);
+                    startActivity(intent);
+                    break;
                     case 4:
                         //跳转便民
                         toActivity(BianMinServiceActivity.class);

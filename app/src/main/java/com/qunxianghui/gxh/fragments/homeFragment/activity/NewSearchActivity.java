@@ -740,7 +740,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
                 final Intent intent = new Intent();
                 intent.putExtra("cityinfo",curCity);
                 setResult(RESULT_OK,intent);
-                finish();
+
 
 
             }

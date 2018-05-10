@@ -99,7 +99,7 @@ public class ActionSheetDialog {
 	 * @return
 	 */
 	public ActionSheetDialog addSheetItem(String strItem, SheetItemColor color,
-			OnSheetItemClickListener listener) {
+                                          OnSheetItemClickListener listener) {
 		if (sheetItemList == null) {
 			sheetItemList = new ArrayList<SheetItem>();
 		}

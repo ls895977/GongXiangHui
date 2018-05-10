@@ -1,15 +1,23 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -27,6 +35,7 @@ public class ProtocolActivity extends BaseActivity {
     @BindView(R.id.ll_protocol_main)
     LinearLayout llProtocolMain;
     private WebView webView;
+    private Dialog loadingDialog;
 
 
     @Override
@@ -36,6 +45,29 @@ public class ProtocolActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+
+        loadingDialog = createLoadingDialog(ProtocolActivity.this, "加载中...");
+        loadingDialog.show();
+
+    }
+
+    private Dialog createLoadingDialog(Context context, String msg) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
+        LinearLayout layout = (LinearLayout) v.findViewById(R.id.dialog_view);//加载布局
+        // main.xml中的ImageView
+        ImageView spaceshipImage = (ImageView) v.findViewById(R.id.dialog_img);
+        TextView tipTextView = (TextView) v.findViewById(R.id.tipTextView);// 提示文字
+        //加载动画
+        final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
+        //使用imageView显示动画
+        spaceshipImage.startAnimation(animation);
+        tipTextView.setText(msg);  //设置加载信息
+        final Dialog loadingDialog = new Dialog(context);
+        loadingDialog.setCancelable(true);  //不可以用返回键 取消
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
+        return loadingDialog;
 
     }
 
@@ -51,7 +83,6 @@ public class ProtocolActivity extends BaseActivity {
                 finish();
             }
         });
-
         webView = new WebView(this);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -72,6 +103,7 @@ public class ProtocolActivity extends BaseActivity {
                 activity.setProgress(progress * 100);
                 if (progress == 100) {
                     activity.setTitle(title);
+                    loadingDialog.dismiss();
                 }
             }
         });

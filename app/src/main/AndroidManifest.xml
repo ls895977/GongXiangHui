@@ -200,7 +200,8 @@
             android:name=".fragments.homeFragment.activity.NewSearchActivity"
             android:launchMode="singleTask" />
 
-
+<activity android:name=".fragments.locationFragment.activity.VideoListActivity"
+    android:launchMode="singleTask"/>
     </application>
 
 
