@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qunxianghui.gxh">
+          package="com.qunxianghui.gxh">
     <!--高德相应权限-->
     <!--用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
@@ -11,7 +11,7 @@
     <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
     <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
     <!--用于访问网络，网络定位需要上网-->
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -24,14 +24,14 @@
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <!-- 震动权限 -->
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <!--蓝牙缺陷-->
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
         android:name="com.qunxianghui.gxh.base.MyApplication"
@@ -47,11 +47,14 @@
             android:name="com.amap.api.v2.apikey"
             android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
+        <!--高德地图-->
+
         <!--微信-->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"/>
+        <!--微信-->
 
         <!-- 注册QQActivity -->
         <activity
@@ -60,148 +63,189 @@
             android:noHistory="true">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="1106763297" /> <!-- 开放平台获取的APPID -->
+                <data android:scheme="1106763297"/> <!-- 开放平台获取的APPID -->
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <!-- 注册QQActivity -->
+
+
+        <activity android:name="com.qunxianghui.gxh.activity.WelcomActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
 
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"/>
 
-        </activity>
         <activity
             android:name="com.qunxianghui.gxh.activity.BianMinActiviry"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.activity.ScanActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.RegistActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.SeekPasswordActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.LiftStyleActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.locationFragment.activity.PublishStateActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MessageGatherActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name="com.qunxianghui.gxh.activity.WelcomActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/Base.Theme.AppCompat"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MineIssueActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.InviteFrientActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.CooperationCallActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAddTabActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity"
-            android:launchMode="standard" />
+            android:launchMode="standard"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.GestureDetectorActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
 
         <activity
             android:name="com.qunxianghui.gxh.activity.NewsDetailActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.CarDetailActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
 
         <activity
             android:name=".activity.BianMinServiceActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name=".fragments.mineFragment.activity.MemberUpActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name=".fragments.homeFragment.activity.LocationServiceActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name=".fragments.locationFragment.activity.InFormActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name=".fragments.homeFragment.activity.NewSearchActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
 
-<activity android:name=".fragments.locationFragment.activity.VideoListActivity"
-    android:launchMode="singleTask"/>
+        <activity
+            android:name=".fragments.locationFragment.activity.VideoListActivity"
+            android:launchMode="singleTask"/>
+
     </application>
 
 
