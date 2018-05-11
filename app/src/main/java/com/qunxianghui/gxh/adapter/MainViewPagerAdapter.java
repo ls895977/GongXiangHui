@@ -2,13 +2,14 @@ package com.qunxianghui.gxh.adapter;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+
 import java.util.List;
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class MainViewPagerAdapter extends FragmentPagerAdapter {
+public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments;
     private List<String> mTitles;
 
