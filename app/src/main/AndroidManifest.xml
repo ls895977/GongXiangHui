@@ -45,8 +45,8 @@
         <!--android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>
-        <service android:name="com.amap.api.location.APSService"></service>
+            android:value="9720a15c1ffd088110c1dd98ead4ce9b"/>
+        <service android:name="com.amap.api.location.APSService"/>
         <!--高德地图-->
 
         <!--微信-->
