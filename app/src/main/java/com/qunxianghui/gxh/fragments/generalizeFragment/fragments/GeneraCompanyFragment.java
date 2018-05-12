@@ -77,7 +77,7 @@ public class GeneraCompanyFragment extends BaseFragment {
     /** ==================viewpager滑动监听===================== */
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        public void onPageSelected(int position) {
 
             if (position == 0) {
                 rbGeneraCompanyYuebang.setChecked(true);

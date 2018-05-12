@@ -20,4 +20,9 @@ public abstract class PageChangeListener implements ViewPager.OnPageChangeListen
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
 }
