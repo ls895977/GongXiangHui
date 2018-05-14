@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -9,7 +10,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.listener.PageChangeListener;
-import com.qunxianghui.gxh.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class GeneraCompanyFragment extends BaseFragment {
     @BindView(R.id.rg_genera_company_paihang)
     RadioGroup rgGeneraCompanyPaihang;
     @BindView(R.id.vp_generalize_company_main)
-    MyViewPager vpGeneralizeCompanyMain;
+    ViewPager vpGeneralizeCompanyMain;
 
     @Override
     public int getLayoutId() {

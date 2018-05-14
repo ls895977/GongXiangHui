@@ -45,6 +45,8 @@ public class MineMessageFragment extends BaseFragment {
         });
 
         xrecyclerMineMessage.setAdapter(mineMessageAdapter);
+
+
     }
 
     @Override

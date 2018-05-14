@@ -122,8 +122,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-            super.onPageSelected(position);
-            Log.d("hzq", "onPageSelected--> " + position);
             switch (position) {
                 case 0:
                     rbGeneraPersonal.setChecked(true);
