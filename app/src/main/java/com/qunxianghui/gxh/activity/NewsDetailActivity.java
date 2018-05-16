@@ -56,7 +56,7 @@ import butterknife.ButterKnife;
 
 import static com.qunxianghui.gxh.base.MyApplication.WeiXinAPP_ID;
 
-/**
+/**新闻详情界面
  * Created by Administrator on 2018/4/9 0009.
  */
 

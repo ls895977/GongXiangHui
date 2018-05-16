@@ -26,7 +26,7 @@ import com.yzq.zxinglibrary.common.Constant;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
+/** 二维码扫描界面
  * Created by Administrator on 2018/3/10 0010.
  */
 

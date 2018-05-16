@@ -11,7 +11,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 
 
-/**
+/**欢迎界面 倒计时
  * Created by Administrator on 2018/3/26 0026.
  */
 

@@ -52,11 +52,11 @@ public class MainActivity extends BaseActivity {
 
     private void initViewPagers() {
         final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new HomeFragment());
-        fragments.add(new LocationFragment());
-        fragments.add(new IssureFragment());
-        fragments.add(new GeneralizeFragment());
-        fragments.add(new MineFragment());
+        fragments.add(new HomeFragment()); //首尔
+        fragments.add(new LocationFragment()); //本地圈
+        fragments.add(new IssureFragment()); //发布fragment
+        fragments.add(new GeneralizeFragment()); //推广页面
+        fragments.add(new MineFragment()); //我的界面
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);
         vpMain.setAdapter(adapter);
         /**禁止滑动*/
@@ -97,6 +97,12 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * 二次点击返回
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
