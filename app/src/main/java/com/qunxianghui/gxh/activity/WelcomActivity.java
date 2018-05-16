@@ -60,7 +60,14 @@ private Handler handler=new Handler(){
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_text);
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
+
+
+
+
+
     }
+
+
 
     @Override
     protected void initDatas() {
