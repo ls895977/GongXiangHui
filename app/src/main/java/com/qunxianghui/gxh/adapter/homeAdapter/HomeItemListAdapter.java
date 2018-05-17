@@ -9,8 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.TestRecyclerAdapter;
-import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 
 import java.util.List;
@@ -63,6 +61,21 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+
+        MoreTypeBean moreTypeBean = mData.get(position);
+
+         RecyclerView.ViewHolder viewHolder;
+
+        if (moreTypeBean.type == 0) {
+            viewHolder = (PullImageHolder) holder;
+
+        } else if (moreTypeBean.type == 1) {
+            viewHolder = (RightImageHolder) holder;
+
+        } else {
+            viewHolder = (ThreeImageHolder) holder;
+        }
+
        if(onItemClickListener!=null){
            holder.itemView.setOnClickListener(new View.OnClickListener() {
                @Override
