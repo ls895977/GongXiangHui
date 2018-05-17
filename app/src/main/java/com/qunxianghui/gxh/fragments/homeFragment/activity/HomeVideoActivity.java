@@ -6,10 +6,17 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.AdapterVideoList;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
+import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.VideoConstant;
+import com.qunxianghui.gxh.utils.GsonUtil;
 
 import cn.jzvd.JZVideoPlayer;
 
@@ -22,6 +29,7 @@ public class HomeVideoActivity extends BaseActivity {
     private SensorManager sensorManager;
     private JZVideoPlayer.JZAutoFullscreenListener sensorEventListener;
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_video;
@@ -29,15 +37,31 @@ public class HomeVideoActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-//               JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
-//        jzVideoPlayerStandard.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
-//                , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子闭眼睛");
-//          jzVideoPlayerStandard.thumbImageView.setImageURI(Uri.parse("http://p.qpic.cn/videoyun/0/2449_43b6f6969803
+
         listView = findViewById(R.id.listview);
-        listView.setAdapter(new AdapterVideoList(this,
-                VideoConstant.videoUrls[0],
-                VideoConstant.videoTitles[0],
-                VideoConstant.videoThumbs[0]));
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorEventListener = new JZVideoPlayer.JZAutoFullscreenListener();
+    }
+
+    @Override
+    protected void initDatas() {
+        //首页视频数据
+        OkGo.<String>get(Constant.HOME_VIDEO_LIST_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseData(response.body());
+                    }
+                });
+
+    }
+
+    private void parseData(String body) {
+        final HomeVideoListBean homeVideoListBean = GsonUtil.parseJsonWithGson(body, HomeVideoListBean.class);
+        final HomeVideoListBean.DataBean videoData = homeVideoListBean.getData();
+
+        listView.setAdapter(new AdapterVideoList(mContext,videoData.getList()));
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -50,13 +74,6 @@ public class HomeVideoActivity extends BaseActivity {
                 JZVideoPlayer.onScrollReleaseAllVideos(view, firstVisibleItem, visibleItemCount, totalItemCount);
             }
         });
-
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorEventListener = new JZVideoPlayer.JZAutoFullscreenListener();
-    }
-
-    @Override
-    protected void initDatas() {
 
     }
 

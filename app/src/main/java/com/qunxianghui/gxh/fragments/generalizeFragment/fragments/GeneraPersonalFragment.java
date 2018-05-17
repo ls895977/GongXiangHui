@@ -8,11 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.GsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     @BindView(R.id.xrecycler_genera_personal_list)
     XRecyclerView xrecyclerGeneraPersonalList;
     Unbinder unbinder;
+    private List<HomeNewListBean.DataBean> data;
 
     @Override
     public int getLayoutId() {
@@ -49,6 +56,15 @@ public class GeneraPersonalFragment extends BaseFragment {
             more.pic=icons[i];
             more.type=random.nextInt(3);
             mDatas.add(more);
+
+            //首页新闻数据
+            OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            parseData(response.body());
+                        }
+                    });
         }
 
         xrecyclerGeneraPersonalList.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -66,6 +82,15 @@ public class GeneraPersonalFragment extends BaseFragment {
             }
         });
         xrecyclerGeneraPersonalList.setAdapter(adapter);
+    }
+
+
+
+    private void parseData(String body) {
+
+        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+        data = homeNewListBean.getData();
+
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.mineAdapter.TestRecyclerAdapter;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 
 import java.util.List;
@@ -23,9 +25,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     public static final int TYPE_RIGHT_IMAGE = 1;
     public static final int TYPE_THREE_IMAGE = 2;
     private List<MoreTypeBean> mData;
-
+    private List<HomeNewListBean.DataBean> newsList;
     private View view;
    private OnItemClickListener onItemClickListener;
+    private HomeNewListBean.DataBean dataBean;
 
     public HomeItemListAdapter(List<MoreTypeBean> mData) {
         this.mData = mData;
@@ -36,14 +39,14 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener{
-        void onClick( int position);
-        void onLongClick( int position);
+        void onClick(int position);
+        void onLongClick(int position);
     }
 
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType ) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //创建不同的 ViewHolder
         //根据viewtype来创建条目
 
@@ -62,21 +65,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
-        MoreTypeBean moreTypeBean = mData.get(position);
 
-         RecyclerView.ViewHolder viewHolder;
 
-        if (moreTypeBean.type == 0) {
-            viewHolder = (PullImageHolder) holder;
-
-        } else if (moreTypeBean.type == 1) {
-            viewHolder = (RightImageHolder) holder;
-
-        } else {
-            viewHolder = (ThreeImageHolder) holder;
-        }
-
-       if(onItemClickListener!=null){
+        if(onItemClickListener!=null){
            holder.itemView.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {

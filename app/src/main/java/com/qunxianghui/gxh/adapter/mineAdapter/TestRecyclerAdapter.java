@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  */
 
 public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapter.MyViewHolder> {
-    private List<String> mDatas;
+    private List<HomeNewListBean.DataBean> mDatas;
     private Context mContext;
     private LayoutInflater mInflayter;
     private OnMyItemClickListener listener;
@@ -34,7 +35,7 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
     }
 
 
-    public TestRecyclerAdapter(List<String> mDatas, Context mContext) {
+    public TestRecyclerAdapter(List<HomeNewListBean.DataBean> mDatas, Context mContext) {
         this.mDatas = mDatas;
         this.mContext = mContext;
         mInflayter = LayoutInflater.from(mContext);
@@ -52,7 +53,7 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        holder.textView.setText(mDatas.get(position));
+        holder.textView.setText( mDatas.get(position).getTitle());
         if (listener != null) {
             holder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,8 +81,6 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
 
     //添加增加删除item的方法
     public void addItem(int position) {
-        mDatas.add(position, "New Data");
-
         notifyItemInserted(position);
         notifyItemRangeChanged(position, mDatas.size());
     }

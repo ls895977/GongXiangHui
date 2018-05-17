@@ -77,6 +77,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
 
+    private List<HomeNewListBean.DataBean> data;
+    private HomeItemListAdapter homeItemListAdapter;
+
     @Override
     public int getLayoutId() {
 
@@ -106,30 +109,32 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
         }
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
-        HomeItemListAdapter adapter = new HomeItemListAdapter(mDatas);
+
         View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
         View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-        adapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
+        if (homeItemListAdapter==null){
+            homeItemListAdapter = new HomeItemListAdapter(mDatas);
+            homeItemListAdapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
+                @Override
+                public void onClick(int position) {
 
-                Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
-                toActivity(NewsDetailActivity.class);
-            }
+                    Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
+                    toActivity(NewsDetailActivity.class);
+                }
 
-            @Override
-            public void onLongClick(int position) {
-                Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
-            }
-        });
-        recyclerviewList.setAdapter(adapter);
+                @Override
+                public void onLongClick(int position) {
+                    Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        recyclerviewList.setAdapter(homeItemListAdapter);
         recyclerviewList.addHeaderView(headerNavigator);
         recyclerviewList.addHeaderView2(headerVp);
         recyclerviewList.addFooterView(footer);
         recyclerviewList.setEmptyView(empty);
-
 //找控件
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
 
@@ -170,6 +175,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     private void parseData(String body) {
         final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+        data = homeNewListBean.getData();
+
+
 
     }
 
@@ -192,13 +200,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-                        toActivity(LocationServiceActivity.class);
+//                        toActivity(LocationServiceActivity.class);
 
-//                        Log.e(TAG,"...................本地服务怎么找不到");
-//                        intent = new Intent(mActivity, ProtocolActivity.class);
-//                        intent.putExtra("title", iconName[position]);
-//                        intent.putExtra("url", Constant.BenDiService);
-//                        startActivity(intent);
+                        Log.e(TAG,"...................本地服务怎么找不到");
+                        intent = new Intent(mActivity, ProtocolActivity.class);
+                        intent.putExtra("title", iconName[position]);
+                        intent.putExtra("url", Constant.BenDiService);
+                        startActivity(intent);
                         break;
                     case 3:
                         //跳转优惠

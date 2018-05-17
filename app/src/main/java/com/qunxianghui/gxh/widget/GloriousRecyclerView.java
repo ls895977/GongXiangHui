@@ -133,7 +133,7 @@ public class GloriousRecyclerView extends RecyclerView {
         private int ITEM_TYPE_FOOTER = 3;
         private int ITEM_TYPE_EMPTY = 4;
 
-        //聪明的人会发现我们这里用了一个装饰模式
+               //聪明的人会发现我们这里用了一个装饰模式
         public GloriousAdapter(Adapter originalAdapter) {
             mOriginalAdapter = originalAdapter;
         }

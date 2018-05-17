@@ -59,6 +59,8 @@ public class Constant {
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL=BASE_URL+"news/getList";
+    //首页视频列表
+    public static final String HOME_VIDEO_LIST_URL=BASE_URL+"video/getList";
 
 
 }
