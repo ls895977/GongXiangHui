@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.TestRecyclerAdapter;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 
