@@ -7,14 +7,10 @@ package com.qunxianghui.gxh.config;
 public class Constant {
     public static final long TIME_OUT = 3000;//网络请求超时时间
     public static final String URL = "http://112.124.22.238:8081/course_api/wares/hot?pageSize=8&curPage=1";
-
     public static final String SERVE_URL = "http://www.zzbcar.com/";
-
     /*主页*/
     public static final String API_MAIN_PAGE = SERVE_URL + "zzb/app/compound/mainpage";
-
     public static final String API_CAR_DETAIL = SERVE_URL + "zzb/app/car/queryCar";
-
     /*车辆品牌*/
     public static final String API_CAR_BRAND = SERVE_URL + "zzb/app/car/brand";
 
@@ -53,8 +49,16 @@ public class Constant {
     public static final String HPTEL_ZHUSU = "http://app.zzbcar.com/zzb/helpcenter/user8.html";
 
     //首页链接的跳转
-
     public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
     public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
+
+
+
+
+// 真正的开发   先前的先忽略
+    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    //首页新闻列表
+    public static final String HOME_NEWS_LIST_URL=BASE_URL+"news/getList";
+
 
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.TestRecyclerAdapter;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     public static final int TYPE_RIGHT_IMAGE = 1;
     public static final int TYPE_THREE_IMAGE = 2;
     private List<MoreTypeBean> mData;
+
     private View view;
    private OnItemClickListener onItemClickListener;
 
@@ -43,7 +45,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType ) {
         //创建不同的 ViewHolder
         //根据viewtype来创建条目
 

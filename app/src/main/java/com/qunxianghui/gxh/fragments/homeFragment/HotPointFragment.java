@@ -20,12 +20,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
+import com.qunxianghui.gxh.bean.home.MainPageBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
@@ -35,6 +40,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.GloriousRecyclerView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -87,6 +93,17 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             more.pic = icons[i];
             more.type = random.nextInt(3);
             mDatas.add(more);
+
+            //首页新闻数据
+            OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            parseData(response.body());
+                        }
+                    });
+
+
         }
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
         HomeItemListAdapter adapter = new HomeItemListAdapter(mDatas);
@@ -101,6 +118,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
                 toActivity(NewsDetailActivity.class);
             }
+
             @Override
             public void onLongClick(int position) {
                 Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
@@ -149,13 +167,20 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         //加載首頁那个导航图
         initGridHomeNavigator();
     }
+
+    private void parseData(String body) {
+        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+
+    }
+
+
     private void initGridHomeNavigator() {
         final BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
         grid_home_navigator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=null;
+                Intent intent = null;
                 switch (position) {
                     case 0:
                         //跳转天气
@@ -167,7 +192,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-                      toActivity(LocationServiceActivity.class);
+                        toActivity(LocationServiceActivity.class);
 
 //                        Log.e(TAG,"...................本地服务怎么找不到");
 //                        intent = new Intent(mActivity, ProtocolActivity.class);
@@ -180,9 +205,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 //                        toActivity(SalerActivity.class);
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                    intent.putExtra("url", Constant.YouXuan);
-                    startActivity(intent);
-                    break;
+                        intent.putExtra("url", Constant.YouXuan);
+                        startActivity(intent);
+                        break;
                     case 4:
                         //跳转便民
                         toActivity(BianMinServiceActivity.class);
