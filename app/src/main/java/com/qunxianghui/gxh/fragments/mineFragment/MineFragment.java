@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
@@ -101,6 +104,17 @@ public class MineFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (LoginMsgHelper.isLogin(getActivity())) {
+            LoginBean result = LoginMsgHelper.getResult(getActivity());
+            mineQuicklyLogin.setText(String.valueOf(result.getData().getMobile()));
+            Logger.d("onResume-->:" + result);
+        }
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect,

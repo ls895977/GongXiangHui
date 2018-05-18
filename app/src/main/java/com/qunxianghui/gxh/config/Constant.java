@@ -53,14 +53,21 @@ public class Constant {
     public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
 
 
-
-
-// 真正的开发   先前的先忽略
+    // 真正的开发   先前的先忽略
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //首页新闻列表
-    public static final String HOME_NEWS_LIST_URL=BASE_URL+"news/getList";
+    public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页视频列表
-    public static final String HOME_VIDEO_LIST_URL=BASE_URL+"video/getList";
+    public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
+    //获取全部频道
+    public static final String CHANNEL_GETALL = BASE_URL + "channel/getAll";
+    //频道列表（用户订阅的频道）
+    public static final String CHANNEL_GETLIST = BASE_URL + "channel/getList";
+    //添加频道
+    public static final String CHANNEL_ADD_CHANNEL = BASE_URL + "channel/addChannel";
+    //添加频道
+    public static final String CHANNEL_DELETE_CHANNEL = BASE_URL + "channel/delChannel";
+
     //注册页面发送验证码
     public static final String REFIST_SEND_CODE_URL=BASE_URL+"captcha/send";
     //注册接口

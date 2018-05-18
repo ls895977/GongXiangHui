@@ -1,9 +1,11 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,18 +17,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.OtherAdapter;
 import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
+import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.SystemUtil;
 import com.qunxianghui.gxh.widget.DragGrid;
 import com.qunxianghui.gxh.widget.OtherGridView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description：对tab进行添加删除排序操作
@@ -55,11 +68,18 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
      */
     boolean isMove = false;
+    private String mAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.channel);
+
+        if (LoginMsgHelper.isLogin(this)) {
+            LoginBean result = LoginMsgHelper.getResult(this);
+            mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
+            Logger.d("onCreate-->:" + mAccessToken);
+        }
         initView();
         initData();
     }
@@ -68,15 +88,79 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
-        otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getOtherChannel());
-        userAdapter = new DragAdapter(this, userChannelList);
-        userGridView.setAdapter(userAdapter);
-        otherAdapter = new OtherAdapter(this, otherChannelList);
-        otherGridView.setAdapter(otherAdapter);
+
+
+        //获取全部频道
+        OkGo.<String>get(Constant.CHANNEL_GETALL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                getAllData(response.body());
+            }
+
+        });
+
+        //频道列表（用户订阅的频道）
+        OkGo.<String>get(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                getListData(response.body());
+            }
+
+
+        });
+
+
+        //        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
+        //        userAdapter = new DragAdapter(this, userChannelList);
+        //        userGridView.setAdapter(userAdapter);
+        //        otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getOtherChannel());
+        //        otherAdapter = new OtherAdapter(this, otherChannelList);
+        //        otherGridView.setAdapter(otherAdapter);
         //设置GRIDVIEW的ITEM的点击监听
         otherGridView.setOnItemClickListener(this);
         userGridView.setOnItemClickListener(this);
+    }
+
+
+    private void getAllData(String body) {
+
+        Logger.d("getAllData-->: " + body);
+
+        final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
+        if (null != bean) {
+            List<ChannelGetallBean.DataBean> datas = bean.getData();
+
+            for (int i = 0; i < datas.size(); i++) {
+                ChannelGetallBean.DataBean dataBean = datas.get(i);
+                ChannelItem item = new ChannelItem(i, dataBean.getChannel_name(), dataBean.getChannel_id(), 1);
+                otherChannelList.add(item);
+            }
+
+            otherAdapter = new OtherAdapter(this, otherChannelList);
+            otherGridView.setAdapter(otherAdapter);
+
+
+        }
+
+    }
+
+
+    private void getListData(String body) {
+        Logger.d("getAllData-->: " + body);
+        final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
+        if (null != bean) {
+            List<ChannelGetallBean.DataBean> datas = bean.getData();
+
+            for (int i = 0; i < datas.size(); i++) {
+                ChannelGetallBean.DataBean dataBean = datas.get(i);
+                ChannelItem item = new ChannelItem(i, dataBean.getChannel_name(), dataBean.getChannel_id(), 1);
+                userChannelList.add(item);
+            }
+
+            userAdapter = new DragAdapter(this, userChannelList);
+            userGridView.setAdapter(userAdapter);
+
+        }
     }
 
     /**
@@ -90,6 +174,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     /**
      * GRIDVIEW对应的ITEM点击监听接口
      */
+    @SuppressLint("MissingPermission")
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
         //如果点击的时候，之前动画还没结束，那么就让点击事件无效
@@ -107,6 +192,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                         newTextView.getLocationInWindow(startLocation);
                         final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);//获取点击的频道内容
                         otherAdapter.setVisible(false);
+
+
                         //添加到最后一个
                         otherAdapter.addItem(channel);
                         new Handler().postDelayed(new Runnable() {
@@ -124,6 +211,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     }
                 }
                 break;
+
+
             case R.id.otherGridView:
                 // 其它GridView
                 final ImageView moveImageView = getView(view);
@@ -133,21 +222,49 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     newTextView.getLocationInWindow(startLocation);
                     final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
                     userAdapter.setVisible(false);
-                    //添加到最后一个
-                    userAdapter.addItem(channel);
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            try {
-                                int[] endLocation = new int[2];
-                                //获取终点的坐标
-                                userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                                MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
-                                otherAdapter.setRemove(position);
-                            } catch (Exception localException) {
-                            }
-                        }
-                    }, 50L);
+
+                    Logger.d("onItemClick-->:" + channel.getOrderId());
+                    Logger.d("onItemClick-->:" + SystemUtil.getIMEI(this));
+                    Logger.d("onItemClick-->:" + SystemUtil.getSystemModel());
+                    String imei = SystemUtil.getIMEI(this);
+
+                    if (!TextUtils.isEmpty(imei)) {
+                        //频道列表（用户订阅的频道）
+                        OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL).
+                                cacheKey("cachePostKey").
+                                cacheMode(CacheMode.DEFAULT).
+                                params("X-accesstoken", mAccessToken).
+                                params("X-systemType", "android").
+                                params("X-deviceModel", SystemUtil.getSystemModel()).
+                                params("X-deviceId", imei).
+                                params("channel_id", channel.getOrderId()).
+                                execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        Logger.d("onSuccess-->:" + response.body().toString());
+
+                                        //添加到最后一个
+                                        userAdapter.addItem(channel);
+                                        new Handler().postDelayed(new Runnable() {
+                                            public void run() {
+                                                try {
+                                                    int[] endLocation = new int[2];
+                                                    //获取终点的坐标
+                                                    userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                                                    MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
+                                                    otherAdapter.setRemove(position);
+                                                } catch (Exception localException) {
+                                                }
+                                            }
+                                        }, 50L);
+
+                                    }
+                                });
+                    }
+
                 }
+
+
                 break;
             default:
                 break;
@@ -156,15 +273,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
     /**
      * 点击ITEM移动动画
-     *
-     * @param moveView
-     * @param startLocation
-     * @param endLocation
-     * @param moveChannel
-     * @param clickGridView
      */
-    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ChannelItem moveChannel,
-                          final GridView clickGridView) {
+    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ChannelItem moveChannel, final GridView clickGridView) {
         int[] initLocation = new int[2];
         //获取传递过来的VIEW的坐标
         moveView.getLocationInWindow(initLocation);
@@ -172,9 +282,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
         final ViewGroup moveViewGroup = getMoveViewGroup();
         final View mMoveView = getMoveView(moveViewGroup, moveView, initLocation);
         //创建移动动画
-        TranslateAnimation moveAnimation = new TranslateAnimation(
-                startLocation[0], endLocation[0], startLocation[1],
-                endLocation[1]);
+        TranslateAnimation moveAnimation = new TranslateAnimation(startLocation[0], endLocation[0], startLocation[1], endLocation[1]);
         moveAnimation.setDuration(300L);//动画时间
         //动画配置
         AnimationSet moveAnimationSet = new AnimationSet(true);
@@ -212,11 +320,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
     /**
      * 获取移动的VIEW，放入对应ViewGroup布局容器
-     *
-     * @param viewGroup
-     * @param view
-     * @param initLocation
-     * @return
      */
     private View getMoveView(ViewGroup viewGroup, View view, int[] initLocation) {
         int x = initLocation[0];
@@ -242,9 +345,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
     /**
      * 获取点击的Item的对应View，
-     *
-     * @param view
-     * @return
      */
     private ImageView getView(View view) {
         view.destroyDrawingCache();

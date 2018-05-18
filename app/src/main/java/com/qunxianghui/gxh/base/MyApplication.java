@@ -2,22 +2,22 @@ package com.qunxianghui.gxh.base;
 
 
 import android.app.Application;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 
-
 import com.lljjcoder.style.citylist.utils.CityListLoader;
+import com.lzy.okgo.OkGo;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
-
-import com.lzy.okgo.OkGo;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
 
 import java.util.concurrent.TimeUnit;
 
@@ -69,6 +69,12 @@ public class MyApplication extends Application {
          */
         CityListLoader.getInstance().loadProData(this);
 
+
+
+        /**
+         * 创建日志
+         */
+        initLogger();
     }
 
     /**
@@ -103,8 +109,20 @@ public class MyApplication extends Application {
         OkGo.getInstance().setOkHttpClient(builder.build());
     }
 
-    {
+    private void initLogger() {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
+                .methodCount(1)         // (Optional) How many method line to show. Default 2
+                .methodOffset(0)        // (Optional) Hides internal method calls up to offset. Default 5
+                .tag("hzq")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .build();
 
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+            @Override
+            public boolean isLoggable(int priority, String tag) {
+                return true; //关闭打印日志设置为false
+            }
+        });
     }
 
 }

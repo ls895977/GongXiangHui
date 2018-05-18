@@ -3,10 +3,10 @@ package com.qunxianghui.gxh.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
-
-import com.qunxianghui.gxh.bean.SigninBean;
 import com.google.gson.Gson;
+import com.qunxianghui.gxh.bean.SigninBean;
 
 
 
@@ -132,6 +132,14 @@ public final class SPUtils {
             return null;
         } else {
             return null;
+        }
+    }
+
+    /**==================清除保存的数据=====================*/
+    public static void removePreference(Context context,  final String key) {
+        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        if(settings.contains(key)){
+            settings.edit().remove(key).commit();
         }
     }
 }

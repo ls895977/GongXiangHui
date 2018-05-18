@@ -9,11 +9,27 @@ public class LoginBean implements Serializable {
     /**
      * code : 0
      * message : 登录成功
-     * data : {"id":1000175,"level_id":1,"sex":1,"address":"","nick":"","username":"","mobile":13116779507,"email":"","avatar":"","company_id":0,"company_info":[],"accessTokenInfo":{"access_token":"eQl67k3p7FRS3Dinuz8g9XY22jIahU5d","expires_time":1527236774,"client":{"app_key":"100","id":1000175,"mobile":13116779507,"deviceId":""}}}
+     * data : {"id":1000175,"level_id":1,"sex":1,"address":"","nick":"","username":"","mobile":13116779507,"email":"","avatar":"","company_id":0,"company_info":[],
+     * "accessTokenInfo":{"access_token":"YIgpCwLf9TSq78HvDt0aEi3b5Fn6O29m","expires_time":1527240488,"client":{"app_key":"100","id":1000175,"mobile":13116779507,"deviceId":""}}}
      */
 
     private int code;
     private String message;
+    /**
+     * id : 1000175
+     * level_id : 1
+     * sex : 1
+     * address :
+     * nick :
+     * username :
+     * mobile : 13116779507
+     * email :
+     * avatar :
+     * company_id : 0
+     * company_info : []
+     * accessTokenInfo : {"access_token":"YIgpCwLf9TSq78HvDt0aEi3b5Fn6O29m","expires_time":1527240488,"client":{"app_key":"100","id":1000175,"mobile":13116779507,"deviceId":""}}
+     */
+
     private DataBean data;
 
     public int getCode() {
@@ -41,21 +57,6 @@ public class LoginBean implements Serializable {
     }
 
     public static class DataBean {
-        /**
-         * id : 1000175
-         * level_id : 1
-         * sex : 1
-         * address :
-         * nick :
-         * username :
-         * mobile : 13116779507
-         * email :
-         * avatar :
-         * company_id : 0
-         * company_info : []
-         * accessTokenInfo : {"access_token":"eQl67k3p7FRS3Dinuz8g9XY22jIahU5d","expires_time":1527236774,"client":{"app_key":"100","id":1000175,"mobile":13116779507,"deviceId":""}}
-         */
-
         private int id;
         private int level_id;
         private int sex;
@@ -66,6 +67,12 @@ public class LoginBean implements Serializable {
         private String email;
         private String avatar;
         private int company_id;
+        /**
+         * access_token : YIgpCwLf9TSq78HvDt0aEi3b5Fn6O29m
+         * expires_time : 1527240488
+         * client : {"app_key":"100","id":1000175,"mobile":13116779507,"deviceId":""}
+         */
+
         private AccessTokenInfoBean accessTokenInfo;
         private List<?> company_info;
 
@@ -166,14 +173,15 @@ public class LoginBean implements Serializable {
         }
 
         public static class AccessTokenInfoBean {
-            /**
-             * access_token : eQl67k3p7FRS3Dinuz8g9XY22jIahU5d
-             * expires_time : 1527236774
-             * client : {"app_key":"100","id":1000175,"mobile":13116779507,"deviceId":""}
-             */
-
             private String access_token;
             private int expires_time;
+            /**
+             * app_key : 100
+             * id : 1000175
+             * mobile : 13116779507
+             * deviceId :
+             */
+
             private ClientBean client;
 
             public String getAccess_token() {
@@ -201,13 +209,6 @@ public class LoginBean implements Serializable {
             }
 
             public static class ClientBean {
-                /**
-                 * app_key : 100
-                 * id : 1000175
-                 * mobile : 13116779507
-                 * deviceId :
-                 */
-
                 private String app_key;
                 private int id;
                 private long mobile;
@@ -244,7 +245,28 @@ public class LoginBean implements Serializable {
                 public void setDeviceId(String deviceId) {
                     this.deviceId = deviceId;
                 }
+
+                @Override
+                public String toString() {
+                    return "ClientBean{" + "app_key='" + app_key + '\'' + ", id=" + id + ", mobile=" + mobile + ", deviceId='" + deviceId + '\'' + '}';
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "AccessTokenInfoBean{" + "access_token='" + access_token + '\'' + ", expires_time=" + expires_time + ", client=" + client + '}';
             }
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" + "id=" + id + ", level_id=" + level_id + ", sex=" + sex + ", address='" + address + '\'' + ", nick='" + nick + '\'' + ", username='" + username + '\'' + ", mobile="
+                    + mobile + ", email='" + email + '\'' + ", avatar='" + avatar + '\'' + ", company_id=" + company_id + ", accessTokenInfo=" + accessTokenInfo + ", company_info=" + company_info + '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "LoginBean{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
     }
 }
