@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
+import com.qunxianghui.gxh.bean.mine.RegistBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
@@ -47,6 +49,7 @@ import butterknife.ButterKnife;
  */
 
 public class RegistActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.title_leftIco)
     ImageView titleLeftIco;
     @BindView(R.id.title_text)
@@ -187,6 +190,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             case R.id.bt_register_quickly:
                 String phone = etRegistPhone.getText().toString().trim();
                 String pass = etRegisterPassword.getText().toString().trim();
+                final String registCode = etRegistCode.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pass)) {
                     asyncShowToast("手机号和密码不能为空");
                 } else if (!REGutil.checkCellphone(phone)){
@@ -199,7 +203,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     } else {
                         if (userDao.dbQueryOneByUsername(phone) == null) {
                             userDao.dbInsert(phone, pass);
-                            asyncShowToast("注册成功" + phone + ",密码:" + pass);
+//                            asyncShowToast("注册成功" + phone + ",密码:" + pass);
+                            RegistUser(phone,pass,registCode);
                         } else {
                             asyncShowToast("该用户已经注册");
                         }
@@ -213,6 +218,26 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    private void RegistUser(String phone, String pass,String registCode) {
+
+        OkGo.<String>post(Constant.REGIST_URL).tag(TAG)
+                .cacheKey("cachePostKey")
+                .cacheMode(CacheMode.DEFAULT)
+                .params("mobile",phone)
+                .params("password",pass)
+                .params("captcha",registCode)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        final RegistBean registBean = GsonUtil.parseJsonWithGson(response.body(), RegistBean.class);
+                        if (registBean.getCode()==0){
+                            asyncShowToast("注册成功");
+                            toActivity(LoginActivity.class);
+                        }
+                    }
+                });
+    }
+
     private void getVertifiCode() {
         //同步更新界面显示，倒计时验证码
         mPhone = etRegistPhone.getText().toString().trim();
@@ -220,12 +245,17 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        final String url = OkHttpUtil.obtainGetUrl(Constant.API_GET_CODE, "mobile", mPhone);
-        OkGo.<String>get(url).tag(TAG).execute(new StringCallback() {
+
+        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
+                 .cacheKey("cachePostKey")
+                .cacheMode(CacheMode.DEFAULT)
+                .params("mobile",mPhone)
+                .params("type",1)
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
-                if (responseBean.getErrno() == 0) {
+                if (responseBean.getCode() == 0) {
                     handler.sendEmptyMessage(MSG_SEND_SUCCESS);
 
                 } else {

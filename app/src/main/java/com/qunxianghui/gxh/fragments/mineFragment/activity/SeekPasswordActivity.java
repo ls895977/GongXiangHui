@@ -98,14 +98,13 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onSuccess(Response<String> response) {
                 final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
-                if (responseBean.getErrno() == 0) {
+                if (responseBean.getCode() == 0) {
                     handler.sendEmptyMessage(MSG_SEND_SUCCESS);
 
                 } else {
                     handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                 }
             }
-
             @Override
             public void onError(Response<String> response) {
                 handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
@@ -139,7 +138,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             super.handleMessage(msg);
         }
     }
-
     private void startTimer() {
 
         if (time > 0) {

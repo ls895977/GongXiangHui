@@ -12,14 +12,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.User;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.bean.mine.RegistBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.StudentDao;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.third.sina.Constants;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.sina.weibo.sdk.WbSdk;
@@ -144,13 +152,14 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.bt_login_login:
                 phone = etLoginPhone.getText().toString().trim();
-                password = etLoginPassword.getText().toString().trim();
+                    password = etLoginPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
+                    if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
                 } else if (!REGutil.checkCellphone(phone)) {
                     asyncShowToast("手机号格式不正确");
                 } else {
+                     doLogin(phone, password);
                     final User user = userDao.dbQueryOneByUsername(phone);
                     if (userDao.dbQueryOneByUsername(phone) == null) {
                         Toast.makeText(mContext, "此用户不存在", Toast.LENGTH_SHORT).show();
@@ -160,7 +169,7 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
                             toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
-                        }
+                    }
                     }
                 }
 
@@ -168,8 +177,6 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_login_regist:
                 intent = new Intent(this, RegistActivity.class);
                 startActivity(intent);
-
-
                 break;
             case R.id.tv_login_forget_password:
                 intent = new Intent(this, SeekPasswordActivity.class);
@@ -194,13 +201,43 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    private void doLogin(String phone, String password) {
+
+
+        OkGo.<String>get(Constant.LOGIN_URL).tag(TAG)
+                .cacheKey("cachePostKey")
+                .cacheMode(CacheMode.DEFAULT)
+                .params("mobile", phone)
+                .params("password", password)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e("CHOUCHOU",response.toString());
+                        Log.e("Login",response.toString());
+                        final LoginBean loginBean = GsonUtil.parseJsonWithGson(response.body(), LoginBean.class);
+
+
+                        if (loginBean.getCode() == 0) {
+                            asyncShowToast("登录成功");
+                            toActivity(MainActivity.class);
+                        }else {
+                            asyncShowToast("查看登录失败的原因");
+                        }
+
+                    }
+
+
+                });
+
+    }
+
     private void loginQQ() {
         /**通过这句代码，SDK实现了QQ的登录，这个方法有三个参数，第一个参数是context上下文，第二个参数SCOPO 是一个String类型的字符串，表示一些权限
          官方文档中的说明：应用需要获得哪些API的权限，由“，”分隔。例如：SCOPE = “get_user_info,add_t”；所有权限用“all”
          第三个参数，是一个事件监听器，IUiListener接口的实例，这里用的是该接口的实现类 */
         mIUiListener = new BaseUiListener();
         //all表示获取所有权限
-        mTencent.login(LoginActivity.this,"all", mIUiListener);
+        mTencent.login(LoginActivity.this, "all", mIUiListener);
     }
 
     private void loginWx() {
@@ -276,8 +313,8 @@ public class LoginActivity extends BaseActivity {
         if (mSsoHandler != null) {
             mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
 
-        }else if (requestCode== com.tencent.connect.common.Constants.REQUEST_LOGIN){
-            Tencent.onActivityResultData(requestCode,resultCode,data,mIUiListener);
+        } else if (requestCode == com.tencent.connect.common.Constants.REQUEST_LOGIN) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
         }
         super.onActivityResult(requestCode, resultCode, data);
 

@@ -3,20 +3,11 @@ package com.qunxianghui.gxh.bean.mine;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 通用返回信息的模板
- * <p>
- * Created by zlt
- *
- */
-
-public class GeneralResponseBean implements Serializable {
-
-    private static final long serialVersionUID = 7633287747986518406L;
+public class RegistBean implements Serializable {
 
     /**
-     * code : 100
-     * message : 请传入正确的手机号
+     * code : 101
+     * message : 验证码错误
      * data : []
      */
 

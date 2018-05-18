@@ -61,6 +61,13 @@ public class Constant {
     public static final String HOME_NEWS_LIST_URL=BASE_URL+"news/getList";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL=BASE_URL+"video/getList";
+    //注册页面发送验证码
+    public static final String REFIST_SEND_CODE_URL=BASE_URL+"captcha/send";
+    //注册接口
+    public static final String REGIST_URL=BASE_URL+"user/register";
+    //登录接口
+    public static final String LOGIN_URL=BASE_URL+"user/login";
+
 
 
 }
