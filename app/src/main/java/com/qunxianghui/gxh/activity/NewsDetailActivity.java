@@ -56,7 +56,8 @@ import butterknife.ButterKnife;
 
 import static com.qunxianghui.gxh.base.MyApplication.WeiXinAPP_ID;
 
-/**新闻详情界面
+/**
+ * 新闻详情界面
  * Created by Administrator on 2018/4/9 0009.
  */
 
@@ -223,7 +224,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         etInputDiscuss.setOnClickListener(this);
         llNewsDetailBigDiss.setOnClickListener(this);
         ivNewsDetailAddAdver.setOnClickListener(this);
-
+        ivNewsDetailCollect.setOnClickListener(this);
     }
 
     private void SettingsP() {
@@ -322,6 +323,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.bt_newsdetail_cancle_share:
                 dialog.dismiss();
                 break;
+            case R.id.iv_news_detail_collect:
+
+                break;
         }
 
     }
@@ -405,9 +409,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
 
-
-
-
     @Override
     public void onWbShareSuccess() {
         Toast.makeText(mContext, "分享成功", Toast.LENGTH_SHORT).show();
@@ -454,6 +455,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     private String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }

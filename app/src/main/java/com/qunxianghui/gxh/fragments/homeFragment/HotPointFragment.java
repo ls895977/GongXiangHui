@@ -33,6 +33,7 @@ import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MainPageBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationServiceActivity;
@@ -192,7 +193,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 switch (position) {
                     case 0:
                         //跳转天气
-                        toActivity(NewSearchActivity.class);
+                        toActivity(HomeAirActivity.class);
                         break;
                     case 1:
                         //跳转视频

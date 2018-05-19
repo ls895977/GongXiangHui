@@ -74,6 +74,8 @@ public class Constant {
     public static final String REGIST_URL=BASE_URL+"user/register";
     //登录接口
     public static final String LOGIN_URL=BASE_URL+"user/login";
+    //首页天气列表
+    public static final String HOME_AIRLIST_URL=BASE_URL+"weather/getWeatherInfo";
 
 
 
