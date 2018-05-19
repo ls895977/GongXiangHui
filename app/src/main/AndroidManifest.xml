@@ -240,6 +240,10 @@
         <activity
             android:name=".fragments.locationFragment.activity.VideoListActivity"
             android:launchMode="singleTask" />
+        <!--重新设置密码界面-->
+        <activity
+            android:name=".fragments.mineFragment.activity.ResetPasswordActivity"
+            android:launchMode="singleTask" />
 
     </application>
 

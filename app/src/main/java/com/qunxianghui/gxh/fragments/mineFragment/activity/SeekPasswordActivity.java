@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
@@ -81,35 +82,42 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             case R.id.bt_seek_password_next:
                 asyncShowToast("默认请求接口成功");
                 finish();
+                toActivity(ResetPasswordActivity.class);
                 break;
 
         }
     }
 
     private void getVertifiCode() {
-        //同步更新新界面显示，倒计时验证码
+        //同步更新界面显示，倒计时验证码
         phoneNumber = etSeekPasswordPhoneNumber.getText().toString().trim();
         if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        OkGo.<String>get(Constant.API_GET_CODE)
-                .params("mobile", phoneNumber).tag(TAG).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
-                if (responseBean.getCode() == 0) {
-                    handler.sendEmptyMessage(MSG_SEND_SUCCESS);
 
-                } else {
-                    handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
-                }
-            }
-            @Override
-            public void onError(Response<String> response) {
-                handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
-            }
-        });
+        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
+                .cacheKey("cachePostKey")
+                .cacheMode(CacheMode.DEFAULT)
+                .params("mobile", phoneNumber)
+                .params("type", 2)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
+                        if (responseBean.getCode() == 0) {
+                            handler.sendEmptyMessage(MSG_SEND_SUCCESS);
+
+                        } else {
+                            handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                    }
+                });
 
     }
 
@@ -138,6 +146,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             super.handleMessage(msg);
         }
     }
+
     private void startTimer() {
 
         if (time > 0) {

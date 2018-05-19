@@ -60,20 +60,29 @@ public class LoginActivity extends BaseActivity {
 
     public static final int LOGIN_REQUEST = 1;
     public static final int LOGIN_RESULT = 1;
-    @BindView(R.id.tv_login_show_usermessage) TextView tvLoginShowUsermessage;
+    @BindView(R.id.tv_login_show_usermessage)
+    TextView tvLoginShowUsermessage;
 
 
     private IWXAPI api;
 
 
-    @BindView(R.id.et_login_password) EditText etLoginPassword;
-    @BindView(R.id.bt_login_login) Button btLoginLogin;
-    @BindView(R.id.tv_login_regist) TextView tvLoginRegist;
-    @BindView(R.id.tv_login_forget_password) TextView tvLoginForgetPassword;
-    @BindView(R.id.et_login_phone) EditText etLoginPhone;
-    @BindView(R.id.iv_wx_login) ImageView ivWxLogin;
-    @BindView(R.id.iv_qq_login) ImageView ivQqLogin;
-    @BindView(R.id.iv_sina_login) ImageView ivSinaLogin;
+    @BindView(R.id.et_login_password)
+    EditText etLoginPassword;
+    @BindView(R.id.bt_login_login)
+    Button btLoginLogin;
+    @BindView(R.id.tv_login_regist)
+    TextView tvLoginRegist;
+    @BindView(R.id.tv_login_forget_password)
+    TextView tvLoginForgetPassword;
+    @BindView(R.id.et_login_phone)
+    EditText etLoginPhone;
+    @BindView(R.id.iv_wx_login)
+    ImageView ivWxLogin;
+    @BindView(R.id.iv_qq_login)
+    ImageView ivQqLogin;
+    @BindView(R.id.iv_sina_login)
+    ImageView ivSinaLogin;
     private StudentDao studentDao;
     private String phone;
     private String password;
@@ -164,16 +173,10 @@ public class LoginActivity extends BaseActivity {
 
                 break;
             case R.id.tv_login_regist:
-                intent = new Intent(this, RegistActivity.class);
-                startActivity(intent);
+             toActivity( RegistActivity.class);
                 break;
             case R.id.tv_login_forget_password:
-                intent = new Intent(this, SeekPasswordActivity.class);
-                startActivity(intent);
-                phone = etLoginPhone.getText().toString();
-                password = etLoginPassword.getText().toString();
-                studentDao.query(phone, password);
-
+                toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
                 userText = tvLoginShowUsermessage.getText().toString().trim();
