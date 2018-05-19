@@ -97,7 +97,7 @@ abstract public class BaseRecycleViewAdapter<T> extends
             tv.setText(text == null ? "" : text);
                     }
 
-public void setImageRes(int id, @NonNull int imgRes) {
+   public void setImageRes(int id, @NonNull int imgRes) {
         ImageView iv = getView(id);
         iv.setImageResource(imgRes);
         }

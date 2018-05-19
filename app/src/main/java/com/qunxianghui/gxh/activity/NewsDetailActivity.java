@@ -324,7 +324,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 dialog.dismiss();
                 break;
             case R.id.iv_news_detail_collect:
-
+                asyncShowToast("点击了收藏");
                 break;
         }
 

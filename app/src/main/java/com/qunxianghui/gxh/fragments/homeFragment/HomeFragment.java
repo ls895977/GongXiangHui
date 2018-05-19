@@ -339,4 +339,4 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         }
     }
-    }
+}

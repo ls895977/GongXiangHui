@@ -1,11 +1,16 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -111,12 +116,31 @@ public class ProtocolActivity extends BaseActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
                 return false;
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
+                Log.e("用户单机超链接",url);
+                //判断用户单机的是那个超链接
+                String tag ="tel";
+                if (url.contains(tag)) {
+                    final String mobile = url.substring(url.lastIndexOf("/") + 1);
+                    Log.e("mobile----------->", mobile);
+                    final Intent mIntent = new Intent(Intent.ACTION_CALL);
+                    final Uri data = Uri.parse(mobile);
+                    mIntent.setData(data);
+                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        startActivity(mIntent);
+                        //这个超连接,java已经处理了，webview不要处理
+                        return true;
+                    } else {
+                        //申请权限
+                        ActivityCompat.requestPermissions(ProtocolActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                        return true;
+                    }
+                }
                 return false;
             }
         });

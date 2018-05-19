@@ -76,6 +76,8 @@ public class Constant {
     public static final String LOGIN_URL=BASE_URL+"user/login";
     //首页天气列表
     public static final String HOME_AIRLIST_URL=BASE_URL+"weather/getWeatherInfo";
+    //获取城市列表
+    public static final String CITY_LIST_URL=BASE_URL+"region/getList";
 
 
 
