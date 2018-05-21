@@ -53,6 +53,9 @@ public class Constant {
     public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
 
 
+
+
+
     // 真正的开发   先前的先忽略
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //首页新闻列表
@@ -78,6 +81,8 @@ public class Constant {
     public static final String HOME_AIRLIST_URL=BASE_URL+"weather/getWeatherInfo";
     //获取城市列表
     public static final String CITY_LIST_URL=BASE_URL+"region/getList";
+    //修改个人资料
+    public static final String EDIT_PERSON_DATA=BASE_URL+"user/editProfile";
 
 
 

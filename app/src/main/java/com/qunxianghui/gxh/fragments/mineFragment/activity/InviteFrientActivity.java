@@ -89,7 +89,7 @@ public class InviteFrientActivity extends BaseActivity {
         final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
         newsDataList = homeNewListBean.getData();
 
-        requesNewsList(newsDataList);
+
         //创建适配器
         adapter = new MultipleItemQuickAdapter(datas02,data);
 
@@ -98,19 +98,7 @@ public class InviteFrientActivity extends BaseActivity {
 
     }
 
-    private void requesNewsList(List<HomeNewListBean.DataBean> newsDataList) {
-        //模拟的假数据
-        datas01 = new ArrayList<>();
-        Model model;
-        for (int i=0;i<newsDataList.size();i++){
-            model = new Model();
-            model.setTitle(newsDataList.get(i).getTitle());
-            model.setLongtime(newsDataList.get(i).getCtime());
-            model.setCount(newsDataList.get(i).getView_cnt());
-            model.setContentfrom(newsDataList.get(i).getSource());
-            datas01.add(model);
-        }
-    }
+
 }
 
 
