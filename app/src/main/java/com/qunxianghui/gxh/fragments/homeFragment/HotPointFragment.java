@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
+import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MainPageBean;
@@ -63,7 +65,7 @@ import kr.co.namee.permissiongen.PermissionGen;
 
 public class HotPointFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.recyclerview_list)
-    GloriousRecyclerView recyclerviewList;
+    RecyclerView recyclerviewList;
     @BindView(R.id.ll_home_paste_artical)
     LinearLayout llHomePasteArtical;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
@@ -78,9 +80,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
 
-    private List<HomeNewListBean.DataBean> data;
+//    private List<HomeNewListBean.DataBean> data;
     private HomeItemListAdapter homeItemListAdapter;
 
+
+    private HomeItemListAdapter1 homeItemListAdapter1;
     @Override
     public int getLayoutId() {
 
@@ -90,13 +94,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
-        //随机数用来标记item界面的类型
-        Random random = new Random();
-        for (int i = 0; i < icons.length; i++) {
-            MoreTypeBean more = new MoreTypeBean();
-            more.pic = icons[i];
-            more.type = random.nextInt(3);
-            mDatas.add(more);
+//        //随机数用来标记item界面的类型
+//        Random random = new Random();
+//        for (int i = 0; i < icons.length; i++) {
+//            MoreTypeBean more = new MoreTypeBean();
+//            more.pic = icons[i];
+//            more.type = random.nextInt(3);
+//            mDatas.add(more);
 
             //首页新闻数据
             OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
@@ -108,35 +112,40 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     });
 
 
-        }
+//        }
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
 
         View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
         View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-        if (homeItemListAdapter==null){
-            homeItemListAdapter = new HomeItemListAdapter(mDatas);
-            homeItemListAdapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
-                @Override
-                public void onClick(int position) {
+//        if (homeItemListAdapter==null){
+//            homeItemListAdapter = new HomeItemListAdapter(mDatas);
+//            homeItemListAdapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
+//                @Override
+//                public void onClick(int position) {
+//
+//                    Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
+//                    toActivity(NewsDetailActivity.class);
+//                }
+//
+//                @Override
+//                public void onLongClick(int position) {
+//                    Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+        homeItemListAdapter1=new HomeItemListAdapter1();
+        recyclerviewList.setAdapter(homeItemListAdapter1);
 
-                    Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
-                    toActivity(NewsDetailActivity.class);
-                }
+        homeItemListAdapter1.addHeaderView(headerNavigator);
+        homeItemListAdapter1.addHeaderView(headerVp,1);
+        homeItemListAdapter1.addFooterView(footer);
 
-                @Override
-                public void onLongClick(int position) {
-                    Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        recyclerviewList.setAdapter(homeItemListAdapter);
-        recyclerviewList.addHeaderView(headerNavigator);
-        recyclerviewList.addHeaderView2(headerVp);
-        recyclerviewList.addFooterView(footer);
-        recyclerviewList.setEmptyView(empty);
-//找控件
+//        recyclerviewList.addHeaderView(headerNavigator);
+//        recyclerviewList.addHeaderView2(headerVp);
+//        recyclerviewList.addFooterView(footer);
+//        recyclerviewList.setEmptyView(empty);
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
 
         grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
@@ -176,7 +185,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     private void parseData(String body) {
         final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
-        data = homeNewListBean.getData();
+        homeItemListAdapter1.setNewData(homeNewListBean.getData());
+
+        // TODO: 2018/5/21/021
+
+//        data = homeNewListBean.getData();
 
 
 

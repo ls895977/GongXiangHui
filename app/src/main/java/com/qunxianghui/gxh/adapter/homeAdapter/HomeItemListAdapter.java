@@ -26,7 +26,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     private List<MoreTypeBean> mData;
     private List<HomeNewListBean.DataBean> newsList;
     private View view;
-   private OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
     private HomeNewListBean.DataBean dataBean;
 
     public HomeItemListAdapter(List<MoreTypeBean> mData) {
@@ -67,20 +67,20 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
 
 
         if(onItemClickListener!=null){
-           holder.itemView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     onItemClickListener.onClick(position);
-               }
-           });
-           holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-               @Override
-               public boolean onLongClick(View v) {
-                   onItemClickListener.onLongClick(position);
-                   return false;
-               }
-           });
-       }
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemClickListener.onLongClick(position);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
