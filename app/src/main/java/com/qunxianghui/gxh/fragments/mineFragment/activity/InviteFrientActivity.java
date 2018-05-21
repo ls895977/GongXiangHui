@@ -58,15 +58,7 @@ public class InviteFrientActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-        //模拟的假数据
-        datas01 = new ArrayList<>();
-        Model model;
-        for (int i=0;i<30;i++){
-        model = new Model();
-            model.setTitle("我是第" + i + "条标题");
-            model.setContent("第" + i + "条内容");
-            datas01.add(model);
-        }
+
 
 
         OkGo.<String>get(Constant.HOME_NEWS_LIST_URL).execute(new StringCallback() {
@@ -79,7 +71,7 @@ public class InviteFrientActivity extends BaseActivity {
 
         datas02 = new ArrayList<>();
         //这里我是随机给某一条目加载不同的布局
-        for (int i=0;i<30;i++){
+        for (int i=0;i<newsDataList.size();i++){
             if(i%3==0){
                 datas02.add(new MultipleItem(MultipleItem.FIRST_TYPE,null));
             }else if (i%7==0){
@@ -96,12 +88,28 @@ public class InviteFrientActivity extends BaseActivity {
     private void parseNewsListData(String body) {
         final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
         newsDataList = homeNewListBean.getData();
+
+        requesNewsList(newsDataList);
         //创建适配器
         adapter = new MultipleItemQuickAdapter(datas02,data);
 
         inviteRecyclerView.setAdapter(adapter);
 
 
+    }
+
+    private void requesNewsList(List<HomeNewListBean.DataBean> newsDataList) {
+        //模拟的假数据
+        datas01 = new ArrayList<>();
+        Model model;
+        for (int i=0;i<newsDataList.size();i++){
+            model = new Model();
+            model.setTitle(newsDataList.get(i).getTitle());
+            model.setLongtime(newsDataList.get(i).getCtime());
+            model.setCount(newsDataList.get(i).getView_cnt());
+            model.setContentfrom(newsDataList.get(i).getSource());
+            datas01.add(model);
+        }
     }
 }
 

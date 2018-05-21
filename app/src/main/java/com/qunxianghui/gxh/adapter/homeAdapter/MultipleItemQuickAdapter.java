@@ -20,15 +20,17 @@ private  List<HomeNewListBean.DataBean> newLataList;
     public MultipleItemQuickAdapter(List<MultipleItem> data, List<HomeNewListBean.DataBean> newsList) {
         super(data);
         this.newLataList = newsList;
+
         //必须绑定type和layout的关系
         addItemType(MultipleItem.FIRST_TYPE, R.layout.item_text_text);
         addItemType(MultipleItem.SECOND_TYPE, R.layout.item_three_img);
-        addItemType(MultipleItem.NORMAL_TYPE, R.layout.recyclerview_item_test);
+        addItemType(MultipleItem.NORMAL_TYPE, R.layout.item_text_text);
     }
 
 
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
+    int position = helper.getLayoutPosition();
         switch (helper.getItemViewType()) {
             case MultipleItem.FIRST_TYPE:
                 Log.i("tag", "FIRST_TYPE===============" + helper.getLayoutPosition());
@@ -37,9 +39,10 @@ private  List<HomeNewListBean.DataBean> newLataList;
                 Log.i("tag", "SECOND_TYPE===============" + helper.getLayoutPosition());
                 break;
             case MultipleItem.NORMAL_TYPE:
-                helper.setImageResource(R.id.iv_item_img, R.mipmap.ic_launcher)
-                        .setText(R.id.tv_title, item.getData().getTitle())
-                        .setText(R.id.tv_content, item.getData().getContent());
+                helper.setText(R.id.tv_homelistItem_text_content, item.getData().getTitle())
+                        .setText(R.id.tv_recycler_bottom_science, item.getData().getContentfrom())
+                .setText(R.id.tv_recycler_bottom_science2,item.getData().getCount())
+                .setText(R.id.tv_recycler_bottom_science3,item.getData().getLongtime());
                 break;
         }
     }
