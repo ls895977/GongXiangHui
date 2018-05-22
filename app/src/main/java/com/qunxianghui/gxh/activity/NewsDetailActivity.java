@@ -1,11 +1,16 @@
 package com.qunxianghui.gxh.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +32,7 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.sina.weibo.sdk.WbSdk;
@@ -77,7 +83,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailAddAdver;
     private WebView mWebView;
     private ProgressBar mProgressBar;
-    public static final String url = "http://new.qq.com/omn/20180409/20180409C0446D.html";
+    //    public static final String url = "http://new.qq.com/omn/20180409/20180409C0446D.html";
     private Dialog dialog;
     private View alertView;
     private TextView tv_addAdver_share;
@@ -97,6 +103,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private WbShareHandler mWbShareHandler;
     private Bundle params;
     private MyIUiListener qqShareListener;
+    private String url;
 
     @Override
     protected int getLayoutId() {
@@ -124,8 +131,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             qqShareListener = new MyIUiListener();
         }
         //QQ空间
-
-
         mProgressBar = (ProgressBar) findViewById(R.id.progress_newsdetail);
         Intent intent = getIntent();
         intent.getStringExtra("url");
@@ -136,7 +141,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
-
+        Intent intent = getIntent();
+        url = intent.getStringExtra("url");
         SettingsP();
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
@@ -228,16 +234,50 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void SettingsP() {
-        WebSettings seting = mWebView.getSettings();
-        seting.setJavaScriptEnabled(true);//设置webview支持javascript脚本
+        WebSettings settings = mWebView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setDomStorageEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setSupportZoom(false);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDisplayZoomControls(false);
+        settings.setDefaultTextEncodingName("utf-8");
+        settings.setAppCacheEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-                view.loadUrl(url);
-                return true;
+
+                return false;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.e("用户单机超链接", url);
+                //判断用户单机的是那个超链接
+                String tag = "tel";
+                if (url.contains(tag)) {
+                    final String mobile = url.substring(url.lastIndexOf("/") + 1);
+                    Log.e("mobile----------->", mobile);
+                    final Intent mIntent = new Intent(Intent.ACTION_CALL);
+                    final Uri data = Uri.parse(mobile);
+                    mIntent.setData(data);
+                    if (ActivityCompat.checkSelfPermission(NewsDetailActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        startActivity(mIntent);
+                        //这个超连接,java已经处理了，webview不要处理
+                        return true;
+                    } else {
+                        //申请权限
+                        ActivityCompat.requestPermissions(NewsDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                        return true;
+                    }
+                }
+                return false;
             }
         });
+        mWebView.loadUrl(url);
 
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -265,7 +305,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.et_input_discuss:
                 etInputDiscuss.setVisibility(View.GONE);
@@ -280,7 +320,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             case R.id.tv_addAdver_share:
                 Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
-                toActivity(AddAdverActivity.class);
+                intent = new Intent(mContext, AddAdverActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
+                dialog.dismiss();
 
 
                 break;
@@ -294,7 +337,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.iv_news_detail_addAdver:
 
-                toActivity(AddAdverActivity.class);
+                intent = new Intent(mContext, AddAdverActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
+
                 break;
 
             case R.id.iv_newsdetail_shared_qq:

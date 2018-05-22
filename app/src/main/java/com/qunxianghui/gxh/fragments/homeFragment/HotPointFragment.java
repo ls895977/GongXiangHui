@@ -21,6 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -80,11 +81,15 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
 
-//    private List<HomeNewListBean.DataBean> data;
+
     private HomeItemListAdapter homeItemListAdapter;
 
 
     private HomeItemListAdapter1 homeItemListAdapter1;
+    private View headerNavigator;
+    private View footer;
+    private View headerVp;
+
     @Override
     public int getLayoutId() {
 
@@ -94,16 +99,12 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
-//        //随机数用来标记item界面的类型
-//        Random random = new Random();
-//        for (int i = 0; i < icons.length; i++) {
-//            MoreTypeBean more = new MoreTypeBean();
-//            more.pic = icons[i];
-//            more.type = random.nextInt(3);
-//            mDatas.add(more);
+
 
             //首页新闻数据
             OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
+                    .params("limit",20)
+
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -112,42 +113,16 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     });
 
 
-//        }
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
 
-        View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
-        View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
-        View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
+        footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
+        headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
+        headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-//        if (homeItemListAdapter==null){
-//            homeItemListAdapter = new HomeItemListAdapter(mDatas);
-//            homeItemListAdapter.setOnItemClickListener(new HomeItemListAdapter.OnItemClickListener() {
-//                @Override
-//                public void onClick(int position) {
-//
-//                    Toast.makeText(mActivity, "点击了：" + position + "行", Toast.LENGTH_SHORT).show();
-//                    toActivity(NewsDetailActivity.class);
-//                }
-//
-//                @Override
-//                public void onLongClick(int position) {
-//                    Toast.makeText(mActivity, "长按点击了：" + position + "行", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-        homeItemListAdapter1=new HomeItemListAdapter1();
-        recyclerviewList.setAdapter(homeItemListAdapter1);
 
-        homeItemListAdapter1.addHeaderView(headerNavigator);
-        homeItemListAdapter1.addHeaderView(headerVp,1);
-        homeItemListAdapter1.addFooterView(footer);
 
-//        recyclerviewList.addHeaderView(headerNavigator);
-//        recyclerviewList.addHeaderView2(headerVp);
-//        recyclerviewList.addFooterView(footer);
-//        recyclerviewList.setEmptyView(empty);
+
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
-
         grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
 
         List<Integer> list = new ArrayList<>();
@@ -184,13 +159,26 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void parseData(String body) {
-        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+       final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+
+
+        homeItemListAdapter1=new HomeItemListAdapter1();
         homeItemListAdapter1.setNewData(homeNewListBean.getData());
+        homeItemListAdapter1.addHeaderView(headerNavigator);
+        homeItemListAdapter1.addHeaderView(headerVp,1);
+        homeItemListAdapter1.addFooterView(footer);
+        recyclerviewList.setAdapter(homeItemListAdapter1);
+        //对列表设置点击事件
+        homeItemListAdapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                final String url = homeNewListBean.getData().get(position).getUrl();
+                final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
 
-        // TODO: 2018/5/21/021
-
-//        data = homeNewListBean.getData();
-
+            }
+        });
 
 
     }

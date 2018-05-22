@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -66,6 +67,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private WbShareHandler mWbShareHandler;
     private IWXAPI api;
     private String title = "第一条信息分享成功";
+    private String url;
 
     @Override
     protected int getLayoutId() {
@@ -100,7 +102,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                 //        //初始化一个WXTextObject
                 WXTextObject textObject = new WXTextObject();
                 textObject.text = title;
-               //用wxTextObjecet对象初始化一个WXMediaMessage对象
+                //用wxTextObjecet对象初始化一个WXMediaMessage对象
                 final WXMediaMessage msg = new WXMediaMessage();
                 msg.mediaObject = textObject;
                 msg.description = title;
@@ -131,6 +133,9 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initDatas() {
+
+        final Intent intent = getIntent();
+        url = intent.getStringExtra("url");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
 
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
@@ -171,7 +176,19 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
             }
         });
-        webViewMineFragmentAdver.loadUrl("https://mbd.baidu.com/newspage/data/landingsuper?context=%7B%22nid%22%3A%22news_118373008387232010%22%7D&n_type=0&p_from=1");
+
+        webViewMineFragmentAdver.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
+        webViewMineFragmentAdver.loadUrl(url);
 
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
