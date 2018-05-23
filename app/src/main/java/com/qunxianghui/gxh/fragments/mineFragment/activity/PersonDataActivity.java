@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 
@@ -120,27 +121,32 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 }else {
                     Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                     OkGo.<String>post(Constant.EDIT_PERSON_DATA)
-
                             .params("nick",mNiceName)
                             .params("sex",mSex)
                             .params("address",mAdress)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
-                                    Log.e("TAG", response.body().toString());
+                                    Logger.d("保存成功-->:" + response.body().toString());
+                                    finish();
+
+
+                                }
+
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    Logger.e("保存失败->"+response.body().toString());
+
                                 }
                             });
-
                 }
-
-
-
-
                 break;
 
         }
 
     }
+
 
     private void openPhoto() {
         imagePicker.startChooser(this, new ImagePicker.Callback() {

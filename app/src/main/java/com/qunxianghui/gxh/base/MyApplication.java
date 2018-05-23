@@ -10,13 +10,14 @@ import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.ScreenUtils;
@@ -38,6 +39,7 @@ public class MyApplication extends Application {
 
     private static MyApplication SINSTANCE;
     public static AppManager appManager;
+    private String mAccessToken ="KOmh3JcW6nXSdt9k4ZszFYfxr3vb5ae1";
 
     public static MyApplication getMyApplicaiton() {
 
@@ -106,25 +108,31 @@ public class MyApplication extends Application {
 
 
     private void initOkGo() {
+
+
+        if (LoginMsgHelper.isLogin(this)) {
+            LoginBean result = LoginMsgHelper.getResult(this);
+            mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
+        }
+
+        //全局参数
         final HttpParams params = new HttpParams();
-
-        params.put("app_key",100);
-
+        params.put("app_key", 100);
+        params.put("access_token", mAccessToken);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(Constant.TIME_OUT, TimeUnit.SECONDS);
-        OkGo.getInstance().init(this).setOkHttpClient(builder.build())
-                .setCacheMode(CacheMode.NO_CACHE)
-                .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)
-                .setRetryCount(3)
-                .addCommonParams(params);
+        OkGo.getInstance().init(this).setOkHttpClient(builder.build()).
+                setCacheMode(CacheMode.NO_CACHE).
+                setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE).
+                setRetryCount(3).
+                addCommonParams(params);
 
 
     }
 
     private void initLogger() {
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(1)         // (Optional) How many method line to show. Default 2
                 .methodOffset(0)        // (Optional) Hides internal method calls up to offset. Default 5
                 .tag("hzq")   // (Optional) Global tag for every log. Default PRETTY_LOGGER

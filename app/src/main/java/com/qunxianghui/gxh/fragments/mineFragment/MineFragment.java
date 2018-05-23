@@ -8,11 +8,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.bean.mine.MineUserBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
@@ -27,6 +32,7 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
+import com.qunxianghui.gxh.utils.GsonUtil;
 
 import java.util.ArrayList;
 
@@ -77,13 +83,36 @@ public class MineFragment extends BaseFragment {
     @Override
     public void initDatas() {
 
+
         if (userSize > 0) {
+
             final ArrayList<User> userList = userDao.dbQueryAll();
             for (int i = 0; i < userSize; i++) {
                 final User user = userList.get(i);
                 mineQuicklyLogin.setText(user.getUsername());
             }
         }
+
+
+    }
+
+    private void FillUserData() {
+
+        OkGo.<String>get(Constant.CATCH_USERDATA_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        FillUserData(response.body());
+                    }
+                });
+
+    }
+
+    private void FillUserData(String body) {
+        final MineUserBean mineUserBean = GsonUtil.parseJsonWithGson(body, MineUserBean.class);
+        final MineUserBean.DataBean data = mineUserBean.getData();
+        mineQuicklyLogin.setText(data.getNick());
+
     }
 
     @Override
@@ -114,11 +143,12 @@ public class MineFragment extends BaseFragment {
             LoginBean result = LoginMsgHelper.getResult(getActivity());
             mineQuicklyLogin.setText(String.valueOf(result.getData().getMobile()));
             Logger.d("onResume-->:" + result);
+
         }
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect,
-            R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set,R.id.rl_up_step,
+            R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step,
             R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
     public void onViewClicked(View view) {
         Intent intent = null;
@@ -152,7 +182,7 @@ public class MineFragment extends BaseFragment {
                 toActivity(AddAdverActivity.class);
                 break;
             case R.id.rl_invite_friend:
-               toActivity(InviteFrientActivity.class);
+                toActivity(InviteFrientActivity.class);
 
                 break;
             case R.id.mine_quickly_login:
