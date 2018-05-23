@@ -107,7 +107,7 @@ public class MyApplication extends Application {
 
     private void initOkGo() {
         final HttpParams params = new HttpParams();
-      
+
         params.put("app_key",100);
 
 

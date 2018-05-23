@@ -29,11 +29,13 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
+
 import com.qunxianghui.gxh.adapter.homeAdapter.FireSearchAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.QueryResultAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.SimpleTextAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.FireSearchBean;
+import com.qunxianghui.gxh.bean.home.GuessBean;
 import com.qunxianghui.gxh.bean.home.QueryBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -104,13 +106,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initDatas() {
-        OkGo.<String>get(Constant.API_FIRE_SEARCH)
+        OkGo.<String>get(Constant.SEARCH_GUESS_URL)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        final FireSearchBean searchBean = GsonUtil.parseJsonWithGson(response.body(), FireSearchBean.class);
-                        if(searchBean.getErrno()==0){
-                            final List<FireSearchBean.DataBean> data = searchBean.getData();
+                        final GuessBean guessBean = GsonUtil.parseJsonWithGson(response.body(), GuessBean.class);
+                        if(guessBean.getCode()==0){
+                            final List<GuessBean.DataBean> data = guessBean.getData();
                             initFireRecycle(data);
                         }
                     }
@@ -119,12 +121,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initHistories();
     }
 
-    private void initFireRecycle(final List<FireSearchBean.DataBean> searchBean) {
-        final FireSearchAdapter adapter = new FireSearchAdapter(mContext, searchBean);
+    private void initFireRecycle(final List<GuessBean.DataBean> guessBean) {
+        final FireSearchAdapter adapter = new FireSearchAdapter(mContext, guessBean);
         adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-              searchText= searchBean.get(position).getName();
+                searchText= guessBean.get(position).getTitle();
                 refreshSearchText();
             }
         });
@@ -143,8 +145,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
         if (datas != null) {
             historyDatas = datas;
-            historyDatas.add("凯迪拉克");
-            historyDatas.add("赵龙涛测试数据");
+
         }
 
         if (historyDatas != null && historyDatas.size() != 0) {

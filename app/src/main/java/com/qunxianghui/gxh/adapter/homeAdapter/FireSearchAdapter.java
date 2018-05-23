@@ -5,6 +5,7 @@ import android.content.Context;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.home.FireSearchBean;
+import com.qunxianghui.gxh.bean.home.GuessBean;
 
 import java.util.List;
 
@@ -14,15 +15,16 @@ import java.util.List;
  * Created on 2017/11/16 18:25.
  */
 
-public class FireSearchAdapter extends BaseRecycleViewAdapter<FireSearchBean.DataBean> {
+public class FireSearchAdapter extends BaseRecycleViewAdapter<GuessBean.DataBean> {
 
-    public FireSearchAdapter(Context context, List<FireSearchBean.DataBean> datas) {
+
+    public FireSearchAdapter(Context context, List<GuessBean.DataBean> datas) {
         super(context, datas);
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, FireSearchBean.DataBean fireSearchBean) {
-        holder.setText(R.id.tv_fire_search_item, fireSearchBean.getName());
+    protected void convert(MyViewHolder holder, int position, GuessBean.DataBean dataBean) {
+        holder.setText(R.id.tv_fire_search_item,dataBean.getTitle());
     }
 
     @Override

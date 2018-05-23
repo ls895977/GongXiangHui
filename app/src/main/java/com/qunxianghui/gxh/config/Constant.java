@@ -83,6 +83,8 @@ public class Constant {
     public static final String CITY_LIST_URL=BASE_URL+"region/getList";
     //修改个人资料
     public static final String EDIT_PERSON_DATA=BASE_URL+"user/editProfile";
+    //搜索显示猜的数据
+    public static final String SEARCH_GUESS_URL=BASE_URL+"search/getGuess";
 
 
 
