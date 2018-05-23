@@ -84,6 +84,10 @@ public class Constant {
     public static final String SEARCH_GUESS_URL=BASE_URL+"search/getGuess";
     //获取个人资料
     public static final String  CATCH_USERDATA_URL=BASE_URL+"user/getProfile";
+    //添加收藏
+    public static final String  ADD_COLLECT_URL=BASE_URL+"collect/addCollect";
+    //获取收藏
+    public static final String  GET_COLLECT_URL=BASE_URL+"user/getCollect";
 
 
 }

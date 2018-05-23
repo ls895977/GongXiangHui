@@ -74,12 +74,7 @@
                     android:textSize="16sp" />
 
 
-                <ImageView
-                    android:id="@+id/iv_news_detail_collect"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@mipmap/icon_collect" />
+
 
                 <ImageView
                     android:id="@+id/iv_news_detail_message"
@@ -87,6 +82,12 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:background="@mipmap/icon_message" />
+                <ImageView
+                    android:id="@+id/iv_news_detail_collect"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/collect_normal" />
 
                 <ImageView
                     android:id="@+id/iv_news_detail_share"

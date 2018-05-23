@@ -6,12 +6,12 @@
     android:layout_height="match_parent">
 
 
-    <com.qunxianghui.gxh.widget.GloriousRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_mine_common"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.qunxianghui.gxh.widget.GloriousRecyclerView>
+    </android.support.v7.widget.RecyclerView>
 
 </com.qunxianghui.gxh.widget.ScrollChildSwipeRefreshLayout>

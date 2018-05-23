@@ -186,12 +186,7 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.mine_quickly_login:
-//                if (userSize==0){
-//                    toActivity(LoginActivity.class);
-//                }
-
                 toActivity(LoginActivity.class);
-
                 break;
             case R.id.tv_mine_set:
                 toActivity(SettingActivity.class);

@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity {
 
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
 
-                            SPUtils.saveString(LoginActivity.this, SpConstant.LOGIN_MSG, response.body().toString());
+//                            SPUtils.saveString(LoginActivity.this, SpConstant.LOGIN_MSG, response.body().toString());
                             asyncShowToast("登录成功");
                             finish();
                             return;

@@ -30,10 +30,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.location.MyCollectBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.ImageObject;
@@ -105,6 +111,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private MyIUiListener qqShareListener;
     private String url;
 
+    private int collectFlag = 0;
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -370,8 +377,33 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 dialog.dismiss();
                 break;
             case R.id.iv_news_detail_collect:
-                asyncShowToast("点击了收藏");
+
+                CollectDataList(url);
                 break;
+        }
+
+    }
+
+    private void CollectDataList(String url) {
+        OkGo.<String>post(Constant.ADD_COLLECT_URL)
+                .params("data_uuid",url).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                 parseCollectData(response.body());
+
+            }
+        });
+
+    }
+
+    private void parseCollectData(String body) {
+        final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
+        if (myCollectBean.getCode()==0){
+
+
+            collectFlag=(collectFlag==0?1:0);
+            ivNewsDetailCollect.setBackgroundResource(collectFlag==0?R.drawable.collect:R.drawable.collect_normal);
+            Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -383,7 +415,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         params.putString(QQShare.SHARE_TO_QQ_TITLE, "标题");// 标题
         params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");
-        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
+        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "群享汇");// 应用名称
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");
         params.putString(QQShare.SHARE_TO_QQ_EXT_INT, "其它附加功能");

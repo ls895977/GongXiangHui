@@ -53,8 +53,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         for (String tab : titles) {
             mineTablayoutCommon.addTab(mineTablayoutCommon.newTab().setText(tab));
         }
-
-
     }
 
     @Override
@@ -63,10 +61,11 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
         tvMycollectEdit.setOnClickListener(this);
-        fragments.add(new MineCommonFragment());
 
         fragments.add(new MineCommonFragment());
         fragments.add(new MineCommonFragment());
+        fragments.add(new MineCommonFragment());
+
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);
         mineTablayoutCommon.setupWithViewPager(mineCommonViewpager);

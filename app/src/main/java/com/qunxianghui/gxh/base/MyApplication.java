@@ -39,7 +39,7 @@ public class MyApplication extends Application {
 
     private static MyApplication SINSTANCE;
     public static AppManager appManager;
-    private String mAccessToken ="KOmh3JcW6nXSdt9k4ZszFYfxr3vb5ae1";
+    private String mAccessToken ;
 
     public static MyApplication getMyApplicaiton() {
 
@@ -112,7 +112,7 @@ public class MyApplication extends Application {
 
         if (LoginMsgHelper.isLogin(this)) {
             LoginBean result = LoginMsgHelper.getResult(this);
-            mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
+          mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
         }
 
         //全局参数

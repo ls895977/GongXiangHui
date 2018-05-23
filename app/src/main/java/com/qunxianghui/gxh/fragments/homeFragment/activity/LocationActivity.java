@@ -71,7 +71,7 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-//        List<CityBean> cityBean = (List<CityBean>) GsonUtil.parseJsonWithGson(mActivity.getResources().getString(R.string.location),CityBean.class );
+
         List<CityBean> cityBean = JSON.parseArray(getResources().getString(R.string.location), CityBean.class);
         List<TreeItem> treeItemList = ItemHelperFactory.createTreeItemList((List) cityBean, ProvinceItemParent.class, null);
         TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter();
@@ -152,7 +152,7 @@ public class LocationActivity extends BaseActivity implements View.OnClickListen
 
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                Log.e("AmapError", "location Error, ErrCode:"
+                Log.e("AmapError", "locations Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
             }

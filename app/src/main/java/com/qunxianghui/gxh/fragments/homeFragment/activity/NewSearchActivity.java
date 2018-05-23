@@ -401,7 +401,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
                 });
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                Log.e("AmapError", "location Error, ErrCode:"
+                Log.e("AmapError", "locations Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
             }

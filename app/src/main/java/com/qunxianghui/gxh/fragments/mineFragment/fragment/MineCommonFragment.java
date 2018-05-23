@@ -3,14 +3,18 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.adapter.mineAdapter.MinCollectAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.mine.CollectBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -22,6 +26,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +38,7 @@ import butterknife.Unbinder;
 
 public class MineCommonFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_common)
-    GloriousRecyclerView recyclerMineCommon;
+    RecyclerView recyclerMineCommon;
     Unbinder unbinder;
     @BindView(R.id.mycollect_refresh_layout)
     ScrollChildSwipeRefreshLayout mycollectRefreshLayout;
@@ -48,16 +53,7 @@ public class MineCommonFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-        mycollectRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //这里做刷新的操作
-                Toast.makeText(mActivity, "刷新完毕", Toast.LENGTH_SHORT).show();
-                //然后调用下面这句话告诉SwipeRefreshLayout已经加载完毕
-                mycollectRefreshLayout.setRefreshing(false);
 
-            }
-        });
 
 
     }
@@ -66,17 +62,20 @@ public class MineCommonFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
 
-        mycollectRefreshLayout.setScrollUpChild(recyclerMineCommon);
+
         recyclerMineCommon.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        String url = OkHttpUtil.obtainGetUrl(Constant.URL);
-        OkGo.<String>get(url).execute(new StringCallback() {
+
+        OkGo.<String>get(Constant.GET_COLLECT_URL+"&model=news")
+              .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 String body = response.body();
-                CollectBean collectBean = GsonUtil.parseJsonWithGson(body, CollectBean.class);
-                data = collectBean.getList();
-                MinCollectAdapter minCollectAdapter = new MinCollectAdapter(data, mActivity);
-                recyclerMineCommon.setAdapter(minCollectAdapter);
+                Log.i(TAG,body.toString());
+                final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+                final List<HomeNewListBean.DataBean> newsDataList = homeNewListBean.getData();
+                final HomeItemListAdapter1 homeItemListAdapter1 = new HomeItemListAdapter1();
+                homeItemListAdapter1.setNewData(newsDataList);
+                recyclerMineCommon.setAdapter(homeItemListAdapter1);
 
             }
 
