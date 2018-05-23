@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
@@ -193,7 +192,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                         final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);//获取点击的频道内容
                         otherAdapter.setVisible(false);
 
-
                         //添加到最后一个
                         otherAdapter.addItem(channel);
                         new Handler().postDelayed(new Runnable() {
@@ -223,20 +221,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
                     userAdapter.setVisible(false);
 
-                    Logger.d("onItemClick-->:" + channel.getOrderId());
-                    Logger.d("onItemClick-->:" + SystemUtil.getIMEI(this));
-                    Logger.d("onItemClick-->:" + SystemUtil.getSystemModel());
-                    String imei = SystemUtil.getIMEI(this);
-
-                    if (!TextUtils.isEmpty(imei)) {
                         //频道列表（用户订阅的频道）
                         OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL).
-                                cacheKey("cachePostKey").
-                                cacheMode(CacheMode.DEFAULT).
-                                params("X-accesstoken", mAccessToken).
-                                params("X-systemType", "android").
-                                params("X-deviceModel", SystemUtil.getSystemModel()).
-                                params("X-deviceId", imei).
                                 params("channel_id", channel.getOrderId()).
                                 execute(new StringCallback() {
                                     @Override
@@ -260,7 +246,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
                                     }
                                 });
-                    }
 
                 }
 

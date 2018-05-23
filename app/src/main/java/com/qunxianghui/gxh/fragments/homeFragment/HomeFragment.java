@@ -1,13 +1,8 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
-import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -23,30 +18,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.dfqin.grantor.PermissionListener;
-import com.github.dfqin.grantor.PermissionsUtil;
-import com.lljjcoder.style.citylist.CityListSelectActivity;
-import com.lljjcoder.style.citylist.bean.CityInfoBean;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
-import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
+import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.ColumnHorizontalScrollView;
-import com.yzq.zxinglibrary.android.CaptureActivity;
-import com.yzq.zxinglibrary.bean.ZxingConfig;
-import com.yzq.zxinglibrary.common.Constant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,6 +100,20 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void initDatas() {
 
+        //频道列表（用户订阅的频道）
+        OkGo.<String>get(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                String json = response.body().toString();
+                if (HttpStatusUtil.getStatus(json)) {
+                    ChannelGetallBean listData = getListData(json);
+                } else {
+                    ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
+                }
+            }
+        });
+
+
 
         // + 号监听
         button_more_columns.setOnClickListener(new View.OnClickListener() {
@@ -112,13 +122,28 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             public void onClick(View v) {
                 Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
                 startActivityForResult(intent_channel, CHANNELREQUEST);
-
-
             }
         });
         setChangelView();
 
     }
+
+    /** ==================频道列表（用户订阅的频道）===================== */
+    private ChannelGetallBean getListData(String body) {
+        Logger.d("getAllData-->: " + body);
+        final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
+        if (null != bean) {
+            List<ChannelGetallBean.DataBean> datas = bean.getData();
+
+            for (int i = 0; i < datas.size(); i++) {
+                ChannelGetallBean.DataBean dataBean = datas.get(i);
+                ChannelItem item = new ChannelItem(i, dataBean.getChannel_name(), dataBean.getChannel_id(), 1);
+                userChannelList.add(item);
+            }
+        }
+        return bean;
+    }
+
 
     @Override
     public void initViews(View view) {

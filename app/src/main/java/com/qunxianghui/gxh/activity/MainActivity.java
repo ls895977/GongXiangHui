@@ -94,8 +94,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-
-    }
+}
 
     /**
      * 二次点击返回
