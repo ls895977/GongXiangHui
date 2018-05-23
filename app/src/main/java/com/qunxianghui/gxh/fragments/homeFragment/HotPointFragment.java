@@ -104,7 +104,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             //首页新闻数据
             OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
                     .params("limit",20)
-
+             
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {

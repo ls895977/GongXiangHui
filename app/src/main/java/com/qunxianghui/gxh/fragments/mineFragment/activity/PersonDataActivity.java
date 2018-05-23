@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,9 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.linchaolong.android.imagepicker.ImagePicker;
@@ -114,6 +119,18 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                     Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
+                    OkGo.<String>post(Constant.EDIT_PERSON_DATA)
+
+                            .params("nick",mNiceName)
+                            .params("sex",mSex)
+                            .params("address",mAdress)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    Log.e("TAG", response.body().toString());
+                                }
+                            });
+
                 }
 
 

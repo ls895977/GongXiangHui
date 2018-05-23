@@ -8,6 +8,10 @@ import android.os.StrictMode;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheEntity;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.model.HttpParams;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -70,7 +74,6 @@ public class MyApplication extends Application {
         CityListLoader.getInstance().loadProData(this);
 
 
-
         /**
          * 创建日志
          */
@@ -103,10 +106,20 @@ public class MyApplication extends Application {
 
 
     private void initOkGo() {
-        OkGo.getInstance().init(this);
+        final HttpParams params = new HttpParams();
+      
+        params.put("app_key",100);
+
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(Constant.TIME_OUT, TimeUnit.SECONDS);
-        OkGo.getInstance().setOkHttpClient(builder.build());
+        OkGo.getInstance().init(this).setOkHttpClient(builder.build())
+                .setCacheMode(CacheMode.NO_CACHE)
+                .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)
+                .setRetryCount(3)
+                .addCommonParams(params);
+
+
     }
 
     private void initLogger() {
