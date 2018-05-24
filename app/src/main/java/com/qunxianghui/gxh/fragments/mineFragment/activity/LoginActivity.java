@@ -43,6 +43,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
@@ -208,7 +209,19 @@ public class LoginActivity extends BaseActivity {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
 
                             Logger.d("onSuccess-->:" + response.body().toString());
-                            SPUtils.saveString(LoginActivity.this, SpConstant.LOGIN_MSG, response.body().toString());
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                JSONObject  data = jsonObject.getJSONObject("data");
+                                JSONObject accessTokenInfo = data.getJSONObject("accessTokenInfo");
+                                String access_token = accessTokenInfo.getString("access_token");
+                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
                             asyncShowToast("登录成功");
                             finish();
                             return;

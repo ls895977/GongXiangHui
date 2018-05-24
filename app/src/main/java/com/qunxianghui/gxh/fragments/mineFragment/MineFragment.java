@@ -14,10 +14,8 @@ import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
-import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.bean.mine.MineUserBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
@@ -95,10 +93,6 @@ public class MineFragment extends BaseFragment {
     /**==================获取用户信息(资料)=====================*/
     private void fillUserData() {
 
-        if (LoginMsgHelper.isLogin(getContext())) {
-            LoginBean result = LoginMsgHelper.getResult((getContext()));
-            Logger.d("initOkGo-->:" + result);
-        }
 
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).execute(new StringCallback() {
             @Override

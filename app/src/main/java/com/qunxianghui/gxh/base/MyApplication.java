@@ -15,11 +15,12 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -111,9 +112,8 @@ public class MyApplication extends Application {
 
 
         if (LoginMsgHelper.isLogin(this)) {
-            LoginBean result = LoginMsgHelper.getResult(this);
-            Logger.d("initOkGo-->:" + result);
-            mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
+           mAccessToken= SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");
+            Logger.d("initOkGo-->:" + mAccessToken);
         }
 
         //全局参数
