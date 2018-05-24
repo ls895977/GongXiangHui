@@ -26,9 +26,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.REGutil;
 
-import java.io.File;
-import java.io.FileInputStream;
-
 import butterknife.BindView;
 
 ;
