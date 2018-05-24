@@ -1,24 +1,15 @@
 package com.qunxianghui.gxh.adapter.homeAdapter;
 
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.utils.GlideApp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +45,8 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataB
         final String source = dataBean.getSource();
         final int view_cnt = dataBean.getView_cnt();
         final String ctime = dataBean.getCtime();
+        images = dataBean.getImages();
+
         switch (dataBean.getItemType()) {
             case 0:
                 //没有图片
@@ -80,7 +73,6 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataB
                 ImageView imageView1 = baseViewHolder.getView(R.id.iv_itemthree_imgfirst);
                 ImageView imageView2 = baseViewHolder.getView(R.id.iv_itemthree_second);
                 ImageView imageView3 = baseViewHolder.getView(R.id.iv_itemthree_third);
-                images = dataBean.getImages();
 
                 GlideApp.with(mContext).load(images.get(0))
                         .centerCrop()

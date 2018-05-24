@@ -67,4 +67,8 @@ public class ChannelItem implements Serializable {
         this.selected = paramInteger;
     }
 
+    @Override
+    public String toString() {
+        return "ChannelItem{" + "id=" + id + ", name='" + name + '\'' + ", orderId=" + orderId + ", selected=" + selected + '}';
+    }
 }

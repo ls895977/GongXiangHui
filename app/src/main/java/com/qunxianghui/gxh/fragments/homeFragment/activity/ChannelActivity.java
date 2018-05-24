@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -26,14 +25,11 @@ import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.OtherAdapter;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
-import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.SystemUtil;
 import com.qunxianghui.gxh.widget.DragGrid;
 import com.qunxianghui.gxh.widget.OtherGridView;
 
@@ -49,6 +45,7 @@ import java.util.List;
 
 public class ChannelActivity extends GestureDetectorActivity implements AdapterView.OnItemClickListener {
 
+    public static final String USER_CHANNEL = "user_channel";//订阅列表
     /**
      * 用户栏目
      */
@@ -74,11 +71,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.channel);
 
-        if (LoginMsgHelper.isLogin(this)) {
-            LoginBean result = LoginMsgHelper.getResult(this);
-            mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
-            Logger.d("onCreate-->:" + mAccessToken);
-        }
         initView();
         initData();
     }
@@ -89,24 +81,32 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     private void initData() {
 
 
+        ArrayList<ChannelItem> userChannelListData = (ArrayList<ChannelItem>) getIntent().getSerializableExtra(USER_CHANNEL);
+        if(userChannelListData!=null) {
+            userChannelList = userChannelListData;
+            userAdapter = new DragAdapter(this, userChannelListData);
+            userGridView.setAdapter(userAdapter);
+        }
+        Logger.d("initData-->:" + userChannelListData.toString());
+
         //获取全部频道
-        OkGo.<String>get(Constant.CHANNEL_GETALL).execute(new StringCallback() {
+        OkGo.<String>post(Constant.CHANNEL_GETALL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 getAllData(response.body());
             }
 
         });
-
-        //频道列表（用户订阅的频道）
-        OkGo.<String>get(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                getListData(response.body());
-            }
-
-
-        });
+//
+//        //频道列表（用户订阅的频道）
+//        OkGo.<String>get(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
+//            @Override
+//            public void onSuccess(Response<String> response) {
+//                getListData(response.body());
+//            }
+//
+//
+//        });
 
 
         //        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
@@ -131,7 +131,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem(i, dataBean.getChannel_name(), dataBean.getChannel_id(), 1);
+                ChannelItem item = new ChannelItem( dataBean.getChannel_id(), dataBean.getChannel_name(),i, 1);
                 otherChannelList.add(item);
             }
 
@@ -152,7 +152,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem(i, dataBean.getChannel_name(), dataBean.getChannel_id(), 1);
+                ChannelItem item = new ChannelItem( dataBean.getChannel_id(), dataBean.getChannel_name(),i, 1);
                 userChannelList.add(item);
             }
 
@@ -223,7 +223,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
                         //频道列表（用户订阅的频道）
                         OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL).
-                                params("channel_id", channel.getOrderId()).
+                                params("channel_id", channel.getId()).
                                 execute(new StringCallback() {
                                     @Override
                                     public void onSuccess(Response<String> response) {

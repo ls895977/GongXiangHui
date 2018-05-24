@@ -79,15 +79,15 @@ public class Constant {
     //获取城市列表
     public static final String CITY_LIST_URL = BASE_URL + "region/getList";
     //修改个人资料
-    public static final String EDIT_PERSON_DATA=BASE_URL+"user/editProfile";
+    public static final String EDIT_PERSON_DATA = BASE_URL + "user/editProfile";
     //搜索显示猜的数据
-    public static final String SEARCH_GUESS_URL=BASE_URL+"search/getGuess";
+    public static final String SEARCH_GUESS_URL = BASE_URL + "search/getGuess";
     //获取个人资料
-    public static final String  CATCH_USERDATA_URL=BASE_URL+"user/getProfile";
+    public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
     //添加收藏
-    public static final String  ADD_COLLECT_URL=BASE_URL+"collect/addCollect";
+    public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
     //获取收藏
-    public static final String  GET_COLLECT_URL=BASE_URL+"user/getCollect";
+    public static final String GET_COLLECT_URL = BASE_URL + "user/getCollect";
 
 
 }

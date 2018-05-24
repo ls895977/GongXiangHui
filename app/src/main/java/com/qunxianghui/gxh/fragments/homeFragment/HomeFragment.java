@@ -101,7 +101,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void initDatas() {
 
         //频道列表（用户订阅的频道）
-        OkGo.<String>get(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
+        OkGo.<String>post(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 String json = response.body().toString();
@@ -120,7 +120,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
             @Override
             public void onClick(View v) {
+
+                Logger.d("onClick-->:" + userChannelList.toString());
                 Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ChannelActivity.USER_CHANNEL,(userChannelList));
+                intent_channel.putExtras(bundle);
                 startActivityForResult(intent_channel, CHANNELREQUEST);
             }
         });
@@ -137,7 +142,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem(i, dataBean.getChannel_name(), dataBean.getChannel_id(), 1);
+                ChannelItem item = new ChannelItem(dataBean.getChannel_id(), dataBean.getChannel_name(),i , 1);
                 userChannelList.add(item);
             }
         }
@@ -171,6 +176,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private void initFragment() {
         fragments.clear();//清空
         int count = userChannelList.size();
+        Logger.d("initFragment-->:" + count);
         for (int i = 0; i < count; i++) {
             HotPointFragment newfragment = new HotPointFragment();
             fragments.add(newfragment);

@@ -39,7 +39,7 @@ public class MyApplication extends Application {
 
     private static MyApplication SINSTANCE;
     public static AppManager appManager;
-    private String mAccessToken ;
+    private String mAccessToken;
 
     public static MyApplication getMyApplicaiton() {
 
@@ -112,7 +112,8 @@ public class MyApplication extends Application {
 
         if (LoginMsgHelper.isLogin(this)) {
             LoginBean result = LoginMsgHelper.getResult(this);
-          mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
+            Logger.d("initOkGo-->:" + result);
+            mAccessToken = result.getData().getAccessTokenInfo().getAccess_token();
         }
 
         //全局参数
@@ -120,6 +121,7 @@ public class MyApplication extends Application {
         params.put("app_key", 100);
         params.put("access_token", mAccessToken);
 
+        Logger.d("initOkGo-->:" + mAccessToken);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(Constant.TIME_OUT, TimeUnit.SECONDS);
         OkGo.getInstance().init(this).setOkHttpClient(builder.build()).

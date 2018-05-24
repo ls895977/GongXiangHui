@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <RelativeLayout
 
@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:background="@mipmap/icon_back" />
+            android:background="@mipmap/icon_back"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:text="个人资料"
             android:textColor="#000"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/tv_person_data_save"
@@ -37,7 +37,7 @@
             android:layout_marginRight="15dp"
             android:text="保存"
             android:textColor="#000"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="8dp"
-        android:background="@color/divider" />
+        android:background="@color/divider"/>
 
     <RelativeLayout
 
@@ -59,20 +59,19 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="15dp"
-            android:text="头像" />
+            android:text="头像"/>
 
-        <com.qunxianghui.gxh.widget.RoundImageView
+        <ImageView
             android:id="@+id/iv_person_data_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-
             android:layout_marginRight="15dp"
-            android:src="@mipmap/bianmin_call" />
+            android:src="@mipmap/user_moren"/>
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View style="@style/dividerStyle"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -83,20 +82,21 @@
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
-            android:text="昵称" />
+            android:text="昵称"/>
 
         <EditText
+            android:gravity="right"
             android:id="@+id/et_person_data_nickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:hint="请设置昵称" />
+            android:hint="请设置昵称"/>
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View style="@style/dividerStyle"/>
 
     <RelativeLayout
         android:id="@+id/rl_mineData_sex"
@@ -108,20 +108,24 @@
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
-            android:text="性别" />
+            android:text="性别"/>
 
         <EditText
-            android:id="@+id/et_person_data_sex"
+            android:cursorVisible="false"
+            android:gravity="right"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:id="@+id/tv_person_data_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:hint="请选择性别" />
+            android:hint="请选择性别"/>
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View style="@style/dividerStyle"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -132,20 +136,21 @@
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
-            android:text="手机号码" />
+            android:text="手机号码"/>
 
         <EditText
+            android:gravity="right"
             android:id="@+id/et_person_data_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:hint="请输入手机号" />
+            android:hint="请输入手机号"/>
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View style="@style/dividerStyle"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -156,18 +161,19 @@
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
-            android:text="联系地址" />
+            android:text="联系地址"/>
 
         <EditText
+            android:gravity="right"
             android:id="@+id/et_person_data_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:hint="请输入联系地址" />
+            android:hint="请输入联系地址"/>
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View style="@style/dividerStyle"/>
 </LinearLayout>

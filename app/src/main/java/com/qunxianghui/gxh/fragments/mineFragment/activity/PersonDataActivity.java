@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,23 +12,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linchaolong.android.imagepicker.ImagePicker;
+import com.linchaolong.android.imagepicker.cropper.CropImage;
+import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-
+import com.qunxianghui.gxh.bean.mine.MineUserBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.REGutil;
-import com.qunxianghui.gxh.widget.RoundImageView;
-import com.linchaolong.android.imagepicker.ImagePicker;
-import com.linchaolong.android.imagepicker.cropper.CropImage;
-import com.linchaolong.android.imagepicker.cropper.CropImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 ;
 
@@ -40,23 +39,18 @@ import butterknife.ButterKnife;
 
 public class PersonDataActivity extends BaseActivity implements View.OnClickListener {
 
+    public static final String MINEI_USER_DATA = "minei_user_data";
     private String[] sexArray = new String[]{"男", "女"}; //性别选择
-    @BindView(R.id.et_person_data_nickName)
-    EditText etPersonDataNickName;
-    @BindView(R.id.et_person_data_sex)
-    EditText etPersonDataSex;
-    @BindView(R.id.et_person_data_phone)
-    EditText etPersonDataPhone;
-    @BindView(R.id.et_person_data_address)
-    EditText etPersonDataAddress;
-    @BindView(R.id.iv_person_data_back)
-    ImageView ivPersonDataBack;
-    @BindView(R.id.tv_person_data_save)
-    TextView tvPersonDataSave;
-    @BindView(R.id.iv_person_data_img)
-    RoundImageView ivPersonDataImg;
-    @BindView(R.id.rl_mineData_sex)
-    RelativeLayout rlMineDataSex;
+
+    @BindView(R.id.et_person_data_nickName) EditText etPersonDataNickName;
+    @BindView(R.id.tv_person_data_sex) EditText mEtPersonDataSex;
+    @BindView(R.id.et_person_data_phone) EditText etPersonDataPhone;
+    @BindView(R.id.et_person_data_address) EditText etPersonDataAddress;
+    @BindView(R.id.iv_person_data_back) ImageView ivPersonDataBack;
+    @BindView(R.id.tv_person_data_save) TextView tvPersonDataSave;
+    @BindView(R.id.iv_person_data_img) ImageView ivPersonDataImg;
+    @BindView(R.id.rl_mineData_sex) RelativeLayout rlMineDataSex;
+
     private ImagePicker imagePicker;
 
     @Override
@@ -73,21 +67,44 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initDatas() {
 
+        //设置回显
+        setData();
+
         ivPersonDataBack.setOnClickListener(this);
         ivPersonDataImg.setOnClickListener(this);
         rlMineDataSex.setOnClickListener(this);
-        etPersonDataSex.setOnClickListener(this);
+        mEtPersonDataSex.setOnClickListener(this);
         tvPersonDataSave.setOnClickListener(this);
 
     }
 
+    /** ==================设置个人资料回显===================== */
+    private void setData() {
+        MineUserBean userBean = (MineUserBean) getIntent().getSerializableExtra(MINEI_USER_DATA);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        if (userBean != null) {
+            MineUserBean.DataBean data = userBean.getData();
+            String nick = data.getNick();
+            etPersonDataNickName.setText(nick);
+            etPersonDataNickName.setSelection(nick.length());
+            etPersonDataPhone.setText(String.valueOf(data.getMobile()));
+            etPersonDataAddress.setText(data.getAddress());
+
+            if (data.getSex() == 1) {
+                mEtPersonDataSex.setText("男");
+            } else {
+                mEtPersonDataSex.setText("女");
+            }
+
+            //头像
+            GlideApp.with(this).load(data.getAvatar()).
+                    placeholder(R.mipmap.user_moren).
+                    error(R.mipmap.user_moren).
+                    circleCrop().
+                    into(ivPersonDataImg);
+        }
     }
+
 
     @Override
     public void onClick(View v) {
@@ -95,7 +112,13 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         final String mNiceName = etPersonDataNickName.getText().toString().trim();
         final String mPhone = etPersonDataPhone.getText().toString().trim();
         final String mAdress = etPersonDataAddress.getText().toString().trim();
-        final String mSex = etPersonDataNickName.getText().toString().trim();
+        final String mSex = mEtPersonDataSex.getText().toString().trim();
+        final String sex;
+        if (mSex.equals("男")) {
+            sex = "1";
+        } else {
+            sex = "0";
+        }
 
         switch (v.getId()) {
             case R.id.iv_person_data_back:
@@ -108,7 +131,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
             case R.id.rl_mineData_sex:
                 showSexDialog();
                 break;
-            case R.id.et_person_data_sex:
+            case R.id.tv_person_data_sex:
                 showSexDialog();
                 break;
             case R.id.tv_person_data_save:
@@ -118,25 +141,24 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 }
                 if (!REGutil.checkCellphone(mPhone)) {
                     Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
-                    OkGo.<String>post(Constant.EDIT_PERSON_DATA)
-                            .params("nick",mNiceName)
-                            .params("sex",mSex)
-                            .params("address",mAdress)
-                            .execute(new StringCallback() {
+                } else {
+
+                    OkGo.<String>post(Constant.EDIT_PERSON_DATA).
+                            params("nick", mNiceName).
+                            params("sex", sex).
+                            params("address", mAdress).
+                            execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     Logger.d("保存成功-->:" + response.body().toString());
+                                    Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                                     finish();
-
-
                                 }
 
                                 @Override
                                 public void onError(Response<String> response) {
                                     super.onError(response);
-                                    Logger.e("保存失败->"+response.body().toString());
+                                    Logger.e("保存失败->" + response.body().toString());
 
                                 }
                             });
@@ -148,16 +170,27 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     }
 
 
+
     private void openPhoto() {
         imagePicker.startChooser(this, new ImagePicker.Callback() {
+
+
             @Override
             public void onPickImage(Uri imageUri) {
             }
+
             //剪裁图片回调
             @Override
             public void onCropImage(Uri imageUri) {
 
-                ivPersonDataImg.setImageURI(imageUri);
+//                //头像
+                GlideApp.with(PersonDataActivity.this).load(imageUri).
+                        placeholder(R.mipmap.user_moren).
+                        error(R.mipmap.user_moren).
+                        circleCrop().
+                        into(ivPersonDataImg);
+
+
             }
 
             //自定义剪裁
@@ -170,8 +203,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                         // 设置网格显示模式
                         .setGuidelines(CropImageView.Guidelines.OFF)
                         // 圆形/矩形
-                        .setCropShape(CropImageView.CropShape
-                                .RECTANGLE)
+                        .setCropShape(CropImageView.CropShape.RECTANGLE)
                         // 调整裁剪后的图片最终大小
                         .setRequestedSize(150, 150)
                         // 宽高比
@@ -194,7 +226,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //witch是被选中的位置
-                etPersonDataSex.setText(sexArray[which]);
+                mEtPersonDataSex.setText(sexArray[which]);
                 dialog.dismiss();
             }
         });
@@ -206,5 +238,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         imagePicker.onActivityResult(PersonDataActivity.this, requestCode, resultCode, data);
     }
+
+
 }
 

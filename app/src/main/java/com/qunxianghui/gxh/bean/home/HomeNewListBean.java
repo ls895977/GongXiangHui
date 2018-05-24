@@ -270,5 +270,18 @@ public class HomeNewListBean implements Serializable{
             }
             return 2;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" + "id=" + id + ", uuid=" + uuid + ", channel_id=" + channel_id + ", member_id=" + member_id + ", title='" + title + '\'' + ", picurl='" + picurl + '\'' + ", " +
+                    "linkurl='" + linkurl + '\'' + ", description='" + description + '\'' + ", content='" + content + '\'' + ", like_cnt=" + like_cnt + ", comment_cnt=" + comment_cnt + ", " +
+                    "view_cnt=" + view_cnt + ", ctime='" + ctime + '\'' + ", ip='" + ip + '\'' + ", status=" + status + ", source='" + source + '\'' + ", tags='" + tags + '\'' + ", forward_cnt=" +
+                    forward_cnt + ", share_cnt=" + share_cnt + ", url='" + url + '\'' + ", images=" + images + '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "HomeNewListBean{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
     }
 }

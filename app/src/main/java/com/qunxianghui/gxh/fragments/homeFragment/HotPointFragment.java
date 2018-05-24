@@ -7,7 +7,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,14 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
@@ -33,19 +31,13 @@ import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.bean.home.MainPageBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAirActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationServiceActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.widget.GloriousRecyclerView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -53,7 +45,6 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -160,7 +151,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     private void parseData(String body) {
        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
-
 
         homeItemListAdapter1=new HomeItemListAdapter1();
         homeItemListAdapter1.setNewData(homeNewListBean.getData());

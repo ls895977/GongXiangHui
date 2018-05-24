@@ -2,9 +2,10 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tool="http://schemas.android.com/tools"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp"
             android:text="设置"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -29,11 +30,12 @@
 
 
             <ImageView
+                android:id="@+id/iv_head"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="35dp"
                 android:layout_marginLeft="20dp"
-                android:src="@mipmap/bianmin_call" />
+                android:src="@mipmap/user_moren"/>
 
 
             <LinearLayout
@@ -48,16 +50,17 @@
                     android:layout_marginLeft="15dp"
                     android:text="立即登录"
                     android:textColor="#000"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"/>
 
                 <TextView
 
+                    android:id="@+id/tv_member_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
-                    android:text="普通用户"
-                    android:textSize="17sp" />
+                    tool:text="普通用户"
+                    android:textSize="17sp"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -83,14 +86,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="点赞"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="9653"
                 android:textColor="#fe1d00"
-                android:textSize="25sp" />
+                android:textSize="25sp"/>
 
         </LinearLayout>
 
@@ -105,14 +108,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="帖子"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12"
                 android:textColor="#fe1d00"
-                android:textSize="25sp" />
+                android:textSize="25sp"/>
 
         </LinearLayout>
 
@@ -127,14 +130,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="跟帖"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="472"
                 android:textColor="#fe1d00"
-                android:textSize="25sp" />
+                android:textSize="25sp"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -159,15 +162,15 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="个人资料" />
+                    android:text="个人资料"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
 
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/rl_message_gather"
@@ -176,14 +179,14 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="信息汇总" />
+                    android:text="信息汇总"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/rl_mine_message"
@@ -192,14 +195,14 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="我的消息" />
+                    android:text="我的消息"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/rl_mine_collect"
@@ -208,14 +211,14 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="我的收藏" />
+                    android:text="我的收藏"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/mine_fabu"
@@ -224,15 +227,15 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="我的发布" />
+                    android:text="我的发布"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
 
             <RelativeLayout
@@ -245,14 +248,14 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="会员升级" />
+                    android:text="会员升级"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/company_set"
@@ -261,14 +264,14 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="企业设置" />
+                    android:text="企业设置"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/hezuo_call"
@@ -277,14 +280,14 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="合作热线" />
+                    android:text="合作热线"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/write_advertise"
@@ -293,14 +296,14 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="植入广告" />
+                    android:text="植入广告"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
+            <View style="@style/dividerStyle"/>
 
             <RelativeLayout
                 android:id="@+id/rl_invite_friend"
@@ -309,11 +312,11 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="邀请好友" />
+                    android:text="邀请好友"/>
 
                 <ImageView
                     style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

@@ -15,6 +15,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
@@ -206,7 +207,8 @@ public class LoginActivity extends BaseActivity {
 
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
 
-//                            SPUtils.saveString(LoginActivity.this, SpConstant.LOGIN_MSG, response.body().toString());
+                            Logger.d("onSuccess-->:" + response.body().toString());
+                            SPUtils.saveString(LoginActivity.this, SpConstant.LOGIN_MSG, response.body().toString());
                             asyncShowToast("登录成功");
                             finish();
                             return;

@@ -3,17 +3,74 @@ package com.qunxianghui.gxh.bean.mine;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class MineUserBean implements Serializable {
+
 
     /**
      * code : 0
      * message :
-     * data : {"id":1000030,"level_id":1,"nick":"圆梦","username":"","mobile":17757149916,"email":"","money":"0.00","frozen_money":"0.00","income":"0.00","expend":"0.00","exper":0,"integral":0,"frozen_integral":0,"sex":0,"avatar":"","last_login_ip":"36.23.83.4","last_login_time":1526468803,"login_count":0,"expire_time":"2019-05-21","status":1,"ctime":1523186162,"level_2":0,"level_3":0,"level_4":0,"level_5":0,"remark":"","isactive":0,"active_time":0,"agency_id":0,"company_name":"","company_intro":"","company_trade":"","region_name":"","address":"西湖区","channel_ids":"","province_id":0,"city_id":0,"area_id":0,"last_captcha":0,"serarch_key_word":"","device_id":"","level_info":{"id":1,"name":"企业会员","intro":"","default":1,"expire":0,"status":1,"ctime":1524712832,"mtime":1491966814},"like_cnt":3,"posts_cnt":3,"comment_cnt":0,"company_id":1000122,"company_info":{"id":64,"member_id":1000122,"company_name":"杭州共享汇信息技术有限公司","description":"","company_trade":"6","tel":"","mobile":"","qq":"","province_id":0,"city_id":0,"area_id":0,"address":"","images":"","linkname":"","content":"","ctime":1525858395,"view_cnt":0,"status":0,"push_id":1,"change_ad_id":320},"staff":1}
+     * data : {"id":1000175,"level_id":1,"nick":"yuanmeng","username":"","mobile":13116779507,"email":"","money":"0.00","frozen_money":"0.00","income":"0.00","expend":"0.00","exper":0,"integral":0,
+     * "frozen_integral":0,"sex":0,"avatar":"","last_login_ip":"119.130.231.161","last_login_time":1527071018,"login_count":0,"expire_time":0,"status":1,"ctime":1526625693,"level_2":0,"level_3":0,
+     * "level_4":0,"level_5":0,"remark":"","isactive":0,"active_time":0,"agency_id":0,"company_name":"","company_intro":"","company_trade":"","region_name":"","address":"aaa","channel_ids":",2,3,1,
+     * 29,17","province_id":0,"city_id":0,"area_id":0,"last_captcha":2186,"serarch_key_word":"","device_id":"","level_info":{"id":1,"name":"注册会员","intro":"","default":1,"expire":0,"status":1,
+     * "ctime":1524712832,"mtime":1491966814},"like_cnt":0,"posts_cnt":0,"comment_cnt":0,"company_id":0,"company_info":[],"staff":0}
      */
 
     private int code;
     private String message;
+    /**
+     * id : 1000175
+     * level_id : 1
+     * nick : yuanmeng
+     * username :
+     * mobile : 13116779507
+     * email :
+     * money : 0.00
+     * frozen_money : 0.00
+     * income : 0.00
+     * expend : 0.00
+     * exper : 0
+     * integral : 0
+     * frozen_integral : 0
+     * sex : 0
+     * avatar :
+     * last_login_ip : 119.130.231.161
+     * last_login_time : 1527071018
+     * login_count : 0
+     * expire_time : 0
+     * status : 1
+     * ctime : 1526625693
+     * level_2 : 0
+     * level_3 : 0
+     * level_4 : 0
+     * level_5 : 0
+     * remark :
+     * isactive : 0
+     * active_time : 0
+     * agency_id : 0
+     * company_name :
+     * company_intro :
+     * company_trade :
+     * region_name :
+     * address : aaa
+     * channel_ids : ,2,3,1,29,17
+     * province_id : 0
+     * city_id : 0
+     * area_id : 0
+     * last_captcha : 2186
+     * serarch_key_word :
+     * device_id :
+     * level_info : {"id":1,"name":"注册会员","intro":"","default":1,"expire":0,"status":1,"ctime":1524712832,"mtime":1491966814}
+     * like_cnt : 0
+     * posts_cnt : 0
+     * comment_cnt : 0
+     * company_id : 0
+     * company_info : []
+     * staff : 0
+     */
+
     private DataBean data;
 
     public int getCode() {
@@ -40,58 +97,7 @@ public class MineUserBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
-        /**
-         * id : 1000030
-         * level_id : 1
-         * nick : 圆梦
-         * username :
-         * mobile : 17757149916
-         * email :
-         * money : 0.00
-         * frozen_money : 0.00
-         * income : 0.00
-         * expend : 0.00
-         * exper : 0
-         * integral : 0
-         * frozen_integral : 0
-         * sex : 0
-         * avatar :
-         * last_login_ip : 36.23.83.4
-         * last_login_time : 1526468803
-         * login_count : 0
-         * expire_time : 2019-05-21
-         * status : 1
-         * ctime : 1523186162
-         * level_2 : 0
-         * level_3 : 0
-         * level_4 : 0
-         * level_5 : 0
-         * remark :
-         * isactive : 0
-         * active_time : 0
-         * agency_id : 0
-         * company_name :
-         * company_intro :
-         * company_trade :
-         * region_name :
-         * address : 西湖区
-         * channel_ids :
-         * province_id : 0
-         * city_id : 0
-         * area_id : 0
-         * last_captcha : 0
-         * serarch_key_word :
-         * device_id :
-         * level_info : {"id":1,"name":"企业会员","intro":"","default":1,"expire":0,"status":1,"ctime":1524712832,"mtime":1491966814}
-         * like_cnt : 3
-         * posts_cnt : 3
-         * comment_cnt : 0
-         * company_id : 1000122
-         * company_info : {"id":64,"member_id":1000122,"company_name":"杭州共享汇信息技术有限公司","description":"","company_trade":"6","tel":"","mobile":"","qq":"","province_id":0,"city_id":0,"area_id":0,"address":"","images":"","linkname":"","content":"","ctime":1525858395,"view_cnt":0,"status":0,"push_id":1,"change_ad_id":320}
-         * staff : 1
-         */
-
+    public static class DataBean implements Serializable{
         private int id;
         private int level_id;
         private String nick;
@@ -110,7 +116,7 @@ public class MineUserBean implements Serializable {
         private String last_login_ip;
         private int last_login_time;
         private int login_count;
-        private String expire_time;
+        private int expire_time;
         private int status;
         private int ctime;
         private int level_2;
@@ -133,13 +139,24 @@ public class MineUserBean implements Serializable {
         private int last_captcha;
         private String serarch_key_word;
         private String device_id;
+        /**
+         * id : 1
+         * name : 注册会员
+         * intro :
+         * default : 1
+         * expire : 0
+         * status : 1
+         * ctime : 1524712832
+         * mtime : 1491966814
+         */
+
         private LevelInfoBean level_info;
         private int like_cnt;
         private int posts_cnt;
         private int comment_cnt;
         private int company_id;
-        private CompanyInfoBean company_info;
         private int staff;
+        private List<?> company_info;
 
         public int getId() {
             return id;
@@ -285,11 +302,11 @@ public class MineUserBean implements Serializable {
             this.login_count = login_count;
         }
 
-        public String getExpire_time() {
+        public int getExpire_time() {
             return expire_time;
         }
 
-        public void setExpire_time(String expire_time) {
+        public void setExpire_time(int expire_time) {
             this.expire_time = expire_time;
         }
 
@@ -509,14 +526,6 @@ public class MineUserBean implements Serializable {
             this.company_id = company_id;
         }
 
-        public CompanyInfoBean getCompany_info() {
-            return company_info;
-        }
-
-        public void setCompany_info(CompanyInfoBean company_info) {
-            this.company_info = company_info;
-        }
-
         public int getStaff() {
             return staff;
         }
@@ -525,23 +534,19 @@ public class MineUserBean implements Serializable {
             this.staff = staff;
         }
 
-        public static class LevelInfoBean {
-            /**
-             * id : 1
-             * name : 企业会员
-             * intro :
-             * default : 1
-             * expire : 0
-             * status : 1
-             * ctime : 1524712832
-             * mtime : 1491966814
-             */
+        public List<?> getCompany_info() {
+            return company_info;
+        }
 
+        public void setCompany_info(List<?> company_info) {
+            this.company_info = company_info;
+        }
+
+        public static class LevelInfoBean implements Serializable{
             private int id;
             private String name;
             private String intro;
-            @SerializedName("default")
-            private int defaultX;
+            @SerializedName("default") private int defaultX;
             private int expire;
             private int status;
             private int ctime;
@@ -610,212 +615,29 @@ public class MineUserBean implements Serializable {
             public void setMtime(int mtime) {
                 this.mtime = mtime;
             }
-        }
 
-        public static class CompanyInfoBean {
-            /**
-             * id : 64
-             * member_id : 1000122
-             * company_name : 杭州共享汇信息技术有限公司
-             * description :
-             * company_trade : 6
-             * tel :
-             * mobile :
-             * qq :
-             * province_id : 0
-             * city_id : 0
-             * area_id : 0
-             * address :
-             * images :
-             * linkname :
-             * content :
-             * ctime : 1525858395
-             * view_cnt : 0
-             * status : 0
-             * push_id : 1
-             * change_ad_id : 320
-             */
-
-            private int id;
-            private int member_id;
-            private String company_name;
-            private String description;
-            private String company_trade;
-            private String tel;
-            private String mobile;
-            private String qq;
-            private int province_id;
-            private int city_id;
-            private int area_id;
-            private String address;
-            private String images;
-            private String linkname;
-            private String content;
-            private int ctime;
-            private int view_cnt;
-            private int status;
-            private int push_id;
-            private int change_ad_id;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public int getMember_id() {
-                return member_id;
-            }
-
-            public void setMember_id(int member_id) {
-                this.member_id = member_id;
-            }
-
-            public String getCompany_name() {
-                return company_name;
-            }
-
-            public void setCompany_name(String company_name) {
-                this.company_name = company_name;
-            }
-
-            public String getDescription() {
-                return description;
-            }
-
-            public void setDescription(String description) {
-                this.description = description;
-            }
-
-            public String getCompany_trade() {
-                return company_trade;
-            }
-
-            public void setCompany_trade(String company_trade) {
-                this.company_trade = company_trade;
-            }
-
-            public String getTel() {
-                return tel;
-            }
-
-            public void setTel(String tel) {
-                this.tel = tel;
-            }
-
-            public String getMobile() {
-                return mobile;
-            }
-
-            public void setMobile(String mobile) {
-                this.mobile = mobile;
-            }
-
-            public String getQq() {
-                return qq;
-            }
-
-            public void setQq(String qq) {
-                this.qq = qq;
-            }
-
-            public int getProvince_id() {
-                return province_id;
-            }
-
-            public void setProvince_id(int province_id) {
-                this.province_id = province_id;
-            }
-
-            public int getCity_id() {
-                return city_id;
-            }
-
-            public void setCity_id(int city_id) {
-                this.city_id = city_id;
-            }
-
-            public int getArea_id() {
-                return area_id;
-            }
-
-            public void setArea_id(int area_id) {
-                this.area_id = area_id;
-            }
-
-            public String getAddress() {
-                return address;
-            }
-
-            public void setAddress(String address) {
-                this.address = address;
-            }
-
-            public String getImages() {
-                return images;
-            }
-
-            public void setImages(String images) {
-                this.images = images;
-            }
-
-            public String getLinkname() {
-                return linkname;
-            }
-
-            public void setLinkname(String linkname) {
-                this.linkname = linkname;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
-
-            public int getCtime() {
-                return ctime;
-            }
-
-            public void setCtime(int ctime) {
-                this.ctime = ctime;
-            }
-
-            public int getView_cnt() {
-                return view_cnt;
-            }
-
-            public void setView_cnt(int view_cnt) {
-                this.view_cnt = view_cnt;
-            }
-
-            public int getStatus() {
-                return status;
-            }
-
-            public void setStatus(int status) {
-                this.status = status;
-            }
-
-            public int getPush_id() {
-                return push_id;
-            }
-
-            public void setPush_id(int push_id) {
-                this.push_id = push_id;
-            }
-
-            public int getChange_ad_id() {
-                return change_ad_id;
-            }
-
-            public void setChange_ad_id(int change_ad_id) {
-                this.change_ad_id = change_ad_id;
+            @Override
+            public String toString() {
+                return "LevelInfoBean{" + "id=" + id + ", name='" + name + '\'' + ", intro='" + intro + '\'' + ", defaultX=" + defaultX + ", expire=" + expire + ", status=" + status + ", ctime=" + ctime + ", mtime=" + mtime + '}';
             }
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" + "id=" + id + ", level_id=" + level_id + ", nick='" + nick + '\'' + ", username='" + username + '\'' + ", mobile=" + mobile + ", email='" + email + '\'' + ", " +
+                    "money='" + money + '\'' + ", frozen_money='" + frozen_money + '\'' + ", income='" + income + '\'' + ", expend='" + expend + '\'' + ", exper=" + exper + ", integral=" + integral
+                    + ", frozen_integral=" + frozen_integral + ", sex=" + sex + ", avatar='" + avatar + '\'' + ", last_login_ip='" + last_login_ip + '\'' + ", last_login_time=" + last_login_time +
+                    ", login_count=" + login_count + ", expire_time=" + expire_time + ", status=" + status + ", ctime=" + ctime + ", level_2=" + level_2 + ", level_3=" + level_3 + ", level_4=" +
+                    level_4 + ", level_5=" + level_5 + ", remark='" + remark + '\'' + ", isactive=" + isactive + ", active_time=" + active_time + ", agency_id=" + agency_id + ", company_name='" +
+                    company_name + '\'' + ", company_intro='" + company_intro + '\'' + ", company_trade='" + company_trade + '\'' + ", region_name='" + region_name + '\'' + ", address='" + address
+                    + '\'' + ", channel_ids='" + channel_ids + '\'' + ", province_id=" + province_id + ", city_id=" + city_id + ", area_id=" + area_id + ", last_captcha=" + last_captcha + ", " +
+                    "serarch_key_word='" + serarch_key_word + '\'' + ", device_id='" + device_id + '\'' + ", level_info=" + level_info + ", like_cnt=" + like_cnt + ", posts_cnt=" + posts_cnt + ", " +
+                    "comment_cnt=" + comment_cnt + ", company_id=" + company_id + ", staff=" + staff + ", company_info=" + company_info + '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "MineUserBean{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
     }
 }
