@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.bean.location.LocationListBean;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
@@ -28,9 +29,12 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private Context mContext;
     private List<NineGridTestModel> mList;
     protected LayoutInflater inflater;
+    private List<LocationListBean.DataBean.ListBean> dataBeanList;
 
-    public NineGridTest2Adapter(Context context) {
+
+    public NineGridTest2Adapter(Context context, List<LocationListBean.DataBean.ListBean> dataBeanList) {
         mContext = context;
+        this.dataBeanList = dataBeanList;
         inflater = LayoutInflater.from(context);
     }
 
@@ -49,14 +53,15 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.layout.setIsShowAll(mList.get(position).isShowAll);
         holder.layout.setUrlList(mList.get(position).urlList);
+        holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
 
         //收藏
         holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
-                collectFlag=(collectFlag==0?1:0);
-                holder.iv_location_style_collect.setBackgroundResource(collectFlag==0?R.drawable.collect:R.drawable.collect_normal);
+                collectFlag = (collectFlag == 0 ? 1 : 0);
+                holder.iv_location_style_collect.setBackgroundResource(collectFlag == 0 ? R.drawable.collect : R.drawable.collect_normal);
                 Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
 
             }
@@ -70,7 +75,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
             }
         });
-        
+
         //举报
         holder.tv_location_circle_inform.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +88,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     private void toInformActivity() {
 
-        Intent intent=new Intent(mContext,InFormActivity.class);
+        Intent intent = new Intent(mContext, InFormActivity.class);
         mContext.startActivity(intent);
     }
 
@@ -97,6 +102,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         TextView tv_location_style_collect;
         TextView tv_location_style_pointgood;
         TextView tv_location_circle_inform;
+        TextView tv_location_person_name;
         ImageView iv_location_style_collect;
         LinearLayout ll_location_style_collect;
 
@@ -108,6 +114,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_style_collect = itemView.findViewById(R.id.iv_location_style_collect);
             ll_location_style_collect = itemView.findViewById(R.id.ll_location_style_collect);
             tv_location_circle_inform = itemView.findViewById(R.id.tv_location_circle_inform);
+            tv_location_person_name = itemView.findViewById(R.id.tv_location_person_name);
         }
     }
 

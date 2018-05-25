@@ -88,6 +88,8 @@ public class Constant {
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
     //获取收藏
     public static final String GET_COLLECT_URL = BASE_URL + "user/getCollect";
+    //获取本地圈的信息列表
+    public static final String LOCATION_NEWS_LIST_URL=BASE_URL+"posts/getList";
 
 
 }

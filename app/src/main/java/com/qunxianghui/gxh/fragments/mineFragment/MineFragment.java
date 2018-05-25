@@ -100,7 +100,7 @@ public class MineFragment extends BaseFragment {
 
                 if (HttpStatusUtil.getStatus(response.body().toString())) {
                     Logger.d("onSuccess-->:" + response.body().toString());
-                   // fillUserData(response.body());
+                    parseUserData(response.body());
                     return;
                 }
                                         toActivity(LoginActivity.class);
@@ -110,7 +110,7 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    private void fillUserData(String body) {
+    private void parseUserData(String body) {
         mMineUserBean = GsonUtil.parseJsonWithGson(body, MineUserBean.class);
         final MineUserBean.DataBean data = mMineUserBean.getData();
         mineQuicklyLogin.setText(data.getNick());

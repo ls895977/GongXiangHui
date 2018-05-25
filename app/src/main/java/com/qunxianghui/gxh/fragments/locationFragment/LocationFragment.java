@@ -22,13 +22,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.location.LocationListBean;
 import com.qunxianghui.gxh.config.Code;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
+import com.qunxianghui.gxh.utils.GsonUtil;
 
 
 import java.util.ArrayList;
@@ -149,13 +156,34 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView_location);
-
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new NineGridTest2Adapter(getActivity());
-        mAdapter.setList(mList);
-        recyclerView.setAdapter(mAdapter);
+        RequestLocationData();
+
+
+    }
+
+    private void RequestLocationData() {
+        OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+//                parseLocationData(response.body());
+            }
+        });
+    }
+
+    private void parseLocationData(String body) {
+
+        Logger.i("Location"+body.toString());
+        final LocationListBean locationListBean = LocationListBean.objectFromData(body);
+        if (locationListBean.getCode() == 0) {
+            final List<LocationListBean.DataBean.ListBean> dataList = locationListBean.getData().getList();
+            mAdapter = new NineGridTest2Adapter(getActivity(), dataList);
+            mAdapter.setList(mList);
+            recyclerView.setAdapter(mAdapter);
+        }
+
     }
 
     /**
