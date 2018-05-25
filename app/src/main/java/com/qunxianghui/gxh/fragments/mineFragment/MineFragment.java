@@ -100,7 +100,7 @@ public class MineFragment extends BaseFragment {
 
                 if (HttpStatusUtil.getStatus(response.body().toString())) {
                     Logger.d("onSuccess-->:" + response.body().toString());
-                    fillUserData(response.body());
+                   // fillUserData(response.body());
                     return;
                 }
                                         toActivity(LoginActivity.class);

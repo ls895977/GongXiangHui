@@ -116,7 +116,7 @@ public class MineUserBean implements Serializable {
         private String last_login_ip;
         private int last_login_time;
         private int login_count;
-        private int expire_time;
+        private String expire_time;
         private int status;
         private int ctime;
         private int level_2;
@@ -302,11 +302,11 @@ public class MineUserBean implements Serializable {
             this.login_count = login_count;
         }
 
-        public int getExpire_time() {
+        public String getExpire_time() {
             return expire_time;
         }
 
-        public void setExpire_time(int expire_time) {
+        public void setExpire_time(String expire_time) {
             this.expire_time = expire_time;
         }
 

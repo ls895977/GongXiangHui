@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.utils.DataCleanManager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -131,6 +132,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                         deleteDatabase("SqliteTest.db");
 
+                        LoginMsgHelper.exitLogin(SettingActivity.this);
                         finish();
                     }
                 }).setNegativeButton("否", null).show();
