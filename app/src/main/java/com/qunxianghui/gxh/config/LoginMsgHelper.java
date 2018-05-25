@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.config;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 
@@ -24,8 +25,8 @@ public class LoginMsgHelper {
 
     //登录退出处理
     public static void exitLogin(Context mContext) {
-        SPUtils.removePreference(mContext, SpConstant.LOGIN_MSG);
         SPUtils.removePreference(mContext, SpConstant.ACCESS_TOKEN);
+        MyApplication.getApp().setAccessToken("");
     }
 
 }

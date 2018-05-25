@@ -17,6 +17,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.config.Constant;
@@ -216,13 +217,14 @@ public class LoginActivity extends BaseActivity {
                                 JSONObject accessTokenInfo = data.getJSONObject("accessTokenInfo");
                                 String access_token = accessTokenInfo.getString("access_token");
                                 SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-
+                                MyApplication.getApp().setAccessToken(access_token);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
 
                             asyncShowToast("登录成功");
+                            toActivity(MainActivity.class);
                             finish();
                             return;
                         }

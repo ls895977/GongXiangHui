@@ -58,6 +58,8 @@ public class MyApplication extends Application {
         super.onCreate();
         mAppApplication = this;
         SINSTANCE = this;
+        Logger.d("onCreate-->:" + mAccessToken);
+
         initOkGo();
         appManager = AppManager.getAppManager();
         //微信
@@ -113,15 +115,12 @@ public class MyApplication extends Application {
 
         if (LoginMsgHelper.isLogin(this)) {
            mAccessToken= SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");
-            Logger.d("initOkGo-->:" + mAccessToken);
         }
-
+        Logger.d("initOkGo-->:" + mAccessToken);
         //全局参数
         final HttpParams params = new HttpParams();
         params.put("app_key", 100);
         params.put("access_token", mAccessToken);
-
-        Logger.d("initOkGo-->:" + mAccessToken);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(Constant.TIME_OUT, TimeUnit.SECONDS);
         OkGo.getInstance().init(this).setOkHttpClient(builder.build()).
@@ -148,4 +147,8 @@ public class MyApplication extends Application {
         });
     }
 
+    public void setAccessToken(String accessToken) {
+        mAccessToken = accessToken;
+        initOkGo();
+    }
 }

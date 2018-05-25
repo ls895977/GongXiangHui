@@ -133,6 +133,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         deleteDatabase("SqliteTest.db");
 
                         LoginMsgHelper.exitLogin(SettingActivity.this);
+
+//                        toActivity(MainActivity.class);
+
                         finish();
                     }
                 }).setNegativeButton("否", null).show();
