@@ -3,106 +3,155 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:layout_marginTop="10dp"
+    android:orientation="vertical"
     android:padding="10dp">
 
-    <com.qunxianghui.gxh.widget.RoundImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@mipmap/icon_headimage" />
-
-
     <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_location_person_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="杰伦"
-            android:textColor="@android:color/holo_blue_dark" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
+        <com.qunxianghui.gxh.widget.RoundImageView
+            android:id="@+id/iv_location_person_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@mipmap/icon_headimage" />
 
-        <com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/layout_nine_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:sapcing="4dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="7dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/tv_location_person_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="发布时间" />
+                android:text="杰伦"
+                android:textColor="@android:color/holo_blue_dark" />
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/tv_location_person_content"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/icon_message"
-                android:drawablePadding="5dp"
-                android:text="评论" />
+                android:layout_marginTop="5dp"
+                android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
-            <TextView
-                android:id="@+id/tv_location_style_pointgood"
-                android:layout_width="0dp"
+            <com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout
+
+                android:id="@+id/layout_nine_grid"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/icon_good"
-                android:drawablePadding="5dp"
-                android:text="点赞" />
+                android:layout_marginTop="8dp"
+                app:sapcing="4dp" />
 
             <LinearLayout
-                android:id="@+id/ll_location_style_collect"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_location_style_collect"
-                    android:background="@drawable/collect_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
                 <TextView
-                    android:layout_marginLeft="3dp"
-                    android:id="@+id/tv_location_style_collect"
+                    android:id="@+id/tv_location_issure_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="发布时间" />
 
+                <TextView
+                    android:id="@+id/tv_location_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/icon_message"
                     android:drawablePadding="5dp"
-                    android:text="收藏" />
+                    android:text="评论" />
+
+                <TextView
+                    android:id="@+id/tv_location_style_pointgood"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/icon_good"
+                    android:drawablePadding="5dp"
+                    android:text="点赞" />
+
+                <LinearLayout
+                    android:id="@+id/ll_location_style_collect"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_location_style_collect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/collect_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_location_style_collect"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"
+
+                        android:drawablePadding="5dp"
+                        android:text="收藏" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
+
+        <TextView
+            android:id="@+id/tv_location_circle_inform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="举报"
+            android:textColor="@color/tab_color" />
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/tv_location_circle_inform"
-        android:textColor="@color/tab_color"
-        android:text="举报"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/ll_location_discuss_commit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="请输入您的评论..."
+            android:lines="5"
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_location_discuss_commit"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/butn_oval"
+            android:gravity="center"
+            android:text="提交" />
+    </LinearLayout>
+
+
 </LinearLayout>

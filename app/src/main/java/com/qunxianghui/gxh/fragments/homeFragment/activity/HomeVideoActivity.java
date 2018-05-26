@@ -1,9 +1,12 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lzy.okgo.OkGo;
@@ -16,7 +19,10 @@ import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.VideoConstant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
+
+import java.util.List;
 
 import cn.jzvd.JZVideoPlayer;
 
@@ -28,6 +34,7 @@ public class HomeVideoActivity extends BaseActivity {
     ListView listView;
     private SensorManager sensorManager;
     private JZVideoPlayer.JZAutoFullscreenListener sensorEventListener;
+    private List<HomeVideoListBean.DataBean.ListBean> videoList;
 
 
     @Override
@@ -60,9 +67,24 @@ public class HomeVideoActivity extends BaseActivity {
     private void parseData(String body) {
         final HomeVideoListBean homeVideoListBean = GsonUtil.parseJsonWithGson(body, HomeVideoListBean.class);
         final HomeVideoListBean.DataBean videoData = homeVideoListBean.getData();
+         videoList = videoData.getList();
+        AdapterVideoList adapterVideoList = new AdapterVideoList(mContext, videoList);
+        adapterVideoList.notifyDataSetChanged();
+//        //设置每个条目的点击事件
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                final String url = videoList.get(position).getUrl();
+//                Intent intent = new Intent(mContext, ProtocolActivity.class);
+//                intent.putExtra("url", url);
+//                startActivity(intent);
+//            }
+//        });
 
-        listView.setAdapter(new AdapterVideoList(mContext,videoData.getList()));
+          listView.setAdapter(adapterVideoList);
 
+
+        //列表滑动
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {

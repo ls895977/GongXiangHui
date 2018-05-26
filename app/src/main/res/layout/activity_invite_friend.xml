@@ -4,11 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/invite_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
+    <Button
+        android:text="显示JSONObject数据"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_show"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_show"
+        android:hint="此处显示JSONObject数据"/>
 
 
 </LinearLayout>

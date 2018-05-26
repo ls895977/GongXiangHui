@@ -21,7 +21,6 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.mine.MineUserBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.REGutil;
@@ -33,10 +32,14 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2018/3/10 0010.
  */
-
 public class PersonDataActivity extends BaseActivity implements View.OnClickListener {
 
-    public static final String MINEI_USER_DATA = "minei_user_data";
+    public static final String NICK = "nick";
+    public static final String AVATAR = "avatar";
+    public static final String MOBILE = "mobile";
+    public static final String ADDRESS = "address";
+    public static final String SEX = "sex";
+
     private String[] sexArray = new String[]{"男", "女"}; //性别选择
 
     @BindView(R.id.et_person_data_nickName) EditText etPersonDataNickName;
@@ -77,29 +80,43 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
 
     /** ==================设置个人资料回显===================== */
     private void setData() {
-        MineUserBean userBean = (MineUserBean) getIntent().getSerializableExtra(MINEI_USER_DATA);
 
-        if (userBean != null) {
-            MineUserBean.DataBean data = userBean.getData();
-            String nick = data.getNick();
-            etPersonDataNickName.setText(nick);
-            etPersonDataNickName.setSelection(nick.length());
-            etPersonDataPhone.setText(String.valueOf(data.getMobile()));
-            etPersonDataAddress.setText(data.getAddress());
+        String nick = getIntent().getStringExtra(NICK);
+        String avatar = getIntent().getStringExtra(AVATAR);
+        String mobile = getIntent().getStringExtra(MOBILE);
+        String address = getIntent().getStringExtra(ADDRESS);
+        int sex = getIntent().getIntExtra(SEX, -1);
 
-            if (data.getSex() == 1) {
-                mEtPersonDataSex.setText("男");
-            } else {
-                mEtPersonDataSex.setText("女");
-            }
-
+        if (!TextUtils.isEmpty(avatar)) {
             //头像
-            GlideApp.with(this).load(data.getAvatar()).
+            GlideApp.with(this).load(avatar).
                     placeholder(R.mipmap.user_moren).
                     error(R.mipmap.user_moren).
                     circleCrop().
                     into(ivPersonDataImg);
         }
+
+        if (!TextUtils.isEmpty(mobile)) {
+            etPersonDataPhone.setText(String.valueOf(mobile));
+
+        }
+        if (!TextUtils.isEmpty(address)) {
+            etPersonDataAddress.setText(String.valueOf(address));
+
+        }
+        if (!TextUtils.isEmpty(nick)) {
+            etPersonDataNickName.setText(nick);
+            etPersonDataNickName.setSelection(nick.length());
+        }
+
+        if (sex == 1) {
+            mEtPersonDataSex.setText("男");
+        } else if (sex == 1) {
+            mEtPersonDataSex.setText("女");
+        } else {
+            mEtPersonDataSex.setText("");
+        }
+
     }
 
 
@@ -167,7 +184,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     }
 
 
-
     private void openPhoto() {
         imagePicker.startChooser(this, new ImagePicker.Callback() {
 
@@ -180,7 +196,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onCropImage(Uri imageUri) {
 
-//                //头像
+                //                //头像
                 GlideApp.with(PersonDataActivity.this).load(imageUri).
                         placeholder(R.mipmap.user_moren).
                         error(R.mipmap.user_moren).

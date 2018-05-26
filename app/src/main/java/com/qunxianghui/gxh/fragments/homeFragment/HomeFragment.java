@@ -176,7 +176,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private void initFragment() {
         fragments.clear();//清空
         int count = userChannelList.size();
-        Logger.d("initFragment-->:" + count);
+//        Logger.d("initFragment-->:" + count);
         for (int i = 0; i < count; i++) {
             HotPointFragment newfragment = new HotPointFragment();
             fragments.add(newfragment);

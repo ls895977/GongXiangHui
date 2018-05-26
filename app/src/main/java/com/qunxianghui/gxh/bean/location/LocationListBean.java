@@ -14,7 +14,7 @@ public class LocationListBean implements Serializable {
     /**
      * code : 0
      * message :
-     * data : {"list":[{"id":642,"uuid":1521858832,"member_id":1000025,"title":"","content":"生活不是勉为其难的应付，需要调适，丰富，柔软，推进。总之一句话，好好的活着。","like_cnt":0,"comment_cnt":0,"ctime":"12分钟前","ip":"113.215.160.164","status":0,"images":[],"member_name":"群享汇","member_avatar":"http://api.qunxianghui.com.cn/upload/posts/5aca11fe1b58a.jpeg","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0},{"id":641,"uuid":1521858830,"member_id":1000025,"title":"","content":"生命里不见固执的我，便是跳出了这是非的漩涡。","like_cnt":0,"comment_cnt":0,"ctime":"13分钟前","ip":"113.215.160.164","status":0,"images":[],"member_name":"群享汇","member_avatar":"http://api.qunxianghui.com.cn/upload/posts/5aca11fe1b58a.jpeg","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0},{"id":640,"uuid":1521858823,"member_id":1000009,"title":"","content":"一键发布","like_cnt":0,"comment_cnt":0,"ctime":"30分钟前","ip":"113.215.160.164","status":0,"images":[],"member_name":"陈公子_璐","member_avatar":"http://api.qunxianghui.com.cn/upload/images/20180517/90ff8c669d402cbdc00a8289c92929d3.png","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0},{"id":639,"uuid":1521858817,"member_id":1000065,"title":"","content":"毕业答辩","like_cnt":1,"comment_cnt":0,"ctime":"1小时前","ip":"112.17.235.178","status":0,"images":["http://api.qunxianghui.com.cn/upload/images/20180525/5333ab94f62047e86cc013f8022ef53d.jpg","http://api.qunxianghui.com.cn/upload/images/20180525/64b92902d79ed25704661727577f7f28.jpg"],"member_name":"碗碗","member_avatar":"http://api.qunxianghui.com.cn/upload/images/20180509/fa989a61e962e42073fef7ab14affe7b.png","comment_res":[],"comment_num":"","collect":"","click_like":[{"id":871,"data_uuid":1521858817,"member_id":1000099,"unlike":0,"member_name":"玄黄子"}],"like_info_res":"","delete":"","client_id":0},{"id":638,"uuid":1521858813,"member_id":1000043,"title":"","content":"学无止境","like_cnt":0,"comment_cnt":0,"ctime":"1小时前","ip":"113.215.160.164","status":0,"images":["http://api.qunxianghui.com.cn/upload/images/20180525/f076b18fb65480cf6aa8061ff89f4a35.jpg","http://api.qunxianghui.com.cn/upload/images/20180525/1323d9e73ff12714bfacb93a769a4906.jpg"],"member_name":"蔡╓〞＝㈠o(*￣▽￣*)ブ","member_avatar":"","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0}]}
+     * data : {"list":[{"id":704,"uuid":1521859105,"member_id":1000108,"title":"","content":"好心情","like_cnt":0,"comment_cnt":0,"ctime":"4分钟前","ip":"115.206.63.85","status":0,"images":["http://api.qunxianghui.com.cn/upload/posts/5b08e1ecef313.jpg"],"member_name":"我狂故我拽","member_avatar":"http://api.qunxianghui.com.cn/upload/images/20180516/cfc1b7c745701142a1d9d09c7b3be475.png","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0},{"id":703,"uuid":1521859085,"member_id":1000049,"title":"","content":"在路上","like_cnt":0,"comment_cnt":0,"ctime":"1小时前","ip":"183.156.124.181","status":0,"images":["http://api.qunxianghui.com.cn/upload/images/20180526/d051307fdf575f81fe12c56d99df94e0.jpg"],"member_name":"龙","member_avatar":"","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0},{"id":702,"uuid":1521859057,"member_id":1000054,"title":"","content":"生活的美好在于点点滴滴都用心～","like_cnt":1,"comment_cnt":1,"ctime":"2小时前","ip":"113.215.160.164","status":0,"images":["http://api.qunxianghui.com.cn/upload/images/20180526/9128e5d07d1a55ffd24dd09162ec83b4.jpg","http://api.qunxianghui.com.cn/upload/images/20180526/0c4aff55a1e5d9f599819416bd53c4ca.jpg","http://api.qunxianghui.com.cn/upload/images/20180526/d9aaf8ff524901a065bdd1806db89d98.jpg"],"member_name":"神仙姐姐ah","member_avatar":"","comment_res":[{"id":565,"comment_id":0,"pid":0,"uuid":1521859102,"data_uuid":1521859057,"member_id":1000053,"content":"好漂亮","ctime":1527307081,"ip":"113.215.160.164","status":1,"read":0,"member_name":"钱朵朵","member_avatar":"http://api.qunxianghui.com.cn/upload/posts/5adafd9c51a02.jpg","address":"浙江杭州","comment_delete":""}],"comment_num":"true","collect":"","click_like":[{"id":969,"data_uuid":1521859057,"member_id":1000108,"unlike":0,"member_name":"我狂故我拽"}],"like_info_res":"","delete":"","client_id":0},{"id":701,"uuid":1521859055,"member_id":1000160,"title":"","content":"挺好","like_cnt":0,"comment_cnt":0,"ctime":"2小时前","ip":"112.17.237.223","status":0,"images":["http://api.qunxianghui.com.cn/upload/images/20180526/35c2f2d144be00cadca980e6149b77d8.jpg"],"member_name":"某时某刻某人","member_avatar":"","comment_res":[],"comment_num":"","collect":"","click_like":"","like_info_res":"","delete":"","client_id":0},{"id":700,"uuid":1521859053,"member_id":1000065,"title":"","content":"啤酒2块钱一瓶，4个瓶盖换一瓶，2个空瓶换一瓶，问10块钱能喝几瓶","like_cnt":1,"comment_cnt":0,"ctime":"2小时前","ip":"223.104.247.85","status":0,"images":["http://api.qunxianghui.com.cn/upload/images/20180526/a916897a88e3cfa22b9fbd1a74d6b137.jpg"],"member_name":"碗碗","member_avatar":"http://api.qunxianghui.com.cn/upload/images/20180509/fa989a61e962e42073fef7ab14affe7b.png","comment_res":[],"comment_num":"","collect":"","click_like":[{"id":965,"data_uuid":1521859053,"member_id":1000108,"unlike":0,"member_name":"我狂故我拽"}],"like_info_res":"","delete":"","client_id":0}]}
      */
 
     private int code;
@@ -84,19 +84,19 @@ public class LocationListBean implements Serializable {
 
         public static class ListBean {
             /**
-             * id : 642
-             * uuid : 1521858832
-             * member_id : 1000025
+             * id : 704
+             * uuid : 1521859105
+             * member_id : 1000108
              * title :
-             * content : 生活不是勉为其难的应付，需要调适，丰富，柔软，推进。总之一句话，好好的活着。
+             * content : 好心情
              * like_cnt : 0
              * comment_cnt : 0
-             * ctime : 12分钟前
-             * ip : 113.215.160.164
+             * ctime : 4分钟前
+             * ip : 115.206.63.85
              * status : 0
-             * images : []
-             * member_name : 群享汇
-             * member_avatar : http://api.qunxianghui.com.cn/upload/posts/5aca11fe1b58a.jpeg
+             * images : ["http://api.qunxianghui.com.cn/upload/posts/5b08e1ecef313.jpg"]
+             * member_name : 我狂故我拽
+             * member_avatar : http://api.qunxianghui.com.cn/upload/images/20180516/cfc1b7c745701142a1d9d09c7b3be475.png
              * comment_res : []
              * comment_num :
              * collect :
@@ -124,7 +124,7 @@ public class LocationListBean implements Serializable {
             private String like_info_res;
             private String delete;
             private int client_id;
-            private List<?> images;
+            private List<String> images;
             private List<?> comment_res;
 
             public static ListBean objectFromData(String str) {
@@ -284,11 +284,11 @@ public class LocationListBean implements Serializable {
                 this.client_id = client_id;
             }
 
-            public List<?> getImages() {
+            public List<String> getImages() {
                 return images;
             }
 
-            public void setImages(List<?> images) {
+            public void setImages(List<String> images) {
                 this.images = images;
             }
 

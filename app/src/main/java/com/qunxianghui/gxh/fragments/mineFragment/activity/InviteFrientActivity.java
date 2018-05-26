@@ -1,28 +1,25 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.homeAdapter.MultipleItemQuickAdapter;
-import com.qunxianghui.gxh.adapter.mineAdapter.TestRecyclerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.db.Model;
-import com.qunxianghui.gxh.item.MultipleItem;
-import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.bean.TestBean;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,15 +29,14 @@ import butterknife.ButterKnife;
  */
 
 public class InviteFrientActivity extends BaseActivity {
-    private List<String> mDatas = new ArrayList<>();
-    @BindView(R.id.invite_recycler_view)
-    RecyclerView inviteRecyclerView;
-    private List<HomeNewListBean.DataBean> data;
 
-    private List<Model> datas01;
-    private List<MultipleItem> datas02;
-    private MultipleItemQuickAdapter adapter;
-    private List<HomeNewListBean.DataBean> newsDataList;
+
+    @BindView(R.id.btn_show)
+    Button btnShow;
+    @BindView(R.id.tv_show)
+    TextView tvShow;
+    private ArrayList<TestBean> jsonDataList;
+
 
     @Override
     protected int getLayoutId() {
@@ -49,56 +45,98 @@ public class InviteFrientActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        inviteRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        inviteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
 
     }
 
     @Override
     protected void initDatas() {
+        jsonDataList = new ArrayList<TestBean>();
+        //从Assets中获取json数据字符串
+        String jsonData = getStringFromAssert(this, "parseDataJson.json");
+        Log.e(TAG, "jsonData=" + jsonData);
 
+        //解析json字符串
+        try {
+            JSONArray jsonDataArray = new JSONArray(jsonData);
+            if (jsonDataArray.length() > 0) {
+                for (int i = 0; i < jsonDataArray.length(); i++) {
+                    final JSONObject jsonDataItemObj = jsonDataArray.getJSONObject(i);
+                    TestBean testBean = new TestBean();
+                    testBean.setCode(jsonDataItemObj.getInt("code"));
+                    testBean.setData(jsonDataItemObj.get("data"));
+                    jsonDataList.add(testBean);
+                }
+            }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        OkGo.<String>get(Constant.HOME_NEWS_LIST_URL).execute(new StringCallback() {
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(Response<String> response) {
-                parseNewsListData(response.body());
+            public void onClick(View v) {
+                String showResult = "";
+                //循环获取json数据
+                for (int i = 0; i < jsonDataList.size(); i++) {
+                    final TestBean testBean = jsonDataList.get(i);
 
+                    int code = testBean.getCode();
+                    Object data = testBean.getData();
+                    String dataType = "Object";
+                    if (data instanceof Integer) {
+                        data = (Integer) data;
+                        dataType = "Integer";
+                    } else if (data instanceof String) {
+                        data = (String) data;
+                        dataType = "String";
+                    } else if (data instanceof JSONObject) {
+                        data = (JSONObject) data;
+                        dataType = "JSONObject";
+                    }
+                    showResult += "code=" + code + ";data=" + data + "【dataType=" + dataType + "】\n";
+
+
+                }
+                tvShow.setText(showResult);
             }
         });
+    }
 
-        datas02 = new ArrayList<>();
-        //这里我是随机给某一条目加载不同的布局
-        for (int i=0;i<newsDataList.size();i++){
-            if(i%3==0){
-                datas02.add(new MultipleItem(MultipleItem.FIRST_TYPE,null));
-            }else if (i%7==0){
-                datas02.add(new MultipleItem(MultipleItem.SECOND_TYPE,null));
+    private String getStringFromAssert(Context mContext, String assetsFilePath) {
 
-            }else {
-                datas02.add(new MultipleItem(MultipleItem.NORMAL_TYPE,datas01.get(i)));
+        String content = ""; // 结果字符串
+        try {
+            final InputStream is = mContext.getResources().getAssets().open(assetsFilePath);
+            int ch = 0;
+            final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            while ((ch = is.read()) != -1) {
+                out.write(ch);
             }
+            byte[] buff = out.toByteArray();// 以 byte 数组的形式返回此输出流的当前内容
+            out.close(); // 关闭流
+            is.close(); // 关闭流
+            content = new String(buff, "UTF-8"); // 设置字符串编码
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(mContext, "对不起，没有找到指定文件！", Toast.LENGTH_SHORT)
+                    .show();
         }
 
 
+        return content;
     }
 
-    private void parseNewsListData(String body) {
-        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
-        newsDataList = homeNewListBean.getData();
-
-
-        //创建适配器
-        adapter = new MultipleItemQuickAdapter(datas02,data);
-
-        inviteRecyclerView.setAdapter(adapter);
-
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
-
-
 }
 
 

@@ -3,11 +3,9 @@ package com.qunxianghui.gxh.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.qunxianghui.gxh.bean.SigninBean;
-
 
 
 public final class SPUtils {
@@ -17,10 +15,6 @@ public final class SPUtils {
 
     /**
      * 保存首选项
-     *
-     * @param context
-     * @param key
-     * @param value
      */
     public static void saveBoolean(Context context, String key, boolean value) {
         SharedPreferences sp = context.getSharedPreferences(name, mode);
@@ -46,11 +40,6 @@ public final class SPUtils {
 
     /**
      * 获取首选项
-     *
-     * @param context
-     * @param key
-     * @param defValue
-     * @return
      */
     public static boolean getBoolean(Context context, String key, boolean defValue) {
         SharedPreferences sp = context.getSharedPreferences(name, mode);
@@ -87,9 +76,9 @@ public final class SPUtils {
     }
 
 
-//    /**
-//     * 获取登录信息
-//     */
+    //    /**
+    //     * 获取登录信息
+    //     */
     public static SigninBean.DataBean.MemberBean getSignInfo(Context context) {
         final String user = getString(context, "User", "");
         if (!user.equals("")) {
@@ -104,9 +93,9 @@ public final class SPUtils {
         }
     }
 
-//    /**
-//     * 修改用户登录信息
-//     */
+    //    /**
+    //     * 修改用户登录信息
+    //     */
     public static void putSignInfo(Context context, SigninBean.DataBean.MemberBean signInfo) {
         final String user = getString(context, "User", "");
         if (!user.equals("")) {
@@ -135,10 +124,10 @@ public final class SPUtils {
         }
     }
 
-    /**==================清除保存的数据=====================*/
-    public static void removePreference(Context context,  final String key) {
-        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        if(settings.contains(key)){
+    /** ==================清除保存的数据===================== */
+    public static void removePreference(Context context, final String key) {
+        SharedPreferences settings = context.getSharedPreferences(name, mode);
+        if (settings.contains(key)) {
             settings.edit().remove(key).commit();
         }
     }

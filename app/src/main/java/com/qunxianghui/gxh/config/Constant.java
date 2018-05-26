@@ -96,6 +96,10 @@ public class Constant {
     public static final String DELETE_DISCUSS_URL=BASE_URL+"comment/delComment";
     //我发布的帖子
     public static final String MINE_ISSURE_NEWS_URL=BASE_URL+"user/myPosts";
+    //喜欢
+    public static final String LIKE_URL=BASE_URL+"like/clickLike";
+    //不喜欢
+    public static final String  UNLIKE_URL=BASE_URL+"like/unClickLike";
 
 
 }
