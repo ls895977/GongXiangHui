@@ -280,7 +280,7 @@
                 <TextView
                     style="@style/MineListStyle"
                     android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="合作热线"/>
+                    android:text="合作热线  400-188-4660"/>
 
                 <ImageView
                     style="@style/rightBackStyle"

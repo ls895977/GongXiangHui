@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -80,6 +81,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private View headerNavigator;
     private View footer;
     private View headerVp;
+    private int mCurrentCounter;
+    private List<HomeNewListBean.DataBean> dataList;
+    private int count = 0;
 
     @Override
     public int getLayoutId() {
@@ -92,16 +96,15 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         mDatas = new ArrayList<>();
 
 
-            //首页新闻数据
-            OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
-                    .params("limit",20)
-             
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            parseData(response.body());
-                        }
-                    });
+        //首页新闻数据
+        OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
+                .params("limit", 10)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseData(response.body());
+                    }
+                });
 
 
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -110,7 +113,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-
 
 
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
@@ -150,14 +152,59 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void parseData(String body) {
-       final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+        dataList = homeNewListBean.getData();
 
-        homeItemListAdapter1=new HomeItemListAdapter1();
-        homeItemListAdapter1.setNewData(homeNewListBean.getData());
+        homeItemListAdapter1 = new HomeItemListAdapter1();
+        homeItemListAdapter1.setNewData(dataList);
         homeItemListAdapter1.addHeaderView(headerNavigator);
-        homeItemListAdapter1.addHeaderView(headerVp,1);
+        homeItemListAdapter1.addHeaderView(headerVp, 1);
         homeItemListAdapter1.addFooterView(footer);
+
+        //上拉加载更多哦
+        homeItemListAdapter1.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                recyclerviewList.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((mCurrentCounter >= dataList.size())) {
+                            homeItemListAdapter1.loadMoreEnd();
+                        } else {
+                            boolean isErr = false;
+                            if (isErr) {
+                                //成功获取数据
+                                homeItemListAdapter1.addData(dataList);
+                                mCurrentCounter = homeItemListAdapter1.getData().size();
+                                //主动调用加载完成 停止加载
+                                homeItemListAdapter1.loadMoreComplete();
+                            } else {
+                                //获取更多数据失败
+                                isErr = true;
+                                asyncShowToast("加载失败");
+                                homeItemListAdapter1.loadMoreFail();
+                            }
+                        }
+                    }
+                }, 1000);
+
+            }
+        }, recyclerviewList);
+        //下来刷新
+        homeItemListAdapter1.setUpFetchEnable(true);
+        homeItemListAdapter1.setUpFetchListener(new BaseQuickAdapter.UpFetchListener() {
+            @Override
+            public void onUpFetch() {
+                startUpFetch();
+            }
+        });
+
+        //设置加载出来看的动画
+        homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+
         recyclerviewList.setAdapter(homeItemListAdapter1);
+
+
         //对列表设置点击事件
         homeItemListAdapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -169,8 +216,25 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
             }
         });
+    }
 
+    private void startUpFetch() {
 
+        count++;
+
+        homeItemListAdapter1.setUpFetching(true);
+
+        recyclerviewList.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                homeItemListAdapter1.addData(0, dataList);
+                homeItemListAdapter1.setUpFetching(false);
+                if (count > 5) {
+                    homeItemListAdapter1.setUpFetchEnable(false);
+
+                }
+            }
+        }, 300);
     }
 
 
@@ -194,7 +258,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         //跳转生活圈
 //                        toActivity(LocationServiceActivity.class);
 
-                        Log.e(TAG,"...................本地服务怎么找不到");
+                        Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.BenDiService);

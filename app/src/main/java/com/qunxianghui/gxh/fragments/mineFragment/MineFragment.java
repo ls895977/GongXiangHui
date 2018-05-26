@@ -1,12 +1,17 @@
 package com.qunxianghui.gxh.fragments.mineFragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -43,25 +48,39 @@ import butterknife.OnClick;
  */
 
 public class MineFragment extends BaseFragment {
-    @BindView(R.id.rl_preson_data) RelativeLayout rlPresonData;
-    @BindView(R.id.rl_message_gather) RelativeLayout rlMessageGather;
-    @BindView(R.id.rl_mine_message) RelativeLayout rlMineMessage;
-    @BindView(R.id.rl_mine_collect) RelativeLayout rlMineCollect;
-    @BindView(R.id.mine_fabu) RelativeLayout mineFabu;
+    @BindView(R.id.rl_preson_data)
+    RelativeLayout rlPresonData;
+    @BindView(R.id.rl_message_gather)
+    RelativeLayout rlMessageGather;
+    @BindView(R.id.rl_mine_message)
+    RelativeLayout rlMineMessage;
+    @BindView(R.id.rl_mine_collect)
+    RelativeLayout rlMineCollect;
+    @BindView(R.id.mine_fabu)
+    RelativeLayout mineFabu;
 
-    @BindView(R.id.company_set) RelativeLayout companySet;
-    @BindView(R.id.hezuo_call) RelativeLayout hezuoCall;
-    @BindView(R.id.write_advertise) RelativeLayout writeAdvertise;
-    @BindView(R.id.rl_invite_friend) RelativeLayout rlInviteFriend;
-    @BindView(R.id.tv_mine_set) TextView tvMineSet;
-    @BindView(R.id.rl_up_step) RelativeLayout rlUpStep;
+    @BindView(R.id.company_set)
+    RelativeLayout companySet;
+    @BindView(R.id.hezuo_call)
+    RelativeLayout hezuoCall;
+    @BindView(R.id.write_advertise)
+    RelativeLayout writeAdvertise;
+    @BindView(R.id.rl_invite_friend)
+    RelativeLayout rlInviteFriend;
+    @BindView(R.id.tv_mine_set)
+    TextView tvMineSet;
+    @BindView(R.id.rl_up_step)
+    RelativeLayout rlUpStep;
 
     //头像
-    @BindView(R.id.iv_head) ImageView mIvHead;
+    @BindView(R.id.iv_head)
+    ImageView mIvHead;
     //会员类型
-    @BindView(R.id.tv_member_type) TextView mTvMemberType;
+    @BindView(R.id.tv_member_type)
+    TextView mTvMemberType;
     //用户名
-    @BindView(R.id.mine_quickly_login) TextView mineQuicklyLogin;
+    @BindView(R.id.mine_quickly_login)
+    TextView mineQuicklyLogin;
 
     private UserDao userDao;
     private int userSize;
@@ -86,11 +105,12 @@ public class MineFragment extends BaseFragment {
         }
 
 
-
     }
 
 
-    /**==================获取用户信息(资料)=====================*/
+    /**
+     * ==================获取用户信息(资料)=====================
+     */
     private void fillUserData() {
 
 
@@ -100,10 +120,10 @@ public class MineFragment extends BaseFragment {
 
                 if (HttpStatusUtil.getStatus(response.body().toString())) {
                     Logger.d("onSuccess-->:" + response.body().toString());
-                    parseUserData(response.body());
+//                    parseUserData(response.body());
                     return;
                 }
-                                        toActivity(LoginActivity.class);
+                toActivity(LoginActivity.class);
                 Logger.d("onSuccess-->:" + response.body().toString());
             }
         });
@@ -144,8 +164,8 @@ public class MineFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.rl_preson_data:
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(PersonDataActivity.MINEI_USER_DATA,mMineUserBean);
-                toActivity(PersonDataActivity.class,bundle);
+                bundle.putSerializable(PersonDataActivity.MINEI_USER_DATA, mMineUserBean);
+                toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.rl_message_gather:
                 toActivity(MessageGatherActivity.class);
@@ -166,8 +186,13 @@ public class MineFragment extends BaseFragment {
             case R.id.company_set:
                 toActivity(CompanySetActivity.class);
                 break;
+
             case R.id.hezuo_call:
-                toActivity(CooperationCallActivity.class);
+
+
+                requestCall();
+
+
                 break;
             case R.id.write_advertise:
                 toActivity(AddAdverActivity.class);
@@ -184,6 +209,29 @@ public class MineFragment extends BaseFragment {
                 break;
 
 
+        }
+    }
+
+    private void requestCall() {
+
+        if (PermissionsUtil.hasPermission(mActivity, new String[]{Manifest.permission.CALL_PHONE})) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001884660"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
+                @Override
+                public void permissionGranted(@NonNull String[] permission) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001884660"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void permissionDenied(@NonNull String[] permission) {
+                    asyncShowToast("权限被禁止  设置权限后再试试.");
+                }
+            }, new String[]{Manifest.permission.CALL_PHONE});
         }
     }
 

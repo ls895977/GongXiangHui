@@ -90,6 +90,12 @@ public class Constant {
     public static final String GET_COLLECT_URL = BASE_URL + "user/getCollect";
     //获取本地圈的信息列表
     public static final String LOCATION_NEWS_LIST_URL=BASE_URL+"posts/getList";
+    //发布评论
+    public static final String ISSURE_DISUSS_URL=BASE_URL+"comment/addComment";
+    //删除评论
+    public static final String DELETE_DISCUSS_URL=BASE_URL+"comment/delComment";
+    //我发布的帖子
+    public static final String MINE_ISSURE_NEWS_URL=BASE_URL+"user/myPosts";
 
 
 }
