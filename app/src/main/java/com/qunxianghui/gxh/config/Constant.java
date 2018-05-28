@@ -54,11 +54,16 @@ public class Constant {
 
 
     // 真正的开发   先前的先忽略
+
+
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
+    //首页轮播图
+    public static final String HOME_PAGE_LUNBO_URL=BASE_URL+"ad/getList?place=首页图片轮播";
+
     //获取全部频道
     public static final String CHANNEL_GETALL = BASE_URL + "channel/getAll";
     //频道列表（用户订阅的频道）

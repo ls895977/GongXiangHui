@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,11 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
@@ -31,6 +30,7 @@ import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.config.Constant;
@@ -39,12 +39,15 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.GsonUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -84,6 +87,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private int mCurrentCounter;
     private List<HomeNewListBean.DataBean> dataList;
     private int count = 0;
+    private String image_url;
 
     @Override
     public int getLayoutId() {
@@ -113,42 +117,87 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
         headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-
-
         viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
         grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
 
-        List<Integer> list = new ArrayList<>();
-        list.add(R.mipmap.ic_test_0);
-        list.add(R.mipmap.ic_test_1);
-        list.add(R.mipmap.ic_test_2);
-        list.add(R.mipmap.ic_test_3);
-        list.add(R.mipmap.ic_test_4);
-        list.add(R.mipmap.ic_test_5);
-        list.add(R.mipmap.ic_test_6);
-        List<String> titles = new ArrayList<>();
-        titles.add("图片1");
-        titles.add("图片2");
-        titles.add("图片3");
-        titles.add("图片4");
-        titles.add("图片5");
-        titles.add("图片6");
-        titles.add("图片7");
-        viewpagerHome.setImages(list).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
-                .setBannerTitles(titles)
-                .setDelayTime(3000)
-                .setBannerAnimation(Transformer.Tablet)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Toast.makeText(mActivity, "点击了" + position + 1, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .start();
+//        List<Integer> list = new ArrayList<>();
+//        list.add(R.mipmap.ic_test_0);
+//        list.add(R.mipmap.ic_test_1);
+//        list.add(R.mipmap.ic_test_2);
+//        list.add(R.mipmap.ic_test_3);
+//        list.add(R.mipmap.ic_test_4);
+//        list.add(R.mipmap.ic_test_5);
+//        list.add(R.mipmap.ic_test_6);
+//
+//        List<String> titles = new ArrayList<>();
+//        titles.add("图片1");
+//        titles.add("图片2");
+//        titles.add("图片3");
+//        titles.add("图片4");
+//        titles.add("图片5");
+//        titles.add("图片6");
+//        titles.add("图片7");
+
 
         //加載首頁那个导航图
         initGridHomeNavigator();
+        //加载首页轮播图
+        initLunBoShow();
+    }
+
+    /**
+     * 加载轮播图
+     */
+    private void initLunBoShow() {
+        OkGo.<String>get(Constant.HOME_PAGE_LUNBO_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                parseHomeLunBoPager(response.body());
+            }
+        });
+    }
+
+    private void parseHomeLunBoPager(String body) {
+        final HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
+        if (homeLunBoBean.getCode() == 0) {
+            final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
+            List<String> titles = new ArrayList<>();
+            List<String> imags = new ArrayList<>();
+
+            String image_src = null;
+            String title = null;
+
+
+            for (int i = 0; i < lunboData.size(); i++) {
+                image_src = lunboData.get(i).getImage_src();  //图片
+                title = lunboData.get(i).getTitle();        //title
+
+                //轮播图跳转的url
+                image_url = lunboData.get(i).getImage_url();
+                imags.add(image_src);
+                titles.add(title);
+
+            }
+
+
+
+            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+                    .setBannerTitles(titles)
+                    .setDelayTime(3000)
+                    .setBannerAnimation(Transformer.Tablet)
+                    .setImageLoader(new GlideImageLoader())
+                    .setOnBannerListener(new OnBannerListener() {
+                        @Override
+                        public void OnBannerClick(int position) {
+                            Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                            intent.putExtra("url",  image_url);
+                            startActivity(intent);
+                        }
+                    })
+                    .start();
+        }
+
+
     }
 
     private void parseData(String body) {

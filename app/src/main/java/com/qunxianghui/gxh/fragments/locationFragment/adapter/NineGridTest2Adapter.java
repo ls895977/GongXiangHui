@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,7 +61,19 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
+
+        final List<String> images = dataBeanList.get(position).getImages();
+
+
+//        GlideApp.with(mContext).load(images)
+//                .centerCrop()
+//                .placeholder(R.mipmap.ic_launcher)
+//                .error(R.mipmap.ic_launcher)
+//                .into(holder.gridLayout);
+
+
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
+
                 .centerCrop().placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(holder.iv_location_person_head);
@@ -101,7 +114,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
             }
         });
-        
+
         //点击了提交
         holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +137,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        NineGridTestLayout  gridLayout;
+        NineGridTestLayout gridLayout;
         TextView tv_location_style_collect;
         TextView tv_location_style_pointgood;
         TextView tv_location_circle_inform;
@@ -137,6 +150,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         LinearLayout ll_location_style_collect;
         LinearLayout ll_location_discuss_commit;
         TextView tv_location_discuss_commit;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -153,6 +167,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
+
         }
     }
 

@@ -93,7 +93,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private View upVideoDialogView;
 
     private int page = 1;
-//    private List<TestMode.DataBean.ListBean> dataList;
+    private List<TestMode.DataBean.ListBean> dataList;
 
     @Override
     public int getLayoutId() {
