@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class GeneraPersonalFragment extends BaseFragment {
 
     private void parseData(String body) {
 
-        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
+        final HomeNewListBean homeNewListBean = GsonUtils.jsonFromJson(body, HomeNewListBean.class);
         data = homeNewListBean.getData();
 
     }

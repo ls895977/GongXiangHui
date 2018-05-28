@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.bean.location.LocationListBean;
+import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
@@ -31,9 +31,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private Context mContext;
     private List<NineGridTestModel> mList;
     protected LayoutInflater inflater;
-    private List<LocationListBean.DataBean.ListBean> dataBeanList;
+    private List<TestMode.DataBean.ListBean> dataBeanList;
 
-    public NineGridTest2Adapter(Context context, List<LocationListBean.DataBean.ListBean> dataBeanList) {
+    public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
         this.dataBeanList = dataBeanList;
         inflater = LayoutInflater.from(context);

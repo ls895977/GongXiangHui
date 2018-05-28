@@ -27,13 +27,14 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.location.LocationListBean;
+import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             "http://img2.imgtn.bdimg.com/it/u=3251359643,4211266111&fm=21&gp=0.jpg",
             "http://img4.duitang.com/uploads/item/201506/11/20150611000809_yFe5Z.jpeg",
             "http://img5.imgtn.bdimg.com/it/u=1717647885,4193212272&fm=21&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=2024625579,507531332&fm=21&gp=0.jpg" };
+            "http://img5.imgtn.bdimg.com/it/u=2024625579,507531332&fm=21&gp=0.jpg"};
 
 
     private AlertDialog.Builder builder;
@@ -90,12 +91,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private TextView tv_quickly_up_video;
     private Button bt_quickly_up_video_cancel;
     private View upVideoDialogView;
-    private List<LocationListBean.DataBean.ListBean> dataList;
-    private int page=1;
+
+    private int page = 1;
+//    private List<TestMode.DataBean.ListBean> dataList;
 
     @Override
     public int getLayoutId() {
-       mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_location;
     }
 
@@ -106,7 +108,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     public void initDatas() {
 
         NineGridTestModel model4 = new NineGridTestModel();
-        for (int i = 0; i <mUrls.length; i++) {
+        for (int i = 0; i < mUrls.length; i++) {
             model4.urlList.add(mUrls[i]);
         }
         model4.isShowAll = false;
@@ -164,16 +166,22 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     private void parseLocationData(String body) {
 
-        Logger.i("Location"+body.toString());
-        final LocationListBean locationListBean = LocationListBean.objectFromData(body);
-
+        Logger.i("Location" + body.toString());
+        final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
+        final List<TestMode.DataBean.ListBean> dataList = locationListBean.getData().getList();
         if (locationListBean.getCode() == 0) {
-            dataList = locationListBean.getData().getList();
-            mAdapter = new NineGridTest2Adapter(getActivity(), dataList);
-            mAdapter.setList(mList);
-            recyclerView.setAdapter(mAdapter);
+            for (int i = 0; i < dataList.size(); i++) {
+                TestMode.DataBean.ListBean listBean = dataList.get(i);
+                if (listBean.getClick_like().size() > 0) {
+                    mAdapter = new NineGridTest2Adapter(mActivity, dataList);
+                    mAdapter.setList(mList);
+                    recyclerView.setAdapter(mAdapter);
+
+                }
+            }
 
         }
+
 
     }
 
@@ -186,7 +194,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-              mAdapter=null; // 把集合和适配器清空  重新请求数据
+                mAdapter = null; // 把集合和适配器清空  重新请求数据
 
                 RequestLocationData();
 
