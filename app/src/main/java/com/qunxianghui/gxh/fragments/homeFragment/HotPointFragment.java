@@ -180,7 +180,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             }
 
 
-
             viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                     .setBannerTitles(titles)
                     .setDelayTime(3000)
@@ -190,7 +189,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         @Override
                         public void OnBannerClick(int position) {
                             Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                            intent.putExtra("url",  image_url);
+                            intent.putExtra("url", image_url);
                             startActivity(intent);
                         }
                     })

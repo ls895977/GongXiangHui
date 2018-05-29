@@ -95,6 +95,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private int page = 1;
     private List<TestMode.DataBean.ListBean> dataList;
 
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -107,37 +108,37 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initDatas() {
 
-        NineGridTestModel model4 = new NineGridTestModel();
-        for (int i = 0; i < mUrls.length; i++) {
-            model4.urlList.add(mUrls[i]);
-        }
-        model4.isShowAll = false;
-        mList.add(model4);
-
-        NineGridTestModel model5 = new NineGridTestModel();
-        for (int i = 0; i < mUrls.length; i++) {
-            model5.urlList.add(mUrls[i]);
-        }
-        model5.isShowAll = true;//显示全部图片
-        mList.add(model5);
-
-        NineGridTestModel model6 = new NineGridTestModel();
-        for (int i = 0; i < 9; i++) {
-            model6.urlList.add(mUrls[i]);
-        }
-        mList.add(model6);
-
-        NineGridTestModel model7 = new NineGridTestModel();
-        for (int i = 3; i < 7; i++) {
-            model7.urlList.add(mUrls[i]);
-        }
-        mList.add(model7);
-
-        NineGridTestModel model8 = new NineGridTestModel();
-        for (int i = 3; i < 6; i++) {
-            model8.urlList.add(mUrls[i]);
-        }
-        mList.add(model8);
+//        NineGridTestModel model4 = new NineGridTestModel();
+//        for (int i = 0; i < mUrls.length; i++) {
+//            model4.urlList.add(mUrls[i]);
+//        }
+//        model4.isShowAll = false;
+//        mList.add(model4);
+//
+//        NineGridTestModel model5 = new NineGridTestModel();
+//        for (int i = 0; i < mUrls.length; i++) {
+//            model5.urlList.add(mUrls[i]);
+//        }
+//        model5.isShowAll = true;//显示全部图片
+//        mList.add(model5);
+//
+//        NineGridTestModel model6 = new NineGridTestModel();
+//        for (int i = 0; i < 9; i++) {
+//            model6.urlList.add(mUrls[i]);
+//        }
+//        mList.add(model6);
+//
+//        NineGridTestModel model7 = new NineGridTestModel();
+//        for (int i = 3; i < 7; i++) {
+//            model7.urlList.add(mUrls[i]);
+//        }
+//        mList.add(model7);
+//
+//        NineGridTestModel model8 = new NineGridTestModel();
+//        for (int i = 3; i < 6; i++) {
+//            model8.urlList.add(mUrls[i]);
+//        }
+//        mList.add(model8);
 
     }
 
@@ -168,13 +169,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
         Logger.i("Location" + body.toString());
         final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
-        final List<TestMode.DataBean.ListBean> dataList = locationListBean.getData().getList();
+        dataList = locationListBean.getData().getList();
         if (locationListBean.getCode() == 0) {
             for (int i = 0; i < dataList.size(); i++) {
                 TestMode.DataBean.ListBean listBean = dataList.get(i);
                 if (listBean.getClick_like().size() > 0) {
                     mAdapter = new NineGridTest2Adapter(mActivity, dataList);
-                    mAdapter.setList(mList);
+//                    mAdapter.setList(mList);
                     recyclerView.setAdapter(mAdapter);
 
                 }

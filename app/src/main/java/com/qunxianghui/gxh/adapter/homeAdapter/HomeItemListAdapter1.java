@@ -74,6 +74,7 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataB
                 ImageView imageView2 = baseViewHolder.getView(R.id.iv_itemthree_second);
                 ImageView imageView3 = baseViewHolder.getView(R.id.iv_itemthree_third);
 
+
                 GlideApp.with(mContext).load(images.get(0))
                         .centerCrop()
                         .placeholder(R.mipmap.ic_launcher)

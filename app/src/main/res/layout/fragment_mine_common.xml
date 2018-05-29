@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.qunxianghui.gxh.widget.ScrollChildSwipeRefreshLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mycollect_refresh_layout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_mine_common"
+        android:id="@+id/recycler_mine_collect_news"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 
-</com.qunxianghui.gxh.widget.ScrollChildSwipeRefreshLayout>
+</LinearLayout>

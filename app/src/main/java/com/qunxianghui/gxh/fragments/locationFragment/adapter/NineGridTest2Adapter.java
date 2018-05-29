@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
@@ -22,6 +24,7 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +36,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private List<NineGridTestModel> mList;
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
+    private List<String> imageList;
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
@@ -54,22 +58,13 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.gridLayout.setIsShowAll(mList.get(position).isShowAll);
-        holder.gridLayout.setUrlList(mList.get(position).urlList);
 
 
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
 
-        final List<String> images = dataBeanList.get(position).getImages();
-
-
-//        GlideApp.with(mContext).load(images)
-//                .centerCrop()
-//                .placeholder(R.mipmap.ic_launcher)
-//                .error(R.mipmap.ic_launcher)
-//                .into(holder.gridLayout);
+        imageList = dataBeanList.get(position).getImages();
 
 
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
@@ -77,6 +72,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 .centerCrop().placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(holder.iv_location_person_head);
+
+
+    //设置宫格数据
+
+       holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList,dataBeanList));
 
         //收藏
         holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +137,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        NineGridTestLayout gridLayout;
+        GridView gridLayout;
         TextView tv_location_style_collect;
         TextView tv_location_style_pointgood;
         TextView tv_location_circle_inform;

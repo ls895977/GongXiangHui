@@ -79,6 +79,8 @@ public class Constant {
     public static final String REGIST_URL = BASE_URL + "user/register";
     //登录接口
     public static final String LOGIN_URL = BASE_URL + "user/login";
+    //找回密码
+    public static final String SEEK_PASSWORD_URL=BASE_URL+"user/findPassword";
     //首页天气列表
     public static final String HOME_AIRLIST_URL = BASE_URL + "weather/getWeatherInfo";
     //获取城市列表
@@ -91,8 +93,14 @@ public class Constant {
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
     //添加收藏
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
-    //获取收藏
-    public static final String GET_COLLECT_URL = BASE_URL + "user/getCollect";
+    //获取收藏的新闻
+    public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
+    //获取我收藏的视频
+    public static final String GET_COLLECT_VIDEO_URL = BASE_URL + "user/getCollect&model=news";
+    //获取我收藏帖子
+    public static final String GET_COLLECT_POST_URL = BASE_URL + "user/getCollect&model=news";
+
+
     //获取本地圈的信息列表
     public static final String LOCATION_NEWS_LIST_URL=BASE_URL+"posts/getList";
     //发布评论
@@ -105,6 +113,8 @@ public class Constant {
     public static final String LIKE_URL=BASE_URL+"like/clickLike";
     //不喜欢
     public static final String  UNLIKE_URL=BASE_URL+"like/unClickLike";
+    //我发布的帖子
+    public static final String MYPOST_TIEZI_URL=BASE_URL+"user/myPosts";
 
 
 }

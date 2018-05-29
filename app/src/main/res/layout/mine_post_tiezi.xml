@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_location_person_name"
+                android:id="@+id/tv_mine_postnews_person_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="杰伦"
@@ -41,14 +40,15 @@
                 android:layout_marginTop="5dp"
                 android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
-            <GridView
+            <com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout
 
-                android:id="@+id/layout_nine_grid"
+                android:id="@+id/mine_postnews_nine_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numColumns="3"
-                android:layout_marginTop="8dp"
-                />
+                android:layout_marginTop="8dp">
+
+            </com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,12 +111,6 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/tv_location_circle_inform"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="举报"
-            android:textColor="@color/tab_color" />
     </LinearLayout>
 
 
@@ -153,6 +147,5 @@
             android:gravity="center"
             android:text="提交" />
     </LinearLayout>
-
 
 </LinearLayout>
