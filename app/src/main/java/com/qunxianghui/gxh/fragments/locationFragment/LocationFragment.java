@@ -107,38 +107,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
      */
     @Override
     public void initDatas() {
+        RequestLocationData();
 
-//        NineGridTestModel model4 = new NineGridTestModel();
-//        for (int i = 0; i < mUrls.length; i++) {
-//            model4.urlList.add(mUrls[i]);
-//        }
-//        model4.isShowAll = false;
-//        mList.add(model4);
-//
-//        NineGridTestModel model5 = new NineGridTestModel();
-//        for (int i = 0; i < mUrls.length; i++) {
-//            model5.urlList.add(mUrls[i]);
-//        }
-//        model5.isShowAll = true;//显示全部图片
-//        mList.add(model5);
-//
-//        NineGridTestModel model6 = new NineGridTestModel();
-//        for (int i = 0; i < 9; i++) {
-//            model6.urlList.add(mUrls[i]);
-//        }
-//        mList.add(model6);
-//
-//        NineGridTestModel model7 = new NineGridTestModel();
-//        for (int i = 3; i < 7; i++) {
-//            model7.urlList.add(mUrls[i]);
-//        }
-//        mList.add(model7);
-//
-//        NineGridTestModel model8 = new NineGridTestModel();
-//        for (int i = 3; i < 6; i++) {
-//            model8.urlList.add(mUrls[i]);
-//        }
-//        mList.add(model8);
 
     }
 
@@ -148,10 +118,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView_location);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
-
-        RequestLocationData();
 
 
     }
@@ -175,7 +143,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 TestMode.DataBean.ListBean listBean = dataList.get(i);
                 if (listBean.getClick_like().size() > 0) {
                     mAdapter = new NineGridTest2Adapter(mActivity, dataList);
-//                    mAdapter.setList(mList);
+
                     recyclerView.setAdapter(mAdapter);
 
                 }
@@ -197,7 +165,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             public void onRefresh() {
                 mAdapter = null; // 把集合和适配器清空  重新请求数据
 
-                RequestLocationData();
+                //   RequestLocationData();
 
                 recyclerView.refreshComplete();
             }

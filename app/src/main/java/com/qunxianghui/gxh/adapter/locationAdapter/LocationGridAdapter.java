@@ -17,7 +17,6 @@ import java.util.List;
 public class LocationGridAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
-
     private List<String> imageList;
 
 
@@ -28,7 +27,6 @@ public class LocationGridAdapter extends BaseAdapter {
 
         layoutInflater = LayoutInflater.from(context);
     }
-
 
 
     @Override
@@ -58,7 +56,7 @@ public class LocationGridAdapter extends BaseAdapter {
             holder = (myGridHolder) convertView.getTag();
         }
 
-        GlideApp.with(context).load(imageList)
+        GlideApp.with(context).load(imageList.get(position))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)

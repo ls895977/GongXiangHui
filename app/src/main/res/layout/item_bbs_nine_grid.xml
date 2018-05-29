@@ -41,12 +41,13 @@
                 android:layout_marginTop="5dp"
                 android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
-            <GridView
+            <com.qunxianghui.gxh.widget.MyGridView
 
                 android:id="@+id/layout_nine_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numColumns="3"
+               
                 android:layout_marginTop="8dp"
                 />
 

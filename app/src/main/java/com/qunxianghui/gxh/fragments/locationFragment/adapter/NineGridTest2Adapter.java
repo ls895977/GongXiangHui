@@ -33,7 +33,7 @@ import java.util.List;
 public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder> {
     private int collectFlag = 0;
     private Context mContext;
-    private List<NineGridTestModel> mList;
+
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
 
@@ -44,9 +44,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         inflater = LayoutInflater.from(context);
     }
 
-    public void setList(List<NineGridTestModel> list) {
-        mList = list;
-    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -133,7 +131,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     @Override
     public int getItemCount() {
-        return getListSize(mList);
+        return dataBeanList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -171,10 +169,5 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         }
     }
 
-    private int getListSize(List<NineGridTestModel> list) {
-        if (list == null || list.size() == 0) {
-            return 0;
-        }
-        return list.size();
-    }
+
 }

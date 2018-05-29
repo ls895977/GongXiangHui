@@ -135,7 +135,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     /** ==================频道列表（用户订阅的频道）===================== */
     private ChannelGetallBean getListData(String body) {
-        Logger.d("getAllData-->: " + body);
+//        Logger.d("getAllData-->: " + body);
         final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
             List<ChannelGetallBean.DataBean> datas = bean.getData();
@@ -174,9 +174,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
      * 初始化Fragment
      */
     private void initFragment() {
+
         fragments.clear();//清空
         int count = userChannelList.size();
-//        Logger.d("initFragment-->:" + count);
+
         for (int i = 0; i < count; i++) {
             HotPointFragment newfragment = new HotPointFragment();
             fragments.add(newfragment);
