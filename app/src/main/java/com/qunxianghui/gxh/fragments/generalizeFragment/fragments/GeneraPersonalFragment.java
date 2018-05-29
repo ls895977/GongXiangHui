@@ -40,7 +40,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     @BindView(R.id.xrecycler_genera_personal_list)
     XRecyclerView xrecyclerGeneraPersonalList;
     Unbinder unbinder;
-    private List<HomeNewListBean.DataBean> data;
+    private List<HomeNewListBean> data;
 
     @Override
     public int getLayoutId() {
@@ -59,13 +59,13 @@ public class GeneraPersonalFragment extends BaseFragment {
             mDatas.add(more);
 
             //首页新闻数据
-            OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            parseData(response.body());
-                        }
-                    });
+//            OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onSuccess(Response<String> response) {
+//                            parseData(response.body());
+//                        }
+//                    });
         }
 
         xrecyclerGeneraPersonalList.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -89,8 +89,8 @@ public class GeneraPersonalFragment extends BaseFragment {
 
     private void parseData(String body) {
 
-        final HomeNewListBean homeNewListBean = GsonUtils.jsonFromJson(body, HomeNewListBean.class);
-        data = homeNewListBean.getData();
+//        final HomeNewListBean homeNewListBean = GsonUtils.jsonFromJson(body, HomeNewListBean.class);
+//        data = homeNewListBean.getData();
 
     }
 

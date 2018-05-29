@@ -20,6 +20,9 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.StudentDao;
@@ -199,40 +202,59 @@ public class LoginActivity extends BaseActivity {
     private void doLogin(String phone, String password) {
 
 
-        OkGo.<String>get(Constant.LOGIN_URL).tag(TAG).cacheKey("cachePostKey").
+        OkGo.<LzyResponse<LoginBean>>get(Constant.LOGIN_URL).tag(TAG).cacheKey("cachePostKey").
                 cacheMode(CacheMode.DEFAULT).
                 params("mobile", phone).
                 params("password", password).
-                execute(new StringCallback() {
+                execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
                     @Override
-                    public void onSuccess(Response<String> response) {
-
-                        if (HttpStatusUtil.getStatus(response.body().toString())) {
-
-                            Logger.d("onSuccess-->:" + response.body().toString());
-
-                            try {
-                                JSONObject jsonObject = new JSONObject(response.body().toString());
-                                JSONObject  data = jsonObject.getJSONObject("data");
-                                JSONObject accessTokenInfo = data.getJSONObject("accessTokenInfo");
-                                String access_token = accessTokenInfo.getString("access_token");
-                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-                                MyApplication.getApp().setAccessToken(access_token);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
+                    public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                        if (response.body().code.equals("0")) {
+                            String access_token=response.body().data.getAccessTokenInfo().getAccess_token();
+                            SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                            MyApplication.getApp().setAccessToken(access_token);
+                            Log.e(TAG, "onSuccess: "+access_token);
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
                             return;
+                        }else {
+                            asyncShowToast(response.body().message);
                         }
-                        asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().toString()));
+
+
                     }
-
-
                 });
+//                execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//
+//                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+//
+//                            Logger.d("onSuccess-->:" + response.body().toString());
+//
+//                            try {
+//                                JSONObject jsonObject = new JSONObject(response.body().toString());
+//                                JSONObject  data = jsonObject.getJSONObject("data");
+//                                JSONObject accessTokenInfo = data.getJSONObject("accessTokenInfo");
+//                                String access_token = accessTokenInfo.getString("access_token");
+//                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+//                                MyApplication.getApp().setAccessToken(access_token);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//
+//                            asyncShowToast("登录成功");
+//                            toActivity(MainActivity.class);
+//                            finish();
+//                            return;
+//                        }
+//                        asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().toString()));
+//                    }
+//
+//
+//                });
 
     }
 

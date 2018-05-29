@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Administrator on 2018/3/15 0015.
  */
 
-public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataBean, BaseViewHolder> {
+public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, BaseViewHolder> {
 
 
     private List<String> images;
@@ -24,9 +24,9 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataB
 
     public HomeItemListAdapter1() {
         super(null);
-        setMultiTypeDelegate(new MultiTypeDelegate<HomeNewListBean.DataBean>() {
+        setMultiTypeDelegate(new MultiTypeDelegate<HomeNewListBean>() {
             @Override
-            protected int getItemType(HomeNewListBean.DataBean entity) {
+            protected int getItemType(HomeNewListBean entity) {
                 //根据你的实体类来判断布局类型
                 return entity.getItemType();
             }
@@ -39,7 +39,7 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataB
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, HomeNewListBean.DataBean dataBean) {
+    protected void convert(BaseViewHolder baseViewHolder, HomeNewListBean dataBean) {
         ImageView imageView = null;
         final String title = dataBean.getTitle();
         final String source = dataBean.getSource();
@@ -74,21 +74,36 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean.DataB
                 ImageView imageView2 = baseViewHolder.getView(R.id.iv_itemthree_second);
                 ImageView imageView3 = baseViewHolder.getView(R.id.iv_itemthree_third);
 
-                GlideApp.with(mContext).load(images.get(0))
-                        .centerCrop()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(imageView1);
-                GlideApp.with(mContext).load(images.get(1))
-                        .centerCrop()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(imageView2);
-                GlideApp.with(mContext).load(images.get(2))
-                        .centerCrop()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(imageView3);
+                if (images.size()<3){
+                    GlideApp.with(mContext).load(images.get(0))
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView1);
+                    GlideApp.with(mContext).load(images.get(1))
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView2);
+                }else {
+                    GlideApp.with(mContext).load(images.get(0))
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView1);
+                    GlideApp.with(mContext).load(images.get(1))
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView2);
+                    GlideApp.with(mContext).load(images.get(2))
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView3);
+                }
+
+
                 break;
         }
     }

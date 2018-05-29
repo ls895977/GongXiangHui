@@ -24,10 +24,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter {
     public static final int TYPE_RIGHT_IMAGE = 1;
     public static final int TYPE_THREE_IMAGE = 2;
     private List<MoreTypeBean> mData;
-    private List<HomeNewListBean.DataBean> newsList;
+    private List<HomeNewListBean> newsList;
     private View view;
     private OnItemClickListener onItemClickListener;
-    private HomeNewListBean.DataBean dataBean;
+    private HomeNewListBean dataBean;
 
     public HomeItemListAdapter(List<MoreTypeBean> mData) {
         this.mData = mData;

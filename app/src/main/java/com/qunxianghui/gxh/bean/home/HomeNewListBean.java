@@ -9,50 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeNewListBean implements Serializable{
-
-    private int code;
-    private String message;
-    private List<DataBean> data;
-
-    public static HomeNewListBean objectFromData(String str) {
-
-        return new Gson().fromJson(str, HomeNewListBean.class);
-    }
-
-    public static List<HomeNewListBean> arrayHomeNewListBeanFromData(String str) {
-
-        Type listType = new TypeToken<ArrayList<HomeNewListBean>>() {
-        }.getType();
-
-        return new Gson().fromJson(str, listType);
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<DataBean> getData() {
-        return data;
-    }
-
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
-
-    public static class DataBean implements MultiItemEntity{
+public class HomeNewListBean implements MultiItemEntity{
 
 
         private int id;
@@ -77,18 +34,6 @@ public class HomeNewListBean implements Serializable{
         private String url;
         private List<String> images;
 
-        public static DataBean objectFromData(String str) {
-
-            return new Gson().fromJson(str, DataBean.class);
-        }
-
-        public static List<DataBean> arrayDataBeanFromData(String str) {
-
-            Type listType = new TypeToken<ArrayList<DataBean>>() {
-            }.getType();
-
-            return new Gson().fromJson(str, listType);
-        }
 
         public int getId() {
             return id;
@@ -278,10 +223,6 @@ public class HomeNewListBean implements Serializable{
                     "view_cnt=" + view_cnt + ", ctime='" + ctime + '\'' + ", ip='" + ip + '\'' + ", status=" + status + ", source='" + source + '\'' + ", tags='" + tags + '\'' + ", forward_cnt=" +
                     forward_cnt + ", share_cnt=" + share_cnt + ", url='" + url + '\'' + ", images=" + images + '}';
         }
-    }
 
-    @Override
-    public String toString() {
-        return "HomeNewListBean{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
-    }
+
 }

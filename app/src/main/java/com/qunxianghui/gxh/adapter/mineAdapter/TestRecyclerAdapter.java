@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapter.MyViewHolder> {
-    private List<HomeNewListBean.DataBean> mDatas;
+    private List<HomeNewListBean> mDatas;
     private Context mContext;
     private LayoutInflater mInflayter;
     private OnMyItemClickListener listener;
@@ -35,7 +35,7 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
     }
 
 
-    public TestRecyclerAdapter(List<HomeNewListBean.DataBean> mDatas, Context mContext) {
+    public TestRecyclerAdapter(List<HomeNewListBean> mDatas, Context mContext) {
         this.mDatas = mDatas;
         this.mContext = mContext;
         mInflayter = LayoutInflater.from(mContext);

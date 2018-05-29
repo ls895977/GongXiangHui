@@ -10,6 +10,7 @@ import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpParams;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -26,6 +27,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
 
@@ -122,6 +124,12 @@ public class MyApplication extends Application {
         params.put("app_key", 100);
         params.put("access_token", mAccessToken);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //log相关
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
+        loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);        //log打印级别，决定了log显示的详细程度
+        loggingInterceptor.setColorLevel(Level.INFO);                               //log颜色级别，决定了log在控制台显示的颜色
+        builder.addInterceptor(loggingInterceptor);                                 //添加OkGo默认debug日志
+
         builder.readTimeout(Constant.TIME_OUT, TimeUnit.SECONDS);
         OkGo.getInstance().init(this).setOkHttpClient(builder.build()).
                 setCacheMode(CacheMode.NO_CACHE).
@@ -133,6 +141,7 @@ public class MyApplication extends Application {
     }
 
     private void initLogger() {
+
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(1)         // (Optional) How many method line to show. Default 2
                 .methodOffset(0)        // (Optional) Hides internal method calls up to offset. Default 5
