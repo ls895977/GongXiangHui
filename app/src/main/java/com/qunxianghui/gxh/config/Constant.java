@@ -94,17 +94,21 @@ public class Constant {
     //获取收藏
     public static final String GET_COLLECT_URL = BASE_URL + "user/getCollect";
     //获取本地圈的信息列表
-    public static final String LOCATION_NEWS_LIST_URL=BASE_URL+"posts/getList";
+    public static final String LOCATION_NEWS_LIST_URL = BASE_URL + "posts/getList";
     //发布评论
-    public static final String ISSURE_DISUSS_URL=BASE_URL+"comment/addComment";
+    public static final String ISSURE_DISUSS_URL = BASE_URL + "comment/addComment";
     //删除评论
-    public static final String DELETE_DISCUSS_URL=BASE_URL+"comment/delComment";
+    public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
     //我发布的帖子
-    public static final String MINE_ISSURE_NEWS_URL=BASE_URL+"user/myPosts";
+    public static final String MINE_ISSURE_NEWS_URL = BASE_URL + "user/myPosts";
     //喜欢
-    public static final String LIKE_URL=BASE_URL+"like/clickLike";
+    public static final String LIKE_URL = BASE_URL + "like/clickLike";
     //不喜欢
-    public static final String  UNLIKE_URL=BASE_URL+"like/unClickLike";
+    public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
+    //搜索结果
+    public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
+    //获取搜索自动完成数据
+    public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
 
 
 }

@@ -6,7 +6,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
-import com.readystatesoftware.chuck.internal.support.JsonConvertor;
 
 import java.io.Reader;
 import java.lang.reflect.Type;

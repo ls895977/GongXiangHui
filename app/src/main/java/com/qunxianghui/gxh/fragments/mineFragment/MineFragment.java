@@ -17,7 +17,6 @@ import com.github.dfqin.grantor.PermissionsUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
@@ -135,12 +134,12 @@ public class MineFragment extends BaseFragment {
 
 
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
-                            Logger.d("onSuccess-->:" + response.body().toString());
+//                            Logger.d("onSuccess-->:" + response.body().toString());
                             parseUserData(response.body());
                             return;
                         }
                         toActivity(LoginActivity.class);
-                        Logger.d("onSuccess-->:" + response.body().toString());
+//                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
                 });
 

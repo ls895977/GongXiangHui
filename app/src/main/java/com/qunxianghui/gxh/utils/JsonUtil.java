@@ -83,6 +83,7 @@ public class JsonUtil {
             return null;
         }
         try {
+
             list = gson.fromJson(content, new TypeToken<List<T>>() {
             }.getType());
 

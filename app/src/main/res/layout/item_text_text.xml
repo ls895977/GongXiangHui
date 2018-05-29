@@ -32,25 +32,22 @@
                 android:id="@+id/tv_recycler_bottom_science"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginRight="3dp"
                 android:text="科技" />
 
             <TextView
                 android:id="@+id/tv_recycler_bottom_science2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-
                 android:drawableLeft="@mipmap/eye_test"
                 android:drawablePadding="3dp"
+                android:layout_marginRight="3dp"
                 android:text="52万" />
 
             <TextView
                 android:id="@+id/tv_recycler_bottom_science3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-
                 android:drawableLeft="@mipmap/eye_test"
                 android:drawablePadding="3dp"
                 android:text="刚刚" />
