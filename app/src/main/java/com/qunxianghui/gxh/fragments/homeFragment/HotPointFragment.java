@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,9 +31,11 @@ import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
@@ -40,6 +43,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -60,6 +64,8 @@ import kr.co.namee.permissiongen.PermissionGen;
  */
 
 public class HotPointFragment extends BaseFragment implements View.OnClickListener {
+    @BindView(R.id.swip)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerview_list)
     RecyclerView recyclerviewList;
     @BindView(R.id.ll_home_paste_artical)
@@ -85,8 +91,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private View footer;
     private View headerVp;
     private int mCurrentCounter;
-    private List<HomeNewListBean.DataBean> dataList;
+    private List<HomeNewListBean> dataList=new ArrayList<>();
     private int count = 0;
+    private int total=0;
     private String image_url;
 
     @Override
@@ -99,50 +106,56 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     public void initDatas() {
         mDatas = new ArrayList<>();
 
-
-        //首页新闻数据
-        OkGo.<String>get(Constant.HOME_NEWS_LIST_URL)
-                .params("limit", 10)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        parseData(response.body());
-                    }
-                });
+        //请求数据
+        parseData();
 
 
-        recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
+        homeItemListAdapter1 = new HomeItemListAdapter1();
+        homeItemListAdapter1.setNewData(dataList);
+        homeItemListAdapter1.addHeaderView(headerNavigator);
+        homeItemListAdapter1.addHeaderView(headerVp, 1);
+        homeItemListAdapter1.addFooterView(footer);
 
-        footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
-        headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
-        headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
-        View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-        viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
-        grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
+        //上拉加载更多哦
+        homeItemListAdapter1.setLoadMoreView(new CustomLoadMoreView());
+        homeItemListAdapter1.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                parseData();
+            }
+        }, recyclerviewList);
 
-//        List<Integer> list = new ArrayList<>();
-//        list.add(R.mipmap.ic_test_0);
-//        list.add(R.mipmap.ic_test_1);
-//        list.add(R.mipmap.ic_test_2);
-//        list.add(R.mipmap.ic_test_3);
-//        list.add(R.mipmap.ic_test_4);
-//        list.add(R.mipmap.ic_test_5);
-//        list.add(R.mipmap.ic_test_6);
-//
-//        List<String> titles = new ArrayList<>();
-//        titles.add("图片1");
-//        titles.add("图片2");
-//        titles.add("图片3");
-//        titles.add("图片4");
-//        titles.add("图片5");
-//        titles.add("图片6");
-//        titles.add("图片7");
+        //下来刷新
+        // 设置下拉进度的背景颜色，默认就是白色的
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        // 设置下拉进度的主题颜色
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+
+        // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // 开始刷新，设置当前为刷新状态
+                swipeRefreshLayout.setRefreshing(true);
+                count=0;
+                parseData();
+
+            }
+        });
 
 
-        //加載首頁那个导航图
-        initGridHomeNavigator();
-        //加载首页轮播图
-        initLunBoShow();
+        //设置加载出来看的动画
+        homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        recyclerviewList.setAdapter(homeItemListAdapter1);
+
+
+
+
+
+
+
+
     }
 
     /**
@@ -199,91 +212,46 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private void parseData(String body) {
-        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
-        dataList = homeNewListBean.getData();
+    private void parseData() {
 
-        homeItemListAdapter1 = new HomeItemListAdapter1();
-        homeItemListAdapter1.setNewData(dataList);
-        homeItemListAdapter1.addHeaderView(headerNavigator);
-        homeItemListAdapter1.addHeaderView(headerVp, 1);
-        homeItemListAdapter1.addFooterView(footer);
-
-        //上拉加载更多哦
-        homeItemListAdapter1.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                recyclerviewList.postDelayed(new Runnable() {
+        //首页新闻数据
+        OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
+                .params("limit", 10)
+                .params("skip",count)
+                .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
-                    public void run() {
-                        if ((mCurrentCounter >= dataList.size())) {
-                            homeItemListAdapter1.loadMoreEnd();
-                        } else {
-                            boolean isErr = false;
-                            if (isErr) {
-                                //成功获取数据
-                                homeItemListAdapter1.addData(dataList);
-                                mCurrentCounter = homeItemListAdapter1.getData().size();
-                                //主动调用加载完成 停止加载
-                                homeItemListAdapter1.loadMoreComplete();
-                            } else {
-                                //获取更多数据失败
-                                isErr = true;
-                                asyncShowToast("加载失败");
-                                homeItemListAdapter1.loadMoreFail();
+                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                        if (response.body().code.equals("0")){
+                            swipeRefreshLayout.setRefreshing(false);
+                            List<HomeNewListBean> list=response.body().data;
+                            if (list==null||list.size()==0){
+                                homeItemListAdapter1.loadMoreEnd();
+                                return;
+                            }else{
+                                if (count==0){
+                                    dataList.clear();
+                                }
+                                dataList.addAll(list);
+                                total=dataList.size();
+                                if (count+10<=total){
+                                    count+=10;
+                                    homeItemListAdapter1.loadMoreComplete();
+
+                                }else {
+                                    homeItemListAdapter1.loadMoreEnd();
+
+                                }
+
                             }
+                            homeItemListAdapter1.notifyDataSetChanged();
                         }
                     }
-                }, 1000);
-
-            }
-        }, recyclerviewList);
-        //下来刷新
-        homeItemListAdapter1.setUpFetchEnable(true);
-        homeItemListAdapter1.setUpFetchListener(new BaseQuickAdapter.UpFetchListener() {
-            @Override
-            public void onUpFetch() {
-                startUpFetch();
-            }
-        });
-
-        //设置加载出来看的动画
-        homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-
-        recyclerviewList.setAdapter(homeItemListAdapter1);
+                });
 
 
-        //对列表设置点击事件
-        homeItemListAdapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                final String url = homeNewListBean.getData().get(position).getUrl();
-                final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
 
-            }
-        });
     }
 
-    private void startUpFetch() {
-
-        count++;
-
-        homeItemListAdapter1.setUpFetching(true);
-
-        recyclerviewList.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                homeItemListAdapter1.addData(0, dataList);
-                homeItemListAdapter1.setUpFetching(false);
-                if (count > 5) {
-                    homeItemListAdapter1.setUpFetchEnable(false);
-
-                }
-            }
-        }, 300);
-    }
 
 
     private void initGridHomeNavigator() {
@@ -332,7 +300,20 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initViews(View view) {
 
-//这句是调取粘贴的系统服务
+        recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
+        footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
+        headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
+        headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
+        View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
+        viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
+        grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
+
+        //加載首頁那个导航图
+        initGridHomeNavigator();
+        //加载首页轮播图
+        initLunBoShow();
+
+        //这句是调取粘贴的系统服务
         mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         PermissionGen.needPermission(HotPointFragment.this, 105,
                 new String[]{
@@ -347,6 +328,17 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     protected void initListeners() {
         llHomePasteArtical.setOnClickListener(this);
+        //对列表设置点击事件
+        homeItemListAdapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                final String url = dataList.get(position).getUrl();
+                final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override

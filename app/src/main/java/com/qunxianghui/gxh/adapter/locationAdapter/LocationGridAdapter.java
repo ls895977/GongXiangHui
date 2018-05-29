@@ -19,13 +19,13 @@ public class LocationGridAdapter extends BaseAdapter {
     private Context context;
 
     private List<String> imageList;
-    private List<TestMode.DataBean.ListBean> dataBeanList;
 
-    public LocationGridAdapter(Context context, List<String> imageList, List<TestMode.DataBean.ListBean> dataBeanList) {
+
+    public LocationGridAdapter(Context context, List<String> imageList) {
 
         this.context = context;
         this.imageList = imageList;
-        this.dataBeanList = dataBeanList;
+
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -58,8 +58,7 @@ public class LocationGridAdapter extends BaseAdapter {
             holder = (myGridHolder) convertView.getTag();
         }
 
-
-        GlideApp.with(context).load(dataBeanList.get(position).getImages())
+        GlideApp.with(context).load(imageList)
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)

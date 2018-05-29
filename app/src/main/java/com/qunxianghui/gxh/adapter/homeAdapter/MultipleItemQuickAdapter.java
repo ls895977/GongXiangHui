@@ -15,9 +15,9 @@ import java.util.List;
 
 public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
 
-private  List<HomeNewListBean.DataBean> newLataList;
+private  List<HomeNewListBean> newLataList;
 
-    public MultipleItemQuickAdapter(List<MultipleItem> data, List<HomeNewListBean.DataBean> newsList) {
+    public MultipleItemQuickAdapter(List<MultipleItem> data, List<HomeNewListBean> newsList) {
         super(data);
         this.newLataList = newsList;
 

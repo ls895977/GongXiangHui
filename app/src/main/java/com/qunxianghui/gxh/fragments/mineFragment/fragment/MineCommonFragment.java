@@ -54,27 +54,9 @@ public class MineCommonFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        recyclerMineCollectNews.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL )
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        String body = response.body();
-                        Log.i(TAG, body.toString());
-                        final HomeNewListBean homeNewListBean = GsonUtil.parseJsonWithGson(body, HomeNewListBean.class);
-                        final List<HomeNewListBean.DataBean> newsDataList = homeNewListBean.getData();
-                        final HomeItemListAdapter1 homeItemListAdapter1 = new HomeItemListAdapter1();
-                        homeItemListAdapter1.setNewData(newsDataList);
-                        recyclerMineCollectNews.setAdapter(homeItemListAdapter1);
 
-                    }
 
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        Toast.makeText(mActivity, "加载失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
 
 
     }

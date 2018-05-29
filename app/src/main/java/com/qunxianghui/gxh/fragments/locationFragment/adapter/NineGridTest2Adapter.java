@@ -36,7 +36,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private List<NineGridTestModel> mList;
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
-    private List<String> imageList;
+
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
@@ -64,7 +64,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
 
-        imageList = dataBeanList.get(position).getImages();
+        final List<String> imageList = dataBeanList.get(position).getImages();
 
 
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
@@ -76,7 +76,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     //设置宫格数据
 
-       holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList,dataBeanList));
+       holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
 
         //收藏
         holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
