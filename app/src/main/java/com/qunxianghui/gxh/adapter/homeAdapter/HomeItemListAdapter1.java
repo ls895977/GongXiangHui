@@ -104,8 +104,6 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, Base
                             .into(imageView3);
                 }
 
-
-
                 break;
         }
     }

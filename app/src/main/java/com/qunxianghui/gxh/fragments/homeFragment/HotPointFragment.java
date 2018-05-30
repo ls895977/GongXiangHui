@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -81,35 +82,26 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
-
-
     private HomeItemListAdapter homeItemListAdapter;
-
-
     private HomeItemListAdapter1 homeItemListAdapter1;
     private View headerNavigator;
     private View footer;
     private View headerVp;
     private int mCurrentCounter;
-    private List<HomeNewListBean> dataList=new ArrayList<>();
+    private List<HomeNewListBean> dataList = new ArrayList<>();
     private int count = 0;
-    private int total=0;
+    private int total = 0;
     private String image_url;
-
     @Override
     public int getLayoutId() {
-
         return R.layout.fragment_home;
     }
 
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
-
         //请求数据
         parseData();
-
-
         homeItemListAdapter1 = new HomeItemListAdapter1();
         homeItemListAdapter1.setNewData(dataList);
         homeItemListAdapter1.addHeaderView(headerNavigator);
@@ -121,7 +113,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         homeItemListAdapter1.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                parseData();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        parseData();
+                    }
+                }, 1000);
+
             }
         }, recyclerviewList);
 
@@ -135,27 +133,21 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-                // 开始刷新，设置当前为刷新状态
-                swipeRefreshLayout.setRefreshing(true);
-                count=0;
-                parseData();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 开始刷新，设置当前为刷新状态
+                        swipeRefreshLayout.setRefreshing(true);
+                        count = 0;
+                        parseData();
+                    }
+                }, 1000);
 
             }
         });
-
-
         //设置加载出来看的动画
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
-
-
-
-
-
-
-
-
     }
 
     /**
@@ -176,7 +168,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
             List<String> titles = new ArrayList<>();
             List<String> imags = new ArrayList<>();
-
             String image_src = null;
             String title = null;
 
@@ -184,15 +175,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             for (int i = 0; i < lunboData.size(); i++) {
                 image_src = lunboData.get(i).getImage_src();  //图片
                 title = lunboData.get(i).getTitle();        //title
-
                 //轮播图跳转的url
                 image_url = lunboData.get(i).getImage_url();
                 imags.add(image_src);
                 titles.add(title);
-
             }
-
-
             viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                     .setBannerTitles(titles)
                     .setDelayTime(3000)
@@ -209,37 +196,34 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     .start();
         }
 
-
     }
-
     private void parseData() {
 
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
                 .params("limit", 10)
-                .params("skip",count)
+                .params("skip", count)
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code.equals("0")){
+                        if (response.body().code.equals("0")) {
                             swipeRefreshLayout.setRefreshing(false);
-                            List<HomeNewListBean> list=response.body().data;
-                            if (list==null||list.size()==0){
+                            List<HomeNewListBean> list = response.body().data;
+                            if (list == null || list.size() == 0) {
                                 homeItemListAdapter1.loadMoreEnd();
                                 return;
-                            }else{
-                                if (count==0){
+                            } else {
+                                if (count == 0) {
                                     dataList.clear();
                                 }
                                 dataList.addAll(list);
-                                total=dataList.size();
-                                if (count+10<=total){
-                                    count+=10;
+                                total = dataList.size();
+                                if (count + 10 <= total) {
+                                    count += 10;
                                     homeItemListAdapter1.loadMoreComplete();
 
-                                }else {
+                                } else {
                                     homeItemListAdapter1.loadMoreEnd();
-
                                 }
 
                             }
@@ -249,9 +233,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 });
 
 
-
     }
-
 
 
     private void initGridHomeNavigator() {
@@ -354,7 +336,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
     @Override
     public void onDestroy() {

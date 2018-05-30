@@ -54,16 +54,15 @@ public class Constant {
 
 
     // 真正的开发   先前的先忽略
-
-
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //首页轮播图
-    public static final String HOME_PAGE_LUNBO_URL=BASE_URL+"ad/getList?place=首页图片轮播";
-
+    public static final String HOME_PAGE_LUNBO_URL = BASE_URL + "ad/getList?place=首页图片轮播";
+    //首页爆料
+    public static final String HOME_DISCLOSE_URL = BASE_URL + "iv_person_data_pic";
     //获取全部频道
     public static final String CHANNEL_GETALL = BASE_URL + "channel/getAll";
     //频道列表（用户订阅的频道）
@@ -72,7 +71,6 @@ public class Constant {
     public static final String CHANNEL_ADD_CHANNEL = BASE_URL + "channel/addChannel";
     //删除频道
     public static final String CHANNEL_DELETE_CHANNEL = BASE_URL + "channel/delChannel";
-
     //注册页面发送验证码
     public static final String REFIST_SEND_CODE_URL = BASE_URL + "captcha/send";
     //注册接口
@@ -80,9 +78,11 @@ public class Constant {
     //登录接口
     public static final String LOGIN_URL = BASE_URL + "user/login";
     //找回密码
-    public static final String SEEK_PASSWORD_URL=BASE_URL+"user/findPassword";
+    public static final String SEEK_PASSWORD_URL = BASE_URL + "user/findPassword";
     //首页天气列表
     public static final String HOME_AIRLIST_URL = BASE_URL + "weather/getWeatherInfo";
+    //首页爆料
+    public static final String HOME_DISCLOSS_URL = BASE_URL + "info/publish";
     //获取城市列表
     public static final String CITY_LIST_URL = BASE_URL + "region/getList";
     //修改个人资料
@@ -99,8 +99,6 @@ public class Constant {
     public static final String GET_COLLECT_VIDEO_URL = BASE_URL + "user/getCollect&model=news";
     //获取我收藏帖子
     public static final String GET_COLLECT_POST_URL = BASE_URL + "user/getCollect&model=news";
-
-
     //获取本地圈的信息列表
     public static final String LOCATION_NEWS_LIST_URL = BASE_URL + "posts/getList";
     //发布评论
@@ -112,16 +110,14 @@ public class Constant {
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
     //不喜欢
-
-    public static final String  UNLIKE_URL=BASE_URL+"like/unClickLike";
+    public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
     //我发布的帖子
-    public static final String MYPOST_TIEZI_URL=BASE_URL+"user/myPosts";
+    public static final String MYPOST_TIEZI_URL = BASE_URL + "user/myPosts";
 
     //搜索结果
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
     //获取搜索自动完成数据
     public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
-
 
 
 }
