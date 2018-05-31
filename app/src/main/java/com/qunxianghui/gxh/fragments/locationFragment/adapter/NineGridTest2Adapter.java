@@ -122,6 +122,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
 
+        //点击提交评论后要显示布局
+//        holder.recycler_location_discuss.setAdapter();
+
+//        holder.liner_location_discuss.setVisibility(View.VISIBLE);
+
     }
 
     private void toInformActivity() {
@@ -148,6 +153,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         LinearLayout ll_location_style_collect;
         LinearLayout ll_location_discuss_commit;
         TextView tv_location_discuss_commit;
+        RecyclerView recycler_location_discuss;
+        LinearLayout liner_location_discuss;
 
 
         public ViewHolder(View itemView) {
@@ -165,6 +172,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
+
+           recycler_location_discuss = itemView.findViewById(R.id.recycler_location_discuss);
+            liner_location_discuss = itemView.findViewById(R.id.liner_location_discuss);
 
         }
     }

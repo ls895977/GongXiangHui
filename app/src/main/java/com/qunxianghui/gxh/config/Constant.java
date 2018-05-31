@@ -54,7 +54,10 @@ public class Constant {
 
 
     // 真正的开发   先前的先忽略
+
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    //欢迎页广告
+    public static final String WELCOM_ADVER_URL=BASE_URL+"system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页视频列表
@@ -107,17 +110,23 @@ public class Constant {
     public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
     //我发布的帖子
     public static final String MINE_ISSURE_NEWS_URL = BASE_URL + "user/myPosts";
+    // 推广统计个人上面的头部
+    public static final String GENERALIZE_RERSON_STATIS_URL=BASE_URL+"promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
     //不喜欢
     public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
     //我发布的帖子
     public static final String MYPOST_TIEZI_URL = BASE_URL + "user/myPosts";
-
     //搜索结果
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
     //获取搜索自动完成数据
     public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
-
+   //获取我的爆料信息
+    public static final String GET_DISCLOSS_INFO_URL=BASE_URL+"user/getMyInfo";
+    //获取我发布帖子
+    public static final String GET_ISSURE_POST_URL=BASE_URL+"user/myPosts";
+    //用户升级
+    public static final String PERSON_UPGRADE_URL=BASE_URL+"user/upgrade";
 
 }

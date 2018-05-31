@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.qunxianghui.gxh"
         minSdkVersion 16
@@ -54,27 +54,36 @@ dependencies {
     //用于请求相机权限
 
     //    compile 'com.google.zxing:core:3.2.1'//扫描二维码
+
     //谷歌的zxing库
     implementation 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
+
     //bingoogolapple的库
     implementation 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
     implementation 'com.lovedise:permissiongen:0.0.6'
     implementation 'com.contrarywind:Android-PickerView:3.2.6'
+
     //选择器
     implementation 'com.android.support:recyclerview-v7:27.0.0-alpha1'
     implementation 'com.android.support:design:27.+'
 
     //优惠横向转换条
     implementation 'com.github.bumptech.glide:glide:4.2.0'
+
     //图片处理
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+
     //图片处理
     implementation 'com.android.support:cardview-v7:24.2.0'
+
     //卡片图片
     implementation 'com.google.code.gson:gson:2.8.1'
+
     //Gson解析
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.8'
+
     //视频库
+
     //相册
     implementation 'com.linchaolong.android:imagepicker:1.2'
     testImplementation 'junit:junit:4.12'
@@ -95,7 +104,9 @@ dependencies {
 
     //新浪微博
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
     //微信
+
     //定位功能
 
     //    compile 'com.amap.api:location:latest.integration'
@@ -111,6 +122,7 @@ dependencies {
 
     //打印日志
     implementation 'com.orhanobut:logger:2.1.1'
+
     //BaseRecyclerViewAdapter的适配器
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
     implementation 'com.readystatesoftware.chuck:library:1.0.4'

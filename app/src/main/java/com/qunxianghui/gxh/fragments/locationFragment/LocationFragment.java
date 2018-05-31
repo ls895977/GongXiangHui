@@ -105,7 +105,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
 
-
     }
 
     private void RequestLocationData() {
@@ -137,7 +136,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
                 }
             }
-
         }
 
 

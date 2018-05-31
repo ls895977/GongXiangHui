@@ -31,15 +31,12 @@
     </RelativeLayout>
 
 
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/recyclerView_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <com.jcodecraeer.xrecyclerview.XRecyclerView
-            android:id="@+id/recyclerView_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </com.jcodecraeer.xrecyclerview.XRecyclerView>
-
-
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
 
 
 
