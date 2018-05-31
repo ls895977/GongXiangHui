@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.fragments.locationFragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -60,7 +59,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     NineGridTest2Adapter mAdapter;
 
 
-
     private View view;
     private Dialog picVideo_dialog;
     private TextView tv_alertbottom_up_pic;
@@ -79,7 +77,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private View upVideoDialogView;
     private int count = 0;
     private int page = 1;
-    private List<TestMode.DataBean.ListBean> dataList;
+    private List<TestMode.DataBean.ListBean> dataList=new ArrayList<TestMode.DataBean.ListBean>();
 
 
     @Override
@@ -113,22 +111,22 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private void RequestLocationData() {
 
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
-                .params("limit",10)
-                .params("skip",count)
+                .params("limit", 10)
+                .params("skip", count)
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseLocationData(response.body());
-            }
-        });
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseLocationData(response.body());
+                    }
+                });
     }
 
     private void parseLocationData(String body) {
 
         Logger.i("Location" + body.toString());
         final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
-        dataList = locationListBean.getData().getList();
-
+        dataList.addAll(locationListBean.getData().getList());
+        count = dataList.size();
         if (locationListBean.getCode() == 0) {
             for (int i = 0; i < dataList.size(); i++) {
                 TestMode.DataBean.ListBean listBean = dataList.get(i);
@@ -154,9 +152,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                  mAdapter = null; // 把集合和适配器清空  重新请求数据
-
-                   RequestLocationData();
+                mAdapter = null; // 把集合和适配器清空  重新请求数据
+                dataList.clear();
+                count = 0;
+                RequestLocationData();
 
                 recyclerView.refreshComplete();
             }
@@ -164,12 +163,12 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onLoadMore() {
 
-                 new Handler().postDelayed(new Runnable() {
-                     @Override
-                     public void run() {
-                         RequestLocationData();
-                     }
-                 },1000);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RequestLocationData();
+                    }
+                }, 1000);
                 recyclerView.refreshComplete();
 
             }
