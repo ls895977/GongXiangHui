@@ -35,7 +35,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     TextView tvMycollectEdit;
 
 
-    private String[] titles = new String[]{"咨询", "视频", "帖子"};
+    private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
 

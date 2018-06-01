@@ -315,8 +315,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 final String url = dataList.get(position).getUrl();
+                final int uuid = dataList.get(position).getId();
                 final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", url);
+                intent.putExtra("uuid", uuid);
+
                 startActivity(intent);
 
             }

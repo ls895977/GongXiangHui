@@ -15,11 +15,14 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
+import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.mine.CollectBean;
+import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
 
@@ -48,15 +51,28 @@ public class MineCommonFragment extends BaseFragment {
     @Override
     public void initDatas() {
 
+        OkGo.<String>post(Constant.GET_COLLECT_POST_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                 parseCollectPostData(response.body());
+            }
+        });
 
+    }
+
+    private void parseCollectPostData(String body) {
+        final MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
+        if (myCollectPostBean.getCode()==0){
+            final List<MyCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
+            final MyCollectPostAdapter myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+            recyclerMineCollectNews.setAdapter(myCollectPostAdapter);
+        }
     }
 
 
     @Override
     public void initViews(View view) {
-
-
-
+        recyclerMineCollectNews.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
 
 
     }
