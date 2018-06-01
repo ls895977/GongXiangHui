@@ -36,6 +36,8 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     EditText etSeekPasswordPhoneNumber;
     @BindView(R.id.tv_seekPassword_code)
     TextView tvSeekPasswordCode;
+    @BindView(R.id.et_fetch_pass_code)
+    EditText etFetchPassCode;
     private String phoneNumber;
 
 
@@ -71,6 +73,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        final String vertifiCode = etFetchPassCode.getText().toString().trim();
         Intent intent = null;
         switch (v.getId()) {
             case R.id.et_seekPassword_phoneNumber:
@@ -82,7 +85,12 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             case R.id.bt_seek_password_next:
                 asyncShowToast("默认请求接口成功");
                 finish();
-                toActivity(ResetPasswordActivity.class);
+//                toActivity(ResetPasswordActivity.class);
+                intent = new Intent(mContext, ResetPasswordActivity.class);
+                intent.putExtra("mobile", phoneNumber);
+                intent.putExtra("captcha",vertifiCode );
+                startActivity(intent);
+
                 break;
 
         }

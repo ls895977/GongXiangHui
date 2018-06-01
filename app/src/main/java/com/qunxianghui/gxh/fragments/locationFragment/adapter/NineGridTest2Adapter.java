@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
@@ -22,6 +24,7 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +33,10 @@ import java.util.List;
 public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder> {
     private int collectFlag = 0;
     private Context mContext;
-    private List<NineGridTestModel> mList;
+
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
+
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
@@ -40,9 +44,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         inflater = LayoutInflater.from(context);
     }
 
-    public void setList(List<NineGridTestModel> list) {
-        mList = list;
-    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,22 +56,13 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.gridLayout.setIsShowAll(mList.get(position).isShowAll);
-        holder.gridLayout.setUrlList(mList.get(position).urlList);
 
 
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
 
-        final List<String> images = dataBeanList.get(position).getImages();
-
-
-//        GlideApp.with(mContext).load(images)
-//                .centerCrop()
-//                .placeholder(R.mipmap.ic_launcher)
-//                .error(R.mipmap.ic_launcher)
-//                .into(holder.gridLayout);
+        final List<String> imageList = dataBeanList.get(position).getImages();
 
 
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
@@ -77,6 +70,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 .centerCrop().placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(holder.iv_location_person_head);
+
+
+    //设置宫格数据
+
+       holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
 
         //收藏
         holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +122,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
 
+        //点击提交评论后要显示布局
+//        holder.recycler_location_discuss.setAdapter();
+
+//        holder.liner_location_discuss.setVisibility(View.VISIBLE);
+
     }
 
     private void toInformActivity() {
@@ -133,11 +136,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     @Override
     public int getItemCount() {
-        return getListSize(mList);
+        return dataBeanList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        NineGridTestLayout gridLayout;
+        GridView gridLayout;
         TextView tv_location_style_collect;
         TextView tv_location_style_pointgood;
         TextView tv_location_circle_inform;
@@ -150,6 +153,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         LinearLayout ll_location_style_collect;
         LinearLayout ll_location_discuss_commit;
         TextView tv_location_discuss_commit;
+        RecyclerView recycler_location_discuss;
+        LinearLayout liner_location_discuss;
 
 
         public ViewHolder(View itemView) {
@@ -168,13 +173,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
 
+           recycler_location_discuss = itemView.findViewById(R.id.recycler_location_discuss);
+            liner_location_discuss = itemView.findViewById(R.id.liner_location_discuss);
+
         }
     }
 
-    private int getListSize(List<NineGridTestModel> list) {
-        if (list == null || list.size() == 0) {
-            return 0;
-        }
-        return list.size();
-    }
+
 }

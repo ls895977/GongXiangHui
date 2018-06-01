@@ -5,9 +5,10 @@
 
 
     <TextView
+        android:id="@+id/tv_click_addmore"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="没有数据咯"
+        android:text="没有数据咯,点击加载更多"
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

@@ -2,8 +2,14 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.view.View;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.config.Constant;
+
+import java.util.logging.Logger;
 
 /**
  * Created by Administrator on 2018/4/14 0014.
@@ -17,6 +23,13 @@ public class MyIssureFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+        OkGo.<String>get(Constant.GET_DISCLOSS_INFO_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        com.orhanobut.logger.Logger.e("我的爆料+++++"+response.body().toString());
+                    }
+                });
 
     }
 

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 作者：李标
+ * 作者：赵龙涛
  * 日期  2017/11/6 15:39
  * 邮箱：Lb_android@163.com
  * 模块：ListArray 集合的工具类

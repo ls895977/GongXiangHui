@@ -28,7 +28,7 @@ public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSe
     @BindView(R.id.mine_MyIssure_viewpager)
     ViewPager mineMyIssureViewpager;
 
-    private String [] titles=new String[]{"资讯","视频","帖子"};
+    private String [] titles=new String[]{"爆料","视频","帖子"};
     private List<Fragment> fragments=new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
 

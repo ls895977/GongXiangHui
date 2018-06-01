@@ -7,8 +7,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.home.WelcomAdverBean;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 
 /**欢迎界面 倒计时
@@ -61,16 +67,29 @@ private Handler handler=new Handler(){
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
 
-
-
-
-
     }
-
-
 
     @Override
     protected void initDatas() {
+        /**
+         * 增加欢迎页广告
+         */
 
+        OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                parseWelcomData(response.body());
+            }
+        });
+    }
+
+    private void parseWelcomData(String body) {
+        final WelcomAdverBean welcomAdverBean = GsonUtils.jsonFromJson(body, WelcomAdverBean.class);
+        if (welcomAdverBean.getCode()==0){
+            final WelcomAdverBean.DataBean data = welcomAdverBean.getData();
+            /**
+             * 欢迎页 不可能就一张图片 设置滑动的图片
+             */
+        }
     }
 }

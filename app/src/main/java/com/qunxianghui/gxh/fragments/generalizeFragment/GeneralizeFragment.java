@@ -1,28 +1,38 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment;
 
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.generalize.GeneraLizePersonTopBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPushFragment;
 import com.qunxianghui.gxh.listener.PageChangeListener;
+import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -47,6 +57,17 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     ImageView ivGeneraBack;
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
+    @BindView(R.id.tv_generalize_company_des)
+    TextView tvGeneralizeCompanyDes;
+    @BindView(R.id.tv_genera_person_exposure)
+    TextView tvGeneraPersonExposure;
+    @BindView(R.id.tv_genera_person_click_count)
+    TextView tvGeneraPersonClickCount;
+    @BindView(R.id.tv_genera_person_transmit)
+    TextView tvGeneraPersonTransmit;
+    @BindView(R.id.tv_genera_person_click_rate)
+    TextView tvGeneraPersonClickRate;
+    Unbinder unbinder;
 
 
     @Override
@@ -69,10 +90,43 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         /**默认显示第一个选项卡*/
         rgGeneralizeMain.check(R.id.rb_genera_personal);
 
+        //显示推广头部的信息
+        DisplayPersonData();
+
     }
+//解析推光头部信息
+    private void DisplayPersonData() {
+        OkGo.<String>get(Constant.GENERALIZE_RERSON_STATIS_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseGeneraPersonTopData(response.body());
+                    }
+                });
+
+    }
+
+    private void parseGeneraPersonTopData(String body) {
+        final GeneraLizePersonTopBean generaLizePersonTopBean = GsonUtils.jsonFromJson(body, GeneraLizePersonTopBean.class);
+        if (generaLizePersonTopBean.getCode()==0){
+            final GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
+            tvGeneraPersonExposure.setText(data.getView_cnt());
+            tvGeneraPersonClickCount.setText(data.getClick_cnt());
+            tvGeneraPersonTransmit.setText(data.getShare_cnt());
+            tvGeneraPersonClickRate.setText(data.getClick_rate());
+            tvGeneralizeCompanyDes.setText(data.getAd_prize());
+
+        }
+
+
+
+
+    }
+
 
     @Override
     public void initViews(View view) {
+
         initViewPagers();
     }
 
@@ -118,7 +172,9 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    /** ==================viewPager滑动监听===================== */
+    /**
+     * ==================viewPager滑动监听=====================
+     */
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
         public void onPageSelected(int position) {
@@ -148,4 +204,17 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     };
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

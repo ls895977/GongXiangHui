@@ -111,7 +111,7 @@ public class TestMode {
 
             public List<ClickLikeBean> getClick_like() {
                 List<ClickLikeBean>  clickLikeBeanList= ListUtils.getNewArrayObjectList();
-                if(!TextUtils.isEmpty(click_like.toString())){
+                    if(!TextUtils.isEmpty(click_like.toString())){
                     clickLikeBeanList= GsonUtils.jsonTypeTokenFromJson(click_like.toString(),new TypeToken<List<ClickLikeBean>>(){}.getType());
                 }
                 return clickLikeBeanList;
