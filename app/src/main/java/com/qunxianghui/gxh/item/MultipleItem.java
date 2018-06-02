@@ -8,6 +8,7 @@ public class MultipleItem implements MultiItemEntity {
     public static final int FIRST_TYPE = 1;
     public static final int SECOND_TYPE = 2;
     public static final int NORMAL_TYPE = 3;
+    public static final int THIRD_TYPE = 4;
     private int itemType;
     private Model data;
 

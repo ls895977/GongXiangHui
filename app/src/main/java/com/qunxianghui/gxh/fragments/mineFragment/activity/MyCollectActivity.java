@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCollectPostFrament;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCommonFragment;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
         fragments.add(new MineCommonFragment());
         fragments.add(new MineCommonFragment());
-        fragments.add(new MineCommonFragment());
+        fragments.add(new MineCollectPostFrament());
 
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);

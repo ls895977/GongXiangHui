@@ -106,9 +106,9 @@ public class Constant {
     //获取收藏的新闻
     public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
     //获取我收藏的视频
-    public static final String GET_COLLECT_VIDEO_URL = BASE_URL + "user/getCollect&model=news";
+    public static final String GET_COLLECT_VIDEO_URL = BASE_URL + "user/getCollect&model=video";
     //获取我收藏帖子
-    public static final String GET_COLLECT_POST_URL = BASE_URL + "user/getCollect&model=news";
+    public static final String GET_COLLECT_POST_URL = BASE_URL + "user/getCollect&model=posts";
     //获取本地圈的信息列表
     public static final String LOCATION_NEWS_LIST_URL = BASE_URL + "posts/getList";
     //发布评论
