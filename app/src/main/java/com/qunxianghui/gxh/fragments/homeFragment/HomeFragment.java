@@ -337,10 +337,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case R.id.tv_home_location:
 
-                toActivity(LocationActivity.class);
+//                toActivity(LocationActivity.class);
 
-//                Intent intent = new Intent(mActivity, NewSearchActivity.class);
-//                startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
+                Intent intent = new Intent(mActivity, NewSearchActivity.class);
+                startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
 
         }

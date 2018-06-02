@@ -168,14 +168,15 @@ public class MineFragment extends BaseFragment {
             mLikeCount = data.getInt("like_cnt");
             mPostCount = data.getInt("posts_cnt");
             mCommentCount = data.getInt("comment_cnt");
+
             mLevelName = data.getJSONObject("level_info").getString("name");
             mTvMemberType.setText(mLevelName);
             mineQuicklyLogin.setText(mNick);
 
 
-            tvMineAddlikeCount.setText(mLikeCount);
-            tvMinePostCount.setText(mPostCount);
-            tvMineFollowPostCount.setText(mCommentCount);
+            tvMineAddlikeCount.setText(Integer.valueOf(mLikeCount));
+            tvMinePostCount.setText(String.valueOf(mPostCount));
+            tvMineFollowPostCount.setText(Integer.valueOf(mCommentCount));
 
 
             GlideApp.with(getActivity()).load(mAvatar).
