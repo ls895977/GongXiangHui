@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -15,9 +15,12 @@
 
 
     <com.qunxianghui.gxh.widget.MyGridView
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/gv_mine_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:numColumns="3">
 
     </com.qunxianghui.gxh.widget.MyGridView>
@@ -33,11 +36,12 @@
 
 
         <TextView
+            android:id="@+id/tv_minecollect_post_tiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:drawableLeft="@mipmap/bianmin_call"
-            android:drawablePadding="10dp"
+            android:drawableLeft="@mipmap/ic_locate"
+            android:drawablePadding="7dp"
             android:text="10小时" />
 
 

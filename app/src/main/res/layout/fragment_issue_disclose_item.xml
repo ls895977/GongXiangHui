@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_mine_issure_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="xxxx" />
+
+
+    <com.qunxianghui.gxh.widget.MyGridView
+        android:id="@+id/mygrid_issure_disclose_img"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3">
+
+    </com.qunxianghui.gxh.widget.MyGridView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_mineissue_disclose_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_locate"
+            android:drawablePadding="5dp"
+            android:text="n分钟之前" />
+
+
+        <TextView
+            android:id="@+id/tv_mineissue_item_status"
+            android:layout_marginLeft="20dp"
+            android:text="未审核"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@color/divider"
+        android:layout_height="1dp"/>
+</LinearLayout>

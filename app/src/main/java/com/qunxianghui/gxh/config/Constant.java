@@ -101,8 +101,7 @@ public class Constant {
     public static final String MYFANS_URL=BASE_URL+"user/myFans";
     //我的关注
     public static final String MYFOCUS_URL=BASE_URL+"user/myFollow";
-    //我发布的帖子
-    public static final String MY_ISSURE_POST_URL=BASE_URL+"user/myPosts";
+
     //获取收藏的新闻
     public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
     //获取我收藏的视频
@@ -115,16 +114,15 @@ public class Constant {
     public static final String ISSURE_DISUSS_URL = BASE_URL + "comment/addComment";
     //删除评论
     public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
-    //我发布的帖子
-    public static final String MINE_ISSURE_NEWS_URL = BASE_URL + "user/myPosts";
+
     // 推广统计个人上面的头部
     public static final String GENERALIZE_RERSON_STATIS_URL=BASE_URL+"promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
     //不喜欢
     public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
-    //我发布的帖子
-    public static final String MYPOST_TIEZI_URL = BASE_URL + "user/myPosts";
+    //发布帖子
+    public static final String MYPOST_TIEZI_URL = BASE_URL + "posts/publish";
     //搜索结果
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
     //获取搜索自动完成数据
@@ -133,6 +131,12 @@ public class Constant {
     public static final String GET_DISCLOSS_INFO_URL=BASE_URL+"user/getMyInfo";
     //获取我发布帖子
     public static final String GET_ISSURE_POST_URL=BASE_URL+"user/myPosts";
+    //获取我发布的爆料
+    public static final String GET_ISSURE_DISCLOSS_URL=BASE_URL+"user/getMyInfo";
+
+    //获取我发布的视频
+    public static final String GET_ISSURE_VIDEO_URL=BASE_URL+"user/getRelease&model=video";
+
     //用户升级
     public static final String PERSON_UPGRADE_URL=BASE_URL+"user/upgrade";
 

@@ -12,10 +12,9 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectPostAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueDiscloseAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.mine.MineCollectPostBean;
-import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
+import com.qunxianghui.gxh.bean.mine.MyIssueDiscloseBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -25,41 +24,39 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MineCollectPostFrament extends BaseFragment {
-    @BindView(R.id.recycler_mycollect_post)
-    RecyclerView recyclerMycollectPost;
+public class MyIssueDiscloseFragment extends BaseFragment {
+    @BindView(R.id.recycler_mineissue_disclose)
+    RecyclerView recyclerMineissueDisclose;
     Unbinder unbinder;
 
     @Override
     public int getLayoutId() {
-        return R.layout.mine_collect_post;
+        return R.layout.fragment_issue_disclose;
     }
 
     @Override
     public void initDatas() {
-        OkGo.<String>post(Constant.GET_COLLECT_POST_URL).execute(new StringCallback() {
+        OkGo.<String>post(Constant.GET_ISSURE_DISCLOSS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                parseCollectPostDaTA(response.body());
+               ParseIssureDiscloseData(response.body());
             }
         });
 
     }
 
-    private void parseCollectPostDaTA(String body) {
-        Logger.d("我收藏帖子的内容+++"+body.toString());
-        final MineCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MineCollectPostBean.class);
-        if (myCollectPostBean.getCode()==0){
-            final List<MineCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
-            final MineCollectPostAdapter mineCollectPostAdapter = new MineCollectPostAdapter(mActivity, dataList);
-            recyclerMycollectPost.setAdapter(mineCollectPostAdapter);
-asyncShowToast("请求成功");
+    private void ParseIssureDiscloseData(String body) {
+        final MyIssueDiscloseBean myIssueDiscloseBean = GsonUtils.jsonFromJson(body, MyIssueDiscloseBean.class);
+        if (myIssueDiscloseBean.getCode()==0){
+            final List<MyIssueDiscloseBean.DataBean> dataList = myIssueDiscloseBean.getData();
+            final MineIssueDiscloseAdapter mineIssueDiscloseAdapter = new MineIssueDiscloseAdapter(mActivity, dataList);
+            recyclerMineissueDisclose.setAdapter(mineIssueDiscloseAdapter);
         }
     }
 
     @Override
     public void initViews(View view) {
-        recyclerMycollectPost.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        recyclerMineissueDisclose.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
