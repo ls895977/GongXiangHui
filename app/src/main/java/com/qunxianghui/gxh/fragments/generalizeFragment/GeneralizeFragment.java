@@ -213,6 +213,11 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

@@ -69,6 +69,11 @@ public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelect
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

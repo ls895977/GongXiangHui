@@ -26,6 +26,11 @@ public class MineMessageFragment extends BaseFragment {
     XRecyclerView xrecyclerMineMessage;
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_minemessage;
     }

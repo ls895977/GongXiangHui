@@ -332,6 +332,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

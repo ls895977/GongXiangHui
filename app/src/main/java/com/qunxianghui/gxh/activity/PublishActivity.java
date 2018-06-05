@@ -1,16 +1,12 @@
-package com.qunxianghui.gxh.fragments.homeFragment.activity;
+package com.qunxianghui.gxh.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,52 +24,51 @@ import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.BigGridView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class PublishActivity extends BaseActivity implements GvAdapter.DeletePicListener {
 
-/**
- * Created by Administrator on 2018/3/16 0016.
- */
-
-public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener,GvAdapter.DeletePicListener {
-    @BindView(R.id.iv_baoliao_close)
-    ImageView ivBaoliaoClose;
-
-    @BindView(R.id.grid_view)
-    BigGridView gridView;
-    @BindView(R.id.ll_baoliao_remember)
-    LinearLayout llBaoliaoRemember;
-    @BindView(R.id.tv_home_baoliao_fabu)
-    TextView tvHomeBaoliaoFabu;
-    @BindView(R.id.et_baoliao_fabu_content)
-    EditText etBaoliaoFabuContent;
-    @BindView(R.id.et_baoliao_fabu_title)
-    EditText etBaoliaoFabuTitle;
+    private EditText et_baoliao_fabu_content;
+    private TextView tv_home_baoliao_fabu;
+    private ImageView back;
+    private BigGridView gridView;
     private ImagePicker imagePicker;
-    private List<String> list;
+    private List<String> list=new ArrayList<>();
     private GvAdapter adapter;
     private List<String> upLoadPics=new ArrayList<>();
 
     @Override
+    public void deletePic(int position) {
+        list.remove(position);
+        upLoadPics.remove(position);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected int getLayoutId() {
-        return R.layout.activity_baoliao;
+        return R.layout.activity_publish;
     }
 
     @Override
     protected void initViews() {
+        et_baoliao_fabu_content=findViewById(R.id.et_baoliao_fabu_content);
+        gridView=findViewById(R.id.grid_view);
+        back=findViewById(R.id.back);
+        tv_home_baoliao_fabu=findViewById(R.id.tv_home_baoliao_fabu);
+    }
+
+    @Override
+    protected void initDatas() {
         imagePicker = new ImagePicker();
         //设置标题
         imagePicker.setTitle("设置头像");
         //设置是否剪裁照片
         imagePicker.setCropImage(false);
-        list = new ArrayList<>();
         adapter = new GvAdapter(this, list);
         adapter.setDeletePicListener(this);
         gridView.setAdapter(adapter);
@@ -93,7 +88,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         });
-
     }
 
     private void openPhoto() {
@@ -101,13 +95,13 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPickImage(Uri imageUri) {
                 if (list.size() >= 9) {
-                    Toast.makeText(BaoLiaoActivity.this, "最多选择九张图片", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PublishActivity.this, "最多选择九张图片", Toast.LENGTH_LONG).show();
                 } else {
                     list.add(String.valueOf(imageUri));
                 }
                 adapter.notifyDataSetChanged();
                 String url=String.valueOf(imageUri).replace("file://","");
-                upLoadPic("data:image/jpeg;base64,"+Utils.imageToBase64(url));
+                upLoadPic("data:image/jpeg;base64,"+ Utils.imageToBase64(url));
             }
             //剪裁图片回调file:///storage/emulated/0/DCIM/Camera/IMG_20180603_184632_HHT.jpg
             //file:///storage/emulated/0/Android/data/com.qunxianghui.gxh/cache/pickImageResult.jpeg
@@ -115,7 +109,7 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onCropImage(Uri imageUri) {
                 if (list.size() >= 9) {
-                    Toast.makeText(BaoLiaoActivity.this, "最多选择九张图片", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PublishActivity.this, "最多选择九张图片", Toast.LENGTH_LONG).show();
                 } else {
                     list.add(String.valueOf(imageUri));
                 }
@@ -152,42 +146,24 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imagePicker.onActivityResult(BaoLiaoActivity.this, requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void initDatas() {
-
+        imagePicker.onActivityResult(PublishActivity.this, requestCode, resultCode, data);
     }
 
     @Override
     protected void initListeners() {
-        ivBaoliaoClose.setOnClickListener(this);
-        tvHomeBaoliaoFabu.setOnClickListener(this);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
-        final String faBuTitle = etBaoliaoFabuTitle.getText().toString().trim();
-        switch (v.getId()) {
-            case R.id.iv_baoliao_close:
-                llBaoliaoRemember.setVisibility(View.GONE);
-                break;
-            case R.id.tv_home_baoliao_fabu:
-                requestBaoLiaoFaBu(faBuTitle, faBuContent);
-                break;
-        }
+        tv_home_baoliao_fabu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestBaoLiaoFaBu();
+            }
+        });
     }
 
     private void upLoadPic(String urls) {
@@ -206,13 +182,13 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private void requestBaoLiaoFaBu(String faBuTitle, String faBuContent) {
+    private void requestBaoLiaoFaBu() {
+        String faBuContent=et_baoliao_fabu_content.getText().toString();
         String imgUrl=Utils.listToString(upLoadPics);
-        if (TextUtils.isEmpty(faBuContent) && TextUtils.isEmpty(faBuContent)) {
-            asyncShowToast("标题和内容不能为空");
+        if ( TextUtils.isEmpty(faBuContent)) {
+            asyncShowToast("内容不能为空");
         } else {
-            OkGo.<String>post(Constant.HOME_DISCLOSS_URL)
-                    .params("title", faBuTitle)
+            OkGo.<String>post(Constant.PUBLISH_ARTICLE)
                     .params("content", faBuContent)
                     .params("images",imgUrl)
                     .execute(new StringCallback() {
@@ -233,10 +209,5 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    @Override
-    public void deletePic(int position) {
-        list.remove(position);
-        upLoadPics.remove(position);
-        adapter.notifyDataSetChanged();
-    }
+
 }

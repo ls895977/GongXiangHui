@@ -301,6 +301,11 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

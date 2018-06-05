@@ -78,6 +78,11 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

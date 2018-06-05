@@ -11,6 +11,11 @@ import com.qunxianghui.gxh.base.BaseFragment;
 
 public class IssureFragment extends BaseFragment {
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_issure;
     }

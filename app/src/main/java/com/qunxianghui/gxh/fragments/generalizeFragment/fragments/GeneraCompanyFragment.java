@@ -34,6 +34,11 @@ public class GeneraCompanyFragment extends BaseFragment {
     ViewPager vpGeneralizeCompanyMain;
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.genera_company;
     }

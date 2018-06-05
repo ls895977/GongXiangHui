@@ -14,6 +14,11 @@ import com.qunxianghui.gxh.base.BaseFragment;
 public class Fragment5 extends BaseFragment {
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_advertise5;

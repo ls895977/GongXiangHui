@@ -71,6 +71,11 @@ public class MineCommonFragment extends BaseFragment {
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

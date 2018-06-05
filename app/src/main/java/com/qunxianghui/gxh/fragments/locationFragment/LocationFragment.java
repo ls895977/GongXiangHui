@@ -26,6 +26,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.config.Code;
@@ -91,7 +92,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
      */
     @Override
     public void initDatas() {
-        RequestLocationData();
 
 
     }
@@ -182,6 +182,12 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    protected void onLoadData() {
+        RequestLocationData();
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -195,7 +201,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 showBottomAliert();
                 break;
             case R.id.tv_alertbottom_up_pic:
-                toActivity(BaoLiaoActivity.class);
+                toActivity(PublishActivity.class);
                 picVideo_dialog.dismiss();
                 break;
             case R.id.tv_alertbottom_up_video:

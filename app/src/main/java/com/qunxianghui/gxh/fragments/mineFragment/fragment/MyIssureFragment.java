@@ -17,6 +17,11 @@ import java.util.logging.Logger;
 
 public class MyIssureFragment extends BaseFragment {
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_issure;
     }

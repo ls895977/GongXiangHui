@@ -23,10 +23,15 @@ public class GvAdapter extends BaseAdapter {
     private Context context;
     private int mMaxPosition;//
     private List<String> list;
+    private DeletePicListener deletePicListener;
 
     public GvAdapter(Context context, List<String> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public void setDeletePicListener(DeletePicListener deletePicListener) {
+        this.deletePicListener = deletePicListener;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class GvAdapter extends BaseAdapter {
 //            vh.img.setImageResource(R.drawable.id_photo);
             vh.img.setVisibility(View.VISIBLE);
             vh.demimg.setVisibility(View.GONE);
-            if (position==6&&mMaxPosition==7){//设置最大6个。那么达到最大，就隐藏。
+            if (position==9&&mMaxPosition==10){//设置最大6个。那么达到最大，就隐藏。
 //                vh.img.setImageResource(R.drawable.id_photo);
                 vh.img.setVisibility(View.GONE);
             }
@@ -78,8 +83,9 @@ public class GvAdapter extends BaseAdapter {
         vh.demimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list.remove(position);
-                notifyDataSetChanged();
+                deletePicListener.deletePic(position);
+//                list.remove(position);
+//                notifyDataSetChanged();
             }
         });
         return v;
@@ -88,6 +94,10 @@ public class GvAdapter extends BaseAdapter {
     public class ViewHolder{
         public ImageView demimg;
         public PhotoView img;
+    }
+
+    public interface DeletePicListener{
+        void deletePic(int position);
     }
 
 }

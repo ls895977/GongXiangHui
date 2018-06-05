@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
+import com.qunxianghui.gxh.widget.SnsPopupWindow;
 
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
 
 
+
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
@@ -65,36 +67,51 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         final List<String> imageList = dataBeanList.get(position).getImages();
 
 
+
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
 
-                .centerCrop().placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .centerCrop()
+                .placeholder(R.mipmap.icon_headimage)
+                .error(R.mipmap.icon_headimage)
                 .into(holder.iv_location_person_head);
 
 
+        if (imageList.size()==1){
+            holder.gridLayout.setVisibility(View.GONE);
+            holder.img.setVisibility(View.VISIBLE);
+            GlideApp.with(mContext).load(imageList.get(0))
+                    .centerCrop()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(holder.img);
+        }else {
+            holder.gridLayout.setVisibility(View.VISIBLE);
+            holder.img.setVisibility(View.GONE);
+            holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
+        }
     //设置宫格数据
 
-       holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
+
 
         //收藏
-        holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
-                collectFlag = (collectFlag == 0 ? 1 : 0);
-                holder.iv_location_style_collect.setBackgroundResource(collectFlag == 0 ? R.drawable.collect : R.drawable.collect_normal);
-                Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
+//                collectFlag = (collectFlag == 0 ? 1 : 0);
+//                holder.iv_location_style_collect.setBackgroundResource(collectFlag == 0 ? R.drawable.collect : R.drawable.collect_normal);
+//                Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         //点赞
-        holder.tv_location_style_pointgood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
-
-            }
-        });
+//        holder.tv_location_style_pointgood.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
 
         //举报
         holder.tv_location_circle_inform.setOnClickListener(new View.OnClickListener() {
@@ -106,19 +123,28 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         });
 
         //点击评论
-        holder.tv_location_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
-            }
-        });
+//        holder.tv_location_comment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         //点击了提交
-        holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
+//        holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "提交成功", Toast.LENGTH_SHORT).show();
+//                holder.ll_location_discuss_commit.setVisibility(View.GONE);
+//            }
+//        });
+        final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
+        //弹窗
+        holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "提交成功", Toast.LENGTH_SHORT).show();
-                holder.ll_location_discuss_commit.setVisibility(View.GONE);
+                //弹出popupwindow
+                snsPopupWindow.showPopupWindow(v);
             }
         });
 
@@ -140,6 +166,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        SnsPopupWindow snsPopupWindow;
         GridView gridLayout;
         TextView tv_location_style_collect;
         TextView tv_location_style_pointgood;
@@ -148,7 +175,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         TextView tv_location_person_content;
         TextView tv_location_issure_name;
         TextView tv_location_comment;
-        ImageView iv_location_style_collect;
+        ImageView iv_location_style_collect,snsBtn,img;
         RoundImageView iv_location_person_head;
         LinearLayout ll_location_style_collect;
         LinearLayout ll_location_discuss_commit;
@@ -172,6 +199,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
+            snsBtn=itemView.findViewById(R.id.snsBtn);
+            img=itemView.findViewById(R.id.img);
+            snsPopupWindow = new SnsPopupWindow(itemView.getContext());
 
            recycler_location_discuss = itemView.findViewById(R.id.recycler_location_discuss);
             liner_location_discuss = itemView.findViewById(R.id.liner_location_discuss);

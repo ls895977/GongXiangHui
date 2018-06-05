@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,8 +21,14 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
     protected final String TAG = getClass().getSimpleName();
+    public Handler mLoadHandler;
 
     public FragmentActivity mActivity;
+    /**
+     * Fragment当前状态是否可见
+     */
+    protected boolean isVisible;
+
 
     @Override
     public void onAttach(Context context) {
@@ -48,6 +55,45 @@ public abstract class BaseFragment extends Fragment {
         initDatas();
         initListeners();
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+    /**
+     * 可见
+     */
+    protected void onVisible() {
+        loadData();
+    }
+
+    public void loadData() {
+        long time = 500;
+        mLoadHandler =  new Handler();
+        mLoadHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onLoadData();
+            }
+        }, time);
+    }
+
+    protected abstract void onLoadData();
+
+    /**
+     * 不可见
+     */
+    protected void onInvisible() {
+    }
+
 
     /**
      * 需要登陆才能跳转的aty

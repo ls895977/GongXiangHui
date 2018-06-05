@@ -34,6 +34,11 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
     @BindView(R.id.recyclerview) RecyclerView mRecyclerview;
     private SearchBean mBean;
 
+    @Override
+    protected void onLoadData() {
+
+    }
+
     /**
      * 子类实现此抽象方法返回View进行展示
      */
