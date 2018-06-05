@@ -112,6 +112,7 @@
                 android:textSize="15sp"/>
 
             <TextView
+                android:id="@+id/tv_mine_post_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12"
@@ -134,6 +135,7 @@
                 android:textSize="15sp"/>
 
             <TextView
+                android:id="@+id/tv_mine_follow_post_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="472"

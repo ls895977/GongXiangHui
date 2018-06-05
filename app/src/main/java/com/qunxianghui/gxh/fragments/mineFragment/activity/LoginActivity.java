@@ -158,6 +158,8 @@ public class LoginActivity extends BaseActivity {
                 phone = etLoginPhone.getText().toString().trim();
                 password = etLoginPassword.getText().toString().trim();
 
+
+
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
                 } else if (!REGutil.checkCellphone(phone)) {

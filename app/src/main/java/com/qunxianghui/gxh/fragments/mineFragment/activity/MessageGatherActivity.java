@@ -9,6 +9,8 @@ import android.view.View;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineAttentionFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineFancesFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineMessageGatherFragment;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -57,8 +59,8 @@ public class MessageGatherActivity extends BaseActivity implements TabLayout.OnT
   //设置tablayout的点击事件
         mineMessageGatherTablayoutCommon.setOnTabSelectedListener(this);
         fragments.add(new MineMessageGatherFragment());
-        fragments.add(new  MineMessageGatherFragment());
-        fragments.add(new  MineMessageGatherFragment());
+        fragments.add(new MineAttentionFragment());
+        fragments.add(new MineFancesFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMessageGatherViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMessageGatherTablayoutCommon.setupWithViewPager(mineMessageGatherViewpager);

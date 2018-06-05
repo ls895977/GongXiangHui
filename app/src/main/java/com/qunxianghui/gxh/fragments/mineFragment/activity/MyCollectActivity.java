@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCollectPostFrament;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCommonFragment;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     TextView tvMycollectEdit;
 
 
-    private String[] titles = new String[]{"咨询", "视频", "帖子"};
+    private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
 
@@ -64,7 +65,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
         fragments.add(new MineCommonFragment());
         fragments.add(new MineCommonFragment());
-        fragments.add(new MineCommonFragment());
+        fragments.add(new MineCollectPostFrament());
 
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);

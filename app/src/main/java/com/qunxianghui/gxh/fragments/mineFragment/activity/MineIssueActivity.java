@@ -9,7 +9,9 @@ import android.view.View;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssureFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssurePostFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssureVideoFragment;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
@@ -58,9 +60,9 @@ public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSe
             }
         }).setTitleText("我的发布");
 
-        fragments.add(new MyIssureFragment());
-        fragments.add(new MyIssureFragment());
-        fragments.add(new MyIssureFragment());
+        fragments.add(new MyIssueDiscloseFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssurePostFragment());
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);

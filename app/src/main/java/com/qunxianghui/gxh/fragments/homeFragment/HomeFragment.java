@@ -34,6 +34,7 @@ import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -340,7 +341,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 toActivity(SearchActivity.class);
                 break;
             case R.id.tv_home_location:
-//               toActivity(LocationActivity.class);
+
+//                toActivity(LocationActivity.class);
+
                 Intent intent = new Intent(mActivity, NewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;

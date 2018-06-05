@@ -62,6 +62,7 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,6 +113,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private String url;
 
     private int collectFlag = 0;
+    private int uuid;
+
+
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -150,6 +154,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     protected void initDatas() {
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        uuid = intent.getIntExtra("uuid", 0);
+
+
         SettingsP();
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
@@ -378,18 +385,20 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.iv_news_detail_collect:
 
-                CollectDataList(url);
+                        CollectDataList(uuid);
+
+
                 break;
         }
 
     }
 
-    private void CollectDataList(String url) {
+    private void CollectDataList(int uuid) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid",url).execute(new StringCallback() {
+                .params("data_uuid", uuid).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                 parseCollectData(response.body());
+                parseCollectData(response.body());
 
             }
         });
@@ -397,13 +406,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void parseCollectData(String body) {
+        com.orhanobut.logger.Logger.d("收藏的详细信息---" + body.toString());
+
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
-        if (myCollectBean.getCode()==0){
-
-
-            collectFlag=(collectFlag==0?1:0);
-            ivNewsDetailCollect.setBackgroundResource(collectFlag==0?R.drawable.collect:R.drawable.collect_normal);
+        if (myCollectBean.getCode() == 0) {
+            collectFlag = (collectFlag == 0 ? 1 : 0);
+            ivNewsDetailCollect.setBackgroundResource(collectFlag == 0 ? R.drawable.collect : R.drawable.collect_normal);
             Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
+
+
         }
 
     }

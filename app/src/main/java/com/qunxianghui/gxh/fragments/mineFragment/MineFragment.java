@@ -86,6 +86,10 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.tv_mine_addlike_count)
     TextView tvMineAddlikeCount;
     Unbinder unbinder;
+    @BindView(R.id.tv_mine_post_count)
+    TextView tvMinePostCount;
+    @BindView(R.id.tv_mine_follow_post_count)
+    TextView tvMineFollowPostCount;
 
     private UserDao userDao;
     private int userSize;
@@ -95,6 +99,9 @@ public class MineFragment extends BaseFragment {
     private String mMobile;//手机
     private String mAddress;//地址
     private int mSex;//性别
+    private int mLikeCount;
+    private int mPostCount;
+    private int mCommentCount;
 
     @Override
     public int getLayoutId() {
@@ -157,10 +164,20 @@ public class MineFragment extends BaseFragment {
             mMobile = data.getString("mobile");
             mAddress = data.getString("address");
             mSex = data.getInt("sex");
-            mLevelName = data.getJSONObject("level_info").getString("name");
 
+            mLikeCount = data.getInt("like_cnt");
+            mPostCount = data.getInt("posts_cnt");
+            mCommentCount = data.getInt("comment_cnt");
+
+            mLevelName = data.getJSONObject("level_info").getString("name");
             mTvMemberType.setText(mLevelName);
             mineQuicklyLogin.setText(mNick);
+
+
+            tvMineAddlikeCount.setText(Integer.valueOf(mLikeCount));
+            tvMinePostCount.setText(String.valueOf(mPostCount));
+            tvMineFollowPostCount.setText(Integer.valueOf(mCommentCount));
+
 
             GlideApp.with(getActivity()).load(mAvatar).
                     placeholder(R.mipmap.user_moren).
