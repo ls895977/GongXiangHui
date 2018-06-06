@@ -76,7 +76,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void loadData() {
-        long time = 500;
+        long time = 100;
         mLoadHandler =  new Handler();
         mLoadHandler.postDelayed(new Runnable() {
             @Override

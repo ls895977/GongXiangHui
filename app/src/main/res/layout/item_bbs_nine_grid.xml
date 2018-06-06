@@ -49,7 +49,6 @@
             </LinearLayout>
 
 
-
             <TextView
                 android:id="@+id/tv_location_person_content"
                 android:layout_width="wrap_content"
@@ -59,26 +58,25 @@
 
             <ImageView
                 android:id="@+id/img"
-                android:visibility="gone"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:visibility="gone" />
 
             <com.qunxianghui.gxh.widget.MyGridView
-                android:visibility="gone"
                 android:id="@+id/layout_nine_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:numColumns="3"
                 android:layout_marginTop="8dp"
-                />
+                android:numColumns="3"
+                android:visibility="gone" />
 
             <!-- 地址、时间 、删除 、点赞、 评论 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_location_issure_name"
@@ -96,9 +94,9 @@
                     android:paddingLeft="3dp"
                     android:paddingRight="3dp"
                     android:text="删除"
-                    android:textSize="12sp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:visibility="gone"/>
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="0dip"
@@ -109,108 +107,10 @@
                     android:id="@+id/snsBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/im_snsimg"/>
+                    android:src="@drawable/im_snsimg" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/digCommentBody"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="10dip"
-                android:paddingLeft="12dip"
-                android:paddingTop="12dip"
-                android:paddingRight="12dip"
-                android:paddingBottom="8dip"
-                android:background="@drawable/im_distribute_comm_bg"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:id="@+id/mLayoutLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/mImageZanName"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginTop="3dp"
-                        android:src="@drawable/collect"
-                        />
-
-                    <com.qunxianghui.gxh.widget.TagGroup
-                        android:id="@+id/mTagGroup"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginStart="5dp"
-                        style="@style/TagGroup.Small"/>
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/lin_dig"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:background="@color/white"
-                    android:layout_marginTop="5dip"
-                    android:layout_marginBottom="5dip"
-                    />
-
-                <com.qunxianghui.gxh.widget.BigListView
-                    android:id="@+id/comment_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:scrollbars="none"
-                    android:divider="@null"
-                    android:dividerHeight="0dp" />
-
-            </LinearLayout>
-
-
-
         </LinearLayout>
 
-
-
     </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:id="@+id/ll_location_discuss_commit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@null"
-            android:hint="请输入您的评论..."
-            android:lines="5"
-            android:paddingLeft="10dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_location_discuss_commit"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/butn_oval"
-            android:gravity="center"
-            android:text="提交" />
-    </LinearLayout>
-
 
 </LinearLayout>
