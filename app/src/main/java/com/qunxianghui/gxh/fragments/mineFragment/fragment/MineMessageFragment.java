@@ -14,6 +14,7 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineMessageAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.EmployeePaiHangBean;
+import com.qunxianghui.gxh.bean.mine.MineMessageCommentBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -27,41 +28,31 @@ import butterknife.BindView;
  */
 
 
-@SuppressLint("ValidFragment")
 public class MineMessageFragment extends BaseFragment {
-    private String type = "";
 
-    @SuppressLint("ValidFragment")
-    public MineMessageFragment(String type) {
-        this.type = type;
-    }
 
-    private List<String> mDatas = new ArrayList<>();
     @BindView(R.id.xrecycler_mineMessage)
     XRecyclerView xrecyclerMineMessage;
 
 
-    private String url = Constant.GENERALIZE_PAIHANG_URL + "?type=";
-
-
     @Override
     protected void onLoadData() {
-        OkGo.<String>post(url).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-
-                parsePaiHangData(response.body());
-
-
-            }
-        });
 
     }
 
     private void parsePaiHangData(String body) {
-        final EmployeePaiHangBean employeePaiHangBean = GsonUtils.jsonFromJson(body, EmployeePaiHangBean.class);
-        if (employeePaiHangBean.getCode() == 0) {
-            final List<EmployeePaiHangBean.DataBean> dataList = employeePaiHangBean.getData();
+        final MineMessageCommentBean mineMessageCommentBean = GsonUtils.jsonFromJson(body, MineMessageCommentBean.class);
+        if (mineMessageCommentBean.getCode() == 0) {
+            final List<MineMessageCommentBean.DataBean> dataList = mineMessageCommentBean.getData();
+            final MineMessageAdapter mineMessageAdapter = new MineMessageAdapter(mActivity, dataList);
+            mineMessageAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    Toast.makeText(mActivity, "点击了:" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            xrecyclerMineMessage.setAdapter(mineMessageAdapter);
         }
 
     }
@@ -73,19 +64,15 @@ public class MineMessageFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-
-        for (int i = 0; i < 30; i++) {
-            mDatas.add(i, i + 1 + " ");
-        }
-        final MineMessageAdapter mineMessageAdapter = new MineMessageAdapter(mActivity, mDatas);
-        mineMessageAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+        OkGo.<String>post(Constant.DISCUSS_MINE_URL).execute(new StringCallback() {
             @Override
-            public void onItemClick(View v, int position) {
-                Toast.makeText(mActivity, "点击了:" + position, Toast.LENGTH_SHORT).show();
+            public void onSuccess(Response<String> response) {
+
+                parsePaiHangData(response.body());
+
+
             }
         });
-
-        xrecyclerMineMessage.setAdapter(mineMessageAdapter);
 
 
     }

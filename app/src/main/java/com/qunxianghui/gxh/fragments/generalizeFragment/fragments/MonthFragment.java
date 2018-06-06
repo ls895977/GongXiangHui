@@ -40,10 +40,10 @@ public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelect
 
 //设置tablayout的点击事件
         generaCompanyPaihangTablayoutCommon.setOnTabSelectedListener(this);
-        fragments.add(new MineMessageFragment("0"));
-        fragments.add(new MineMessageFragment("1"));
-        fragments.add(new MineMessageFragment("2"));
-        fragments.add(new MineMessageFragment("3"));
+        fragments.add(new MineMessageFragment());
+        fragments.add(new MineMessageFragment());
+        fragments.add(new MineMessageFragment());
+        fragments.add(new MineMessageFragment());
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(mActivity.getSupportFragmentManager(), fragments, titles);
         generaCampanyPaihangViewpager.setAdapter(mineTabViewPagerAdapter);

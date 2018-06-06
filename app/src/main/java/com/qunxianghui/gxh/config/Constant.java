@@ -146,4 +146,11 @@ public class Constant {
     //推广员工排行
     public static final String GENERALIZE_PAIHANG_URL=BASE_URL+"promote/getRanking";
 
+    //我的消息的评论我的
+    public static final String DISCUSS_MINE_URL=BASE_URL+"msg/getComment";
+    //我的消息的我的跟帖
+    public static final String DISCUSS_MINE_FOLLOW_URL=BASE_URL+"msg/getPosts";
+    //我的消息的我的跟帖
+    public static final String DISCUSS_MINE_SSYSTEM_URL=BASE_URL+"msg/getList";
+
 }
