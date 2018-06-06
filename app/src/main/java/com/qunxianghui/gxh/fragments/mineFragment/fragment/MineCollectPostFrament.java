@@ -71,6 +71,11 @@ asyncShowToast("请求成功");
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
