@@ -9,7 +9,9 @@ import android.view.View;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineMessageFollowFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineMessageFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineMessageSystemFragment;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
@@ -59,8 +61,8 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
 //设置tablayout的点击事件
         mineMyMessaageTablayoutCommon.setOnTabSelectedListener(this);
         fragments.add(new MineMessageFragment());
-        fragments.add(new MineMessageFragment());
-        fragments.add(new MineMessageFragment());
+        fragments.add(new MineMessageFollowFragment());
+        fragments.add(new MineMessageSystemFragment());
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMymessageViewpager.setAdapter(mineTabViewPagerAdapter);

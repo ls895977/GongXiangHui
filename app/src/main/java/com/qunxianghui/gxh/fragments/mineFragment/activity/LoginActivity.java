@@ -146,8 +146,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        etLoginPassword.setText("123456");
-        etLoginPhone.setText("13116779507");
+//        etLoginPassword.setText("123456");
+//        etLoginPhone.setText("13295815771");
     }
 
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
@@ -213,10 +213,17 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(Response<LzyResponse<LoginBean>> response) {
                         if (response.body().code.equals("0")) {
                             String access_token=response.body().data.getAccessTokenInfo().getAccess_token();
+
+
                             SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+
+
                             MyApplication.getApp().setAccessToken(access_token);
                             Log.e(TAG, "onSuccess: "+access_token);
                             asyncShowToast("登录成功");
+
+
+
                             toActivity(MainActivity.class);
                             finish();
                             return;

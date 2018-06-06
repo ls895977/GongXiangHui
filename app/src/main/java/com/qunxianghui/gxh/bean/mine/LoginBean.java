@@ -1,6 +1,14 @@
 package com.qunxianghui.gxh.bean.mine;
 
+import android.text.TextUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.qunxianghui.gxh.utils.ListUtils;
+
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginBean implements Serializable {
@@ -32,7 +40,9 @@ public class LoginBean implements Serializable {
     private String avatar;
     private int company_id;
     private AccessTokenInfoBean accessTokenInfo;
-    private List<?> company_info;
+    private Object company_info;
+
+
 
     public int getId() {
         return id;
@@ -122,13 +132,224 @@ public class LoginBean implements Serializable {
         this.accessTokenInfo = accessTokenInfo;
     }
 
-    public List<?> getCompany_info() {
+    public Object getCompany_info() {
+
         return company_info;
     }
 
-    public void setCompany_info(List<?> company_info) {
+    public void setCompany_info(Object company_info) {
+
         this.company_info = company_info;
     }
+
+
+    public static class CompanyInfoBean{
+
+        /**
+         * id : 64
+         * member_id : 1000122
+         * company_name : 杭州共享汇信息技术有限公司
+         * description :
+         * company_trade : 6
+         * tel :
+         * mobile :
+         * qq :
+         * province_id : 0
+         * city_id : 0
+         * area_id : 0
+         * address :
+         * images :
+         * linkname :
+         * content :
+         * ctime : 1525858395
+         * view_cnt : 0
+         * status : 0
+         * push_id : 1
+         * change_ad_id : 320
+         */
+
+        private int id;
+        private int member_id;
+        private String company_name;
+        private String description;
+        private String company_trade;
+        private String tel;
+        private String mobile;
+        private String qq;
+        private int province_id;
+        private int city_id;
+        private int area_id;
+        private String address;
+        private String images;
+        private String linkname;
+        private String content;
+        private int ctime;
+        private int view_cnt;
+        private int status;
+        private int push_id;
+        private int change_ad_id;
+
+        public int getId(){
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(int member_id) {
+            this.member_id = member_id;
+        }
+
+        public String getCompany_name() {
+            return company_name;
+        }
+
+        public void setCompany_name(String company_name) {
+            this.company_name = company_name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getCompany_trade() {
+            return company_trade;
+        }
+
+        public void setCompany_trade(String company_trade) {
+            this.company_trade = company_trade;
+        }
+
+        public String getTel() {
+            return tel;
+        }
+
+        public void setTel(String tel) {
+            this.tel = tel;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public String getQq() {
+            return qq;
+        }
+
+        public void setQq(String qq) {
+            this.qq = qq;
+        }
+
+        public int getProvince_id() {
+            return province_id;
+        }
+
+        public void setProvince_id(int province_id) {
+            this.province_id = province_id;
+        }
+
+        public int getCity_id() {
+            return city_id;
+        }
+
+        public void setCity_id(int city_id) {
+            this.city_id = city_id;
+        }
+
+        public int getArea_id() {
+            return area_id;
+        }
+
+        public void setArea_id(int area_id) {
+            this.area_id = area_id;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getImages() {
+            return images;
+        }
+
+        public void setImages(String images) {
+            this.images = images;
+        }
+
+        public String getLinkname() {
+            return linkname;
+        }
+
+        public void setLinkname(String linkname) {
+            this.linkname = linkname;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public int getCtime() {
+            return ctime;
+        }
+
+        public void setCtime(int ctime) {
+            this.ctime = ctime;
+        }
+
+        public int getView_cnt() {
+            return view_cnt;
+        }
+
+        public void setView_cnt(int view_cnt) {
+            this.view_cnt = view_cnt;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public int getPush_id() {
+            return push_id;
+        }
+
+        public void setPush_id(int push_id) {
+            this.push_id = push_id;
+        }
+
+        public int getChange_ad_id() {
+            return change_ad_id;
+        }
+
+        public void setChange_ad_id(int change_ad_id) {
+            this.change_ad_id = change_ad_id;
+        }
+    }
+
 
     public static class AccessTokenInfoBean {
         /**
@@ -211,4 +432,10 @@ public class LoginBean implements Serializable {
             }
         }
     }
+
+
+
+
+
+
 }

@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <com.qunxianghui.gxh.widget.RoundImageView
-            android:id="@+id/iv_mineMessage_issueImage"
+            android:id="@+id/iv_mineMessagefollow_issueImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@mipmap/icon_headimage" />
@@ -25,14 +25,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_mineMessage_headtitle"
+                android:id="@+id/tv_mineMessagefollow_headtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:text="臭居居的汤包" />
 
             <TextView
-                android:id="@+id/tv_mineMessage_headContent"
+                android:id="@+id/tv_mineMessagefollow_headContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -47,14 +47,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_mineMessage_personLocation"
+                    android:id="@+id/tv_mineMessagefollow_personLocation"
                     android:text="浙江杭州"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
 
                 <TextView
-                    android:id="@+id/tv_mineMessage_issueTime"
+                    android:id="@+id/tv_mineMessagefollow_issueTime"
                     android:layout_marginLeft="15dp"
                     android:text="2小时前"
                     android:layout_width="wrap_content"
@@ -78,13 +78,13 @@
                 android:layout_height="wrap_content">
 
                 <com.qunxianghui.gxh.widget.RoundImageView
-                    android:id="@+id/iv_mineMessage_commenImage"
+                    android:id="@+id/iv_mineMessagefollow_commenImage"
                     android:src="@mipmap/icon_headimage"
                     android:layout_width="35dp"
                     android:layout_height="35dp" />
 
                 <TextView
-                    android:id="@+id/mineMessage_discuss_message"
+                    android:id="@+id/mineMessagefollow_discuss_message"
                     android:layout_marginLeft="10dp"
                     android:text="今天的风好大，欣赏美图"
                     android:layout_width="wrap_content"
