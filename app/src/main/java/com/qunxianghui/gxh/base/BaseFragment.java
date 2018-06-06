@@ -111,6 +111,7 @@ public abstract class BaseFragment extends Fragment {
             final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo(mActivity);
             if (signInfo == null) {
                 Toast.makeText(mActivity, "请先登录", Toast.LENGTH_SHORT).show();
+                //先注释一下  到时候..再加
                 toActivity(LoginActivity.class, bundle);
                 MyApplication.next = target;
             } else toActivity(target, bundle);

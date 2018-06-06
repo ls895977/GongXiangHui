@@ -143,5 +143,7 @@ public class Constant {
     public static final String UP_LOAD_PIC=BASE_URL+"system/uploadImage";
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
+    //推广员工排行
+    public static final String GENERALIZE_PAIHANG_URL=BASE_URL+"promote/getRanking";
 
 }

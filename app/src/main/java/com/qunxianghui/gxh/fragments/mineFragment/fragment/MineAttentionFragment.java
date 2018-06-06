@@ -76,6 +76,11 @@ public class MineAttentionFragment extends BaseFragment {
     }
 
     @Override
+    protected void onLoadData() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

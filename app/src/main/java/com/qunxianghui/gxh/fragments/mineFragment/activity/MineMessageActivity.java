@@ -58,9 +58,9 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
 
 //设置tablayout的点击事件
         mineMyMessaageTablayoutCommon.setOnTabSelectedListener(this);
-        fragments.add(new MineMessageFragment());
-        fragments.add(new MineMessageFragment());
-        fragments.add(new MineMessageFragment());
+        fragments.add(new MineMessageFragment("0"));
+        fragments.add(new MineMessageFragment("1"));
+        fragments.add(new MineMessageFragment("2"));
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMymessageViewpager.setAdapter(mineTabViewPagerAdapter);

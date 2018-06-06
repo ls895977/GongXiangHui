@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.utils.DataCleanManager;
@@ -134,9 +135,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                         LoginMsgHelper.exitLogin(SettingActivity.this);
 
-//                        toActivity(MainActivity.class);
+                       toActivity(MainActivity.class);
 
-                        finish();
+//                        finish();
                     }
                 }).setNegativeButton("否", null).show();
                 break;
