@@ -40,7 +40,7 @@ public class LoginBean implements Serializable {
     private String avatar;
     private int company_id;
     private AccessTokenInfoBean accessTokenInfo;
-    private List<?> company_info;
+    private Object company_info;
 
 
 
@@ -132,12 +132,12 @@ public class LoginBean implements Serializable {
         this.accessTokenInfo = accessTokenInfo;
     }
 
-    public List<?> getCompany_info() {
+    public Object getCompany_info() {
 
         return company_info;
     }
 
-    public void setCompany_info(List<?> company_info) {
+    public void setCompany_info(Object company_info) {
 
         this.company_info = company_info;
     }
