@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp">
 
         <ImageView
-
+            android:id="@+id/iv_baoliao_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_back" />
@@ -74,28 +74,28 @@
 
         <EditText
             android:id="@+id/et_baoliao_fabu_title"
-            android:background="@null"
-            android:textSize="14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:hint="请输入标题"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="14sp" />
+
         <View
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/divider"
-            />
+            android:layout_marginTop="8dp"
+            android:background="@color/divider" />
 
 
         <EditText
-            android:textSize="14sp"
-            android:lines="4"
             android:id="@+id/et_baoliao_fabu_content"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@null"
-            android:hint="发布内容..." />
+            android:hint="发布内容..."
+            android:lines="4"
+            android:textSize="14sp" />
 
 
         <LinearLayout

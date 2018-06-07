@@ -33,12 +33,9 @@ import java.util.List;
  * Created by HMY on 2016/8/6
  */
 public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder> {
-    private int collectFlag = 0;
     private Context mContext;
-
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
-
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
@@ -119,11 +116,21 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                         Toast.makeText(mContext, "点击了2", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        Toast.makeText(mContext, "点击了3", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "点击了评论", Toast.LENGTH_SHORT).show();
+                        ClickCommenDiscuss();
                         break;
                 }
             }
         });
+
+
+    }
+
+    /**
+     * 点击了评论
+     */
+    private void ClickCommenDiscuss() {
+
 
 
     }
@@ -148,7 +155,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         TextView tv_location_issure_name;
         ImageView snsBtn, img;
         RoundImageView iv_location_person_head;
-
         public ViewHolder(View itemView) {
             super(itemView);
             gridLayout = itemView.findViewById(R.id.layout_nine_grid);
@@ -157,8 +163,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_circle_inform = itemView.findViewById(R.id.tv_location_circle_inform);
             tv_location_person_name = itemView.findViewById(R.id.tv_location_person_name);
-
-
             snsBtn = itemView.findViewById(R.id.snsBtn);
             img = itemView.findViewById(R.id.img);
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());

@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +29,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.BigGridView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +39,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/16 0016.
  */
 
-public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener,GvAdapter.DeletePicListener {
+public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener, GvAdapter.DeletePicListener {
     @BindView(R.id.iv_baoliao_close)
     ImageView ivBaoliaoClose;
 
@@ -56,10 +53,12 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     EditText etBaoliaoFabuContent;
     @BindView(R.id.et_baoliao_fabu_title)
     EditText etBaoliaoFabuTitle;
+    @BindView(R.id.iv_baoliao_back)
+    ImageView ivBaoliaoBack;
     private ImagePicker imagePicker;
     private List<String> list;
     private GvAdapter adapter;
-    private List<String> upLoadPics=new ArrayList<>();
+    private List<String> upLoadPics = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -106,8 +105,8 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                     list.add(String.valueOf(imageUri));
                 }
                 adapter.notifyDataSetChanged();
-                String url=String.valueOf(imageUri).replace("file://","");
-                upLoadPic("data:image/jpeg;base64,"+Utils.imageToBase64(url));
+                String url = String.valueOf(imageUri).replace("file://", "");
+                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
             }
             //剪裁图片回调file:///storage/emulated/0/DCIM/Camera/IMG_20180603_184632_HHT.jpg
             //file:///storage/emulated/0/Android/data/com.qunxianghui.gxh/cache/pickImageResult.jpeg
@@ -164,7 +163,7 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     protected void initListeners() {
         ivBaoliaoClose.setOnClickListener(this);
         tvHomeBaoliaoFabu.setOnClickListener(this);
-
+        ivBaoliaoBack.setOnClickListener(this);
 
 
     }
@@ -187,13 +186,16 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_home_baoliao_fabu:
                 requestBaoLiaoFaBu(faBuTitle, faBuContent);
                 break;
+            case R.id.iv_baoliao_back:
+                finish();
+                break;
         }
     }
 
     private void upLoadPic(String urls) {
 
         OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
-                .params("base64",  urls)
+                .params("base64", urls)
                 .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
@@ -207,14 +209,14 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void requestBaoLiaoFaBu(String faBuTitle, String faBuContent) {
-        String imgUrl=Utils.listToString(upLoadPics);
+        String imgUrl = Utils.listToString(upLoadPics);
         if (TextUtils.isEmpty(faBuContent) && TextUtils.isEmpty(faBuContent)) {
             asyncShowToast("标题和内容不能为空");
         } else {
             OkGo.<String>post(Constant.HOME_DISCLOSS_URL)
                     .params("title", faBuTitle)
                     .params("content", faBuContent)
-                    .params("images",imgUrl)
+                    .params("images", imgUrl)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
