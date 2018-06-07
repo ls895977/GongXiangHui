@@ -114,6 +114,8 @@ public class Constant {
     public static final String ISSURE_DISUSS_URL = BASE_URL + "comment/addComment";
     //删除评论
     public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
+    //评论列表
+    public static final String COMMENT_LIST = BASE_URL + "comment/getList";
 
     // 推广统计个人上面的头部
     public static final String GENERALIZE_RERSON_STATIS_URL=BASE_URL+"promote/getStatistics";
