@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -16,13 +17,16 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
+import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
 import com.qunxianghui.gxh.utils.GlideApp;
+import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
+import com.qunxianghui.gxh.widget.TagGroup;
 
 
 import java.util.ArrayList;
@@ -37,6 +41,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
+    private CircleOnClickListener listener;
+    public CommentItemAdapter commentItemAdapter;
 
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
@@ -45,6 +51,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         inflater = LayoutInflater.from(context);
     }
 
+    public void setOnClickLitener(CircleOnClickListener listener) {
+        this.listener = listener;
+    }
 
 
     @Override
@@ -55,7 +64,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
 
@@ -89,7 +98,14 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.img.setVisibility(View.GONE);
             holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
         }
-    //设置宫格数据
+
+        if (dataBeanList.get(position).getComment_res().size()!=0){
+            holder.digCommentBody.setVisibility(View.VISIBLE);
+            commentItemAdapter=new CommentItemAdapter(mContext,dataBeanList.get(position).getComment_res(),holder.comment_list);
+            holder.comment_list.setAdapter(commentItemAdapter);
+        }else {
+            holder.digCommentBody.setVisibility(View.GONE);
+        }
 
 
 
@@ -104,14 +120,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 //            }
 //        });
 
-        //点赞
-//        holder.tv_location_style_pointgood.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
 
         //举报
         holder.tv_location_circle_inform.setOnClickListener(new View.OnClickListener() {
@@ -122,23 +130,32 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
 
-        //点击评论
-//        holder.tv_location_comment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
-//            }
-//        });
 
         //点击了提交
-//        holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mContext, "提交成功", Toast.LENGTH_SHORT).show();
-//                holder.ll_location_discuss_commit.setVisibility(View.GONE);
-//            }
-//        });
+        holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content=holder.comment_edit.getText().toString();
+                if (listener!=null){
+                    listener.onCommentClick(position,content);
+                }
+                holder.ll_location_discuss_commit.setVisibility(View.GONE);
+            }
+        });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
+        snsPopupWindow.setmItemClickListener(new SnsPopupWindow.OnItemClickListener() {
+            @Override
+            public void onItemClick(ActionItem item, int position) {
+                switch (position){
+                    case 0://点赞
+                        Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1://评论
+                        holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
         //弹窗
         holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,10 +165,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
 
-        //点击提交评论后要显示布局
-//        holder.recycler_location_discuss.setAdapter();
-
-//        holder.liner_location_discuss.setVisibility(View.VISIBLE);
 
     }
 
@@ -178,10 +191,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         ImageView iv_location_style_collect,snsBtn,img;
         RoundImageView iv_location_person_head;
         LinearLayout ll_location_style_collect;
-        LinearLayout ll_location_discuss_commit;
+        LinearLayout ll_location_discuss_commit,digCommentBody,mLayoutLike;
         TextView tv_location_discuss_commit;
-        RecyclerView recycler_location_discuss;
-        LinearLayout liner_location_discuss;
+        EditText comment_edit;
+        BigListView comment_list;
+        TagGroup mTagGroup;
 
 
         public ViewHolder(View itemView) {
@@ -202,11 +216,29 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             snsBtn=itemView.findViewById(R.id.snsBtn);
             img=itemView.findViewById(R.id.img);
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());
+            comment_edit=itemView.findViewById(R.id.comment_edit);
+            digCommentBody=itemView.findViewById(R.id.digCommentBody);
+            mLayoutLike=itemView.findViewById(R.id.mLayoutLike);
+            mTagGroup=itemView.findViewById(R.id.mTagGroup);
+            comment_list=itemView.findViewById(R.id.comment_list);
 
-           recycler_location_discuss = itemView.findViewById(R.id.recycler_location_discuss);
-            liner_location_discuss = itemView.findViewById(R.id.liner_location_discuss);
+
 
         }
+    }
+
+    public interface CircleOnClickListener {
+        /* 图片点击 */
+        void onPicClick(int position, int picpostion);
+
+        /* 评论点击 */
+        void onCommentClick(int position,String content);
+
+        /* 点赞 */
+        void onLaunClick(int position);
+
+
+
     }
 
 

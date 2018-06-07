@@ -107,7 +107,7 @@ public class TestMode {
             private String delete;
             private int client_id;
             private List<String> images;
-            private List<?> comment_res;
+            private List<CommentBean> comment_res;
 
             public List<ClickLikeBean> getClick_like() {
                 List<ClickLikeBean>  clickLikeBeanList= ListUtils.getNewArrayObjectList();
@@ -269,11 +269,11 @@ public class TestMode {
                 this.images = images;
             }
 
-            public List<?> getComment_res() {
+            public List<CommentBean> getComment_res() {
                 return comment_res;
             }
 
-            public void setComment_res(List<?> comment_res) {
+            public void setComment_res(List<CommentBean> comment_res) {
                 this.comment_res = comment_res;
             }
 

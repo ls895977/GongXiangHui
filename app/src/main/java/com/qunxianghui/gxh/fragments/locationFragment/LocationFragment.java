@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,7 +29,10 @@ import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
@@ -49,7 +53,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class LocationFragment extends BaseFragment implements View.OnClickListener {
+public class LocationFragment extends BaseFragment implements View.OnClickListener ,NineGridTest2Adapter.CircleOnClickListener {
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
 
@@ -131,7 +135,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 TestMode.DataBean.ListBean listBean = dataList.get(i);
                 if (listBean.getClick_like().size() > 0) {
                     mAdapter = new NineGridTest2Adapter(mActivity, dataList);
-
+                    mAdapter.setOnClickLitener(this);
                     recyclerView.setAdapter(mAdapter);
 
                 }
@@ -340,5 +344,42 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
 
+    @Override
+    public void onPicClick(int position, int picpostion) {
+
+    }
+
+    @Override
+    public void onCommentClick(final int position, String content) {
+        final int uuid=dataList.get(position).getUuid();
+        OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
+                .params("uuid", uuid)
+                .params("content", content)
+                .execute(new DialogCallback<LzyResponse<CommentBean>>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<CommentBean>> response) {
+                        if (response.body().code.equals("0")){
+                            requestCommentList(uuid);
+                        }
+                    }
+                });
+
+    }
+
+    void requestCommentList(int uuid){
+        OkGo.<String>post(Constant.COMMENT_LIST)
+                .params("uuid", uuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG, "onSuccess: -----------------------"+response.body() );
+                    }
+                });
+    }
+
+    @Override
+    public void onLaunClick(int position) {
+
+    }
 }
 
