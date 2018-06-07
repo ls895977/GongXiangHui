@@ -8,14 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.kyleduo.switchbutton.SwitchButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,14 +23,15 @@ import butterknife.Unbinder;
  */
 
 public class Fragment3 extends BaseFragment implements View.OnClickListener {
-    private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
-    @BindView(R.id.tv_fragment3_showAddress)
-    TextView tvFragment3ShowAddress;
-    @BindView(R.id.rl_fragment3_showAddress)
-    RelativeLayout rlFragment3ShowAddress;
-    @BindView(R.id.switchButton_mine_fragment3)
-    SwitchButton switchButtonMineFragment3;
+    @BindView(R.id.iv_mine_addBigAdver_three)
+    ImageView ivMineAddBigAdverThree;
+    @BindView(R.id.rl_mine_BigAdver_three)
+    LinearLayout rlMineBigAdverThree;
+    @BindView(R.id.iv_mine_addFragment1BigAdver)
+    ImageView ivMineAddFragment1BigAdver;
     Unbinder unbinder;
+    private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
+
 
     @Override
     public int getLayoutId() {
@@ -43,18 +41,7 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initDatas() {
-        switchButtonMineFragment3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String s;
-                if (isChecked) {
-                    s = "选中";
-                } else {
-                    s = "未选中";
-                }
-                Toast.makeText(mActivity, s, Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     @Override
@@ -64,9 +51,34 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initListeners() {
-        rlFragment3ShowAddress.setOnClickListener(this);
 
 
+    }
+
+
+    @Override
+    protected void onLoadData() {
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    private void showAddAddressDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setSingleChoiceItems(AddressList, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                dialog.dismiss();
+
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -78,37 +90,8 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected void onLoadData() {
-
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rl_fragment3_showAddress:
-                showAddAddressDialog();
-                break;
-        }
-    }
-
-    private void showAddAddressDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setSingleChoiceItems(AddressList, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                //wich是被选中的
-                tvFragment3ShowAddress.setText(AddressList[which]);
-                dialog.dismiss();
-
-            }
-        });
-        builder.show();
     }
 }

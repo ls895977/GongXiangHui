@@ -39,21 +39,18 @@ import butterknife.Unbinder;
 
 public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
-    @BindView(R.id.tv_mine_addAddress)
-    TextView tvMineAddAddress;
+
     @BindView(R.id.tv_mine_click_attr)
     TextView tvMineClickAttr;
     @BindView(R.id.iv_mine_addFragment1BigAdver)
     PhotoView ivMineAddFragment1BigAdver;
     private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
     private String[] addAttrList = new String[]{"点击属性", "属性1", "属性2", "属性3"};
-    @BindView(R.id.rl_mine_addAddress)
-    RelativeLayout rlMineAddAddress;
+
     @BindView(R.id.rl_mine_click_attr)
     RelativeLayout rlMineClickAttr;
     Unbinder unbinder;
-    @BindView(R.id.switchButton)
-    SwitchButton mSwitchButton;
+
     private ImagePicker imagePicker;
 
 
@@ -65,19 +62,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initDatas() {
-        mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                String s;
-                if (b) {
-                    s = "选中";
 
-                } else {
-                    s = "未选中";
-                }
-                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -88,7 +73,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initListeners() {
-        rlMineAddAddress.setOnClickListener(this);
+
         rlMineClickAttr.setOnClickListener(this);
         ivMineAddFragment1BigAdver.setOnClickListener(this);
     }
@@ -115,11 +100,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_mine_addAddress:
-                Toast.makeText(mActivity, "添加位置", Toast.LENGTH_SHORT).show();
-                showAddAddressDialog();
 
-                break;
             case R.id.rl_mine_click_attr:
                 Toast.makeText(mActivity, "添加属性", Toast.LENGTH_SHORT).show();
                 showAddClickAttr();
@@ -208,8 +189,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                //wich是被选中的
-                tvMineAddAddress.setText(AddressList[which]);
+
                 dialog.dismiss();
 
             }

@@ -21,9 +21,16 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.location.ImageBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.REGutil;
+import com.qunxianghui.gxh.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -41,10 +48,11 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     public static final String SEX = "sex";
 
     private String[] sexArray = new String[]{"男", "女"}; //性别选择
-
+    private List<String> upLoadPics = new ArrayList<>();
+   private String sex;
     @BindView(R.id.et_person_data_nickName) EditText etPersonDataNickName;
     @BindView(R.id.tv_person_data_sex) EditText mEtPersonDataSex;
-    @BindView(R.id.et_person_data_phone) EditText etPersonDataPhone;
+    @BindView(R.id.tv_person_data_phone) TextView etPersonDataPhone;
     @BindView(R.id.et_person_data_address) EditText etPersonDataAddress;
     @BindView(R.id.iv_person_data_back) ImageView ivPersonDataBack;
     @BindView(R.id.tv_person_data_save) TextView tvPersonDataSave;
@@ -52,6 +60,7 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.rl_mineData_sex) RelativeLayout rlMineDataSex;
 
     private ImagePicker imagePicker;
+    private String mSex;
 
     @Override
     protected int getLayoutId() {
@@ -110,9 +119,9 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         }
 
         if (sex == 1) {
-            mEtPersonDataSex.setText("男");
-        } else if (sex == 1) {
             mEtPersonDataSex.setText("女");
+        } else if (sex == 2) {
+            mEtPersonDataSex.setText("男");
         } else {
             mEtPersonDataSex.setText("");
         }
@@ -126,12 +135,13 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         final String mNiceName = etPersonDataNickName.getText().toString().trim();
         final String mPhone = etPersonDataPhone.getText().toString().trim();
         final String mAdress = etPersonDataAddress.getText().toString().trim();
-        final String mSex = mEtPersonDataSex.getText().toString().trim();
-        final String sex;
-        if (mSex.equals("男")) {
+        mSex = mEtPersonDataSex.getText().toString().trim();
+
+        if (mSex.equals("女")) {
             sex = "1";
-        } else {
-            sex = "0";
+        } else if (mSex.equals("男")){
+
+            sex = "2";
         }
 
         switch (v.getId()) {
@@ -149,6 +159,8 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 showSexDialog();
                 break;
             case R.id.tv_person_data_save:
+
+
                 if (TextUtils.isEmpty(mNiceName) && TextUtils.isEmpty(mPhone) && TextUtils.isEmpty(mSex) && TextUtils.isEmpty(mAdress)) {
                     Toast.makeText(mContext, "请在检查一下 是否还有没有写的", Toast.LENGTH_SHORT).show();
                     return;
@@ -156,11 +168,15 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 if (!REGutil.checkCellphone(mPhone)) {
                     Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
                 } else {
+                    String imagUrl = Utils.listToString(upLoadPics);
+
 
                     OkGo.<String>post(Constant.EDIT_PERSON_DATA).
                             params("nick", mNiceName).
                             params("sex", sex).
                             params("address", mAdress).
+                            params("avatar",imagUrl).
+
                             execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -190,11 +206,14 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onPickImage(Uri imageUri) {
+
             }
 
             //剪裁图片回调
             @Override
             public void onCropImage(Uri imageUri) {
+                final String url = String.valueOf(imageUri).replace("file://", "");
+                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
 
                 //                //头像
                 GlideApp.with(PersonDataActivity.this).load(imageUri).
@@ -230,6 +249,21 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 super.onPermissionDenied(requestCode, permissions, grantResults);
             }
         });
+
+    }
+
+    private void upLoadPic(String urls) {
+        OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
+                .params("base64", urls)
+                .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<ImageBean>> response) {
+                        if (response.body().code.equals("0")) {
+                            upLoadPics.add(response.body().data.getFile());
+                            Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
     }
 

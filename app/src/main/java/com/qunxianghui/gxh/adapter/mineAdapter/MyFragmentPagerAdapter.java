@@ -15,7 +15,9 @@ import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment5;
  */
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
-    private String[] mTitles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告 "};
+    private String[] mTitles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告 ","贴图广告"};
+
+
 
     public MyFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -30,6 +32,8 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         } else if (position == 3) {
             return new Fragment4();
         } else if (position == 4) {
+            return new Fragment5();
+        }else if (position==5){
             return new Fragment5();
         }
         return new Fragment1();

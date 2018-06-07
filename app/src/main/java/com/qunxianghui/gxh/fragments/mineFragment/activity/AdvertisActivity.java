@@ -29,6 +29,7 @@ public class AdvertisActivity extends AppCompatActivity {
     private TabLayout.Tab three;
     private TabLayout.Tab four;
     private TabLayout.Tab five;
+    private TabLayout.Tab six;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,13 +53,13 @@ public class AdvertisActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起
         tabLayout.setupWithViewPager(viewPager);
-
         //指定tab的位置
         one = tabLayout.getTabAt(0);
         two = tabLayout.getTabAt(1);
         three = tabLayout.getTabAt(2);
         four = tabLayout.getTabAt(3);
         five = tabLayout.getTabAt(4);
+        six = tabLayout.getTabAt(5);
 
         //设置tab的图标
         one.setIcon(R.mipmap.ic_launcher);
@@ -66,6 +67,7 @@ public class AdvertisActivity extends AppCompatActivity {
         three.setIcon(R.mipmap.ic_launcher);
         four.setIcon(R.mipmap.ic_launcher);
         five.setIcon(R.mipmap.ic_launcher);
+        six.setIcon(R.mipmap.ic_launcher);
     }
 
 
