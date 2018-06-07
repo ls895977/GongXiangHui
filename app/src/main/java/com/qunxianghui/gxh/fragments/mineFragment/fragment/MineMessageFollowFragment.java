@@ -34,16 +34,6 @@ public class MineMessageFollowFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
-
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_mine_message_follow;
-    }
-
-    @Override
-    public void initDatas() {
         OkGo.<String>post(Constant.DISCUSS_MINE_FOLLOW_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -53,6 +43,16 @@ public class MineMessageFollowFragment extends BaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_mine_message_follow;
+    }
+
+    @Override
+    public void initDatas() {
+
 
 
     }

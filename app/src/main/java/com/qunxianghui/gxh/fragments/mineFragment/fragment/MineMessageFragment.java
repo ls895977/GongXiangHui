@@ -37,6 +37,15 @@ public class MineMessageFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
+        OkGo.<String>post(Constant.DISCUSS_MINE_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+
+                parsePaiHangData(response.body());
+
+
+            }
+        });
 
     }
 
@@ -64,15 +73,6 @@ public class MineMessageFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-
-                parsePaiHangData(response.body());
-
-
-            }
-        });
 
 
     }

@@ -147,7 +147,6 @@ public class Constant {
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
     public static final String GENERALIZE_PAIHANG_URL=BASE_URL+"promote/getRanking";
-
     //我的消息的评论我的
     public static final String DISCUSS_MINE_URL=BASE_URL+"msg/getComment";
     //我的消息的我的跟帖

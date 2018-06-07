@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,23 +25,27 @@ import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.BigGridView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PublishActivity extends BaseActivity implements GvAdapter.DeletePicListener {
 
+    @BindView(R.id.iv_fabu_back)
+    ImageView ivFabuBack;
     private EditText et_baoliao_fabu_content;
     private TextView tv_home_baoliao_fabu;
-    private ImageView back;
+
     private BigGridView gridView;
     private ImagePicker imagePicker;
-    private List<String> list=new ArrayList<>();
+    private List<String> list = new ArrayList<>();
     private GvAdapter adapter;
-    private List<String> upLoadPics=new ArrayList<>();
+    private List<String> upLoadPics = new ArrayList<>();
 
     @Override
     public void deletePic(int position) {
@@ -56,10 +61,10 @@ public class PublishActivity extends BaseActivity implements GvAdapter.DeletePic
 
     @Override
     protected void initViews() {
-        et_baoliao_fabu_content=findViewById(R.id.et_baoliao_fabu_content);
-        gridView=findViewById(R.id.grid_view);
-        back=findViewById(R.id.back);
-        tv_home_baoliao_fabu=findViewById(R.id.tv_home_baoliao_fabu);
+        et_baoliao_fabu_content = findViewById(R.id.et_baoliao_fabu_content);
+        gridView = findViewById(R.id.grid_view);
+
+        tv_home_baoliao_fabu = findViewById(R.id.tv_home_baoliao_fabu);
     }
 
     @Override
@@ -100,8 +105,8 @@ public class PublishActivity extends BaseActivity implements GvAdapter.DeletePic
                     list.add(String.valueOf(imageUri));
                 }
                 adapter.notifyDataSetChanged();
-                String url=String.valueOf(imageUri).replace("file://","");
-                upLoadPic("data:image/jpeg;base64,"+ Utils.imageToBase64(url));
+                String url = String.valueOf(imageUri).replace("file://", "");
+                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
             }
             //剪裁图片回调file:///storage/emulated/0/DCIM/Camera/IMG_20180603_184632_HHT.jpg
             //file:///storage/emulated/0/Android/data/com.qunxianghui.gxh/cache/pickImageResult.jpeg
@@ -151,12 +156,10 @@ public class PublishActivity extends BaseActivity implements GvAdapter.DeletePic
 
     @Override
     protected void initListeners() {
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
+        /**
+         * 爆料离得发布
+         */
 
         tv_home_baoliao_fabu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,12 +167,23 @@ public class PublishActivity extends BaseActivity implements GvAdapter.DeletePic
                 requestBaoLiaoFaBu();
             }
         });
+
+
+/**
+ * 发布的点击返回
+ */
+        ivFabuBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void upLoadPic(String urls) {
 
         OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
-                .params("base64",  urls)
+                .params("base64", urls)
                 .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
@@ -183,14 +197,14 @@ public class PublishActivity extends BaseActivity implements GvAdapter.DeletePic
     }
 
     private void requestBaoLiaoFaBu() {
-        String faBuContent=et_baoliao_fabu_content.getText().toString();
-        String imgUrl=Utils.listToString(upLoadPics);
-        if ( TextUtils.isEmpty(faBuContent)) {
+        String faBuContent = et_baoliao_fabu_content.getText().toString();
+        String imgUrl = Utils.listToString(upLoadPics);
+        if (TextUtils.isEmpty(faBuContent)) {
             asyncShowToast("内容不能为空");
         } else {
             OkGo.<String>post(Constant.PUBLISH_ARTICLE)
                     .params("content", faBuContent)
-                    .params("images",imgUrl)
+                    .params("images", imgUrl)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -210,4 +224,10 @@ public class PublishActivity extends BaseActivity implements GvAdapter.DeletePic
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
