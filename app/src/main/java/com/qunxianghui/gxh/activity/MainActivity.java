@@ -40,6 +40,9 @@ public class MainActivity extends BaseActivity {
     RadioButton rbGeneralize;
     private long exitTime;
 
+
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;

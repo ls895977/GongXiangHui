@@ -21,6 +21,7 @@ public class SimpleTextAdapter extends BaseRecycleViewAdapter<String> {
     @Override
     protected void convert(MyViewHolder holder, int position, String s) {
         holder.setText(R.id.tv_simple_1_line, s);
+
     }
 
     @Override

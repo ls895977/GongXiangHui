@@ -60,6 +60,8 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
         notifyDataSetChanged();
     }
 
+
+
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         Object obj = super.instantiateItem(container, position);
