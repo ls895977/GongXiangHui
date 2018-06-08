@@ -12,6 +12,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineAttentionFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineFancesFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineMessageGatherFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class MessageGatherActivity extends BaseActivity implements TabLayout.OnT
 
   //设置tablayout的点击事件
         mineMessageGatherTablayoutCommon.setOnTabSelectedListener(this);
-        fragments.add(new MineMessageGatherFragment());
+        fragments.add(new MyIssurePostFragment());
         fragments.add(new MineAttentionFragment());
         fragments.add(new MineFancesFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);

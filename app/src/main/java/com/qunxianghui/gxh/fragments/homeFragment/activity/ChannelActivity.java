@@ -218,30 +218,30 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     TextView newTextView = (TextView) view.findViewById(R.id.text_item);
                     final int[] startLocation = new int[2];
                     newTextView.getLocationInWindow(startLocation);
-                    final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
+                                            final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
                     userAdapter.setVisible(false);
 
-                        //频道列表（用户订阅的频道）
-                        OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL).
-                                params("channel_id", channel.getId()).
-                                execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        Logger.d("onSuccess-->:" + response.body().toString());
+                                            //频道列表（用户订阅的频道）
+                                            OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL).
+                                            params("channel_id", channel.getId()).
+                                            execute(new StringCallback() {
+                                                @Override
+                                                public void onSuccess(Response<String> response) {
+                                                    Logger.d("onSuccess-->:" + response.body().toString());
 
-                                        //添加到最后一个
-                                        userAdapter.addItem(channel);
-                                        new Handler().postDelayed(new Runnable() {
-                                            public void run() {
-                                                try {
-                                                    int[] endLocation = new int[2];
-                                                    //获取终点的坐标
-                                                    userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                                                    MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
-                                                    otherAdapter.setRemove(position);
-                                                } catch (Exception localException) {
-                                                }
-                                            }
+                                                    //添加到最后一个
+                                                    userAdapter.addItem(channel);
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        public void run() {
+                                                            try {
+                                                                int[] endLocation = new int[2];
+                                                                //获取终点的坐标
+                                                                userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                                                                MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
+                                                                otherAdapter.setRemove(position);
+                                                            } catch (Exception localException) {
+                                                            }
+                                                        }
                                         }, 50L);
 
                                     }

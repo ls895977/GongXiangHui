@@ -395,6 +395,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     private void CollectDataList(int uuid) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
+                .params("collect",collectFlag)
                 .params("data_uuid", uuid).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {

@@ -13,7 +13,9 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
-        android:drawableLeft="@drawable/collect_normal"
+
+        android:drawableLeft="@mipmap/icon_good"
+
         android:drawablePadding="5dp"
         android:gravity="center"
         android:text="点赞"
@@ -32,7 +34,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
-        android:drawableLeft="@mipmap/icon_good"
+        android:drawableLeft="@drawable/collect_normal"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:text="收藏"
