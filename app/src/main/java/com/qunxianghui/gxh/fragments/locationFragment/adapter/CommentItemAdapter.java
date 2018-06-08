@@ -8,11 +8,17 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.CommentBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.widget.BigListView;
+import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CommentItemAdapter extends BaseAdapter {
 
@@ -65,6 +71,8 @@ public class CommentItemAdapter extends BaseAdapter {
             convertView=layoutInflater.inflate(R.layout.item_comment, parent, false);
             holder.name=convertView.findViewById(R.id.name);
             holder.content=convertView.findViewById(R.id.content);
+            holder.tv_item_discuss_delete=convertView.findViewById(R.id.tv_item_discuss_delete);
+
             convertView.setTag(holder);
         }else {
             holder= (ViewHolder) convertView.getTag();
@@ -78,12 +86,38 @@ public class CommentItemAdapter extends BaseAdapter {
 
         holder.name.setText(mList.get(position).getMember_name());
         holder.content.setText(mList.get(position).getContent());
+        /**
+         * 删除帖子
+         */
+        holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
+                        params("id",v.getId()).execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        com.orhanobut.logger.Logger.d("删除成功"+response.body().toString());
+
+
+
+
+                    }
+                });
+
+            }
+        });
 
     }
 
 
+
+
     public static class ViewHolder {
-        TextView name,content;
+        TextView name,content,tv_item_discuss_delete;
 
 
     }

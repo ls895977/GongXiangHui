@@ -48,33 +48,6 @@
         </LinearLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_mine_click_attr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp">
-
-            <TextView
-                android:id="@+id/tv_mine_click_attr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="点击属性"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="@mipmap/icon_down" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="#cdcdcd" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,6 +58,7 @@
             android:textSize="15sp" />
 
         <EditText
+            android:id="@+id/et_fragment_bigpic_link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

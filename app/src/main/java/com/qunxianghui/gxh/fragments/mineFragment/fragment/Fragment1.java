@@ -6,27 +6,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Interpolator;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bm.library.Info;
 import com.bm.library.PhotoView;
-import com.kyleduo.switchbutton.SwitchButton;
 import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.utils.DisplayUtil;
 
 import butterknife.BindView;
@@ -40,15 +34,14 @@ import butterknife.Unbinder;
 public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
 
-    @BindView(R.id.tv_mine_click_attr)
-    TextView tvMineClickAttr;
     @BindView(R.id.iv_mine_addFragment1BigAdver)
     PhotoView ivMineAddFragment1BigAdver;
+    @BindView(R.id.et_fragment_bigpic_link)
+    EditText etFragmentBigpicLink;
     private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
     private String[] addAttrList = new String[]{"点击属性", "属性1", "属性2", "属性3"};
 
-    @BindView(R.id.rl_mine_click_attr)
-    RelativeLayout rlMineClickAttr;
+
     Unbinder unbinder;
 
     private ImagePicker imagePicker;
@@ -74,7 +67,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initListeners() {
 
-        rlMineClickAttr.setOnClickListener(this);
+
         ivMineAddFragment1BigAdver.setOnClickListener(this);
     }
 
@@ -101,10 +94,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.rl_mine_click_attr:
-                Toast.makeText(mActivity, "添加属性", Toast.LENGTH_SHORT).show();
-                showAddClickAttr();
-                break;
+
             case R.id.iv_mine_addFragment1BigAdver:
                 openPhoto();
 
@@ -148,12 +138,12 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         // 是否启动多点触摸
                         .setMultiTouchEnabled(false)
                         // 设置网格显示模式
-                        .setGuidelines(CropImageView.Guidelines.OFF)
+                        .setGuidelines(CropImageView.Guidelines.ON)
                         // 圆形/矩形
                         .setCropShape(CropImageView.CropShape
                                 .RECTANGLE)
                         // 调整裁剪后的图片最终大小
-                        .setRequestedSize(DisplayUtil.dip2px(mActivity,1500), DisplayUtil.dip2px(mActivity,732)  )
+                        .setRequestedSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
                         // 宽高比
                         .setAspectRatio(2, 1);
             }
@@ -174,8 +164,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                //wich是被选中的
-                tvMineClickAttr.setText(addAttrList[which]);
+
                 dialog.dismiss();
 
             }

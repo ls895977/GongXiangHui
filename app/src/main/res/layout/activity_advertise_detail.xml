@@ -24,19 +24,10 @@
         app:tabTextColor="#000" />
 
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/recycler_addAdver_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
+        android:layout_weight="1" />
 
 </LinearLayout>

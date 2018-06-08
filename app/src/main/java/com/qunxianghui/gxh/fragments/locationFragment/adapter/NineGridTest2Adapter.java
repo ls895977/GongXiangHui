@@ -67,14 +67,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
-
-
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
 
         final List<String> imageList = dataBeanList.get(position).getImages();
-
 
 
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
@@ -85,7 +82,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 .into(holder.iv_location_person_head);
 
 
-        if (imageList.size()==1){
+        if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
             GlideApp.with(mContext).load(imageList.get(0))
@@ -93,20 +90,19 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     .placeholder(R.mipmap.ic_launcher)
                     .error(R.mipmap.ic_launcher)
                     .into(holder.img);
-        }else {
+        } else {
             holder.gridLayout.setVisibility(View.VISIBLE);
             holder.img.setVisibility(View.GONE);
             holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
         }
 
-        if (dataBeanList.get(position).getComment_res().size()!=0){
+        if (dataBeanList.get(position).getComment_res().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
-            commentItemAdapter=new CommentItemAdapter(mContext,dataBeanList.get(position).getComment_res(),holder.comment_list);
+            commentItemAdapter = new CommentItemAdapter(mContext, dataBeanList.get(position).getComment_res(), holder.comment_list);
             holder.comment_list.setAdapter(commentItemAdapter);
-        }else {
+        } else {
             holder.digCommentBody.setVisibility(View.GONE);
         }
-
 
 
         //收藏
@@ -135,9 +131,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content=holder.comment_edit.getText().toString();
-                if (listener!=null){
-                    listener.onCommentClick(position,content);
+                String content = holder.comment_edit.getText().toString();
+                if (listener != null) {
+                    listener.onCommentClick(position, content);
                 }
                 holder.ll_location_discuss_commit.setVisibility(View.GONE);
             }
@@ -146,11 +142,15 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         snsPopupWindow.setmItemClickListener(new SnsPopupWindow.OnItemClickListener() {
             @Override
             public void onItemClick(ActionItem item, int position) {
-                switch (position){
+                switch (position) {
                     case 0://点赞
                         Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
                         break;
-                    case 1://评论
+                    case 1:
+                        Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case 2://评论
                         holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
                         break;
                 }
@@ -188,10 +188,10 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         TextView tv_location_person_content;
         TextView tv_location_issure_name;
         TextView tv_location_comment;
-        ImageView iv_location_style_collect,snsBtn,img;
+        ImageView iv_location_style_collect, snsBtn, img;
         RoundImageView iv_location_person_head;
         LinearLayout ll_location_style_collect;
-        LinearLayout ll_location_discuss_commit,digCommentBody,mLayoutLike;
+        LinearLayout ll_location_discuss_commit, digCommentBody, mLayoutLike;
         TextView tv_location_discuss_commit;
         EditText comment_edit;
         BigListView comment_list;
@@ -213,15 +213,14 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
-            snsBtn=itemView.findViewById(R.id.snsBtn);
-            img=itemView.findViewById(R.id.img);
+            snsBtn = itemView.findViewById(R.id.snsBtn);
+            img = itemView.findViewById(R.id.img);
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());
-            comment_edit=itemView.findViewById(R.id.comment_edit);
-            digCommentBody=itemView.findViewById(R.id.digCommentBody);
-            mLayoutLike=itemView.findViewById(R.id.mLayoutLike);
-            mTagGroup=itemView.findViewById(R.id.mTagGroup);
-            comment_list=itemView.findViewById(R.id.comment_list);
-
+            comment_edit = itemView.findViewById(R.id.comment_edit);
+            digCommentBody = itemView.findViewById(R.id.digCommentBody);
+            mLayoutLike = itemView.findViewById(R.id.mLayoutLike);
+            mTagGroup = itemView.findViewById(R.id.mTagGroup);
+            comment_list = itemView.findViewById(R.id.comment_list);
 
 
         }
@@ -232,11 +231,10 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void onPicClick(int position, int picpostion);
 
         /* 评论点击 */
-        void onCommentClick(int position,String content);
+        void onCommentClick(int position, String content);
 
         /* 点赞 */
         void onLaunClick(int position);
-
 
 
     }
