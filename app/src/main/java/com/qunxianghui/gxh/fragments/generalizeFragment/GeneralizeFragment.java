@@ -57,16 +57,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     ImageView ivGeneraBack;
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
-    @BindView(R.id.tv_generalize_company_des)
-    TextView tvGeneralizeCompanyDes;
-    @BindView(R.id.tv_genera_person_exposure)
-    TextView tvGeneraPersonExposure;
-    @BindView(R.id.tv_genera_person_click_count)
-    TextView tvGeneraPersonClickCount;
-    @BindView(R.id.tv_genera_person_transmit)
-    TextView tvGeneraPersonTransmit;
-    @BindView(R.id.tv_genera_person_click_rate)
-    TextView tvGeneraPersonClickRate;
+
     Unbinder unbinder;
 
 
@@ -90,38 +81,11 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         /**默认显示第一个选项卡*/
         rgGeneralizeMain.check(R.id.rb_genera_personal);
 
-        //显示推广头部的信息
-        DisplayPersonData();
-
-    }
-//解析推光头部信息
-    private void DisplayPersonData() {
-        OkGo.<String>get(Constant.GENERALIZE_RERSON_STATIS_URL)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        parseGeneraPersonTopData(response.body());
-                    }
-                });
 
     }
 
-    private void parseGeneraPersonTopData(String body) {
-        final GeneraLizePersonTopBean generaLizePersonTopBean = GsonUtils.jsonFromJson(body, GeneraLizePersonTopBean.class);
-        if (generaLizePersonTopBean.getCode()==0){
-            final GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
-            tvGeneraPersonExposure.setText(data.getView_cnt());
-            tvGeneraPersonClickCount.setText(data.getClick_cnt());
-            tvGeneraPersonTransmit.setText(data.getShare_cnt());
-            tvGeneraPersonClickRate.setText(data.getClick_rate());
-            tvGeneralizeCompanyDes.setText(data.getAd_prize());
-
-        }
 
 
-
-
-    }
 
 
     @Override
