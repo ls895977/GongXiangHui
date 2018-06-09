@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+
+        android:background="@color/tab_color"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_genera_company_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/icon_back" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="杭州共享汇信息技术有限公司"
+
+                android:textColor="@color/white" />
+
+            <TextView
+
+                android:id="@+id/tv_generalize_company_money_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:text="节省广告费:  181280元  规模：57人"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -65,21 +116,22 @@
 
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="文章曝光"/>
+                                    android:text="文章曝光" />
 
                                 <TextView
+                                    android:id="@+id/tv_article_exposure_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="206次"
-                                    android:textColor="#000"/>
+                                    android:textColor="#000" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="↑ +0"
-                                    android:textColor="@color/tab_color"/>
+                                    android:textColor="@color/tab_color" />
 
                             </LinearLayout>
 
@@ -87,7 +139,7 @@
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="@color/divider"/>
+                                android:background="@color/divider" />
 
                             <LinearLayout
                                 style="@style/generaGroupLinerStyle"
@@ -97,21 +149,22 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="文章总数"/>
+                                    android:text="文章总数" />
 
                                 <TextView
+                                    android:id="@+id/tv_article_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="22篇"
-                                    android:textColor="#000"/>
+                                    android:textColor="#000" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="↑ +0"
-                                    android:textColor="@color/tab_color"/>
+                                    android:textColor="@color/tab_color" />
 
                             </LinearLayout>
 
@@ -122,7 +175,7 @@
 
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/divider"/>
+                            android:background="@color/divider" />
 
                         <!--第二栏-->
 
@@ -140,27 +193,28 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="文章转发"/>
+                                    android:text="文章转发" />
 
                                 <TextView
+                                    android:id="@+id/tv_article_transmit_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="0次"
-                                    android:textColor="#000"/>
+                                    android:textColor="#000" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="↑ +0"
-                                    android:textColor="@color/tab_color"/>
+                                    android:textColor="@color/tab_color" />
                             </LinearLayout>
 
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="@color/divider"/>
+                                android:background="@color/divider" />
 
                             <LinearLayout
                                 style="@style/generaGroupLinerStyle"
@@ -171,28 +225,29 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="广告点击"/>
+                                    android:text="广告点击" />
 
                                 <TextView
+                                    android:id="@+id/tv_adver_click_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="19次"
-                                    android:textColor="#000"/>
+                                    android:textColor="#000" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="↑ +0"
-                                    android:textColor="@color/tab_color"/>
+                                    android:textColor="@color/tab_color" />
                             </LinearLayout>
                         </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/divider"/>
+                            android:background="@color/divider" />
                         <!--第三栏-->
                         <LinearLayout
 
@@ -209,20 +264,21 @@
 
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="广告点击率"/>
+                                    android:text="广告点击率" />
 
                                 <TextView
+                                    android:id="@+id/tv_adver_click_rate"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="9.22%"
-                                    android:textColor="#000"/>
+                                    android:textColor="#000" />
                             </LinearLayout>
 
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="@color/divider"/>
+                                android:background="@color/divider" />
 
                             <LinearLayout
                                 style="@style/generaGroupLinerStyle"
@@ -233,14 +289,15 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="文章转发率"/>
+                                    android:text="文章转发率" />
 
                                 <TextView
+                                    android:id="@+id/tv_article_transmit_rate"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:text="0.00%"
-                                    android:textColor="#000"/>
+                                    android:textColor="#000" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -267,7 +324,7 @@
                     android:id="@+id/view_company"
                     android:layout_width="4dp"
                     android:layout_height="18dp"
-                    android:background="@drawable/button_red_shap"/>
+                    android:background="@drawable/button_red_shap" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -275,7 +332,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/view_company"
                     android:text="本月员工排行榜"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
 
                 <RadioGroup
@@ -296,7 +353,7 @@
                         android:background="@drawable/selector_btn_generalize"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="月榜"/>
+                        android:text="月榜" />
 
                     <RadioButton
                         android:id="@+id/rb_genera_company_zongbang"
@@ -306,7 +363,7 @@
                         android:background="@drawable/selector_btn_generalize"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="总榜"/>
+                        android:text="总榜" />
                 </RadioGroup>
             </RelativeLayout>
 
@@ -314,11 +371,11 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/vp_generalize_company_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"/>
+            android:background="#fff"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
     </android.support.design.widget.CoordinatorLayout>

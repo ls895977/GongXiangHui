@@ -57,7 +57,7 @@ public class Constant {
 
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //欢迎页广告
-    public static final String WELCOM_ADVER_URL=BASE_URL+"system/getEntry";
+    public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页视频列表
@@ -96,11 +96,10 @@ public class Constant {
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
     //添加收藏
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
-
     //我的粉丝
-    public static final String MYFANS_URL=BASE_URL+"user/myFans";
+    public static final String MYFANS_URL = BASE_URL + "user/myFans";
     //我的关注
-    public static final String MYFOCUS_URL=BASE_URL+"user/myFollow";
+    public static final String MYFOCUS_URL = BASE_URL + "user/myFollow";
     //获取收藏的新闻
     public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
     //获取我收藏的视频
@@ -115,9 +114,8 @@ public class Constant {
     public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
     //评论列表
     public static final String COMMENT_LIST = BASE_URL + "comment/getList";
-
     // 推广统计个人上面的头部
-    public static final String GENERALIZE_RERSON_STATIS_URL=BASE_URL+"promote/getStatistics";
+    public static final String GENERALIZE_RERSON_STATIS_URL = BASE_URL + "promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
     //不喜欢
@@ -128,29 +126,34 @@ public class Constant {
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
     //获取搜索自动完成数据
     public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
-   //获取我的爆料信息
-    public static final String GET_DISCLOSS_INFO_URL=BASE_URL+"user/getMyInfo";
+    //获取我的爆料信息
+    public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";
     //获取我发布帖子
-    public static final String GET_ISSURE_POST_URL=BASE_URL+"user/myPosts";
+    public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
     //获取我发布的爆料
-    public static final String GET_ISSURE_DISCLOSS_URL=BASE_URL+"user/getMyInfo";
+    public static final String GET_ISSURE_DISCLOSS_URL = BASE_URL + "user/getMyInfo";
 
     //获取我发布的视频
-    public static final String GET_ISSURE_VIDEO_URL=BASE_URL+"user/getRelease&model=video";
-
+    public static final String GET_ISSURE_VIDEO_URL = BASE_URL + "user/getRelease&model=video";
     //用户升级
-    public static final String PERSON_UPGRADE_URL=BASE_URL+"user/upgrade";
+    public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
-    public static final String UP_LOAD_PIC=BASE_URL+"system/uploadImage";
+    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
-    public static final String GENERALIZE_PAIHANG_URL=BASE_URL+"promote/getRanking";
+    public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRanking";
+    //推广公司统计
+    public static final String GENERALIZE_COMPANY_STATICS_URL = BASE_URL + "promote/getCompanyStatistics";
+
+    //我的推广列表
+    public static final String GENERALIZE_PERSON_LIST_URL = BASE_URL + "promote/getList";
+
     //我的消息的评论我的
-    public static final String DISCUSS_MINE_URL=BASE_URL+"msg/getComment";
+    public static final String DISCUSS_MINE_URL = BASE_URL + "msg/getComment";
     //我的消息的我的跟帖
-    public static final String DISCUSS_MINE_FOLLOW_URL=BASE_URL+"msg/getPosts";
+    public static final String DISCUSS_MINE_FOLLOW_URL = BASE_URL + "msg/getPosts";
     //我的消息的我的跟帖
-    public static final String DISCUSS_MINE_SSYSTEM_URL=BASE_URL+"msg/getList";
+    public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
 
 }

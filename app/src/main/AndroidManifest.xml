@@ -249,6 +249,9 @@
         <!--搜索结果页面-->
         <activity android:name=".activity.PublishActivity"
             android:launchMode="singleTask"/>
+        <!--个人信息详情页-->
+        <activity android:name=".fragments.mineFragment.activity.PersonDetailActivity"
+            android:launchMode="singleTask"/>
 
     </application>
 

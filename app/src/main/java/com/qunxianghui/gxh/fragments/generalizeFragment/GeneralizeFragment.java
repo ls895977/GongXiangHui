@@ -86,8 +86,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
 
 
-
-
     @Override
     public void initViews(View view) {
 

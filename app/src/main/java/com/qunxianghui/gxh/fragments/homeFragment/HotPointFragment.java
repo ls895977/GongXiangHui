@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -82,7 +83,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
-    private HomeItemListAdapter homeItemListAdapter;
+
     private HomeItemListAdapter1 homeItemListAdapter1;
     private View headerNavigator;
     private View footer;
@@ -279,6 +280,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
 
@@ -358,6 +360,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
      *
      * @param v
      */
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

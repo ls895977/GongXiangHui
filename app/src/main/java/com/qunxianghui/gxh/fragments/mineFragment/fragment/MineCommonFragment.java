@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -66,6 +69,8 @@ public class MineCommonFragment extends BaseFragment {
             final List<MyCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
             final MyCollectPostAdapter myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
             recyclerMineCollectNews.setAdapter(myCollectPostAdapter);
+
+
         }
     }
 
