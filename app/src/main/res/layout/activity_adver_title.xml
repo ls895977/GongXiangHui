@@ -21,7 +21,7 @@
 
 
     <TextView
-        android:id="@+id/tv_top_addAdaver"
+        android:id="@+id/tv_addAdver_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

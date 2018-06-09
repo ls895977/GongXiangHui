@@ -32,7 +32,7 @@ public class AdvertisActivity extends AppCompatActivity implements View.OnClickL
 
     @BindView(R.id.recycler_addAdver_list)
     XRecyclerView recyclerAddAdverList;
-    @BindView(R.id.tv_top_addAdaver)
+    @BindView(R.id.tv_addAdver_list)
     TextView tvTopAddAdaver;
     @BindView(R.id.iv_top_addAdverBack)
     ImageView ivTopAddAdverBack;
@@ -108,7 +108,7 @@ public class AdvertisActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_top_addAdaver:
+            case R.id.tv_addAdver_list:
                 recyclerChangeData();
                 break;
             case R.id.iv_top_addAdverBack:

@@ -13,6 +13,10 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments;
     private List<String> mTitles;
 
+    public void setmFragments(List<Fragment> mFragments) {
+        this.mFragments = mFragments;
+    }
+
     public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
