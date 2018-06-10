@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
     android:layout_height="50dp">
 
 
     <ImageView
-        android:id="@+id/iv_top_addAdverBack"
+        android:id="@+id/iv_top_savedverBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -22,14 +22,14 @@
 
 
     <TextView
-        android:id="@+id/tv_addAdver_list"
+        android:id="@+id/tv_addAdver_savelist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:text="+"
-        android:textSize="35sp" />
+        android:text="保存"
+        android:textSize="17sp" />
 
 
 </RelativeLayout>

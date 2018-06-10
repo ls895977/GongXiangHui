@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -24,8 +25,10 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/4/3 0003.
  */
 
-public class GeneraPushFragment extends BaseFragment {
-    private List<String> datas=new ArrayList<>();
+public class GeneraPushFragment extends BaseFragment implements View.OnClickListener {
+    @BindView(R.id.iv_generalize_push_back)
+    ImageView ivGeneralizePushBack;
+    private List<String> datas = new ArrayList<>();
     @BindView(R.id.xrecycler_generapush)
     XRecyclerView xrecyclerGenerapush;
     Unbinder unbinder;
@@ -38,17 +41,17 @@ public class GeneraPushFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-        xrecyclerGenerapush.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        xrecyclerGenerapush.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
 
 
-        for (int i=0;i<10;i++){
-            datas.add(i+1+"");
+        for (int i = 0; i < 10; i++) {
+            datas.add(i + 1 + "");
         }
         final GeneraPushFragmentAdapter generaPushFragmentAdapter = new GeneraPushFragmentAdapter(mActivity, datas);
         generaPushFragmentAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Toast.makeText(mActivity, "点击了"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, "点击了" + position, Toast.LENGTH_SHORT).show();
             }
         });
         xrecyclerGenerapush.setAdapter(generaPushFragmentAdapter);
@@ -85,8 +88,23 @@ public class GeneraPushFragment extends BaseFragment {
     }
 
     @Override
+    protected void initListeners() {
+        super.initListeners();
+        ivGeneralizePushBack.setOnClickListener(this);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_generalize_push_back:
+              asyncShowToast("处理后退一步");
+                break;
+        }
     }
 }

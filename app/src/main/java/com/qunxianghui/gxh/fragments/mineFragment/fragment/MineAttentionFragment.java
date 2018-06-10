@@ -11,10 +11,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFocusAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MyFocusBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
@@ -59,6 +61,17 @@ public class MineAttentionFragment extends BaseFragment {
             final List<MyFocusBean.DataBean> dataList = myFocusBean.getData();
             final MyFocusAdapter myFocusAdapter = new MyFocusAdapter(mActivity, dataList);
             recyclerMineAttention.setAdapter(myFocusAdapter);
+
+            myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                  asyncShowToast("点击了"+position);
+                  toActivity(PersonDetailActivity.class);
+                }
+            });
+
+
+
         }
     }
 

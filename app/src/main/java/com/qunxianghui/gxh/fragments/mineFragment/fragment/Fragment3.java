@@ -30,7 +30,6 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.iv_mine_addFragment1BigAdver)
     ImageView ivMineAddFragment1BigAdver;
     Unbinder unbinder;
-    private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
 
 
     @Override
@@ -67,19 +66,6 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private void showAddAddressDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setSingleChoiceItems(AddressList, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                dialog.dismiss();
-
-            }
-        });
-        builder.show();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

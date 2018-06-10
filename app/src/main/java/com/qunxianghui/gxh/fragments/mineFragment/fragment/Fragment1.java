@@ -1,21 +1,19 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.bm.library.PhotoView;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
@@ -38,11 +36,10 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     PhotoView ivMineAddFragment1BigAdver;
     @BindView(R.id.et_fragment_bigpic_link)
     EditText etFragmentBigpicLink;
-    private String[] AddressList = new String[]{"显示位置", "顶部广告", "底部广告", "中部广告"};
-    private String[] addAttrList = new String[]{"点击属性", "属性1", "属性2", "属性3"};
 
 
     Unbinder unbinder;
+
 
     private ImagePicker imagePicker;
 
@@ -62,6 +59,8 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     public void initViews(View view) {
         imagePicker = new ImagePicker();
         imagePicker.setCropImage(true);
+
+
     }
 
     @Override
@@ -158,34 +157,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private void showAddClickAttr() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setSingleChoiceItems(addAttrList, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                dialog.dismiss();
-
-            }
-        });
-        builder.show();
-    }
-
-    private void showAddAddressDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setSingleChoiceItems(AddressList, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                dialog.dismiss();
-
-            }
-        });
-        builder.show();
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

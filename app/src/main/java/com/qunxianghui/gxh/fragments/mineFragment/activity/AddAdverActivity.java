@@ -213,7 +213,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.rl_mineFragment_addBottomAdver:
-                intent = new Intent(this, AdvertisActivity.class);
+                intent = new Intent(this, AdvertisConmmengtActivity.class);
                 startActivity(intent);
                 break;
         }

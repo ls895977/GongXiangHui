@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverTiseCommenFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment1;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment2;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment3;
@@ -28,17 +30,17 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class AdvertisActivity extends BaseActivity implements View.OnClickListener, TabLayout.OnTabSelectedListener {
+public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener, TabLayout.OnTabSelectedListener {
 
 
-    @BindView(R.id.iv_top_savedverBack)
-    ImageView iv_top_savedverBack;
-    @BindView(R.id.tv_addAdver_savelist)
-    TextView tvSaveAddAdverList;
-    @BindView(R.id.tabLayout)
-    TabLayout tabLayout;
-    @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    @BindView(R.id.iv_top_addAdverBack)
+    ImageView ivTopAddAdverBack;
+    @BindView(R.id.tv_addAdver_list)
+    TextView tvAddAdverList;
+    @BindView(R.id.tabLayout_adver_commen)
+    TabLayout tabLayout_adver_commen;
+    @BindView(R.id.viewPager_adver_commen)
+    ViewPager viewPager_adver_commen;
     private TabLayout.Tab one;
     private TabLayout.Tab two;
     private TabLayout.Tab three;
@@ -53,16 +55,16 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_advertise;
+        return R.layout.activity_commen_advertise;
     }
 
     @Override
     protected void initViews() {
 //设置tabLayout的一个显示方式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout_adver_commen.setTabMode(TabLayout.MODE_SCROLLABLE);
         //循环注入标签
         for (String tab : titles) {
-            tabLayout.addTab(tabLayout.newTab().setText(tab));
+            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setText(tab));
         }
     }
 
@@ -70,34 +72,35 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initListeners() {
         super.initListeners();
-        tvSaveAddAdverList.setOnClickListener(this);
-        iv_top_savedverBack.setOnClickListener(this);
+        tvAddAdverList.setOnClickListener(this);
+        ivTopAddAdverBack.setOnClickListener(this);
     }
 
     @Override
     protected void initDatas() {
 
-        fragments.add(new Fragment1());
-        fragments.add(new Fragment2());
-        fragments.add(new Fragment3());
-        fragments.add(new Fragment4());
-        fragments.add(new Fragment5());
-        fragments.add(new Fragment5());
+        fragments.add(new AdverTiseCommenFragment());
+        fragments.add(new AdverTiseCommenFragment());
+        fragments.add(new AdverTiseCommenFragment());
+        fragments.add(new AdverTiseCommenFragment());
+        fragments.add(new AdverTiseCommenFragment());
+        fragments.add(new AdverTiseCommenFragment());
 
 
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), titles, fragments);
-        viewPager.setAdapter(adapter);
+        viewPager_adver_commen.setOffscreenPageLimit(3);
+        viewPager_adver_commen.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout_adver_commen.setupWithViewPager(viewPager_adver_commen);
 
 
         //指定tab的位置
-        one = tabLayout.getTabAt(0);
-        two = tabLayout.getTabAt(1);
-        three = tabLayout.getTabAt(2);
-        four = tabLayout.getTabAt(3);
-        five = tabLayout.getTabAt(4);
-        six = tabLayout.getTabAt(5);
+        one = tabLayout_adver_commen.getTabAt(0);
+        two = tabLayout_adver_commen.getTabAt(1);
+        three = tabLayout_adver_commen.getTabAt(2);
+        four = tabLayout_adver_commen.getTabAt(3);
+        five = tabLayout_adver_commen.getTabAt(4);
+        six = tabLayout_adver_commen.getTabAt(5);
 
         //设置tab的图标
         one.setIcon(R.mipmap.ic_launcher);
@@ -113,11 +116,11 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_addAdver_savelist:
-
+            case R.id.tv_addAdver_list:
+                toActivity(AdvertisActivity.class);
 
                 break;
-            case R.id.iv_top_savedverBack:
+            case R.id.iv_top_addAdverBack:
                 finish();
                 break;
         }
@@ -126,9 +129,10 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
 
 
 
+
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
+        viewPager_adver_commen.setCurrentItem(tab.getPosition());
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_adver_save_title" />
+    <include layout="@layout/activity_adver_title" />
 
     <View
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         android:background="#cdcdcd" />
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tabLayout_adver_commen"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:tabBackground="@drawable/selected"
@@ -23,11 +23,8 @@
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabTextColor="#000" />
 
-
-
-
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/viewPager_adver_commen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

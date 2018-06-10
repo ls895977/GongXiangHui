@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
@@ -27,6 +28,7 @@ public class MyFocusAdapter extends BaseRecycleViewAdapter<MyFocusBean.DataBean>
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(headImave);
+
     }
 
     @Override

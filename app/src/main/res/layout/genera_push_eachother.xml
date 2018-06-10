@@ -4,10 +4,59 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
- <com.jcodecraeer.xrecyclerview.XRecyclerView
-     android:id="@+id/xrecycler_generapush"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="@color/tab_color"
+        android:orientation="vertical">
 
- </com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+        <ImageView
+            android:id="@+id/iv_generalize_push_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/icon_back" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="杭州共享汇信息技术有限公司"
+
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_generalize_company_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:text=" 规模：57人"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/xrecycler_generapush"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
 </LinearLayout>

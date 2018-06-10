@@ -23,7 +23,8 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisConmmengtActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.InviteFrientActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
@@ -267,7 +268,7 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.write_advertise:
-                toActivity(AddAdverActivity.class);
+                toActivity(AdvertisConmmengtActivity.class);
                 break;
             case R.id.rl_invite_friend:
                 toActivity(InviteFrientActivity.class);

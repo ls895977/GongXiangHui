@@ -28,35 +28,38 @@ import butterknife.Unbinder;
 @SuppressLint("ValidFragment")
 public class GeneraLizeMonthSortFragment extends BaseFragment {
 
-    private String type = "";
     private String queryType = "";
+
     public GeneraLizeMonthSortFragment(String type) {
         this.queryType = type;
     }
+
+
+
 
     @BindView(R.id.recycler_generalize_month_sort)
     RecyclerView recyclerGeneralizeMonthSort;
     Unbinder unbinder;
 
-   private String url = Constant.GENERALIZE_PAIHANG_URL+"?type=";
+    private String url = Constant.GENERALIZE_PAIHANG_URL + "?type=";
 
     @Override
     protected void onLoadData() {
         OkGo.<String>post(url)
-                .params("type",queryType)
+                .params("type", queryType)
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseGeneralizeSortData(response.body());
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseGeneralizeSortData(response.body());
 
-            }
-        });
+                    }
+                });
 
     }
 
     private void parseGeneralizeSortData(String body) {
         final EmployeePaiHangBean employeePaiHangBean = GsonUtils.jsonFromJson(body, EmployeePaiHangBean.class);
-        if (employeePaiHangBean.getCode()==0){
+        if (employeePaiHangBean.getCode() == 0) {
             final List<EmployeePaiHangBean.DataBean> dataList = employeePaiHangBean.getData();
 
             final GeneralizeSortAdapter generalizeSortAdapter = new GeneralizeSortAdapter(mActivity, dataList);
