@@ -87,7 +87,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/collect_normal" />
+                    android:src="@drawable/collect_normal" />
 
                 <ImageView
                     android:id="@+id/iv_news_detail_share"
