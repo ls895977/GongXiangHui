@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/xrecycler_genera_personal_list"
         android:layout_width="match_parent"

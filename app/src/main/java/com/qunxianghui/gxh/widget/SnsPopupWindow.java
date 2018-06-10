@@ -3,6 +3,8 @@ package com.qunxianghui.gxh.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.ActionItem;
+import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.utils.DensityUtil;
 
 import java.util.ArrayList;
@@ -81,11 +84,18 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         addAction(new ActionItem("评论"));
     }
 
-    public void showPopupWindow(View parent) {
+
+    public void showPopupWindow(View parent, TestMode.DataBean.ListBean listBean) {
         parent.getLocationOnScreen(mLocation);
         // 设置矩形的大小
         mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
-        digBtn.setText(mActionItems.get(0).mTitle);
+       // digBtn.setText(mActionItems.get(0).mTitle);
+        //判断当前状态
+        if (listBean.getCollect().equals("true")){
+
+        }else {
+            colletBtn.setCompoundDrawables(parent.getResources().getDrawable(R.mipmap.ic_launcher),null,null,null);
+        }
         if (!this.isShowing()) {
             showAtLocation(parent, Gravity.NO_GRAVITY, mLocation[0] - this.getWidth()
                     , mLocation[1] - ((this.getHeight() - parent.getHeight()) / 2));

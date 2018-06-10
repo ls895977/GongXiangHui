@@ -161,7 +161,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             @Override
             public void onClick(View v) {
                 //弹出popupwindow
-                snsPopupWindow.showPopupWindow(v);
+                snsPopupWindow.showPopupWindow(v,dataBeanList.get(position));
             }
         });
 
