@@ -32,6 +32,7 @@ public class MyIssurePostFragment extends BaseFragment {
     @BindView(R.id.recycler_mineissue_post)
     RecyclerView recyclerMineissuePost;
     Unbinder unbinder;
+    private List<MineIssurePostBean.DataBean.ListBean> dataList;
 
     @Override
     public int getLayoutId() {
@@ -59,9 +60,9 @@ public class MyIssurePostFragment extends BaseFragment {
         final MineIssurePostBean mineIssurePostBean = GsonUtils.jsonFromJson(body, MineIssurePostBean.class);
 
         if (mineIssurePostBean.getCode() == 0) {
-            final List<MineIssurePostBean.DataBean.ListBean> dataList = mineIssurePostBean.getData().getList();
-            for (int i=0;i<dataList.size();i++){
-                final MineIssurePostBean.DataBean.ListBean listBean = dataList.get(i);
+            dataList = mineIssurePostBean.getData().getList();
+            for (int i = 0; i< dataList.size(); i++){
+           MineIssurePostBean.DataBean.ListBean listBean = dataList.get(i);
                 if (listBean.getClick_like().size()>0){
                     final MineIssurePostAdapter mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
                     recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
@@ -73,6 +74,8 @@ public class MyIssurePostFragment extends BaseFragment {
         }else {
             asyncShowToast("数据出错了  请重新加载");
         }
+
+
 
     }
 

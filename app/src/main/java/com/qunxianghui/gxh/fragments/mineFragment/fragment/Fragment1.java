@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.DisplayUtil;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.Utils;
 
@@ -121,10 +122,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         imagePicker.startChooser(this, new ImagePicker.Callback() {
             @Override
             public void onPickImage(Uri imageUri) {
-                ivMineAddFragment1BigAdver.setImageURI(imageUri);
-                ivMineAddFragment1BigAdver.enable();
-                final String url = String.valueOf(imageUri).replace("file://", "");
-                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+//                ivMineAddFragment1BigAdver.setImageURI(imageUri);
+//                ivMineAddFragment1BigAdver.enable();
+
 
 //        Glide.with(this)
 //                .load(gif)
@@ -137,13 +137,17 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             @Override
             public void onCropImage(Uri imageUri) {
 
-                ivMineAddFragment1BigAdver.setImageURI(imageUri);
+                final String url = String.valueOf(imageUri).replace("file://", "");
+                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+
+//                ivMineAddFragment1BigAdver.setImageURI(imageUri);
                 //      使用Glide加载的gif图片同样支持缩放功能
-//        Glide.with(this)
-//                .load(gif)
-//                .crossFade()
-//                .placeholder(R.mipmap.bbb)
-//                .into(((PhotoView) findViewById(R.id.img1)));
+                GlideApp.with(mActivity)
+                        .load(imageUri)
+
+                        .placeholder(R.mipmap.user_moren)
+                        .error(R.mipmap.user_moren)
+                        .into(ivMineAddFragment1BigAdver);
             }
 
             //自定义剪裁
@@ -191,19 +195,19 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     @Override
     public void commitData() {
         super.commitData();
-        if (upLoadPics.size()==0){
-            ToastUtils.showShortToast(mActivity,"请先上传图片");
-        }else{
+        if (upLoadPics.size() == 0) {
+            ToastUtils.showShortToast(mActivity, "请先上传图片");
+        } else {
 
             //
             OkGo.<LzyResponse<String>>post(Constant.CHECK_ADD)
                     .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
                         @Override
                         public void onSuccess(Response<LzyResponse<String>> response) {
-                            if (response.body().code.equals("0")){
+                            if (response.body().code.equals("0")) {
                                 commit();
-                            }else{
-                                ToastUtils.showShortToast(mActivity,response.body().message);
+                            } else {
+                                ToastUtils.showShortToast(mActivity, response.body().message);
                             }
                         }
                     });
@@ -213,21 +217,21 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     private void commit() {
         String imagUrl = Utils.listToString(upLoadPics);
         String trim = etFragmentBigpicLink.getText().toString().trim();
-        if (TextUtils.isEmpty(trim)){
-            ToastUtils.showShortToast(mActivity,"链接不能为空");
+        if (TextUtils.isEmpty(trim)) {
+            ToastUtils.showShortToast(mActivity, "链接不能为空");
             return;
         }
         OkGo.<LzyResponse<String>>post(Constant.ADD_AD)
-                .params("ad_type",1)
+                .params("ad_type", 1)
                 .params("images", imagUrl)
-                .params("link",trim)
+                .params("link", trim)
                 .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
                     @Override
                     public void onSuccess(Response<LzyResponse<String>> response) {
-                        if (response.body().code.equals("0")){
+                        if (response.body().code.equals("0")) {
                             Intent intent = new Intent();
-                            intent.putExtra("index",0);
-                            mActivity.setResult(Activity.RESULT_OK,intent);
+                            intent.putExtra("index", 0);
+                            mActivity.setResult(Activity.RESULT_OK, intent);
                             mActivity.finish();
                         }
                     }

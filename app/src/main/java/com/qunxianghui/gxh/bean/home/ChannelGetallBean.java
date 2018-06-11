@@ -3,7 +3,7 @@ package com.qunxianghui.gxh.bean.home;
 import java.util.List;
 
 /**
- * @author 小强
+ * @author 龙涛
  * @time 2018/5/18  11:15
  * @desc 获取全部频道实体类
  */

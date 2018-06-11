@@ -96,6 +96,8 @@ public class Constant {
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
     //添加收藏
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
+    //取消收藏
+    public static final String CANCEL_COLLECT_URL=BASE_URL+"user/unCollect";
     //我的粉丝
     public static final String MYFANS_URL = BASE_URL + "user/myFans";
     //我的关注
@@ -112,6 +114,8 @@ public class Constant {
     public static final String ISSURE_DISUSS_URL = BASE_URL + "comment/addComment";
     //删除评论
     public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
+    //删除帖子
+    public static final String DELETE_POST_URL=BASE_URL+"posts/delete";
     //评论列表
     public static final String COMMENT_LIST = BASE_URL + "comment/getList";
     // 推广统计个人上面的头部
@@ -132,7 +136,6 @@ public class Constant {
     public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
     //获取我发布的爆料
     public static final String GET_ISSURE_DISCLOSS_URL = BASE_URL + "user/getMyInfo";
-
     //获取我发布的视频
     public static final String GET_ISSURE_VIDEO_URL = BASE_URL + "user/getRelease&model=video";
     //用户升级
@@ -145,10 +148,8 @@ public class Constant {
     public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRanking";
     //推广公司统计
     public static final String GENERALIZE_COMPANY_STATICS_URL = BASE_URL + "promote/getCompanyStatistics";
-
     //我的推广列表
     public static final String GENERALIZE_PERSON_LIST_URL = BASE_URL + "promote/getList";
-
     //我的消息的评论我的
     public static final String DISCUSS_MINE_URL = BASE_URL + "msg/getComment";
     //我的消息的我的跟帖

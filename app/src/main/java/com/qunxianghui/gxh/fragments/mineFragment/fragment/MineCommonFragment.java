@@ -40,10 +40,11 @@ import butterknife.Unbinder;
 public class MineCommonFragment extends BaseFragment {
 
 
-    @BindView(R.id.recycler_mine_collect_news)
-    RecyclerView recyclerMineCollectNews;
+    @BindView(R.id.xrecycler_mine_collect_news)
+    XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
     private List<CollectBean.ListBean> data;
+    private MyCollectPostAdapter myCollectPostAdapter;
 
 
     @Override
@@ -67,8 +68,9 @@ public class MineCommonFragment extends BaseFragment {
         final MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
         if (myCollectPostBean.getCode()==0){
             final List<MyCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
-            final MyCollectPostAdapter myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-            recyclerMineCollectNews.setAdapter(myCollectPostAdapter);
+
+            myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+            xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
 
 
         }
@@ -77,11 +79,27 @@ public class MineCommonFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        recyclerMineCollectNews.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        xrecycler_mine_collect_news.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
 
 
     }
 
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        xrecycler_mine_collect_news.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                myCollectPostAdapter.notifyDataSetChanged();
+                xrecycler_mine_collect_news.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                xrecycler_mine_collect_news.refreshComplete();
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

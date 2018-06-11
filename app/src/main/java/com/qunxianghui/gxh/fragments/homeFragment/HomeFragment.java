@@ -32,6 +32,8 @@ import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
+
+import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
@@ -107,7 +109,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             public void onSuccess(Response<String> response) {
                 String json = response.body().toString();
                 if (HttpStatusUtil.getStatus(json)) {
-                    ChannelGetallBean listData = getListData(json);
+                 getListData(json);
                 } else {
                     ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
                 }

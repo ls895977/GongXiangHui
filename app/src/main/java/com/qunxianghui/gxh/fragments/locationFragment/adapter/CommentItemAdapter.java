@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -27,11 +28,10 @@ public class CommentItemAdapter extends BaseAdapter {
     private List<CommentBean> mList;
     private ListView listView;
 
-    public CommentItemAdapter(Context context, List<CommentBean> mList,ListView listView) {
+    public CommentItemAdapter(Context context, List<CommentBean> mList, ListView listView) {
         this.context = context;
         this.mList = mList;
-        this.listView=listView;
-
+        this.listView = listView;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -66,43 +66,44 @@ public class CommentItemAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
-        if (convertView==null){
-            holder=new ViewHolder();
-            convertView=layoutInflater.inflate(R.layout.item_comment, parent, false);
-            holder.name=convertView.findViewById(R.id.name);
-            holder.content=convertView.findViewById(R.id.content);
-            holder.tv_item_discuss_delete=convertView.findViewById(R.id.tv_item_discuss_delete);
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = layoutInflater.inflate(R.layout.item_comment, parent, false);
+            holder.name = convertView.findViewById(R.id.name);
+            holder.content = convertView.findViewById(R.id.content);
+            holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
 
             convertView.setTag(holder);
-        }else {
-            holder= (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         showView(holder, position, parent);
 
         return convertView;
     }
 
-    private void showView(ViewHolder holder, int position, ViewGroup parent) {
+    private void showView(ViewHolder holder, final int position, ViewGroup parent) {
 
         holder.name.setText(mList.get(position).getMember_name());
         holder.content.setText(mList.get(position).getContent());
+
         /**
          * 删除帖子
          */
         holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(final View v) {
 
 
                 OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
-                        params("id",v.getId()).execute(new StringCallback() {
+                        params("id", v.getId()).execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
 
-                        com.orhanobut.logger.Logger.d("删除成功"+response.body().toString());
+                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
 
 
+                        deleteItemView(position);
 
 
                     }
@@ -114,10 +115,8 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
 
-
-
     public static class ViewHolder {
-        TextView name,content,tv_item_discuss_delete;
+        TextView name, content, tv_item_discuss_delete;
 
 
     }
