@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment1;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment2;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment3;
@@ -48,7 +50,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
 
 
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
-    private List<Fragment> fragments = new ArrayList<>();
+    private List<BaseFragment> fragments = new ArrayList<>();
 
 
     @Override
@@ -114,10 +116,11 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_addAdver_savelist:
-
-
+//                ToastUtils.showLongToast(mContext,"点击");
+                fragments.get(viewPager.getCurrentItem()).commitData();
                 break;
             case R.id.iv_top_savedverBack:
+                setResult(RESULT_CANCELED);
                 finish();
                 break;
         }

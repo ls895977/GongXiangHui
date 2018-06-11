@@ -4,12 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverTiseCommenFragment;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment1;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment2;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment3;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment4;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment5;
+import com.qunxianghui.gxh.base.BaseFragment;
 
 import java.util.List;
 
@@ -19,10 +14,10 @@ import java.util.List;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     private String[] mTitles ;
-    private List<Fragment> fragments;
+    private List<BaseFragment> fragments;
 
 
-    public MyFragmentPagerAdapter(FragmentManager fm, String[] mTitles, List<Fragment> fragments) {
+    public MyFragmentPagerAdapter(FragmentManager fm, String[] mTitles, List<BaseFragment> fragments) {
         super(fm);
         this.mTitles = mTitles;
         this.fragments = fragments;

@@ -155,5 +155,10 @@ public class Constant {
     public static final String DISCUSS_MINE_FOLLOW_URL = BASE_URL + "msg/getPosts";
     //我的消息的我的跟帖
     public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
-
+    //我的植入广告
+    public static final String GET_AD_LIST = BASE_URL+"user/getAdList";
+    //广告权限
+    public static final String CHECK_ADD = BASE_URL +"user/checkAddAd";
+    //添加广告
+    public static final String ADD_AD = BASE_URL+"user/addAd";
 }

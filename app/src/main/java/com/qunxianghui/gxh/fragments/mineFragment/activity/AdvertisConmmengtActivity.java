@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverTiseCommenFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment1;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment2;
@@ -50,7 +51,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
 
 
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
-    private List<Fragment> fragments = new ArrayList<>();
+    private List<BaseFragment> fragments = new ArrayList<>();
 
 
     @Override
@@ -79,13 +80,15 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     @Override
     protected void initDatas() {
 
+       /* fragments.add(new AdverTiseCommenFragment());
         fragments.add(new AdverTiseCommenFragment());
         fragments.add(new AdverTiseCommenFragment());
         fragments.add(new AdverTiseCommenFragment());
         fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());
-
+        fragments.add(new AdverTiseCommenFragment());*/
+        for (int i =0;i<6;i++){
+            fragments.add(new AdverTiseCommenFragment(i+1));
+        }
 
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), titles, fragments);
         viewPager_adver_commen.setOffscreenPageLimit(3);
@@ -117,8 +120,9 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_addAdver_list:
-                toActivity(AdvertisActivity.class);
 
+               // toActivity(AdvertisActivity.class);
+                toActivityWithResult(AdvertisActivity.class,0);
                 break;
             case R.id.iv_top_addAdverBack:
                 finish();
@@ -150,5 +154,15 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK){
+            int index = data.getIntExtra("index", 0);
+            viewPager_adver_commen.setCurrentItem(index);
+            fragments.get(index).initDatas();
+        }
     }
 }
