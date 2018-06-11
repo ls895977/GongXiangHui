@@ -40,10 +40,10 @@ public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelect
 
 //设置tablayout的点击事件
         generaCompanyPaihangTablayoutCommon.setOnTabSelectedListener(this);
-        fragments.add(new GeneraLizeMonthSortFragment("0"));
-        fragments.add(new GeneraLizeMonthSortFragment("1"));
-        fragments.add(new GeneraLizeMonthSortFragment("2"));
-        fragments.add(new GeneraLizeMonthSortFragment("3"));
+        fragments.add(new GeneraLizeMonthSortFragment("view_cnt"));
+        fragments.add(new GeneraLizeMonthSortFragment("click_cnt"));
+        fragments.add(new GeneraLizeMonthSortFragment("forward_cnt"));
+        fragments.add(new GeneraLizeMonthSortFragment("article_cnt"));
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(mActivity.getSupportFragmentManager(), fragments, titles);
         generaCampanyPaihangViewpager.setAdapter(mineTabViewPagerAdapter);
