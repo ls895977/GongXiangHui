@@ -69,6 +69,7 @@ public class MineCommonFragment extends BaseFragment {
         if (myCollectPostBean.getCode()==0){
             final List<MyCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
 
+
             myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
             xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
 

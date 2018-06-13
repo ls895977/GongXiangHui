@@ -83,6 +83,10 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--欢迎界面的广告界面-->
+        <activity
+            android:name=".activity.WelcomAdverActivity"
+            android:launchMode="singleTask" />
         <!--主页面MainActivity-->
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"
@@ -244,16 +248,20 @@
         <activity
             android:name=".fragments.mineFragment.activity.ResetPasswordActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".fragments.homeFragment.activity.HomeAirActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".fragments.homeFragment.activity.HomeAirActivity"
+            android:launchMode="singleTask" />
         <!--搜索结果页面-->
-        <activity android:name=".activity.PublishActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.PublishActivity"
+            android:launchMode="singleTask" />
         <!--个人信息详情页-->
-        <activity android:name=".fragments.mineFragment.activity.PersonDetailActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".fragments.mineFragment.activity.AdvertisConmmengtActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".fragments.mineFragment.activity.PersonDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.mineFragment.activity.AdvertisConmmengtActivity"
+            android:launchMode="singleTask" />
 
     </application>
 

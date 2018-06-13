@@ -28,12 +28,16 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/26 0026.
  */
 
-public class WelcomActivity extends BaseActivity {
+public class WelcomAdverActivity extends BaseActivity {
 
+    @BindView(R.id.iv_welcom_luncher)
+    ImageView ivWelcomLuncher;
+    @BindView(R.id.textView)
+    TextView textView;
     // 声明控件对象
-    private TextView textView;
+
     private Animation animation;
-    private int count = 1;
+    private int count = 3;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -52,7 +56,7 @@ public class WelcomActivity extends BaseActivity {
     private int getCount() {
         count--;
         if (count == 0) {
-            Intent intent = new Intent(this, WelcomAdverActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -64,13 +68,12 @@ public class WelcomActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
 
-        return R.layout.activity_welcom;
+        return R.layout.activity_welcomadver;
     }
 
     @Override
     protected void initViews() {
-        // 初始化控件对象
-        textView = (TextView) findViewById(R.id.textView);
+
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_text);
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
@@ -81,8 +84,41 @@ public class WelcomActivity extends BaseActivity {
     protected void initDatas() {
 
 
+        /**
+         * 增加欢迎页广告
+         */
 
+        OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                parseWelcomData(response.body());
+            }
+        });
+    }
+
+    private void parseWelcomData(String body) {
+        final WelcomAdverBean welcomAdverBean = GsonUtils.jsonFromJson(body, WelcomAdverBean.class);
+        if (welcomAdverBean.getCode() == 0) {
+            final WelcomAdverBean.DataBean data = welcomAdverBean.getData();
+            final String image = data.getImage();
+
+            GlideApp.with(mContext).load(image).centerCrop()
+                    .placeholder(R.mipmap.ic_test_0)
+                    .error(R.mipmap.ic_test_1)
+                    .into(ivWelcomLuncher);
+
+
+            /**
+             * 欢迎页 不可能就一张图片 设置滑动的图片
+             */
+        }
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

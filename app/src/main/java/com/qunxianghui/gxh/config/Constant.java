@@ -94,6 +94,8 @@ public class Constant {
     public static final String SEARCH_GUESS_URL = BASE_URL + "search/getGuess";
     //获取个人资料
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
+    //获取用户详情
+    public static final String GET_USER_DETAIL_URL=BASE_URL+"user/getUserInfo";
     //添加收藏
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
     //取消收藏
@@ -162,4 +164,6 @@ public class Constant {
     public static final String CHECK_ADD = BASE_URL +"user/checkAddAd";
     //添加广告
     public static final String ADD_AD = BASE_URL+"user/addAd";
+    //企业添加
+    public static final String ADD_COMPANY_URL=BASE_URL+"service/addCompany";
 }

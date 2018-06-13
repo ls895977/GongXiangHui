@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,8 @@ public class MineAttentionFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_attention)
     RecyclerView recyclerMineAttention;
     Unbinder unbinder;
+    private List<MyFocusBean.DataBean> dataList;
+
 
     @Override
     public int getLayoutId() {
@@ -58,18 +61,28 @@ public class MineAttentionFragment extends BaseFragment {
 
         final MyFocusBean myFocusBean = GsonUtils.jsonFromJson(body, MyFocusBean.class);
         if (myFocusBean.getCode() == 0) {
-            final List<MyFocusBean.DataBean> dataList = myFocusBean.getData();
+            dataList = myFocusBean.getData();
+
+
+
+
+
             final MyFocusAdapter myFocusAdapter = new MyFocusAdapter(mActivity, dataList);
             recyclerMineAttention.setAdapter(myFocusAdapter);
 
             myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+
                 @Override
                 public void onItemClick(View v, int position) {
-                  asyncShowToast("点击了"+position);
-                  toActivity(PersonDetailActivity.class);
+                    asyncShowToast("点击了" + position);
+                    final int member_id = dataList.get(position).getMember_id();
+                    Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+                    intent.putExtra("member_id", member_id);
+                    startActivity(intent);
+
+
                 }
             });
-
 
 
         }
@@ -77,7 +90,7 @@ public class MineAttentionFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        recyclerMineAttention.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        recyclerMineAttention.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

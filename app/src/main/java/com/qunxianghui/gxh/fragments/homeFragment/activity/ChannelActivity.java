@@ -109,12 +109,12 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 //        });
 
 
-        //        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
-        //        userAdapter = new DragAdapter(this, userChannelList);
-        //        userGridView.setAdapter(userAdapter);
-        //        otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getOtherChannel());
-        //        otherAdapter = new OtherAdapter(this, otherChannelList);
-        //        otherGridView.setAdapter(otherAdapter);
+//                userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
+//                userAdapter = new DragAdapter(this, userChannelList);
+//                userGridView.setAdapter(userAdapter);
+//                otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getOtherChannel());
+//                otherAdapter = new OtherAdapter(this, otherChannelList);
+//                otherGridView.setAdapter(otherAdapter);
         //设置GRIDVIEW的ITEM的点击监听
         otherGridView.setOnItemClickListener(this);
         userGridView.setOnItemClickListener(this);

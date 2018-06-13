@@ -8,10 +8,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lljjcoder.Constant;
 import com.lljjcoder.style.citythreelist.CityBean;
 import com.lljjcoder.style.citythreelist.ProvinceActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,10 +33,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCaompanysetToIndustry;
     @BindView(R.id.et_mine_companyset_selectProvince)
     EditText etMineCompanysetSelectProvince;
-//    @BindView(R.id.et_mine_companyset_selectCity)
-//    EditText etMineCompanysetSelectCity;
-//    @BindView(R.id.et_mine_companyset_selectCounty)
-//    EditText etMineCompanysetSelectCounty;
+
     @BindView(R.id.et_mine_companyset_detailAddress)
     EditText etMineCompanysetDetailAddress;
     @BindView(R.id.et_mine_companyset_writContactName)
@@ -43,6 +46,11 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCompanysetWriteQQ;
     @BindView(R.id.tv_mine_companyset_fabu)
     TextView tvMmineCompanysetFabu;
+    @BindView(R.id.et_mine_companyset_company_lowshow)
+    TextView et_mine_companyset_company_lowshow;
+    @BindView(R.id.et_mine_companyset_compaydetail)
+    TextView et_mine_companyset_compaydetail;
+
 
 
     @Override
@@ -94,10 +102,49 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 //                asyncShowToast("选择县区");
 //                break;
             case R.id.tv_mine_companyset_fabu:
-                asyncShowToast("模拟发布成功");
+           fetchCompayData();
                 break;
 
         }
+    }
+
+    private void fetchCompayData() {
+
+        final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
+        final String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
+        final String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
+        final String connectPhone = etMineCompanysetMobilePhoneNumber.getText().toString().trim(); //联系人手机
+        final String connectCall = etMineCompanysetZuojiPhoneNumber.getText().toString().trim(); //联系人电话
+        final String connectQQ = etMineCompanysetWriteQQ.getText().toString().trim(); //联系人QQ
+        final String companyLowshow = et_mine_companyset_company_lowshow.getText().toString().trim(); //企业简介
+        final String companyL = et_mine_companyset_compaydetail.getText().toString().trim(); //企业详情
+
+      OkGo.<String>post(com.qunxianghui.gxh.config.Constant.ADD_COMPANY_URL).
+              params("company_name",companyName)
+              .params("address",detailAddress)
+              .params("linkname",connectName)
+              .params("mobile",connectPhone)
+              .params("tel",connectCall)
+              .params("qq",connectQQ)
+              .params("images","")
+              .params("description",companyLowshow)
+              .params("content",companyL)
+              .params("province_id","")
+              .params("city_id","")
+              .params("area_id","")
+              .execute(new StringCallback() {
+                  @Override
+                  public void onSuccess(Response<String> response) {
+                      com.orhanobut.logger.Logger.e("发布成功+"+response.body().toString());
+                  }
+
+                  @Override
+                  public void onError(Response<String> response) {
+                      super.onError(response);
+                      asyncShowToast(response.message());
+                  }
+              });
+
     }
 
     private void list() {

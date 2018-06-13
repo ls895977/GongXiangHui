@@ -95,8 +95,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         } else {
             holder.gridLayout.setVisibility(View.VISIBLE);
             holder.img.setVisibility(View.GONE);
+
             holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
         }
+
+
 
         if (dataBeanList.get(position).getComment_res().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);

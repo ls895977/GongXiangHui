@@ -184,8 +184,21 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================点击猜你想要是的进行搜索=====================
      */
     private void refreshSearchText() {
-        etSearch.setText(searchText);
+       etSearch.setText(searchText);
+
+
         etSearch.setSelection(etSearch.getText().length());
+
+//        OkGo.<String>post(Constant.SEARCH_AUTO_COMPLETE).
+//                params("keywords",trim).execute(new StringCallback() {
+//            @Override
+//            public void onSuccess(Response<String> response) {
+//
+//                if (mViewpager != null) {
+//                    setupViewPager(trim);
+//                }
+//            }
+//        });
 
 
 

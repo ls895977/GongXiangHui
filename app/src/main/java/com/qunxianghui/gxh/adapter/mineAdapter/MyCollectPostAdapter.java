@@ -20,11 +20,14 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * 我收藏贴子的适配器
  */
 public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBean.DataBean> {
+
+    private int data_uuid;
 
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
@@ -39,7 +42,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         final String source = dataBean.getInfo().getSource();
         final String title = dataBean.getInfo().getTitle();
         final String ctime = dataBean.getCtime();
-        final int data_uuid = dataBean.getData_uuid();
+        data_uuid = dataBean.getData_uuid();
 
 
         holder.setText(R.id.tv_mine_mycollect_from, source);
@@ -66,17 +69,9 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
                 builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
-                                .params("data_uuid", data_uuid)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
 
+                        CancelNewsData();
 
-
-                                    }
-                                });
                     }
                 });
                 builder.setNegativeButton("取消", null);
@@ -86,6 +81,21 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
             }
         });
 
+    }
+
+    private void CancelNewsData() {
+        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+                .params("data_uuid", data_uuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        com.orhanobut.logger.Logger.d("取消收藏的信息" + response.body().toString());
+
+                        Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
     }
 
     @Override
