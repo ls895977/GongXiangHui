@@ -1,11 +1,13 @@
 package com.qunxianghui.gxh.adapter.locationAdapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.TestMode;
@@ -18,6 +20,7 @@ public class LocationGridAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private List<String> imageList;
+    private ImageOnClickListener listener;
 
 
     public LocationGridAdapter(Context context, List<String> imageList) {
@@ -28,6 +31,9 @@ public class LocationGridAdapter extends BaseAdapter {
         layoutInflater = LayoutInflater.from(context);
     }
 
+    public void setListener(ImageOnClickListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public int getCount() {
@@ -45,7 +51,7 @@ public class LocationGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         myGridHolder holder = null;
         if (convertView == null) {
             holder = new myGridHolder();
@@ -55,17 +61,35 @@ public class LocationGridAdapter extends BaseAdapter {
         } else {
             holder = (myGridHolder) convertView.getTag();
         }
+        //holder.iv.setTag(position);
+
+
+        holder.iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(v,position);
+            }
+        });
+
 
         GlideApp.with(context).load(imageList.get(position))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(holder.iv);
+
         return convertView;
     }
 
     private static class myGridHolder {
         ImageView iv;
     }
+
+    public interface ImageOnClickListener {
+
+        void onClick(View v, int position);
+
+    }
+
 
 }

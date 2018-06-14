@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -126,12 +127,19 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     private void parseLocationData(String body) {
 
-        Logger.i("Location" + body.toString());
+        Logger.i("Location：" + body.toString());
         final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
         dataList.addAll(locationListBean.getData().getList());
         count = dataList.size();
         if (locationListBean.getCode() == 0) {
+
+            mAdapter = new NineGridTest2Adapter(mActivity, dataList);
+            mAdapter.setOnClickLitener(this);
+            recyclerView.setAdapter(mAdapter);
+
+            /*
             for (int i = 0; i < dataList.size(); i++) {
+
                 TestMode.DataBean.ListBean listBean = dataList.get(i);
                 if (listBean.getClick_like().size() > 0) {
                     mAdapter = new NineGridTest2Adapter(mActivity, dataList);
@@ -139,7 +147,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     recyclerView.setAdapter(mAdapter);
 
                 }
-            }
+            }*/
         }
 
 
@@ -346,7 +354,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onPicClick(int position, int picpostion) {
-
+        Toast.makeText(getActivity(),"test :" + position + "test1 : " + picpostion ,Toast.LENGTH_LONG).show();
     }
 
     @Override

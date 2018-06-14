@@ -126,4 +126,7 @@ dependencies {
     //BaseRecyclerViewAdapter的适配器
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
     implementation 'com.readystatesoftware.chuck:library:1.0.4'
+    implementation 'com.jaeger.ninegridimageview:library:1.1.1'
+
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 }
