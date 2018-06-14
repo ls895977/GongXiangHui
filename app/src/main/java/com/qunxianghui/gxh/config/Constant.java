@@ -166,4 +166,8 @@ public class Constant {
     public static final String ADD_AD = BASE_URL+"user/addAd";
     //企业添加
     public static final String ADD_COMPANY_URL=BASE_URL+"service/addCompany";
+    //企业设置   获取
+    public static final String GET_COMPANY_URL=BASE_URL+"service/getCompany";
+    //企业修改
+    public static final String EDIT_COMPANY_URL=BASE_URL+"service/editCompany";
 }

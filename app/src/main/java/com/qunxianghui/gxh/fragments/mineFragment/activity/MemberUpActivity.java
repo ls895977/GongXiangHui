@@ -5,18 +5,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.lzy.okgo.request.PostRequest;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +30,13 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     TextView tvMemberUpQuicklyActivate;
     @BindView(R.id.et_activity_member_code)
     EditText etActivityMemberCode;
+    @BindView(R.id.tv_company_active_time)
+    TextView tvCompanyActiveTime;
+    @BindView(R.id.ll_activite_top)
+    LinearLayout llActiviteTop;
+    @BindView(R.id.ll_unactivite_top)
+    LinearLayout llUnactiviteTop;
+
 
     @Override
     protected int getLayoutId() {
@@ -83,25 +89,28 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     private void ActiviteCompanyData(String activiteCode) {
         if (TextUtils.isEmpty(activiteCode)) {
             asyncShowToast("激活码不能为空");
-        }else {
+        } else {
             OkGo.<String>post(Constant.PERSON_UPGRADE_URL)
                     .params("activecode", activiteCode)
-            .execute(new StringCallback() {
-                @Override
-                public void onSuccess(Response<String> response) {
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
 
-                   asyncShowToast("该账号已激活");
+                            asyncShowToast("该账号已激活");
+                            llUnactiviteTop.setVisibility(View.GONE);
+                            llActiviteTop.setVisibility(View.VISIBLE);
 
-                }
 
-                @Override
-                public void onError(Response<String> response) {
-                    super.onError(response);
-                    asyncShowToast("激活失败 具体原因是"+response.body().toString());
+                        }
 
-                    com.orhanobut.logger.Logger.e("激活失败，原因是："+response.body().toString());
-                }
-            });
+                        @Override
+                        public void onError(Response<String> response) {
+                            super.onError(response);
+                            asyncShowToast("激活失败 具体原因是" + response.body().toString());
+
+                            Logger.e("激活失败，原因是：" + response.body().toString());
+                        }
+                    });
         }
 
     }
