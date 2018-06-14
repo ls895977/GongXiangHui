@@ -72,16 +72,15 @@ public class MineAttentionFragment extends BaseFragment {
 
             myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
 
-                @Override
-                public void onItemClick(View v, int position) {
-                    asyncShowToast("点击了" + position);
-                    final int member_id = dataList.get(position).getMember_id();
-                    Intent intent = new Intent(mActivity, PersonDetailActivity.class);
-                    intent.putExtra("member_id", member_id);
-                    startActivity(intent);
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        asyncShowToast("点击了" + position);
+                        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+                        intent.putExtra("member_id", dataList.get(position).getBe_member_id());
+                        startActivity(intent);
 
 
-                }
+                    }
             });
 
 

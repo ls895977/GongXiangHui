@@ -262,6 +262,9 @@
         <activity
             android:name=".fragments.mineFragment.activity.AdvertisConmmengtActivity"
             android:launchMode="singleTask" />
+        <!--选取省份的的activity-->
+        <activity android:name=".fragments.mineFragment.activity.CompanySetProvinceActivity"
+            android:launchMode="singleTask"/>
 
     </application>
 

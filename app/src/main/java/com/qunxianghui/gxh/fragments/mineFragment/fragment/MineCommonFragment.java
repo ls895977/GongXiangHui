@@ -45,6 +45,7 @@ public class MineCommonFragment extends BaseFragment {
     Unbinder unbinder;
     private List<CollectBean.ListBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
+    private List<MyCollectPostBean.DataBean> dataList;
 
 
     @Override
@@ -67,11 +68,17 @@ public class MineCommonFragment extends BaseFragment {
     private void parseCollectPostData(String body) {
         final MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
         if (myCollectPostBean.getCode()==0){
-            final List<MyCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
+            dataList = myCollectPostBean.getData();
 
 
             myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
             xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+            myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    asyncShowToast("这里实现跳转详情的动作 目前没有字段不会跳");
+                }
+            });
 
 
         }

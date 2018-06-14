@@ -5,20 +5,18 @@
     android:orientation="vertical">
 
 
-<android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/demo_swiperefreshlayout"
-    android:scrollbars="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/demo_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
-
-
-</android.support.v4.widget.SwipeRefreshLayout>
+<Button
+    android:layout_marginTop="20dp"
+    android:id="@+id/bt_invite_click"
+    android:textSize="17sp"
+    android:text="点击出来选择器"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+<Button
+    android:id="@+id/bt_invite_parsedata"
+    android:textSize="17sp"
+    android:text="解析数据"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
 
 </LinearLayout>

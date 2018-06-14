@@ -119,6 +119,9 @@ dependencies {
     /* 省市区列表  滚轮 citypickew*/
     implementation 'liji.library.dev:citypickerview:3.1.7'
     implementation 'com.google.code.gson:gson:2.8.4'
+    
+    /* 滚轮时间  地址*/
+    implementation 'com.contrarywind:Android-PickerView:4.1.4'
 
     //打印日志
     implementation 'com.orhanobut:logger:2.1.1'

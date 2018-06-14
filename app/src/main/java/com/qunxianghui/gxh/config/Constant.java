@@ -62,6 +62,13 @@ public class Constant {
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
+    //获取省份
+    public static final String FETCH_PROVINCE_URL=BASE_URL+"province/getProvince";
+    //获取城市
+    public static final String FETCH_CITY_URL=BASE_URL+"city/getCity";
+    //获取县城
+    public static final String FETCH_COUNTRY_URL=BASE_URL+"area/getArea";
+
     //首页轮播图
     public static final String HOME_PAGE_LUNBO_URL = BASE_URL + "ad/getList?place=首页图片轮播";
     //首页爆料
@@ -166,4 +173,8 @@ public class Constant {
     public static final String ADD_AD = BASE_URL+"user/addAd";
     //企业添加
     public static final String ADD_COMPANY_URL=BASE_URL+"service/addCompany";
+    //企业设置   获取
+    public static final String GET_COMPANY_URL=BASE_URL+"service/getCompany";
+    //企业修改
+    public static final String EDIT_COMPANY_URL=BASE_URL+"service/editCompany";
 }

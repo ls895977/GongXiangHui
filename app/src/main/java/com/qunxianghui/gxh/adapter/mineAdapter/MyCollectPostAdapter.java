@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 /**
@@ -69,7 +71,6 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
                 builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         CancelNewsData();
 
                     }
@@ -84,14 +85,22 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     }
 
     private void CancelNewsData() {
+
         OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
                 .params("data_uuid", data_uuid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        com.orhanobut.logger.Logger.d("取消收藏的信息" + response.body().toString());
-
                         Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
+
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+
+                        Toast.makeText(mContext, "取消收藏失败", Toast.LENGTH_SHORT).show();
 
 
                     }

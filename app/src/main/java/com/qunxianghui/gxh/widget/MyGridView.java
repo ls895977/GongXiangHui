@@ -13,6 +13,13 @@ public class MyGridView extends GridView {
         super(context, attrs);
     }
 
+    public MyGridView(Context context) {
+        super(context);
+    }
+
+    public MyGridView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
     //重写onmeasure
 
     @Override
