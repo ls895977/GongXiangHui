@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +12,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFansAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineFansBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
@@ -58,8 +61,18 @@ public class MineFancesFragment extends BaseFragment {
         final MineFansBean mineFansBean = GsonUtils.jsonFromJson(body, MineFansBean.class);
         if (mineFansBean.getCode() == 0) {
             final List<MineFansBean.DataBean> dataList = mineFansBean.getData();
+
             final MyFansAdapter myFansAdapter = new MyFansAdapter(mActivity, dataList);
             recyclerMineFances.setAdapter(myFansAdapter);
+
+            myFansAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    Intent intent=new Intent(mActivity,PersonDetailActivity.class);
+                    intent.putExtra("member_id",dataList.get(position).getMember_id());
+                    startActivity(intent);
+                }
+            });
 
         }
     }

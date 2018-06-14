@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ProvinceBean implements Serializable {
 
+
     /**
      * code : 0
      * message : 获取省份成功
@@ -56,8 +57,6 @@ public class ProvinceBean implements Serializable {
     public void setData(List<DataBean> data) {
         this.data = data;
     }
-
-
 
     public static class DataBean {
         /**

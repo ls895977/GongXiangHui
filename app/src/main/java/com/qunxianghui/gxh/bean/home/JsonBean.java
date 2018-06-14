@@ -1,4 +1,4 @@
-package com.bigkoo.pickerviewdemo.bean;
+package com.qunxianghui.gxh.bean.home;
 
 
 import com.contrarywind.interfaces.IPickerViewData;

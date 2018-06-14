@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.Constant;
 import com.lljjcoder.style.citythreelist.CityBean;
 import com.lljjcoder.style.citythreelist.ProvinceActivity;
 import com.lzy.okgo.OkGo;
@@ -18,8 +16,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.CompanySetBean;
 import com.qunxianghui.gxh.utils.GsonUtils;
-
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +31,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCaompanysetToIndustry;
     @BindView(R.id.et_mine_companyset_selectProvince)
     EditText etMineCompanysetSelectProvince;
+    @BindView(R.id.et_mine_companyset_selectCity)
+    EditText etMineCompanysetSelectCity;
+    @BindView(R.id.et_mine_companyset_selectCounty)
+    EditText etMineCompanysetSelectCounty;
 
     @BindView(R.id.et_mine_companyset_detailAddress)
     EditText etMineCompanysetDetailAddress;
@@ -125,7 +125,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCompanysetWritContactName.setText(linkname);
 
 
-
     }
 
     @Override
@@ -138,8 +137,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCaompanysetToIndustry.setOnClickListener(this);
         etMineCompanysetSelectProvince.setOnClickListener(this);
         tvMmineCompanysetFabu.setOnClickListener(this);
-//        etMineCompanysetSelectCity.setOnClickListener(this);
-//        etMineCompanysetSelectCounty.setOnClickListener(this);
+        etMineCompanysetSelectCity.setOnClickListener(this);
+        etMineCompanysetSelectCounty.setOnClickListener(this);
 
     }
 
@@ -157,20 +156,39 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 asyncShowToast("选择行业");
                 break;
             case R.id.et_mine_companyset_selectProvince:
-                list();
+
+                 toActivity(CompanySetProvinceActivity.class);
                 break;
-//            case R.id.et_mine_companyset_selectCity:
-//                asyncShowToast("选择城市");
-//                break;
-//            case R.id.et_mine_companyset_selectCounty:
-//                asyncShowToast("选择县区");
-//                break;
+            case R.id.et_mine_companyset_selectCity:
+                asyncShowToast("选择城市");
+                requestCityData();
+                break;
+            case R.id.et_mine_companyset_selectCounty:
+                asyncShowToast("选择县区");
+
+                requestCountData();
+                break;
             case R.id.tv_mine_companyset_fabu:
                 fetchCompayData();
                 break;
 
         }
     }
+
+    /**
+     * 请求县城
+     */
+    private void requestCountData() {
+
+    }
+
+    /**
+     * 请求城市
+     */
+    private void requestCityData() {
+
+    }
+
 
     private void fetchCompayData() {
         final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
@@ -215,10 +233,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     }
 
-    private void list() {
-        Intent intent = new Intent(mContext, ProvinceActivity.class);
-        startActivityForResult(intent, ProvinceActivity.RESULT_DATA);
-    }
+//    private void list() {
+//        Intent intent = new Intent(mContext, ProvinceActivity.class);
+//        startActivityForResult(intent, ProvinceActivity.RESULT_DATA);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

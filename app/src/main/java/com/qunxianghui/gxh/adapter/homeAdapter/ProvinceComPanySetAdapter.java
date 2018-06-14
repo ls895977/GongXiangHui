@@ -8,8 +8,8 @@ import com.qunxianghui.gxh.bean.home.ProvinceBean;
 
 import java.util.List;
 
-public class ProvinceAdapter extends BaseRecycleViewAdapter <ProvinceBean.DataBean>{
-    public ProvinceAdapter(Context context, List<ProvinceBean.DataBean> datas) {
+public class ProvinceComPanySetAdapter extends BaseRecycleViewAdapter <ProvinceBean.DataBean>{
+    public ProvinceComPanySetAdapter(Context context, List<ProvinceBean.DataBean> datas) {
         super(context, datas);
     }
 

@@ -6,9 +6,16 @@
 
 
 <Button
+    android:layout_marginTop="20dp"
     android:id="@+id/bt_invite_click"
     android:textSize="17sp"
     android:text="点击出来选择器"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+<Button
+    android:id="@+id/bt_invite_parsedata"
+    android:textSize="17sp"
+    android:text="解析数据"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
