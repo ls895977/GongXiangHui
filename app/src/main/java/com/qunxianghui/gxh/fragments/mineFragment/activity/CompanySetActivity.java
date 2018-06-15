@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -79,10 +80,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             }
         });
 
-        /**
-         * 发布改为修改
-         */
-
 
     }
 
@@ -157,7 +154,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.et_mine_companyset_selectProvince:
 
-                 toActivity(CompanySetProvinceActivity.class);
+                toActivity(CompanySetProvinceActivity.class);
                 break;
             case R.id.et_mine_companyset_selectCity:
                 asyncShowToast("选择城市");
@@ -191,6 +188,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
 
     private void fetchCompayData() {
+
         final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
         final String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
         final String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
@@ -199,7 +197,13 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final String connectQQ = etMineCompanysetWriteQQ.getText().toString().trim(); //联系人QQ
         final String companyLowshow = et_mine_companyset_company_lowshow.getText().toString().trim(); //企业简介
         final String companyL = et_mine_companyset_compaydetail.getText().toString().trim(); //企业详情
-        if (dataList == null) {
+
+
+        if (TextUtils.isEmpty(companyName) || TextUtils.isEmpty(detailAddress) || TextUtils.isEmpty(connectName) || TextUtils.isEmpty(connectPhone)
+                || TextUtils.isEmpty(connectCall) || TextUtils.isEmpty(connectQQ) || TextUtils.isEmpty(companyLowshow)) {
+            asyncShowToast("还有一些信息没有填，仔细检查一下");
+
+        } else {
 
             OkGo.<String>post(com.qunxianghui.gxh.config.Constant.ADD_COMPANY_URL).
                     params("company_name", companyName)
@@ -222,11 +226,12 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
                         @Override
                         public void onError(Response<String> response) {
+
+
                             super.onError(response);
                             asyncShowToast(response.message());
                         }
                     });
-
 
         }
 

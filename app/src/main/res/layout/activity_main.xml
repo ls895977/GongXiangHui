@@ -8,11 +8,11 @@
     tools:context="com.qunxianghui.gxh.activity.MainActivity">
 
     <com.qunxianghui.gxh.widget.NoScrollViewPager
-        android:background="#fff"
         android:id="@+id/vp_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
     </com.qunxianghui.gxh.widget.NoScrollViewPager>
 
@@ -24,10 +24,10 @@
     <RadioGroup
         android:id="@+id/rg_main"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:background="@color/Gxh_BG"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
 
@@ -47,6 +47,7 @@
         <RadioButton
             android:id="@+id/rb_fabu"
             style="@style/MainRadioButtonStyle"
+
             android:drawableTop="@drawable/selector_tab_fabu"
             android:text="一键发布" />
 

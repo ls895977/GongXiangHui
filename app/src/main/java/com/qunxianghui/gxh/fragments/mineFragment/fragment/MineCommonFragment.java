@@ -56,29 +56,40 @@ public class MineCommonFragment extends BaseFragment {
     @Override
     public void initDatas() {
 
-        OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL).execute(new StringCallback() {
+        LoadMycolectNews();
+
+
+    }
+
+    private void LoadMycolectNews() {
+        OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL)
+
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                 parseCollectPostData(response.body());
+                parseCollectPostData(response.body());
             }
         });
-
     }
 
     private void parseCollectPostData(String body) {
         final MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
-        if (myCollectPostBean.getCode()==0){
+        if (myCollectPostBean.getCode() == 0) {
+
             dataList = myCollectPostBean.getData();
 
-
-            myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-            xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-            myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    asyncShowToast("这里实现跳转详情的动作 目前没有字段不会跳");
-                }
-            });
+            if (myCollectPostAdapter == null) {
+                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        asyncShowToast("这里实现跳转详情的动作 目前没有字段不会跳");
+                    }
+                });
+            } else {
+                myCollectPostAdapter.notifyDataSetChanged();
+            }
 
 
         }
@@ -98,12 +109,15 @@ public class MineCommonFragment extends BaseFragment {
         xrecycler_mine_collect_news.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                myCollectPostAdapter.notifyDataSetChanged();
+
+                LoadMycolectNews();
                 xrecycler_mine_collect_news.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
+
+                LoadMycolectNews();
                 xrecycler_mine_collect_news.refreshComplete();
             }
         });

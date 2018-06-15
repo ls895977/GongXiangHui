@@ -113,6 +113,9 @@ public class Constant {
     public static final String MYFOCUS_URL = BASE_URL + "user/myFollow";
     //获取收藏的新闻
     public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
+
+    //获取内容详情
+    public static final String GET_NEWS_CONTENT_DETAIL_URL=BASE_URL+"detail/getInfo";
     //获取我收藏的视频
     public static final String GET_COLLECT_VIDEO_URL = BASE_URL + "user/getCollect&model=video";
     //获取我收藏帖子
@@ -131,6 +134,8 @@ public class Constant {
     public static final String GENERALIZE_RERSON_STATIS_URL = BASE_URL + "promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
+    //关注
+    public static final String ATTENTION_URL=BASE_URL+"follow/addFollow";
     //不喜欢
     public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
     //发布帖子

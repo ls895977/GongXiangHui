@@ -46,20 +46,24 @@ public class MineCollectPostFrament extends BaseFragment {
 
     }
 
+
+
     private void parseCollectPostDaTA(String body) {
-        Logger.d("我收藏帖子的内容+++"+body.toString());
+        Logger.d("我收藏帖子的内容+++" + body.toString());
         final MineCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MineCollectPostBean.class);
-        if (myCollectPostBean.getCode()==0){
+        if (myCollectPostBean.getCode() == 0) {
             final List<MineCollectPostBean.DataBean> dataList = myCollectPostBean.getData();
+
+
             final MineCollectPostAdapter mineCollectPostAdapter = new MineCollectPostAdapter(mActivity, dataList);
             recyclerMycollectPost.setAdapter(mineCollectPostAdapter);
-asyncShowToast("请求成功");
+            asyncShowToast("请求成功");
         }
     }
 
     @Override
     public void initViews(View view) {
-        recyclerMycollectPost.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        recyclerMycollectPost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

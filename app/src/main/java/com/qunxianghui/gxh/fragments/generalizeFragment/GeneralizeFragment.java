@@ -53,8 +53,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.rb_genera_push)
     RadioButton rbGeneraPush;
 
-    @BindView(R.id.iv_genera_back)
-    ImageView ivGeneraBack;
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
 
@@ -96,7 +94,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     protected void initListeners() {
 
 
-        ivGeneraBack.setOnClickListener(this);
+
         tvGeneraEdit.setOnClickListener(this);
         rgGeneralizeMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -128,9 +126,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
             case R.id.iv_genera_back:
 
                 break;
-            case R.id.tv_genera_edit:
-                Toast.makeText(mActivity, "这里实现编辑逻辑", Toast.LENGTH_SHORT).show();
-                break;
+
         }
     }
 

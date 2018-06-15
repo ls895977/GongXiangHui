@@ -13,6 +13,7 @@
                 android:layout_height="70dp">
 
                 <LinearLayout
+
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -20,16 +21,19 @@
 
 
                 <ImageView
+
                     android:id="@+id/iv_genera_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="20dp"
+
                     android:background="@mipmap/icon_back"
                     android:visibility="invisible" />
 
                 <RadioGroup
+
                     android:id="@+id/rg_generalize_main"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -39,6 +43,7 @@
 
 
                     <RadioButton
+
                         android:id="@+id/rb_genera_personal"
                         android:layout_width="0dp"
                         android:layout_height="35dp"

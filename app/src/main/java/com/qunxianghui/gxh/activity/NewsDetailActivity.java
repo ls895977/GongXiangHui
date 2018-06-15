@@ -34,12 +34,15 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.mineAdapter.SelfTestRecyclerviewAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.JsonUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.ImageObject;
@@ -61,7 +64,11 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 import butterknife.BindView;
@@ -112,8 +119,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private MyIUiListener qqShareListener;
     private String url;
 
-    private int collectFlag = 0;
+
     private int uuid;
+    private int id;
+    private android.os.Handler handler = new android.os.Handler();
+    private boolean has_collect;
 
 
     @Override
@@ -126,6 +136,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
+
+
         //微博
         WbSdk.install(this, new AuthInfo(this, com.qunxianghui.gxh.third.sina.Constants.APP_KEY, com.qunxianghui.gxh.third.sina.Constants.REDIRECT_URL, com.qunxianghui.gxh.third.sina.Constants.SCOPE));//创建微博API接口类对象
         mWbShareHandler = new WbShareHandler(this);
@@ -147,6 +159,44 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         intent.getStringExtra("url");
         mWebView.loadUrl(url);
 
+        //获取内容状态
+        hodeNewsStatus();
+
+    }
+
+    private void hodeNewsStatus() {
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id", id).execute(new StringCallback() {
+            @Override
+            public void onSuccess(final Response<String> response) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+                            parseNewsContentData(response.body());
+
+                            com.orhanobut.logger.Logger.d("收藏+++"+response.body().toString());
+                        }
+
+                    }
+                }, 200);
+            }
+        });
+
+
+    }
+
+    //解析内容详情
+    private void parseNewsContentData(String body) {
+        try {
+            final JSONObject jsonObject = new JSONObject(body);
+            final JSONObject data = jsonObject.getJSONObject("data");
+            has_collect = data.getBoolean("has_collect");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -155,7 +205,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         uuid = intent.getIntExtra("uuid", 0);
-
+        id = intent.getIntExtra("id", 0);
 
         SettingsP();
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -194,7 +244,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         imageObject.setImageObject(bitmap);
         return imageObject;
     }
-
 
     //底部弹出对话框
     private void showBottomAliert() {
@@ -385,7 +434,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.iv_news_detail_collect:
 
-                        CollectDataList(uuid);
+                CollectDataList(uuid);
 
 
                 break;
@@ -395,7 +444,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     private void CollectDataList(int uuid) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("collect",collectFlag)
                 .params("data_uuid", uuid).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -411,10 +459,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
         if (myCollectBean.getCode() == 0) {
-            collectFlag = (collectFlag == 0 ? 1 : 0);
-            ivNewsDetailCollect.setBackgroundResource(collectFlag == 0 ? R.drawable.collect : R.drawable.collect_normal);
-            Toast.makeText(mContext, collectFlag == 0 ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
 
+            has_collect = (has_collect == true ? false : true);
+            ivNewsDetailCollect.setBackgroundResource(has_collect == true ? R.drawable.collect : R.drawable.collect_normal);
+            Toast.makeText(mContext, has_collect == true ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
 
         }
 
