@@ -24,7 +24,7 @@
     <RadioGroup
         android:id="@+id/rg_main"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="2dp"
         android:background="@color/Gxh_BG"
         android:gravity="center"
@@ -47,7 +47,7 @@
         <RadioButton
             android:id="@+id/rb_fabu"
             style="@style/MainRadioButtonStyle"
-            android:drawableTop="@drawable/selector_tab_journey"
+            android:drawableTop="@drawable/selector_tab_fabu"
             android:text="一键发布" />
 
         <RadioButton
