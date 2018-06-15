@@ -91,15 +91,16 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
 
     private void CancelNewsData() {
 
-        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+        OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", data_uuid)
                 .execute(new StringCallback() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(final Response<String> response) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                                com.orhanobut.logger.Logger.e("取消收藏+"+response.body().toString());
                             }
                         });
                     }

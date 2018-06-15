@@ -135,6 +135,9 @@ public class Constant {
     public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
     //发布帖子
     public static final String MYPOST_TIEZI_URL = BASE_URL + "posts/publish";
+
+    //添加举报信息
+    public static final String  ADD_REPORT_URL=BASE_URL+"report/reportAdd";
     //搜索结果
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
     //获取搜索自动完成数据
@@ -143,6 +146,8 @@ public class Constant {
     public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";
     //获取我发布帖子
     public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
+    //删除我的发布
+    public static final String DELETE_MYISSUE_URL=BASE_URL+"user/delRelease";
     //获取我发布的爆料
     public static final String GET_ISSURE_DISCLOSS_URL = BASE_URL + "user/getMyInfo";
     //获取我发布的视频
