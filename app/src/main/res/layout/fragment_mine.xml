@@ -298,7 +298,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_adver"
                     android:text="植入广告"/>
 
                 <ImageView

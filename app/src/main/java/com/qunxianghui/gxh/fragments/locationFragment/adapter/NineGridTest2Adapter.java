@@ -45,7 +45,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private CircleOnClickListener listener;
     public CommentItemAdapter commentItemAdapter;
     private LocationFragment context;
-
+    private int model_id;
 
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
@@ -68,7 +68,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
+        model_id = dataBeanList.get(position).getId();
 
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
@@ -191,6 +191,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     private void toInformActivity() {
         Intent intent = new Intent(mContext, InFormActivity.class);
+        intent.putExtra("model_id",model_id);
         mContext.startActivity(intent);
     }
 

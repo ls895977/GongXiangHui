@@ -167,7 +167,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mAdapter = null; // 把集合和适配器清空  重新请求数据
+                // 把集合和适配器清空  重新请求数据
                 dataList.clear();
                 count = 0;
                 RequestLocationData();

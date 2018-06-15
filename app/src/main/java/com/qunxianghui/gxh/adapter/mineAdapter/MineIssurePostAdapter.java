@@ -30,18 +30,11 @@ public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePost
         holder.setText(R.id.tv_mine_issue_post_content, listBean.getContent());
         holder.setText(R.id.tv_mine_issue_post_issuetime, listBean.getCtime());
 
-        final LinearLayout issue_digCommentBody = holder.getView(R.id.issue_digCommentBody);
-        final LinearLayout issue_mLayoutLike = holder.getView(R.id.issue_mLayoutLike);
-        final BigListView issue_comment_list = holder.getView(R.id.issue_comment_list);
+
 
 
         //设置九宫哥
         myGridView.setAdapter(new LocationGridAdapter(mContext, images));
-        //设置评论的布局
-        if (listBean.getComment_res().size() != 0) {
-            issue_digCommentBody.setVisibility(View.VISIBLE);
-
-        }
 
         final TextView tv_mypost_discuss = holder.getView(R.id.tv_mine_issue_post_discuss);
         final TextView tv_mypost_good = holder.getView(R.id.tv_mine_issue_post_like);

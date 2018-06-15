@@ -1,9 +1,13 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.qunxianghui.gxh.R;
@@ -40,6 +44,36 @@ public class MineCollectPostAdapter extends BaseRecycleViewAdapter<MineCollectPo
         //九宫格图片
         myGrid.setAdapter(new LocationGridAdapter(mContext,images));
 
+
+
+     TextView tv_collect_cancel = holder.getView(R.id.tv_collect_post_cancel);
+
+        /**
+         * 取消收藏
+         */
+        tv_collect_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                      final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                builder.setTitle("删除提示");
+                                builder.setMessage("您确定要删除该条消息吗?");
+                                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        CancelCollectPostData();
+
+                                    }
+                                });
+                                builder.setNegativeButton("取消", null);
+                                builder.show();
+
+            }
+        });
+
+    }
+
+    private void CancelCollectPostData() {
+        Toast.makeText(mContext, "取消成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override

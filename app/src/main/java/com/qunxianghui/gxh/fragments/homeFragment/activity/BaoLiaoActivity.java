@@ -105,8 +105,10 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                     list.add(String.valueOf(imageUri));
                 }
                 adapter.notifyDataSetChanged();
+
                 String url = String.valueOf(imageUri).replace("file://", "");
                 upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+
             }
             //剪裁图片回调file:///storage/emulated/0/DCIM/Camera/IMG_20180603_184632_HHT.jpg
             //file:///storage/emulated/0/Android/data/com.qunxianghui.gxh/cache/pickImageResult.jpeg
@@ -119,6 +121,10 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                     list.add(String.valueOf(imageUri));
                 }
                 adapter.notifyDataSetChanged();
+
+                String url = String.valueOf(imageUri).replace("file://", "");
+                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+
             }
 
 

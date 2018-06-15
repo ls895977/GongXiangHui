@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -50,6 +52,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     private int member_id;
+    private String follow;
 
     @Override
     protected int getLayoutId() {
@@ -99,9 +102,10 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
 
     //解析用户的详情资料
     private void parseUserDetailInfo(String body) {
-        final UserDetailInforBean userDetailInforBean = GsonUtils.jsonFromJson(body, UserDetailInforBean.class);
+        UserDetailInforBean userDetailInforBean = GsonUtils.jsonFromJson(body, UserDetailInforBean.class);
         if (userDetailInforBean.getCode() == 0) {
             final UserDetailInforBean.DataBean dataList = userDetailInforBean.getData();
+            follow = dataList.getFollow();
 
             tvPersonDetailName.setText(dataList.getNick());
             tvPersonDetailSetep.setText(dataList.getLevel_info().getName());
@@ -114,6 +118,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     protected void initListeners() {
         super.initListeners();
         ivPersonDetailBack.setOnClickListener(this);
+        tvPersonDetailAttention.setOnClickListener(this);
     }
 
     @Override
@@ -129,6 +134,33 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
             case R.id.iv_person_detail_back:
                 finish();
                 break;
+            case R.id.tv_person_detail_attention:
+                acctionPerson();
+
+                break;
         }
+    }
+
+    private void acctionPerson() {
+   OkGo.<String> post(Constant.ATTENTION_URL).params("be_member_id",member_id).execute(new StringCallback() {
+       @Override
+       public void onSuccess(final Response<String> response) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                 if (follow.equals(true)){
+                     asyncShowToast("关注成功");
+                     tvPersonDetailAttention.setText("已关注");
+
+                 }else if (follow.equals("")){
+                     asyncShowToast("取消关注成功");
+                     tvPersonDetailAttention.setText("关注");
+
+                 }
+
+                }
+            });
+       }
+   });
     }
 }
