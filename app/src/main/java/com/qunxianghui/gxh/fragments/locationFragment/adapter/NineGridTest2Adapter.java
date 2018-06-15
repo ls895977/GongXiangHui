@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.TestMode;
+import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
@@ -35,7 +36,7 @@ import java.util.List;
 /**
  * Created by HMY on 2016/8/6
  */
-public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder> {
+public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder>{
     private int collectFlag = 0;
     private Context mContext;
 
@@ -43,7 +44,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private List<TestMode.DataBean.ListBean> dataBeanList;
     private CircleOnClickListener listener;
     public CommentItemAdapter commentItemAdapter;
-
+    private LocationFragment context;
 
 
 
@@ -72,6 +73,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
+        //holder.img.setVisibility(View.INVISIBLE);
 
         final List<String> imageList = dataBeanList.get(position).getImages();
 
@@ -92,14 +94,22 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     .placeholder(R.mipmap.ic_launcher)
                     .error(R.mipmap.ic_launcher)
                     .into(holder.img);
+
         } else {
             holder.gridLayout.setVisibility(View.VISIBLE);
             holder.img.setVisibility(View.GONE);
+            LocationGridAdapter adapter = new LocationGridAdapter(mContext, imageList);
+            holder.gridLayout.setAdapter(adapter);
 
-            holder.gridLayout.setAdapter(new LocationGridAdapter(mContext, imageList));
+            adapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
+                @Override
+                public void onClick(View v, int p) {
+                    //Toast.makeText(mContext,"test : " + position,Toast.LENGTH_LONG).show();
+                    listener.onPicClick(position,p);
+
+                };
+            });
         }
-
-
 
         if (dataBeanList.get(position).getComment_res().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
@@ -166,6 +176,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             @Override
             public void onClick(View v) {
                 //弹出popupwindow
+                //Toast.makeText(mContext, "你好!", Toast.LENGTH_LONG).show();
                 snsPopupWindow.showPopupWindow(v,dataBeanList.get(position));
             }
         });

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
 import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -30,6 +32,8 @@ import java.util.logging.Logger;
 public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBean.DataBean> {
 
     private int data_uuid;
+
+    private android.os.Handler handler = new android.os.Handler();
 
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
@@ -84,6 +88,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
 
     }
 
+
     private void CancelNewsData() {
 
         OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
@@ -91,9 +96,12 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
-
-
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
@@ -105,6 +113,12 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
 
                     }
                 });
+    }
+    public static boolean isInMainThread() {
+        Looper myLooper = Looper.myLooper();
+        Looper mainLooper = Looper.getMainLooper();
+        Log.i("MyCollectPostAdapter", "isInMainThread myLooper=" + myLooper + ";mainLooper=" + mainLooper);
+        return myLooper == mainLooper;
     }
 
     @Override
