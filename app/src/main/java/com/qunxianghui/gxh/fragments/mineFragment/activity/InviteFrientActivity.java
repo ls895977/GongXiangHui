@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.NavUtils;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,7 +15,10 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.MyAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.MyFansAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.JsonBean;
 import com.qunxianghui.gxh.utils.GetJsonDataUtil;
@@ -21,6 +26,7 @@ import com.qunxianghui.gxh.utils.GetJsonDataUtil;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,8 +43,15 @@ public class InviteFrientActivity extends BaseActivity {
     private static final int MSG_LOAD_FAILED = 0x0003;
     @BindView(R.id.bt_invite_parsedata)
     Button btInviteParsedata;
+    @BindView(R.id.xre_xrv)
+    XRecyclerView xreXrv;
     private boolean isLoaded = false;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
+    private int curr;
+    /**
+     * 数据集合
+     */
+    private List<String> list = new ArrayList<>();
 
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -79,6 +92,7 @@ public class InviteFrientActivity extends BaseActivity {
             }
         }
     };
+    private MyAdapter myAdapter;
 
     private void initJsonData() {
         //解析数据
@@ -157,11 +171,58 @@ public class InviteFrientActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        xreXrv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
 
     }
 
     @Override
     protected void initDatas() {
+        xreXrv.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+/**
+ * 当下拉刷新的时候  重新获取数据  所有的curr要变回0  并且把集合list清空
+ *
+ */
+
+                curr = 0;
+                list.clear();
+                getData(curr);
+                xreXrv.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+  //在上拉加载的时候 以为第一次获取10个数据  所也在获取的时候就要在加10的地方开始获取
+                curr=curr+10;
+                getData(curr);
+                xreXrv.refreshComplete();
+            }
+        });
+        /**
+         * 第一次获取数据
+         *
+         */
+        curr = 0;
+        getData(curr);
+
+    }
+
+    private void getData(int number) {
+
+        for (int i = number; i < number+10; i++) {
+            list.add("数据是第" + i + "个");
+        }
+
+        //调用Adapter展示数据，这个判断是为了不重复创建MyAdapter的对象
+        if (myAdapter == null) {
+            myAdapter = new MyAdapter(list, mContext);
+            xreXrv.setAdapter(myAdapter);
+
+        } else {
+            myAdapter.notifyDataSetChanged();
+        }
+
 
     }
 
@@ -216,12 +277,15 @@ public class InviteFrientActivity extends BaseActivity {
         pvOptions.show();
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
+
 }
 
 
