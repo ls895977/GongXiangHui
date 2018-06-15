@@ -266,6 +266,10 @@
         <activity android:name=".fragments.mineFragment.activity.CompanySetProvinceActivity"
             android:launchMode="singleTask"/>
 
+        <activity android:name=".activity.PhotoBrowserActivity"
+            android:launchMode="singleTask"/>
+
+
     </application>
 
 </manifest>

@@ -1,8 +1,13 @@
 package com.qunxianghui.gxh.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -10,6 +15,7 @@ import android.widget.Toast;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
@@ -23,7 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity{
     @BindView(R.id.vp_main)
     NoScrollViewPager vpMain;
     @BindView(R.id.rb_home)
@@ -40,8 +46,9 @@ public class MainActivity extends BaseActivity {
     RadioButton rbGeneralize;
     private long exitTime;
 
-
-
+    private IntentFilter intentFilter;
+    private MainBroadCast receiver;
+    static final String INTENT_BROADCAST_HIDE_TAB = "android.intent.action.HIDE_TAB";
 
     @Override
     protected int getLayoutId() {
@@ -50,6 +57,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        //initDatas();
         initViewPagers();
     }
 
@@ -97,7 +105,27 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-}
+
+        receiver = new MainBroadCast(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Toast.makeText(this,"Broad",Toast.LENGTH_LONG).show();
+                //super.onReceive(context, intent);
+                if(intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)){
+                    boolean hide = intent.getBooleanExtra("hide",false);
+                    if(hide == true){
+                        rgMain.setVisibility(View.GONE);
+                    }else {
+                        rgMain.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        };
+
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(INTENT_BROADCAST_HIDE_TAB);
+        registerReceiver(receiver, filter);
+    }
 
     /**
      * 二次点击返回
@@ -122,4 +150,11 @@ public class MainActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+
+//    @Override
+//    public void onReceive(Context context, Intent intent) {
+//
+//    }
 }

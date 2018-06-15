@@ -79,7 +79,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
 
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
-
                 .centerCrop()
                 .placeholder(R.mipmap.icon_headimage)
                 .error(R.mipmap.icon_headimage)
@@ -94,6 +93,12 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     .placeholder(R.mipmap.ic_launcher)
                     .error(R.mipmap.ic_launcher)
                     .into(holder.img);
+            holder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPicClick(position,0);
+                }
+            });
 
         } else {
             holder.gridLayout.setVisibility(View.VISIBLE);

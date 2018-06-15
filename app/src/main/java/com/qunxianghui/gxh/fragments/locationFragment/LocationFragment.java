@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,12 +23,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.LzyResponse;
@@ -40,6 +43,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 
@@ -57,6 +61,9 @@ import butterknife.Unbinder;
 public class LocationFragment extends BaseFragment implements View.OnClickListener ,NineGridTest2Adapter.CircleOnClickListener {
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
+
+    @BindView(R.id.photo_view)
+    PhotoView photoView;
 
     XRecyclerView recyclerView;
     Unbinder unbinder;
@@ -149,8 +156,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 }
             }*/
         }
-
-
     }
 
     /**
@@ -354,7 +359,41 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onPicClick(int position, int picpostion) {
-        Toast.makeText(getActivity(),"test :" + position + "test1 : " + picpostion ,Toast.LENGTH_LONG).show();
+
+        List<String> imageList = dataList.get(position).getImages();
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for(String data : imageList)    {
+            arrayList.add(data);
+        }
+
+        Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
+        intent.putStringArrayListExtra("url",arrayList);
+        intent.putExtra("position",picpostion);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
+        /*
+        Intent broadcast = new Intent("android.intent.action.HIDE_TAB");
+        broadcast.putExtra("hide",true);
+        getActivity().sendBroadcast(broadcast);
+        List<String> imageList = dataList.get(position).getImages();
+        String url = imageList.get(picpostion);
+        GlideApp.with(getContext()).load(url)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(photoView);
+        photoView.setVisibility(View.VISIBLE);
+        //LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
+
+        photoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.INVISIBLE);
+                Intent broadcast = new Intent("android.intent.action.HIDE_TAB");
+                broadcast.putExtra("hide",false);
+                getActivity().sendBroadcast(broadcast);
+            }
+        });*/
     }
 
     @Override
