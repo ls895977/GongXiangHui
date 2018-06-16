@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -30,7 +31,7 @@ public class MineFancesFragment extends BaseFragment {
 
 
     @BindView(R.id.recycler_mine_fances)
-    RecyclerView recyclerMineFances;
+    XRecyclerView recyclerMineFances;
     Unbinder unbinder;
 
     @Override
@@ -94,6 +95,22 @@ public class MineFancesFragment extends BaseFragment {
     @Override
     protected void onLoadData() {
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        recyclerMineFances.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                recyclerMineFances.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                recyclerMineFances.refreshComplete();
+            }
+        });
     }
 
     @Override

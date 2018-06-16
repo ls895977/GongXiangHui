@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -30,7 +31,7 @@ import butterknife.Unbinder;
 
 public class MyIssurePostFragment extends BaseFragment {
     @BindView(R.id.recycler_mineissue_post)
-    RecyclerView recyclerMineissuePost;
+    XRecyclerView recyclerMineissuePost;
     Unbinder unbinder;
     private List<MineIssurePostBean.DataBean.ListBean> dataList;
 
@@ -83,6 +84,22 @@ public class MyIssurePostFragment extends BaseFragment {
     public void initViews(View view) {
         recyclerMineissuePost.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        recyclerMineissuePost.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                recyclerMineissuePost.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                recyclerMineissuePost.refreshComplete();
+            }
+        });
     }
 
     @Override

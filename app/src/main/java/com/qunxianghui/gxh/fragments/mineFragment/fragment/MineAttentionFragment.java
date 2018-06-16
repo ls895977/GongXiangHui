@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -29,7 +30,7 @@ import butterknife.Unbinder;
 
 public class MineAttentionFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_attention)
-    RecyclerView recyclerMineAttention;
+    XRecyclerView recyclerMineAttention;
     Unbinder unbinder;
     private List<MyFocusBean.DataBean> dataList;
 
@@ -102,6 +103,24 @@ public class MineAttentionFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
+
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        recyclerMineAttention.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                recyclerMineAttention.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                recyclerMineAttention.refreshComplete();
+
+            }
+        });
 
     }
 
