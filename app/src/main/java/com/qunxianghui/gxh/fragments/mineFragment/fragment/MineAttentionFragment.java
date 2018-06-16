@@ -61,49 +61,33 @@ public class MineAttentionFragment extends BaseFragment {
     private void parseFocusData(String body) {
 
         final MyFocusBean myFocusBean = GsonUtils.jsonFromJson(body, MyFocusBean.class);
+
+        dataList = myFocusBean.getData();
         if (myFocusBean.getCode() == 0) {
-            dataList = myFocusBean.getData();
-
-
-
 
 
             final MyFocusAdapter myFocusAdapter = new MyFocusAdapter(mActivity, dataList);
-            recyclerMineAttention.setAdapter(myFocusAdapter);
+
 
             myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
 
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        asyncShowToast("点击了" + position);
-                        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
-                        intent.putExtra("member_id", dataList.get(position).getBe_member_id());
-                        startActivity(intent);
+                @Override
+                public void onItemClick(View v, int position) {
+                    asyncShowToast("点击了" + position);
+                    Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+                    intent.putExtra("member_id", dataList.get(position-1).getBe_member_id());
+                    startActivity(intent);
 
-
-                    }
+                }
             });
 
-
+            recyclerMineAttention.setAdapter(myFocusAdapter);
         }
     }
 
     @Override
     public void initViews(View view) {
         recyclerMineAttention.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-
     }
 
     @Override
@@ -120,6 +104,18 @@ public class MineAttentionFragment extends BaseFragment {
                 recyclerMineAttention.refreshComplete();
             }
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    protected void onLoadData() {
 
     }
 

@@ -164,7 +164,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_person"
                     android:text="个人资料"/>
 
                 <ImageView
@@ -181,7 +181,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_message_gather"
                     android:text="信息汇总"/>
 
                 <ImageView
@@ -197,7 +197,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_message"
                     android:text="我的消息"/>
 
                 <ImageView
@@ -213,7 +213,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_collect"
                     android:text="我的收藏"/>
 
                 <ImageView
@@ -229,7 +229,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_mine_issue"
                     android:text="我的发布"/>
 
                 <ImageView
@@ -250,7 +250,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_memberup"
                     android:text="会员升级"/>
 
                 <ImageView
@@ -266,7 +266,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_company_set"
                     android:text="企业设置"/>
 
                 <ImageView
@@ -282,7 +282,7 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
+                    android:drawableLeft="@mipmap/mine_add_call"
                     android:text="合作热线  400-188-4660"/>
 
                 <ImageView

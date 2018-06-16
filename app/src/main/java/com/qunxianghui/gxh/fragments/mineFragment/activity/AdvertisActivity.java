@@ -102,12 +102,12 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         six = tabLayout.getTabAt(5);
 
         //设置tab的图标
-        one.setIcon(R.mipmap.ic_launcher);
-        two.setIcon(R.mipmap.ic_launcher);
-        three.setIcon(R.mipmap.ic_launcher);
-        four.setIcon(R.mipmap.ic_launcher);
-        five.setIcon(R.mipmap.ic_launcher);
-        six.setIcon(R.mipmap.ic_launcher);
+        one.setIcon(R.mipmap.adv_select_big_img);
+        two.setIcon(R.mipmap.adv_select_card);
+        three.setIcon(R.mipmap.adv_select_san);
+        four.setIcon(R.mipmap.adv_select_san);
+        five.setIcon(R.mipmap.adv_select_qq);
+        six.setIcon(R.mipmap.adv_select_video);
 
     }
 

@@ -64,17 +64,17 @@ public class MineFancesFragment extends BaseFragment {
             final List<MineFansBean.DataBean> dataList = mineFansBean.getData();
 
             final MyFansAdapter myFansAdapter = new MyFansAdapter(mActivity, dataList);
-            recyclerMineFances.setAdapter(myFansAdapter);
+
 
             myFansAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
                     Intent intent=new Intent(mActivity,PersonDetailActivity.class);
-                    intent.putExtra("member_id",dataList.get(position).getMember_id());
+                    intent.putExtra("member_id",dataList.get(position-1).getMember_id());
                     startActivity(intent);
                 }
             });
-
+            recyclerMineFances.setAdapter(myFansAdapter);
         }
     }
 
@@ -99,7 +99,7 @@ public class MineFancesFragment extends BaseFragment {
 
     @Override
     protected void initListeners() {
-        super.initListeners();
+
         recyclerMineFances.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
