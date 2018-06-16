@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,15 +23,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
@@ -40,7 +45,11 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.UserUtil;
 
 
 import java.util.ArrayList;
@@ -57,6 +66,9 @@ import butterknife.Unbinder;
 public class LocationFragment extends BaseFragment implements View.OnClickListener ,NineGridTest2Adapter.CircleOnClickListener {
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
+
+    @BindView(R.id.photo_view)
+    PhotoView photoView;
 
     XRecyclerView recyclerView;
     Unbinder unbinder;
@@ -149,8 +161,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 }
             }*/
         }
-
-
     }
 
     /**
@@ -354,12 +364,76 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onPicClick(int position, int picpostion) {
-        Toast.makeText(getActivity(),"test :" + position + "test1 : " + picpostion ,Toast.LENGTH_LONG).show();
+
+        List<String> imageList = dataList.get(position).getImages();
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for(String data : imageList)    {
+            arrayList.add(data);
+        }
+
+        Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
+        intent.putStringArrayListExtra("url",arrayList);
+        intent.putExtra("position",picpostion);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
+        /*
+        Intent broadcast = new Intent("android.intent.action.HIDE_TAB");
+        broadcast.putExtra("hide",true);
+        getActivity().sendBroadcast(broadcast);
+        List<String> imageList = dataList.get(position).getImages();
+        String url = imageList.get(picpostion);
+        GlideApp.with(getContext()).load(url)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(photoView);
+        photoView.setVisibility(View.VISIBLE);
+        //LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
+
+        photoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.INVISIBLE);
+                Intent broadcast = new Intent("android.intent.action.HIDE_TAB");
+                broadcast.putExtra("hide",false);
+                getActivity().sendBroadcast(broadcast);
+            }
+        });*/
     }
 
     @Override
     public void onCommentClick(final int position, String content) {
+
+
+
         final int uuid=dataList.get(position).getUuid();
+        if (dataList.get(position).getComment_res().size()<=0) {
+            dataList.get(position).setComment_res(new ArrayList<CommentBean>());
+            //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
+
+        }
+
+        List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
+        CommentBean comment = new CommentBean();
+        UserUtil user = UserUtil.getInstance();
+        comment.setContent(content);
+        comment.setUuid(user.id);
+        comment.setMember_name(user.mNick);
+        commentBeanList.add(comment);
+
+
+        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemChanged(position);
+        /*
+        synchronized (Thread.currentThread()) {
+            
+            try {
+                mAdapter.notifyItemChanged(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        */
         OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", uuid)
                 .params("content", content)
@@ -367,10 +441,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     @Override
                     public void onSuccess(Response<LzyResponse<CommentBean>> response) {
                         if (response.body().code.equals("0")){
-                            requestCommentList(uuid);
+                            //requestCommentList(uuid);
+                            Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
+                            Log.v("chenyu :",response.toString());
                         }
                     }
                 });
+
 
     }
 
