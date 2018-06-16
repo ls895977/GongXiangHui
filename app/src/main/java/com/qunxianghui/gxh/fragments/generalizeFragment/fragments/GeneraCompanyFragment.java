@@ -47,8 +47,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     RadioGroup rgGeneraCompanyPaihang;
     @BindView(R.id.vp_generalize_company_main)
     ViewPager vpGeneralizeCompanyMain;
-    @BindView(R.id.iv_genera_company_back)
-    ImageView ivGeneraCompanyBack;
+
     @BindView(R.id.app_bar)
     AppBarLayout appBar;
     Unbinder unbinder;
@@ -175,7 +174,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     @Override
     protected void initListeners() {
         super.initListeners();
-        ivGeneraCompanyBack.setOnClickListener(this);
+
     }
 
     @Override
@@ -195,9 +194,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_genera_company_back:
-                asyncShowToast("处理后退一步");
-                break;
+
         }
     }
 }

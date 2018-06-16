@@ -118,7 +118,6 @@ public class MineAttentionFragment extends BaseFragment {
             @Override
             public void onLoadMore() {
                 recyclerMineAttention.refreshComplete();
-
             }
         });
 

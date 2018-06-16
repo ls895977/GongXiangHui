@@ -26,8 +26,7 @@ import butterknife.Unbinder;
  */
 
 public class GeneraPushFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.iv_generalize_push_back)
-    ImageView ivGeneralizePushBack;
+
     private List<String> datas = new ArrayList<>();
     @BindView(R.id.xrecycler_generapush)
     XRecyclerView xrecyclerGenerapush;
@@ -90,7 +89,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     @Override
     protected void initListeners() {
         super.initListeners();
-        ivGeneralizePushBack.setOnClickListener(this);
+
     }
 
     @Override
@@ -101,10 +100,8 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.iv_generalize_push_back:
-              asyncShowToast("处理后退一步");
-                break;
+        switch (v.getId()) {
+
         }
     }
 }
