@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
+import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -125,6 +126,8 @@ public class MainActivity extends BaseActivity{
         IntentFilter filter=new IntentFilter();
         filter.addAction(INTENT_BROADCAST_HIDE_TAB);
         registerReceiver(receiver, filter);
+
+        UserUtil.getInstance();
     }
 
     /**

@@ -33,7 +33,9 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
@@ -43,8 +45,11 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.UserUtil;
 
 
 import java.util.ArrayList;
@@ -398,7 +403,37 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onCommentClick(final int position, String content) {
+
+
+
         final int uuid=dataList.get(position).getUuid();
+        if (dataList.get(position).getComment_res().size()<=0) {
+            dataList.get(position).setComment_res(new ArrayList<CommentBean>());
+            //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
+
+        }
+
+        List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
+        CommentBean comment = new CommentBean();
+        UserUtil user = UserUtil.getInstance();
+        comment.setContent(content);
+        comment.setUuid(user.id);
+        comment.setMember_name(user.mNick);
+        commentBeanList.add(comment);
+
+
+        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemChanged(position);
+        /*
+        synchronized (Thread.currentThread()) {
+            
+            try {
+                mAdapter.notifyItemChanged(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        */
         OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", uuid)
                 .params("content", content)
@@ -406,10 +441,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     @Override
                     public void onSuccess(Response<LzyResponse<CommentBean>> response) {
                         if (response.body().code.equals("0")){
-                            requestCommentList(uuid);
+                            //requestCommentList(uuid);
+                            Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
+                            Log.v("chenyu :",response.toString());
                         }
                     }
                 });
+
 
     }
 
