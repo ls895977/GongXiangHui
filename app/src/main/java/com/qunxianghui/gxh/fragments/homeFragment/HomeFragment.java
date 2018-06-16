@@ -1,12 +1,15 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +21,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -52,13 +62,14 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 
 
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener,AMapLocationListener {
     @BindView(R.id.ib_home_camera)
     TextView ibHomeCamera;
     @BindView(R.id.ib_home_search)
@@ -88,7 +99,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private int REQUEST_CODE_SCAN = 111;
     // tab集合：HorizontalScrollView的数据源
     private ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
-
+    private AMapLocationClient mlocationClient;
+    public AMapLocationClientOption mLocationOption = null;
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     Unbinder unbinder;
@@ -109,13 +121,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             public void onSuccess(Response<String> response) {
                 String json = response.body().toString();
                 if (HttpStatusUtil.getStatus(json)) {
-                 getListData(json);
+                    getListData(json);
                 } else {
                     ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
                 }
             }
         });
-
 
 
         // + 号监听
@@ -127,7 +138,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 Logger.d("onClick-->:" + userChannelList.toString());
                 Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ChannelActivity.USER_CHANNEL,(userChannelList));
+                bundle.putSerializable(ChannelActivity.USER_CHANNEL, (userChannelList));
                 intent_channel.putExtras(bundle);
                 startActivityForResult(intent_channel, CHANNELREQUEST);
             }
@@ -136,7 +147,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     }
 
-    /** ==================频道列表（用户订阅的频道）===================== */
+    /**
+     * ==================频道列表（用户订阅的频道）=====================
+     */
     private ChannelGetallBean getListData(String body) {
 //        Logger.d("getAllData-->: " + body);
         final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
@@ -145,7 +158,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem(dataBean.getChannel_id(), dataBean.getChannel_name(),i , 1);
+                ChannelItem item = new ChannelItem(dataBean.getChannel_id(), dataBean.getChannel_name(), i, 1);
                 userChannelList.add(item);
             }
         }
@@ -305,7 +318,41 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     protected void onLoadData() {
+/**
+ * 定位城市
+ */
 
+LoadLocation();
+    }
+
+    private void LoadLocation() {
+
+        PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
+            @Override
+            public void permissionGranted(@NonNull String[] permission) {
+                //定位
+                mlocationClient = new AMapLocationClient(mActivity);
+                //初始化定位参数
+                mLocationOption = new AMapLocationClientOption();
+                //设置返回地址信息，默认为true
+                mLocationOption.setNeedAddress(true);
+              //设置定位监听
+//                  mlocationClient.setLocationListener((AMapLocationListener) getActivity());
+                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+                //设置定位间隔,单位毫秒,默认为2000ms
+                mLocationOption.setInterval(2000);
+                //设置定位参数
+                mlocationClient.setLocationOption(mLocationOption);
+                mlocationClient.startLocation();
+            }
+
+            @Override
+            public void permissionDenied(@NonNull String[] permission) {
+                Toast.makeText(mActivity, "你拒绝了定位权限，赶紧去设置中心去设置吧", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
     }
 
     @Override
@@ -344,7 +391,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case R.id.tv_home_location:
 
-                toActivity(LocationActivity.class);
+//                toActivity(LocationActivity.class);
 
                 Intent intent = new Intent(mActivity, NewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
@@ -380,5 +427,29 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 super.onActivityResult(requestCode, resultCode, data);
 
         }
+    }
+
+    @Override
+    public void onLocationChanged(final AMapLocation aMapLocation) {
+
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        tvHomeLocation.setText(aMapLocation.getDistrict());
+
+                    }
+                });
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "locations Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
+        }
+        mlocationClient.stopLocation();
+
     }
 }

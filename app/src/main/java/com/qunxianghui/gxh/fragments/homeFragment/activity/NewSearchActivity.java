@@ -147,7 +147,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
 
                 @Override
                 public void permissionDenied(@NonNull String[] permission) {
-                    Toast.makeText(mContext, "你拒绝了定位权限，感觉去设置中心去设置吧", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "你拒绝了定位权限，赶紧去设置中心去设置吧", Toast.LENGTH_SHORT).show();
 
                 }
             }, new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
@@ -739,7 +739,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
                 intent.putExtra("cityinfo",curCity);
                 setResult(RESULT_OK,intent);
 
-
+                     finish();
 
             }
         });
@@ -752,6 +752,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
         });
 
         builder.create().show();
+
     }
 
     /**

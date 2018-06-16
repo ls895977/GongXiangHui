@@ -16,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bm.library.PhotoView;
+import com.google.gson.JsonObject;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -31,11 +33,16 @@ import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.DisplayUtil;
 import com.qunxianghui.gxh.utils.GlideApp;
+import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.Utils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -217,26 +224,60 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     private void commit() {
         String imagUrl = Utils.listToString(upLoadPics);
         String trim = etFragmentBigpicLink.getText().toString().trim();
-        if (TextUtils.isEmpty(trim)) {
-            ToastUtils.showShortToast(mActivity, "链接不能为空");
-            return;
-        }
-        OkGo.<LzyResponse<String>>post(Constant.ADD_AD)
+//        if (TextUtils.isEmpty(trim)) {
+//            ToastUtils.showShortToast(mActivity, "链接不能为空");
+//            return;
+//        }
+//        OkGo.<LzyResponse<String>>post(Constant.ADD_AD)
+//                .params("ad_type", 1)
+//                .params("images", imagUrl)
+//                .params("link", trim)
+//                .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
+//                    @Override
+//                    public void onSuccess(Response<LzyResponse<String>> response) {
+//                        if (response.body().code.equals("0")) {
+//
+//                            com.orhanobut.logger.Logger.d("错误信息+"+response.body().toString());
+//
+//
+//                            Intent intent = new Intent();
+//                            intent.putExtra("index", 0);
+//                            mActivity.setResult(Activity.RESULT_OK, intent);
+//                            mActivity.finish();
+//                        }
+//                    }
+//                });
+        OkGo.<String>post(Constant.ADD_AD)
                 .params("ad_type", 1)
                 .params("images", imagUrl)
-                .params("link", trim)
-                .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
-                    @Override
-                    public void onSuccess(Response<LzyResponse<String>> response) {
-                        if (response.body().code.equals("0")) {
-                            Intent intent = new Intent();
-                            intent.putExtra("index", 0);
-                            mActivity.setResult(Activity.RESULT_OK, intent);
-                            mActivity.finish();
-                        }
-                    }
-                });
+                .params("link", trim).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+
+                    parseFragment1AdvData(response.body());
+            }
+        });
+
     }
+
+    private void parseFragment1AdvData(String body) {
+        try {
+            JSONObject jsonObject = new JSONObject(body);
+            final int code = jsonObject.getInt("code");
+            if (code==0) {
+                com.orhanobut.logger.Logger.d("错误信息+"+body.toString());
+                Intent intent = new Intent();
+                intent.putExtra("index", 0);
+                mActivity.setResult(Activity.RESULT_OK, intent);
+                mActivity.finish();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
