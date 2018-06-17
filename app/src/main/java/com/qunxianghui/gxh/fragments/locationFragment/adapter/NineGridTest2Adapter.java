@@ -155,27 +155,37 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 if (listener != null) {
                     listener.onCommentClick(position, content);
                 }
-                holder.ll_location_discuss_commit.setVisibility(View.GONE);
+                //holder.ll_location_discuss_commit.setVisibility(View.GONE);
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
+        snsPopupWindow.setClick_like((String)dataBeanList.get(position).getClick_like().toString());
+        snsPopupWindow.setClick_like(dataBeanList.get(position).getCollect());
+        snsPopupWindow.initItemData();
+
         snsPopupWindow.setmItemClickListener(new SnsPopupWindow.OnItemClickListener() {
             @Override
-            public void onItemClick(ActionItem item, int position) {
-                switch (position) {
+            public void onItemClick(ActionItem item, int p) {
+                switch (p) {
                     case 0://点赞
-                        Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
+                        listener.onLaunClick(position);
                         break;
                     case 1:
-                        Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
+                        listener.onCollectionClick(position);
                         break;
 
                     case 2://评论
-                        holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
+                        if (listener != null) {
+                            listener.onCommentClick(position, "");
+                        }
+                        //holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
                         break;
                 }
             }
         });
+
         //弹窗
         holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +267,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
         /* 点赞 */
         void onLaunClick(int position);
+
+        void onCollectionClick(int position);
 
 
     }
