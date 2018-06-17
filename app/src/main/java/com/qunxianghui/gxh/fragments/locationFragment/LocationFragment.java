@@ -165,6 +165,37 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 //                mRootView.setLayoutParams(layout);
             }
         });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch(newState)
+                {
+                    case 0:
+                        System.out.println("recyclerview已经停止滚动");
+                        break;
+                    case 1:
+                        System.out.println("recyclerview正在被拖拽");
+                        System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
+                        
+                        if(getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+                                || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE){
+                            new Handler().postDelayed(new Runnable() {@Override
+                            public void run() {
+
+                                hideSoftKeyboard(comment_edit,getActivity());
+                            }
+                            }, 10);
+                        }
+                        break;
+                    case 2:
+                        System.out.println("recyclerview正在依靠惯性滚动");
+                        break;
+                }
+            }
+        });
+
 //        mRootView = view.findViewById(R.id.loactionn_fragment_relative_layout);
 //
 //        DisplayMetrics metrics = new DisplayMetrics();
