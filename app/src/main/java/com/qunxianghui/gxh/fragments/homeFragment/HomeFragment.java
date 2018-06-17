@@ -70,6 +70,7 @@ import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
  */
 
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener,AMapLocationListener {
+    private static HomeFragment homeFragment;
     @BindView(R.id.ib_home_camera)
     TextView ibHomeCamera;
     @BindView(R.id.ib_home_search)
@@ -318,41 +319,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     protected void onLoadData() {
-/**
- * 定位城市
- */
 
-LoadLocation();
-    }
-
-    private void LoadLocation() {
-
-        PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
-            @Override
-            public void permissionGranted(@NonNull String[] permission) {
-                //定位
-                mlocationClient = new AMapLocationClient(mActivity);
-                //初始化定位参数
-                mLocationOption = new AMapLocationClientOption();
-                //设置返回地址信息，默认为true
-                mLocationOption.setNeedAddress(true);
-              //设置定位监听
-//                  mlocationClient.setLocationListener((AMapLocationListener) getActivity());
-                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-                //设置定位间隔,单位毫秒,默认为2000ms
-                mLocationOption.setInterval(2000);
-                //设置定位参数
-                mlocationClient.setLocationOption(mLocationOption);
-                mlocationClient.startLocation();
-            }
-
-            @Override
-            public void permissionDenied(@NonNull String[] permission) {
-                Toast.makeText(mActivity, "你拒绝了定位权限，赶紧去设置中心去设置吧", Toast.LENGTH_SHORT).show();
-
-            }
-        }, new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
     }
 
     @Override
@@ -451,5 +418,12 @@ LoadLocation();
         }
         mlocationClient.stopLocation();
 
+    }
+
+    public static HomeFragment getInstance() {
+        if(homeFragment == null){
+            homeFragment = new HomeFragment();
+        }
+        return homeFragment;
     }
 }

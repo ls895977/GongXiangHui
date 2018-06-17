@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
+import com.qunxianghui.gxh.utils.CityPickerutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -79,7 +80,8 @@ public class MyApplication extends Application {
          * 预先加载三级列表显示省市区的数据
          */
         CityListLoader.getInstance().loadProData(this);
-
+        //重复 ？
+        CityPickerutil.initDatas(this);
 
         /**
          * 创建日志

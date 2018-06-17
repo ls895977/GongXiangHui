@@ -39,6 +39,8 @@ import butterknife.Unbinder;
  */
 
 public class GeneralizeFragment extends BaseFragment implements View.OnClickListener {
+    private static GeneralizeFragment generalizeFragment;
+
     @BindView(R.id.rg_generalize_main)
     RadioGroup rgGeneralizeMain;
     @BindView(R.id.vp_generalize_main)
@@ -179,5 +181,12 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public static GeneralizeFragment getInstance() {
+        if(generalizeFragment == null){
+            generalizeFragment = new GeneralizeFragment();
+        }
+        return generalizeFragment;
     }
 }

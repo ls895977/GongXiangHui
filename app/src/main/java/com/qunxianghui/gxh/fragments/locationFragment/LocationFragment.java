@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,6 +65,7 @@ import butterknife.Unbinder;
  */
 
 public class LocationFragment extends BaseFragment implements View.OnClickListener ,NineGridTest2Adapter.CircleOnClickListener {
+    private static LocationFragment locationFragment;
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
 
@@ -465,6 +467,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onLaunClick(int position) {
 
+    }
+
+    public static LocationFragment getInstance() {
+        if(locationFragment == null){
+            locationFragment = new LocationFragment();
+        }
+        return locationFragment;
     }
 }
 
