@@ -31,6 +31,8 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
     private TextView digBtn;
     private TextView commentBtn;
     private TextView colletBtn;
+    private String collect;
+    private String click_like;
 
     // 实例化一个矩形
     private Rect mRect = new Rect();
@@ -45,6 +47,14 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         this.mItemClickListener = mItemClickListener;
     }
 
+    public void setCollect(String collect) {
+        this.collect = collect;
+    }
+
+    public void setClick_like(String click_like) {
+        this.click_like = click_like;
+    }
+
     public ArrayList<ActionItem> getmActionItems() {
         return mActionItems;
     }
@@ -53,8 +63,9 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         this.mActionItems = mActionItems;
     }
 
-
-    public SnsPopupWindow(Context context) {
+    public SnsPopupWindow(Context context, String collect, String like) {
+        this.collect = collect;
+        this.click_like = like;
         View view = LayoutInflater.from(context).inflate(R.layout.social_sns_popupwindow, null);
         digBtn = (TextView) view.findViewById(R.id.digBtn);
         commentBtn = (TextView) view.findViewById(R.id.commentBtn);
@@ -78,10 +89,44 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         initItemData();
     }
 
-    private void initItemData() {
-        addAction(new ActionItem("点赞"));
-        addAction(new ActionItem("收藏"));
+    public SnsPopupWindow(Context context) {
+        View view = LayoutInflater.from(context).inflate(R.layout.social_sns_popupwindow, null);
+        digBtn = (TextView) view.findViewById(R.id.digBtn);
+        commentBtn = (TextView) view.findViewById(R.id.commentBtn);
+        colletBtn = (TextView) view.findViewById(R.id.colletBtn);
+        digBtn.setOnClickListener(this);
+        commentBtn.setOnClickListener(this);
+        colletBtn.setOnClickListener(this);
+
+        this.setContentView(view);
+        this.setWidth(DensityUtil.dip2px(context, 200));
+        this.setHeight(DensityUtil.dip2px(context, 30));
+        this.setFocusable(true);
+        this.setOutsideTouchable(true);
+        this.update();
+        // 实例化一个ColorDrawable颜色为半透明
+        ColorDrawable dw = new ColorDrawable(0000000000);
+        // 点back键和其他地方使其消失,设置了这个才能触发OnDismisslistener ，设置其他控件变化等操作
+        this.setBackgroundDrawable(dw);
+        this.setAnimationStyle(R.style.social_pop_anim);
+
+        //initItemData();
+    }
+
+    public void initItemData() {
+
+        if ( click_like == null || click_like.length()==0){
+            addAction(new ActionItem("点赞"));
+        }else {
+            addAction(new ActionItem("取消赞"));
+        }
+        if (collect == null || collect.length()==0){
+            addAction(new ActionItem("收藏"));
+        }else {
+            addAction(new ActionItem("取消收藏"));
+        }
         addAction(new ActionItem("评论"));
+        //addAction(new ActionItem("取消收藏"));
     }
 
 

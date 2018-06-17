@@ -1,8 +1,10 @@
 package com.qunxianghui.gxh.fragments.locationFragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,16 +13,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +46,7 @@ import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
+import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Code;
@@ -47,10 +56,13 @@ import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GlideApp;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
+import com.qunxianghui.gxh.widget.Bind;
 
 
 import java.util.ArrayList;
@@ -69,8 +81,15 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
 
-    @BindView(R.id.photo_view)
-    PhotoView photoView;
+//    @BindView(R.id.photo_view)
+//    PhotoView photoView;
+
+    //@Bind(R.id.location_send_comment_view)
+    LinearLayout commentView;
+    //@Bind(R.id.loaction_comment_edit)
+    EditText comment_edit;
+    //@Bind(R.id.location_comment_to_send)
+    TextView send_btn;
 
     XRecyclerView recyclerView;
     Unbinder unbinder;
@@ -98,7 +117,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private int count = 0;
     private int page = 1;
     private List<TestMode.DataBean.ListBean> dataList=new ArrayList<TestMode.DataBean.ListBean>();
-
+    private int currentPosition;
+    private RelativeLayout mRootView;
 
     @Override
     public int getLayoutId() {
@@ -120,9 +140,82 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
      */
     @Override
     public void initViews(View view) {
+        commentView = view.findViewById(R.id.location_send_comment_view);
+        comment_edit = view.findViewById(R.id.loaction_comment_edit);
+        send_btn = view.findViewById(R.id.location_comment_to_send);
         recyclerView = view.findViewById(R.id.recyclerView_location);
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
+        mRootView = view.findViewById(R.id.loactionn_fragment_relative_layout);
+        SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+
+
+//                Toast.makeText(getActivity(), "键盘显示 高度" + height, Toast.LENGTH_SHORT).show();
+//                ViewGroup.LayoutParams layout = mRootView.getLayoutParams();
+//                layout.height = layout.height - height;
+//                mRootView.setLayoutParams(layout);
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                commentView.setVisibility(View.INVISIBLE);
+//                Toast.makeText(getActivity(), "键盘隐藏 高度" + height, Toast.LENGTH_SHORT).show();
+//                ViewGroup.LayoutParams layout = mRootView.getLayoutParams();
+//                layout.height = layout.height + height;
+//                mRootView.setLayoutParams(layout);
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch(newState)
+                {
+                    case 0:
+                        System.out.println("recyclerview已经停止滚动");
+                        break;
+                    case 1:
+                        System.out.println("recyclerview正在被拖拽");
+                        System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
+                        
+                        if(getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+                                || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE){
+                            new Handler().postDelayed(new Runnable() {@Override
+                            public void run() {
+
+                                hideSoftKeyboard(comment_edit,getActivity());
+                            }
+                            }, 10);
+                        }
+                        break;
+                    case 2:
+                        System.out.println("recyclerview正在依靠惯性滚动");
+                        break;
+                }
+            }
+        });
+
+//        mRootView = view.findViewById(R.id.loactionn_fragment_relative_layout);
+//
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        final int screenHeight = metrics.heightPixels;
+//
+//        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+//                new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @Override
+//                    public void onGlobalLayout() { //当界面大小变化时，系统就会调用该方法
+//                        Rect r = new Rect(); //该对象代表一个矩形（rectangle）
+//                        mRootView.getWindowVisibleDisplayFrame(r); //将当前界面的尺寸传给Rect矩形
+//                        int deltaHeight = screenHeight - r.bottom;  //弹起键盘时的变化高度，在该场景下其实就是键盘高度。
+//
+//                    }
+//                });
+
+
 
     }
 
@@ -406,51 +499,62 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onCommentClick(final int position, String content) {
 
+        commentView.setVisibility(View.VISIBLE);
+        comment_edit.setFocusable(true);
+        comment_edit.setFocusableInTouchMode(true);
+        comment_edit.requestFocus();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(comment_edit.getText().toString().length()<=0){
+                    Toast.makeText(getActivity(),"请输入评论内容",Toast.LENGTH_LONG).show();
+                    return;
 
-        final int uuid=dataList.get(position).getUuid();
-        if (dataList.get(position).getComment_res().size()<=0) {
-            dataList.get(position).setComment_res(new ArrayList<CommentBean>());
-            //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
+                }else {
+                    final int uuid=dataList.get(position).getUuid();
+                    if (dataList.get(position).getComment_res().size()<=0) {
+                        dataList.get(position).setComment_res(new ArrayList<CommentBean>());
+                        //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
 
-        }
-
-        List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
-        CommentBean comment = new CommentBean();
-        UserUtil user = UserUtil.getInstance();
-        comment.setContent(content);
-        comment.setUuid(user.id);
-        comment.setMember_name(user.mNick);
-        commentBeanList.add(comment);
-
-
-        mAdapter.notifyDataSetChanged();
-        mAdapter.notifyItemChanged(position);
-        /*
-        synchronized (Thread.currentThread()) {
-            
-            try {
-                mAdapter.notifyItemChanged(position);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        */
-        OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
-                .params("uuid", uuid)
-                .params("content", content)
-                .execute(new DialogCallback<LzyResponse<CommentBean>>(getActivity()) {
-                    @Override
-                    public void onSuccess(Response<LzyResponse<CommentBean>> response) {
-                        if (response.body().code.equals("0")){
-                            //requestCommentList(uuid);
-                            Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
-                            Log.v("chenyu :",response.toString());
-                        }
                     }
-                });
+                    List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
+                    CommentBean comment = new CommentBean();
+                    UserUtil user = UserUtil.getInstance();
+                    comment.setContent(comment_edit.getText().toString());
+                    comment.setUuid(user.id);
+                    comment.setMember_name(user.mNick);
+                    commentBeanList.add(comment);
+                    mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyItemChanged(position);
 
+                    OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
+                            .params("uuid", uuid)
+                            .params("content", comment_edit.getText().toString())
+                            .execute(new DialogCallback<LzyResponse<CommentBean>>(getActivity()) {
+                                @Override
+                                public void onSuccess(Response<LzyResponse<CommentBean>> response) {
+                                    if (response.body().code.equals("0")){
+                                        //requestCommentList(uuid);
+                                        Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
+                                        comment_edit.setText("");
+                                        hideSoftKeyboard(comment_edit,getActivity());
 
+                                    }
+                                }
+                            });
+                }
+            }
+        });
+    }
+
+    public static void hideSoftKeyboard(EditText editText, Context context) {
+        if (editText != null && context != null) {
+            InputMethodManager imm = (InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        }
     }
 
     void requestCommentList(int uuid){
@@ -467,6 +571,51 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onLaunClick(int position) {
 
+        if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() ==0 ){
+            OkGo.<String>post(Constant.LIKE_URL)
+                    .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
+                @Override
+                public void onSuccess(Response<String> response) {
+                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                }
+            });
+        }else {
+            OkGo.<String>post(Constant.UNLIKE_URL)
+                    .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
+                @Override
+                public void onSuccess(Response<String> response) {
+                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onCollectionClick(int position) {
+        OkGo.<String>post(Constant.ADD_COLLECT_URL)
+                .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
+            @Override
+            public void onSuccess(Response<String> response) {
+                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
+                if (myCollectBean.getCode() == 0) {
+                    Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
+                }else if (myCollectBean.getCode() == 202) {
+                    Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+//        OkGo.<String>post(Constant.ADD_COLLECT_URL)
+//                .params("data_uuid", dataList.get(position).getUuid()).execute(new StringCallback() {
+//            @Override
+//            public void onSuccess(Response<String> response) {
+//                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
+//                if (myCollectBean.getCode() == 0) {
+//                    Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
     public static LocationFragment getInstance() {

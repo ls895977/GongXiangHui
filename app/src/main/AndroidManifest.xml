@@ -90,6 +90,7 @@
         <!--主页面MainActivity-->
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:launchMode="singleTask" />
         <!--首页便民服务页面-->
         <activity
