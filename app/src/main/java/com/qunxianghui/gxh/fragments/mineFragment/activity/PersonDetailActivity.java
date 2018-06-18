@@ -16,6 +16,7 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.MyFocusAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.UserDetailInforBean;
 import com.qunxianghui.gxh.config.Constant;
@@ -103,9 +104,10 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     //解析用户的详情资料
     private void parseUserDetailInfo(String body) {
         UserDetailInforBean userDetailInforBean = GsonUtils.jsonFromJson(body, UserDetailInforBean.class);
+        final UserDetailInforBean.DataBean dataList = userDetailInforBean.getData();
+        follow = dataList.getFollow();
         if (userDetailInforBean.getCode() == 0) {
-            final UserDetailInforBean.DataBean dataList = userDetailInforBean.getData();
-            follow = dataList.getFollow();
+
 
             tvPersonDetailName.setText(dataList.getNick());
             tvPersonDetailSetep.setText(dataList.getLevel_info().getName());
@@ -148,7 +150,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                 if (follow.equals(true)){
+                 if (follow.equals(null)){
                      asyncShowToast("关注成功");
                      tvPersonDetailAttention.setText("已关注");
 

@@ -69,7 +69,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
          *
          */
 
-
         OkGo.<String>post(com.qunxianghui.gxh.config.Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -126,6 +125,12 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
+//        String trim = etMineCompanysetWriteQQ.getText().toString().trim();
+//        if (TextUtils.isEmpty(trim)){
+//            tvMmineCompanysetFabu.setText("发布");
+//        }else {
+//            tvMmineCompanysetFabu.setText("修改");
+//        }
 
     }
 
@@ -166,6 +171,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 requestCountData();
                 break;
             case R.id.tv_mine_companyset_fabu:
+
                 fetchCompayData();
                 break;
 

@@ -106,4 +106,5 @@
         android:background="#fff">
 
     </com.qunxianghui.gxh.widget.NoScrollViewPager>
+
 </LinearLayout>
