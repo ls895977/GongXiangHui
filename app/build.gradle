@@ -86,7 +86,7 @@ dependencies {
 
     //相册
     implementation 'com.linchaolong.android:imagepicker:1.2'
-    compile 'com.lzy.widget:imagepicker:0.6.1'
+    implementation 'com.lzy.widget:imagepicker:0.6.1'
 
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.dfqin:grantor:2.1.0'
