@@ -28,10 +28,19 @@ import butterknife.Unbinder;
 @SuppressLint("ValidFragment")
 public class GeneraLizeMonthSortFragment extends BaseFragment {
 
-    private String queryType = "";
+    private static String queryType = "";
 
-    public GeneraLizeMonthSortFragment(String type) {
-        this.queryType = type;
+    private static GeneraLizeMonthSortFragment mGenerMonthSortFragment;
+
+    public GeneraLizeMonthSortFragment() {
+    }
+
+    public static GeneraLizeMonthSortFragment newInstance(String type) {
+        if(mGenerMonthSortFragment == null || !type.equals(queryType)){
+            queryType = type;
+            mGenerMonthSortFragment = new GeneraLizeMonthSortFragment();
+        }
+        return mGenerMonthSortFragment;
     }
 
 

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,9 +13,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
+
+import com.lzy.imagepicker.util.ProviderUtil;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -192,7 +200,7 @@ public class ImageUtils {
 	/**
 	 * 图片压缩
 	 * 
-	 * @param bmp
+	 * @param
 	 * @param file
 	 */
 	public static void compressBmpToFile(File file,int height,int width) {
@@ -219,23 +227,6 @@ public class ImageUtils {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * 将图片变成bitmap
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public static Bitmap getImageBitmap(String path) {
-		Bitmap bitmap = null;
-		File file = new File(path);
-		if (file.exists()) {
-			bitmap = BitmapFactory.decodeFile(path);
-			return bitmap;
-		}
-		return null;
-	}
-
 	
 //=================================图片压缩方法===============================================
 	
@@ -556,5 +547,35 @@ public class ImageUtils {
 			f.delete();
 		}
 	}
-	
+
+	public static Bitmap compressBmpToFile(Bitmap bmp, String filePath) {
+		File file = new File(filePath);
+		Bitmap bitmap = bmp;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bmp.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			fos.write(baos.toByteArray());
+			fos.flush();
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
+
+	public static Uri getUriFromFile(Context context, String filePath) {
+		Uri uri;
+		File file = new File(filePath);
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+			uri = Uri.fromFile(file);
+		} else {
+			/**
+			 * 7.0 调用系统相机拍照不再允许使用Uri方式，应该替换为FileProvider
+			 * 并且这样可以解决MIUI系统上拍照返回size为0的情况
+			 */
+			uri = FileProvider.getUriForFile(context, ProviderUtil.getFileProviderName(context), file);
+		}
+		return uri;
+	}
 }

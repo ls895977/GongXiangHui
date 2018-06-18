@@ -68,6 +68,8 @@ public class Constant {
     public static final String FETCH_CITY_URL=BASE_URL+"city/getCity";
     //获取县城
     public static final String FETCH_COUNTRY_URL=BASE_URL+"area/getArea";
+    //获取省市区
+    public static final String FETCH_COUNTRY_ADRESS = BASE_URL+"region/getAllArea";
 
     //首页轮播图
     public static final String HOME_PAGE_LUNBO_URL = BASE_URL + "ad/getList?place=首页图片轮播";

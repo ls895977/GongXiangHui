@@ -64,11 +64,11 @@ public class MainActivity extends BaseActivity{
 
     private void initViewPagers() {
         final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new HomeFragment()); //首尔
-        fragments.add(new LocationFragment()); //本地圈
-        fragments.add(new IssureFragment()); //发布fragment
-        fragments.add(new GeneralizeFragment()); //推广页面
-        fragments.add(new MineFragment()); //我的界面
+        fragments.add(HomeFragment.getInstance()); //首尔
+        fragments.add(LocationFragment.getInstance()); //本地圈
+        fragments.add(IssureFragment.getInstance()); //发布fragment
+        fragments.add(GeneralizeFragment.getInstance()); //推广页面
+        fragments.add(MineFragment.getInstance()); //我的界面
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);
         vpMain.setAdapter(adapter);
         /**禁止滑动*/
