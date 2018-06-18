@@ -19,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.third.sina.Constants;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.ImageObject;
 import com.sina.weibo.sdk.api.TextObject;
@@ -68,6 +70,8 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private IWXAPI api;
     private String title = "第一条信息分享成功";
     private String url;
+    private MainBroadCast receiver;
+    static final String INTENT_BROADCAST_ADVERTISE = "android.intent.action.advertise";
 
     @Override
     protected int getLayoutId() {
@@ -193,6 +197,27 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
 
+        /*
+        receiver = new MainBroadCast(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if(intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_ADVERTISE)){
+
+                    boolean top = intent.getBooleanExtra("top",false);
+                    if(top){
+                        String url = intent.getStringExtra("url");
+                        String title = intent.getStringExtra("title");
+                        GlideApp.with(mContext).load(url)
+                                .centerCrop()
+                                .placeholder(R.mipmap.icon_headimage)
+                                .error(R.mipmap.icon_headimage)
+                                .into(ivMineFragmentAddTopAdver);
+                    }
+                }
+            }
+        };*/
+
 
     }
 
@@ -210,7 +235,8 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.rl_mineFragment_addTopAdver:
                 intent = new Intent(this, AdvertisActivity.class);
-                startActivity(intent);
+                //startActivity(intent);
+                startActivityForResult(intent, 100);
                 break;
             case R.id.rl_mineFragment_addBottomAdver:
                 intent = new Intent(this, AdvertisConmmengtActivity.class);
@@ -263,5 +289,17 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         mWbShareHandler.doResultIntent(intent, this);
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 100){
+            String url = data.getStringExtra("url");
+            String title = data.getStringExtra("title");
+            GlideApp.with(mContext).load(url)
+                    .centerCrop()
+                    .placeholder(R.mipmap.icon_headimage)
+                    .error(R.mipmap.icon_headimage)
+                    .into(ivMineFragmentAddTopAdver);
+        }
+        //super.onActivityResult(requestCode, resultCode, data);
+    }
 }

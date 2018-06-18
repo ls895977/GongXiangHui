@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,12 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
+import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.DisplayUtil;
 import com.qunxianghui.gxh.utils.GlideApp;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.Utils;
@@ -206,7 +209,23 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             ToastUtils.showShortToast(mActivity, "请先上传图片");
         } else {
 
-            //
+            OkGo.<String>post(Constant.CHECK_ADD)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            //Log.e(TAG, "onSuccess: -----------------------"+response.body() );
+                            MyCollectBean check = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
+                            if (check.getCode() == 0){
+                                commit();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<String> response) {
+                            Log.e(TAG, "onSuccess: -----------------------"+response.body() );
+                        }
+                    });
+            /*
             OkGo.<LzyResponse<String>>post(Constant.CHECK_ADD)
                     .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
                         @Override
@@ -217,13 +236,20 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                                 ToastUtils.showShortToast(mActivity, response.body().message);
                             }
                         }
+
+                        @Override
+                        public void onError(Response<LzyResponse<String>> response) {
+
+                            ToastUtils.showShortToast(mActivity, response.body().message);
+                        }
                     });
+                    */
         }
     }
 
     private void commit() {
-        String imagUrl = Utils.listToString(upLoadPics);
-        String trim = etFragmentBigpicLink.getText().toString().trim();
+        final String imagUrl = Utils.listToString(upLoadPics);
+        final String trim = etFragmentBigpicLink.getText().toString().trim();
 //        if (TextUtils.isEmpty(trim)) {
 //            ToastUtils.showShortToast(mActivity, "链接不能为空");
 //            return;
@@ -250,11 +276,27 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         OkGo.<String>post(Constant.ADD_AD)
                 .params("ad_type", 1)
                 .params("images", imagUrl)
+                .params("name","test")
+                .params("mobile","19957272061")
+                .params("address",trim)
                 .params("link", trim).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
 
                     parseFragment1AdvData(response.body());
+            }
+
+            @Override
+            public void onError(Response<String> response) {
+
+                Log.v("ad_add",response.toString());
+                //super.onError(response);
+                Intent intent = new Intent();
+                intent.putExtra("index", 0);
+                intent.putExtra("url",imagUrl);
+                intent.putExtra("title",trim);
+                mActivity.setResult(Activity.RESULT_OK, intent);
+                mActivity.finish();
             }
         });
 

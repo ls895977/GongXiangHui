@@ -1,27 +1,34 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment1;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment2;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment3;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment4;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment5;
+import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +58,8 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
 
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
     private List<BaseFragment> fragments = new ArrayList<>();
+
+
 
 
     @Override
@@ -109,6 +118,8 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         five.setIcon(R.mipmap.adv_select_qq);
         six.setIcon(R.mipmap.adv_select_video);
 
+
+
     }
 
 
@@ -117,6 +128,9 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.tv_addAdver_savelist:
 //                ToastUtils.showLongToast(mContext,"点击");
+                Log.v("hahahahah",this.toString());
+                //ToastUtils.showShortToast(this, "保存");
+                //Toast.makeText(this,"保存",Toast.LENGTH_LONG);
                 fragments.get(viewPager.getCurrentItem()).commitData();
                 break;
             case R.id.iv_top_savedverBack:
@@ -150,4 +164,6 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
+
 }

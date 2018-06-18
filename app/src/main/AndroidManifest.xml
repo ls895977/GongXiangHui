@@ -198,6 +198,7 @@
         <!--我的板块的植入广告头部 navigator界面-->
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask" />
         <!--首页频道activity-->
         <activity
