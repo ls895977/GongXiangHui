@@ -14,9 +14,11 @@ import java.util.List;
 
 public class MyFocusAdapter extends BaseRecycleViewAdapter<MyFocusBean.DataBean> {
 
+
     public MyFocusAdapter(Context context, List<MyFocusBean.DataBean> datas) {
         super(context, datas);
     }
+
 
     @Override
     protected void convert(MyViewHolder holder, int position, MyFocusBean.DataBean dataBean) {

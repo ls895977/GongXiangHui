@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineMessageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +39,10 @@ public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelect
 
 //设置tablayout的点击事件
         generaCompanyPaihangTablayoutCommon.setOnTabSelectedListener(this);
-        fragments.add(new GeneraLizeMonthSortFragment("view_cnt"));
-        fragments.add(new GeneraLizeMonthSortFragment("click_cnt"));
-        fragments.add(new GeneraLizeMonthSortFragment("forward_cnt"));
-        fragments.add(new GeneraLizeMonthSortFragment("article_cnt"));
+        fragments.add(GeneraLizeMonthSortFragment.newInstance("view_cnt"));
+        fragments.add(GeneraLizeMonthSortFragment.newInstance("click_cnt"));
+        fragments.add(GeneraLizeMonthSortFragment.newInstance("forward_cnt"));
+        fragments.add(GeneraLizeMonthSortFragment.newInstance("article_cnt"));
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(mActivity.getSupportFragmentManager(), fragments, titles);
         generaCampanyPaihangViewpager.setAdapter(mineTabViewPagerAdapter);
