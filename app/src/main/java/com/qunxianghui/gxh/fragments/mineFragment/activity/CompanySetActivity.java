@@ -1,33 +1,20 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
-import com.lljjcoder.style.citythreelist.CityBean;
-import com.lljjcoder.style.citythreelist.ProvinceActivity;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -36,9 +23,11 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.nex3z.flowlayout.FlowLayout;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.CompanySetBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ImageUtils;
@@ -83,6 +72,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     TextView et_mine_companyset_compaydetail;
     @BindView(R.id.fl_company_photo)
     FlowLayout fl_company_photo;
+    @BindView(R.id.iv_companyset_back)
+    ImageView ivCompanysetBack;
     private CompanySetBean.DataBean dataList;
     private SelectPhotoDialog selectPhotoDialog;
     private List<Bitmap> mData;
@@ -90,6 +81,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private int REQUEST_CODE_SELECT = 0x1007;
     private List<ImageView> imgs = new ArrayList<>();
     private LocationPickDialog locationPickDialog;
+
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -101,7 +93,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         locationPickDialog = new LocationPickDialog(this, new LocationPickDialog.LocationPickListener() {
             @Override
             public void onSelect(String info) {
-                if(!TextUtils.isEmpty(info)) {
+                if (!TextUtils.isEmpty(info)) {
                     etMineCompanysetSelectAddress.setText(info);
                 }
             }
@@ -147,7 +139,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
          *
          */
 
-        OkGo.<String>post(com.qunxianghui.gxh.config.Constant.GET_COMPANY_URL).execute(new StringCallback() {
+        OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
 
@@ -207,6 +199,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         et_mine_companyset_company_lowshow.setText(description);
         et_mine_companyset_compaydetail.setText(content);
         etMineCompanysetWritContactName.setText(linkname);
+        etMineCompanysetSelectAddress.setText(province_name + city_name + area_name);
+        etMineCaompanysetToIndustry.setText(company_trade_name);
 
 
     }
@@ -223,6 +217,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCaompanysetToIndustry.setOnClickListener(this);
         tvMmineCompanysetFabu.setOnClickListener(this);
         etMineCompanysetSelectAddress.setOnClickListener(this);
+        ivCompanysetBack.setOnClickListener(this);
 
 
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
@@ -285,12 +280,15 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 asyncShowToast("选择行业");
                 break;
             case R.id.et_mine_companyset_selectAddress:
-               locationPickDialog.show();
+                locationPickDialog.show();
                 locationPickDialog.showPickView();
                 break;
             case R.id.tv_mine_companyset_fabu:
 
                 fetchCompayData();
+                break;
+            case R.id.iv_companyset_back:
+                finish();
                 break;
 
         }
@@ -314,7 +312,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
         } else {
 
-            OkGo.<String>post(com.qunxianghui.gxh.config.Constant.ADD_COMPANY_URL).
+            OkGo.<String>post(Constant.ADD_COMPANY_URL).
                     params("company_name", companyName)
                     .params("address", detailAddress)
                     .params("linkname", connectName)
@@ -330,7 +328,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
-                            com.orhanobut.logger.Logger.e("发布成功+" + response.body().toString());
+                            Logger.e("发布成功+" + response.body().toString());
                         }
 
                         @Override
@@ -367,8 +365,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                                 return;
                             }
                             bitmap = BitmapFactory.decodeFile(images.get(0).path);
-                            if(bitmap != null && mImgView != null) {
-                                GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this,images.get(0).path))
+                            if (bitmap != null && mImgView != null) {
+                                GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this, images.get(0).path))
                                         .centerCrop()
                                         .placeholder(R.mipmap.image_add)
                                         .error(R.mipmap.image_add)
@@ -389,8 +387,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                                     bitmap = BitmapFactory.decodeFile(images.get(i).path);
                                     bitmap = ImageUtils.compressBmpToFile(bitmap, images.get(i).path);
                                 }
-                                if(bitmap != null && mImgView != null) {
-                                    GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this,images.get(i).path))
+                                if (bitmap != null && mImgView != null) {
+                                    GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this, images.get(i).path))
                                             .centerCrop()
                                             .placeholder(R.mipmap.image_add)
                                             .error(R.mipmap.image_add)

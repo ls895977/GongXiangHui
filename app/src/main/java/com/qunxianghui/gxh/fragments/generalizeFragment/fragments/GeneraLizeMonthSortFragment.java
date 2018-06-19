@@ -36,6 +36,7 @@ public class GeneraLizeMonthSortFragment extends BaseFragment {
     }
 
     public static GeneraLizeMonthSortFragment newInstance(String type) {
+
         if(mGenerMonthSortFragment == null || !type.equals(queryType)){
             queryType = type;
             mGenerMonthSortFragment = new GeneraLizeMonthSortFragment();

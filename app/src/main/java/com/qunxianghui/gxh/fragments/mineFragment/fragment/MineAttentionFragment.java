@@ -76,6 +76,7 @@ public class MineAttentionFragment extends BaseFragment {
                     asyncShowToast("点击了" + position);
                     Intent intent = new Intent(mActivity, PersonDetailActivity.class);
                     intent.putExtra("member_id", dataList.get(position-1).getBe_member_id());
+
                     startActivity(intent);
 
                 }

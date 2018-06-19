@@ -18,12 +18,18 @@ import java.util.List;
 
 public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePostBean.DataBean.ListBean> {
 
+    private MyPostOnClickListener postOnClickListener;
+
+    public void setPostOnClickListener(MyPostOnClickListener postOnClickListener) {
+        this.postOnClickListener = postOnClickListener;
+    }
+
     public MineIssurePostAdapter(Context context, List<MineIssurePostBean.DataBean.ListBean> datas) {
         super(context, datas);
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, MineIssurePostBean.DataBean.ListBean listBean) {
+    protected void convert(MyViewHolder holder, final int position, MineIssurePostBean.DataBean.ListBean listBean) {
         final List<String> images = (List<String>) listBean.getImages();
         final MyGridView myGridView = holder.getView(R.id.layout_nine_grid_mineissue_post);
         holder.setText(R.id.tv_mine_issue_post_name, listBean.getMember_name());
@@ -58,6 +64,7 @@ public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePost
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
+                postOnClickListener.onLaunLikeClick(position);
             }
         });
         /**
@@ -67,6 +74,7 @@ public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePost
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
+                postOnClickListener.onCollectionItemClick(position);
             }
         });
         /**
@@ -85,5 +93,13 @@ public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePost
     @Override
     protected int getItemView() {
         return R.layout.item_mine_issue_post;
+    }
+
+
+    public  interface  MyPostOnClickListener{
+        /* 收藏*/
+        void  onCollectionItemClick(int position);
+        /* 点赞*/
+        void  onLaunLikeClick(int position);
     }
 }

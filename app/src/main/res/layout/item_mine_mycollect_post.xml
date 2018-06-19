@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
                 android:text="科技"
-                android:textSize="14sp"/>
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/tv_mine_mycollect_time"
@@ -76,7 +76,7 @@
                 android:drawablePadding="3dp"
                 android:text="52万"
                 android:layout_marginRight="3dp"
-                android:textSize="14sp"/>
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/tv_mine_mycollect_cancle_collect"
@@ -86,7 +86,7 @@
                 android:drawableLeft="@mipmap/eye_test"
                 android:drawablePadding="3dp"
                 android:text="取消收藏"
-                android:textSize="14sp"/>
+                android:textSize="13sp"/>
 
 
         </LinearLayout>

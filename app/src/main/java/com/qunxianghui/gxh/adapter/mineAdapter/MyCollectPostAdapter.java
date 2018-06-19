@@ -32,6 +32,11 @@ import java.util.logging.Logger;
 public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBean.DataBean> {
 
     private int data_uuid;
+    private CollectOnClickListener collectOnClickListener;
+
+    public void setCollectOnClickListener(CollectOnClickListener collectOnClickListener) {
+        this.collectOnClickListener = collectOnClickListener;
+    }
 
     private android.os.Handler handler = new android.os.Handler();
 
@@ -41,7 +46,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
 
 
     @Override
-    protected void convert(MyViewHolder holder, int position, final MyCollectPostBean.DataBean dataBean) {
+    protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
         final ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
         final TextView mTvNewsCollectCancle = holder.getView(R.id.tv_mine_mycollect_cancle_collect);
         final List<String> images = dataBean.getImages();
@@ -68,53 +73,18 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         mTvNewsCollectCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("删除提示");
-                builder.setMessage("您确定要删除该条消息吗?");
-                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                handler.post(new Runnable() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        CancelNewsData();
-
+                    public void run() {
+                        collectOnClickListener.cancelNewsCollect(position);
                     }
                 });
-                builder.setNegativeButton("取消", null);
-                builder.show();
-
-
             }
         });
 
     }
 
 
-    private void CancelNewsData() {
-
-        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", data_uuid)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(final Response<String> response) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                                com.orhanobut.logger.Logger.e("取消收藏+"+response.body().toString());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-
-                        Toast.makeText(mContext, "取消收藏失败", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                });
-    }
     public static boolean isInMainThread() {
         Looper myLooper = Looper.myLooper();
         Looper mainLooper = Looper.getMainLooper();
@@ -126,4 +96,10 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     protected int getItemView() {
         return R.layout.item_mine_mycollect_post;
     }
+
+
+    public interface CollectOnClickListener {
+        void cancelNewsCollect(int position);
+    }
+
 }

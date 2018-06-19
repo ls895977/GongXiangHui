@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
@@ -34,6 +36,8 @@ public class MineCollectVideoFragment extends BaseFragment {
     XRecyclerView xrecyclerMycollectVideo;
     Unbinder unbinder;
 
+
+
     @Override
     protected void onLoadData() {
 
@@ -46,6 +50,9 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+
+//        final PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
+
         OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -54,6 +61,7 @@ public class MineCollectVideoFragment extends BaseFragment {
 
             }
         });
+
 
     }
 

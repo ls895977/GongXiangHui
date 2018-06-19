@@ -581,7 +581,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 }
             });
         }else {
-            OkGo.<String>post(Constant.UNLIKE_URL)
+            OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {

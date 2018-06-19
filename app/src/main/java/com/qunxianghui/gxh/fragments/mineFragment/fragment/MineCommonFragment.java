@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,15 +40,17 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MineCommonFragment extends BaseFragment {
+public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener {
 
-
+ 
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
     private List<CollectBean.ListBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList;
+    private Handler handler = new Handler();
+    private int data_uuid;
 
     private int count;
 
@@ -81,17 +85,22 @@ public class MineCommonFragment extends BaseFragment {
 
             dataList = myCollectPostBean.getData();
 
+            for (int i = 0; i < dataList.size(); i++) {
+                data_uuid = dataList.get(i).getData_uuid();
+            }
+
+
             if (myCollectPostAdapter == null) {
                 myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                myCollectPostAdapter.setCollectOnClickListener(this);
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
                         asyncShowToast("这里实现跳转详情的动作 目前没有字段不会跳");
+
                     }
                 });
-            } else {
-                myCollectPostAdapter.notifyDataSetChanged();
             }
 
 
@@ -114,9 +123,10 @@ public class MineCommonFragment extends BaseFragment {
             public void onRefresh() {
                 dataList.clear();
                 count = 0;
-
                 LoadMycolectNews(count);
                 xrecycler_mine_collect_news.refreshComplete();
+
+                myCollectPostAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -127,13 +137,13 @@ public class MineCommonFragment extends BaseFragment {
                     public void run() {
 
                     }
-                },100);
+                }, 100);
                 count = count + 10;
                 LoadMycolectNews(count);
                 xrecycler_mine_collect_news.refreshComplete();
             }
         });
-        count=0;
+        count = 0;
         LoadMycolectNews(count);
     }
 
@@ -155,4 +165,52 @@ public class MineCommonFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void cancelNewsCollect(int position) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("删除提示");
+        builder.setMessage("您确定要删除该条消息吗?");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                CancelNewsData();
+
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    /**
+     * 取消收藏
+     */
+    private void CancelNewsData() {
+
+        OkGo.<String>post(Constant.ADD_COLLECT_URL)
+                .params("data_uuid", data_uuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(final Response<String> response) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                                com.orhanobut.logger.Logger.e("取消收藏+" + response.body().toString());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+
+                        Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
+    }
+
+
 }

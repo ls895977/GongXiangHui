@@ -33,14 +33,11 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     //新添加的库
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     implementation 'com.jakewharton:butterknife:8.4.0'
-
     //butterknife
     implementation 'com.lzy.net:okgo:3.0.4'
-
     //okgo网络框架
 
     //compile 'com.bigkoo:convenientbanner:2.0.5'
@@ -81,7 +78,6 @@ dependencies {
 
     //Gson解析
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.8'
-
     //视频库
 
     //相册
@@ -90,7 +86,6 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.dfqin:grantor:2.1.0'
-
     //权限库
     implementation files('libs/fastjson-1.2.9.jar')
 
