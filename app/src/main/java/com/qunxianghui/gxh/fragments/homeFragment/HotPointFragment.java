@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -30,7 +28,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
-import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.LzyResponse;
@@ -43,7 +40,6 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 import com.youth.banner.Banner;
@@ -51,9 +47,7 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -92,6 +86,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private List<HomeNewListBean> dataList = new ArrayList<>();
     private int count = 0;
     private int total = 0;
+    private int mChannelId = 1;
     private String image_url;
     @Override
     public int getLayoutId() {
@@ -100,6 +95,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void initDatas() {
+        if (getArguments() != null) {
+            mChannelId = getArguments().getInt("channel_id");
+        }
         mDatas = new ArrayList<>();
         //请求数据
         parseData();
@@ -172,7 +170,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             String image_src = null;
             String title = null;
 
-
             for (int i = 0; i < lunboData.size(); i++) {
                 image_src = lunboData.get(i).getImage_src();  //图片
                 title = lunboData.get(i).getTitle();        //title
@@ -196,14 +193,14 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     })
                     .start();
         }
-
     }
-    private void parseData() {
 
+    private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
                 .params("limit", 10)
                 .params("skip", count)
+                .params("channel_id", mChannelId)
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
@@ -222,20 +219,15 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                                 if (count + 10 <= total) {
                                     count += 10;
                                     homeItemListAdapter1.loadMoreComplete();
-
                                 } else {
                                     homeItemListAdapter1.loadMoreEnd();
                                 }
-
                             }
                             homeItemListAdapter1.notifyDataSetChanged();
                         }
                     }
                 });
-
-
     }
-
 
     private void initGridHomeNavigator() {
         final BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
@@ -283,7 +275,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
-
         recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
         footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
         headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
@@ -305,8 +296,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 }
         );
-
-
     }
 
     @Override

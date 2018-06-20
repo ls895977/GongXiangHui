@@ -1,10 +1,8 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -25,28 +23,21 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.github.dfqin.grantor.PermissionListener;
-import com.github.dfqin.grantor.PermissionsUtil;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.activity.ScanActivity;
+import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
-import com.qunxianghui.gxh.db.ChannelManage;
-
-import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -69,7 +60,7 @@ import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener,AMapLocationListener {
+public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener, AMapLocationListener {
     private static HomeFragment homeFragment;
     @BindView(R.id.ib_home_camera)
     TextView ibHomeCamera;
@@ -115,7 +106,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void initDatas() {
-
         //频道列表（用户订阅的频道）
         OkGo.<String>post(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
             @Override
@@ -123,19 +113,18 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 String json = response.body().toString();
                 if (HttpStatusUtil.getStatus(json)) {
                     getListData(json);
+                    setChangelView();
                 } else {
                     ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
                 }
             }
         });
 
-
         // + 号监听
         button_more_columns.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 Logger.d("onClick-->:" + userChannelList.toString());
                 Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
                 Bundle bundle = new Bundle();
@@ -144,19 +133,15 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 startActivityForResult(intent_channel, CHANNELREQUEST);
             }
         });
-        setChangelView();
-
     }
 
     /**
      * ==================频道列表（用户订阅的频道）=====================
      */
     private ChannelGetallBean getListData(String body) {
-//        Logger.d("getAllData-->: " + body);
         final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
             List<ChannelGetallBean.DataBean> datas = bean.getData();
-
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
                 ChannelItem item = new ChannelItem(dataBean.getChannel_id(), dataBean.getChannel_name(), i, 1);
@@ -169,15 +154,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void initViews(View view) {
-
-        mColumnHorizontalScrollView = (ColumnHorizontalScrollView) mActivity.findViewById(R.id.mColumnHorizontalScrollView);
-        mRadioGroup_content = (LinearLayout) mActivity.findViewById(R.id.mRadioGroup_content);
-        ll_more_columns = (LinearLayout) mActivity.findViewById(R.id.ll_more_columns);
-        rl_column = (RelativeLayout) mActivity.findViewById(R.id.rl_column);
-        button_more_columns = (ImageView) mActivity.findViewById(R.id.button_more_columns);
-        shade_left = (ImageView) mActivity.findViewById(R.id.shade_left);
-        shade_right = (ImageView) mActivity.findViewById(R.id.shade_right);
-        mViewPager = (ViewPager) mActivity.findViewById(R.id.home_view_pager);
+        mColumnHorizontalScrollView = mActivity.findViewById(R.id.mColumnHorizontalScrollView);
+        mRadioGroup_content = mActivity.findViewById(R.id.mRadioGroup_content);
+        ll_more_columns = mActivity.findViewById(R.id.ll_more_columns);
+        rl_column = mActivity.findViewById(R.id.rl_column);
+        button_more_columns = mActivity.findViewById(R.id.button_more_columns);
+        shade_left = mActivity.findViewById(R.id.shade_left);
+        shade_right = mActivity.findViewById(R.id.shade_right);
+        mViewPager = mActivity.findViewById(R.id.home_view_pager);
 
     }
 
@@ -195,9 +179,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         fragments.clear();//清空
         int count = userChannelList.size();
 
+        HotPointFragment newFragment;
+        Bundle bundle;
         for (int i = 0; i < count; i++) {
-            HotPointFragment newfragment = new HotPointFragment();
-            fragments.add(newfragment);
+            newFragment = new HotPointFragment();
+            bundle = new Bundle();
+            bundle.putInt("channel_id", userChannelList.get(i).getId());
+            newFragment.setArguments(bundle);
+            fragments.add(newFragment);
         }
         NewsFragmentPagerAdapter mAdapetr = new NewsFragmentPagerAdapter(getChildFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapetr);
@@ -296,7 +285,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
      * 获取Column栏目 数据
      */
     private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
+//        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
 
     }
 
@@ -363,22 +352,19 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 Intent intent = new Intent(mActivity, NewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
-
         }
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         switch (requestCode) {
             case CHANNELREQUEST:
                 if (resultCode == CHANNELRESULT) {
+                    userChannelList = DragAdapter.channelList;
                     setChangelView();
                 }
                 break;
-
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
                     if (data == null) {
@@ -421,7 +407,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     public static HomeFragment getInstance() {
-        if(homeFragment == null){
+        if (homeFragment == null) {
             homeFragment = new HomeFragment();
         }
         return homeFragment;
