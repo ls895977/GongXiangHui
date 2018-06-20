@@ -20,12 +20,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.utils.DataCleanManager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -37,16 +44,23 @@ import butterknife.ButterKnife;
  */
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.bt_setting_quit) Button btSettingQuit;
-    @BindView(R.id.tv_mine_set_cache) TextView tvMineSetCache;
-    @BindView(R.id.rl_set_cache) RelativeLayout rlSetCache;
-    @BindView(R.id.switchButton_mine_set) SwitchButton switchButtonMineSet;
-    @BindView(R.id.tv_mine_set_version) TextView tvMineSetVersion;
-    @BindView(R.id.rl_set_banben_new) RelativeLayout rlSetBanbenNew;
+    @BindView(R.id.bt_setting_quit)
+    Button btSettingQuit;
+    @BindView(R.id.tv_mine_set_cache)
+    TextView tvMineSetCache;
+    @BindView(R.id.rl_set_cache)
+    RelativeLayout rlSetCache;
+    @BindView(R.id.switchButton_mine_set)
+    SwitchButton switchButtonMineSet;
+    @BindView(R.id.tv_mine_set_version)
+    TextView tvMineSetVersion;
+    @BindView(R.id.rl_set_banben_new)
+    RelativeLayout rlSetBanbenNew;
     private Dialog loadingDialog;
 
 
-    @SuppressLint("HandlerLeak") private Handler handler = new Handler() {
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -135,7 +149,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                         LoginMsgHelper.exitLogin(SettingActivity.this);
 
-                       toActivity(MainActivity.class);
+                        ExitUserLogin();
+
 
 //                        finish();
                     }
@@ -161,6 +176,37 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
         }
 
+    }
+
+    /**
+     * 用户登出
+     */
+
+    private void ExitUserLogin() {
+
+        OkGo.<String>post(Constant.LOGIN_OUT_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                parseLoginOutData(response.body());
+            }
+        });
+
+
+    }
+
+    private void parseLoginOutData(String body) {
+        try {
+            final JSONObject jsonObject = new JSONObject(body);
+            final int code = jsonObject.getInt("code");
+            if (code == 0) {
+                asyncShowToast("退出登录成功");
+                toActivity(MainActivity.class);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //自定义的清理对话框

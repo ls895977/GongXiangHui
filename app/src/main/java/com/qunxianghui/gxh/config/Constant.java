@@ -89,6 +89,8 @@ public class Constant {
     public static final String REGIST_URL = BASE_URL + "user/register";
     //登录接口
     public static final String LOGIN_URL = BASE_URL + "user/login";
+    //用户登出
+    public static final String LOGIN_OUT_URL=BASE_URL+"user/logout";
     //找回密码
     public static final String SEEK_PASSWORD_URL = BASE_URL + "user/findPassword";
     //首页天气列表

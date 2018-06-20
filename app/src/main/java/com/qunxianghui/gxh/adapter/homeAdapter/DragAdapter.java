@@ -50,7 +50,7 @@ public class DragAdapter extends BaseAdapter {
     /**
      * 可以拖动的列表（即用户选择的频道列表）
      */
-    public List<ChannelItem> channelList;
+    public static ArrayList<ChannelItem> channelList;
     /**
      * TextView 频道内容
      */
@@ -165,7 +165,7 @@ public class DragAdapter extends BaseAdapter {
     /**
      * 设置频道列表
      */
-    public void setListDate(List<ChannelItem> list) {
+    public void setListDate(ArrayList<ChannelItem> list) {
         channelList = list;
     }
 

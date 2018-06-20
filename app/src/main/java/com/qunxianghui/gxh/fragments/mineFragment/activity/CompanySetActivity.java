@@ -172,7 +172,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
              */
 
             fillPersonCompanyData(dataList);
-
         }
     }
 
@@ -189,8 +188,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final String tel = dataList.getTel();  //座机号码
         final String content = dataList.getContent();  //公司详情
         final String description = dataList.getDescription();  //公司简介
-
-
         etMineCompanysetInputCompany.setText(company_name);
         etMineCompanysetDetailAddress.setText(address);
         etMineCompanysetMobilePhoneNumber.setText(mobile);
@@ -201,15 +198,11 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCompanysetWritContactName.setText(linkname);
         etMineCompanysetSelectAddress.setText(province_name + city_name + area_name);
         etMineCaompanysetToIndustry.setText(company_trade_name);
-
-
     }
 
     @Override
     protected void initDatas() {
-
         mData = new ArrayList<>();
-
     }
 
     @Override
@@ -218,8 +211,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         tvMmineCompanysetFabu.setOnClickListener(this);
         etMineCompanysetSelectAddress.setOnClickListener(this);
         ivCompanysetBack.setOnClickListener(this);
-
-
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
             public void onTakePhoto() {
@@ -241,7 +232,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 selectPhotoDialog.dismiss();
             }
         });
-
     }
 
     private void startChoosePhoto(int i) {
@@ -290,12 +280,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_companyset_back:
                 finish();
                 break;
-
         }
     }
 
     private void fetchCompayData() {
-
         final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
         final String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
         final String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
@@ -304,14 +292,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final String connectQQ = etMineCompanysetWriteQQ.getText().toString().trim(); //联系人QQ
         final String companyLowshow = et_mine_companyset_company_lowshow.getText().toString().trim(); //企业简介
         final String companyL = et_mine_companyset_compaydetail.getText().toString().trim(); //企业详情
-
-
         if (TextUtils.isEmpty(companyName) || TextUtils.isEmpty(detailAddress) || TextUtils.isEmpty(connectName) || TextUtils.isEmpty(connectPhone)
                 || TextUtils.isEmpty(connectCall) || TextUtils.isEmpty(connectQQ) || TextUtils.isEmpty(companyLowshow)) {
             asyncShowToast("还有一些信息没有填，仔细检查一下");
-
         } else {
-
             OkGo.<String>post(Constant.ADD_COMPANY_URL).
                     params("company_name", companyName)
                     .params("address", detailAddress)

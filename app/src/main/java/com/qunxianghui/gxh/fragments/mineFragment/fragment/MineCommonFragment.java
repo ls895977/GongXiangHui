@@ -2,12 +2,9 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +15,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-
 import com.qunxianghui.gxh.bean.mine.CollectBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
-
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
@@ -53,6 +46,8 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private int data_uuid;
 
     private int count;
+    private int mMemberId;
+
 
     @Override
     public int getLayoutId() {
@@ -61,10 +56,10 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     @Override
     public void initDatas() {
-
+        if (getArguments() != null) {
+            mMemberId = getArguments().getInt("member_id");
+        }
         LoadMycolectNews(count);
-
-
     }
 
     private void LoadMycolectNews(int number) {
@@ -111,8 +106,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     @Override
     public void initViews(View view) {
         xrecycler_mine_collect_news.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-
-
     }
 
     @Override

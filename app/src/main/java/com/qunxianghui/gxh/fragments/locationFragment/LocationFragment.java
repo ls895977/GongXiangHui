@@ -56,6 +56,7 @@ import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -616,6 +617,19 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 //                }
 //            }
 //        });
+    }
+
+    /**
+     * 头像点击跳转用户详情页
+     * @param position
+     */
+    @Override
+    public void headImageClick(int position) {
+        Intent intent=new Intent(mActivity, PersonDetailActivity.class);
+        intent.putExtra("member_id",dataList.get(position).getMember_id());
+        startActivity(intent);
+
+
     }
 
     public static LocationFragment getInstance() {
