@@ -18,6 +18,7 @@ import java.util.List;
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private List<DataCityInfo.DataBean.CityBean> header; // header titles
     private HashMap<DataCityInfo.DataBean.CityBean, List<DataCityInfo.DataBean.CityBean.AreasBean>> child;
+    private final DataCityInfo.DataBean mDataBean;
 
 //	public MyExpandableAdapter(List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
 //		this.header = listDataHeader;
@@ -31,29 +32,29 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         child = new HashMap<>();
 
         // 添加header
-        DataCityInfo.DataBean dataBean = bean.getData();
-        header.addAll(dataBean.getA());
-        header.addAll(dataBean.getB());
-        header.addAll(dataBean.getC());
-        header.addAll(dataBean.getD());
-        header.addAll(dataBean.getE());
-        header.addAll(dataBean.getF());
-        header.addAll(dataBean.getG());
-        header.addAll(dataBean.getH());
-        header.addAll(dataBean.getJ());
-        header.addAll(dataBean.getK());
-        header.addAll(dataBean.getL());
-        header.addAll(dataBean.getM());
-        header.addAll(dataBean.getN());
-        header.addAll(dataBean.getP());
-        header.addAll(dataBean.getQ());
-        header.addAll(dataBean.getR());
-        header.addAll(dataBean.getS());
-        header.addAll(dataBean.getT());
-        header.addAll(dataBean.getW());
-        header.addAll(dataBean.getX());
-        header.addAll(dataBean.getY());
-        header.addAll(dataBean.getZ());
+        mDataBean = bean.getData();
+        header.addAll(mDataBean.getA());
+        header.addAll(mDataBean.getB());
+        header.addAll(mDataBean.getC());
+        header.addAll(mDataBean.getD());
+        header.addAll(mDataBean.getE());
+        header.addAll(mDataBean.getF());
+        header.addAll(mDataBean.getG());
+        header.addAll(mDataBean.getH());
+        header.addAll(mDataBean.getJ());
+        header.addAll(mDataBean.getK());
+        header.addAll(mDataBean.getL());
+        header.addAll(mDataBean.getM());
+        header.addAll(mDataBean.getN());
+        header.addAll(mDataBean.getP());
+        header.addAll(mDataBean.getQ());
+        header.addAll(mDataBean.getR());
+        header.addAll(mDataBean.getS());
+        header.addAll(mDataBean.getT());
+        header.addAll(mDataBean.getW());
+        header.addAll(mDataBean.getX());
+        header.addAll(mDataBean.getY());
+        header.addAll(mDataBean.getZ());
         for (int i = 0; i < header.size(); i++) {
             DataCityInfo.DataBean.CityBean key = header.get(i);
             List<DataCityInfo.DataBean.CityBean.AreasBean> areas = key.getAreas();
@@ -117,11 +118,20 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         TextView header_text = (TextView) convertView.findViewById(R.id.header);
         header_text.setText(headerTitle);
         TextView index_tv = (TextView) convertView.findViewById(R.id.index_tv);
-        if (groupPosition == 0){
+        if (groupPosition == 0) {
             index_tv.setVisibility(View.VISIBLE);
-            index_tv.setText(cityBean.getPinyin());
+            index_tv.setText(cityBean.getPinyin().substring(0,1).toUpperCase());
+        } else {
+            DataCityInfo.DataBean.CityBean lastCityBean = (DataCityInfo.DataBean.CityBean) getGroup(groupPosition - 1);
+            String currentTag = cityBean.getPinyin().substring(0, 1);
+            String lastTag = lastCityBean.getPinyin().substring(0, 1);
+            if (!currentTag.equals(lastTag)) {
+                index_tv.setVisibility(View.VISIBLE);
+                index_tv.setText(currentTag.toUpperCase());
+            }else {
+                index_tv.setVisibility(View.GONE);
+            }
         }
-
 
 
         // If group is expanded then change the text into bold and change the
