@@ -1,22 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <!--<cn.jzvd.JZVideoPlayerStandard-->
-        <!--android:id="@+id/videoplayer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp">-->
+    <RelativeLayout
 
-    <!--</cn.jzvd.JZVideoPlayerStandard>-->
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/iv_home_video_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="视频汇"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_home_video_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="我要发布"
+            android:textColor="@color/tab_color" />
 
 
-    <ListView
-        android:id="@+id/listview"
+    </RelativeLayout>
+
+
+    <!--<ListView-->
+    <!--android:id="@+id/listview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scrollbars="none" />-->
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+
+        android:id="@+id/xrecycler_homevideo_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
 
 </LinearLayout>

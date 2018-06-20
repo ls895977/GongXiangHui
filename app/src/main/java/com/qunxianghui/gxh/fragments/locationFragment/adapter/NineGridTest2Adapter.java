@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Created by HMY on 2016/8/6
  */
-public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder>{
+public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder> {
     private int collectFlag = 0;
     private Context mContext;
 
@@ -96,7 +96,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onPicClick(position,0);
+                    listener.onPicClick(position, 0);
                 }
             });
 
@@ -110,9 +110,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 @Override
                 public void onClick(View v, int p) {
                     //Toast.makeText(mContext,"test : " + position,Toast.LENGTH_LONG).show();
-                    listener.onPicClick(position,p);
+                    listener.onPicClick(position, p);
 
-                };
+                }
+
+                ;
             });
         }
 
@@ -159,7 +161,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
-        snsPopupWindow.setClick_like((String)dataBeanList.get(position).getClick_like().toString());
+        snsPopupWindow.setClick_like((String) dataBeanList.get(position).getClick_like().toString());
         snsPopupWindow.setClick_like(dataBeanList.get(position).getCollect());
         snsPopupWindow.initItemData();
 
@@ -186,13 +188,23 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
 
+        /**
+         * 点击本地圈头像的跳转
+         */
+        holder.iv_location_person_head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.headImageClick(position);
+            }
+        });
+
         //弹窗
         holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //弹出popupwindow
                 //Toast.makeText(mContext, "你好!", Toast.LENGTH_LONG).show();
-                snsPopupWindow.showPopupWindow(v,dataBeanList.get(position));
+                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position));
             }
         });
 
@@ -201,7 +213,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     private void toInformActivity() {
         Intent intent = new Intent(mContext, InFormActivity.class);
-        intent.putExtra("model_id",model_id);
+        intent.putExtra("model_id", model_id);
         mContext.startActivity(intent);
     }
 
@@ -268,7 +280,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         /* 点赞 */
         void onLaunClick(int position);
 
+        /* 收藏*/
         void onCollectionClick(int position);
+
+        /* 头像点击*/
+        void headImageClick(int position);
 
 
     }
