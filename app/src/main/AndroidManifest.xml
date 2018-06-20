@@ -242,6 +242,9 @@
         <activity
             android:name=".fragments.homeFragment.activity.NewSearchActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".fragments.homeFragment.activity.AbleNewSearchActivity"
+            android:launchMode="singleTask" />
         <!--本地圈界面我要发布视频的界面-->
         <activity
             android:name=".fragments.locationFragment.activity.VideoListActivity"

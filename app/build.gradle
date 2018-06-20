@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+//    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.qunxianghui.gxh"
         minSdkVersion 16
@@ -33,11 +33,14 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
     //新添加的库
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     implementation 'com.jakewharton:butterknife:8.4.0'
+
     //butterknife
     implementation 'com.lzy.net:okgo:3.0.4'
+
     //okgo网络框架
 
     //compile 'com.bigkoo:convenientbanner:2.0.5'
@@ -78,14 +81,15 @@ dependencies {
 
     //Gson解析
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.8'
+
     //视频库
 
     //相册
     implementation 'com.linchaolong.android:imagepicker:1.2'
     implementation 'com.lzy.widget:imagepicker:0.6.1'
-
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.dfqin:grantor:2.1.0'
+
     //权限库
     implementation files('libs/fastjson-1.2.9.jar')
 
@@ -116,7 +120,7 @@ dependencies {
     /* 省市区列表  滚轮 citypickew*/
     implementation 'liji.library.dev:citypickerview:3.1.7'
     implementation 'com.google.code.gson:gson:2.8.4'
-    
+
     /* 滚轮时间  地址*/
     implementation 'com.contrarywind:Android-PickerView:4.1.4'
 
@@ -127,8 +131,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
     implementation 'com.readystatesoftware.chuck:library:1.0.4'
     implementation 'com.jaeger.ninegridimageview:library:1.1.1'
-
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
-
     implementation 'com.nex3z:flow-layout:1.0.0'
+    implementation project(':letterindexlibrary')
 }

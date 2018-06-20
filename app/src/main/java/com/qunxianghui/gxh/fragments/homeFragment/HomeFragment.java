@@ -44,6 +44,7 @@ import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 
 import com.qunxianghui.gxh.db.ChannelManage;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity;
@@ -360,7 +361,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
 //                toActivity(LocationActivity.class);
 
-                Intent intent = new Intent(mActivity, NewSearchActivity.class);
+//                Intent intent = new Intent(mActivity, NewSearchActivity.class);
+                Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
 

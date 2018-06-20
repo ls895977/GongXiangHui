@@ -50,10 +50,6 @@ public abstract class BaseActivity extends FragmentActivity {
         initListeners();
         initDatas();
         //  MyApplication.appManager.addActivity(this);
-
-
-
-
     }
 
 
