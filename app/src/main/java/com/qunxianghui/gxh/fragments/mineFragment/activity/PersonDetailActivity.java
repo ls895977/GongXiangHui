@@ -20,6 +20,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCollectVideoFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCommonFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssurePostFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
@@ -78,7 +79,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
         mineCommonFragment.setArguments(bundle);
         fragments.add(mineCommonFragment);
         fragments.add(new MineCollectVideoFragment());
-        fragments.add(new MyIssurePostFragment());
+        fragments.add(new PersonDetailPostFragment());
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         minePersonDetailViewpager.setAdapter(mineTabViewPagerAdapter);
