@@ -23,11 +23,9 @@ import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.OtherAdapter;
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
-import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.DragGrid;
@@ -79,10 +77,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
-
-
         ArrayList<ChannelItem> userChannelListData = (ArrayList<ChannelItem>) getIntent().getSerializableExtra(USER_CHANNEL);
-        if(userChannelListData!=null) {
+        if (userChannelListData != null) {
             userChannelList = userChannelListData;
             userAdapter = new DragAdapter(this, userChannelListData);
             userGridView.setAdapter(userAdapter);
@@ -97,77 +93,38 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             }
 
         });
-//
-//        //频道列表（用户订阅的频道）
-//        OkGo.<String>get(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
-//            @Override
-//            public void onSuccess(Response<String> response) {
-//                getListData(response.body());
-//            }
-//
-//
-//        });
-
-
-//                userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
-//                userAdapter = new DragAdapter(this, userChannelList);
-//                userGridView.setAdapter(userAdapter);
-//                otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getOtherChannel());
-//                otherAdapter = new OtherAdapter(this, otherChannelList);
-//                otherGridView.setAdapter(otherAdapter);
-        //设置GRIDVIEW的ITEM的点击监听
         otherGridView.setOnItemClickListener(this);
         userGridView.setOnItemClickListener(this);
     }
 
-
     private void getAllData(String body) {
-
         Logger.d("getAllData-->: " + body);
-
         final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
             List<ChannelGetallBean.DataBean> datas = bean.getData();
-
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem( dataBean.getChannel_id(), dataBean.getChannel_name(),i, 1);
+                ChannelItem item = new ChannelItem(dataBean.getChannel_id(), dataBean.getChannel_name(), i, 1);
                 otherChannelList.add(item);
+                for (ChannelItem channelItem : userChannelList) {
+                    if (channelItem.name.equals(item.name)) {
+                        otherChannelList.remove(item);
+                        break;
+                    }
+                }
             }
-
             otherAdapter = new OtherAdapter(this, otherChannelList);
             otherGridView.setAdapter(otherAdapter);
-
-
         }
 
-    }
-
-
-    private void getListData(String body) {
-        Logger.d("getAllData-->: " + body);
-        final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
-        if (null != bean) {
-            List<ChannelGetallBean.DataBean> datas = bean.getData();
-
-            for (int i = 0; i < datas.size(); i++) {
-                ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem( dataBean.getChannel_id(), dataBean.getChannel_name(),i, 1);
-                userChannelList.add(item);
-            }
-
-            userAdapter = new DragAdapter(this, userChannelList);
-            userGridView.setAdapter(userAdapter);
-
-        }
     }
 
     /**
      * 初始化布局
      */
     private void initView() {
-        userGridView = (DragGrid) findViewById(R.id.userGridView);
-        otherGridView = (OtherGridView) findViewById(R.id.otherGridView);
+        userGridView =  findViewById(R.id.userGridView);
+        otherGridView =  findViewById(R.id.otherGridView);
     }
 
     /**
@@ -192,20 +149,31 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                         final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);//获取点击的频道内容
                         otherAdapter.setVisible(false);
 
-                        //添加到最后一个
-                        otherAdapter.addItem(channel);
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                try {
-                                    int[] endLocation = new int[2];
-                                    //获取终点的坐标
-                                    otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                                    MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
-                                    userAdapter.setRemove(position);
-                                } catch (Exception localException) {
-                                }
-                            }
-                        }, 50L);
+                        //频道列表（用户订阅的频道）
+                        OkGo.<String>post(Constant.CHANNEL_DELETE_CHANNEL)
+                                .params("channel_id", channel.getId())
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        Logger.d("onSuccess-->:" + response.body().toString());
+
+                                        //添加到最后一个
+                                        otherAdapter.addItem(channel);
+                                        new Handler().postDelayed(new Runnable() {
+                                            public void run() {
+                                                try {
+                                                    int[] endLocation = new int[2];
+                                                    //获取终点的坐标
+                                                    otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                                                    MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
+                                                    userAdapter.setRemove(position);
+                                                } catch (Exception localException) {
+                                                }
+                                            }
+                                        }, 50L);
+
+                                    }
+                                });
                     }
                 }
                 break;
@@ -218,38 +186,34 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     TextView newTextView = (TextView) view.findViewById(R.id.text_item);
                     final int[] startLocation = new int[2];
                     newTextView.getLocationInWindow(startLocation);
-                                            final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
+                    final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
                     userAdapter.setVisible(false);
+                    //频道列表（用户订阅的频道）
+                    OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL)
+                            .params("channel_id", channel.getId())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    Logger.d("onSuccess-->:" + response.body().toString());
 
-                                            //频道列表（用户订阅的频道）
-                                            OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL).
-                                            params("channel_id", channel.getId()).
-                                            execute(new StringCallback() {
-                                                @Override
-                                                public void onSuccess(Response<String> response) {
-                                                    Logger.d("onSuccess-->:" + response.body().toString());
+                                    //添加到最后一个
+                                    userAdapter.addItem(channel);
+                                    new Handler().postDelayed(new Runnable() {
+                                        public void run() {
+                                            try {
+                                                int[] endLocation = new int[2];
+                                                //获取终点的坐标
+                                                userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                                                MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
+                                                otherAdapter.setRemove(position);
+                                            } catch (Exception localException) {
+                                            }
+                                        }
+                                    }, 50L);
 
-                                                    //添加到最后一个
-                                                    userAdapter.addItem(channel);
-                                                    new Handler().postDelayed(new Runnable() {
-                                                        public void run() {
-                                                            try {
-                                                                int[] endLocation = new int[2];
-                                                                //获取终点的坐标
-                                                                userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                                                                MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
-                                                                otherAdapter.setRemove(position);
-                                                            } catch (Exception localException) {
-                                                            }
-                                                        }
-                                        }, 50L);
-
-                                    }
-                                });
-
+                                }
+                            });
                 }
-
-
                 break;
             default:
                 break;
@@ -345,20 +309,18 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 退出时候保存选择后数据库的设置
      */
     private void saveChannel() {
-        ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).deleteAllChannel();
-        ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).saveUserChannel(userAdapter.getChannnelLst());
-        ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).saveOtherChannel(otherAdapter.getChannnelLst());
+//        ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).deleteAllChannel();
+//        ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).saveUserChannel(userAdapter.getChannnelLst());
+//        ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).saveOtherChannel(otherAdapter.getChannnelLst());
     }
 
     @Override
     public void onBackPressed() {
         saveChannel();
         if (userAdapter.isListChanged()) {
-            Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
+            Intent intent = new Intent();
             setResult(HomeFragment.CHANNELRESULT, intent);
             finish();
-
-
         } else {
             super.onBackPressed();
         }
