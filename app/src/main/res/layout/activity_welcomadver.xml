@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,6 +47,25 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:id="@+id/ll_welcom_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="27dp"
+            android:background="@drawable/shape_blue_bg"
+            android:gravity="center"
+            android:text="跳过广告"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 
 </FrameLayout>

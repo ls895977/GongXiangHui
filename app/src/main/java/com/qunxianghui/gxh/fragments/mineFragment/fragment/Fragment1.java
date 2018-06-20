@@ -69,8 +69,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     private ImagePicker imagePicker;
     private List<String> upLoadPics = new ArrayList<>();
-    private String imagUrl;
-    private String trim;
 
     @Override
     public int getLayoutId() {
@@ -250,8 +248,8 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     }
 
     private void commit() {
-        imagUrl = Utils.listToString(upLoadPics);
-        trim = etFragmentBigpicLink.getText().toString().trim();
+        final String imagUrl = Utils.listToString(upLoadPics);
+        final String trim = etFragmentBigpicLink.getText().toString().trim();
 //        if (TextUtils.isEmpty(trim)) {
 //            ToastUtils.showShortToast(mActivity, "链接不能为空");
 //            return;
@@ -276,24 +274,27 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 //                    }
 //                });
         OkGo.<String>post(Constant.ADD_AD)
-                .params("ad_type", "1")
+                .params("ad_type", 1)
                 .params("images", imagUrl)
+                .params("name","test")
+                .params("mobile","19957272061")
+                .params("address",trim)
                 .params("link", trim).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                   asyncShowToast(response.body().toString());
+
                     parseFragment1AdvData(response.body());
             }
 
             @Override
             public void onError(Response<String> response) {
-                asyncShowToast(response.toString());
+
                 Log.v("ad_add",response.toString());
-                super.onError(response);
+                //super.onError(response);
                 Intent intent = new Intent();
                 intent.putExtra("index", 0);
-                intent.putExtra("url", imagUrl);
-                intent.putExtra("title", trim);
+                intent.putExtra("url",imagUrl);
+                intent.putExtra("title",trim);
                 mActivity.setResult(Activity.RESULT_OK, intent);
                 mActivity.finish();
             }
@@ -306,11 +307,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             JSONObject jsonObject = new JSONObject(body);
             final int code = jsonObject.getInt("code");
             if (code==0) {
-
+                com.orhanobut.logger.Logger.d("错误信息+"+body.toString());
                 Intent intent = new Intent();
                 intent.putExtra("index", 0);
-                intent.putExtra("url",imagUrl);
-               intent.putExtra("title",trim);
                 mActivity.setResult(Activity.RESULT_OK, intent);
                 mActivity.finish();
 

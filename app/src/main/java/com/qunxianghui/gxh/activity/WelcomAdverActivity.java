@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
@@ -28,12 +30,14 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/26 0026.
  */
 
-public class WelcomAdverActivity extends BaseActivity {
+public class WelcomAdverActivity extends BaseActivity  {
 
     @BindView(R.id.iv_welcom_luncher)
     ImageView ivWelcomLuncher;
     @BindView(R.id.textView)
     TextView textView;
+    @BindView(R.id.ll_welcom_skip)
+    LinearLayout llWelcomSkip;
     // 声明控件对象
 
     private Animation animation;
@@ -114,6 +118,16 @@ public class WelcomAdverActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        llWelcomSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toActivity(MainActivity.class);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

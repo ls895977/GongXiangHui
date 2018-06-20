@@ -52,7 +52,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-    private int member_id;
+    public int member_id;
     private String follow;
 
     @Override
@@ -107,8 +107,6 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
         final UserDetailInforBean.DataBean dataList = userDetailInforBean.getData();
         follow = dataList.getFollow();
         if (userDetailInforBean.getCode() == 0) {
-
-
             tvPersonDetailName.setText(dataList.getNick());
             tvPersonDetailSetep.setText(dataList.getLevel_info().getName());
             GlideApp.with(mContext).load(dataList.getMember_avatar()).centerCrop()

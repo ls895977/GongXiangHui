@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -53,7 +55,14 @@ public class MineCollectVideoFragment extends BaseFragment {
 
 //        final PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
 
-        OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL).execute(new StringCallback() {
+
+
+
+
+
+        OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
+
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 Logger.d("我爆料的视频+++" + response.body().toString());
