@@ -15,12 +15,16 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +43,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     @BindView(R.id.et_fetch_pass_code)
     EditText etFetchPassCode;
     private String phoneNumber;
+    private String vertifiCode;
 
 
     @Override
@@ -73,8 +78,8 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        final String vertifiCode = etFetchPassCode.getText().toString().trim();
-        Intent intent = null;
+        vertifiCode = etFetchPassCode.getText().toString().trim();
+
         switch (v.getId()) {
             case R.id.et_seekPassword_phoneNumber:
 
@@ -83,17 +88,58 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
                 getVertifiCode();
                 break;
             case R.id.bt_seek_password_next:
-                asyncShowToast("默认请求接口成功");
-                finish();
-//                toActivity(ResetPasswordActivity.class);
-                intent = new Intent(mContext, ResetPasswordActivity.class);
-                intent.putExtra("mobile", phoneNumber);
-                intent.putExtra("captcha",vertifiCode );
-                startActivity(intent);
+
+                RequestNextStep();
+
+
 
                 break;
 
         }
+    }
+
+    /**
+     * 点击下一步
+     */
+    private void RequestNextStep() {
+
+        OkGo.<String> post(Constant.SEEK_PASSWORD_URL)
+                .params("mobile",phoneNumber)
+                .params("captcha",vertifiCode).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+
+
+                try {
+                    JSONObject jsonObject=new JSONObject(response.body());
+
+                    final int code = jsonObject.getInt("code");
+                    if (code==101){
+                        asyncShowToast("验证码不正确");
+                        return;
+                    }else if (code==0){
+                        Intent intent  = new Intent(mContext, ResetPasswordActivity.class);
+                        intent.putExtra("mobile", phoneNumber);
+                        intent.putExtra("captcha", vertifiCode);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Response<String> response) {
+                super.onError(response);
+                Logger.e(response.body().toString());
+
+            }
+        });
+
+
+
+
     }
 
     private void getVertifiCode() {

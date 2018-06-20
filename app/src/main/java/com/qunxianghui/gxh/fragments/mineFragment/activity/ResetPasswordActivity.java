@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ResetPasswordActivity extends BaseActivity  implements View.OnClickListener{
+public class ResetPasswordActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.et_resetpassword_newpassword)
     EditText etResetpasswordNewpassword;
     @BindView(R.id.et_resetpassword_conform_new_passworm)
@@ -30,6 +30,8 @@ public class ResetPasswordActivity extends BaseActivity  implements View.OnClick
     Button btResetpasswordConformPassword;
     private int mobile;
     private int vertifiCode;
+    private String password;
+    private String confirmPassword;
 
 
     @Override
@@ -39,7 +41,8 @@ public class ResetPasswordActivity extends BaseActivity  implements View.OnClick
 
     @Override
     protected void initViews() {
-
+        password = etResetpasswordNewpassword.getText().toString().trim();
+        confirmPassword = etResetpasswordConformNewPassworm.getText().toString().trim();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class ResetPasswordActivity extends BaseActivity  implements View.OnClick
         }).setTitleText("密码找回");
 
 
-       Intent intent = getIntent();
+        Intent intent = getIntent();
         mobile = intent.getIntExtra("mobile", 0);
         vertifiCode = intent.getIntExtra("captcha", 0);
     }
@@ -72,35 +75,38 @@ public class ResetPasswordActivity extends BaseActivity  implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        final String password = etResetpasswordNewpassword.getText().toString().trim();
-        final String confirmPassword = etResetpasswordConformNewPassworm.getText().toString().trim();
-        switch (v.getId()){
+
+        switch (v.getId()) {
             case R.id.bt_resetpassword_conform_password:
-
-                if (TextUtils.isEmpty(password)||TextUtils.isEmpty(confirmPassword)){
-                    asyncShowToast("密码和确认密码不能为空");
-                }else if (password!=confirmPassword){
-                    asyncShowToast("两次输入的密码不一致");
-
-                }else {
-                    CommitSeekPassword(password);
-                }
-
+                SeekPasswordCommit();
 
                 break;
         }
     }
 
+    private void SeekPasswordCommit() {
+
+        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+            asyncShowToast("密码和确认密码不能为空");
+            return;
+        } else if (!password.equals(confirmPassword) ) {
+            asyncShowToast("两次输入的密码不一致");
+            return;
+        } else {
+            CommitSeekPassword(password);
+        }
+
+    }
     private void CommitSeekPassword(String password) {
 
-        OkGo.<String> post(Constant.SEEK_PASSWORD_URL)
-                .params("password",password)
-                .params("mobile",mobile)
-                .params("captcha",vertifiCode)
+        OkGo.<String>post(Constant.SEEK_PASSWORD_URL)
+                .params("password", password)
+                .params("mobile", mobile)
+                .params("captcha", vertifiCode)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        com.orhanobut.logger.Logger.e("----------修改成功"+response.toString());
+                        com.orhanobut.logger.Logger.e("----------修改成功" + response.toString());
                     }
                 });
     }
