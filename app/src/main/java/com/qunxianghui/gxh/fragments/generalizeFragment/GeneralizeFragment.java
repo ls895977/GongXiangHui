@@ -6,25 +6,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.generalize.GeneraLizePersonTopBean;
-import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPushFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -68,22 +63,33 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void initDatas() {
-        final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new GeneraPersonalFragment());
-        fragments.add(new GeneraCompanyFragment());
-        fragments.add(new GeneraPushFragment());
-        final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
-        vpGeneralizeMain.setAdapter(adapter);
-        /** 禁止滑动*/
-        vpGeneralizeMain.setScroll(true);
-        /**增加缓存页面的数量*/
-        vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
-        /**默认显示第一个选项卡*/
-        rgGeneralizeMain.check(R.id.rb_genera_personal);
+        if (LoginMsgHelper.isLogin(getContext())) {
+            final List<Fragment> fragments = new ArrayList<>();
+            fragments.add(new GeneraPersonalFragment());
+            fragments.add(new GeneraCompanyFragment());
+            fragments.add(new GeneraPushFragment());
+            final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
+            vpGeneralizeMain.setAdapter(adapter);
+            /** 禁止滑动*/
+            vpGeneralizeMain.setScroll(true);
+            /**增加缓存页面的数量*/
+            vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
+            /**默认显示第一个选项卡*/
+            rgGeneralizeMain.check(R.id.rb_genera_personal);
+        }
 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
+    }
 
 
     @Override
@@ -189,4 +195,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         }
         return generalizeFragment;
     }
+
+
 }
