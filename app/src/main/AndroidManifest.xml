@@ -90,8 +90,8 @@
         <!--主页面MainActivity-->
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!--首页便民服务页面-->
         <activity
             android:name="com.qunxianghui.gxh.activity.BianMinActiviry"
@@ -198,8 +198,8 @@
         <!--我的板块的植入广告头部 navigator界面-->
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
         <!--首页频道activity-->
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity"
@@ -265,11 +265,13 @@
             android:name=".fragments.mineFragment.activity.AdvertisConmmengtActivity"
             android:launchMode="singleTask" />
         <!--选取省份的的activity-->
-        <activity android:name=".fragments.mineFragment.activity.CompanySetProvinceActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".fragments.mineFragment.activity.CompanySetProvinceActivity"
+            android:launchMode="singleTask" />
 
-        <activity android:name=".activity.PhotoBrowserActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.PhotoBrowserActivity"
+            android:launchMode="singleTask" />
 
 
     </application>

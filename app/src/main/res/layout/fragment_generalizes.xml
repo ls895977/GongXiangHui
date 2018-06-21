@@ -4,107 +4,92 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/tab_color">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/iv_genera_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:background="@mipmap/icon_back"
+                android:visibility="invisible" />
 
-                android:background="@color/tab_color"
-                android:layout_width="match_parent"
-                android:layout_height="70dp">
+            <RadioGroup
+                android:id="@+id/rg_generalize_main"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <LinearLayout
-
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-
-                <ImageView
-
-                    android:id="@+id/iv_genera_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-
-                    android:background="@mipmap/icon_back"
-                    android:visibility="invisible" />
-
-                <RadioGroup
-
-                    android:id="@+id/rg_generalize_main"
+                <RadioButton
+                    android:id="@+id/rb_genera_personal"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_btn_generalize"
+                    android:button="@null"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:text="个人"
+                    android:textColor="#0f0"
+                    android:textSize="14sp" />
 
-
-                    <RadioButton
-
-                        android:id="@+id/rb_genera_personal"
-                        android:layout_width="0dp"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_generalize"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="个人"
-                        android:textColor="#0f0"
-                        android:textSize="14sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_genera_company"
-                        android:layout_width="0dp"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_generalize"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="企业"
-                        android:textColor="#0f0"
-                        android:textSize="14sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_genera_push"
-                        android:layout_width="0dp"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_generalize"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="互推"
-                        android:textColor="#0f0"
-                        android:textSize="14sp" />
-                </RadioGroup>
-
-                <TextView
-                    android:id="@+id/tv_genera_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                <RadioButton
+                    android:id="@+id/rb_genera_company"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_btn_generalize"
+                    android:button="@null"
                     android:gravity="center"
-                    android:text="编辑"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:visibility="invisible" />
-                </LinearLayout>
-            </LinearLayout>
+                    android:text="企业"
+                    android:textColor="#0f0"
+                    android:textSize="14sp" />
 
+                <RadioButton
+                    android:id="@+id/rb_genera_push"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_btn_generalize"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="互推"
+                    android:textColor="#0f0"
+                    android:textSize="14sp" />
+            </RadioGroup>
 
+            <TextView
+                android:id="@+id/tv_genera_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="编辑"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </LinearLayout>
 
     <com.qunxianghui.gxh.widget.NoScrollViewPager
         android:id="@+id/vp_generalize_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#fff">
-
-    </com.qunxianghui.gxh.widget.NoScrollViewPager>
+        android:background="#fff"/>
 
 </LinearLayout>

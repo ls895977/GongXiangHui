@@ -6,25 +6,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.generalize.GeneraLizePersonTopBean;
-import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPushFragment;
 import com.qunxianghui.gxh.listener.PageChangeListener;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -80,23 +72,17 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
         /**默认显示第一个选项卡*/
         rgGeneralizeMain.check(R.id.rb_genera_personal);
-
-
     }
 
 
 
     @Override
     public void initViews(View view) {
-
         initViewPagers();
     }
 
     @Override
     protected void initListeners() {
-
-
-
         tvGeneraEdit.setOnClickListener(this);
         rgGeneralizeMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -143,21 +129,16 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                     rbGeneraPersonal.setChecked(true);
                     rbGeneraCompany.setChecked(false);
                     rbGeneraPush.setChecked(false);
-
                     break;
                 case 1:
-
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(true);
                     rbGeneraPush.setChecked(false);
-
                     break;
                 case 2:
-
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(false);
                     rbGeneraPush.setChecked(true);
-
                     break;
             }
         }

@@ -113,12 +113,9 @@ public class MyApplication extends Application {
         //整体摧毁的时候调用这个方法
     }
 
-
     private void initOkGo() {
-
-
         if (LoginMsgHelper.isLogin(this)) {
-           mAccessToken= SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");
+            mAccessToken = SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");
         }
         Logger.d("initOkGo-->:" + mAccessToken);
         //全局参数
@@ -143,7 +140,6 @@ public class MyApplication extends Application {
     }
 
     private void initLogger() {
-
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(1)         // (Optional) How many method line to show. Default 2
                 .methodOffset(0)        // (Optional) Hides internal method calls up to offset. Default 5

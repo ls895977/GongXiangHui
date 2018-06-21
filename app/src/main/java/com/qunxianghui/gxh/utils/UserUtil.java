@@ -4,10 +4,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
-import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,7 +13,7 @@ import org.json.JSONTokener;
 public class UserUtil {
     private static UserUtil instance = null;
 
-    private UserUtil(){
+    private UserUtil() {
         getUserData();
     }
 
@@ -28,21 +25,16 @@ public class UserUtil {
         synchronized (UserUtil.class) {
             if (instance == null) {
                 instance = new UserUtil();
-
             }
         }
         return instance;
     }
 
     private void getUserData() {
-
-
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
-
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
 //                            Logger.d("onSuccess-->:" + response.body().toString());
                             parseUserData(response.body());
@@ -55,12 +47,11 @@ public class UserUtil {
 
 
     }
-    private void parseUserData(String body) {
 
+    private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
-
             mNick = data.getString("nick");
             mAvatar = data.getString("avatar");
             id = data.getInt("id");
@@ -73,9 +64,6 @@ public class UserUtil {
 //            comment_cnt = data.getInt("comment_cnt");
 //
 //            mLevelName = data.getJSONObject("level_info").getString("name");
-
-
-
 
             Object companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
             if (companyInfo instanceof JSONArray) {

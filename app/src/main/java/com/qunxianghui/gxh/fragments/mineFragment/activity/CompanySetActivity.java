@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,10 +51,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCompanysetInputCompany;
     @BindView(R.id.et_mine_caompanyset_toIndustry)
     EditText etMineCaompanysetToIndustry;
-
     @BindView(R.id.et_mine_companyset_selectAddress)
     TextView etMineCompanysetSelectAddress;
-
     @BindView(R.id.et_mine_companyset_detailAddress)
     EditText etMineCompanysetDetailAddress;
     @BindView(R.id.et_mine_companyset_writContactName)
@@ -142,10 +141,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-
                 parseCompanyInfo(response.body());
-
-
             }
         });
     }
@@ -163,15 +159,15 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     }
 
     private void parseCompanyInfo(String body) {
-        final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
-        if (companySetBean.getCode() == 0) {
-            dataList = companySetBean.getData();
-
-            /**
-             * 如果有数据  填充设置的数据
-             */
-
-            fillPersonCompanyData(dataList);
+        if (!body.contains("查询失败")) {
+            final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
+            if (companySetBean.getCode() == 0) {
+                dataList = companySetBean.getData();
+                /**
+                 * 如果有数据  填充设置的数据
+                 */
+                fillPersonCompanyData(dataList);
+            }
         }
     }
 
@@ -274,7 +270,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 locationPickDialog.showPickView();
                 break;
             case R.id.tv_mine_companyset_fabu:
-
                 fetchCompayData();
                 break;
             case R.id.iv_companyset_back:
@@ -306,9 +301,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     .params("images", "")
                     .params("description", companyLowshow)
                     .params("content", companyL)
-                    .params("province_id", "")
-                    .params("city_id", "")
-                    .params("area_id", "")
+                    .params("company_trade", "01")
+                    .params("province_id", "浙江省")
+                    .params("city_id", "杭州市")
+                    .params("area_id", "西湖区")
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -317,8 +313,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
                         @Override
                         public void onError(Response<String> response) {
-
-
                             super.onError(response);
                             asyncShowToast(response.message());
                         }
@@ -349,7 +343,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                                 return;
                             }
                             bitmap = BitmapFactory.decodeFile(images.get(0).path);
-                            if (bitmap != null && mImgView != null) {
+                            if (bitmap != null) {
                                 GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this, images.get(0).path))
                                         .centerCrop()
                                         .placeholder(R.mipmap.image_add)
@@ -383,6 +377,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     }
                 }
             } catch (Exception e) {
+                Log.w("test", e.getMessage());
             }
         }
     }

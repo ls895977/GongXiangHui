@@ -1,26 +1,14 @@
 package com.qunxianghui.gxh.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.WelcomAdverBean;
-import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GlideApp;
-import com.qunxianghui.gxh.utils.GsonUtils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -37,15 +25,12 @@ public class WelcomActivity extends BaseActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
             if (msg.what == 0) {
                 textView.setText(getCount() + "");
                 handler.sendEmptyMessageDelayed(0, 1000);
                 animation.reset();
                 textView.startAnimation(animation);
             }
-
-            super.handleMessage(msg);
         }
     };
 

@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.interfaces.PermissionListener;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import butterknife.ButterKnife;
 
@@ -21,13 +19,8 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends FragmentActivity {
     private static PermissionListener mlistener;
     protected String TAG = this.getClass().getSimpleName();
-
-
     protected Context mContext;
-
     protected Resources mResources;
-
-
 
     /**
      * 创建Activity时加到管理栈中
@@ -39,23 +32,14 @@ public abstract class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setStatusBar();
         setContentView(getLayoutId());
-
         mContext = this;
         mResources = getResources();
-
         ButterKnife.bind(this);
-
-
         initViews();
         initListeners();
         initDatas();
         //  MyApplication.appManager.addActivity(this);
-
-
-
-
     }
-
 
     @Override
     protected void onResume() {
@@ -128,7 +112,6 @@ public abstract class BaseActivity extends FragmentActivity {
             @Override
             public void run() {
                 Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
-
             }
         });
     }
