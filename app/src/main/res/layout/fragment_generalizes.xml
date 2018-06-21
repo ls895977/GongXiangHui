@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_genera"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/tab_color">
@@ -91,5 +92,11 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#fff"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_person"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

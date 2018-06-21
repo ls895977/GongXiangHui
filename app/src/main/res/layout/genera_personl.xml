@@ -4,15 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@color/tab_color"
         android:orientation="vertical">
-
-
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -25,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="节省广告费(元)"
-
                 android:textColor="@color/white" />
 
             <TextView
@@ -38,7 +33,6 @@
                 android:textColor="@color/white"
                 android:textSize="30sp" />
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,7 +147,6 @@
 
             </LinearLayout>
 
-
         </LinearLayout>
 
     </RelativeLayout>
@@ -163,14 +156,10 @@
         android:layout_height="1dp"
         android:background="@color/divider" />
 
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="10dp"
-            android:id="@+id/xrecycler_genera_personal_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/xrecycler_genera_personal_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
