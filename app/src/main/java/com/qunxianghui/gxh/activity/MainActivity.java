@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @OnClick({R.id.rb_location, R.id.rb_fabu, R.id.rb_generalize, R.id.rb_mine, R.id.rg_main})
+    @OnClick({R.id.rb_location, R.id.rb_fabu, R.id.rb_generalize, R.id.rb_mine, R.id.rb_home})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rb_home:
