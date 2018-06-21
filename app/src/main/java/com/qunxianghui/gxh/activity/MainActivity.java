@@ -93,8 +93,8 @@ public class MainActivity extends BaseActivity{
                         vpMain.setCurrentItem(1, false);
                         break;
                     case R.id.rb_fabu:
-//                        toActivity(PublishActivity.class);  之前的逻辑  现在换一下
-                        vpMain.setCurrentItem(2, false);
+                        toActivity(PublishActivity.class);
+//                        vpMain.setCurrentItem(2, false);
                         break;
                     case R.id.rb_generalize:
                         vpMain.setCurrentItem(3, false);

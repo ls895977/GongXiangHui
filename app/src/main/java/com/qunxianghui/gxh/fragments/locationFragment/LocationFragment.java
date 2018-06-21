@@ -570,7 +570,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    //接口回调之 点赞接口回调
+    //接口回调之 接口回调
     @Override
     public void onLaunClick(int position) {
 

@@ -136,11 +136,13 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
 
+
+
+
         /**
          * 获取用户company的信息
          *
          */
-
 
 
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
@@ -174,10 +176,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             /**
              * 如果有数据  填充设置的数据
              */
-if (dataList!=null){
-    fillPersonCompanyData(dataList);
+            if (dataList!=null) {
+                fillPersonCompanyData(dataList);
 
-}
+            }
 
         }
     }
@@ -293,9 +295,12 @@ if (dataList!=null){
     private void fetchCompayData() {
         final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
         final String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
+        final String fromIndustry = etMineCaompanysetToIndustry.getText().toString().trim();  //所属行业
+        final String fromArea = etMineCompanysetSelectAddress.getText().toString().trim();  //所属地区
         final String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
         final String connectPhone = etMineCompanysetMobilePhoneNumber.getText().toString().trim(); //联系人手机
         final String connectCall = etMineCompanysetZuojiPhoneNumber.getText().toString().trim(); //联系人电话
+
         final String connectQQ = etMineCompanysetWriteQQ.getText().toString().trim(); //联系人QQ
         final String companyLowshow = et_mine_companyset_company_lowshow.getText().toString().trim(); //企业简介
         final String companyL = et_mine_companyset_compaydetail.getText().toString().trim(); //企业详情
@@ -310,12 +315,13 @@ if (dataList!=null){
                     .params("mobile", connectPhone)
                     .params("tel", connectCall)
                     .params("qq", connectQQ)
-                    .params("images", "")
+                    .params("images", "shdhashd")
                     .params("description", companyLowshow)
                     .params("content", companyL)
-                    .params("province_id", "")
-                    .params("city_id", "")
-                    .params("area_id", "")
+                    .params("province_id", "河北")
+                    .params("city_id", "邢台")
+                    .params("area_id", "隆尧")
+                    .params("company_trade","保洁清洗qqq")
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {

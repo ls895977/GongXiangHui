@@ -203,11 +203,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             @Override
             public void onClick(View v) {
                 //弹出popupwindow
-                //Toast.makeText(mContext, "你好!", Toast.LENGTH_LONG).show();
                 snsPopupWindow.showPopupWindow(v, dataBeanList.get(position));
             }
         });
-
 
     }
 
