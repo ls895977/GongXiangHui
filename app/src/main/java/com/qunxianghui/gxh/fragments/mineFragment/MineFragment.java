@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisConmmengtActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
@@ -54,46 +55,29 @@ import butterknife.Unbinder;
 
 public class MineFragment extends BaseFragment {
     private static MineFragment mineFragment;
-    @BindView(R.id.rl_preson_data)
-    RelativeLayout rlPresonData;
-    @BindView(R.id.rl_message_gather)
-    RelativeLayout rlMessageGather;
-    @BindView(R.id.rl_mine_message)
-    RelativeLayout rlMineMessage;
-    @BindView(R.id.rl_mine_collect)
-    RelativeLayout rlMineCollect;
-    @BindView(R.id.mine_fabu)
-    RelativeLayout mineFabu;
+    @BindView(R.id.rl_preson_data) RelativeLayout rlPresonData;
+    @BindView(R.id.rl_message_gather) RelativeLayout rlMessageGather;
+    @BindView(R.id.rl_mine_message) RelativeLayout rlMineMessage;
+    @BindView(R.id.rl_mine_collect) RelativeLayout rlMineCollect;
+    @BindView(R.id.mine_fabu) RelativeLayout mineFabu;
 
-    @BindView(R.id.company_set)
-    RelativeLayout companySet;
-    @BindView(R.id.hezuo_call)
-    RelativeLayout hezuoCall;
-    @BindView(R.id.write_advertise)
-    RelativeLayout writeAdvertise;
-    @BindView(R.id.rl_invite_friend)
-    RelativeLayout rlInviteFriend;
-    @BindView(R.id.tv_mine_set)
-    TextView tvMineSet;
-    @BindView(R.id.rl_up_step)
-    RelativeLayout rlUpStep;
+    @BindView(R.id.company_set) RelativeLayout companySet;
+    @BindView(R.id.hezuo_call) RelativeLayout hezuoCall;
+    @BindView(R.id.write_advertise) RelativeLayout writeAdvertise;
+    @BindView(R.id.rl_invite_friend) RelativeLayout rlInviteFriend;
+    @BindView(R.id.tv_mine_set) TextView tvMineSet;
+    @BindView(R.id.rl_up_step) RelativeLayout rlUpStep;
 
     //头像
-    @BindView(R.id.iv_head)
-    ImageView mIvHead;
+    @BindView(R.id.iv_head) ImageView mIvHead;
     //会员类型
-    @BindView(R.id.tv_member_type)
-    TextView mTvMemberType;
+    @BindView(R.id.tv_member_type) TextView mTvMemberType;
     //用户名
-    @BindView(R.id.mine_quickly_login)
-    TextView mineQuicklyLogin;
-    @BindView(R.id.tv_mine_addlike_count)
-    TextView tvMineAddlikeCount;
+    @BindView(R.id.mine_quickly_login) TextView mineQuicklyLogin;
+    @BindView(R.id.tv_mine_addlike_count) TextView tvMineAddlikeCount;
     Unbinder unbinder;
-    @BindView(R.id.tv_mine_post_count)
-    TextView tvMinePostCount;
-    @BindView(R.id.tv_mine_follow_post_count)
-    TextView tvMineFollowPostCount;
+    @BindView(R.id.tv_mine_post_count) TextView tvMinePostCount;
+    @BindView(R.id.tv_mine_follow_post_count) TextView tvMineFollowPostCount;
 
     private UserDao userDao;
     private int userSize;
@@ -134,12 +118,12 @@ public class MineFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
-//                            Logger.d("onSuccess-->:" + response.body().toString());
+                            //                            Logger.d("onSuccess-->:" + response.body().toString());
                             parseUserData(response.body());
                             return;
                         }
-                        toActivity(LoginActivity.class);
-//                        Logger.d("onSuccess-->:" + response.body().toString());
+                        //  toActivity(LoginActivity.class);
+                        //                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
                 });
     }
@@ -199,6 +183,12 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
         fillUserData();
 //        toCollectView();
     }
@@ -206,8 +196,7 @@ public class MineFragment extends BaseFragment {
     private void toCollectView() {
     }
 
-    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id
-            .write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
+    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {

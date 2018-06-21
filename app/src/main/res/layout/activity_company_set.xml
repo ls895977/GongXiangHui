@@ -102,8 +102,8 @@
                         android:drawableRight="@drawable/down_icon"
                         android:focusable="true"
                         android:hint="请选择省市区"
-                        android:textSize="18dp"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
