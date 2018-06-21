@@ -1,11 +1,11 @@
 package com.qunxianghui.gxh.fragments.issureFragment;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 
 /**
  * Created by Administrator on 2018/3/26 0026.
@@ -16,7 +16,17 @@ public class IssureFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
+    }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
     }
 
     @Override
@@ -40,4 +50,5 @@ public class IssureFragment extends BaseFragment {
         }
         return issureFragment;
     }
+
 }

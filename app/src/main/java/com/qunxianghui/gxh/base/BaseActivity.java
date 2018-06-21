@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.interfaces.PermissionListener;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import butterknife.ButterKnife;
 
