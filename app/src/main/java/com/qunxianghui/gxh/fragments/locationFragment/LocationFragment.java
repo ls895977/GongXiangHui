@@ -132,7 +132,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
      */
     @Override
     public void initDatas() {
-
+        RequestLocationData();
 
     }
 
@@ -301,7 +301,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void onLoadData() {
-        RequestLocationData();
+
 
     }
 
