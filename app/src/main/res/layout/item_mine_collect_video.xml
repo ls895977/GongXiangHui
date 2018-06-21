@@ -8,6 +8,8 @@
         android:id="@+id/tv_mycollect_video_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
         android:text="xxxxx"
         android:textColor="@color/tab_color" />
 
@@ -17,6 +19,7 @@
         android:layout_height="170dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         card_view:cardCornerRadius="2dp"
@@ -52,6 +55,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/round_item_collect_video_personhead"
+            android:maxLength="150"
             android:text="香馍馍" />
 
 

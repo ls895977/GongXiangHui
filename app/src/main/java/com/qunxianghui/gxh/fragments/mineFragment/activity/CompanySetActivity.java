@@ -89,6 +89,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
+
+
         locationPickDialog = new LocationPickDialog(this, new LocationPickDialog.LocationPickListener() {
             @Override
             public void onSelect(String info) {
@@ -138,6 +140,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
          *
          */
 
+
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -163,10 +166,13 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
             if (companySetBean.getCode() == 0) {
                 dataList = companySetBean.getData();
+
                 /**
                  * 如果有数据  填充设置的数据
                  */
-                fillPersonCompanyData(dataList);
+                if (dataList != null) {
+                    fillPersonCompanyData(dataList);
+                }
             }
         }
     }

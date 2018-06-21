@@ -53,7 +53,7 @@ public class PersonDetailPostFragment extends BaseFragment {
          * 获取帖子列表
          */
         OkGo.<String>post(Constant.LOCATION_NEWS_LIST_URL)
-                .params("user_id",personDetailActivity.member_id)
+                .params("user_id", personDetailActivity.member_id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -69,7 +69,7 @@ public class PersonDetailPostFragment extends BaseFragment {
     private void parsePersonDetailPostData(String body) {
         final TestMode testMode = GsonUtils.jsonFromJson(body, TestMode.class);
 
-        if (testMode.getCode()==0){
+        if (testMode.getCode() == 0) {
             postList = testMode.getData().getList();
 
             final NineGridTest2Adapter persondetailPostAdapter = new NineGridTest2Adapter(mActivity, postList);
@@ -83,7 +83,26 @@ public class PersonDetailPostFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        xrecyclerPersondetailPost.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        xrecyclerPersondetailPost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        /**
+         * 下拉刷新和上拉加载
+         */
+        xrecyclerPersondetailPost.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                xrecyclerPersondetailPost.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                xrecyclerPersondetailPost.refreshComplete();
+            }
+        });
     }
 
     @Override

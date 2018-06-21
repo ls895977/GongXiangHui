@@ -36,6 +36,7 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
@@ -348,8 +349,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             case R.id.tv_home_location:
 
 //                toActivity(LocationActivity.class);
-
-                Intent intent = new Intent(mActivity, NewSearchActivity.class);
+                Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
         }
@@ -378,21 +378,17 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
                 }
                 super.onActivityResult(requestCode, resultCode, data);
-
         }
     }
 
     @Override
     public void onLocationChanged(final AMapLocation aMapLocation) {
-
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         tvHomeLocation.setText(aMapLocation.getDistrict());
-
                     }
                 });
             } else {
@@ -403,7 +399,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             }
         }
         mlocationClient.stopLocation();
-
     }
 
     public static HomeFragment getInstance() {

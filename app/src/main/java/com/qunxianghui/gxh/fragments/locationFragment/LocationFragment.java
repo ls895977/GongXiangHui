@@ -56,6 +56,7 @@ import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -568,6 +569,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 });
     }
 
+
+    //接口回调之 点赞接口回调
     @Override
     public void onLaunClick(int position) {
 
@@ -606,16 +609,20 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 }
             }
         });
-//        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-//                .params("data_uuid", dataList.get(position).getUuid()).execute(new StringCallback() {
-//            @Override
-//            public void onSuccess(Response<String> response) {
-//                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
-//                if (myCollectBean.getCode() == 0) {
-//                    Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
+    }
+
+    /**
+     * 头像点击跳转用户详情页
+     * @param position
+     */
+    @Override
+    public void headImageClick(int position) {
+        Intent intent=new Intent(mActivity, PersonDetailActivity.class);
+        intent.putExtra("member_id",dataList.get(position).getMember_id());
+        startActivity(intent);
+
+
     }
 
     public static LocationFragment getInstance() {
