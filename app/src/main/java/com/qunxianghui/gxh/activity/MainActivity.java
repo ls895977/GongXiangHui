@@ -58,15 +58,12 @@ public class MainActivity extends BaseActivity {
 
 
     private void initViewPagers() {
-
         /** 默认选中第一个选项卡*/
         selectedFragment(0);
     }
 
     @Override
-    protected void initListeners() {
-
-    }
+    protected void initListeners() { }
 
     @Override
     protected void initDatas() {
@@ -91,12 +88,10 @@ public class MainActivity extends BaseActivity {
         UserUtil.getInstance();
     }
 
-
     private void selectedFragment(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
         switch (position) {
-
             //首页
             case 0:
                 if (mHomeFragment == null) {
@@ -157,12 +152,10 @@ public class MainActivity extends BaseActivity {
             transaction.hide(mHomeFragment);
         if (mLocationFragment != null)
             transaction.hide(mLocationFragment);
-        if (mIssureFragment != null) {
+        if (mIssureFragment != null)
             transaction.hide(mIssureFragment);
-        }
-        if (mGeneralizeFragment != null) {
+        if (mGeneralizeFragment != null)
             transaction.hide(mGeneralizeFragment);
-        }
         if (mMineFragment != null)
             transaction.hide(mMineFragment);
     }
@@ -210,7 +203,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.rb_generalize:
                 selectedFragment(3);
-
                 break;
             case R.id.rb_mine:
                 selectedFragment(4);
