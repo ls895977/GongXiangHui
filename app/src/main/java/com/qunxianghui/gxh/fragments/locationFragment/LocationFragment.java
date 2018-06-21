@@ -569,6 +569,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 });
     }
 
+
+    //接口回调之 点赞接口回调
     @Override
     public void onLaunClick(int position) {
 
@@ -607,16 +609,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 }
             }
         });
-//        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-//                .params("data_uuid", dataList.get(position).getUuid()).execute(new StringCallback() {
-//            @Override
-//            public void onSuccess(Response<String> response) {
-//                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
-//                if (myCollectBean.getCode() == 0) {
-//                    Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
     }
 
     /**

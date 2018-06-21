@@ -75,6 +75,8 @@ public class MainActivity extends BaseActivity{
         vpMain.setScroll(false);
         /** 增加缓存页面的数量*/
         vpMain.setOffscreenPageLimit(fragments.size() - 1);
+//        vpMain.setOffscreenPageLimit(0);
+
         /** 默认选中第一个选项卡*/
         rgMain.check(R.id.rb_home);
     }

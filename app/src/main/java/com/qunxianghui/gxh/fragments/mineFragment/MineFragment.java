@@ -218,7 +218,7 @@ public class MineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         fillUserData();
-        toCollectView();
+//        toCollectView();
 
     }
 
