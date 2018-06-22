@@ -66,6 +66,7 @@ import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.widget.Bind;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -572,24 +573,58 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     //接口回调之 接口回调
     @Override
-    public void onLaunClick(int position) {
+    public void onLaunClick(final int position) {
 
         if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() ==0 ){
+            if (dataList.get(position).getClick_like().size() <= 0) {
+                dataList.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
+            }
+            TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
+            UserUtil user = UserUtil.getInstance();
+            like.setMember_name(user.mNick);
+            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = dataList.get(position).getClick_like();
+            likeBeanList.add(like);
+            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(position);
             OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+
+                    //Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                    //Handler haner = new Handler()
                 }
             });
         }else {
+
             OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+
+
                     Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                    //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
+                    UserUtil user = UserUtil.getInstance();
+                    like.setMember_name(user.mNick);
+                    if (like.getMessage().equalsIgnoreCase("点赞成功")) {
+                        dataList.get(position).getTem().add(like);
+                        mAdapter.notifyDataSetChanged();
+                        mAdapter.notifyItemChanged(position);
+                    }else if (like.getMessage().equalsIgnoreCase("取消点赞成功")){
+                        List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
+                        for (int i=0;i<dataList.get(position).getTem().size();i++){
+                            TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);
+                            if (tem.getMember_name().equalsIgnoreCase(user.mNick)){
+                                dataList.get(position).getTem().remove(tem);
+                                break;
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mAdapter.notifyItemChanged(position);
+                    }
                 }
             });
         }

@@ -207,6 +207,20 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
 
+        //点赞用户
+        if ( dataBeanList.get(position).getTem().size() != 0 ){
+            holder.digCommentBody.setVisibility(View.VISIBLE);
+            holder.clickusertext.setVisibility(View.VISIBLE);
+            String content = "";
+            for (int i = 0; i<dataBeanList.get(position).getTem().size(); i++){
+                TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(position).getTem().get(i);
+                content = content + like.getMember_name() + " ";
+            }
+            holder.clickusertext.setText(content);
+        }else {
+            holder.clickusertext.setVisibility(View.GONE);
+        }
+
     }
 
     private void toInformActivity() {
@@ -238,6 +252,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         EditText comment_edit;
         BigListView comment_list;
         TagGroup mTagGroup;
+        TextView clickusertext;
 
 
         public ViewHolder(View itemView) {
@@ -260,8 +275,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());
             comment_edit = itemView.findViewById(R.id.comment_edit);
             digCommentBody = itemView.findViewById(R.id.digCommentBody);
-            mLayoutLike = itemView.findViewById(R.id.mLayoutLike);
-            mTagGroup = itemView.findViewById(R.id.mTagGroup);
+            //mLayoutLike = itemView.findViewById(R.id.mLayoutLike);
+            //mTagGroup = itemView.findViewById(R.id.mTagGroup);
+            clickusertext = itemView.findViewById(R.id.click_like_user);
             comment_list = itemView.findViewById(R.id.comment_list);
 
 

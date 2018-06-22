@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ListUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -110,6 +111,9 @@ public class TestMode {
             private List<CommentBean> comment_res;
 
             public List<ClickLikeBean> getClick_like() {
+                if (tem !=null && tem.size()>0){
+                    return tem;
+                }
                 List<ClickLikeBean>  clickLikeBeanList= ListUtils.getNewArrayObjectList();
                     if(!TextUtils.isEmpty(click_like.toString())){
                     clickLikeBeanList= GsonUtils.jsonTypeTokenFromJson(click_like.toString(),new TypeToken<List<ClickLikeBean>>(){}.getType());
@@ -123,7 +127,19 @@ public class TestMode {
 
             private Object click_like;
 //            private List<ClickLikeBean> click_like;
+            private List<ClickLikeBean> tem;
 
+            public void setTem(List<ClickLikeBean> tem) {
+                this.tem = tem;
+            }
+
+            public List<ClickLikeBean> getTem() {
+                if (tem==null || tem.size()==0) {
+                    tem = new ArrayList<ClickLikeBean>();
+                    tem.addAll(getClick_like());
+                }
+                return tem;
+            }
 
             public int getId() {
                 return id;
@@ -294,11 +310,13 @@ public class TestMode {
                  * member_name : 玄黄子
                  */
 
+                private int code;
                 private int id;
                 private int data_uuid;
                 private int member_id;
                 private int unlike;
                 private String member_name;
+                private String message;
 
                 public int getId() {
                     return id;
@@ -336,8 +354,24 @@ public class TestMode {
                     return member_name;
                 }
 
+                public int getCode() {
+                    return code;
+                }
+
+                public void setCode(int code) {
+                    this.code = code;
+                }
+
                 public void setMember_name(String member_name) {
                     this.member_name = member_name;
+                }
+
+                public String getMessage() {
+                    return message;
+                }
+
+                public void setMessage(String message) {
+                    this.message = message;
                 }
             }
         }
