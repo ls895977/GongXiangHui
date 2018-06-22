@@ -50,11 +50,8 @@ public class MyApplication extends Application {
         return SINSTANCE;
     }
 
-    //微信APPID
-    public static String WeiXinAPP_ID = "wx8dd50e08a25101d7";
-    //QQAppID
-    public static String QQAPP_ID = "1106763297";
-    public static IWXAPI api;
+
+
 
     @Override
     public void onCreate() {
@@ -65,9 +62,6 @@ public class MyApplication extends Application {
 
         initOkGo();
         appManager = AppManager.getAppManager();
-        //微信
-        api = WXAPIFactory.createWXAPI(this, WeiXinAPP_ID, true);
-        api.registerApp(WeiXinAPP_ID);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -141,9 +135,9 @@ public class MyApplication extends Application {
 
     private void initLogger() {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
-                .methodCount(1)         // (Optional) How many method line to show. Default 2
-                .methodOffset(0)        // (Optional) Hides internal method calls up to offset. Default 5
-                .tag("hzq")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .methodCount(1)
+                .methodOffset(0)
+                .tag("hzq")
                 .build();
 
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {

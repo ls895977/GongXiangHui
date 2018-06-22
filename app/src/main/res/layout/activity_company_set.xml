@@ -90,24 +90,75 @@
                     android:background="@color/divider" />
 
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/et_mine_companyset_selectAddress"
+                        android:id="@+id/et_mine_companyset_select_province"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@null"
                         android:drawableRight="@drawable/down_icon"
                         android:focusable="true"
-                        android:hint="请选择省市区"
+                        android:hint="请选择省份"
                         android:singleLine="true"
                         android:textSize="18dp" />
 
                 </LinearLayout>
 
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/et_mine_companyset_selectcity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableRight="@drawable/down_icon"
+                        android:focusable="true"
+                        android:hint="请选择城市"
+                        android:singleLine="true"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/et_mine_companyset_select_area"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableRight="@drawable/down_icon"
+                        android:focusable="true"
+                        android:hint="请选择区域"
+                        android:singleLine="true"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

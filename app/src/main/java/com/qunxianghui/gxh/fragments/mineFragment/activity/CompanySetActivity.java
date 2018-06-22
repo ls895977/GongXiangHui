@@ -33,7 +33,6 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.PicassoImageLoader;
-import com.qunxianghui.gxh.widget.LocationPickDialog;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import java.util.ArrayList;
@@ -51,8 +50,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCompanysetInputCompany;
     @BindView(R.id.et_mine_caompanyset_toIndustry)
     EditText etMineCaompanysetToIndustry;
-    @BindView(R.id.et_mine_companyset_selectAddress)
-    TextView etMineCompanysetSelectAddress;
+    @BindView(R.id.et_mine_companyset_select_province)
+    TextView etMineCompanysetSelectProvince;
     @BindView(R.id.et_mine_companyset_detailAddress)
     EditText etMineCompanysetDetailAddress;
     @BindView(R.id.et_mine_companyset_writContactName)
@@ -73,13 +72,17 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     FlowLayout fl_company_photo;
     @BindView(R.id.iv_companyset_back)
     ImageView ivCompanysetBack;
+    @BindView(R.id.et_mine_companyset_selectcity)
+    TextView etMineCompanysetSelectcity;
+    @BindView(R.id.et_mine_companyset_select_area)
+    TextView etMineCompanysetSelectArea;
     private CompanySetBean.DataBean dataList;
     private SelectPhotoDialog selectPhotoDialog;
     private List<Bitmap> mData;
     private int IMAGE_PICKER = 0x1000;
     private int REQUEST_CODE_SELECT = 0x1007;
     private List<ImageView> imgs = new ArrayList<>();
-    private LocationPickDialog locationPickDialog;
+
 
     @Override
     protected int getLayoutId() {
@@ -91,14 +94,14 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     protected void initViews() {
 
 
-        locationPickDialog = new LocationPickDialog(this, new LocationPickDialog.LocationPickListener() {
-            @Override
-            public void onSelect(String info) {
-                if (!TextUtils.isEmpty(info)) {
-                    etMineCompanysetSelectAddress.setText(info);
-                }
-            }
-        });
+//        locationPickDialog = new LocationPickDialog(this, new LocationPickDialog.LocationPickListener() {
+//            @Override
+//            public void onSelect(String info) {
+//                if (!TextUtils.isEmpty(info)) {
+//                    etMineCompanysetSelectProvince.setText(info);
+//                }
+//            }
+//        });
 
         fl_company_photo.setChildSpacing(15);
         fl_company_photo.setRowSpacing(15);
@@ -134,8 +137,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
-
-
 
 
         /**
@@ -184,7 +185,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             /**
              * 如果有数据  填充设置的数据
              */
-            if (dataList!=null) {
+            if (dataList != null) {
                 fillPersonCompanyData(dataList);
 
             }
@@ -212,7 +213,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         et_mine_companyset_company_lowshow.setText(description);
         et_mine_companyset_compaydetail.setText(content);
         etMineCompanysetWritContactName.setText(linkname);
-        etMineCompanysetSelectAddress.setText(province_name + city_name + area_name);
+
         etMineCaompanysetToIndustry.setText(company_trade_name);
     }
 
@@ -225,7 +226,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     protected void initListeners() {
         etMineCaompanysetToIndustry.setOnClickListener(this);
         tvMmineCompanysetFabu.setOnClickListener(this);
-        etMineCompanysetSelectAddress.setOnClickListener(this);
+        etMineCompanysetSelectProvince.setOnClickListener(this);
+        etMineCompanysetSelectcity.setOnClickListener(this);
+        etMineCompanysetSelectArea.setOnClickListener(this);
         ivCompanysetBack.setOnClickListener(this);
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
@@ -285,9 +288,15 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             case R.id.et_mine_caompanyset_toIndustry:
                 asyncShowToast("选择行业");
                 break;
-            case R.id.et_mine_companyset_selectAddress:
-                locationPickDialog.show();
-                locationPickDialog.showPickView();
+
+            case R.id.et_mine_companyset_select_province:   //所在省份
+
+                break;
+                case R.id.et_mine_companyset_selectcity:  //所在城市
+
+                break;
+                case R.id.et_mine_companyset_select_area:  //所在区域
+
                 break;
             case R.id.tv_mine_companyset_fabu:
                 fetchCompayData();
@@ -302,7 +311,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
         final String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
         final String fromIndustry = etMineCaompanysetToIndustry.getText().toString().trim();  //所属行业
-        final String fromArea = etMineCompanysetSelectAddress.getText().toString().trim();  //所属地区
+        final String fromProvince = etMineCompanysetSelectProvince.getText().toString().trim();  //所属地区
         final String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
         final String connectPhone = etMineCompanysetMobilePhoneNumber.getText().toString().trim(); //联系人手机
         final String connectCall = etMineCompanysetZuojiPhoneNumber.getText().toString().trim(); //联系人电话
@@ -327,7 +336,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     .params("province_id", "河北")
                     .params("city_id", "邢台")
                     .params("area_id", "隆尧")
-                    .params("company_trade","保洁清洗qqq")
+                    .params("company_trade", "保洁清洗qqq")
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {

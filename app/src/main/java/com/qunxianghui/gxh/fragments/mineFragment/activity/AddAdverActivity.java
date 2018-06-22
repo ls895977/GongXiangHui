@@ -16,41 +16,23 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
-import com.qunxianghui.gxh.third.sina.Constants;
+
 import com.qunxianghui.gxh.utils.GlideApp;
-import com.sina.weibo.sdk.WbSdk;
+
 import com.sina.weibo.sdk.api.ImageObject;
-import com.sina.weibo.sdk.api.TextObject;
-import com.sina.weibo.sdk.api.WeiboMultiMessage;
-import com.sina.weibo.sdk.auth.AuthInfo;
-import com.sina.weibo.sdk.share.WbShareCallback;
-import com.sina.weibo.sdk.share.WbShareHandler;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnLongClick;
-
-import static com.qunxianghui.gxh.base.MyApplication.WeiXinAPP_ID;
 
 /**
  * Created by Administrator on 2018/4/2 0002.
  */
-public class AddAdverActivity extends BaseActivity implements View.OnClickListener, WbShareCallback {
-
+public class AddAdverActivity extends BaseActivity implements View.OnClickListener{
     final Activity activity = this;
     @BindView(R.id.iv_mineFragment_addTopAdver)
     ImageView ivMineFragmentAddTopAdver;
@@ -66,9 +48,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout rlMineFragmentAddTopAdver;
     @BindView(R.id.rl_mineFragment_addBottomAdver)
     RelativeLayout rlMineFragmentAddBottomAdver;
-    private WbShareHandler mWbShareHandler;
-    private IWXAPI api;
-    private String title = "第一条信息分享成功";
+
     private String url;
     private MainBroadCast receiver;
     static final String INTENT_BROADCAST_ADVERTISE = "android.intent.action.advertise";
@@ -83,14 +63,9 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initViews() {
 
-        WbSdk.install(this, new AuthInfo(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE));//创建微博API接口类对象
-        mWbShareHandler = new WbShareHandler(this);
 
-        mWbShareHandler.registerApp();
+
         //微信
-        api = WXAPIFactory.createWXAPI(this, WeiXinAPP_ID, true);
-        //将应用的appid注册到微信
-        api.registerApp(WeiXinAPP_ID);
 
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
@@ -100,39 +75,11 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "跳转到分享页面", Toast.LENGTH_SHORT).show();
-                sendMessageToWb(false, true);
-
-                //        //初始化一个WXTextObject
-                WXTextObject textObject = new WXTextObject();
-                textObject.text = title;
-                //用wxTextObjecet对象初始化一个WXMediaMessage对象
-                final WXMediaMessage msg = new WXMediaMessage();
-                msg.mediaObject = textObject;
-                msg.description = title;
-                //构造一个Reg
-                final SendMessageToWX.Req req = new SendMessageToWX.Req();
-                req.transaction = String.valueOf(System.currentTimeMillis());  //transaction字段用于唯一标识一个请求
-                req.message = msg;
-                //调用api接口发送数据到微信
-                api.sendReq(req);
-
 
             }
         });
 
 
-    }
-
-    private void sendMessageToWb(boolean hastText, boolean hasImage) {
-        final WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
-        if (hastText) {
-            weiboMultiMessage.textObject = getTextObj();
-        }
-        if (hasImage) {
-            weiboMultiMessage.imageObject = getImageObj(mContext);
-        }
-        mWbShareHandler.shareMessage(weiboMultiMessage, false);
     }
 
     @Override
@@ -197,27 +144,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
 
-        /*
-        receiver = new MainBroadCast(){
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                if(intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_ADVERTISE)){
-
-                    boolean top = intent.getBooleanExtra("top",false);
-                    if(top){
-                        String url = intent.getStringExtra("url");
-                        String title = intent.getStringExtra("title");
-                        GlideApp.with(mContext).load(url)
-                                .centerCrop()
-                                .placeholder(R.mipmap.icon_headimage)
-                                .error(R.mipmap.icon_headimage)
-                                .into(ivMineFragmentAddTopAdver);
-                    }
-                }
-            }
-        };*/
-
 
     }
 
@@ -245,31 +171,12 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onWbShareSuccess() {
 
-        Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
 
-    }
 
-    @Override
-    public void onWbShareCancel() {
-        Toast.makeText(activity, "取消分享", Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void onWbShareFail() {
 
-        Toast.makeText(activity, "分享失败", Toast.LENGTH_SHORT).show();
-    }
 
-    private TextObject getTextObj() {
-        TextObject textObject = new TextObject();
-        textObject.text = "我正在使用微博客户端发博器分享文字";
-        textObject.title = "1024wawa";
-        textObject.actionUrl = "http://www.baidu.com";
-        return textObject;
-    }
 
     /**
      * 创建图片消息对象。
@@ -283,11 +190,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         return imageObject;
     }
 
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        mWbShareHandler.doResultIntent(intent, this);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

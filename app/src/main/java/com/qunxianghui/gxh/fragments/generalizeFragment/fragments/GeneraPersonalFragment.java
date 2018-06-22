@@ -46,6 +46,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     @BindView(R.id.xrecycler_genera_personal_list)
     RecyclerView xrecyclerGeneraPersonalList;
     Unbinder unbinder;
+    private MyGeneralizePersonAdapter myGeneralizePersonAdapter;
 
     @Override
     public int getLayoutId() {
@@ -110,20 +111,22 @@ public class GeneraPersonalFragment extends BaseFragment {
         final GeneraPersonStaticBean generaPersonStaticBean = GsonUtils.jsonFromJson(body, GeneraPersonStaticBean.class);
         if (generaPersonStaticBean.getCode()==0){
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
-            final MyGeneralizePersonAdapter myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(mActivity, dataList);
-            xrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
-            myGeneralizePersonAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    final String url = dataList.get(position).getUrl();
-                    final int uuid = dataList.get(position).getUuid();
-                    final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                    intent.putExtra("url", url);
-                    intent.putExtra("uuid", uuid);
+            if (myGeneralizePersonAdapter==null){
+                myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(mActivity, dataList);
+                xrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
+                myGeneralizePersonAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        final String url = dataList.get(position).getUrl();
+                        final int uuid = dataList.get(position).getUuid();
+                        final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("url", url);
+                        intent.putExtra("uuid", uuid);
+                        startActivity(intent);
+                    }
+                });
+            }
 
-                    startActivity(intent);
-                }
-            });
         }
     }
 
