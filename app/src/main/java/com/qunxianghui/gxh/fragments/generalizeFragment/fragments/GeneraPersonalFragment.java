@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,27 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
-import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyGeneralizePersonAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.generalize.GeneraLizePersonTopBean;
 import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
-import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.bean.home.MoreTypeBean;
-import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,8 +43,6 @@ public class GeneraPersonalFragment extends BaseFragment {
     TextView tvGeneraPersonTransmit;
     @BindView(R.id.tv_genera_person_click_rate)
     TextView tvGeneraPersonClickRate;
-
-
     @BindView(R.id.xrecycler_genera_personal_list)
     RecyclerView xrecyclerGeneraPersonalList;
     Unbinder unbinder;
@@ -64,14 +53,11 @@ public class GeneraPersonalFragment extends BaseFragment {
     }
     @Override
     public void initDatas() {
-
         //显示推广头部的信息
         DisplayPersonData();
-
-
     }
-    private void DisplayPersonData() {
 
+    private void DisplayPersonData() {
         OkGo.<String>get(Constant.GENERALIZE_RERSON_STATIS_URL)
                 .execute(new StringCallback() {
                     @Override
@@ -79,7 +65,6 @@ public class GeneraPersonalFragment extends BaseFragment {
                         parseGeneraPersonTopData(response.body());
                     }
                 });
-
     }
 
     private void parseGeneraPersonTopData(String body) {
@@ -91,9 +76,7 @@ public class GeneraPersonalFragment extends BaseFragment {
             tvGeneraPersonTransmit.setText(data.getShare_cnt());
             tvGeneraPersonClickRate.setText(data.getClick_rate());
             tvGeneralizeCompanyDes.setText(data.getAd_prize());
-
         }
-
     }
 
     @Override
@@ -103,7 +86,6 @@ public class GeneraPersonalFragment extends BaseFragment {
 
     @Override
     protected void initListeners() {
-
     }
 
     @Override
@@ -122,7 +104,6 @@ public class GeneraPersonalFragment extends BaseFragment {
                 parseGeneralizePersonData(response.body());
             }
         });
-
     }
 
     private void parseGeneralizePersonData(String body) {
@@ -131,7 +112,6 @@ public class GeneraPersonalFragment extends BaseFragment {
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
             final MyGeneralizePersonAdapter myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(mActivity, dataList);
             xrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
-
             myGeneralizePersonAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
@@ -142,13 +122,19 @@ public class GeneraPersonalFragment extends BaseFragment {
                     intent.putExtra("uuid", uuid);
 
                     startActivity(intent);
-
-
-
                 }
             });
         }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onLoadData();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
     }
 
     @Override

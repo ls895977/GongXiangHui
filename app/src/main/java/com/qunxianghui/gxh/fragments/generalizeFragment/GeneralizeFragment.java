@@ -10,16 +10,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPushFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -35,26 +36,23 @@ import butterknife.Unbinder;
 
 public class GeneralizeFragment extends BaseFragment implements View.OnClickListener {
     private static GeneralizeFragment generalizeFragment;
-
+    @BindView(R.id.ll_genera)
+    View mLlGenera;
+    @BindView(R.id.rl_person)
+    View mRlPerson;
     @BindView(R.id.rg_generalize_main)
     RadioGroup rgGeneralizeMain;
     @BindView(R.id.vp_generalize_main)
     NoScrollViewPager vpGeneralizeMain;
-
     @BindView(R.id.rb_genera_personal)
     RadioButton rbGeneraPersonal;
-
     @BindView(R.id.rb_genera_company)
     RadioButton rbGeneraCompany;
-
     @BindView(R.id.rb_genera_push)
     RadioButton rbGeneraPush;
-
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
-
     Unbinder unbinder;
-
 
     @Override
     public int getLayoutId() {
@@ -64,21 +62,29 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @Override
     public void initDatas() {
         if (LoginMsgHelper.isLogin(getContext())) {
-            final List<Fragment> fragments = new ArrayList<>();
-            fragments.add(new GeneraPersonalFragment());
-            fragments.add(new GeneraCompanyFragment());
-            fragments.add(new GeneraPushFragment());
-            final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
-            vpGeneralizeMain.setAdapter(adapter);
-            /** 禁止滑动*/
-            vpGeneralizeMain.setScroll(true);
-            /**增加缓存页面的数量*/
-            vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
-            /**默认显示第一个选项卡*/
-            rgGeneralizeMain.check(R.id.rb_genera_personal);
+            if (SPUtils.getBoolean(getActivity(), SpConstant.IS_COMPANY, false)) {
+                mLlGenera.setVisibility(View.VISIBLE);
+                vpGeneralizeMain.setVisibility(View.VISIBLE);
+                mRlPerson.setVisibility(View.GONE);
+                final List<Fragment> fragments = new ArrayList<>();
+                fragments.add(new GeneraPersonalFragment());
+                fragments.add(new GeneraCompanyFragment());
+                fragments.add(new GeneraPushFragment());
+                MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
+                vpGeneralizeMain.setAdapter(adapter);
+                /** 禁止滑动*/
+                vpGeneralizeMain.setScroll(true);
+                /**增加缓存页面的数量*/
+                vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
+                /**默认显示第一个选项卡*/
+                rgGeneralizeMain.check(R.id.rb_genera_personal);
+            } else {
+                mLlGenera.setVisibility(View.GONE);
+                vpGeneralizeMain.setVisibility(View.GONE);
+                mRlPerson.setVisibility(View.VISIBLE);
+                getChildFragmentManager().beginTransaction().add(R.id.rl_person, new GeneraPersonalFragment()).commit();
+            }
         }
-
-
     }
 
     @Override
@@ -91,18 +97,13 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-
     @Override
     public void initViews(View view) {
-
         initViewPagers();
     }
 
     @Override
     protected void initListeners() {
-
-
-
         tvGeneraEdit.setOnClickListener(this);
         rgGeneralizeMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -124,17 +125,13 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
     }
 
-    private void initViewPagers() {
-
-    }
+    private void initViewPagers() { }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_genera_back:
-
                 break;
-
         }
     }
 
@@ -149,21 +146,16 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                     rbGeneraPersonal.setChecked(true);
                     rbGeneraCompany.setChecked(false);
                     rbGeneraPush.setChecked(false);
-
                     break;
                 case 1:
-
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(true);
                     rbGeneraPush.setChecked(false);
-
                     break;
                 case 2:
-
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(false);
                     rbGeneraPush.setChecked(true);
-
                     break;
             }
         }
@@ -190,11 +182,9 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     }
 
     public static GeneralizeFragment getInstance() {
-        if(generalizeFragment == null){
+        if (generalizeFragment == null) {
             generalizeFragment = new GeneralizeFragment();
         }
         return generalizeFragment;
     }
-
-
 }

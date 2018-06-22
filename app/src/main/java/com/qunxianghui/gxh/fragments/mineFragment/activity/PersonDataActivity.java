@@ -75,21 +75,17 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
-
         //设置回显
         setData();
-
         ivPersonDataBack.setOnClickListener(this);
         ivPersonDataImg.setOnClickListener(this);
         rlMineDataSex.setOnClickListener(this);
         mEtPersonDataSex.setOnClickListener(this);
         tvPersonDataSave.setOnClickListener(this);
-
     }
 
     /** ==================设置个人资料回显===================== */
     private void setData() {
-
         String nick = getIntent().getStringExtra(NICK);
         String avatar = getIntent().getStringExtra(AVATAR);
         String mobile = getIntent().getStringExtra(MOBILE);
@@ -104,20 +100,16 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                     circleCrop().
                     into(ivPersonDataImg);
         }
-
         if (!TextUtils.isEmpty(mobile)) {
             etPersonDataPhone.setText(String.valueOf(mobile));
-
         }
         if (!TextUtils.isEmpty(address)) {
             etPersonDataAddress.setText(String.valueOf(address));
-
         }
         if (!TextUtils.isEmpty(nick)) {
             etPersonDataNickName.setText(nick);
             etPersonDataNickName.setSelection(nick.length());
         }
-
         if (sex == 1) {
             mEtPersonDataSex.setText("女");
         } else if (sex == 2) {
@@ -125,13 +117,10 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         } else {
             mEtPersonDataSex.setText("");
         }
-
     }
-
 
     @Override
     public void onClick(View v) {
-
         final String mNiceName = etPersonDataNickName.getText().toString().trim();
         final String mPhone = etPersonDataPhone.getText().toString().trim();
         final String mAdress = etPersonDataAddress.getText().toString().trim();
@@ -140,7 +129,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         if (mSex.equals("女")) {
             sex = "1";
         } else if (mSex.equals("男")){
-
             sex = "2";
         }
 
@@ -150,7 +138,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.iv_person_data_img:
                 openPhoto();
-
                 break;
             case R.id.rl_mineData_sex:
                 showSexDialog();
@@ -159,8 +146,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                 showSexDialog();
                 break;
             case R.id.tv_person_data_save:
-
-
                 if (TextUtils.isEmpty(mNiceName) && TextUtils.isEmpty(mPhone) && TextUtils.isEmpty(mSex) && TextUtils.isEmpty(mAdress)) {
                     Toast.makeText(mContext, "请在检查一下 是否还有没有写的", Toast.LENGTH_SHORT).show();
                     return;
@@ -169,8 +154,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                     Toast.makeText(mContext, "手机格式错误了，请检查重试", Toast.LENGTH_SHORT).show();
                 } else {
                     String imagUrl = Utils.listToString(upLoadPics);
-
-
                     OkGo.<String>post(Constant.EDIT_PERSON_DATA).
                             params("nick", mNiceName).
                             params("sex", sex).
@@ -194,16 +177,11 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                             });
                 }
                 break;
-
         }
-
     }
-
 
     private void openPhoto() {
         imagePicker.startChooser(this, new ImagePicker.Callback() {
-
-
             @Override
             public void onPickImage(Uri imageUri) {
 
@@ -221,8 +199,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
                         error(R.mipmap.user_moren).
                         circleCrop().
                         into(ivPersonDataImg);
-
-
             }
 
             //自定义剪裁
@@ -279,7 +255,6 @@ public class PersonDataActivity extends BaseActivity implements View.OnClickList
         });
         builder.show();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

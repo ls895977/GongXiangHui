@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,7 +45,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     private List<HomeVideoListBean.DataBean.ListBean> videoList;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private String follow;
-
+    private int count = 0;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_video;
@@ -52,14 +53,24 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initViews() {
-        xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+       xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+
     }
 
     @Override
     protected void initDatas() {
 
-        OkGo.<String>post(Constant.HOME_VIDEO_LIST_URL)
+        RequestHomeVideoList();
 
+
+
+
+    }
+
+    private void RequestHomeVideoList() {
+        OkGo.<String>post(Constant.HOME_VIDEO_LIST_URL)
+                .params("limit", 10)
+                .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -67,8 +78,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
                     }
                 });
-
-
     }
 
     /**
@@ -79,10 +88,11 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     private void parsePersonDetailVideoData(String body) {
 
         final HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
-        if (homeVideoListBean.getCode() == 0) {
-            videoList = homeVideoListBean.getData().getList();
 
-            if (personDetailVideoAdapter == null) {
+        videoList = homeVideoListBean.getData().getList();
+        count+=videoList.size();
+        if (homeVideoListBean.getCode() == 0) {
+
                 personDetailVideoAdapter = new PersonDetailVideoAdapter(mContext, videoList);
                 personDetailVideoAdapter.setVideoListClickListener(this);
 
@@ -98,7 +108,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
 
-            }
+
 
 
         }
@@ -113,11 +123,28 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         xrecyclerHomevideoList.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                videoList.clear();
+                count=0;
+
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        RequestHomeVideoList();
+                    }
+                });
+
                 xrecyclerHomevideoList.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RequestHomeVideoList();
+                    }
+                },500);
                 xrecyclerHomevideoList.refreshComplete();
             }
         });

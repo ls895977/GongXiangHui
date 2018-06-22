@@ -193,15 +193,11 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.iv_sina_login:
                 mSsoHandler.authorize(new SelfWbAuthListener());
-
                 break;
-
         }
     }
 
     private void doLogin(String phone, String password) {
-
-
         OkGo.<LzyResponse<LoginBean>>get(Constant.LOGIN_URL).tag(TAG).cacheKey("cachePostKey").
                 cacheMode(CacheMode.DEFAULT).
                 params("mobile", phone).
@@ -211,20 +207,13 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(Response<LzyResponse<LoginBean>> response) {
                         if (response.body().code.equals("0")) {
                             String access_token=response.body().data.getAccessTokenInfo().getAccess_token();
-
-
                             SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-
-
+                            SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
                             MyApplication.getApp().setAccessToken(access_token);
                             Log.e(TAG, "onSuccess: "+access_token);
                             asyncShowToast("登录成功");
-
-
-
                             toActivity(MainActivity.class);
                             finish();
-                            return;
                         }else {
                             asyncShowToast(response.body().message);
                         }
@@ -289,10 +278,7 @@ public class LoginActivity extends BaseActivity {
         //官方说明：用于保持请求和回调的状态，授权请求后原样带回给第三方。该参数可用于防止csrf攻击（跨站请求伪造攻击），建议第三方带上该参数，可设置为简单的随机数加session进行校验
         req.state = "wechat_sdk_xb_live_state";
         MyApplication.api.sendReq(req);
-
-
     }
-
 
     private class SelfWbAuthListener implements WbAuthListener {
 

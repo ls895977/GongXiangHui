@@ -99,35 +99,24 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-
-
         if (userSize > 0) {
-
             final ArrayList<User> userList = userDao.dbQueryAll();
             for (int i = 0; i < userSize; i++) {
                 final User user = userList.get(i);
                 mineQuicklyLogin.setText(user.getUsername());
             }
         }
-
-
     }
-
-
     /**
      * ==================获取用户信息(资料)=====================
      */
 
 
     private void fillUserData() {
-
-
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
-
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
                             //                            Logger.d("onSuccess-->:" + response.body().toString());
                             parseUserData(response.body());
@@ -137,12 +126,9 @@ public class MineFragment extends BaseFragment {
                         //                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
                 });
-
-
     }
 
     private void parseUserData(String body) {
-
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
@@ -185,8 +171,6 @@ public class MineFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -205,15 +189,11 @@ public class MineFragment extends BaseFragment {
             mActivity.finish();
             return;
         }
-
         fillUserData();
-        //        toCollectView();
-
+//        toCollectView();
     }
 
     private void toCollectView() {
-
-
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
@@ -227,12 +207,10 @@ public class MineFragment extends BaseFragment {
                 bundle.putString(PersonDataActivity.MOBILE, mMobile);
                 bundle.putString(PersonDataActivity.ADDRESS, mAddress);
                 bundle.putInt(PersonDataActivity.SEX, mSex);
-
                 toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.rl_message_gather:
                 toActivity(MessageGatherActivity.class);
-
                 break;
             case R.id.rl_mine_message:
                 toActivity(MineMessageActivity.class);
@@ -249,20 +227,14 @@ public class MineFragment extends BaseFragment {
             case R.id.company_set:
                 toActivity(CompanySetActivity.class);
                 break;
-
             case R.id.hezuo_call:
-
-
                 requestCall();
-
-
                 break;
             case R.id.write_advertise:
                 toActivity(AdvertisConmmengtActivity.class);
                 break;
             case R.id.rl_invite_friend:
                 toActivity(InviteFrientActivity.class);
-
                 break;
             case R.id.mine_quickly_login:
                 toActivity(LoginActivity.class);
@@ -276,7 +248,6 @@ public class MineFragment extends BaseFragment {
     }
 
     private void requestCall() {
-
         if (PermissionsUtil.hasPermission(mActivity, new String[]{Manifest.permission.CALL_PHONE})) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001884660"));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -323,6 +294,4 @@ public class MineFragment extends BaseFragment {
         }
         return mineFragment;
     }
-
-
 }

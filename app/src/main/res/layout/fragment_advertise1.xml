@@ -9,16 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <LinearLayout
-
             android:id="@+id/ll_addver_fragment1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -28,7 +24,6 @@
                 android:text="图片上传"
                 android:textSize="15sp" />
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +31,6 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal">
-
 
                 <com.bm.library.PhotoView
                     android:id="@+id/iv_mine_addFragment1BigAdver"
@@ -46,7 +40,6 @@
                     android:src="@mipmap/bg_image_75_366" />
 
             </LinearLayout>
-
 
             <TextView
                 android:layout_width="wrap_content"

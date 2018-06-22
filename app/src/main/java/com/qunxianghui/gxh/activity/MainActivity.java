@@ -24,13 +24,18 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.rb_home) RadioButton rbHome;
-    @BindView(R.id.rb_mine) RadioButton rbMine;
-    @BindView(R.id.rg_main) RadioGroup rgMain;
-    @BindView(R.id.rb_location) RadioButton rbLocation;
-    @BindView(R.id.rb_fabu) RadioButton rbFabu;
-    @BindView(R.id.rb_generalize) RadioButton rbGeneralize;
-
+    @BindView(R.id.rb_home)
+    RadioButton rbHome;
+    @BindView(R.id.rb_mine)
+    RadioButton rbMine;
+    @BindView(R.id.rg_main)
+    RadioGroup rgMain;
+    @BindView(R.id.rb_location)
+    RadioButton rbLocation;
+    @BindView(R.id.rb_fabu)
+    RadioButton rbFabu;
+    @BindView(R.id.rb_generalize)
+    RadioButton rbGeneralize;
     private long exitTime;
 
     private MainBroadCast receiver;
@@ -49,24 +54,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViews() {
         initViewPagers();
-
     }
 
 
     private void initViewPagers() {
-
         /** 默认选中第一个选项卡*/
         selectedFragment(0);
     }
 
     @Override
-    protected void initListeners() {
-
-    }
+    protected void initListeners() { }
 
     @Override
     protected void initDatas() {
-
         receiver = new MainBroadCast() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -82,20 +82,16 @@ public class MainActivity extends BaseActivity {
                 }
             }
         };
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_BROADCAST_HIDE_TAB);
         registerReceiver(receiver, filter);
-
         UserUtil.getInstance();
     }
-
 
     private void selectedFragment(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
         switch (position) {
-
             //首页
             case 0:
                 if (mHomeFragment == null) {
@@ -148,18 +144,18 @@ public class MainActivity extends BaseActivity {
         transaction.commit();
     }
 
-    /** ==================先全部隐藏===================== */
+    /**
+     * ==================先全部隐藏=====================
+     */
     private void hideFragment(FragmentTransaction transaction) {
         if (mHomeFragment != null)
             transaction.hide(mHomeFragment);
         if (mLocationFragment != null)
             transaction.hide(mLocationFragment);
-        if (mIssureFragment != null) {
+        if (mIssureFragment != null)
             transaction.hide(mIssureFragment);
-        }
-        if (mGeneralizeFragment != null) {
+        if (mGeneralizeFragment != null)
             transaction.hide(mGeneralizeFragment);
-        }
         if (mMineFragment != null)
             transaction.hide(mMineFragment);
     }
@@ -167,6 +163,12 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 二次点击返回
+     * <<<<<<< HEAD
+     *
+     * @param keyCode
+     * @param event
+     * @return =======
+     * >>>>>>> f0ca598576403ccf98fa58578268c6eb6e375784
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -186,7 +188,6 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-
     @OnClick({R.id.rb_location, R.id.rb_fabu, R.id.rb_generalize, R.id.rb_mine, R.id.rb_home})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -202,7 +203,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.rb_generalize:
                 selectedFragment(3);
-
                 break;
             case R.id.rb_mine:
                 selectedFragment(4);
