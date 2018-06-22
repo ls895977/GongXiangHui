@@ -1,8 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,28 +25,23 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.StudentDao;
 import com.qunxianghui.gxh.db.UserDao;
-
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-import com.sina.weibo.sdk.WbSdk;
-import com.sina.weibo.sdk.auth.AuthInfo;
-import com.sina.weibo.sdk.auth.Oauth2AccessToken;
-import com.sina.weibo.sdk.auth.WbAuthListener;
-import com.sina.weibo.sdk.auth.WbConnectErrorMessage;
-import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
-
-import org.json.JSONObject;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 
 
 /**
@@ -61,11 +54,6 @@ public class LoginActivity extends BaseActivity {
     public static final int LOGIN_RESULT = 1;
     @BindView(R.id.tv_login_show_usermessage)
     TextView tvLoginShowUsermessage;
-
-
-    private IWXAPI api;
-
-
     @BindView(R.id.et_login_password)
     EditText etLoginPassword;
     @BindView(R.id.bt_login_login)
@@ -82,35 +70,24 @@ public class LoginActivity extends BaseActivity {
     ImageView ivQqLogin;
     @BindView(R.id.iv_sina_login)
     ImageView ivSinaLogin;
+
+    private UMShareAPI mShareAPI;
+    private UMAuthListener mUmAuthListener;
+    private UMShareListener umShareListener;
     private StudentDao studentDao;
     private String phone;
     private String password;
-    private SsoHandler mSsoHandler;
 
-    /**
-     * 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
-     */
-    private Oauth2AccessToken mAccessToken;
     private UserDao userDao;
-    private String userText;
-
 
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
-
-
     }
 
     @Override
     protected void initViews() {
-
-
-
-
-
-
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,23 +95,62 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         }).setTitleText("用户登录");
-
         //数据库操作类
         userDao = new UserDao(this);
     }
 
     @Override
     protected void initDatas() {
+        mShareAPI = UMShareAPI.get(this);
+        //此回调用于三方登录回调
+        mUmAuthListener = new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
 
+            }
 
-    }
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+                Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
+                Log.w("test", "openid: " + data.get("uid"));
+                Log.w("test", "昵称: " + data.get("name"));
+                Log.w("test", "头像: " + data.get("iconurl"));
+                Log.w("test", "性别: " + data.get("gender"));
+            }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+//                Log.w("test", "性别: " + data.get("gender"));
+            }
 
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+                Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
+            }
+        };
+
+        //此回调用于分享
+        umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+                //分享开始的回调
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA platform) {
+                Toast.makeText(LoginActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, Throwable t) {
+                Toast.makeText(LoginActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+                Toast.makeText(LoginActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
@@ -144,9 +160,6 @@ public class LoginActivity extends BaseActivity {
             case R.id.bt_login_login:
                 phone = etLoginPhone.getText().toString().trim();
                 password = etLoginPassword.getText().toString().trim();
-
-
-
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
                 } else if (!REGutil.checkCellphone(phone)) {
@@ -168,20 +181,56 @@ public class LoginActivity extends BaseActivity {
 
                 break;
             case R.id.tv_login_regist:
-             toActivity( RegistActivity.class);
+                toActivity(RegistActivity.class);
                 break;
             case R.id.tv_login_forget_password:
                 toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
-                userText = tvLoginShowUsermessage.getText().toString().trim();
-
+                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
                 break;
             case R.id.iv_qq_login:
-
+                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);
                 break;
             case R.id.iv_sina_login:
-         
+//                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.SINA, mUmAuthListener);
+                //此方法用于退出登录，想要删除授权的用户
+//                UMShareAPI.get(mContext).deleteOauth(this, SHARE_MEDIA.WEIXIN, null);
+
+                //以下代码是分享示例代码
+                UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+                final UMWeb web = new UMWeb("http://www.baidu.com"); //切记切记 这里分享的链接必须是http开头
+                web.setTitle("你要分享内容的标题");//标题
+                web.setThumb(image);  //缩略图
+                web.setDescription("你要分享内容的描述");//描述
+                new ShareAction(this)
+                        .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setShareboardclickCallback(new ShareBoardlistener() {
+                            @Override
+                            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                                if (share_media == SHARE_MEDIA.QQ) {
+                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                                            .withMedia(web)
+                                            .setCallback(umShareListener)
+                                            .share();
+                                } else if (share_media == SHARE_MEDIA.WEIXIN) {
+                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                                            .withMedia(web)
+                                            .setCallback(umShareListener)
+                                            .share();
+                                } else if (share_media == SHARE_MEDIA.QZONE) {
+                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.QZONE)
+                                            .withMedia(web)
+                                            .setCallback(umShareListener)
+                                            .share();
+                                } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
+//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+//                                            .withMedia(web)
+//                                            .setCallback(umShareListener)
+//                                            .share();
+                                }
+                            }
+                        }).open();
                 break;
         }
     }
@@ -195,19 +244,17 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<LzyResponse<LoginBean>> response) {
                         if (response.body().code.equals("0")) {
-                            String access_token=response.body().data.getAccessTokenInfo().getAccess_token();
+                            String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
                             MyApplication.getApp().setAccessToken(access_token);
-                            Log.e(TAG, "onSuccess: "+access_token);
+                            Log.e(TAG, "onSuccess: " + access_token);
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
-                        }else {
+                        } else {
                             asyncShowToast(response.body().message);
                         }
-
-
                     }
                 });
 //                execute(new StringCallback() {
@@ -240,39 +287,6 @@ public class LoginActivity extends BaseActivity {
 //
 //
 //                });
-
-    }
-
-
-
-
-    private class SelfWbAuthListener implements WbAuthListener {
-
-        @Override
-        public void onSuccess(final Oauth2AccessToken token) {
-            LoginActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAccessToken = token;
-                    if (mAccessToken.isSessionValid()) {
-                        // 显示 Token
-                        //                     updateTokenView(false);
-                        Log.i("获取mAccessToken成功", "获取mAccessToken成功");
-                        Log.i("mAccessToken为:", String.valueOf(mAccessToken));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void cancel() {
-            Toast.makeText(mContext, "取消授权", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
-            Toast.makeText(mContext, "授权失败", Toast.LENGTH_SHORT).show();
-        }
     }
 
     //    /**
@@ -295,15 +309,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //sso回调 必须重写
-        if (mSsoHandler != null) {
-            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

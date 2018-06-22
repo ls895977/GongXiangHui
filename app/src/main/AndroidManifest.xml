@@ -28,9 +28,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--蓝牙缺陷-->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name="com.qunxianghui.gxh.base.MyApplication"
@@ -49,6 +46,13 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5b2c8e89b27b0a0ba6000034" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="gw" />
+
         <!--三方activity集合-->
         <!--高德地图-->
         <!--android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>-->
@@ -57,26 +61,10 @@
             android:value="9720a15c1ffd088110c1dd98ead4ce9b" />
         <service android:name="com.amap.api.location.APSService" />
 
-        <!--微信-->
-        <!--微信-->
-
-        <!-- 注册QQActivity -->
         <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="1106763297" /> <!-- 开放平台获取的APPID -->
-            </intent-filter>
-        </activity>
-        <!-- 注册QQActivity -->
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--欢迎界面的广告界面-->
@@ -271,8 +259,6 @@
         <activity
             android:name=".activity.PhotoBrowserActivity"
             android:launchMode="singleTask" />
-
-
     </application>
 
 </manifest>

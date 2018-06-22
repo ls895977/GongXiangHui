@@ -29,8 +29,6 @@ import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.OkHttpUtil;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-import com.sina.weibo.sdk.utils.LogUtil;
-
 import java.util.List;
 
 import butterknife.BindView;
@@ -219,7 +217,6 @@ public class LocationServiceActivity extends BaseActivity implements View.OnClic
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //請求数据 舒心车辆信息 每次点击都刷新
                     params.setPageSize(String.valueOf(data.get(position).getId()));
-                    LogUtil.e("请求url",params.buildUrl());
                     doCarQuery(params.buildUrl());
 
 

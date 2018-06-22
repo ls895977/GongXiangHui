@@ -1,12 +1,7 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -17,14 +12,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.qunxianghui.gxh.broadcast.MainBroadCast;
-
-import com.qunxianghui.gxh.utils.GlideApp;
-
-import com.sina.weibo.sdk.api.ImageObject;
-
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.broadcast.MainBroadCast;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -55,18 +46,12 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected int getLayoutId() {
-
         return R.layout.activity_mine_advertise;
-
     }
 
     @Override
     protected void initViews() {
-
-
-
         //微信
-
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,13 +63,10 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
             }
         });
-
-
     }
 
     @Override
     protected void initDatas() {
-
         final Intent intent = getIntent();
         url = intent.getStringExtra("url");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
@@ -149,8 +131,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initListeners() {
-
-
         rlMineFragmentAddTopAdver.setOnClickListener(AddAdverActivity.this);
         rlMineFragmentAddBottomAdver.setOnClickListener(AddAdverActivity.this);
     }
@@ -170,26 +150,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
-
-
-
-
-
-
-
-
-    /**
-     * 创建图片消息对象。
-     *
-     * @return 图片消息对象。
-     */
-    private ImageObject getImageObj(Context context) {
-        ImageObject imageObject = new ImageObject();
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_share);
-        imageObject.setImageObject(bitmap);
-        return imageObject;
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

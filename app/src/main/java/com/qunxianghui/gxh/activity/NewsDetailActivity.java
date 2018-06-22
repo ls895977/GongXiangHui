@@ -34,28 +34,16 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.SelfTestRecyclerviewAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.config.Constant;
-
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
-
 import com.qunxianghui.gxh.widget.TitleBuilder;
-
 import com.sina.weibo.sdk.api.ImageObject;
 
-import com.sina.weibo.sdk.share.WbShareHandler;
-
-
-
-
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,14 +70,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailAddAdver;
     private WebView mWebView;
     private ProgressBar mProgressBar;
-
     private Dialog dialog;
     private View alertView;
     private TextView tv_addAdver_share;
     private TextView tv_article_share;
     private TextView tv_bottom_alertdialog_cancle;
-
-
     private LinearLayout ll_shared_third_list;
     private LinearLayout ll_share_list;
     private ImageView iv_newsdetail_shared_weichat;
@@ -97,42 +82,23 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private ImageView iv_newsdetail_shared_sina;
     private ImageView iv_newsdetail_shared_qq;
     private Button bt_newsdetail_cancle_share;
-
-
-
     private Bundle params;
-
     private String url;
-
-
     private int uuid;
     private int id;
     private android.os.Handler handler = new android.os.Handler();
     private boolean has_collect;
 
-
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
         return R.layout.activity_news_detail;
-
     }
 
     @Override
     protected void initViews() {
-
-
-
-
-
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
-
-
         //微信朋友圈
-
-
-
         mProgressBar = (ProgressBar) findViewById(R.id.progress_newsdetail);
         Intent intent = getIntent();
         intent.getStringExtra("url");
@@ -140,7 +106,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
         //获取内容状态
         hodeNewsStatus();
-
     }
 
     private void hodeNewsStatus() {
@@ -156,13 +121,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
                             com.orhanobut.logger.Logger.d("收藏+++"+response.body().toString());
                         }
-
                     }
                 }, 200);
             }
         });
-
-
     }
 
     //解析内容详情
@@ -176,7 +138,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -203,8 +164,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-
-
 
     /**
      * 创建图片消息对象。
@@ -405,10 +364,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 dialog.dismiss();
                 break;
             case R.id.iv_news_detail_collect:
-
                 CollectDataList(uuid);
-
-
                 break;
         }
 
@@ -420,43 +376,21 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(Response<String> response) {
                 parseCollectData(response.body());
-
             }
         });
-
     }
 
     private void parseCollectData(String body) {
-        com.orhanobut.logger.Logger.d("收藏的详细信息---" + body.toString());
-
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
         if (myCollectBean.getCode() == 0) {
-
             has_collect = (has_collect == true ? false : true);
             ivNewsDetailCollect.setBackgroundResource(has_collect == true ? R.drawable.collect : R.drawable.collect_normal);
             Toast.makeText(mContext, has_collect == true ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
-
         }
-
     }
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 

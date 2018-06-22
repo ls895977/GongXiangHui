@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.interfaces.PermissionListener;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -44,7 +45,14 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         Log.d(TAG, "onResume: " + TAG);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /**
