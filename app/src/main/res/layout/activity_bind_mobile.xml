@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <include layout="@layout/activity_title"/>
+
+
+    <ImageView
+        android:layout_width="98dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@mipmap/home_logo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/bianmin_call"/>
+
+        <EditText
+            android:inputType="phone"
+            android:id="@+id/et_bindmobile_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="手机号"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+    <View style="@style/dividerStyle"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_bindmobile_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/bianmin_call"/>
+
+        <EditText
+            android:id="@+id/et_bindmobile_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:layout_toLeftOf="@+id/tv_bindmobile_getcode"
+            android:layout_toRightOf="@+id/iv_bindmobile_code"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="验证码"
+            android:inputType="textPassword"
+            android:textSize="15sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_bindmobile_getcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="获取验证码"
+            android:textColor="#f00"
+            android:textSize="14sp"/>
+
+
+    </RelativeLayout>
+
+    <View style="@style/dividerStyle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/bianmin_call"/>
+
+        <EditText
+            android:inputType="phone"
+            android:id="@+id/tv_bindmobile_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="密码"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+    <View style="@style/dividerStyle"/>
+
+    <Button
+        android:id="@+id/bt_bindmobile_bindmobile"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/shape_button"
+        android:text="绑定手机号"
+        android:textColor="#fff"
+        android:textSize="16sp"/>
+</LinearLayout>

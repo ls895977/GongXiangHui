@@ -259,6 +259,9 @@
         <activity
             android:name=".activity.PhotoBrowserActivity"
             android:launchMode="singleTask" />
+        <activity android:name=".fragments.mineFragment.activity.BindMobileActivity"
+            android:launchMode="singleTask"    />
+
     </application>
 
 </manifest>

@@ -81,10 +81,7 @@ public class LoginActivity extends BaseActivity {
     private StudentDao studentDao;
     private String phone;
     private String password;
-
     private UserDao userDao;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -112,7 +109,6 @@ public class LoginActivity extends BaseActivity {
             public void onStart(SHARE_MEDIA platform) {
 
 
-
             }
 
             @Override
@@ -120,15 +116,21 @@ public class LoginActivity extends BaseActivity {
                 /**
                  * qq登录完成后的回掉
                  */
-                OkGo.<String>post(Constant.QQ_RESPONSE_URL).execute(new StringCallback() {
+                OkGo.<String>post(Constant.QQ_RESPONSE_URL)
+                        .params("status", true)
+                        .params("accessToken", data.get("accessToken"))
+                        .params("openId", data.get("uid"))
+                        .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
                             JSONObject jsonObject=new JSONObject(response.body());
-
+                            JSONObject data = jsonObject.getJSONObject("data");
                             int code = jsonObject.getInt("code");
                             if (code==0){
                                 toActivity(MainActivity.class);
+                            }else if (code==200){
+                         toActivity(BindMobileActivity.class);
                             }
 
                         } catch (Exception e) {
