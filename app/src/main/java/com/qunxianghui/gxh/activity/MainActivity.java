@@ -163,12 +163,12 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 二次点击返回
-     * <<<<<<< HEAD
+     *
      *
      * @param keyCode
      * @param event
      * @return =======
-     * >>>>>>> f0ca598576403ccf98fa58578268c6eb6e375784
+     *
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
