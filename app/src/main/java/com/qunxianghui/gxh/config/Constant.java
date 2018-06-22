@@ -191,4 +191,7 @@ public class Constant {
     public static final String GET_COMPANY_URL=BASE_URL+"service/getCompany";
     //企业修改
     public static final String EDIT_COMPANY_URL=BASE_URL+"service/editCompany";
+    //QQ登录回调
+    public static final String QQ_RESPONSE_URL=BASE_URL+"user/callback/qq";
+    public static final String WEIXIN_RESPONSE_URL=BASE_URL+"user/callback/weixin ";
 }

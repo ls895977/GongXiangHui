@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
@@ -37,6 +38,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -107,10 +111,31 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onStart(SHARE_MEDIA platform) {
 
+
+
             }
 
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+                /**
+                 * qq登录完成后的回掉
+                 */
+                OkGo.<String>post(Constant.QQ_RESPONSE_URL).execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject=new JSONObject(response.body());
+
+                            int code = jsonObject.getInt("code");
+                            if (code==0){
+                                toActivity(MainActivity.class);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
                 Log.w("test", "openid: " + data.get("uid"));
                 Log.w("test", "昵称: " + data.get("name"));
