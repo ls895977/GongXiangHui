@@ -16,6 +16,10 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.tencent.mm.opensdk.utils.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.logging.Logger;
 
 import butterknife.BindView;
@@ -41,8 +45,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initViews() {
-        password = etResetpasswordNewpassword.getText().toString().trim();
-        confirmPassword = etResetpasswordConformNewPassworm.getText().toString().trim();
+
     }
 
     @Override
@@ -85,13 +88,13 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     private void SeekPasswordCommit() {
-
+        password = etResetpasswordNewpassword.getText().toString().trim();
+        confirmPassword = etResetpasswordConformNewPassworm.getText().toString().trim();
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             asyncShowToast("密码和确认密码不能为空");
-            return;
         } else if (!password.equals(confirmPassword) ) {
             asyncShowToast("两次输入的密码不一致");
-            return;
+
         } else {
             CommitSeekPassword(password);
         }
@@ -106,7 +109,23 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        com.orhanobut.logger.Logger.e("----------修改成功" + response.toString());
+                        try {
+                            JSONObject jsonObject=new JSONObject(response.body());
+
+                            final int code = jsonObject.getInt("code");
+
+
+                            if (code==0){
+                                com.orhanobut.logger.Logger.e("----------修改成功" + response.toString());
+                                toActivity(LoginActivity.class);
+                            }else {
+                                asyncShowToast("修改失败");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 });
     }

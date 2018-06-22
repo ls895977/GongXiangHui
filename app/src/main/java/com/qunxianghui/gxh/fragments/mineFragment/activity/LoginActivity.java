@@ -181,7 +181,7 @@ public class LoginActivity extends BaseActivity {
 
                 break;
             case R.id.iv_sina_login:
-         
+
                 break;
         }
     }
