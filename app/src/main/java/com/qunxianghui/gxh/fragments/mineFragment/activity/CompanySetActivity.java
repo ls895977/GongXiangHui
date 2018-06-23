@@ -33,6 +33,7 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.PicassoImageLoader;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import java.util.ArrayList;
@@ -93,14 +94,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     protected void initViews() {
 
 
-//        locationPickDialog = new LocationPickDialog(this, new LocationPickDialog.LocationPickListener() {
-//            @Override
-//            public void onSelect(String info) {
-//                if (!TextUtils.isEmpty(info)) {
-//                    etMineCompanysetSelectProvince.setText(info);
-//                }
-//            }
-//        });
+
 
         fl_company_photo.setChildSpacing(15);
         fl_company_photo.setRowSpacing(15);
@@ -287,11 +281,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             case R.id.et_mine_caompanyset_toIndustry:
                 asyncShowToast("选择行业");
                 break;
-
             case R.id.et_mine_companyset_select_area:  //所在区域
                 SetCompantSetArea();
-
-
                 break;
             case R.id.tv_mine_companyset_fabu:
                 fetchCompayData();
@@ -416,7 +407,12 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                             }
                         }
                     }
+
+
                 }
+
+
+
             } catch (Exception e) {
                 Log.w("test", e.getMessage());
             }
