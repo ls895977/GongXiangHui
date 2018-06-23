@@ -276,10 +276,8 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         OkGo.<String>post(Constant.ADD_AD)
                 .params("ad_type", 1)
                 .params("images", imagUrl)
-                .params("name","test")
-                .params("mobile","19957272061")
-                .params("address",trim)
-                .params("link", trim).execute(new StringCallback() {
+                .params("link", trim)
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
 
@@ -291,12 +289,12 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
                 Log.v("ad_add",response.toString());
                 //super.onError(response);
-                Intent intent = new Intent();
-                intent.putExtra("index", 0);
-                intent.putExtra("url",imagUrl);
-                intent.putExtra("title",trim);
-                mActivity.setResult(Activity.RESULT_OK, intent);
-                mActivity.finish();
+//                Intent intent = new Intent();
+//                intent.putExtra("index", 0);
+//                intent.putExtra("url",imagUrl);
+//                intent.putExtra("title",trim);
+//                mActivity.setResult(Activity.RESULT_OK, intent);
+//                mActivity.finish();
             }
         });
 
