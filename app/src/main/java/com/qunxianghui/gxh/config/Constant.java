@@ -144,7 +144,8 @@ public class Constant {
     public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
     //发布帖子
     public static final String MYPOST_TIEZI_URL = BASE_URL + "posts/publish";
-
+    //获取三级省市区
+    public static final String  HOST_THIRD_STEPAREA_URL=BASE_URL+"region/getAllArea";
     //添加举报信息
     public static final String  ADD_REPORT_URL=BASE_URL+"report/reportAdd";
     //搜索结果

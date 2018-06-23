@@ -50,8 +50,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCompanysetInputCompany;
     @BindView(R.id.et_mine_caompanyset_toIndustry)
     EditText etMineCaompanysetToIndustry;
-    @BindView(R.id.et_mine_companyset_select_province)
-    TextView etMineCompanysetSelectProvince;
+    @BindView(R.id.et_mine_companyset_select_area)
+    TextView etMineCompanysetSelectArea;
     @BindView(R.id.et_mine_companyset_detailAddress)
     EditText etMineCompanysetDetailAddress;
     @BindView(R.id.et_mine_companyset_writContactName)
@@ -72,10 +72,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     FlowLayout fl_company_photo;
     @BindView(R.id.iv_companyset_back)
     ImageView ivCompanysetBack;
-    @BindView(R.id.et_mine_companyset_selectcity)
-    TextView etMineCompanysetSelectcity;
-    @BindView(R.id.et_mine_companyset_select_area)
-    TextView etMineCompanysetSelectArea;
+//    @BindView(R.id.et_mine_companyset_selectcity)
+//    TextView etMineCompanysetSelectcity;
+
     private CompanySetBean.DataBean dataList;
     private SelectPhotoDialog selectPhotoDialog;
     private List<Bitmap> mData;
@@ -226,9 +225,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     protected void initListeners() {
         etMineCaompanysetToIndustry.setOnClickListener(this);
         tvMmineCompanysetFabu.setOnClickListener(this);
-        etMineCompanysetSelectProvince.setOnClickListener(this);
-        etMineCompanysetSelectcity.setOnClickListener(this);
         etMineCompanysetSelectArea.setOnClickListener(this);
+
+
         ivCompanysetBack.setOnClickListener(this);
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
@@ -289,13 +288,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 asyncShowToast("选择行业");
                 break;
 
-            case R.id.et_mine_companyset_select_province:   //所在省份
+            case R.id.et_mine_companyset_select_area:  //所在区域
+                SetCompantSetArea();
 
-                break;
-                case R.id.et_mine_companyset_selectcity:  //所在城市
-
-                break;
-                case R.id.et_mine_companyset_select_area:  //所在区域
 
                 break;
             case R.id.tv_mine_companyset_fabu:
@@ -307,11 +302,25 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    /**
+     * 企业设置
+     */
+    private void SetCompantSetArea() {
+        OkGo.<String>post(Constant.HOST_THIRD_STEPAREA_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+
+
+            }
+        });
+
+    }
+
     private void fetchCompayData() {
         final String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
         final String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
         final String fromIndustry = etMineCaompanysetToIndustry.getText().toString().trim();  //所属行业
-        final String fromProvince = etMineCompanysetSelectProvince.getText().toString().trim();  //所属地区
+        final String fromArea = etMineCompanysetSelectArea.getText().toString().trim();  //所属地区
         final String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
         final String connectPhone = etMineCompanysetMobilePhoneNumber.getText().toString().trim(); //联系人手机
         final String connectCall = etMineCompanysetZuojiPhoneNumber.getText().toString().trim(); //联系人电话

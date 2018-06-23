@@ -39,7 +39,6 @@ import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -82,6 +81,7 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -106,10 +106,7 @@ public class LoginActivity extends BaseActivity {
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
-            public void onStart(SHARE_MEDIA platform) {
-
-
-            }
+            public void onStart(SHARE_MEDIA platform) { }
 
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
@@ -121,23 +118,30 @@ public class LoginActivity extends BaseActivity {
                         .params("accessToken", data.get("accessToken"))
                         .params("openId", data.get("uid"))
                         .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject=new JSONObject(response.body());
-                            JSONObject data = jsonObject.getJSONObject("data");
-                            int code = jsonObject.getInt("code");
-                            if (code==0){
-                                toActivity(MainActivity.class);
-                            }else if (code==200){
-                         toActivity(BindMobileActivity.class);
-                            }
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+                                    JSONObject data = jsonObject.getJSONObject("data");
+                                    int code = jsonObject.getInt("code");
+                                    if (code == 0) {
+                                        String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                        SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                        SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                        MyApplication.getApp().setAccessToken(access_token);
+                                        Log.e(TAG, "onSuccess: " + access_token);
+                                        asyncShowToast("登录成功");
+                                        toActivity(MainActivity.class);
+                                        finish();
+                                    } else if (code == 200) {
+                                        startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                    }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                 Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
                 Log.w("test", "openid: " + data.get("uid"));
                 Log.w("test", "昵称: " + data.get("name"));
@@ -180,7 +184,7 @@ public class LoginActivity extends BaseActivity {
         };
     }
 
-    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
+    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login, R.id.btn_del})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -258,6 +262,9 @@ public class LoginActivity extends BaseActivity {
                                 }
                             }
                         }).open();
+                break;
+            case R.id.btn_del:
+                UMShareAPI.get(mContext).deleteOauth(this, SHARE_MEDIA.QQ, null);
                 break;
         }
     }

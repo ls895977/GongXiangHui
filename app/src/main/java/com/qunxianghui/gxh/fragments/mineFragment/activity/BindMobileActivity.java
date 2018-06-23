@@ -1,9 +1,9 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,15 +18,17 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GsonUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by user on 2018/6/22.
@@ -55,14 +57,10 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    protected void initViews() {
-
-    }
+    protected void initViews() { }
 
     @Override
-    protected void initDatas() {
-
-    }
+    protected void initDatas() { }
 
     @Override
     protected void initListeners() {
@@ -72,15 +70,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void onClick(View v) {
-
         bindPassword = tvBindmobilePassword.getText().toString().trim();
         switch (v.getId()) {
             case R.id.bt_bindmobile_bindmobile:
@@ -90,40 +80,39 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_bindmobile_getcode:
                 getVertifiCode();
                 break;
-
-
         }
     }
 
     private void BindMobilePhone() {
         mobileCode = etBindmobileCode.getText().toString().trim();
         phoneNumber = EtBindmobilePhone.getText().toString().trim();
-        if (TextUtils.isEmpty(mobileCode)||TextUtils.isEmpty(phoneNumber)||TextUtils.isEmpty(bindPassword)){
+        if (TextUtils.isEmpty(mobileCode) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(bindPassword)) {
             asyncShowToast("检查一下手机号 验证码 密码那个没有填");
-        }else{
-            OkGo.<String>post(Constant.LOGIN_BINE_MOBILE_URL)
-                    .params("mobile",phoneNumber)
-                    .params("captcha",mobileCode)
-                    .params("password",bindPassword)
-                    .execute(new StringCallback() {
+        } else {
+            OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
+                    .params("mobile", phoneNumber)
+                    .params("captcha", mobileCode)
+                    .params("password", bindPassword)
+                    .params("connect_id", getIntent().getIntExtra("connect_id", 0))
+                    .execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
                         @Override
-                        public void onSuccess(Response<String> response) {
-                            try {
-                                JSONObject jsonObject=new JSONObject(response.body());
-                                int code = jsonObject.getInt("code");
-                                if (code==101){
-                                 asyncShowToast("验证码不正确");
-                                 return;
-                                }else if (code==0){
+                        public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                                if (response.body().code.equals("0")) {
+                                    String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
+                                    SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                    SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
+                                    MyApplication.getApp().setAccessToken(access_token);
+                                    Log.e(TAG, "onSuccess: " + access_token);
+                                    asyncShowToast("登录成功");
                                     toActivity(MainActivity.class);
+                                    finish();
+                                } else {
+                                    asyncShowToast("绑定失败" + response.body().toString());
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                        }
+
                     });
         }
-
     }
 
     private void getVertifiCode() {
@@ -138,7 +127,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
                 .params("mobile", phoneNumber)
-                .params("type", 2)
+                .params("type", 3)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -158,12 +147,14 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 });
 
     }
-private TimerHandler timerHandler=new TimerHandler();
+
+    private TimerHandler timerHandler = new TimerHandler();
     public static final int MSG_SEND_SUCCESS = 0;
     private static final int MSG_SEND_CODE_ERROR = 1;
     private static final int MSG_TIMER = 2;
 
     private int time = 60;
+
     private class TimerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -195,6 +186,7 @@ private TimerHandler timerHandler=new TimerHandler();
             chageSendStatus(true);
         }
     }
+
     private void chageSendStatus(boolean canSend) {
 
         if (canSend) {
