@@ -21,6 +21,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -167,8 +168,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         // 开始刷新，设置当前为刷新状态
                         swipeRefreshLayout.setRefreshing(true);
                         count = 0;
-                        parseData();
+//                        parseData();
+
+                        //首页下拉刷新
+                        HomePullRefresh();
+
                     }
+
                 }, 1000);
 
             }
@@ -176,6 +182,38 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         //设置加载出来看的动画
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
+    }
+
+    /**
+     * 首页下拉刷新 新的接口
+     */
+    private void HomePullRefresh() {
+        OkGo.<LzyResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
+                .params("channel_id",mChannelId)
+                .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                        if (response.body().code.equals("0")) {
+                            swipeRefreshLayout.setRefreshing(false);
+                            List<HomeNewListBean> list = response.body().data;
+                            if (list == null || list.size() == 0) {
+                                homeItemListAdapter1.loadMoreEnd();
+                                return;
+                            } else {
+                                dataList.clear();
+                                dataList.addAll(list);
+                                total = dataList.size();
+                                if (count + 10 <= total) {
+                                    count += 10;
+                                    homeItemListAdapter1.loadMoreComplete();
+                                } else {
+                                    homeItemListAdapter1.loadMoreEnd();
+                                }
+                            }
+                            homeItemListAdapter1.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 
     /**

@@ -60,6 +60,8 @@ public class Constant {
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
+    //首页下拉刷新
+    public static final String HOME_PULL_REFRESH_URL=BASE_URL+"news/getRecommendList";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份

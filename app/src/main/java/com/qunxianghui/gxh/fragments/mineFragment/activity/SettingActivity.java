@@ -30,6 +30,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.utils.DataCleanManager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONObject;
 
@@ -129,7 +131,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         /* 清楚登录信息*/
-
+                        UMShareAPI.get(mContext).deleteOauth(SettingActivity.this, SHARE_MEDIA.QQ, null);
                         deleteDatabase("SqliteTest.db");
                         ExitUserLogin();
                     }
