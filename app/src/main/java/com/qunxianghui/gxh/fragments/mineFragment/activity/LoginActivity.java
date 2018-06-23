@@ -125,7 +125,14 @@ public class LoginActivity extends BaseActivity {
                                     JSONObject data = jsonObject.getJSONObject("data");
                                     int code = jsonObject.getInt("code");
                                     if (code == 0) {
+                                        String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                        SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                        SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                        MyApplication.getApp().setAccessToken(access_token);
+                                        Log.e(TAG, "onSuccess: " + access_token);
+                                        asyncShowToast("登录成功");
                                         toActivity(MainActivity.class);
+                                        finish();
                                     } else if (code == 200) {
                                         startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
                                     }
