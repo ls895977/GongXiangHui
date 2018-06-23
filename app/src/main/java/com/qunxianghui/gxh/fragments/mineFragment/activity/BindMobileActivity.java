@@ -111,12 +111,12 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                             try {
                                 JSONObject jsonObject=new JSONObject(response.body());
                                 int code = jsonObject.getInt("code");
-                                if (code==101){
-                                 asyncShowToast("验证码不正确");
-                                 return;
-                                }else if (code==0){
+                                 if (code==0){
                                     toActivity(MainActivity.class);
-                                }
+                                }else {
+                                         asyncShowToast("绑定失败"+response.body().toString());
+                                         return;
+                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -138,7 +138,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
                 .params("mobile", phoneNumber)
-                .params("type", 2)
+                .params("type", 3)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
