@@ -39,7 +39,6 @@ import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -82,6 +81,7 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -106,10 +106,7 @@ public class LoginActivity extends BaseActivity {
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
-            public void onStart(SHARE_MEDIA platform) {
-
-
-            }
+            public void onStart(SHARE_MEDIA platform) { }
 
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
@@ -121,23 +118,23 @@ public class LoginActivity extends BaseActivity {
                         .params("accessToken", data.get("accessToken"))
                         .params("openId", data.get("uid"))
                         .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject=new JSONObject(response.body());
-                            JSONObject data = jsonObject.getJSONObject("data");
-                            int code = jsonObject.getInt("code");
-                            if (code==0){
-                                toActivity(MainActivity.class);
-                            }else if (code==200){
-                         toActivity(BindMobileActivity.class);
-                            }
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+                                    JSONObject data = jsonObject.getJSONObject("data");
+                                    int code = jsonObject.getInt("code");
+                                    if (code == 0) {
+                                        toActivity(MainActivity.class);
+                                    } else if (code == 200) {
+                                        startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                    }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                 Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
                 Log.w("test", "openid: " + data.get("uid"));
                 Log.w("test", "昵称: " + data.get("name"));

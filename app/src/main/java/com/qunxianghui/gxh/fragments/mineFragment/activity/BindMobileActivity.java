@@ -22,7 +22,6 @@ import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
@@ -55,14 +54,10 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    protected void initViews() {
-
-    }
+    protected void initViews() { }
 
     @Override
-    protected void initDatas() {
-
-    }
+    protected void initDatas() { }
 
     @Override
     protected void initListeners() {
@@ -80,7 +75,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
         bindPassword = tvBindmobilePassword.getText().toString().trim();
         switch (v.getId()) {
             case R.id.bt_bindmobile_bindmobile:
@@ -90,40 +84,38 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_bindmobile_getcode:
                 getVertifiCode();
                 break;
-
-
         }
     }
 
     private void BindMobilePhone() {
         mobileCode = etBindmobileCode.getText().toString().trim();
         phoneNumber = EtBindmobilePhone.getText().toString().trim();
-        if (TextUtils.isEmpty(mobileCode)||TextUtils.isEmpty(phoneNumber)||TextUtils.isEmpty(bindPassword)){
+        if (TextUtils.isEmpty(mobileCode) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(bindPassword)) {
             asyncShowToast("检查一下手机号 验证码 密码那个没有填");
-        }else{
+        } else {
             OkGo.<String>post(Constant.LOGIN_BINE_MOBILE_URL)
-                    .params("mobile",phoneNumber)
-                    .params("captcha",mobileCode)
-                    .params("password",bindPassword)
+                    .params("mobile", phoneNumber)
+                    .params("captcha", mobileCode)
+                    .params("password", bindPassword)
+                    .params("connect_id", getIntent().getIntExtra("connect_id", 0))
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
                             try {
-                                JSONObject jsonObject=new JSONObject(response.body());
+                                JSONObject jsonObject = new JSONObject(response.body());
                                 int code = jsonObject.getInt("code");
-                                 if (code==0){
+                                if (code == 0) {
                                     toActivity(MainActivity.class);
-                                }else {
-                                         asyncShowToast("绑定失败"+response.body().toString());
-                                         return;
-                                 }
+                                } else {
+                                    asyncShowToast("绑定失败" + response.body().toString());
+                                    return;
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     });
         }
-
     }
 
     private void getVertifiCode() {
@@ -158,12 +150,14 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 });
 
     }
-private TimerHandler timerHandler=new TimerHandler();
+
+    private TimerHandler timerHandler = new TimerHandler();
     public static final int MSG_SEND_SUCCESS = 0;
     private static final int MSG_SEND_CODE_ERROR = 1;
     private static final int MSG_TIMER = 2;
 
     private int time = 60;
+
     private class TimerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -195,6 +189,7 @@ private TimerHandler timerHandler=new TimerHandler();
             chageSendStatus(true);
         }
     }
+
     private void chageSendStatus(boolean canSend) {
 
         if (canSend) {
