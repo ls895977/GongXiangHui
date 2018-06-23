@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,9 +19,15 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
+import com.qunxianghui.gxh.bean.mine.LoginBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import org.json.JSONObject;
 
@@ -93,27 +100,29 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
         if (TextUtils.isEmpty(mobileCode) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(bindPassword)) {
             asyncShowToast("检查一下手机号 验证码 密码那个没有填");
         } else {
-            OkGo.<String>post(Constant.LOGIN_BINE_MOBILE_URL)
+            OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
                     .params("mobile", phoneNumber)
                     .params("captcha", mobileCode)
                     .params("password", bindPassword)
                     .params("connect_id", getIntent().getIntExtra("connect_id", 0))
-                    .execute(new StringCallback() {
+                    .execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
                         @Override
-                        public void onSuccess(Response<String> response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response.body());
-                                int code = jsonObject.getInt("code");
-                                if (code == 0) {
+                        public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                                if (response.body().code.equals("0")) {
+                                    String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
+                                    SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                    SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
+                                    MyApplication.getApp().setAccessToken(access_token);
+                                    Log.e(TAG, "onSuccess: " + access_token);
+                                    asyncShowToast("登录成功");
                                     toActivity(MainActivity.class);
+                                    finish();
                                 } else {
                                     asyncShowToast("绑定失败" + response.body().toString());
                                     return;
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                        }
+
                     });
         }
     }
