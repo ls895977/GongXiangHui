@@ -314,9 +314,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 intent.putExtra("url", url);
                 intent.putExtra("uuid", uuid);
                 intent.putExtra("id", id);
-
                 startActivity(intent);
-
             }
         });
     }
