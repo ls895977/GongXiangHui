@@ -11,6 +11,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -119,6 +120,9 @@ public class MyApplication extends Application {
         final HttpParams params = new HttpParams();
         params.put("app_key", 100);
         params.put("access_token", mAccessToken);
+        HttpHeaders header = new HttpHeaders();
+        header.put("X-appkey","100");
+        header.put("X-accesstoken",mAccessToken);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
@@ -130,8 +134,9 @@ public class MyApplication extends Application {
         OkGo.getInstance().init(this).setOkHttpClient(builder.build()).
                 setCacheMode(CacheMode.NO_CACHE).
                 setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE).
-                setRetryCount(3).
-                addCommonParams(params);
+                setRetryCount(3)
+                .addCommonParams(params)
+        .addCommonHeaders(header);
 
 
     }
