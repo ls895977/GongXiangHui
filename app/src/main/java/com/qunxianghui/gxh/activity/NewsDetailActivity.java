@@ -46,7 +46,6 @@ import com.sina.weibo.sdk.api.ImageObject;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -289,13 +288,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 super.onProgressChanged(view, newProgress);
             }
         });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

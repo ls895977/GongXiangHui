@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -29,10 +28,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
-import org.json.JSONObject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by user on 2018/6/22.
@@ -74,13 +70,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void onClick(View v) {
         bindPassword = tvBindmobilePassword.getText().toString().trim();
         switch (v.getId()) {
@@ -119,7 +108,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                                     finish();
                                 } else {
                                     asyncShowToast("绑定失败" + response.body().toString());
-                                    return;
                                 }
                             }
 
