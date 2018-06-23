@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -15,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -28,6 +32,7 @@ import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.CompanySetBean;
+import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
@@ -82,7 +87,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private int IMAGE_PICKER = 0x1000;
     private int REQUEST_CODE_SELECT = 0x1007;
     private List<ImageView> imgs = new ArrayList<>();
-
+    private ArrayList<ThirdStepCityBean> options1Items = new ArrayList<>();
+    private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
+    private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -92,8 +99,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-
-
 
 
         fl_company_photo.setChildSpacing(15);
@@ -300,8 +305,52 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         OkGo.<String>post(Constant.HOST_THIRD_STEPAREA_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
+                ParseThirdStepCity(response.body());
+            }
+        });
 
+    }
 
+    /**
+     * 解析省市区
+     *
+     * @param body
+     */
+    private void ParseThirdStepCity(String body) {
+
+        final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(body, ThirdStepCityBean.class);
+        if (thirdStepCityBean.getCode() == 0) {
+//            showPickerView();
+
+        }
+
+    }
+
+    /**
+     * 弹出选择器
+     */
+    private void showPickerView() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                        //返回的分别是三个级别的选中位置
+                        final String tx = options1Items.get(options1).getPickerViewText() +
+                                options2Items.get(options1).get(options2) +
+                                options3Items.get(options1).get(options2).get(options3);
+                        asyncShowToast(tx.toString());
+
+                    }
+                }).setTitleText("城市选择")
+                        .setDividerColor(Color.BLACK)
+                        .setTextColorCenter(Color.BLACK)   //设置选中文字的颜色
+                        .setContentTextSize(20)
+                        .build();
+
+                pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
+                pvOptions.show();
             }
         });
 
@@ -410,7 +459,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
 
                 }
-
 
 
             } catch (Exception e) {
