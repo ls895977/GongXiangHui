@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.utils.DensityUtil;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * 朋友圈点赞评论的popupwindow
@@ -33,6 +35,7 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
     private TextView colletBtn;
     private String collect;
     private String click_like;
+    private Context mContext;
 
     // 实例化一个矩形
     private Rect mRect = new Rect();
@@ -48,6 +51,7 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
     }
 
     public void setCollect(String collect) {
+
         this.collect = collect;
     }
 
@@ -66,6 +70,7 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
     public SnsPopupWindow(Context context, String collect, String like) {
         this.collect = collect;
         this.click_like = like;
+        this.mContext = context;
         View view = LayoutInflater.from(context).inflate(R.layout.social_sns_popupwindow, null);
         digBtn = (TextView) view.findViewById(R.id.digBtn);
         commentBtn = (TextView) view.findViewById(R.id.commentBtn);
@@ -122,7 +127,9 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         }
         if (collect == null || collect.length()==0){
             addAction(new ActionItem("收藏"));
+            //colletBtn.setText("取消");
         }else {
+            colletBtn.setText("取消收藏");
             addAction(new ActionItem("取消收藏"));
         }
         addAction(new ActionItem("评论"));
@@ -130,15 +137,21 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
     }
 
 
-    public void showPopupWindow(View parent, TestMode.DataBean.ListBean listBean) {
+    public void showPopupWindow(View parent, TestMode.DataBean.ListBean listBean, Context context) {
         parent.getLocationOnScreen(mLocation);
         // 设置矩形的大小
+
         mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
+        Log.v("xxxx-yyyy",mRect.toString());
+
        // digBtn.setText(mActionItems.get(0).mTitle);
         //判断当前状态
         if (listBean.getCollect().equals("true")){
-
+            colletBtn.setText("取消收藏");
+            this.setWidth(DensityUtil.dip2px(context, 230));
         }else {
+            //mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
+            this.setWidth(DensityUtil.dip2px(context, 200));
             colletBtn.setCompoundDrawables(parent.getResources().getDrawable(R.mipmap.ic_launcher),null,null,null);
         }
         if (!this.isShowing()) {
