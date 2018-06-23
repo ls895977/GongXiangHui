@@ -88,23 +88,52 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private int total = 0;
     private int mChannelId = 1;
     private String image_url;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
 
+    @SuppressLint("NewApi")
     @Override
-    public void initDatas() {
+    public void initViews(View view) {
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
         }
+        recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
+        footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
+        if (mChannelId == -1) {
+            headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
+            grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
+            headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
+            viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
+            //加載首頁那个导航图
+            initGridHomeNavigator();
+            //加载首页轮播图
+            initLunBoShow();
+        }
+        View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
+        //这句是调取粘贴的系统服务
+        mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+        PermissionGen.needPermission(HotPointFragment.this, 105,
+                new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }
+        );
+    }
+
+    @Override
+    public void initDatas() {
         mDatas = new ArrayList<>();
         //请求数据
         parseData();
         homeItemListAdapter1 = new HomeItemListAdapter1();
         homeItemListAdapter1.setNewData(dataList);
-        homeItemListAdapter1.addHeaderView(headerNavigator);
-        homeItemListAdapter1.addHeaderView(headerVp, 1);
+        if (mChannelId == -1) {
+            homeItemListAdapter1.addHeaderView(headerNavigator);
+            homeItemListAdapter1.addHeaderView(headerVp, 1);
+        }
         homeItemListAdapter1.addFooterView(footer);
 
         //上拉加载更多哦
@@ -248,7 +277,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     case 2:
                         //跳转生活圈
 //                        toActivity(LocationServiceActivity.class);
-
                         Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
@@ -272,32 +300,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
-    @SuppressLint("NewApi")
-    @Override
-    public void initViews(View view) {
-        recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
-        footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
-        headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
-        headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
-        View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-        viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
-        grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
-
-        //加載首頁那个导航图
-        initGridHomeNavigator();
-        //加载首页轮播图
-        initLunBoShow();
-
-        //这句是调取粘贴的系统服务
-        mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-        PermissionGen.needPermission(HotPointFragment.this, 105,
-                new String[]{
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                }
-        );
-    }
-
     @Override
     protected void initListeners() {
         llHomePasteArtical.setOnClickListener(this);
@@ -312,9 +314,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 intent.putExtra("url", url);
                 intent.putExtra("uuid", uuid);
                 intent.putExtra("id", id);
-
                 startActivity(intent);
-
             }
         });
     }
@@ -342,9 +342,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     public void onDestroy() {
         super.onDestroy();
         mActivity.finish();
-
     }
-
 
     /**
      * 粘贴文章的处理

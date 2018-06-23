@@ -39,7 +39,6 @@ import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
@@ -111,7 +110,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         OkGo.<String>post(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                String json = response.body().toString();
+                String json = response.body();
                 if (HttpStatusUtil.getStatus(json)) {
                     getListData(json);
                     setChangelView();
