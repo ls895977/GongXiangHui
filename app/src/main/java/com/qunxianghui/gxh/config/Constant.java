@@ -111,6 +111,8 @@ public class Constant {
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
     //取消收藏
     public static final String CANCEL_COLLECT_URL=BASE_URL+"user/unCollect";
+    //获取我发布帖子
+    public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
     //我的粉丝
     public static final String MYFANS_URL = BASE_URL + "user/myFans";
     //我的关注
@@ -154,8 +156,7 @@ public class Constant {
     public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
     //获取我的爆料信息
     public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";
-    //获取我发布帖子
-    public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
+
     //删除我的发布
     public static final String DELETE_MYISSUE_URL=BASE_URL+"user/delRelease";
     //获取我发布的爆料
