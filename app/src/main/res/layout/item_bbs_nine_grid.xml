@@ -109,7 +109,7 @@
                     android:id="@+id/snsBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/im_snsimg"/>
+                    android:src="@drawable/im_snsimg" />
             </LinearLayout>
 
             <LinearLayout

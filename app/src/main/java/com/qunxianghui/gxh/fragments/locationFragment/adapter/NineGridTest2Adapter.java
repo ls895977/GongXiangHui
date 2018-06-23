@@ -162,7 +162,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
         snsPopupWindow.setClick_like((String) dataBeanList.get(position).getClick_like().toString());
-        snsPopupWindow.setClick_like(dataBeanList.get(position).getCollect());
+        snsPopupWindow.setCollect(dataBeanList.get(position).getCollect());
         snsPopupWindow.initItemData();
 
         snsPopupWindow.setmItemClickListener(new SnsPopupWindow.OnItemClickListener() {
@@ -203,7 +203,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             @Override
             public void onClick(View v) {
                 //弹出popupwindow
-                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position));
+                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position),mContext);
             }
         });
 

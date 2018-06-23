@@ -635,6 +635,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onCollectionClick(int position) {
+        final int p = position;
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
             @Override
@@ -642,9 +643,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                 if (myCollectBean.getCode() == 0) {
                     Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
+                    dataList.get(p).setCollect("true");
                 }else if (myCollectBean.getCode() == 202) {
                     Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
+                    dataList.get(p).setCollect("");
                 }
+                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemChanged(p);
             }
         });
 
