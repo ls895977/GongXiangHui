@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -42,19 +41,25 @@ import butterknife.BindView;
  */
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.bt_setting_quit) Button btSettingQuit;
-    @BindView(R.id.tv_mine_set_cache) TextView tvMineSetCache;
-    @BindView(R.id.rl_set_cache) RelativeLayout rlSetCache;
-    @BindView(R.id.switchButton_mine_set) SwitchButton switchButtonMineSet;
-    @BindView(R.id.tv_mine_set_version) TextView tvMineSetVersion;
-    @BindView(R.id.rl_set_banben_new) RelativeLayout rlSetBanbenNew;
+    @BindView(R.id.bt_setting_quit)
+    Button btSettingQuit;
+    @BindView(R.id.tv_mine_set_cache)
+    TextView tvMineSetCache;
+    @BindView(R.id.rl_set_cache)
+    RelativeLayout rlSetCache;
+    @BindView(R.id.switchButton_mine_set)
+    SwitchButton switchButtonMineSet;
+    @BindView(R.id.tv_mine_set_version)
+    TextView tvMineSetVersion;
+    @BindView(R.id.rl_set_banben_new)
+    RelativeLayout rlSetBanbenNew;
     private Dialog loadingDialog;
 
-    @SuppressLint("HandlerLeak") private Handler handler = new Handler() {
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
             switch (msg.what) {
                 case 0x01:
                     loadingDialog.dismiss();
@@ -67,10 +72,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
-
     @Override
     protected int getLayoutId() {
-
         return R.layout.activity_set;
     }
 
@@ -83,8 +86,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -95,7 +96,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 finish();
             }
         });
-
     }
 
     @Override
@@ -129,20 +129,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         /* 清楚登录信息*/
-
                         deleteDatabase("SqliteTest.db");
                         ExitUserLogin();
                     }
                 }).setNegativeButton("否", null).show();
                 break;
-
             case R.id.rl_set_cache:
-
                 final Message msg = new Message();
                 loadingDialog = createLoadingDialog(SettingActivity.this, "清理中...");
                 loadingDialog.show();
-
-
                 try {
                     DataCleanManager.cleanInternalCache(getApplicationContext());
                     msg.what = 0x01;
@@ -151,7 +146,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     msg.what = 0x02;
                 }
                 handler.sendMessageDelayed(msg, 1000);
-
                 break;
         }
 
@@ -162,15 +156,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      */
 
     private void ExitUserLogin() {
-
         OkGo.<String>post(Constant.LOGIN_OUT_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 parseLoginOutData(response.body());
             }
         });
-
-
     }
 
     private void parseLoginOutData(String body) {
@@ -207,8 +198,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
         return loadingDialog;
-
     }
-
 
 }

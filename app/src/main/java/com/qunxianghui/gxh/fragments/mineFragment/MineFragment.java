@@ -96,7 +96,6 @@ public class MineFragment extends BaseFragment {
         return R.layout.fragment_mine;
     }
 
-
     @Override
     public void initDatas() {
         if (userSize > 0) {
@@ -107,10 +106,6 @@ public class MineFragment extends BaseFragment {
             }
         }
     }
-    /**
-     * ==================获取用户信息(资料)=====================
-     */
-
 
     private void fillUserData() {
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).

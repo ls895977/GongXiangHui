@@ -93,7 +93,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         if (!LoginMsgHelper.isLogin(getContext())) {
             toActivity(LoginActivity.class);
             mActivity.finish();
-            return;
         }
     }
 
@@ -135,9 +134,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    /**
-     * ==================viewPager滑动监听=====================
-     */
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
         public void onPageSelected(int position) {
@@ -161,7 +157,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         }
     };
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -171,9 +166,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    protected void onLoadData() {
-
-    }
+    protected void onLoadData() { }
 
     @Override
     public void onDestroyView() {

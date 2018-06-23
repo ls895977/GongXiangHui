@@ -38,17 +38,13 @@ import okhttp3.OkHttpClient;
 public class MyApplication extends Application {
     private static MyApplication mAppApplication;
     private SQLHelper sqlHelper;
-
-
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
-
     private static MyApplication SINSTANCE;
     public static AppManager appManager;
     private String mAccessToken;
 
     public static MyApplication getMyApplicaiton() {
-
         return SINSTANCE;
     }
 

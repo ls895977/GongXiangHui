@@ -17,10 +17,7 @@ public class LoginMsgHelper {
     //是否登录
     public static boolean isLogin(Context mContext) {
         String result = SPUtils.getString(mContext, SpConstant.ACCESS_TOKEN, "");
-        if (!TextUtils.isEmpty(result)) {
-            return true;
-        }
-        return false;
+        return !TextUtils.isEmpty(result);
     }
 
     //登录退出处理
