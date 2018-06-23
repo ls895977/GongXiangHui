@@ -76,7 +76,7 @@ public class MyApplication extends Application {
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL); // 友盟统计场景：普通统计场景类型
         PlatformConfig.setWeixin("wx8dd50e08a25101d7", "b84c68b1fc941afec1aabda8360e34e1");//微信APPID和AppSecret
         PlatformConfig.setQQZone("1106763297", "KEYMQmvgOw2V73MXMZF");//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("1367342454", "774db026cf85b9e14bcee6f822cc5d5d","http://api.qunxianghui.com.cn/v1/user/callback/weibo");//微博
+        PlatformConfig.setSinaWeibo("1367342454", "774db026cf85b9e14bcee6f822cc5d5d", "http://api.qunxianghui.com.cn/v1/user/callback/weibo");//微博
         /**
          * 创建日志
          */
@@ -113,12 +113,12 @@ public class MyApplication extends Application {
         }
         Logger.d("initOkGo-->:" + mAccessToken);
         //全局参数
-        final HttpParams params = new HttpParams();
-        params.put("app_key", 100);
-        params.put("access_token", mAccessToken);
+//        final HttpParams params = new HttpParams();
+//        params.put("app_key", 100);
+//        params.put("access_token", mAccessToken);
         HttpHeaders header = new HttpHeaders();
-        header.put("X-appkey","100");
-        header.put("X-accesstoken",mAccessToken);
+        header.put("X-appkey", "100");
+        header.put("X-accesstoken", mAccessToken);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
@@ -131,8 +131,8 @@ public class MyApplication extends Application {
                 setCacheMode(CacheMode.NO_CACHE).
                 setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE).
                 setRetryCount(3)
-                .addCommonParams(params)
-        .addCommonHeaders(header);
+//                .addCommonParams(params)
+                .addCommonHeaders(header);
 
 
     }
