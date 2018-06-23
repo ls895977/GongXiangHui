@@ -618,6 +618,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         for (int i=0;i<dataList.get(position).getTem().size();i++){
                             TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);
                             if (tem.getMember_name().equalsIgnoreCase(user.mNick)){
+                                if(dataList.get(position).getClick_like().size() == 1 && dataList.get(position).getTem().size() == 1) {
+                                    dataList.get(position).setClick_like("");
+                                }
                                 dataList.get(position).getTem().remove(tem);
                                 break;
                             }
