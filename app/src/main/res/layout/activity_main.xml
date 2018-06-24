@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context="com.qunxianghui.gxh.activity.MainActivity">
 
-
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -28,10 +27,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-
         <RadioButton
-
             android:id="@+id/rb_home"
+            android:checked="true"
             style="@style/MainRadioButtonStyle"
             android:drawableTop="@drawable/selector_tab_home"
             android:text="首页" />
@@ -55,13 +53,11 @@
             android:drawableTop="@drawable/selector_tab_journey"
             android:text="推广" />
 
-
         <RadioButton
             android:id="@+id/rb_mine"
             style="@style/MainRadioButtonStyle"
             android:drawableTop="@drawable/selector_tab_mine"
             android:text="我的" />
     </RadioGroup>
-
 
 </LinearLayout>

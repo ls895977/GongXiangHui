@@ -56,7 +56,6 @@ public class MainActivity extends BaseActivity {
         initViewPagers();
     }
 
-
     private void initViewPagers() {
         /** 默认选中第一个选项卡*/
         selectedFragment(0);
@@ -172,9 +171,7 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
