@@ -23,6 +23,7 @@ import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,16 +36,17 @@ import butterknife.Unbinder;
 
 public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener {
 
- 
+
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
     private List<CollectBean.ListBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
-    private List<MyCollectPostBean.DataBean> dataList;
+    private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
+
     private Handler handler = new Handler();
     private int data_uuid;
-
+    private boolean mIsFirst = true;
     private int count;
     private int mMemberId;
 
@@ -59,10 +61,10 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         if (getArguments() != null) {
             mMemberId = getArguments().getInt("member_id");
         }
-        LoadMycolectNews(count);
+        LoadMycolectNews();
     }
 
-    private void LoadMycolectNews(int number) {
+    private void LoadMycolectNews() {
         OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 5)
                 .params("skip", count)
@@ -74,21 +76,27 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 });
     }
 
+    /**
+     * 解析我的收藏列表
+     *
+     * @param body
+     */
     private void parseCollectPostData(String body) {
         final MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
+        dataList.addAll(myCollectPostBean.getData());
+        count=dataList.size();
+        for (int i = 0; i < dataList.size(); i++) {
+            data_uuid = dataList.get(i).getData_uuid();
+        }
         if (myCollectPostBean.getCode() == 0) {
+            if (mIsFirst) {
+                    mIsFirst = false;
+                    myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                    myCollectPostAdapter.setCollectOnClickListener(this);
+                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
 
-            dataList = myCollectPostBean.getData();
-
-            for (int i = 0; i < dataList.size(); i++) {
-                data_uuid = dataList.get(i).getData_uuid();
             }
-
-
-            if (myCollectPostAdapter == null) {
-                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                myCollectPostAdapter.setCollectOnClickListener(this);
-                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                xrecycler_mine_collect_news.refreshComplete();
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
@@ -96,8 +104,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
                     }
                 });
-            }
-
+                myCollectPostAdapter.notifyItemRangeChanged(count,myCollectPostBean.getData().size());
 
         }
     }
@@ -116,28 +123,19 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             public void onRefresh() {
                 dataList.clear();
                 count = 0;
-                LoadMycolectNews(count);
-                xrecycler_mine_collect_news.refreshComplete();
+                LoadMycolectNews();
 
-                myCollectPostAdapter.notifyDataSetChanged();
+
             }
 
             @Override
             public void onLoadMore() {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                LoadMycolectNews();
 
-                    }
-                }, 100);
-                count = count + 10;
-                LoadMycolectNews(count);
-                xrecycler_mine_collect_news.refreshComplete();
             }
         });
-        count = 0;
-        LoadMycolectNews(count);
+
     }
 
     @Override

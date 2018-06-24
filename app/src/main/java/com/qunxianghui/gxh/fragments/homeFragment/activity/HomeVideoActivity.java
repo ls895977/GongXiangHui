@@ -25,6 +25,7 @@ import com.qunxianghui.gxh.utils.GsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,10 +43,12 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     ImageView ivHomeVideoBack;
     @BindView(R.id.tv_home_video_issue)
     TextView tvHomeVideoIssue;
-    private List<HomeVideoListBean.DataBean.ListBean> videoList;
+
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private String follow;
     private int count = 0;
+    private boolean mIsFirst = true;
+ private List<HomeVideoListBean.DataBean.ListBean> videoDataList=new ArrayList<>();
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_video;
@@ -53,7 +56,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initViews() {
-       xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
 
     }
 
@@ -61,8 +64,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     protected void initDatas() {
 
         RequestHomeVideoList();
-
-
 
 
     }
@@ -89,26 +90,30 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
         final HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
 
-        videoList = homeVideoListBean.getData().getList();
-        count+=videoList.size();
-        if (homeVideoListBean.getCode() == 0) {
 
-                personDetailVideoAdapter = new PersonDetailVideoAdapter(mContext, videoList);
+        videoDataList.addAll(homeVideoListBean.getData().getList());
+        count = videoDataList.size();
+        if (homeVideoListBean.getCode() == 0) {
+            if (mIsFirst) {
+                mIsFirst = false;
+                personDetailVideoAdapter = new PersonDetailVideoAdapter(mContext,videoDataList);
                 personDetailVideoAdapter.setVideoListClickListener(this);
 
                 xrecyclerHomevideoList.setAdapter(personDetailVideoAdapter);
+            }
+            xrecyclerHomevideoList.refreshComplete();
 
-                personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        Intent intent = new Intent(mContext, NewsDetailActivity.class);
+            personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    Intent intent = new Intent(mContext, NewsDetailActivity.class);
 
-                        intent.putExtra("url", videoList.get(position - 1).getUrl());
-                        startActivity(intent);
-                    }
-                });
+                    intent.putExtra("url", videoDataList.get(position - 1).getUrl());
+                    startActivity(intent);
+                }
+            });
 
-
+            personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
 
 
         }
@@ -123,29 +128,19 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         xrecyclerHomevideoList.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                videoList.clear();
-                count=0;
+                videoDataList.clear();
+                count = 0;
+                RequestHomeVideoList();
 
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        RequestHomeVideoList();
-                    }
-                });
 
-                xrecyclerHomevideoList.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        RequestHomeVideoList();
-                    }
-                },500);
-                xrecyclerHomevideoList.refreshComplete();
+                RequestHomeVideoList();
+
+
             }
         });
     }
@@ -184,7 +179,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
      */
     @Override
     public void attentionClick(int position) {
-        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoList.get(position).getMember_id())
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
