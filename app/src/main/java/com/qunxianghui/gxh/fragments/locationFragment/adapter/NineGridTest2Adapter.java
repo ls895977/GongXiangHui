@@ -7,13 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
@@ -21,16 +18,12 @@ import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
-import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
-import com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
 import com.qunxianghui.gxh.widget.TagGroup;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +40,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private LocationFragment context;
     private int model_id;
 
-
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
         this.dataBeanList = dataBeanList;
@@ -58,33 +50,25 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         this.listener = listener;
     }
 
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View convertView = inflater.inflate(R.layout.item_bbs_nine_grid, parent, false);
-        ViewHolder viewHolder = new ViewHolder(convertView);
-        return viewHolder;
+        return new ViewHolder(convertView);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         model_id = dataBeanList.get(position).getId();
-
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
         //holder.img.setVisibility(View.INVISIBLE);
-
         final List<String> imageList = dataBeanList.get(position).getImages();
-
-
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
                 .centerCrop()
                 .placeholder(R.mipmap.icon_headimage)
                 .error(R.mipmap.icon_headimage)
                 .into(holder.iv_location_person_head);
-
-
         if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
@@ -99,7 +83,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     listener.onPicClick(position, 0);
                 }
             });
-
         } else {
             holder.gridLayout.setVisibility(View.VISIBLE);
             holder.img.setVisibility(View.GONE);
@@ -111,13 +94,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 public void onClick(View v, int p) {
                     //Toast.makeText(mContext,"test : " + position,Toast.LENGTH_LONG).show();
                     listener.onPicClick(position, p);
-
                 }
 
                 ;
             });
         }
-
         if (dataBeanList.get(position).getComment_res().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             commentItemAdapter = new CommentItemAdapter(mContext, dataBeanList.get(position).getComment_res(), holder.comment_list);
@@ -143,12 +124,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_circle_inform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 toInformActivity();
             }
         });
-
-
         //点击了提交
         holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +232,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         TagGroup mTagGroup;
         TextView clickusertext;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             gridLayout = itemView.findViewById(R.id.layout_nine_grid);
@@ -279,8 +256,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             //mTagGroup = itemView.findViewById(R.id.mTagGroup);
             clickusertext = itemView.findViewById(R.id.click_like_user);
             comment_list = itemView.findViewById(R.id.comment_list);
-
-
         }
     }
 

@@ -19,10 +19,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,44 +63,24 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private static LocationFragment locationFragment;
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
-
-//    @BindView(R.id.photo_view)
+    //    @BindView(R.id.photo_view)
 //    PhotoView photoView;
-
-    //@Bind(R.id.location_send_comment_view)
     LinearLayout commentView;
-    //@Bind(R.id.loaction_comment_edit)
     EditText comment_edit;
-    //@Bind(R.id.location_comment_to_send)
     TextView send_btn;
-
     XRecyclerView recyclerView;
     Unbinder unbinder;
-
-    RecyclerView.LayoutManager mLayoutManager;
     NineGridTest2Adapter mAdapter;
-
-    private View view;
     private Dialog picVideo_dialog;
-    private TextView tv_alertbottom_up_pic;
-    private TextView tv_alertbottom_up_video;
-    private TextView tv_alertbottom_video_cancel;
-    private TextView tv_fubu_recode_video;
-    private TextView tv_fabu_location_vodeo;
-    private Button bt_fabu_video_cancel;
     private LinearLayout ll_fabu_first_list;
     private LinearLayout ll_fabu_second_list;
     private String filPaths;
     private Dialog upDialog;
     private Dialog quickUpDialog;
-    private TextView tv_quickly_up_video;
-    private Button bt_quickly_up_video_cancel;
-    private View upVideoDialogView;
     private int count = 0;
     private int page = 1;
     private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
     private int currentPosition;
-    private RelativeLayout mRootView;
     private boolean mIsFirst = true;
 
     @Override
@@ -111,31 +89,21 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         return R.layout.fragment_location;
     }
 
-    /**
-     * 子类在此方法中实现数据的初始化
-     */
     @Override
     public void initDatas() {
         RequestLocationData();
     }
 
-    /**
-     * 初始化控件
-     */
     @Override
     public void initViews(View view) {
         commentView = view.findViewById(R.id.location_send_comment_view);
         comment_edit = view.findViewById(R.id.loaction_comment_edit);
         send_btn = view.findViewById(R.id.location_comment_to_send);
         recyclerView = view.findViewById(R.id.recyclerView_location);
-        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(mLayoutManager);
-        mRootView = view.findViewById(R.id.loactionn_fragment_relative_layout);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-
-
 //                Toast.makeText(getActivity(), "键盘显示 高度" + height, Toast.LENGTH_SHORT).show();
 //                ViewGroup.LayoutParams layout = mRootView.getLayoutParams();
 //                layout.height = layout.height - height;
@@ -163,7 +131,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     case 1:
                         System.out.println("recyclerview正在被拖拽");
                         System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
-
                         if (getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
                                 || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE) {
                             new Handler().postDelayed(new Runnable() {
@@ -183,11 +150,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         });
 
 //        mRootView = view.findViewById(R.id.loactionn_fragment_relative_layout);
-//
 //        DisplayMetrics metrics = new DisplayMetrics();
 //        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 //        final int screenHeight = metrics.heightPixels;
-//
 //        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(
 //                new ViewTreeObserver.OnGlobalLayoutListener() {
 //                    @Override
@@ -198,8 +163,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 //
 //                    }
 //                });
-
-
     }
 
     private void RequestLocationData() {
@@ -228,7 +191,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
             recyclerView.refreshComplete();
             mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
-
             /*
             for (int i = 0; i < dataList.size(); i++) {
 
@@ -243,9 +205,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    /**
-     * 子类可以复写此方法初始化事件
-     */
     @Override
     protected void initListeners() {
         tvLocationMineFabu.setOnClickListener(this);
@@ -334,41 +293,34 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void showBottomAliert() {
-        picVideo_dialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
-        //填充对话框的布局
-        view = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_alertdialog, null);
-        //初始化控件
-        ll_fabu_first_list = view.findViewById(R.id.ll_fabu_first_list);
-        ll_fabu_second_list = view.findViewById(R.id.ll_fabu_second_list);
-        tv_alertbottom_up_pic = view.findViewById(R.id.tv_alertbottom_up_pic);   //上传图片
-        tv_alertbottom_up_video = view.findViewById(R.id.tv_alertbottom_up_video);  //上传视频
-        tv_alertbottom_video_cancel = view.findViewById(R.id.tv_alertbottom_video_cancel);  //取消
-        tv_fubu_recode_video = view.findViewById(R.id.tv_fubu_recode_video);   //录制视频
-        tv_fabu_location_vodeo = view.findViewById(R.id.tv_fabu_location_vodeo); //本地视频
-        bt_fabu_video_cancel = view.findViewById(R.id.bt_fabu_video_cancel); //取消
-
-
-        tv_alertbottom_up_pic.setOnClickListener(this);
-        tv_alertbottom_up_video.setOnClickListener(this);
-        tv_alertbottom_video_cancel.setOnClickListener(this);
-        tv_fubu_recode_video.setOnClickListener(this);
-        tv_fabu_location_vodeo.setOnClickListener(this);
-        bt_fabu_video_cancel.setOnClickListener(this);
-
-        //将布局设置给dialog
-        picVideo_dialog.setContentView(view);
-        //获取当前activity所在的窗体
-        final Window dialogWindow = picVideo_dialog.getWindow();
-        //设置dialog从窗体底部弹出
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        //获得窗体的属性
-        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        final WindowManager windowManager = mActivity.getWindowManager();
-        final Display display = windowManager.getDefaultDisplay();
-        lp.width = (int) display.getWidth();  //设置宽度
-        lp.y = 20;  //设置dialog距离底部的距离
-        //将属性设置给窗体
-        dialogWindow.setAttributes(lp);
+        if (picVideo_dialog == null) {
+            picVideo_dialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_alertdialog, null);
+            //初始化控件
+            ll_fabu_first_list = view.findViewById(R.id.ll_fabu_first_list);
+            ll_fabu_second_list = view.findViewById(R.id.ll_fabu_second_list);
+            view.findViewById(R.id.tv_alertbottom_up_pic).setOnClickListener(this); //上传图片
+            view.findViewById(R.id.tv_alertbottom_up_video).setOnClickListener(this);  //上传视频
+            view.findViewById(R.id.tv_alertbottom_video_cancel).setOnClickListener(this);  //取消
+            view.findViewById(R.id.tv_fubu_recode_video).setOnClickListener(this); //录制视频
+            view.findViewById(R.id.tv_fabu_location_vodeo).setOnClickListener(this);  //本地视频
+            view.findViewById(R.id.bt_fabu_video_cancel).setOnClickListener(this); //取消
+            //将布局设置给dialog
+            picVideo_dialog.setContentView(view);
+            //获取当前activity所在的窗体
+            Window dialogWindow = picVideo_dialog.getWindow();
+            //设置dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            //获得窗体的属性
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            WindowManager windowManager = mActivity.getWindowManager();
+            Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 20;  //设置dialog距离底部的距离
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
         picVideo_dialog.show();
     }
 
@@ -388,7 +340,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                             filPaths = cursor.getString(0);
                             showUploadVideoDialog();
                         }
-
                     }
                 }
                 break;
@@ -402,43 +353,38 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void showUploadVideoDialog() {
-        quickUpDialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
-        //填充对话框的布局
-        upVideoDialogView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_up_quickly_alertdialog, null);
-        //初始化控件
-        tv_quickly_up_video = upVideoDialogView.findViewById(R.id.tv_quickly_up_video);
-        bt_quickly_up_video_cancel = upVideoDialogView.findViewById(R.id.bt_quickly_up_video_cancel);
-        tv_quickly_up_video.setOnClickListener(this);
-        bt_fabu_video_cancel.setOnClickListener(this);
-        bt_quickly_up_video_cancel.setOnClickListener(this);
-
-        //将布局设置给dialog
-        quickUpDialog.setContentView(upVideoDialogView);
-        //获取当前activity所在的窗体
-        final Window dialogWindow = quickUpDialog.getWindow();
-        //设置dialog从窗体底部弹出
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        //获得窗体的属性
-        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        final WindowManager windowManager = mActivity.getWindowManager();
-        final Display display = windowManager.getDefaultDisplay();
-        lp.width = (int) display.getWidth();  //设置宽度
-        lp.y = 20;  //设置dialog距离底部的距离
-        //将属性设置给窗体
-        dialogWindow.setAttributes(lp);
+        if (quickUpDialog == null) {
+            quickUpDialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View upVideoDialogView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_up_quickly_alertdialog, null);
+            //初始化控件
+            upVideoDialogView.findViewById(R.id.tv_quickly_up_video).setOnClickListener(this);
+            upVideoDialogView.findViewById(R.id.bt_quickly_up_video_cancel).setOnClickListener(this);
+            //将布局设置给dialog
+            quickUpDialog.setContentView(upVideoDialogView);
+            //获取当前activity所在的窗体
+            final Window dialogWindow = quickUpDialog.getWindow();
+            //设置dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            //获得窗体的属性
+            final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            final WindowManager windowManager = mActivity.getWindowManager();
+            final Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 20;  //设置dialog距离底部的距离
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
         quickUpDialog.show();
     }
 
-
     @Override
     public void onPicClick(int position, int picpostion) {
-
         List<String> imageList = dataList.get(position).getImages();
         ArrayList<String> arrayList = new ArrayList<String>();
         for (String data : imageList) {
             arrayList.add(data);
         }
-
         Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
         intent.putStringArrayListExtra("url", arrayList);
         intent.putExtra("position", picpostion);
@@ -482,14 +428,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             public void onClick(View v) {
                 if (comment_edit.getText().toString().length() <= 0) {
                     Toast.makeText(getActivity(), "请输入评论内容", Toast.LENGTH_LONG).show();
-                    return;
-
                 } else {
                     final int uuid = dataList.get(position).getUuid();
                     if (dataList.get(position).getComment_res().size() <= 0) {
                         dataList.get(position).setComment_res(new ArrayList<CommentBean>());
                         //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
-
                     }
                     List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
                     CommentBean comment = new CommentBean();
@@ -540,11 +483,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 });
     }
 
-
-    //接口回调之 接口回调
+    //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
-
         if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() == 0) {
             if (dataList.get(position).getClick_like().size() <= 0) {
                 dataList.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
@@ -603,8 +544,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onCollectionClick(int position) {
-        final int p = position;
+    public void onCollectionClick(final int position) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
             @Override
@@ -612,13 +552,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                 if (myCollectBean.getCode() == 0) {
                     Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-                    dataList.get(p).setCollect("true");
-                }else if (myCollectBean.getCode() == 202) {
+                    dataList.get(position).setCollect("true");
+                } else if (myCollectBean.getCode() == 202) {
                     Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
-                    dataList.get(p).setCollect("");
+                    dataList.get(position).setCollect("");
                 }
                 mAdapter.notifyDataSetChanged();
-                mAdapter.notifyItemChanged(p);
+                mAdapter.notifyItemChanged(position);
             }
         });
 

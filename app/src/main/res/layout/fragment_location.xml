@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loactionn_fragment_relative_layout"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/location_line_layout"
@@ -38,46 +39,7 @@
         <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/recyclerView_location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </com.jcodecraeer.xrecyclerview.XRecyclerView>
-
-        <!--<LinearLayout-->
-        <!--android:id="@+id/location_send_comment_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:background="@color/white"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:visibility="gone">-->
-
-
-        <!--<EditText-->
-        <!--android:id="@+id/loaction_comment_edit"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:background="@null"-->
-        <!--android:hint="请输入您的评论..."-->
-        <!--android:lines="5"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:layout_weight="4"-->
-        <!--android:paddingLeft="10dp"-->
-        <!--android:textSize="14sp" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/location_comment_to_send"-->
-        <!--android:layout_width="70dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:background="@drawable/butn_oval"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center"-->
-        <!--android:text="提交" />-->
-        <!--</LinearLayout>-->
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -118,5 +80,4 @@
             android:text="提交" />
     </LinearLayout>
 
-
-</RelativeLayout><!--</ScrollView>-->
+</RelativeLayout>
