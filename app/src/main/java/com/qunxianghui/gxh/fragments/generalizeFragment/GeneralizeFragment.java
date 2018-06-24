@@ -117,7 +117,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                     case R.id.rb_genera_push:
                         vpGeneralizeMain.setCurrentItem(2, false);
                         break;
-
                 }
             }
         });
