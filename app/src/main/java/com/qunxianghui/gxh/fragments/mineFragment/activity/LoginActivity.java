@@ -55,8 +55,7 @@ public class LoginActivity extends BaseActivity {
 
     public static final int LOGIN_REQUEST = 1;
     public static final int LOGIN_RESULT = 1;
-    @BindView(R.id.tv_login_show_usermessage)
-    TextView tvLoginShowUsermessage;
+
     @BindView(R.id.et_login_password)
     EditText etLoginPassword;
     @BindView(R.id.bt_login_login)
@@ -184,7 +183,7 @@ public class LoginActivity extends BaseActivity {
         };
     }
 
-    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login, R.id.btn_del})
+    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -263,9 +262,7 @@ public class LoginActivity extends BaseActivity {
                             }
                         }).open();
                 break;
-            case R.id.btn_del:
-                UMShareAPI.get(mContext).deleteOauth(this, SHARE_MEDIA.QQ, null);
-                break;
+
         }
     }
 

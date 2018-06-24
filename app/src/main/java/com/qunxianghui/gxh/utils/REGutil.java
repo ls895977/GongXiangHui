@@ -20,7 +20,7 @@ public class REGutil {
 
         //手机号的正则表达式
     public static boolean checkCellphone(String mobiles) {
-        Pattern p = Pattern.compile("^((17[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p = Pattern.compile("^((17[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,3,5-9]))\\d{8}$");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }

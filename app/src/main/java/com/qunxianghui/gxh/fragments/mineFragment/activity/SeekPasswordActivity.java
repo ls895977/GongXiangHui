@@ -45,7 +45,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     private String phoneNumber;
     private String vertifiCode;
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_seek_password;
@@ -66,7 +65,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
         btSeekPasswordNext.setOnClickListener(this);
         etSeekPasswordPhoneNumber.setOnClickListener(this);
         tvSeekPasswordCode.setOnClickListener(this);
-
     }
 
     @Override
@@ -78,23 +76,15 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        vertifiCode = etFetchPassCode.getText().toString().trim();
-
         switch (v.getId()) {
             case R.id.et_seekPassword_phoneNumber:
-
                 break;
             case R.id.tv_seekPassword_code:
                 getVertifiCode();
                 break;
             case R.id.bt_seek_password_next:
-
                 RequestNextStep();
-
-
-
                 break;
-
         }
     }
 
@@ -102,14 +92,12 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
      * 点击下一步
      */
     private void RequestNextStep() {
-
+        vertifiCode = etFetchPassCode.getText().toString().trim();
         OkGo.<String> post(Constant.SEEK_PASSWORD_URL)
                 .params("mobile",phoneNumber)
                 .params("captcha",vertifiCode).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-
-
                 try {
                     JSONObject jsonObject=new JSONObject(response.body());
 
@@ -121,6 +109,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
                         Intent intent  = new Intent(mContext, ResetPasswordActivity.class);
                         intent.putExtra("mobile", phoneNumber);
                         intent.putExtra("captcha", vertifiCode);
+
                         startActivity(intent);
                     }
                 } catch (Exception e) {
@@ -136,10 +125,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
 
             }
         });
-
-
-
-
     }
 
     private void getVertifiCode() {
@@ -161,7 +146,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
                         final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
                         if (responseBean.getCode() == 0) {
                             handler.sendEmptyMessage(MSG_SEND_SUCCESS);
-
                         } else {
                             handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                         }
@@ -202,7 +186,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void startTimer() {
-
         if (time > 0) {
             tvSeekPasswordCode.setText(String.format("倒计时%s秒", time));
             time -= 1;
@@ -216,7 +199,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void chageSendStatus(boolean canSend) {
-
         if (canSend) {
             tvSeekPasswordCode.setEnabled(true);
             tvSeekPasswordCode.setClickable(true);

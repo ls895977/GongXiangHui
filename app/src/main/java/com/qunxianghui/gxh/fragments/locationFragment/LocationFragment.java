@@ -4,24 +4,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -32,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -42,31 +35,21 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.LzyResponse;
-import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
-import com.qunxianghui.gxh.fragments.locationFragment.model.NineGridTestModel;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
-import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.qunxianghui.gxh.widget.Bind;
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +61,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class LocationFragment extends BaseFragment implements View.OnClickListener ,NineGridTest2Adapter.CircleOnClickListener {
+public class LocationFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
     private static LocationFragment locationFragment;
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
@@ -99,7 +82,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     RecyclerView.LayoutManager mLayoutManager;
     NineGridTest2Adapter mAdapter;
 
-
     private View view;
     private Dialog picVideo_dialog;
     private TextView tv_alertbottom_up_pic;
@@ -118,9 +100,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private View upVideoDialogView;
     private int count = 0;
     private int page = 1;
-    private List<TestMode.DataBean.ListBean> dataList=new ArrayList<TestMode.DataBean.ListBean>();
+    private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
     private int currentPosition;
     private RelativeLayout mRootView;
+    private boolean mIsFirst = true;
 
     @Override
     public int getLayoutId() {
@@ -134,7 +117,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initDatas() {
         RequestLocationData();
-
     }
 
     /**
@@ -174,8 +156,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                switch(newState)
-                {
+                switch (newState) {
                     case 0:
                         System.out.println("recyclerview已经停止滚动");
                         break;
@@ -183,13 +164,14 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         System.out.println("recyclerview正在被拖拽");
                         System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
 
-                        if(getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
-                                || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE){
-                            new Handler().postDelayed(new Runnable() {@Override
-                            public void run() {
+                        if (getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+                                || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                hideSoftKeyboard(comment_edit,getActivity());
-                            }
+                                    hideSoftKeyboard(comment_edit, getActivity());
+                                }
                             }, 10);
                         }
                         break;
@@ -218,11 +200,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 //                });
 
 
-
     }
 
     private void RequestLocationData() {
-
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("limit", 10)
                 .params("skip", count)
@@ -235,16 +215,19 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void parseLocationData(String body) {
-
         Logger.i("Location：" + body.toString());
         final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
         dataList.addAll(locationListBean.getData().getList());
         count = dataList.size();
         if (locationListBean.getCode() == 0) {
-
-            mAdapter = new NineGridTest2Adapter(mActivity, dataList);
-            mAdapter.setOnClickLitener(this);
-            recyclerView.setAdapter(mAdapter);
+            if (mIsFirst) {
+                mIsFirst = false;
+                mAdapter = new NineGridTest2Adapter(mActivity, dataList);
+                mAdapter.setOnClickLitener(this);
+                recyclerView.setAdapter(mAdapter);
+            }
+            recyclerView.refreshComplete();
+            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
 
             /*
             for (int i = 0; i < dataList.size(); i++) {
@@ -273,20 +256,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 dataList.clear();
                 count = 0;
                 RequestLocationData();
-
-                recyclerView.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        RequestLocationData();
-                    }
-                }, 1000);
-                recyclerView.refreshComplete();
+                RequestLocationData();
 
             }
         });
@@ -302,8 +276,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void onLoadData() {
-
-
     }
 
     @Override
@@ -403,7 +375,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case Code.VIDEO_RECORD_REQUEST:
                 if (data != null) {
@@ -464,13 +435,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
         List<String> imageList = dataList.get(position).getImages();
         ArrayList<String> arrayList = new ArrayList<String>();
-        for(String data : imageList)    {
+        for (String data : imageList) {
             arrayList.add(data);
         }
 
         Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
-        intent.putStringArrayListExtra("url",arrayList);
-        intent.putExtra("position",picpostion);
+        intent.putStringArrayListExtra("url", arrayList);
+        intent.putExtra("position", picpostion);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
         /*
@@ -500,7 +471,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onCommentClick(final int position, String content) {
-
         commentView.setVisibility(View.VISIBLE);
         comment_edit.setFocusable(true);
         comment_edit.setFocusableInTouchMode(true);
@@ -510,13 +480,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(comment_edit.getText().toString().length()<=0){
-                    Toast.makeText(getActivity(),"请输入评论内容",Toast.LENGTH_LONG).show();
+                if (comment_edit.getText().toString().length() <= 0) {
+                    Toast.makeText(getActivity(), "请输入评论内容", Toast.LENGTH_LONG).show();
                     return;
 
-                }else {
-                    final int uuid=dataList.get(position).getUuid();
-                    if (dataList.get(position).getComment_res().size()<=0) {
+                } else {
+                    final int uuid = dataList.get(position).getUuid();
+                    if (dataList.get(position).getComment_res().size() <= 0) {
                         dataList.get(position).setComment_res(new ArrayList<CommentBean>());
                         //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
 
@@ -537,11 +507,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                             .execute(new DialogCallback<LzyResponse<CommentBean>>(getActivity()) {
                                 @Override
                                 public void onSuccess(Response<LzyResponse<CommentBean>> response) {
-                                    if (response.body().code.equals("0")){
+                                    if (response.body().code.equals("0")) {
                                         //requestCommentList(uuid);
-                                        Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_LONG).show();
                                         comment_edit.setText("");
-                                        hideSoftKeyboard(comment_edit,getActivity());
+                                        hideSoftKeyboard(comment_edit, getActivity());
 
                                     }
                                 }
@@ -559,13 +529,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    void requestCommentList(int uuid){
+    void requestCommentList(int uuid) {
         OkGo.<String>post(Constant.COMMENT_LIST)
                 .params("uuid", uuid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Log.e(TAG, "onSuccess: -----------------------"+response.body() );
+                        Log.e(TAG, "onSuccess: -----------------------" + response.body());
                     }
                 });
     }
@@ -575,7 +545,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onLaunClick(final int position) {
 
-        if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() ==0 ){
+        if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() == 0) {
             if (dataList.get(position).getClick_like().size() <= 0) {
                 dataList.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
             }
@@ -596,8 +566,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     //Handler haner = new Handler()
                 }
             });
-        }else {
-
+        } else {
             OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
@@ -605,7 +574,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
 
 
-                    Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), response.body(), Toast.LENGTH_LONG).show();
                     //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
                     UserUtil user = UserUtil.getInstance();
                     like.setMember_name(user.mNick);
@@ -613,12 +582,12 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         dataList.get(position).getTem().add(like);
                         mAdapter.notifyDataSetChanged();
                         mAdapter.notifyItemChanged(position);
-                    }else if (like.getMessage().equalsIgnoreCase("取消点赞成功")){
+                    } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
                         List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
-                        for (int i=0;i<dataList.get(position).getTem().size();i++){
+                        for (int i = 0; i < dataList.get(position).getTem().size(); i++) {
                             TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);
-                            if (tem.getMember_name().equalsIgnoreCase(user.mNick)){
-                                if(dataList.get(position).getClick_like().size() == 1 && dataList.get(position).getTem().size() == 1) {
+                            if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
+                                if (dataList.get(position).getClick_like().size() == 1 && dataList.get(position).getTem().size() == 1) {
                                     dataList.get(position).setClick_like("");
                                 }
                                 dataList.get(position).getTem().remove(tem);
@@ -657,19 +626,18 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     /**
      * 头像点击跳转用户详情页
+     *
      * @param position
      */
     @Override
     public void headImageClick(int position) {
-        Intent intent=new Intent(mActivity, PersonDetailActivity.class);
-        intent.putExtra("member_id",dataList.get(position).getMember_id());
+        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+        intent.putExtra("member_id", dataList.get(position).getMember_id());
         startActivity(intent);
-
-
     }
 
     public static LocationFragment getInstance() {
-        if(locationFragment == null){
+        if (locationFragment == null) {
             locationFragment = new LocationFragment();
         }
         return locationFragment;

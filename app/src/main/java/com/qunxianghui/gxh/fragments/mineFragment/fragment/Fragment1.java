@@ -69,6 +69,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     private ImagePicker imagePicker;
     private List<String> upLoadPics = new ArrayList<>();
+    private boolean isComingFromColum = false;
+    private int index;
+    private int ad_id;
 
     @Override
     public int getLayoutId() {
@@ -83,6 +86,24 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initViews(View view) {
+        Intent intent = getActivity().getIntent();
+        isComingFromColum = intent.getBooleanExtra("isComingFromColum",false);
+        if( isComingFromColum == true ){
+            index = intent.getIntExtra("index",0);
+            if(index == 1){
+                String url = intent.getStringExtra("imgUrl");
+                String link = intent.getStringExtra("link");
+                ad_id = intent.getIntExtra("ad_id",0);
+
+                GlideApp.with(mActivity)
+                        .load(url)
+                        .placeholder(R.mipmap.user_moren)
+                        .error(R.mipmap.user_moren)
+                        .into(ivMineAddFragment1BigAdver);
+                etFragmentBigpicLink.setText(link);
+
+            }
+        }
         imagePicker = new ImagePicker();
         imagePicker.setCropImage(true);
 
@@ -154,7 +175,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                 //      使用Glide加载的gif图片同样支持缩放功能
                 GlideApp.with(mActivity)
                         .load(imageUri)
-
                         .placeholder(R.mipmap.user_moren)
                         .error(R.mipmap.user_moren)
                         .into(ivMineAddFragment1BigAdver);
@@ -195,6 +215,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
                         if (response.body().code.equals("0")) {
+                            upLoadPics = new ArrayList<>();
                             upLoadPics.add(response.body().data.getFile());
                             Toast.makeText(mActivity, "上传图片成功", Toast.LENGTH_SHORT).show();
                         }
@@ -250,53 +271,42 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     private void commit() {
         final String imagUrl = Utils.listToString(upLoadPics);
         final String trim = etFragmentBigpicLink.getText().toString().trim();
-//        if (TextUtils.isEmpty(trim)) {
-//            ToastUtils.showShortToast(mActivity, "链接不能为空");
-//            return;
-//        }
-//        OkGo.<LzyResponse<String>>post(Constant.ADD_AD)
-//                .params("ad_type", 1)
-//                .params("images", imagUrl)
-//                .params("link", trim)
-//                .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
-//                    @Override
-//                    public void onSuccess(Response<LzyResponse<String>> response) {
-//                        if (response.body().code.equals("0")) {
-//
-//                            com.orhanobut.logger.Logger.d("错误信息+"+response.body().toString());
-//
-//
-//                            Intent intent = new Intent();
-//                            intent.putExtra("index", 0);
-//                            mActivity.setResult(Activity.RESULT_OK, intent);
-//                            mActivity.finish();
-//                        }
-//                    }
-//                });
-        OkGo.<String>post(Constant.ADD_AD)
-                .params("ad_type", 1)
-                .params("images", imagUrl)
-                .params("link", trim)
-                .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
 
-                    parseFragment1AdvData(response.body());
-            }
+        if(isComingFromColum == true){
+            OkGo.<String>post(Constant.EDIT_AD)
+                    .params("id",ad_id)
+                    .params("ad_type",1)
+                    .params("images", imagUrl)
+                    .params("link", trim)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            parseFragment1AdvData(response.body());
+                        }
+                    });
+        }else {
+            OkGo.<String>post(Constant.ADD_AD)
+                    .params("ad_type", 1)
+                    .params("images", imagUrl)
+                    .params("link", trim)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
 
-            @Override
-            public void onError(Response<String> response) {
+                            parseFragment1AdvData(response.body());
+                        }
 
-                Log.v("ad_add",response.toString());
-                //super.onError(response);
-//                Intent intent = new Intent();
-//                intent.putExtra("index", 0);
-//                intent.putExtra("url",imagUrl);
-//                intent.putExtra("title",trim);
-//                mActivity.setResult(Activity.RESULT_OK, intent);
-//                mActivity.finish();
-            }
-        });
+                        @Override
+                        public void onError(Response<String> response) {
+
+                            Log.v("ad_add",response.toString());
+                            //super.onError(response);
+
+                        }
+                    });
+        }
+
+
 
     }
 
@@ -305,10 +315,20 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             JSONObject jsonObject = new JSONObject(body);
             final int code = jsonObject.getInt("code");
             if (code==0) {
-                com.orhanobut.logger.Logger.d("错误信息+"+body.toString());
+//                com.orhanobut.logger.Logger.d("错误信息+"+body.toString());
+//                Intent intent = new Intent();
+//                intent.putExtra("index", 0);
+//                mActivity.setResult(Activity.RESULT_OK, intent);
+//                mActivity.finish();
+                final String imagUrl = Utils.listToString(upLoadPics);
+                final String trim = etFragmentBigpicLink.getText().toString().trim();
                 Intent intent = new Intent();
+                intent.putExtra("type",1);
+                intent.putExtra("position",getActivity().getIntent().getStringExtra("position"));
                 intent.putExtra("index", 0);
-                mActivity.setResult(Activity.RESULT_OK, intent);
+                intent.putExtra("url",imagUrl);
+                intent.putExtra("title",trim);
+                mActivity.setResult( isComingFromColum == false ? Activity.RESULT_OK : -2, intent);
                 mActivity.finish();
 
             }

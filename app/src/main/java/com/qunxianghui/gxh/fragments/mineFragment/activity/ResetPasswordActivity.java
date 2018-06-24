@@ -31,11 +31,10 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     EditText etResetpasswordConformNewPassworm;
     @BindView(R.id.bt_resetpassword_conform_password)
     Button btResetpasswordConformPassword;
-    private int mobile;
-    private int vertifiCode;
+    private String mobile;
+    private String vertifiCode;
     private String password;
     private String confirmPassword;
-
 
     @Override
     protected int getLayoutId() {
@@ -44,7 +43,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initViews() {
-
     }
 
     @Override
@@ -55,11 +53,9 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 finish();
             }
         }).setTitleText("密码找回");
-
-
         Intent intent = getIntent();
-        mobile = intent.getIntExtra("mobile", 0);
-        vertifiCode = intent.getIntExtra("captcha", 0);
+        mobile = intent.getStringExtra("mobile");
+        vertifiCode = intent.getStringExtra("captcha");
     }
 
     @Override
@@ -77,11 +73,9 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.bt_resetpassword_conform_password:
                 SeekPasswordCommit();
-
                 break;
         }
     }
@@ -93,14 +87,11 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
             asyncShowToast("密码和确认密码不能为空");
         } else if (!password.equals(confirmPassword) ) {
             asyncShowToast("两次输入的密码不一致");
-
         } else {
             CommitSeekPassword(password);
         }
-
     }
     private void CommitSeekPassword(String password) {
-
         OkGo.<String>post(Constant.SEEK_PASSWORD_URL)
                 .params("password", password)
                 .params("mobile", mobile)
@@ -110,10 +101,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                     public void onSuccess(Response<String> response) {
                         try {
                             JSONObject jsonObject=new JSONObject(response.body());
-
                             final int code = jsonObject.getInt("code");
-
-
                             if (code==0){
                                 com.orhanobut.logger.Logger.e("----------修改成功" + response.toString());
                                 toActivity(LoginActivity.class);
@@ -123,8 +111,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 });
     }
