@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
@@ -122,12 +123,15 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
 
         if ( click_like == null || click_like.length()==0){
             addAction(new ActionItem("点赞"));
+            digBtn.setText("点赞");
         }else {
+            digBtn.setText("取消赞");
             addAction(new ActionItem("取消赞"));
         }
         if (collect == null || collect.length()==0){
             addAction(new ActionItem("收藏"));
             //colletBtn.setText("取消");
+            colletBtn.setText("收藏");
         }else {
             colletBtn.setText("取消收藏");
             addAction(new ActionItem("取消收藏"));
@@ -146,13 +150,30 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
 
        // digBtn.setText(mActionItems.get(0).mTitle);
         //判断当前状态
-        if (listBean.getCollect().equals("true")){
-            colletBtn.setText("取消收藏");
+        Drawable like = parent.getResources().getDrawable(R.mipmap.icon_good);
+        like.setBounds(0,0, like.getIntrinsicWidth(), like.getMinimumHeight());
+        Drawable collection = parent.getResources().getDrawable(R.drawable.collect_normal);
+        collection.setBounds(0,0,collection.getIntrinsicWidth(),collection.getIntrinsicHeight());
+        if (listBean.getCollect().equals("true")&&listBean.getLike_info_res().equalsIgnoreCase("true")){
+
+            colletBtn.setCompoundDrawables(null,null,null,null);
+            digBtn.setCompoundDrawables(null,null,null,null);
+            this.setWidth(DensityUtil.dip2px(context, 250));
+        }else if (listBean.getCollect().equals("true")) {
+            colletBtn.setCompoundDrawables(null,null,null,null);
+            digBtn.setCompoundDrawables(like,null,null,null);
             this.setWidth(DensityUtil.dip2px(context, 230));
+        }else if (listBean.getLike_info_res().equalsIgnoreCase("true")) {
+
+            colletBtn.setCompoundDrawables(collection,null,null,null);
+            digBtn.setCompoundDrawables(null,null,null,null);
+            this.setWidth(DensityUtil.dip2px(context, 220));
         }else {
-            //mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
+
             this.setWidth(DensityUtil.dip2px(context, 200));
-            colletBtn.setCompoundDrawables(parent.getResources().getDrawable(R.mipmap.ic_launcher),null,null,null);
+
+            digBtn.setCompoundDrawables(like,null,null,null);
+            colletBtn.setCompoundDrawables(collection,null,null,null);
         }
         if (!this.isShowing()) {
             showAtLocation(parent, Gravity.NO_GRAVITY, mLocation[0] - this.getWidth()
