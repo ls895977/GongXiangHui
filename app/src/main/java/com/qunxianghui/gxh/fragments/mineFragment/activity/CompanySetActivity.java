@@ -320,7 +320,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
         final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(body, ThirdStepCityBean.class);
         if (thirdStepCityBean.getCode() == 0) {
-//            showPickerView();
+            showPickerView();
 
         }
 

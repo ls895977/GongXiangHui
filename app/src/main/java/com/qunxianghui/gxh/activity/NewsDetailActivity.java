@@ -38,10 +38,18 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.sina.weibo.sdk.api.ImageObject;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONObject;
 
@@ -53,7 +61,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/9 0009.
  */
 
-public class NewsDetailActivity extends BaseActivity implements View.OnClickListener{
+public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.et_input_discuss)
     EditText etInputDiscuss;
@@ -74,17 +82,18 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_addAdver_share;
     private TextView tv_article_share;
     private TextView tv_bottom_alertdialog_cancle;
-    private LinearLayout ll_shared_third_list;
+
     private LinearLayout ll_share_list;
-    private ImageView iv_newsdetail_shared_weichat;
+
     private ImageView iv_newsdetail_wxshared_friendcircle;
-    private ImageView iv_newsdetail_shared_sina;
-    private ImageView iv_newsdetail_shared_qq;
-    private Button bt_newsdetail_cancle_share;
+
+
     private Bundle params;
     private String url;
     private int uuid;
     private int id;
+
+    private UMShareListener umShareListener;
     private android.os.Handler handler = new android.os.Handler();
     private boolean has_collect;
 
@@ -118,7 +127,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
                             parseNewsContentData(response.body());
 
-                            com.orhanobut.logger.Logger.d("收藏+++"+response.body().toString());
+                            com.orhanobut.logger.Logger.d("收藏+++" + response.body().toString());
                         }
                     }
                 }, 200);
@@ -162,6 +171,31 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             }
         });
+
+
+        //此回调用于分享
+        umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+                //分享开始的回调
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA platform) {
+                Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, Throwable t) {
+                Toast.makeText(NewsDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+                Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            }
+        };
+
     }
 
     /**
@@ -185,22 +219,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         tv_addAdver_share = alertView.findViewById(R.id.tv_addAdver_share);
         tv_article_share = alertView.findViewById(R.id.tv_article_share);
         tv_bottom_alertdialog_cancle = alertView.findViewById(R.id.tv_bottom_alertdialog_cancle);
-        ll_shared_third_list = alertView.findViewById(R.id.ll_shared_third_list);
+
         ll_share_list = alertView.findViewById(R.id.ll_share_list);
-        iv_newsdetail_shared_qq = alertView.findViewById(R.id.iv_newsdetail_shared_qq);
-        iv_newsdetail_shared_weichat = alertView.findViewById(R.id.iv_newsdetail_shared_weichat);
-        iv_newsdetail_shared_sina = alertView.findViewById(R.id.iv_newsdetail_shared_sina);
-        iv_newsdetail_wxshared_friendcircle = alertView.findViewById(R.id.iv_newsdetail_wxshared_friendcircle);
-        bt_newsdetail_cancle_share = alertView.findViewById(R.id.bt_newsdetail_cancle_share);
+
+
+
         tv_addAdver_share.setOnClickListener(this);
         tv_article_share.setOnClickListener(this);
         tv_bottom_alertdialog_cancle.setOnClickListener(this);
-        bt_newsdetail_cancle_share.setOnClickListener(this);
-        //点击了三方的分享
-        iv_newsdetail_shared_sina.setOnClickListener(this);
-        iv_newsdetail_shared_weichat.setOnClickListener(this);
-        iv_newsdetail_wxshared_friendcircle.setOnClickListener(this);
-        iv_newsdetail_shared_qq.setOnClickListener(this);
+
         //将布局设置给dialog
         dialog.setContentView(alertView);
         //获取当前activity所在的窗体
@@ -209,6 +236,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         dialogWindow.setGravity(Gravity.BOTTOM);
         //获得窗体的属性
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.alpha=0.3f;
         final WindowManager windowManager = getWindowManager();
         final Display display = windowManager.getDefaultDisplay();
         lp.width = (int) display.getWidth();  //设置宽度
@@ -302,7 +330,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 llNewsDetailBigDiss.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_news_detail_bigDiss:
-
                 break;
 
             case R.id.tv_addAdver_share:
@@ -315,9 +342,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.tv_article_share:
-                Toast.makeText(mContext, "文章直接分享", Toast.LENGTH_SHORT).show();
+
                 ll_share_list.setVisibility(View.GONE);
-                ll_shared_third_list.setVisibility(View.VISIBLE);
+
+
+                StartThirdShare();
                 break;
             case R.id.tv_bottom_alertdialog_cancle:
                 dialog.dismiss();
@@ -327,33 +356,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 intent = new Intent(mContext, AddAdverActivity.class);
                 intent.putExtra("url", url);
                 startActivity(intent);
-
-                break;
-
-            case R.id.iv_newsdetail_shared_qq:
-                asyncShowToast("点击了分享QQ");
-
-                dialog.dismiss();
-                break;
-            case R.id.iv_newsdetail_shared_weichat:
-
-                asyncShowToast("点击了分享微信");
-
-
-                dialog.dismiss();
-                break;
-
-            case R.id.iv_newsdetail_wxshared_friendcircle:
-                //分享到朋友圈
-
-                break;
-            case R.id.iv_newsdetail_shared_sina:
-                asyncShowToast("点击分享了新浪微博");
-
-                dialog.dismiss();
-                break;
-            case R.id.bt_newsdetail_cancle_share:
-                dialog.dismiss();
                 break;
             case R.id.iv_news_detail_collect:
                 CollectDataList(uuid);
@@ -361,6 +363,48 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         }
 
     }
+
+    /**
+     * 三方分享
+     */
+    private void StartThirdShare() {
+        //以下代码是分享示例代码
+        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        final UMWeb web = new UMWeb("http://www.baidu.com"); //切记切记 这里分享的链接必须是http开头
+        web.setTitle("你要分享内容的标题");//标题
+        web.setThumb(image);  //缩略图
+        web.setDescription("你要分享内容的描述");//描述
+        new ShareAction(this)
+                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                        if (share_media == SHARE_MEDIA.QQ) {
+                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
+                        } else if (share_media == SHARE_MEDIA.WEIXIN) {
+                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
+                        } else if (share_media == SHARE_MEDIA.QZONE) {
+                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.QZONE)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
+                        } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
+//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+//                                            .withMedia(web)
+//                                            .setCallback(umShareListener)
+//                                            .share();
+                        }
+                    }
+                }).open();
+
+    }
+
 
     private void CollectDataList(int uuid) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
