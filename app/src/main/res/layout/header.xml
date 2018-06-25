@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:padding="5dp"
     android:orientation="vertical">
 
     <TextView
@@ -22,8 +23,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="60dp"
         android:drawablePadding="10dp"
-        android:textColor="@color/subscribe_item_normal_stroke"
-        android:textSize="18sp"
+
+        android:textSize="16sp"
         tools:text="1111" />
 
 </LinearLayout>

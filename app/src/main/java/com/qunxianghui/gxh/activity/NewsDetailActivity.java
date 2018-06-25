@@ -96,6 +96,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private UMShareListener umShareListener;
     private android.os.Handler handler = new android.os.Handler();
     private boolean has_collect;
+    private String title;
 
     @Override
     protected int getLayoutId() {
@@ -108,9 +109,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
         //微信朋友圈
         mProgressBar = (ProgressBar) findViewById(R.id.progress_newsdetail);
-        Intent intent = getIntent();
-        intent.getStringExtra("url");
-        mWebView.loadUrl(url);
+        mWebView.loadUrl(this.url);
 
         //获取内容状态
         hodeNewsStatus();
@@ -152,6 +151,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     protected void initDatas() {
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        title = intent.getStringExtra("title");
         uuid = intent.getIntExtra("uuid", 0);
         id = intent.getIntExtra("id", 0);
 
@@ -236,11 +236,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         dialogWindow.setGravity(Gravity.BOTTOM);
         //获得窗体的属性
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.alpha=0.3f;
+
         final WindowManager windowManager = getWindowManager();
         final Display display = windowManager.getDefaultDisplay();
         lp.width = (int) display.getWidth();  //设置宽度
-        lp.y = 20;  //设置dialog距离底部的距离
+        lp.y = 5;  //设置dialog距离底部的距离
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
         dialog.show();
@@ -278,7 +278,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.e("用户单机超链接", url);
-                //判断用户单机的是那个超链接
+                //判断用户单击的是那个超链接
                 String tag = "tel";
                 if (url.contains(tag)) {
                     final String mobile = url.substring(url.lastIndexOf("/") + 1);
@@ -370,10 +370,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private void StartThirdShare() {
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
-        final UMWeb web = new UMWeb("http://www.baidu.com"); //切记切记 这里分享的链接必须是http开头
-        web.setTitle("你要分享内容的标题");//标题
+        final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
+        web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
-        web.setDescription("你要分享内容的描述");//描述
+//        web.setDescription("你要分享内容的描述");//描述
         new ShareAction(this)
                 .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
                 .setShareboardclickCallback(new ShareBoardlistener() {

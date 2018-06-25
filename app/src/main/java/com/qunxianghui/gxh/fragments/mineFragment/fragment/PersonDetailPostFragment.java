@@ -37,7 +37,7 @@ public class PersonDetailPostFragment extends BaseFragment {
     @Override
     protected void onLoadData() {
 
-    }
+}
 
     @Override
     public int getLayoutId() {

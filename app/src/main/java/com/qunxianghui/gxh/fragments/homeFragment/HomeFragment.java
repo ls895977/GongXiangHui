@@ -1,8 +1,10 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -23,12 +25,15 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.github.dfqin.grantor.PermissionListener;
+import com.github.dfqin.grantor.PermissionsUtil;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
@@ -41,6 +46,7 @@ import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
@@ -77,10 +83,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     //TabLayout标签
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
-
     private LinearLayout ll_more_columns; // 右边+号的父布局
     private ImageView button_more_columns; // 标题右边的+号
-
     private RelativeLayout rl_column; // +号左边的布局：包括HorizontalScrollView和左右阴影部分
     public ImageView shade_left; // 左阴影部分
     public ImageView shade_right; // 右阴影部分
@@ -169,7 +173,32 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         shade_left = mActivity.findViewById(R.id.shade_left);
         shade_right = mActivity.findViewById(R.id.shade_right);
         mViewPager = mActivity.findViewById(R.id.home_view_pager);
+
+
+        //一进来进行定位
+
+        RequestHomeLocation();
+
     }
+
+    private void RequestHomeLocation() {
+        //定位
+        mlocationClient = new AMapLocationClient(mActivity);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置返回地址信息，默认为true
+        mLocationOption.setNeedAddress(true);
+//                //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        mlocationClient.startLocation();
+    }
+
 
     private void setChangelView() {
 //        initColumnData();

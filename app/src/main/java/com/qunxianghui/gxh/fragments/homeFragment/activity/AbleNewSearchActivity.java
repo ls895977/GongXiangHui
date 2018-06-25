@@ -1,27 +1,14 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
-import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -38,25 +25,15 @@ import com.qunxianghui.gxh.adapter.MyExpandableAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.DataCityInfo;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.fragments.homeFragment.search.model.CityEntity;
-import com.qunxianghui.gxh.fragments.homeFragment.search.utils.JsonReadUtil;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.widget.LetterListView;
-import com.qunxianghui.gxh.widget.ViewBinder;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AbleNewSearchActivity extends BaseActivity implements AbsListView.OnScrollListener{
+public class AbleNewSearchActivity extends BaseActivity implements AbsListView.OnScrollListener, View.OnClickListener, AMapLocationListener {
 
     @BindView(R.id.simple_expandable_listview)
     ExpandableListView simpleExpandableListview;
@@ -64,6 +41,16 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     LetterIndexView livLetters;
     @BindView(R.id.tv_hint)
     TextView tvHint;
+    @BindView(R.id.tv_homeactivity_curr_location)
+    TextView tvHomeactivityCurrLocation;
+    @BindView(R.id.tv_homeactivity_setcurr_location)
+    TextView tvHomeactivitySetcurrLocation;
+    @BindView(R.id.iv_blelocation_back)
+    ImageView ivBlelocationBack;
+    @BindView(R.id.tv_bletop_location)
+    TextView tvBletopLocation;
+    private AMapLocationClient mlocationClient;
+    public AMapLocationClientOption mLocationOption = null;
 
     @Override
     protected int getLayoutId() {
@@ -75,6 +62,27 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
         setSystemBarTransparent();
 
         simpleExpandableListview.setGroupIndicator(null);
+
+        RequestAbleLocation();
+
+    }
+
+    private void RequestAbleLocation() {
+        //定位
+        mlocationClient = new AMapLocationClient(mContext);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置返回地址信息，默认为true
+        mLocationOption.setNeedAddress(true);
+//                //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        mlocationClient.startLocation();
     }
 
     @Override
@@ -146,21 +154,16 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     private void setItems(DataCityInfo bean) {
         MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
         simpleExpandableListview.setAdapter(adapter);
-        View headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header, null);
-        simpleExpandableListview.addHeaderView(headerView);
+
     }
 
 
     @Override
     protected void initListeners() {
+        tvHomeactivitySetcurrLocation.setOnClickListener(this);
+        ivBlelocationBack.setOnClickListener(this);
 
     }
-
-
-
-
-
-
 
 
     /**
@@ -188,14 +191,45 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 
-
     }
 
 
+    @Override
+    public void onLocationChanged(final AMapLocation aMapLocation) {
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvHomeactivityCurrLocation.setText(aMapLocation.getDistrict());
+                        tvBletopLocation.setText("当前位置"+ aMapLocation.getDistrict());
+                    }
+                });
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "locations Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
+        }
+        mlocationClient.stopLocation();
 
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_blelocation_back:
+                finish();
+                break;
+        }
 
+    }
 
-
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

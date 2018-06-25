@@ -127,6 +127,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                         }
                     } else {
                         //todo 图片预览，可删除, 使用PhotoView
+
                     }
                 }
             });

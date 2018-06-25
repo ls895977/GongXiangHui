@@ -54,7 +54,7 @@
             android:layout_toRightOf="@+id/ib_home_camera"
             android:drawablePadding="3dp"
             android:drawableTop="@mipmap/icon_home_location"
-            android:text="西湖"
+            android:text="定位"
             android:textSize="13sp" />
 
         <ImageButton

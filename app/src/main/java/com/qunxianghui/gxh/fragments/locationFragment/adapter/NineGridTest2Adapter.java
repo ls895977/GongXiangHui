@@ -96,7 +96,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     listener.onPicClick(position, p);
                 }
 
-                ;
+
             });
         }
         if (dataBeanList.get(position).getComment_res().size() != 0) {

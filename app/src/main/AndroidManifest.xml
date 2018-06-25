@@ -255,12 +255,14 @@
         <activity
             android:name=".fragments.mineFragment.activity.CompanySetProvinceActivity"
             android:launchMode="singleTask" />
-
+        <!--大图image的界面-->
         <activity
             android:name=".activity.PhotoBrowserActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".fragments.mineFragment.activity.BindMobileActivity"
-            android:launchMode="singleTask"    />
+        <!--绑定手机号界面-->
+        <activity
+            android:name=".fragments.mineFragment.activity.BindMobileActivity"
+            android:launchMode="singleTask" />
 
     </application>
 

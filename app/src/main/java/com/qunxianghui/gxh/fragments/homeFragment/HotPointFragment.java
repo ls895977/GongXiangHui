@@ -13,10 +13,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -174,6 +176,14 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
                 }, 1000);
 
+                final Toast toast = Toast.makeText(mActivity, "已经为你推荐了"+dataList.size()+"条新闻", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP,0,0);
+                toast.show();
+
+
+
+
+
             }
         });
         //设置加载出来看的动画
@@ -208,6 +218,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                                 }
                             }
                             homeItemListAdapter1.notifyDataSetChanged();
+
+
+
                         }
                     }
                 });
@@ -227,18 +240,20 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
     private void parseHomeLunBoPager(String body) {
         final HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
+
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
+            //轮播图的标题
             List<String> titles = new ArrayList<>();
+            //轮播图的图片
             List<String> imags = new ArrayList<>();
             String image_src;
             String title;
-
             for (int i = 0; i < lunboData.size(); i++) {
                 image_src = lunboData.get(i).getImage_src();  //图片
                 title = lunboData.get(i).getTitle();        //title
-                //轮播图跳转的url
-                image_url = lunboData.get(i).getImage_url();
+//                //轮播图跳转的url
+//                image_url = lunboData.get(i).getImage_url();
                 imags.add(image_src);
                 titles.add(title);
             }
@@ -251,7 +266,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         @Override
                         public void OnBannerClick(int position) {
                             Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                            intent.putExtra("url", image_url);
+                            intent.putExtra("url", lunboData.get(position).getImage_url());
+
                             startActivity(intent);
                         }
                     })
@@ -334,7 +350,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
-
     @Override
     protected void initListeners() {
         llHomePasteArtical.setOnClickListener(this);
@@ -345,10 +360,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 final String url = dataList.get(position).getUrl();
                 final int uuid = dataList.get(position).getUuid();
                 final int id = dataList.get(position).getId();
+                final String title = dataList.get(position).getTitle();
+
                 final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", url);
                 intent.putExtra("uuid", uuid);
                 intent.putExtra("id", id);
+                intent.putExtra("title",title);
                 startActivity(intent);
             }
         });

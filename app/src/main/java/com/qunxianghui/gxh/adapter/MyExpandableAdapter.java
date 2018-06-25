@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.DataCityInfo;
@@ -19,7 +20,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private List<DataCityInfo.DataBean.CityBean> header; // header titles
     private HashMap<DataCityInfo.DataBean.CityBean, List<DataCityInfo.DataBean.CityBean.AreasBean>> child;
     private final DataCityInfo.DataBean mDataBean;
-
+     private Context context;
 //	public MyExpandableAdapter(List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
 //		this.header = listDataHeader;
 //		this.child = listChildData;
@@ -139,6 +140,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         if (isExpanded) {
             header_text.setTypeface(null, Typeface.BOLD);
             header_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_up, 0);
+
         } else {
             // If group is not expanded then change the text back into normal
             // and change the icon
@@ -169,6 +171,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         TextView child_text = (TextView) convertView.findViewById(R.id.child);
 
         child_text.setText(childText);
+
         return convertView;
     }
 
