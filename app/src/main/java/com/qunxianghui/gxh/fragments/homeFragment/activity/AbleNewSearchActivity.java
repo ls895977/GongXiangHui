@@ -202,7 +202,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                     @Override
                     public void run() {
                         tvHomeactivityCurrLocation.setText(aMapLocation.getDistrict());
-                        tvBletopLocation.setText("当前位置"+ aMapLocation.getDistrict());
+                        tvBletopLocation.setText("当前位置"+" "+ aMapLocation.getDistrict());
                     }
                 });
             } else {

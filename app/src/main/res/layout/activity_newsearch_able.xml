@@ -25,6 +25,7 @@
         <TextView
 
             android:id="@+id/tv_bletop_location"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
