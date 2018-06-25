@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.base;
 
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -12,11 +13,11 @@ import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
-import com.lzy.okgo.model.HttpParams;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+import com.qunxianghui.gxh.activity.WelcomActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
@@ -48,6 +49,16 @@ public class MyApplication extends Application {
         return SINSTANCE;
     }
 
+    private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
+        public void uncaughtException(Thread thread, Throwable ex) {
+            //发生崩溃异常时,重启应用
+            Intent intent = new Intent(mAppApplication, WelcomActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mAppApplication.startActivity(intent);
+            android.os.Process.killProcess(android.os.Process.myPid());  //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -58,7 +69,7 @@ public class MyApplication extends Application {
         initOkGo();
         appManager = AppManager.getAppManager();
 
-
+        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
