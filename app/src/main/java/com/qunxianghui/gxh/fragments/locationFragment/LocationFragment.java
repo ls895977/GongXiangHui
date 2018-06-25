@@ -513,9 +513,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-
-
-                    Toast.makeText(getActivity(), response.body(), Toast.LENGTH_LONG).show();
                     //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
                     UserUtil user = UserUtil.getInstance();
                     like.setMember_name(user.mNick);
@@ -524,6 +521,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         dataList.get(position).setLike_info_res("true");
                         mAdapter.notifyDataSetChanged();
                         mAdapter.notifyItemChanged(position);
+
+                        asyncShowToast("点赞成功");
                     } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
                         List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
                         for (int i = 0; i < dataList.get(position).getTem().size(); i++) {
@@ -539,6 +538,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         dataList.get(position).setLike_info_res("");
                         mAdapter.notifyDataSetChanged();
                         mAdapter.notifyItemChanged(position);
+                        asyncShowToast("取消点赞成功");
                     }
                 }
             });
