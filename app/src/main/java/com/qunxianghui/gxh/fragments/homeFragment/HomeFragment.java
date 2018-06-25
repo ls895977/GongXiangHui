@@ -33,9 +33,11 @@ import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
+import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
@@ -112,7 +114,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             public void onSuccess(Response<String> response) {
                 String json = response.body();
                 if (HttpStatusUtil.getStatus(json)) {
-                    getListData(json);
+                    setChannelData(json);
                     setChangelView();
                 } else {
                     ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
@@ -133,13 +135,20 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 startActivityForResult(intent_channel, CHANNELREQUEST);
             }
         });
+//        toolbar.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                setChangelView();
+//            }
+//        }, 200);
+//        setChangelView();
     }
 
     /**
      * ==================频道列表（用户订阅的频道）=====================
      */
-    private ChannelGetallBean getListData(String body) {
-        final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
+    private void setChannelData(String body) {
+        ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
             List<ChannelGetallBean.DataBean> datas = bean.getData();
             for (int i = 0; i < datas.size(); i++) {
@@ -148,9 +157,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 userChannelList.add(item);
             }
         }
-        return bean;
     }
-
 
     @Override
     public void initViews(View view) {
@@ -162,11 +169,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         shade_left = mActivity.findViewById(R.id.shade_left);
         shade_right = mActivity.findViewById(R.id.shade_right);
         mViewPager = mActivity.findViewById(R.id.home_view_pager);
-
     }
 
     private void setChangelView() {
-        initColumnData();
+//        initColumnData();
         initTabColumn();
         initFragment();
     }
@@ -175,10 +181,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
      * 初始化Fragment
      */
     private void initFragment() {
-
         fragments.clear();//清空
         int count = userChannelList.size();
-
         HotPointFragment newFragment;
         Bundle bundle;
         for (int i = 0; i < count; i++) {
@@ -236,7 +240,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             }
             checkView.setSelected(ischeck);
         }
-
     }
 
     /**
@@ -259,10 +262,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             if (columnSelectIndex == i) {
                 columnTextView.setSelected(true);
             }
-
             // 单击监听
             columnTextView.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
@@ -285,8 +286,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
      * 获取Column栏目 数据
      */
     private void initColumnData() {
-//        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
-
+        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
     }
 
     @Override
@@ -295,7 +295,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         ibHomeSearch.setOnClickListener(this);
         ibHomeScan.setOnClickListener(this);
         tvHomeLocation.setOnClickListener(this);
-
     }
 
     @Override
@@ -308,7 +307,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     protected void onLoadData() {
-
     }
 
     @Override
@@ -339,21 +337,18 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 toActivity(BaoLiaoActivity.class);
                 break;
             case R.id.ib_home_scan:            //扫描二维码
-
                 toActivity(ScanActivity.class);
                 break;
             case R.id.ib_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
             case R.id.tv_home_location:
-
 //                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
