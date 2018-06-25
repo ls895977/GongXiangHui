@@ -189,6 +189,14 @@ public class Constant {
     public static final String CHECK_ADD = BASE_URL +"user/checkAddAd";
     //添加广告
     public static final String ADD_AD = BASE_URL+"user/addAd";
+    //删除单条广告
+    public static final String DELETE_AD = BASE_URL + "user/delAd";
+    //使用广告
+    public static final String USED_AD = BASE_URL + "user/getAdTemplateV2";
+    //加入轮播
+    public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
+    //修改某条广告
+    public static final String EDIT_AD = BASE_URL + "user/editAd";
     //企业添加
     public static final String ADD_COMPANY_URL=BASE_URL+"service/addCompany";
     //企业设置   获取

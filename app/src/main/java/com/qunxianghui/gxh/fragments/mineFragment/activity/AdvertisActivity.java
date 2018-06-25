@@ -55,10 +55,8 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     private TabLayout.Tab five;
     private TabLayout.Tab six;
 
-
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
     private List<BaseFragment> fragments = new ArrayList<>();
-
 
 
 
@@ -69,12 +67,24 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
-//设置tabLayout的一个显示方式
+    //设置tabLayout的一个显示方式
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         //循环注入标签
         for (String tab : titles) {
             tabLayout.addTab(tabLayout.newTab().setText(tab));
         }
+
+        /*
+        Intent intent = getIntent();
+        isComingFromColum = intent.getBooleanExtra("isComingFromColum",false);
+        if( isComingFromColum == true ){
+            int index = intent.getIntExtra("index",0);
+            if(index == 0){
+                String url = intent.getStringExtra("imgUrl");
+                String link = intent.getStringExtra("link");
+                int ad_id = intent.getIntExtra("ad_id",0);
+            }
+        }*/
     }
 
 

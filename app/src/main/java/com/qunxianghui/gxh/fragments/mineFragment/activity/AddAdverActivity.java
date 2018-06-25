@@ -141,27 +141,47 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.rl_mineFragment_addTopAdver:
                 intent = new Intent(this, AdvertisActivity.class);
+                intent.putExtra("position","top");
                 //startActivity(intent);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.rl_mineFragment_addBottomAdver:
                 intent = new Intent(this, AdvertisConmmengtActivity.class);
-                startActivity(intent);
+                intent.putExtra("position","bottom");
+                startActivityForResult(intent, 100);
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 100){
-            String url = data.getStringExtra("url");
-            String title = data.getStringExtra("title");
-            GlideApp.with(mContext).load(url)
-                    .centerCrop()
-                    .placeholder(R.mipmap.icon_headimage)
-                    .error(R.mipmap.icon_headimage)
-                    .into(ivMineFragmentAddTopAdver);
+
+        if(resultCode == Activity.RESULT_OK){
+
+            int type = data.getIntExtra("type",0);
+            if (type == 1){
+                String postion = data.getStringExtra("position");
+
+                if (postion.equalsIgnoreCase("top")) {
+                    String url = data.getStringExtra("url");
+                    String title = data.getStringExtra("title");
+                    GlideApp.with(mContext).load(url)
+                            .centerCrop()
+                            .placeholder(R.mipmap.icon_headimage)
+                            .error(R.mipmap.icon_headimage)
+                            .into(ivMineFragmentAddTopAdver);
+                }else if(postion.equalsIgnoreCase("bottom")){
+                    String url = data.getStringExtra("url");
+                    String title = data.getStringExtra("title");
+                    GlideApp.with(mContext).load(url)
+                            .centerCrop()
+                            .placeholder(R.mipmap.icon_headimage)
+                            .error(R.mipmap.icon_headimage)
+                            .into(ivMineFragmentAddBottomAdver);
+                }
+
+            }
+
         }
-        //super.onActivityResult(requestCode, resultCode, data);
     }
 }

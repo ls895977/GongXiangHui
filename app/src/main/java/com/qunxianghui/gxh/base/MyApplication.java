@@ -142,9 +142,7 @@ public class MyApplication extends Application {
                 setCacheMode(CacheMode.NO_CACHE).
                 setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE).
                 setRetryCount(3)
-//                .addCommonParams(params)
-                .addCommonHeaders(header);
-
+        .addCommonHeaders(header);
 
     }
 
