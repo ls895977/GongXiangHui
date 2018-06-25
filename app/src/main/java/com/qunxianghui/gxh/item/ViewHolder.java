@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -59,6 +60,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
      * @return
      */
     public ImageView getImageView(int id) {
+        return getView(id);
+    }
+
+    public TextView  getTextView(int id) {
+        return getView(id);
+    }
+
+    public CheckBox getBoxView(int id){
         return getView(id);
     }
 

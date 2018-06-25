@@ -139,7 +139,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
-        snsPopupWindow.setClick_like((String) dataBeanList.get(position).getClick_like().toString());
+        snsPopupWindow.setClick_like((String) dataBeanList.get(position).getLike_info_res());
         snsPopupWindow.setCollect(dataBeanList.get(position).getCollect());
         snsPopupWindow.initItemData();
 

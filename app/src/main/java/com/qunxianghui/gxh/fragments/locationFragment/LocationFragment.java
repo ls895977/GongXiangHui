@@ -129,8 +129,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         System.out.println("recyclerview已经停止滚动");
                         break;
                     case 1:
-                        System.out.println("recyclerview正在被拖拽");
-                        System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
+                        //System.out.println("recyclerview正在被拖拽");
+                        //System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
                         if (getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
                                 || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE) {
                             new Handler().postDelayed(new Runnable() {
@@ -143,7 +143,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         }
                         break;
                     case 2:
-                        System.out.println("recyclerview正在依靠惯性滚动");
+                        //System.out.println("recyclerview正在依靠惯性滚动");
                         break;
                 }
             }
@@ -521,6 +521,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     like.setMember_name(user.mNick);
                     if (like.getMessage().equalsIgnoreCase("点赞成功")) {
                         dataList.get(position).getTem().add(like);
+                        dataList.get(position).setLike_info_res("true");
                         mAdapter.notifyDataSetChanged();
                         mAdapter.notifyItemChanged(position);
                     } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
@@ -535,6 +536,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                                 break;
                             }
                         }
+                        dataList.get(position).setLike_info_res("");
                         mAdapter.notifyDataSetChanged();
                         mAdapter.notifyItemChanged(position);
                     }

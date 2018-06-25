@@ -2,12 +2,8 @@ package com.qunxianghui.gxh.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
@@ -15,11 +11,6 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +27,7 @@ public class BianMinServiceActivity extends BaseActivity {
             , "汽车票", "火车票", "飞机票", "农历黄历", "酒店住宿", "找工作", "常用银行"};
 
     @BindView(R.id.grid_bianmin)
-    GridView gridBianmin;
+    RecyclerView gridBianmin;
 
 
     @Override
@@ -47,10 +38,16 @@ public class BianMinServiceActivity extends BaseActivity {
     @Override
     protected void initViews() {
         final BianMinGridAdapter bianMinGridAdapter = new BianMinGridAdapter(mContext, images, iconName);
-
         gridBianmin.setAdapter(bianMinGridAdapter);
-
-
+        bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
+                intent.putExtra("title", iconName[position]);
+                intent.putExtra("url", Constant.COMMON_PHONE);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -63,17 +60,6 @@ public class BianMinServiceActivity extends BaseActivity {
 
             }
         });
-        gridBianmin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
-                intent.putExtra("title", iconName[position]);
-                intent.putExtra("url", Constant.COMMON_PHONE);
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override
