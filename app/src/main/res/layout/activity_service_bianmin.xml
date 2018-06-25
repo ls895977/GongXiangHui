@@ -2,17 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/activity_title" />
 
-
-   <GridView
-       android:numColumns="4"
-       android:horizontalSpacing="10dp"
-    android:verticalSpacing="10dp"
-    android:layout_marginTop="10dp"
-    android:id="@+id/grid_bianmin"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/grid_bianmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="4"/>
+</LinearLayout>

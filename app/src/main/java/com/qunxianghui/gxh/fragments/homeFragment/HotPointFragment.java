@@ -16,12 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -73,7 +70,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private Banner viewpagerHome;
     private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
     private ClipboardManager mClipboardManager;
-    private GridView grid_home_navigator;
+    private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
@@ -87,7 +84,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private List<HomeNewListBean> dataList = new ArrayList<>();
     private int count = 0;
     private int total = 0;
-    private int mChannelId = 1;
+    private int mChannelId = 0;
     private String image_url;
 
     @Override
@@ -234,8 +231,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
             List<String> titles = new ArrayList<>();
             List<String> imags = new ArrayList<>();
-            String image_src = null;
-            String title = null;
+            String image_src;
+            String title;
 
             for (int i = 0; i < lunboData.size(); i++) {
                 image_src = lunboData.get(i).getImage_src();  //图片
@@ -297,11 +294,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initGridHomeNavigator() {
-        final BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
+        BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
-        grid_home_navigator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(int position) {
                 Intent intent = null;
                 switch (position) {
                     case 0:
