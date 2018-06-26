@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,18 +37,12 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.PicassoImageLoader;
-import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/26 0026.
@@ -103,8 +96,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-
-
         fl_company_photo.setChildSpacing(15);
         fl_company_photo.setRowSpacing(15);
         fl_company_photo.setMaxRows(2);
@@ -131,23 +122,16 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                         }
                     } else {
                         //todo 图片预览，可删除, 使用PhotoView
-
                     }
                 }
             });
-
         }
-
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
-
-
         /**
          * 获取用户company的信息
          *
          */
-
-
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -216,7 +200,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         et_mine_companyset_company_lowshow.setText(description);
         et_mine_companyset_compaydetail.setText(content);
         etMineCompanysetWritContactName.setText(linkname);
-
         etMineCaompanysetToIndustry.setText(company_trade_name);
     }
 
@@ -230,8 +213,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCaompanysetToIndustry.setOnClickListener(this);
         tvMmineCompanysetFabu.setOnClickListener(this);
         etMineCompanysetSelectArea.setOnClickListener(this);
-
-
         ivCompanysetBack.setOnClickListener(this);
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
@@ -279,13 +260,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.et_mine_caompanyset_toIndustry:
@@ -311,7 +285,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(Response<String> response) {
 
-                Logger.d("请求成功省市区数据"+response.body().toString());
+                Logger.d("请求成功省市区数据" + response.body().toString());
                 ParseThirdStepCity(response.body());
             }
         });
@@ -324,9 +298,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
      * @param body
      */
     private void ParseThirdStepCity(String body) {
-
         final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(body, ThirdStepCityBean.class);
-        if (thirdStepCityBean.getCode()== 0) {
+        if (thirdStepCityBean.getCode() == 0) {
             showPickerView();
         }
 
@@ -350,32 +323,30 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
      * 弹出选择器
      */
     private void showPickerView() {
-                try {
-                    OptionsPickerView pvOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
-                        @Override
-                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                            //返回的分别是三个级别的选中位置
-                            final String tx = options1Items.get(options1).getName()+
-                                    options2Items.get(options1).get(options2) +
-                                   options3Items.get(options1).get(options2).get(options3);
+        try {
+            OptionsPickerView pvOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    //返回的分别是三个级别的选中位置
+                    final String tx = options1Items.get(options1).getName() +
+                            options2Items.get(options1).get(options2) +
+                            options3Items.get(options1).get(options2).get(options3);
 
-                            asyncShowToast(tx.toString());
+                    asyncShowToast(tx.toString());
 
-                        }
-                    }).setTitleText("城市选择")
-                            .setDividerColor(Color.BLACK)
-                            .setTextColorCenter(Color.BLACK)   //设置选中文字的颜色
-                            .setContentTextSize(20)
-                            .build();
-
-                    pvOptions.setPicker(options1Items,options2Items,options3Items);//三级选择器
-                    pvOptions.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Logger.e("企业设置省市区三级"+e.toString());
                 }
+            }).setTitleText("城市选择")
+                    .setDividerColor(Color.BLACK)
+                    .setTextColorCenter(Color.BLACK)   //设置选中文字的颜色
+                    .setContentTextSize(20)
+                    .build();
 
-
+            pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
+            pvOptions.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.e("企业设置省市区三级" + e.toString());
+        }
     }
 
     private void fetchCompayData() {
@@ -420,7 +391,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                             asyncShowToast(response.message());
                         }
                     });
-
         }
     }
 
@@ -478,11 +448,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                             }
                         }
                     }
-
-
                 }
-
-
             } catch (Exception e) {
                 Log.w("test", e.getMessage());
             }

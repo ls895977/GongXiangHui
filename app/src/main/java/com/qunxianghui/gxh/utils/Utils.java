@@ -19,7 +19,9 @@ import java.util.List;
 
 public class Utils {
 
-    /** 获取屏幕的宽度 */
+    /**
+     * 获取屏幕的宽度
+     */
     public final static int getWindowsWidth(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -35,7 +37,7 @@ public class Utils {
     }
 
     /**
-     *  px 转为 dip
+     * px 转为 dip
      */
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -44,28 +46,29 @@ public class Utils {
 
     /**
      * 将图片转换成Base64编码的字符串
+     *
      * @param path
      * @return base64编码的字符串
      */
-    public static String imageToBase64(String path){
-        if(TextUtils.isEmpty(path)){
+    public static String imageToBase64(String path) {
+        if (TextUtils.isEmpty(path)) {
             return null;
         }
         InputStream is = null;
         byte[] data = null;
         String result = null;
-        try{
+        try {
             is = new FileInputStream(path);
             //创建一个字符流大小的数组。
             data = new byte[is.available()];
             //写入数组
             is.read(data);
             //用默认的编码格式进行编码
-            result = Base64.encodeToString(data,Base64.DEFAULT);
-        }catch (IOException e){
+            result = Base64.encodeToString(data, Base64.DEFAULT);
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if(null !=is){
+        } finally {
+            if (null != is) {
                 try {
                     is.close();
                 } catch (IOException e) {
@@ -80,17 +83,17 @@ public class Utils {
     /**
      * 将list转为string
      */
-    public static String listToString(List<String> list){
-        if(list==null){
+    public static String listToString(List<String> list) {
+        if (list == null || list.size() == 0) {
             return null;
         }
         StringBuilder result = new StringBuilder();
         boolean first = true;
         //第一个前面不拼接","
-        for(String string :list) {
-            if(first) {
-                first=false;
-            }else{
+        for (String string : list) {
+            if (first) {
+                first = false;
+            } else {
                 result.append(",");
             }
             result.append(string);
