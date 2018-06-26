@@ -22,7 +22,9 @@ import com.qunxianghui.gxh.bean.mine.AdListBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
+
 import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,7 +35,7 @@ import butterknife.Unbinder;
  */
 
 @SuppressLint("ValidFragment")
-public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapter.AdListener{
+public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapter.AdListener {
     private final int index;
     @BindView(R.id.xrecycler_addver_commen)
     XRecyclerView xrecyclerAddverCommen;
@@ -71,12 +73,12 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     private void getData() {
         OkGo.<String>post(Constant.GET_AD_LIST)
-                .params("ad_type",index)
+                .params("ad_type", index)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         adListBean = GsonUtil.parseJsonWithGson(response.body(), AdListBean.class);
-                        if (adListBean.getCode()==0){
+                        if (adListBean.getCode() == 0) {
 
                             adListAdapter.setDatas(adListBean.getData());
                             xrecyclerAddverCommen.setAdapter(adListAdapter);
@@ -126,16 +128,16 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     @Override
     public void onEditClick(int p) {
-        Toast.makeText(getActivity(),"edit",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "edit", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), AdvertisActivity.class);
-        intent.putExtra("isComingFromColum",true);
-        intent.putExtra("index",index);
+        intent.putExtra("isComingFromColum", true);
+        intent.putExtra("index", index);
         String url = adListAdapter.getDatas().get(p).getImages();
 
         if (index == 1) {
-            intent.putExtra("imgUrl",adListAdapter.getDatas().get(p).getImages());
-            intent.putExtra("link",adListAdapter.getDatas().get(p).getLink());
-            intent.putExtra("ad_id",adListAdapter.getDatas().get(p).getId());
+            intent.putExtra("imgUrl", adListAdapter.getDatas().get(p).getImages());
+            intent.putExtra("link", adListAdapter.getDatas().get(p).getLink());
+            intent.putExtra("ad_id", adListAdapter.getDatas().get(p).getId());
         }
         //startActivity(intent);
         jumpPosition = p;
@@ -145,20 +147,20 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     @Override
     public void onDeleteClick(int p) {
 
+
         final int position = p;
         OkGo.<String>post(Constant.DELETE_AD)
-                .params("id",adListAdapter.getDatas().get(p).getId())
+                .params("id", adListAdapter.getDatas().get(p).getId())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
-                        Log.v("xxxx--yyyy",response.body());
+
 
                         try {
-
                             JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
                             if (code == 0) {
+                                Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_LONG).show();
                                 adListAdapter.getDatas().remove(position);
                                 adListAdapter.notifyDataSetChanged();
                             }
@@ -170,7 +172,7 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
                     @Override
                     public void onError(Response<String> response) {
-                        Log.v("xx-yy-error",response.toString());
+                        Log.v("xx-yy-error", response.toString());
                     }
                 });
 
@@ -179,14 +181,14 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     @Override
     public void onAddCarousel(int p, boolean ischecked) {
-        Toast.makeText(getActivity(),"add",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "add", Toast.LENGTH_LONG).show();
         OkGo.<String>post(Constant.ADD_SILDE)
-                .params("id",adListAdapter.getDatas().get(p).getId())
-                .params("is_slide",ischecked?1:0)
+                .params("id", adListAdapter.getDatas().get(p).getId())
+                .params("is_slide", ischecked ? 1 : 0)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Toast.makeText(getActivity(),response.body(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), response.body(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -195,8 +197,8 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     public void onUsed(int p) {
         final int position = p;
         OkGo.<String>post(Constant.USED_AD)
-                .params("id",adListAdapter.getDatas().get(p).getId())
-                .params("position",position)
+                .params("id", adListAdapter.getDatas().get(p).getId())
+                .params("position", position)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -206,12 +208,12 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                             int code = jsonObject.getInt("code");
                             if (code == 0) {
                                 Intent intent = new Intent();
-                                intent.putExtra("type",1);
+                                intent.putExtra("type", 1);
                                 intent.putExtra("index", index);
-                                intent.putExtra("url",adListBean.getData().get(position).getImages());
-                                intent.putExtra("position",positionStr);
-                                intent.putExtra("title",adListBean.getData().get(position).getLink());
-                                mActivity.setResult( Activity.RESULT_OK , intent);
+                                intent.putExtra("url", adListBean.getData().get(position).getImages());
+                                intent.putExtra("position", positionStr);
+                                intent.putExtra("title", adListBean.getData().get(position).getLink());
+                                mActivity.setResult(Activity.RESULT_OK, intent);
                                 mActivity.finish();
                             }
 
@@ -227,7 +229,7 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == -2) {
-            if(index == 1) {
+            if (index == 1) {
                 String url = data.getStringExtra("url");
                 String title = data.getStringExtra("title");
 

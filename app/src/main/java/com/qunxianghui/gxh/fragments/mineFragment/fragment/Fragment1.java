@@ -305,11 +305,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         }
                     });
         }
-
-
-
     }
-
     private void parseFragment1AdvData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
@@ -322,27 +318,27 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 //                mActivity.finish();
                 final String imagUrl = Utils.listToString(upLoadPics);
                 final String trim = etFragmentBigpicLink.getText().toString().trim();
-                Intent intent = new Intent();
-                intent.putExtra("type",1);
-                intent.putExtra("position",getActivity().getIntent().getStringExtra("position"));
-                intent.putExtra("index", 0);
-                intent.putExtra("url",imagUrl);
-                intent.putExtra("title",trim);
-                mActivity.setResult( isComingFromColum == false ? Activity.RESULT_OK : -2, intent);
-                mActivity.finish();
+        Intent intent = new Intent();
+        intent.putExtra("type",1);
+        intent.putExtra("position",getActivity().getIntent().getStringExtra("position"));
+        intent.putExtra("index", 0);
+        intent.putExtra("url",imagUrl);
+        intent.putExtra("title",trim);
+        mActivity.setResult( isComingFromColum == false ? Activity.RESULT_OK : -2, intent);
+        mActivity.finish();
 
-            }
+        }
         } catch (Exception e) {
-            e.printStackTrace();
+        e.printStackTrace();
         }
 
-    }
+        }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+@Override
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
         imagePicker.onActivityResult(this, requestCode, resultCode, data);
-    }
-}
+        }
+        }
 
 

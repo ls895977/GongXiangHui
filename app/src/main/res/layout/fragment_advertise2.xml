@@ -21,6 +21,7 @@
 
 
             <EditText
+                android:id="@+id/et_addadv_name_fragment2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -46,6 +47,7 @@
 
 
             <EditText
+                android:id="@+id/et_addadv_phonenumber_fragment2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -71,6 +73,7 @@
 
 
             <EditText
+                android:id="@+id/et_addadv_address_fragment2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"

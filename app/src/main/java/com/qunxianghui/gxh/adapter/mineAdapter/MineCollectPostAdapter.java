@@ -22,7 +22,11 @@ import java.util.List;
 
 
 public class MineCollectPostAdapter extends BaseRecycleViewAdapter<MineCollectPostBean.DataBean> {
+private MycollectPostListener mycollectPostListener;
 
+    public void setMycollectPostListener(MycollectPostListener mycollectPostListener) {
+        this.mycollectPostListener = mycollectPostListener;
+    }
 
     public MineCollectPostAdapter(Context context, List<MineCollectPostBean.DataBean> datas) {
         super(context, datas);
@@ -30,23 +34,27 @@ public class MineCollectPostAdapter extends BaseRecycleViewAdapter<MineCollectPo
 
 
     @Override
-    protected void convert(MyViewHolder holder, int position, MineCollectPostBean.DataBean dataBean) {
+    protected void convert(MyViewHolder holder, final int position, MineCollectPostBean.DataBean dataBean) {
 
         final MyGridView myGrid = holder.getView(R.id.gv_mine_grid);
         final List<String> images = dataBean.getImages();
         final String newctime = dataBean.getNewctime();
 
         final String content = dataBean.getInfo().getContent();
-
-
         holder.setText(R.id.tv_minecollect_post_tiem, newctime);
         holder.setText(R.id.tv_mycollect_post_title, content);
         //九宫格图片
-        myGrid.setAdapter(new LocationGridAdapter(mContext,images));
+        final LocationGridAdapter mycollectPostGridAdapter = new LocationGridAdapter(mContext, images);
+        myGrid.setAdapter(mycollectPostGridAdapter);
+        mycollectPostGridAdapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
+            @Override
+            public void onClick(View v, int p) {
+                mycollectPostListener.onPicClick(position,p);
+            }
+        });
 
 
-
-     TextView tv_collect_cancel = holder.getView(R.id.tv_collect_post_cancel);
+        TextView tv_collect_cancel = holder.getView(R.id.tv_collect_post_cancel);
 
         /**
          * 取消收藏
@@ -54,30 +62,29 @@ public class MineCollectPostAdapter extends BaseRecycleViewAdapter<MineCollectPo
         tv_collect_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                      final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                                builder.setTitle("删除提示");
-                                builder.setMessage("您确定要删除该条消息吗?");
-                                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        CancelCollectPostData();
 
-                                    }
-                                });
-                                builder.setNegativeButton("取消", null);
-                                builder.show();
+                mycollectPostListener.cancelCollect(position);
 
             }
         });
 
     }
 
-    private void CancelCollectPostData() {
-        Toast.makeText(mContext, "取消成功", Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
     protected int getItemView() {
         return R.layout.item_mycollect_post;
     }
+
+    public interface MycollectPostListener{
+        /* 取消收藏*/
+
+
+        void cancelCollect(int position);
+        /* 图片点击*/
+        void onPicClick(int position, int picpostion);
+    }
+
+
 }

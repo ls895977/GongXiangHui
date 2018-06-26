@@ -138,7 +138,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.tv_addAdver_savelist:
 //                ToastUtils.showLongToast(mContext,"点击");
-                Log.v("hahahahah",this.toString());
+                Log.v("植入广告点击保存",this.toString());
                 //ToastUtils.showShortToast(this, "保存");
                 //Toast.makeText(this,"保存",Toast.LENGTH_LONG);
                 fragments.get(viewPager.getCurrentItem()).commitData();

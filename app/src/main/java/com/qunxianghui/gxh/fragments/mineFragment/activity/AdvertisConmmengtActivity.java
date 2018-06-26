@@ -79,13 +79,6 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
 
     @Override
     protected void initDatas() {
-
-       /* fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());
-        fragments.add(new AdverTiseCommenFragment());*/
         for (int i =0;i<6;i++){
             fragments.add(new AdverTiseCommenFragment(i+1));
         }
@@ -95,8 +88,6 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         viewPager_adver_commen.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起
         tabLayout_adver_commen.setupWithViewPager(viewPager_adver_commen);
-
-
         //指定tab的位置
         one = tabLayout_adver_commen.getTabAt(0);
         two = tabLayout_adver_commen.getTabAt(1);
@@ -112,7 +103,6 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         four.setIcon(R.mipmap.adv_select_san);
         five.setIcon(R.mipmap.adv_select_qq);
         six.setIcon(R.mipmap.adv_select_video);
-
     }
 
 
@@ -120,7 +110,6 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_addAdver_list:
-
                // toActivity(AdvertisActivity.class);
                 toActivityWithResult(AdvertisActivity.class,0);
                 break;

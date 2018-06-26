@@ -5,37 +5,37 @@ import java.util.List;
 
 public class MyCollectBean implements Serializable {
 
-    /**
-     * code : 0
-     * message : 收藏成功
-     * data : []
-     */
+/**
+ * code : 0
+ * message : 收藏成功
+ * data : []
+ */
 
-    private int code;
-    private String message;
-    private List<?> data;
+private int code;
+private String message;
+private List<?> data;
 
-    public int getCode() {
+public int getCode() {
         return code;
-    }
+        }
 
-    public void setCode(int code) {
+public void setCode(int code) {
         this.code = code;
-    }
+        }
 
-    public String getMessage() {
+public String getMessage() {
         return message;
-    }
+        }
 
-    public void setMessage(String message) {
+public void setMessage(String message) {
         this.message = message;
-    }
+        }
 
-    public List<?> getData() {
+public List<?> getData() {
         return data;
-    }
+        }
 
-    public void setData(List<?> data) {
+public void setData(List<?> data) {
         this.data = data;
-    }
-}
+        }
+        }

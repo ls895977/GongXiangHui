@@ -16,7 +16,7 @@ import com.qunxianghui.gxh.widget.MyGridView;
 
 import java.util.List;
 
-public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePostBean.DataBean.ListBean> {
+public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePostBean.DataBean.ListBean>implements MineCollectPostAdapter.MycollectPostListener {
 
     private MyPostOnClickListener postOnClickListener;
 
@@ -38,9 +38,15 @@ public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePost
 
 
 
-
         //设置九宫哥
-        myGridView.setAdapter(new LocationGridAdapter(mContext, images));
+        final LocationGridAdapter myIssuePostAdapter = new LocationGridAdapter(mContext, images);
+        myGridView.setAdapter(myIssuePostAdapter);
+        myIssuePostAdapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
+            @Override
+            public void onClick(View v, int p) {
+                postOnClickListener.onPicClick(position,p);
+            }
+        });
 
         final TextView tv_mypost_discuss = holder.getView(R.id.tv_mine_issue_post_discuss);
         final TextView tv_mypost_good = holder.getView(R.id.tv_mine_issue_post_like);
@@ -95,11 +101,23 @@ public class MineIssurePostAdapter extends BaseRecycleViewAdapter<MineIssurePost
         return R.layout.item_mine_issue_post;
     }
 
+    @Override
+    public void cancelCollect(int position) {
+
+    }
+
+    @Override
+    public void onPicClick(int position, int picpostion) {
+
+    }
+
 
     public  interface  MyPostOnClickListener{
         /* 收藏*/
         void  onCollectionItemClick(int position);
         /* 点赞*/
         void  onLaunLikeClick(int position);
+        /* 图片点击*/
+        void onPicClick(int position, int picpostion);
     }
 }

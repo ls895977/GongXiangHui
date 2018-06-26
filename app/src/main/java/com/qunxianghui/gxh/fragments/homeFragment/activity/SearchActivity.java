@@ -104,13 +104,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         //解决嵌套滑动的问题
         rvSearchGuess.setNestedScrollingEnabled(false);
         rvSearchHistory.setNestedScrollingEnabled(false);
-
         rvSearchGuess.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         rvSearchGuess.addItemDecoration(new SpacesItemDecoration(new SpaceSize(20, 12, 20, 12)));
         rvSearchHistory.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         rvSearchHistory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         StatusBarUtil.setViewTopPadding(this, R.id.top_bar);
-
 
     }
 
@@ -283,7 +281,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 Logger.d("saveHistory-->:" + item);
                 SPUtils.saveString(mContext, SpConstant.HISTORIES, historyDatas.toString());
             }
-
 
         }
     }
