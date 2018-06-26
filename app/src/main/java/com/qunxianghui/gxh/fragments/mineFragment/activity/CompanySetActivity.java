@@ -41,6 +41,10 @@ import com.qunxianghui.gxh.utils.PicassoImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +91,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private int IMAGE_PICKER = 0x1000;
     private int REQUEST_CODE_SELECT = 0x1007;
     private List<ImageView> imgs = new ArrayList<>();
-    private ArrayList<ThirdStepCityBean> options1Items = new ArrayList<>();
+    private ArrayList<ThirdStepCityBean.DataBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
 
@@ -303,9 +307,11 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
      * 企业设置
      */
     private void SetCompantSetArea() {
-        OkGo.<String>post(Constant.HOST_THIRD_STEPAREA_URL).execute(new StringCallback() {
+        OkGo.<String>get(Constant.HOST_THIRD_STEPAREA_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
+
+                Logger.d("请求成功省市区数据"+response.body().toString());
                 ParseThirdStepCity(response.body());
             }
         });
@@ -320,40 +326,55 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private void ParseThirdStepCity(String body) {
 
         final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(body, ThirdStepCityBean.class);
-        if (thirdStepCityBean.getCode() == 0) {
+        if (thirdStepCityBean.getCode()== 0) {
             showPickerView();
-
         }
 
+//        try {
+////            JSONObject jsonObject=new JSONObject(body);
+////                final JSONArray data = jsonObject.getJSONArray("data");
+////
+////            final String name = data.getString(Integer.parseInt("name"));
+////
+////
+////            showPickerView();
+////
+////
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        }
     }
+
 
     /**
      * 弹出选择器
      */
     private void showPickerView() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                OptionsPickerView pvOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
-                    @Override
-                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                        //返回的分别是三个级别的选中位置
-                        final String tx = options1Items.get(options1).getPickerViewText() +
-                                options2Items.get(options1).get(options2) +
-                                options3Items.get(options1).get(options2).get(options3);
-                        asyncShowToast(tx.toString());
+                try {
+                    OptionsPickerView pvOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
+                        @Override
+                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                            //返回的分别是三个级别的选中位置
+                            final String tx = options1Items.get(options1).getName()+
+                                    options2Items.get(options1).get(options2) +
+                                   options3Items.get(options1).get(options2).get(options3);
 
-                    }
-                }).setTitleText("城市选择")
-                        .setDividerColor(Color.BLACK)
-                        .setTextColorCenter(Color.BLACK)   //设置选中文字的颜色
-                        .setContentTextSize(20)
-                        .build();
+                            asyncShowToast(tx.toString());
 
-                pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
-                pvOptions.show();
-            }
-        });
+                        }
+                    }).setTitleText("城市选择")
+                            .setDividerColor(Color.BLACK)
+                            .setTextColorCenter(Color.BLACK)   //设置选中文字的颜色
+                            .setContentTextSize(20)
+                            .build();
+
+                    pvOptions.setPicker(options1Items,options2Items,options3Items);//三级选择器
+                    pvOptions.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Logger.e("企业设置省市区三级"+e.toString());
+                }
+
 
     }
 

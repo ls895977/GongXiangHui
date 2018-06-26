@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssurePostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
@@ -24,6 +26,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -76,7 +79,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 }
 
             }
-
 
         }else {
             asyncShowToast("数据出错了  请重新加载");
@@ -173,6 +175,22 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 }
             });
         }
+
+    }
+
+    /* 图片点击*/
+    @Override
+    public void onPicClick(int position, int picpostion) {
+        final List<String> imageList = (List<String>) dataList.get(position).getImages();
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for (String data : imageList) {
+            arrayList.add(data);
+        }
+        Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
+        intent.putStringArrayListExtra("url", arrayList);
+        intent.putExtra("position", picpostion);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
 
     }
 }
