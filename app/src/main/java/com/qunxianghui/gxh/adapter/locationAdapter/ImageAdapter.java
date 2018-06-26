@@ -1,14 +1,19 @@
 package com.qunxianghui.gxh.adapter.locationAdapter;
 
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
@@ -27,7 +32,19 @@ public class ImageAdapter extends PagerAdapter {
         String url = imageUrls.get(position);
         PhotoView photoView = new PhotoView(activity);
         photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight();
+        ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width,height);
+
+        layout.setMargins(0,100,0,100);
+
+//        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(photoView.getLayoutParams());
+//        int offset = 100;
+//        lp.setMargins(0, offset, 0, offset);
+//        photoView.setLayoutParams(lp);
+        photoView.setLayoutParams(layout);
+
         GlideApp.with(activity)
                 .load(url)
                 .centerCrop()
