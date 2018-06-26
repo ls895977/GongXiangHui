@@ -31,12 +31,12 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
     private static final String TYPE = "type";
     public static final String DATA = "data";
 
-    @BindView(R.id.recyclerview) RecyclerView mRecyclerview;
+    @BindView(R.id.recyclerview)
+    RecyclerView mRecyclerview;
     private SearchBean mBean;
 
     @Override
     protected void onLoadData() {
-
     }
 
     /**
@@ -52,38 +52,33 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     @Override
     public void initDatas() {
-
         String string = getArguments().getString(DATA);
         if (string != null) {
             int type = getArguments().getInt(TYPE, 0);
-
             goNextWorks(string, type);
-
         }
-
     }
 
-    /** ==================请求网络===================== */
+    /**
+     * ==================请求网络=====================
+     */
     private void goNextWorks(String trim, int type) {
-
         switch (type) {
-
             //本地咨询
             case 0:
-                OkGo.<String>post(Constant.SEARCH_GET_LIST).
-                        params("type", type).
-                        params("keywords", trim).
-                   execute(new StringCallback() {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    parseData(response.body());
-                }
-            });
-            break;
-
+                OkGo.<String>get(Constant.SEARCH_GET_LIST)
+                        .params("type", type)
+                        .params("keywords", trim)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                parseData(response.body());
+                            }
+                        });
+                break;
             //全网咨询
             case 1:
-                OkGo.<String>post(Constant.SEARCH_GET_LIST).
+                OkGo.<String>get(Constant.SEARCH_GET_LIST).
                         params("type", type).
                         params("keywords", trim).
                         execute(new StringCallback() {
@@ -93,10 +88,9 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
                             }
                         });
                 break;
-
             //本地圈
             case 2:
-                OkGo.<String>post(Constant.SEARCH_GET_LIST).
+                OkGo.<String>get(Constant.SEARCH_GET_LIST).
                         params("type", type).
                         params("keywords", trim).
                         execute(new StringCallback() {
@@ -106,9 +100,7 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
                             }
                         });
                 break;
-
         }
-
     }
 
     //设置数据
@@ -125,27 +117,23 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
      * 初始化控件
      */
     @Override
-    public void initViews(View view) {
+    public void initViews(View view) { }
 
-    }
-
-
-
-    /**==================初始化fragment=====================*/
+    /**
+     * ==================初始化fragment=====================
+     */
     public static SearchFragment newInstance(String data, int type) {
         SearchFragment fragment = new SearchFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(SearchFragment.DATA, data);
         bundle.putInt(SearchFragment.TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
-
     }
 
-
-
-    /**==================跳转到详情页面=====================*/
+    /**
+     * ==================跳转到详情页面=====================
+     */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         final String url = mBean.getData().getList().get(position).getUrl();

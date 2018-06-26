@@ -1,10 +1,8 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -25,15 +23,12 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.github.dfqin.grantor.PermissionListener;
-import com.github.dfqin.grantor.PermissionsUtil;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
@@ -46,7 +41,6 @@ import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.NewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
@@ -139,13 +133,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 startActivityForResult(intent_channel, CHANNELREQUEST);
             }
         });
-//        toolbar.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                setChangelView();
-//            }
-//        }, 200);
-//        setChangelView();
     }
 
     /**
