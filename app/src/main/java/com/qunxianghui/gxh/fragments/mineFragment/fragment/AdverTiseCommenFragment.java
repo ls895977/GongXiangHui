@@ -130,7 +130,7 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         String url = adListAdapter.getDatas().get(p).getImages();
 
         if (index == 1) {
-            intent.putExtra("imgUrl", adListAdapter.getDatas().get(p).getImages());
+            intent.putExtra("imgUrl", url);
             intent.putExtra("link", adListAdapter.getDatas().get(p).getLink());
             intent.putExtra("ad_id", adListAdapter.getDatas().get(p).getId());
         }

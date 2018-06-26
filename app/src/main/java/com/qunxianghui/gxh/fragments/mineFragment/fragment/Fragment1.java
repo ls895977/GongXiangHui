@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +54,12 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.et_fragment_bigpic_link)
     EditText etFragmentBigpicLink;
     private ImagePicker imagePicker;
-    private List<String> upLoadPics = new ArrayList<>();
+    private List<String> upLoadPics;
     private boolean isComingFromColum = false;
     private int index;
     private int ad_id;
     Unbinder unbinder;
+    private String mImgUrl;
 
     @Override
     public int getLayoutId() {
@@ -66,26 +68,26 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void initDatas() { }
+    public void initDatas() {
+    }
 
     @Override
     public void initViews(View view) {
         Intent intent = getActivity().getIntent();
         isComingFromColum = intent.getBooleanExtra("isComingFromColum", false);
-        if (isComingFromColum == true) {
+        if (isComingFromColum) {
             index = intent.getIntExtra("index", 0);
             if (index == 1) {
-                String url = intent.getStringExtra("imgUrl");
+                mImgUrl = intent.getStringExtra("imgUrl");
                 String link = intent.getStringExtra("link");
                 ad_id = intent.getIntExtra("ad_id", 0);
 
                 GlideApp.with(mActivity)
-                        .load(url)
+                        .load(mImgUrl)
                         .placeholder(R.mipmap.user_moren)
                         .error(R.mipmap.user_moren)
                         .into(ivMineAddFragment1BigAdver);
                 etFragmentBigpicLink.setText(link);
-
             }
         }
         imagePicker = new ImagePicker();
@@ -203,7 +205,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         if (upLoadPics.size() == 0) {
             ToastUtils.showShortToast(mActivity, "请先上传图片");
         } else {
-
             OkGo.<String>post(Constant.CHECK_ADD)
                     .execute(new StringCallback() {
                         @Override
@@ -243,9 +244,12 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     }
 
     private void commit() {
-        final String imagUrl = Utils.listToString(upLoadPics);
-        final String trim = etFragmentBigpicLink.getText().toString().trim();
-        if (isComingFromColum == true) {
+        String imagUrl = Utils.listToString(upLoadPics);
+        String trim = etFragmentBigpicLink.getText().toString().trim();
+        if (isComingFromColum) {
+            if (TextUtils.isEmpty(imagUrl)) {
+                imagUrl = mImgUrl;
+            }
             OkGo.<String>post(Constant.EDIT_AD)
                     .params("id", ad_id)
                     .params("ad_type", 1)
