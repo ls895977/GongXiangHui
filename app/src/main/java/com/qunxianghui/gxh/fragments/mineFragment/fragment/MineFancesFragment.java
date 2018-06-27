@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,6 +34,10 @@ public class MineFancesFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_fances)
     XRecyclerView recyclerMineFances;
     Unbinder unbinder;
+    private List<MineFansBean.DataBean> dataList = new ArrayList<>();
+    private int count = 0;
+    private boolean mIsFirst = true;
+    private MyFansAdapter myFansAdapter;
 
     @Override
     public int getLayoutId() {
@@ -42,14 +47,17 @@ public class MineFancesFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-        RequestAttentionData();
+        RequestMyFansData();
 
 
     }
 
-    private void RequestAttentionData() {
+    private void RequestMyFansData() {
 
-        OkGo.<String>post(Constant.MYFANS_URL).execute(new StringCallback() {
+        OkGo.<String>post(Constant.MYFANS_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 parseFocusData(response.body());
@@ -60,21 +68,27 @@ public class MineFancesFragment extends BaseFragment {
     private void parseFocusData(String body) {
 
         final MineFansBean mineFansBean = GsonUtils.jsonFromJson(body, MineFansBean.class);
+        dataList.addAll(mineFansBean.getData());
+        count = dataList.size();
         if (mineFansBean.getCode() == 0) {
-            final List<MineFansBean.DataBean> dataList = mineFansBean.getData();
+            if (mIsFirst) {
+                mIsFirst = false;
+                myFansAdapter = new MyFansAdapter(mActivity, dataList);
+                recyclerMineFances.setAdapter(myFansAdapter);
 
-            final MyFansAdapter myFansAdapter = new MyFansAdapter(mActivity, dataList);
-
+            }
+            recyclerMineFances.refreshComplete();
 
             myFansAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
-                    Intent intent=new Intent(mActivity,PersonDetailActivity.class);
-                    intent.putExtra("member_id",dataList.get(position-1).getMember_id());
+                    Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+                    intent.putExtra("member_id", dataList.get(position - 1).getMember_id());
                     startActivity(intent);
                 }
             });
-            recyclerMineFances.setAdapter(myFansAdapter);
+
+            myFansAdapter.notifyItemChanged(count,mineFansBean.getData().size());
         }
     }
 
@@ -99,16 +113,18 @@ public class MineFancesFragment extends BaseFragment {
 
     @Override
     protected void initListeners() {
-
+        super.initListeners();
         recyclerMineFances.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                recyclerMineFances.refreshComplete();
+                count=0;
+                dataList.clear();
+                RequestMyFansData();
             }
 
             @Override
             public void onLoadMore() {
-                recyclerMineFances.refreshComplete();
+                RequestMyFansData();
             }
         });
     }

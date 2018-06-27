@@ -41,16 +41,28 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     @BindView(R.id.recycler_mineissue_post)
     XRecyclerView recyclerMineissuePost;
     Unbinder unbinder;
-    private List<MineIssurePostBean.DataBean.ListBean> dataList;
-
+    private int count = 0;
+    private List<MineIssurePostBean.DataBean.ListBean> dataList=new ArrayList<>();
+    private boolean mIsFirst = true;
+    private MineIssurePostAdapter mineIssurePostAdapter;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_issure;
     }
-
     @Override
     public void initDatas() {
+        RequestMyIssurePost();
+
+    }
+
+    /**
+     * 网络请求我发布的帖子
+     */
+    private void RequestMyIssurePost() {
+
         OkGo.<String>post(Constant.GET_ISSURE_POST_URL)
+                .params("limit", 10)
+                .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -58,33 +70,33 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
                         parseIssuePostData(response.body());
 
-
                     }
                 });
-
     }
-
     private void parseIssuePostData(String body) {
 
         final MineIssurePostBean mineIssurePostBean = GsonUtils.jsonFromJson(body, MineIssurePostBean.class);
 
         if (mineIssurePostBean.getCode() == 0) {
-            dataList = mineIssurePostBean.getData().getList();
-            for (int i = 0; i< dataList.size(); i++){
-           MineIssurePostBean.DataBean.ListBean listBean = dataList.get(i);
-                if (listBean.getClick_like().size()>0){
-                    final MineIssurePostAdapter mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
-                    mineIssurePostAdapter.setPostOnClickListener(this);
-                    recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
-                }
+            dataList.addAll(mineIssurePostBean.getData().getList());
+            count=dataList.size();
+         if (mineIssurePostBean.getCode()==0){
+             if (mIsFirst){
+                 mIsFirst=false;
 
-            }
+                 mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
+
+                 mineIssurePostAdapter.setPostOnClickListener(this);
+                 recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
+             }
+             recyclerMineissuePost.refreshComplete();
+
+             mineIssurePostAdapter.notifyItemRangeChanged(count,mineIssurePostBean.getData().getList().size());
+         }
 
         }else {
             asyncShowToast("数据出错了  请重新加载");
         }
-
-
 
     }
 
@@ -100,12 +112,14 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         recyclerMineissuePost.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                recyclerMineissuePost.refreshComplete();
+                dataList.clear();
+                count=0;
+                RequestMyIssurePost();
             }
 
             @Override
             public void onLoadMore() {
-                recyclerMineissuePost.refreshComplete();
+                RequestMyIssurePost();
             }
         });
     }
