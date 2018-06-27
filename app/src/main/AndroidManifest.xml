@@ -75,7 +75,7 @@
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+             />
         <!--首页便民服务页面-->
         <activity
             android:name="com.qunxianghui.gxh.activity.BianMinActiviry"
