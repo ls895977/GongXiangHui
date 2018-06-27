@@ -20,6 +20,7 @@ import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import org.json.JSONException;
@@ -216,5 +217,14 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
 
+        Logger.d("视频汇的关注position"+position);
+    }
+
+//    视频头像点击
+    @Override
+    public void videoHeadImageClick(int position) {
+        Intent intent = new Intent(mContext, PersonDetailActivity.class);
+        intent.putExtra("member_id", videoDataList.get(position).getMember_id());
+        startActivity(intent);
     }
 }

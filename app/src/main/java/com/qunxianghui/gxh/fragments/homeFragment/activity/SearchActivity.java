@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -48,7 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/16 0016.
@@ -109,13 +107,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         rvSearchHistory.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         rvSearchHistory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         StatusBarUtil.setViewTopPadding(this, R.id.top_bar);
-
     }
 
 
     @Override
     protected void initDatas() {
-
         //猜你想要的数据
         OkGo.<String>get(Constant.SEARCH_GUESS_URL).execute(new StringCallback() {
             @Override
@@ -127,8 +123,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 }
             }
         });
-
-
         initHistories();
     }
 
@@ -152,11 +146,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     /*加载历史记录*/
     private void initHistories() {
-
-        final String histories = SPUtils.getString(mContext, SpConstant.HISTORIES, "");
-
+        String histories = SPUtils.getString(mContext, SpConstant.HISTORIES, "");
         List<String> datas = JsonUtil.fromJsonList(histories, String.class);
-
         if (datas != null) {
             historyDatas = datas;
         } else {
@@ -182,9 +173,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================点击猜你想要是的进行搜索=====================
      */
     private void refreshSearchText() {
-       etSearch.setText(searchText);
-
-
+        etSearch.setText(searchText);
         etSearch.setSelection(etSearch.getText().length());
 
 //        OkGo.<String>post(Constant.SEARCH_AUTO_COMPLETE).
@@ -197,13 +186,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 //                }
 //            }
 //        });
-
-
-
-
     }
-
-
 
     @Override
     protected void initListeners() {
@@ -213,26 +196,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ivHomeSearchBack.setOnClickListener(this);
         etSearch.setOnEditorActionListener(this);
         etSearch.addTextChangedListener(getTextChanged);
-
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
-
             //清空历史
             case R.id.iv_clear_history:
                 updateHistories("", true);
                 v.setVisibility(View.GONE);
                 break;
-
             //搜索按钮
             case R.id.tv_cancel:
-
                 trim = etSearch.getText().toString().trim();
-
                 if (TextUtils.isEmpty(trim)) {
                     ToastUtils.showShortToast(this, "搜索内容不能为空");
                 } else {
@@ -240,7 +216,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         setupViewPager(trim);
                     }
                 }
-
                 break;
             case R.id.iv_home_search_back:
                 finish();
@@ -253,7 +228,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      */
     private void updateHistories(String item, boolean clear) {
         if (clear) {
-
             //清空历史数据
             historyDatas.clear();
             SPUtils.removePreference(mContext, SpConstant.HISTORIES);
@@ -261,16 +235,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         } else {
             saveHistory(item);
         }
-
         historyAdapter.notifyDataSetChanged();
-
     }
 
     /**
      * ==================保存历史=====================
      */
     private void saveHistory(String item) {
-
         if (historyDatas.size() == 0) {
             historyDatas.add(item);
             SPUtils.saveString(mContext, SpConstant.HISTORIES, item);
@@ -281,7 +252,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 Logger.d("saveHistory-->:" + item);
                 SPUtils.saveString(mContext, SpConstant.HISTORIES, historyDatas.toString());
             }
-
         }
     }
 
@@ -312,23 +282,20 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================初始化fragment=====================
      */
     private void setupViewPager(String data) {
-
         //添加历史记录
         searchText = data;
         refreshSearchText();
         updateHistories(searchText, false);
-
         mNestedScrollView.setVisibility(View.GONE);
         mLlSearch.setVisibility(View.VISIBLE);
-
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         adapter.addFragment(SearchFragment.newInstance(data, 0), "本地资讯");
         adapter.addFragment(SearchFragment.newInstance(data, 1), "全网资讯");
         adapter.addFragment(SearchFragment.newInstance(data, 2), "本地圈");
 
-        mViewpager.setOffscreenPageLimit(3);
-        mTabs.setupWithViewPager(mViewpager);
+        mViewpager.setOffscreenPageLimit(2);
         mViewpager.setAdapter(adapter);
+        mTabs.setupWithViewPager(mViewpager);
     }
 
     /**
@@ -354,11 +321,4 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     };
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

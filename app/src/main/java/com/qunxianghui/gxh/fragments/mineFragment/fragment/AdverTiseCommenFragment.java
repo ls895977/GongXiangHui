@@ -51,11 +51,8 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         this.index = index;
     }
 
-
     @Override
-    protected void onLoadData() {
-
-    }
+    protected void onLoadData() { }
 
     @Override
     public int getLayoutId() {
@@ -66,8 +63,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     public void initDatas() {
         /*SelfTestRecyclerviewAdapter selfTestRecyclerviewAdapter = new SelfTestRecyclerviewAdapter();
         xrecyclerAddverCommen.setAdapter(selfTestRecyclerviewAdapter);*/
-        adListAdapter.setAdOnClickListen(this);
-
         getData();
     }
 
@@ -79,9 +74,8 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                     public void onSuccess(Response<String> response) {
                         adListBean = GsonUtil.parseJsonWithGson(response.body(), AdListBean.class);
                         if (adListBean.getCode() == 0) {
-
                             adListAdapter.setDatas(adListBean.getData());
-                            xrecyclerAddverCommen.setAdapter(adListAdapter);
+                            adListAdapter.notifyDataSetChanged();
                         }
                     }
                 });
@@ -92,11 +86,12 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         xrecyclerAddverCommen.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         Intent intent = getActivity().getIntent();
         positionStr = intent.getStringExtra("position");
+        adListAdapter.setAdOnClickListen(this);
+        xrecyclerAddverCommen.setAdapter(adListAdapter);
     }
 
     @Override
     protected void initListeners() {
-
         xrecyclerAddverCommen.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -135,7 +130,7 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         String url = adListAdapter.getDatas().get(p).getImages();
 
         if (index == 1) {
-            intent.putExtra("imgUrl", adListAdapter.getDatas().get(p).getImages());
+            intent.putExtra("imgUrl", url);
             intent.putExtra("link", adListAdapter.getDatas().get(p).getLink());
             intent.putExtra("ad_id", adListAdapter.getDatas().get(p).getId());
         }
@@ -146,16 +141,12 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     @Override
     public void onDeleteClick(int p) {
-
-
         final int position = p;
         OkGo.<String>post(Constant.DELETE_AD)
                 .params("id", adListAdapter.getDatas().get(p).getId())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
-
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
@@ -164,7 +155,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                                 adListAdapter.getDatas().remove(position);
                                 adListAdapter.notifyDataSetChanged();
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -175,8 +165,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                         Log.v("xx-yy-error", response.toString());
                     }
                 });
-
-
     }
 
     @Override

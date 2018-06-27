@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
@@ -72,13 +70,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);
         mineTablayoutCommon.setupWithViewPager(mineCommonViewpager);
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

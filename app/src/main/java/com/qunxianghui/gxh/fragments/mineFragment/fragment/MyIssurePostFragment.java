@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,11 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     @BindView(R.id.recycler_mineissue_post)
     XRecyclerView recyclerMineissuePost;
     Unbinder unbinder;
-    private List<MineIssurePostBean.DataBean.ListBean> dataList;
+    private int count = 0;
+    private List<MineIssurePostBean.DataBean.ListBean> dataList = new ArrayList<>();
+    private boolean mIsFirst = true;
+    private MineIssurePostAdapter mineIssurePostAdapter;
+    private boolean mIsRefresh = false;
 
     @Override
     public int getLayoutId() {
@@ -50,48 +53,54 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initDatas() {
+        RequestMyIssurePost();
+    }
+
+    /**
+     * 网络请求我发布的帖子
+     */
+    private void RequestMyIssurePost() {
         OkGo.<String>post(Constant.GET_ISSURE_POST_URL)
+                .params("limit", 10)
+                .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         Logger.e("我发布的帖子+++++" + response.body().toString());
-
                         parseIssuePostData(response.body());
-
-
                     }
                 });
-
     }
 
     private void parseIssuePostData(String body) {
-
         final MineIssurePostBean mineIssurePostBean = GsonUtils.jsonFromJson(body, MineIssurePostBean.class);
-
         if (mineIssurePostBean.getCode() == 0) {
-            dataList = mineIssurePostBean.getData().getList();
-            for (int i = 0; i< dataList.size(); i++){
-           MineIssurePostBean.DataBean.ListBean listBean = dataList.get(i);
-                if (listBean.getClick_like().size()>0){
-                    final MineIssurePostAdapter mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
+            if (mIsRefresh) {
+                mIsRefresh = false;
+                dataList.clear();
+            }
+            dataList.addAll(mineIssurePostBean.getData().getList());
+            count = dataList.size();
+            if (mineIssurePostBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
                     mineIssurePostAdapter.setPostOnClickListener(this);
                     recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
                 }
-
+                recyclerMineissuePost.refreshComplete();
+                mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
             }
 
-        }else {
+        } else {
             asyncShowToast("数据出错了  请重新加载");
         }
-
-
 
     }
 
     @Override
     public void initViews(View view) {
-        recyclerMineissuePost.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
-
+        recyclerMineissuePost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
@@ -100,12 +109,14 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         recyclerMineissuePost.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                recyclerMineissuePost.refreshComplete();
+                mIsRefresh = true;
+                count = 0;
+                RequestMyIssurePost();
             }
 
             @Override
             public void onLoadMore() {
-                recyclerMineissuePost.refreshComplete();
+                RequestMyIssurePost();
             }
         });
     }
@@ -131,6 +142,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     /**
      * 收藏
+     *
      * @param position
      */
     @Override
@@ -142,7 +154,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                 if (myCollectBean.getCode() == 0) {
                     Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-                }else if (myCollectBean.getCode() == 202) {
+                } else if (myCollectBean.getCode() == 202) {
                     Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -152,26 +164,27 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     /**
      * 点赞
+     *
      * @param position
      */
     @Override
     public void onLaunLikeClick(int position) {
-        if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() ==0 ){
+        if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() == 0) {
             OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), response.body(), Toast.LENGTH_LONG).show();
                 }
             });
-        }else {
+        } else {
             OkGo.<String>post(Constant.UNLIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), response.body(), Toast.LENGTH_LONG).show();
                 }
             });
         }

@@ -4,7 +4,6 @@
     android:layout_marginTop="10dp"
     android:layout_height="50dp">
 
-
     <ImageView
         android:id="@+id/iv_top_savedverBack"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         android:text="广告选择"
         android:textSize="18sp" />
 
-
     <TextView
         android:id="@+id/tv_addAdver_savelist"
         android:layout_width="wrap_content"
@@ -30,6 +28,5 @@
         android:layout_marginRight="10dp"
         android:text="保存"
         android:textSize="17sp" />
-
 
 </RelativeLayout>

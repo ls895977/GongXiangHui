@@ -49,6 +49,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private boolean mIsFirst = true;
     private int count;
     private int mMemberId;
+    private boolean mIsRefresh = false;
 
 
     @Override
@@ -82,21 +83,22 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
      * @param body
      */
     private void parseCollectPostData(String body) {
-        final MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
+        MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            dataList.clear();
+        }
         dataList.addAll(myCollectPostBean.getData());
-        count=dataList.size();
+        count = dataList.size();
         for (int i = 0; i < dataList.size(); i++) {
             data_uuid = dataList.get(i).getData_uuid();
         }
         if (myCollectPostBean.getCode() == 0) {
             if (mIsFirst) {
-                    mIsFirst = false;
-                    myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                    myCollectPostAdapter.setCollectOnClickListener(this);
-                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-
-            }
-                xrecycler_mine_collect_news.refreshComplete();
+                mIsFirst = false;
+                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                myCollectPostAdapter.setCollectOnClickListener(this);
+                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
@@ -104,8 +106,10 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
                     }
                 });
-                myCollectPostAdapter.notifyItemRangeChanged(count,myCollectPostBean.getData().size());
-
+            }
+            xrecycler_mine_collect_news.refreshComplete();
+            myCollectPostAdapter.notifyDataSetChanged();
+//            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
     }
 
@@ -121,18 +125,14 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         xrecycler_mine_collect_news.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                dataList.clear();
+                mIsRefresh = true;
                 count = 0;
                 LoadMycolectNews();
-
-
             }
 
             @Override
             public void onLoadMore() {
-
                 LoadMycolectNews();
-
             }
         });
 
@@ -177,7 +177,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
      * 取消收藏
      */
     private void CancelNewsData() {
-
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", data_uuid)
                 .execute(new StringCallback() {
