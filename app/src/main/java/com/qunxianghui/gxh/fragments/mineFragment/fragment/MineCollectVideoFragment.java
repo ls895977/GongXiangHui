@@ -1,9 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +14,9 @@ import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
-import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
-import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
@@ -39,7 +31,6 @@ public class MineCollectVideoFragment extends BaseFragment {
     Unbinder unbinder;
 
 
-
     @Override
     protected void onLoadData() {
 
@@ -52,35 +43,23 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-
 //        final PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
-
-
-
-
-
-
         OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
 
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                Logger.d("我爆料的视频+++" + response.body().toString());
-                ParseMineCollectVideo(response.body());
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Logger.d("我爆料的视频+++" + response.body().toString());
+                        ParseMineCollectVideo(response.body());
 
-            }
-        });
-
-
+                    }
+                });
     }
 
     private void ParseMineCollectVideo(String body) {
         final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
-
-
         if (mineCollectVideoBean.getCode() == 0) {
             final List<MineCollectVideoBean.DataBean> dataList = mineCollectVideoBean.getData();
-
             final MineCollectVideoAdapter mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
             xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
             mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {

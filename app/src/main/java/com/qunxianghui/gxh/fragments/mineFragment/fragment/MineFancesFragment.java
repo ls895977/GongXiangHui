@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ public class MineFancesFragment extends BaseFragment {
     private List<MineFansBean.DataBean> dataList = new ArrayList<>();
     private int count = 0;
     private boolean mIsFirst = true;
+    private boolean mIsRefresh = false;
     private MyFansAdapter myFansAdapter;
 
     @Override
@@ -66,8 +66,11 @@ public class MineFancesFragment extends BaseFragment {
     }
 
     private void parseFocusData(String body) {
-
         final MineFansBean mineFansBean = GsonUtils.jsonFromJson(body, MineFansBean.class);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            dataList.clear();
+        }
         dataList.addAll(mineFansBean.getData());
         count = dataList.size();
         if (mineFansBean.getCode() == 0) {
@@ -118,7 +121,7 @@ public class MineFancesFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 count=0;
-                dataList.clear();
+                mIsRefresh = true;
                 RequestMyFansData();
             }
 

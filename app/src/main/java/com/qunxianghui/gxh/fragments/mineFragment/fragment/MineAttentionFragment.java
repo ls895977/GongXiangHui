@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +36,7 @@ public class MineAttentionFragment extends BaseFragment {
     private boolean mIsFirst = true;
     private int count = 0;
     private MyFocusAdapter myFocusAdapter;
+    private boolean mIsRefresh = false;
 
     @Override
     public int getLayoutId() {
@@ -66,8 +65,11 @@ public class MineAttentionFragment extends BaseFragment {
     }
 
     private void parseFocusData(String body) {
-
         final MyFocusBean myFocusBean = GsonUtils.jsonFromJson(body, MyFocusBean.class);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            dataList.clear();
+        }
         dataList.addAll(myFocusBean.getData());
         count = dataList.size();
         if (myFocusBean.getCode() == 0) {
@@ -107,7 +109,7 @@ public class MineAttentionFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 count = 0;
-                dataList.clear();
+                mIsRefresh = true;
                 RequestAttentionData();
             }
 
