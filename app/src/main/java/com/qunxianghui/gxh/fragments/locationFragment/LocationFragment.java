@@ -21,6 +21,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +73,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     XRecyclerView recyclerView;
     Unbinder unbinder;
     NineGridTest2Adapter mAdapter;
+    private RelativeLayout topNav;
     private Dialog picVideo_dialog;
     private LinearLayout ll_fabu_first_list;
     private LinearLayout ll_fabu_second_list;
@@ -82,6 +85,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
     private int currentPosition;
     private boolean mIsFirst = true;
+    private int commentPosition;
+    private int scrollOffsetY = 0;
 
     @Override
     public int getLayoutId() {
@@ -100,14 +105,44 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         comment_edit = view.findViewById(R.id.loaction_comment_edit);
         send_btn = view.findViewById(R.id.location_comment_to_send);
         recyclerView = view.findViewById(R.id.recyclerView_location);
+        topNav = view.findViewById(R.id.loaction_top_nav);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-//                Toast.makeText(getActivity(), "键盘显示 高度" + height, Toast.LENGTH_SHORT).show();
-//                ViewGroup.LayoutParams layout = mRootView.getLayoutParams();
-//                layout.height = layout.height - height;
-//                mRootView.setLayoutParams(layout);
+
+
+                Logger.i("xxx-yyy jump :" + commentPosition);
+                //View item = recyclerView.getChildAt(commentPosition + 1);
+                View item =recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
+
+                int offset = 5;
+                int keyboardoffset = 80;
+                int tabHeight = getArguments().getInt("tabHeight");
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
+                layoutParams.bottomMargin = height - tabHeight - offset;
+                commentView.setLayoutParams(layoutParams);
+
+                Logger.i("xxx-yyy scrollOffsetY " + scrollOffsetY);
+                if(item!=null){
+                    int[] location = new int[2];
+                    item.getLocationOnScreen(location);
+                    int x = location[0];
+                    int y = location[1];
+                    Logger.v("xxx-yyy item " + item);
+                    Logger.v("xxx-yyy item height :",item.getMeasuredHeight());
+                    Logger.v("xxx-yyy y :" + y);
+                    Logger.v("xxx-yyy nav top :" +  topNav.getMeasuredHeight());
+                    Logger.v("xxx-yyy scroll :" + (y + item.getMeasuredHeight() - topNav.getMeasuredHeight()));
+                    recyclerView.scrollBy(0,(y + item.getMeasuredHeight() - topNav.getMeasuredHeight()) - (recyclerView.getMeasuredHeight() + tabHeight - height) + keyboardoffset);
+                }else  {
+                    Logger.i("xxx-yyy" + " item is null");
+                }
+            }
+
+            public int px2dip(Context context, float pxValue) {
+                final float scale = context.getResources().getDisplayMetrics().density;
+                return (int) (pxValue / scale + 0.5f);
             }
 
             @Override
@@ -121,12 +156,21 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //super.onScrolled(recyclerView, dx, dy);
+                //Logger.v("xxx-yyy" + "x :" + dx + "y :" + dy);
+                scrollOffsetY = scrollOffsetY + dy;
+            }
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case 0:
                         System.out.println("recyclerview已经停止滚动");
+
                         break;
                     case 1:
                         //System.out.println("recyclerview正在被拖拽");
@@ -148,21 +192,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 }
             }
         });
-
-//        mRootView = view.findViewById(R.id.loactionn_fragment_relative_layout);
-//        DisplayMetrics metrics = new DisplayMetrics();
-//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//        final int screenHeight = metrics.heightPixels;
-//        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(
-//                new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @Override
-//                    public void onGlobalLayout() { //当界面大小变化时，系统就会调用该方法
-//                        Rect r = new Rect(); //该对象代表一个矩形（rectangle）
-//                        mRootView.getWindowVisibleDisplayFrame(r); //将当前界面的尺寸传给Rect矩形
-//                        int deltaHeight = screenHeight - r.bottom;  //弹起键盘时的变化高度，在该场景下其实就是键盘高度。
-//
-//                    }
-//                });
     }
 
     private void RequestLocationData() {
@@ -417,6 +446,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onCommentClick(final int position, String content) {
+
+        commentPosition = position;
         commentView.setVisibility(View.VISIBLE);
         comment_edit.setFocusable(true);
         comment_edit.setFocusableInTouchMode(true);

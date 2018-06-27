@@ -1,126 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
-    android:layout_marginTop="10dp"
-    android:orientation="vertical"
     android:padding="10dp">
 
+    <com.qunxianghui.gxh.widget.RoundImageView
+        android:id="@+id/iv_mine_issue_post_head"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/icon_headimage" />
+
     <LinearLayout
+        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_toRightOf="@id/iv_mine_issue_post_head"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_mine_issue_post_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="杰伦"
+            android:textColor="@android:color/holo_blue_dark" />
 
-        <com.qunxianghui.gxh.widget.RoundImageView
-            android:id="@+id/iv_mine_issue_post_head"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@mipmap/icon_headimage" />
+        <TextView
+            android:id="@+id/tv_mine_issue_post_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
+        <com.qunxianghui.gxh.widget.MyGridView
+            android:id="@+id/layout_nine_grid_mineissue_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:numColumns="3" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_mine_issue_post_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_mine_issue_post_issuetime"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="杰伦"
-                android:textColor="@android:color/holo_blue_dark" />
+                android:layout_weight="1"
+                android:text="发布时间"
+                android:textSize="13sp" />
 
             <TextView
-                android:id="@+id/tv_mine_issue_post_content"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_mine_issue_post_discuss"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/icon_message"
+                android:drawablePadding="3dp"
+                android:text="评论"
+                android:textSize="11sp" />
 
-            <com.qunxianghui.gxh.widget.MyGridView
-
-                android:id="@+id/layout_nine_grid_mineissue_post"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_mine_issue_post_like"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/icon_good"
+                android:drawablePadding="3dp"
+                android:text="点赞"
+                android:textSize="11sp" />
 
-                android:numColumns="3" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_mine_issue_post_delete"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/iv_delect"
+                android:drawablePadding="3dp"
+                android:text="删除"
+                android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/tv_mine_issue_post_issuetime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="发布时间"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_mine_issue_post_discuss"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/icon_message"
-                    android:drawablePadding="3dp"
-                    android:text="评论"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/tv_mine_issue_post_like"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/icon_good"
-                    android:drawablePadding="3dp"
-                    android:text="点赞"
-                    android:textSize="11sp" />
-
-
-                <TextView
-                    android:id="@+id/tv_mine_issue_post_delete"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/iv_delect"
-                    android:drawablePadding="3dp"
-
-                    android:text="删除"
-                    android:textSize="11sp" />
-
-
-                <TextView
-                    android:id="@+id/tv_mine_issue_post_collect"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/collect_normal"
-                    android:drawablePadding="3dp"
-                    android:text="收藏"
-                    android:textSize="11sp" />
-
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_mine_issue_post_collect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/collect_normal"
+                android:drawablePadding="3dp"
+                android:text="收藏"
+                android:textSize="11sp" />
 
         </LinearLayout>
-
-
     </LinearLayout>
-
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/ll_content"
         android:layout_marginTop="10dp"
         android:background="@color/divider" />
 
-
-</LinearLayout>
+</RelativeLayout>

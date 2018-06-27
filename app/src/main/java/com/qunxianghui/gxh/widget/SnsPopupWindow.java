@@ -146,7 +146,7 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         // 设置矩形的大小
 
         mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
-        Log.v("xxxx-yyyy",mRect.toString());
+        //Log.v("xxxx-yyyy",mRect.toString());
 
        // digBtn.setText(mActionItems.get(0).mTitle);
         //判断当前状态

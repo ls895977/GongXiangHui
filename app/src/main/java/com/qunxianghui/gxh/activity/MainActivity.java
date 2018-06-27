@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
@@ -105,6 +106,9 @@ public class MainActivity extends BaseActivity {
             case 1:
                 if (mLocationFragment == null) {
                     mLocationFragment = new LocationFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("tabHeight",rgMain.getMeasuredHeight());
+                    mLocationFragment.setArguments(bundle);
                     transaction.add(R.id.content, mLocationFragment);
                 } else {
                     transaction.show(mLocationFragment);

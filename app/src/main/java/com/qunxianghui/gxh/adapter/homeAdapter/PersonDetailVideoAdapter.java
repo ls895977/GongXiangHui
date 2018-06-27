@@ -56,6 +56,14 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
                 .error(R.mipmap.ic_test_0)
                 .into(personHeadImag);
 
+
+        personHeadImag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoListClickListener.videoHeadImageClick(position);
+            }
+        });
+
         /**
          * 点击关注
          * @return
@@ -78,6 +86,10 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
 
 
     public interface VideoListClickListener{
+        /* 视频关注*/
         void attentionClick(int position);
+        /* 头像点击*/
+        void videoHeadImageClick(int position);
+
     }
 }

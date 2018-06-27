@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +31,12 @@ public class MineAttentionFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_attention)
     XRecyclerView recyclerMineAttention;
     Unbinder unbinder;
-    private List<MyFocusBean.DataBean> dataList;
+    private List<MyFocusBean.DataBean> dataList = new ArrayList<>();
 
+    private boolean mIsFirst = true;
+    private int count = 0;
+    private MyFocusAdapter myFocusAdapter;
+    private boolean mIsRefresh = false;
 
     @Override
     public int getLayoutId() {
@@ -50,39 +53,47 @@ public class MineAttentionFragment extends BaseFragment {
 
     private void RequestAttentionData() {
 
-        OkGo.<String>post(Constant.MYFOCUS_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseFocusData(response.body());
-            }
-        });
+        OkGo.<String>post(Constant.MYFOCUS_URL)
+                .params("limit", 10)
+                .params("skip", count).
+                execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseFocusData(response.body());
+                    }
+                });
     }
 
     private void parseFocusData(String body) {
-
         final MyFocusBean myFocusBean = GsonUtils.jsonFromJson(body, MyFocusBean.class);
-
-        dataList = myFocusBean.getData();
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            dataList.clear();
+        }
+        dataList.addAll(myFocusBean.getData());
+        count = dataList.size();
         if (myFocusBean.getCode() == 0) {
-
-
-            final MyFocusAdapter myFocusAdapter = new MyFocusAdapter(mActivity, dataList);
-
-
+            if (mIsFirst) {
+                mIsFirst = false;
+                myFocusAdapter = new MyFocusAdapter(mActivity, dataList);
+                recyclerMineAttention.setAdapter(myFocusAdapter);
+            }
+            recyclerMineAttention.refreshComplete();
             myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(View v, int position) {
                     asyncShowToast("点击了" + position);
                     Intent intent = new Intent(mActivity, PersonDetailActivity.class);
-                    intent.putExtra("member_id", dataList.get(position-1).getBe_member_id());
+                    intent.putExtra("member_id", dataList.get(position - 1).getBe_member_id());
 
                     startActivity(intent);
 
                 }
             });
+            myFocusAdapter.notifyItemChanged(count, myFocusBean.getData().size());
 
-            recyclerMineAttention.setAdapter(myFocusAdapter);
+
         }
     }
 
@@ -97,12 +108,14 @@ public class MineAttentionFragment extends BaseFragment {
         recyclerMineAttention.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                recyclerMineAttention.refreshComplete();
+                count = 0;
+                mIsRefresh = true;
+                RequestAttentionData();
             }
 
             @Override
             public void onLoadMore() {
-                recyclerMineAttention.refreshComplete();
+                RequestAttentionData();
             }
         });
     }
