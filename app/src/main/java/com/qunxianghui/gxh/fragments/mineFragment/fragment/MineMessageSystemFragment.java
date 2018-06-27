@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -17,6 +18,7 @@ import com.qunxianghui.gxh.bean.mine.MineMessageSystemBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,31 +27,64 @@ import butterknife.Unbinder;
 
 public class MineMessageSystemFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_message_system)
-    RecyclerView recyclerMineMessageSystem;
+    XRecyclerView recyclerMineMessageSystem;
     Unbinder unbinder;
+
+    private  int count=0;
+    private boolean mIsFirst = true;
+    private boolean mIsRefresh = false;
+    private List<MineMessageSystemBean.DataBean> dataList=new ArrayList<>();
+    private MineMessageSystemAdapter mineMessageSystemAdapter;
+
 
     @Override
     protected void onLoadData() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_SSYSTEM_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
+        /*
+        请求我的系统消息
+         */
+        RequestMymessageSystem();
 
-                parsePaiHangData(response.body());
+
+    }
+
+    private void RequestMymessageSystem() {
+        OkGo.<String>post(Constant.DISCUSS_MINE_SSYSTEM_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        parsePaiHangData(response.body());
 
 
-            }
-        });
-
+                    }
+                });
     }
 
     private void parsePaiHangData(String body) {
 
         final MineMessageSystemBean mineMessageSystemBean = GsonUtils.jsonFromJson(body, MineMessageSystemBean.class);
+
+    if (mIsRefresh){
+        mIsRefresh=false;
+        dataList.clear();
+    }
+    dataList.addAll(mineMessageSystemBean.getData());
+    count=dataList.size();
+
         if (mineMessageSystemBean.getCode()==0){
-            final List<MineMessageSystemBean.DataBean> dataList = mineMessageSystemBean.getData();
-            final MineMessageSystemAdapter mineMessageSystemAdapter = new MineMessageSystemAdapter(mActivity, dataList);
-            recyclerMineMessageSystem.setAdapter(mineMessageSystemAdapter);
-        }
+            if (mIsFirst){
+                mIsFirst=false;
+                mineMessageSystemAdapter = new MineMessageSystemAdapter(mActivity, dataList);
+                recyclerMineMessageSystem.setAdapter(mineMessageSystemAdapter);
+            }
+            recyclerMineMessageSystem.refreshComplete();
+            mineMessageSystemAdapter.notifyItemChanged(count,mineMessageSystemBean.getData().size());
+
+            }
+
+
 
     }
 
@@ -61,6 +96,26 @@ public class MineMessageSystemFragment extends BaseFragment {
     @Override
     public void initDatas() {
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        recyclerMineMessageSystem.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                count=0;
+                mIsRefresh=true;
+                RequestMymessageSystem();
+
+            }
+
+            @Override
+            public void onLoadMore() {
+                RequestMymessageSystem();
+
+            }
+        });
     }
 
     @Override

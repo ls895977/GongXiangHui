@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -29,9 +30,12 @@ import butterknife.Unbinder;
 
 public class MyIssureVideoFragment extends BaseFragment {
     @BindView(R.id.recycler_mine_issue_video)
-    RecyclerView recyclerMineIssueVideo;
+    XRecyclerView recyclerMineIssueVideo;
     Unbinder unbinder;
 
+    private int count=0;
+    private  boolean mIsFirst=true;
+    private boolean mIsRefreshing=false;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_issue_video;
