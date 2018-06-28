@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -22,7 +23,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,10 +35,12 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
@@ -67,6 +69,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     EditText etInputDiscuss;
     @BindView(R.id.ll_news_detail_bigDiss)
     LinearLayout llNewsDetailBigDiss;
+    @BindView(R.id.ll_input_discuss)
+    LinearLayout llInputDiscuss;
     @BindView(R.id.iv_news_detail_collect)
     ImageView ivNewsDetailCollect;
     @BindView(R.id.iv_news_detail_message)
@@ -75,6 +79,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailShare;
     @BindView(R.id.iv_news_detail_addAdver)
     ImageView ivNewsDetailAddAdver;
+
+    @BindView(R.id.tv_newsdetail_commit)
+    TextView tvNewsdetailCommit;
+
+    @BindView(R.id.et_input_bigDiscuss)
+    EditText etInputBigDiscuss;
     private WebView mWebView;
     private ProgressBar mProgressBar;
     private Dialog dialog;
@@ -212,6 +222,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     //底部弹出对话框
     private void showBottomAliert() {
+
         dialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
         //填充对话框的布局
         alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
@@ -221,7 +232,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         tv_bottom_alertdialog_cancle = alertView.findViewById(R.id.tv_bottom_alertdialog_cancle);
 
         ll_share_list = alertView.findViewById(R.id.ll_share_list);
-
 
 
         tv_addAdver_share.setOnClickListener(this);
@@ -253,6 +263,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         llNewsDetailBigDiss.setOnClickListener(this);
         ivNewsDetailAddAdver.setOnClickListener(this);
         ivNewsDetailCollect.setOnClickListener(this);
+        tvNewsdetailCommit.setOnClickListener(this);
     }
 
     private void SettingsP() {
@@ -323,10 +334,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         Intent intent = null;
         switch (v.getId()) {
             case R.id.et_input_discuss:
-                etInputDiscuss.setVisibility(View.GONE);
-                ivNewsDetailCollect.setVisibility(View.GONE);
-                ivNewsDetailMessage.setVisibility(View.GONE);
-                ivNewsDetailShare.setVisibility(View.GONE);
+                llInputDiscuss.setVisibility(View.GONE);
+//                ivNewsDetailCollect.setVisibility(View.GONE);
+//                ivNewsDetailMessage.setVisibility(View.GONE);
+//                ivNewsDetailShare.setVisibility(View.GONE);
                 llNewsDetailBigDiss.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_news_detail_bigDiss:
@@ -355,13 +366,58 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
                 intent = new Intent(mContext, AddAdverActivity.class);
                 intent.putExtra("url", url);
+                intent.putExtra("title", title);
+
                 startActivity(intent);
                 break;
             case R.id.iv_news_detail_collect:
                 CollectDataList(uuid);
                 break;
+            case R.id.tv_newsdetail_commit:
+                CommitNewsCommond();
+                break;
         }
 
+    }
+
+    /**
+     * 提交评论
+     */
+    private void CommitNewsCommond() {
+
+        String CommonText = etInputBigDiscuss.getText().toString().trim();
+        if (TextUtils.isEmpty(CommonText)) {
+
+            asyncShowToast("请输入评论内容");
+        } else {
+
+            RequestNewsCommon(CommonText);
+        }
+
+    }
+
+    /**
+     * 请求评论
+     *
+     * @param commonText
+     */
+    private void RequestNewsCommon(String commonText) {
+
+        OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
+                .params("uuid", uuid)
+                .params("content", commonText)
+                .execute(new DialogCallback<LzyResponse<CommentBean>>(NewsDetailActivity.this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<CommentBean>> response) {
+                        if (response.body().code.equals("0")) {
+                            asyncShowToast("评论成功");
+                            llNewsDetailBigDiss.setVisibility(View.GONE);
+                            llInputDiscuss.setVisibility(View.GONE);
+
+
+                        }
+                    }
+                });
     }
 
     /**

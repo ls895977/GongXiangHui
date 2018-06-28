@@ -48,8 +48,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private int data_uuid;
     private boolean mIsFirst = true;
     private int count;
-    private int mMemberId;
     private boolean mIsRefresh = false;
+    private int mMemberId;
+
 
 
     @Override
@@ -109,7 +110,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             }
             xrecycler_mine_collect_news.refreshComplete();
             myCollectPostAdapter.notifyDataSetChanged();
-//            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
     }
 

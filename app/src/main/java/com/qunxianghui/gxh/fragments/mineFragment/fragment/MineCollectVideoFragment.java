@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,7 +30,11 @@ public class MineCollectVideoFragment extends BaseFragment {
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
     Unbinder unbinder;
-
+    private boolean mIsFirst = true;
+    private int count;
+    private boolean mIsRefresh = false;
+    private List<MineCollectVideoBean.DataBean> dataList=new ArrayList<>();
+    private MineCollectVideoAdapter mineCollectVideoAdapter;
 
     @Override
     protected void onLoadData() {
@@ -43,9 +48,18 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-//        final PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
-        OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
+     RequestMineCollectVideo();
 
+    }
+
+    /**
+     * 请求我收藏的视频
+     */
+    private void RequestMineCollectVideo() {
+
+        OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
+                .params("limit", 5)
+                .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -54,13 +68,23 @@ public class MineCollectVideoFragment extends BaseFragment {
 
                     }
                 });
+
     }
 
     private void ParseMineCollectVideo(String body) {
         final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
+
+        if (mIsRefresh){
+            mIsRefresh=false;
+            dataList.clear();
+
+        }
+        dataList.addAll(mineCollectVideoBean.getData());
+        count=dataList.size();
         if (mineCollectVideoBean.getCode() == 0) {
-            final List<MineCollectVideoBean.DataBean> dataList = mineCollectVideoBean.getData();
-            final MineCollectVideoAdapter mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
+        if (mIsFirst){
+            mIsFirst=false;
+            mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
             xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
             mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
@@ -68,6 +92,12 @@ public class MineCollectVideoFragment extends BaseFragment {
                     asyncShowToast("点击了");
                 }
             });
+        }
+            xrecyclerMycollectVideo.refreshComplete();
+            mineCollectVideoAdapter.notifyDataSetChanged();
+            mineCollectVideoAdapter.notifyItemRangeChanged(count,mineCollectVideoBean.getData().size());
+
+
         }
     }
 
@@ -77,12 +107,14 @@ public class MineCollectVideoFragment extends BaseFragment {
         xrecyclerMycollectVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                xrecyclerMycollectVideo.refreshComplete();
+             mIsRefresh=true;
+             count=0;
+                RequestMineCollectVideo();
             }
 
             @Override
             public void onLoadMore() {
-                xrecyclerMycollectVideo.refreshComplete();
+                RequestMineCollectVideo();
             }
         });
     }

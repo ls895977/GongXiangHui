@@ -18,12 +18,14 @@ import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssurePostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
-import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.bean.mine.MineIssurePostBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.UserUtil;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +76,15 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     private void parseIssuePostData(String body) {
         final MineIssurePostBean mineIssurePostBean = GsonUtils.jsonFromJson(body, MineIssurePostBean.class);
+
+
         if (mineIssurePostBean.getCode() == 0) {
             if (mIsRefresh) {
                 mIsRefresh = false;
                 dataList.clear();
             }
             dataList.addAll(mineIssurePostBean.getData().getList());
+
             count = dataList.size();
             if (mineIssurePostBean.getCode() == 0) {
                 if (mIsFirst) {
@@ -89,6 +94,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
                 }
                 recyclerMineissuePost.refreshComplete();
+                mineIssurePostAdapter.notifyDataSetChanged();
                 mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
             }
 
@@ -146,17 +152,21 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
      * @param position
      */
     @Override
-    public void onCollectionItemClick(int position) {
+    public void onCollectionItemClick(final int position) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>((getActivity())) {
+                .params("data_uuid", dataList.get(position - 1).getUuid()).execute(new DialogCallback<String>((getActivity())) {
             @Override
             public void onSuccess(Response<String> response) {
                 MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                 if (myCollectBean.getCode() == 0) {
                     Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
+                    dataList.get(position).setCollect("true");
                 } else if (myCollectBean.getCode() == 202) {
                     Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
+                    dataList.get(position).setCollect("");
                 }
+                mineIssurePostAdapter.notifyDataSetChanged();
+                mineIssurePostAdapter.notifyItemChanged(position);
             }
         });
 
@@ -170,23 +180,27 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     @Override
     public void onLaunLikeClick(int position) {
         if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() == 0) {
+            if (dataList.get(position).getClick_like().size() <= 0) {
+                dataList.get(position).setClick_like(new ArrayList<MineIssurePostBean.DataBean.ListBean.ClickLikeBean>());
+            }
+
+            MineIssurePostBean.DataBean.ListBean.ClickLikeBean like = new MineIssurePostBean.DataBean.ListBean.ClickLikeBean();
+            UserUtil user = UserUtil.getInstance();
+            like.setMember_name(user.mNick);
+            List<MineIssurePostBean.DataBean.ListBean.ClickLikeBean> likeBeanList = dataList.get(position).getClick_like();
+            likeBeanList.add(like);
+            mineIssurePostAdapter.notifyDataSetChanged();
+            mineIssurePostAdapter.notifyItemChanged(position);
             OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
-                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    MineIssurePostBean.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), MineIssurePostBean.DataBean.ListBean.ClickLikeBean.class);
                     Toast.makeText(getActivity(), response.body(), Toast.LENGTH_LONG).show();
                 }
             });
         } else {
-            OkGo.<String>post(Constant.UNLIKE_URL)
-                    .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    Toast.makeText(getActivity(), response.body(), Toast.LENGTH_LONG).show();
-                }
-            });
+
         }
 
     }
@@ -205,5 +219,37 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
 
+    }
+
+    /*删除帖子*/
+    @Override
+    public void deletePost(int position) {
+
+        OkGo.<String>post(Constant.DELETE_POST_URL)
+                .params("uuid", dataList.get(position).getUuid())
+                .execute(new DialogCallback<String>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseDeletePostAData(response.body());
+
+                    }
+                });
+
+    }
+
+    private void parseDeletePostAData(String body) {
+        try {
+            JSONObject jsonObject = new JSONObject(body);
+            int code = jsonObject.getInt("code");
+            if (code==0){
+                asyncShowToast("删除成功");
+
+
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

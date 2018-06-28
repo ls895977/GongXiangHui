@@ -168,7 +168,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void issueHomeVideo() {
-
+asyncShowToast("发布视频的操作");
 
     }
 

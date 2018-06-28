@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-      <ProgressBar
+    <ProgressBar
         android:id="@+id/progress_newsdetail"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:id="@+id/iv_news_detail_addAdver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             android:layout_gravity="right|center_vertical"
+            android:layout_gravity="right|center_vertical"
             android:layout_marginRight="20dp"
             android:layout_marginTop="80dp"
             android:src="@mipmap/iv_add_adver" />
@@ -51,6 +51,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_input_discuss"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
@@ -74,14 +75,13 @@
                     android:textSize="16sp" />
 
 
-
-
                 <ImageView
                     android:id="@+id/iv_news_detail_message"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:background="@mipmap/icon_message" />
+
                 <ImageView
                     android:id="@+id/iv_news_detail_collect"
                     android:layout_width="20dp"
@@ -128,6 +128,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tv_newsdetail_commit"
                     android:layout_width="60dp"
                     android:layout_height="25dp"
                     android:layout_gravity="right"
@@ -136,7 +137,6 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/butn_oval"
                     android:gravity="center"
-
                     android:text="提交" />
             </LinearLayout>
 

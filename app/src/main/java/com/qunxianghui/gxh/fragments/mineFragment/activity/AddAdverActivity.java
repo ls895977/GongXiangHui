@@ -11,12 +11,20 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.TitleBuilder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import butterknife.BindView;
 
@@ -39,10 +47,11 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout rlMineFragmentAddTopAdver;
     @BindView(R.id.rl_mineFragment_addBottomAdver)
     RelativeLayout rlMineFragmentAddBottomAdver;
-
+    private UMShareListener umShareListener;
     private String url;
     private MainBroadCast receiver;
     static final String INTENT_BROADCAST_ADVERTISE = "android.intent.action.advertise";
+    private String title;
 
     @Override
     protected int getLayoutId() {
@@ -61,14 +70,58 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View view) {
 
+                StartThirdShare();
+
             }
         });
+    }
+
+    /**
+     * 三方分享
+     */
+    private void StartThirdShare() {
+        //以下代码是分享示例代码
+        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
+        web.setTitle(title);//标题
+        web.setThumb(image);  //缩略图
+//        web.setDescription("你要分享内容的描述");//描述
+        new ShareAction(this)
+                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                        if (share_media == SHARE_MEDIA.QQ) {
+                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
+                        } else if (share_media == SHARE_MEDIA.WEIXIN) {
+                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
+                        } else if (share_media == SHARE_MEDIA.QZONE) {
+                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QZONE)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
+                        } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
+//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+//                                            .withMedia(web)
+//                                            .setCallback(umShareListener)
+//                                            .share();
+                        }
+                    }
+                }).open();
+
     }
 
     @Override
     protected void initDatas() {
         final Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        title = intent.getStringExtra("title");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
 
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
@@ -127,6 +180,31 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
 
 
+
+
+
+        //此回调用于分享
+        umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+                //分享开始的回调
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA platform) {
+                Toast.makeText(AddAdverActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, Throwable t) {
+                Toast.makeText(AddAdverActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+                Toast.makeText(AddAdverActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     @Override

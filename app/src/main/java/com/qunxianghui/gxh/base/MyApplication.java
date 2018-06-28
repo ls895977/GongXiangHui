@@ -130,6 +130,7 @@ public class MyApplication extends Application {
         HttpHeaders header = new HttpHeaders();
         header.put("X-appkey", "100");
         header.put("X-accesstoken", mAccessToken);
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");

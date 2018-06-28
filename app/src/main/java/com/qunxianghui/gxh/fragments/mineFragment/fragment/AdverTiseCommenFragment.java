@@ -123,12 +123,12 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     @Override
     public void onEditClick(int p) {
-        Toast.makeText(getActivity(), "edit", Toast.LENGTH_LONG).show();
+
         Intent intent = new Intent(getActivity(), AdvertisActivity.class);
         intent.putExtra("isComingFromColum", true);
         intent.putExtra("index", index);
-        String url = adListAdapter.getDatas().get(p).getImages();
 
+        String url = adListAdapter.getDatas().get(p).getImages();
         if (index == 1) {
             intent.putExtra("imgUrl", url);
             intent.putExtra("link", adListAdapter.getDatas().get(p).getLink());

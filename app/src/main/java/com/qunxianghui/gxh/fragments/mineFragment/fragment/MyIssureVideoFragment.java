@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +35,9 @@ public class MyIssureVideoFragment extends BaseFragment {
     private int count=0;
     private  boolean mIsFirst=true;
     private boolean mIsRefreshing=false;
+    private List<MineIssueVideoBean.DataBean> dataList=new ArrayList<>();
+    private MineIssueVideoAdapter mineIssueVideoAdapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_issue_video;
@@ -43,6 +45,17 @@ public class MyIssureVideoFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+
+        RequestMyIssueVideo();
+
+
+    }
+
+    /**
+     * 请求我的发布中的视频
+     */
+
+    private void RequestMyIssueVideo() {
         OkGo.<String>post(Constant.GET_ISSURE_VIDEO_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -51,26 +64,37 @@ public class MyIssureVideoFragment extends BaseFragment {
 
             }
         });
-
     }
 
     private void ParseMineIssueVideo(String body) {
         final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
 
+        if (mIsRefreshing){
+            mIsRefreshing=false;
+            dataList.clear();
+        }
+        dataList.addAll(mineIssueVideoBean.getData());
+        count=dataList.size();
         if (mineIssueVideoBean.getCode()==0){
-            final List<MineIssueVideoBean.DataBean> dataList = mineIssueVideoBean.getData();
+if (mIsFirst){
+    mIsFirst=false;
+    mineIssueVideoAdapter = new MineIssueVideoAdapter(mActivity, dataList);
+    recyclerMineIssueVideo.setAdapter(mineIssueVideoAdapter);
 
-            final MineIssueVideoAdapter mineIssueVideoAdapter = new MineIssueVideoAdapter(mActivity, dataList);
-            recyclerMineIssueVideo.setAdapter(mineIssueVideoAdapter);
-            mineIssueVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    Intent intent=new Intent(mActivity, ProtocolActivity.class);
-                    intent.putExtra("url",dataList.get(position).getVideo_url());
-                    intent.putExtra("title",dataList.get(position).getTitle());
-                    startActivity(intent);
-                }
-            });
+    mineIssueVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View v, int position) {
+            Intent intent=new Intent(mActivity, ProtocolActivity.class);
+            intent.putExtra("url", dataList.get(position).getVideo_url());
+            intent.putExtra("title", dataList.get(position).getTitle());
+            startActivity(intent);
+        }
+    });
+}
+            recyclerMineIssueVideo.refreshComplete();
+            mineIssueVideoAdapter.notifyDataSetChanged();
+            mineIssueVideoAdapter.notifyItemChanged(count,dataList.size());
+
         }
     }
 
@@ -91,6 +115,24 @@ public class MyIssureVideoFragment extends BaseFragment {
     @Override
     protected void onLoadData() {
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        recyclerMineIssueVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                count=0;
+                mIsRefreshing=true;
+                RequestMyIssueVideo();
+            }
+
+            @Override
+            public void onLoadMore() {
+                RequestMyIssueVideo();
+            }
+        });
     }
 
     @Override
