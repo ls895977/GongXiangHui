@@ -37,12 +37,12 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
     }
 
     @Override
-    public void onBindViewHolder(final MineIssurePostAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final MineIssurePostAdapter.ViewHolder holder, final int position) {
         MineIssurePostBean.DataBean.ListBean listBean = mList.get(position);
         List<String> images = ((List<String>) mList.get(position).getImages());
-
+        final String collect = mList.get(position).getCollect();
         holder.mTvMineName.setText(listBean.getMember_name());
-        holder.mTvCollect.setText(listBean.getContent());
+        holder.mTvMineContent.setText(listBean.getContent());
         holder.mTvIssueTime.setText(listBean.getCtime());
         LocationGridAdapter myIssuePostAdapter = new LocationGridAdapter(mContext, images);
         holder.myGridView.setAdapter(myIssuePostAdapter);
@@ -61,14 +61,18 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         holder.mTvlike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
+
                 postOnClickListener.onLaunLikeClick(holder.getAdapterPosition());
             }
         });
-        holder.mTvDelete.setOnClickListener(new View.OnClickListener() {
+        holder.mTvCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
+                if (collect.equals("")) {
+                    holder.mTvCollect.setBackgroundResource(R.drawable.collect_normal);
+                } else if (collect.equals(true)) {
+                    holder.mTvCollect.setBackgroundResource(R.drawable.collect);
+                }
                 postOnClickListener.onCollectionItemClick(holder.getAdapterPosition());
             }
         });
@@ -76,7 +80,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了删除", Toast.LENGTH_SHORT).show();
-
+                postOnClickListener.deletePost(position);
             }
         });
     }
@@ -129,5 +133,8 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
 
         /* 图片点击*/
         void onPicClick(int position, int picpostion);
+
+        /*删除*/
+        void deletePost(int position);
     }
 }

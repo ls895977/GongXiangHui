@@ -91,5 +91,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         /* 头像点击*/
         void videoHeadImageClick(int position);
 
+
+
     }
 }

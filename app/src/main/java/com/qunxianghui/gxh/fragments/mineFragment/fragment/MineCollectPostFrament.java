@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -33,9 +34,13 @@ import butterknife.Unbinder;
 
 public class MineCollectPostFrament extends BaseFragment implements MineCollectPostAdapter.MycollectPostListener {
     @BindView(R.id.recycler_mycollect_post)
-    RecyclerView recyclerMycollectPost;
+    XRecyclerView recyclerMycollectPost;
     Unbinder unbinder;
-    private List<MineCollectPostBean.DataBean> dataList;
+    private List<MineCollectPostBean.DataBean> dataList = new ArrayList<>();
+    private boolean mIsRefresh = false;
+    private boolean mIsFirst = true;
+    private int count = 0;
+    private MineCollectPostAdapter mineCollectPostAdapter;
 
     @Override
     public int getLayoutId() {
@@ -44,26 +49,48 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
 
     @Override
     public void initDatas() {
-        OkGo.<String>post(Constant.GET_COLLECT_POST_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseCollectPostDaTA(response.body());
-            }
-        });
 
+        RequestMyCollectPost();
+
+
+    }
+
+    private void RequestMyCollectPost() {
+        OkGo.<String>post(Constant.GET_COLLECT_POST_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseCollectPostDaTA(response.body());
+                    }
+                });
     }
 
 
     private void parseCollectPostDaTA(String body) {
         Logger.d("我收藏帖子的内容+++" + body.toString());
         final MineCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MineCollectPostBean.class);
-        if (myCollectPostBean.getCode() == 0) {
-            dataList = myCollectPostBean.getData();
 
-            final MineCollectPostAdapter mineCollectPostAdapter = new MineCollectPostAdapter(mActivity, dataList);
-            recyclerMycollectPost.setAdapter(mineCollectPostAdapter);
-            mineCollectPostAdapter.setMycollectPostListener(this);
-            asyncShowToast("请求成功");
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            dataList.clear();
+        }
+        dataList.addAll(myCollectPostBean.getData());
+        count = dataList.size();
+        if (myCollectPostBean.getCode() == 0) {
+            if (mIsFirst) {
+                mIsFirst = false;
+                mineCollectPostAdapter = new MineCollectPostAdapter(mActivity, dataList);
+                recyclerMycollectPost.setAdapter(mineCollectPostAdapter);
+                mineCollectPostAdapter.setMycollectPostListener(this);
+                asyncShowToast("请求成功");
+            }
+
+            recyclerMycollectPost.refreshComplete();
+            mineCollectPostAdapter.notifyDataSetChanged();
+
+
         }
     }
 
@@ -83,6 +110,26 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     @Override
     protected void onLoadData() {
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        recyclerMycollectPost.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                mIsRefresh=true;
+                count=0;
+                RequestMyCollectPost();
+
+            }
+
+            @Override
+            public void onLoadMore() {
+
+                RequestMyCollectPost();
+            }
+        });
     }
 
     @Override

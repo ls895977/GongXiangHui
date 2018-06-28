@@ -299,6 +299,47 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
      */
     private void ParseThirdStepCity(String body) {
         final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(body, ThirdStepCityBean.class);
+
+        ArrayList<ThirdStepCityBean.DataBean> dataList = thirdStepCityBean.getData();
+
+        /**
+         * 添加省份数据
+         */
+
+        options1Items=dataList;
+        for (int i=0;i<dataList.size();i++){  //遍历省份
+            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
+            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
+            for (int c = 0; c < dataList.get(i).sub.size(); c++) {//遍历该省份的所有城市
+                String CityName = dataList.get(i).sub.get(c).name;
+                CityList.add(CityName);//添加城市
+                ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
+                //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
+                if (dataList.get(i).sub.get(c).sub == null
+                        || dataList.get(i).sub.get(c).sub.size() == 0) {
+                    City_AreaList.add("");
+                } else {
+                    for (int i1 = 0; i1 < dataList.get(i).sub.get(c).sub.size(); i1++) {
+                        City_AreaList.add(dataList.get(i).sub.get(c).sub.get(i1).name);
+                    }
+                }
+                Province_AreaList.add(City_AreaList);//添加该省所有地区数据
+            }
+            /**
+             * 添加城市数据
+             *
+             */
+
+            options2Items.add(CityList);
+
+            /**
+             * 添加地区数据
+             */
+            options3Items.add(Province_AreaList);
+        }
+
+
+
         if (thirdStepCityBean.getCode() == 0) {
             showPickerView();
         }
@@ -328,11 +369,11 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 @Override
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     //返回的分别是三个级别的选中位置
-                    final String tx = options1Items.get(options1).getName() +
+                    final String tx = options1Items.get(options1).getPickerViewText() +
                             options2Items.get(options1).get(options2) +
                             options3Items.get(options1).get(options2).get(options3);
 
-                    asyncShowToast(tx.toString());
+                    etMineCompanysetSelectArea.setText(tx);
 
                 }
             }).setTitleText("城市选择")

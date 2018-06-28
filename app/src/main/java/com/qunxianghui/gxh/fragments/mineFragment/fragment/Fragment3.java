@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +33,10 @@ import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.Utils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +59,7 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
     private List<String> upLoadPics = new ArrayList<>();
     private int index;
     private int ad_id;
+    private String mImgUrl;
 
     @Override
     public int getLayoutId() {
@@ -77,16 +77,16 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
         Intent intent = getActivity().getIntent();
         isComingFromColum = intent.getBooleanExtra("isComingFromColum", false);
 
-        if (isComingFromColum == true) {
+        if (isComingFromColum ) {
             index = intent.getIntExtra("index", 0);
             if (index == 3) {
-                String url = intent.getStringExtra("imgUrl");
+                mImgUrl = intent.getStringExtra("imgUrl");
                 String link = intent.getStringExtra("link");
                 ad_id = intent.getIntExtra("ad_id", 0);
                 etMineLinkAddFragment3.setText(link);
 
                 GlideApp.with(mActivity)
-                        .load(url)
+                        .load(mImgUrl)
                         .placeholder(R.mipmap.user_moren)
                         .error(R.mipmap.user_moren)
                         .into(ivMineAddFragment3_colunmnsAdver);
@@ -238,13 +238,15 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
      * 保存通栏广告数据
      */
     private void commitAdverFragment3() {
-        final String imageUrl = Utils.listToString(upLoadPics);
+        String imageUrl = Utils.listToString(upLoadPics);
         final String trim = etMineLinkAddFragment3.getText().toString().trim();
-
-        if (isComingFromColum == true) {
+if (TextUtils.isEmpty(imageUrl)){
+    imageUrl=mImgUrl;
+}
+        if (isComingFromColum) {
             OkGo.<String>post(Constant.EDIT_AD)
                     .params("id", ad_id)
-                    .params("ad_type", 1)
+                    .params("ad_type", 3)
                     .params("images", imageUrl)
                     .params("link", trim)
                     .execute(new StringCallback() {
@@ -261,10 +263,8 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
-
                             parseFragment3AdvData(response.body());
                         }
-
                         @Override
                         public void onError(Response<String> response) {
 
@@ -292,9 +292,9 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
                 final String imagUrl = Utils.listToString(upLoadPics);
                 final String trim = etMineLinkAddFragment3.getText().toString().trim();
                 Intent intent = new Intent();
-                intent.putExtra("type", 1);
+                intent.putExtra("type", 3);
                 intent.putExtra("position", getActivity().getIntent().getStringExtra("position"));
-                intent.putExtra("index", 0);
+                intent.putExtra("index", 2);
                 intent.putExtra("url", imagUrl);
                 intent.putExtra("title", trim);
                 mActivity.setResult(isComingFromColum == false ? Activity.RESULT_OK : -2, intent);

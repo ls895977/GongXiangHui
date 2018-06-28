@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.bean.mine.MineMessageFollowBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,17 +33,36 @@ public class MineMessageFollowFragment extends BaseFragment {
     XRecyclerView xrecyclerMineFollowMessage;
     Unbinder unbinder;
 
+
+    private int count=0;
+    private boolean mIsRefresh=false;
+    private boolean mIsFirst=true;
+    private List<MineMessageFollowBean.DataBean> dataList=new ArrayList<>();
+    private MineMessageFollewAdapter mineMessageFollewAdapter;
+
     @Override
     protected void onLoadData() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_FOLLOW_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
 
-                parsePaiHangData(response.body());
+        RequestMyMessageFollow();
+
+    }
+
+    /**
+     * 请求我的跟帖
+     */
+    private void RequestMyMessageFollow() {
+        OkGo.<String>post(Constant.DISCUSS_MINE_FOLLOW_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        parsePaiHangData(response.body());
 
 
-            }
-        });
+                    }
+                });
     }
 
     @Override
@@ -59,9 +79,27 @@ public class MineMessageFollowFragment extends BaseFragment {
 
     private void parsePaiHangData(String body) {
         final MineMessageFollowBean mineMessageFollowBean = GsonUtils.jsonFromJson(body, MineMessageFollowBean.class);
+        if (mIsRefresh){
+           mIsRefresh=false;
+            dataList.clear();
+
+        }
+
+        dataList.addAll(mineMessageFollowBean.getData());
+        count=dataList.size();
+
+
         if (mineMessageFollowBean.getCode() == 0) {
-            final List<MineMessageFollowBean.DataBean> dataList = mineMessageFollowBean.getData();
-            final MineMessageFollewAdapter mineMessageFollewAdapter = new MineMessageFollewAdapter(mActivity, dataList);
+            if (mIsFirst){
+                mIsFirst=false;
+                mineMessageFollewAdapter = new MineMessageFollewAdapter(mActivity, dataList);
+                xrecyclerMineFollowMessage.setAdapter(mineMessageFollewAdapter);
+
+            }
+
+            xrecyclerMineFollowMessage.refreshComplete();
+            mineMessageFollewAdapter.notifyDataSetChanged();
+
             mineMessageFollewAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
@@ -69,8 +107,11 @@ public class MineMessageFollowFragment extends BaseFragment {
                 }
             });
 
-            xrecyclerMineFollowMessage.setAdapter(mineMessageFollewAdapter);
+            mineMessageFollewAdapter.notifyItemChanged(count,mineMessageFollowBean.getData().size());
+
         }
+
+
 
     }
 
@@ -79,6 +120,26 @@ public class MineMessageFollowFragment extends BaseFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setSmoothScrollbarEnabled(false);
         xrecyclerMineFollowMessage.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+
+        xrecyclerMineFollowMessage.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+
+                count=0;
+                mIsRefresh=true;
+                RequestMyMessageFollow();
+            }
+
+            @Override
+            public void onLoadMore() {
+                RequestMyMessageFollow();
+            }
+        });
     }
 
     @Override
