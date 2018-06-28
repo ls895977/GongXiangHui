@@ -15,6 +15,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -27,6 +28,7 @@ public class CommentItemAdapter extends BaseAdapter {
     private Context context;
     private List<CommentBean> mList;
     private ListView listView;
+
 
     public CommentItemAdapter(Context context, List<CommentBean> mList, ListView listView) {
         this.context = context;
@@ -78,6 +80,13 @@ public class CommentItemAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         showView(holder, position, parent);
+        UserUtil user = UserUtil.getInstance();
+        CommentBean comment = mList.get(position);
+        if (user.mNick.equalsIgnoreCase(comment.getMember_name())){
+            holder.tv_item_discuss_delete.setVisibility(View.VISIBLE);
+        }else {
+            holder.tv_item_discuss_delete.setVisibility(View.GONE);
+        }
 
         return convertView;
     }
@@ -96,15 +105,12 @@ public class CommentItemAdapter extends BaseAdapter {
 
 
                 OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
-                        params("id", v.getId()).execute(new StringCallback() {
+                        params("id", mList.get(position).getId()).execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
 
-                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
-
-
+                        //Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                         deleteItemView(position);
-
 
                     }
                 });

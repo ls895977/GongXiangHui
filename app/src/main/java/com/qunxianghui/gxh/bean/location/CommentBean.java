@@ -35,6 +35,16 @@ public class CommentBean {
     private String member_avatar;
     private String address;
 
+    private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
     public int getId() {
         return id;
     }

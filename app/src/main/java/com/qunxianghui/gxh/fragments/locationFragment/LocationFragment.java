@@ -27,8 +27,11 @@ import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.Callback;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.base.Request;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
@@ -38,6 +41,7 @@ import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
+import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
@@ -48,6 +52,7 @@ import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
+import com.qunxianghui.gxh.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -473,6 +478,20 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     commentBeanList.add(comment);
                     mAdapter.notifyDataSetChanged();
                     mAdapter.notifyItemChanged(position);
+
+                    OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                            .params("uuid",uuid)
+                            .params("content", comment_edit.getText().toString())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
+                                    if (comment.getCode()==0) {
+                                        comment_edit.setText("");
+                                        hideSoftKeyboard(comment_edit, getActivity());
+                                    }
+                                }
+                            });
 
                     /*
                     OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
