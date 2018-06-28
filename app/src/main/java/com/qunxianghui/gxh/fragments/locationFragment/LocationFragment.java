@@ -474,6 +474,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     mAdapter.notifyDataSetChanged();
                     mAdapter.notifyItemChanged(position);
 
+                    /*
                     OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                             .params("uuid", uuid)
                             .params("content", comment_edit.getText().toString())
@@ -489,6 +490,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                                     }
                                 }
                             });
+                            */
                 }
             }
         });
