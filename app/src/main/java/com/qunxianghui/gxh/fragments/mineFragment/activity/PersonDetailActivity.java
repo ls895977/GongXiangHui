@@ -17,14 +17,14 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.UserDetailInforBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCollectVideoFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCommonFragment;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.PersonDetailVideoFragment;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PersonDetailActivity extends BaseActivity  implements View.OnClickListener{
+public class PersonDetailActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_person_detail_back)
     ImageView ivPersonDetailBack;
     @BindView(R.id.iv_person_detail_head)
@@ -52,6 +52,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     public int member_id;
     private String follow;
+    private UserDetailInforBean.DataBean dataList;
 
     @Override
     protected int getLayoutId() {
@@ -71,9 +72,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     protected void initDatas() {
         final Intent intent = getIntent();
         member_id = intent.getIntExtra("member_id", 1);
-
         FetchPersonData();
-
         Bundle bundle = new Bundle();
         bundle.putInt("member_id", member_id);
         MineCommonFragment mineCommonFragment = new MineCommonFragment();
@@ -106,8 +105,14 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     //解析用户的详情资料
     private void parseUserDetailInfo(String body) {
         UserDetailInforBean userDetailInforBean = GsonUtils.jsonFromJson(body, UserDetailInforBean.class);
-        final UserDetailInforBean.DataBean dataList = userDetailInforBean.getData();
+        dataList = userDetailInforBean.getData();
         follow = dataList.getFollow();
+       if (follow.toString().equals("")){
+           tvPersonDetailAttention.setText("关注");
+       }else {
+           tvPersonDetailAttention.setText("已关注");
+       }
+
         if (userDetailInforBean.getCode() == 0) {
             tvPersonDetailName.setText(dataList.getNick());
             tvPersonDetailSetep.setText(dataList.getLevel_info().getName());
@@ -132,7 +137,7 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_person_detail_back:
                 finish();
                 break;
@@ -144,25 +149,25 @@ public class PersonDetailActivity extends BaseActivity  implements View.OnClickL
     }
 
     private void acctionPerson() {
-   OkGo.<String> post(Constant.ATTENTION_URL).params("be_member_id",member_id).execute(new StringCallback() {
-       @Override
-       public void onSuccess(final Response<String> response) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                 if (follow.equals(null)){
-                     asyncShowToast("关注成功");
-                     tvPersonDetailAttention.setText("已关注");
-
-                 }else if (follow.equals("")){
-                     asyncShowToast("取消关注成功");
-                     tvPersonDetailAttention.setText("关注");
-
-                 }
-
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", member_id).execute(new StringCallback() {
+            @Override
+            public void onSuccess(final Response<String> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body());
+                    int code = jsonObject.getInt("code");
+                    if (code == 0) {
+                        asyncShowToast("关注成功");
+                        tvPersonDetailAttention.setText("已关注");
+                        dataList.setFollow("true");
+                    } else if (code == 202) {
+                        asyncShowToast("取消关注成功");
+                        tvPersonDetailAttention.setText("关注");
+                        dataList.setFollow("");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-       }
-   });
+            }
+        });
     }
 }

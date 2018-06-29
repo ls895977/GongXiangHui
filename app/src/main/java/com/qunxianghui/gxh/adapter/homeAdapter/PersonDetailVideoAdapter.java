@@ -32,7 +32,12 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         final RoundImageView personHeadImag = holder.getView(R.id.round_item_collect_video_personhead);
         videoAttention = holder.getView(R.id.tv_mycollect_video_attention);
 
-
+        String follow = listBean.getFollow();
+        if (follow.toString().equals("")){
+            videoAttention.setText("关注");
+        }else {
+            videoAttention.setText("已关注");
+        }
         final String picurl = listBean.getPicurl();
         final String title = listBean.getTitle();
         final String member_name = listBean.getMember_name();
@@ -72,8 +77,11 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
             @Override
             public void onClick(View v) {
                 videoListClickListener.attentionClick(position);
+
             }
         });
+
+
     }
 
 

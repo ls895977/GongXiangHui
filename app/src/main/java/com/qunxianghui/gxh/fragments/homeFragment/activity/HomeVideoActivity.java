@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -108,7 +106,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 @Override
                 public void onItemClick(View v, int position) {
                     Intent intent = new Intent(mContext, NewsDetailActivity.class);
-
                     intent.putExtra("url", videoDataList.get(position - 1).getUrl());
                     startActivity(intent);
                 }
@@ -184,15 +181,9 @@ asyncShowToast("发布视频的操作");
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
-
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             final int code = jsonObject.getInt("code");
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
                                     if (code == 0) {
                                         asyncShowToast("关注成功");
                                         personDetailVideoAdapter.videoAttention.setText("已关注");
@@ -200,10 +191,8 @@ asyncShowToast("发布视频的操作");
                                     } else if (code == 202) {
                                         asyncShowToast("取消关注成功");
                                         personDetailVideoAdapter.videoAttention.setText("关注");
-                                    }
 
-                                }
-                            });
+                                    }
 
                         } catch (Exception e) {
                             e.printStackTrace();

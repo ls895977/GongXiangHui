@@ -39,8 +39,15 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
     @Override
     public void onBindViewHolder(final MineIssurePostAdapter.ViewHolder holder, final int position) {
         MineIssurePostBean.DataBean.ListBean listBean = mList.get(position);
-        List<String> images = ((List<String>) mList.get(position).getImages());
+
         final String collect = mList.get(position).getCollect();
+        if (collect.length()==0||collect==null){
+            holder.mTvCollect.setText("收藏");
+
+        }else {
+            holder.mTvCollect.setText("取消收藏");
+        }
+        List<String> images = ((List<String>) mList.get(position).getImages());
         holder.mTvMineName.setText(listBean.getMember_name());
         holder.mTvMineContent.setText(listBean.getContent());
         holder.mTvIssueTime.setText(listBean.getCtime());
@@ -79,7 +86,12 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
                 postOnClickListener.deletePost(position);
             }
         });
+
+
     }
+
+
+
 
     @Override
     public int getItemCount() {
