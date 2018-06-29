@@ -17,6 +17,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.activity.WelcomActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
@@ -24,6 +25,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CityPickerutil;
+import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -62,6 +64,13 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if("debug".equals(BuildConfig.BUILD_TYPE)) {
+            CrashHandler.getInstance().init(getApplicationContext());
+        }else{
+            Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+        }
+
         mAppApplication = this;
         SINSTANCE = this;
         Logger.d("onCreate-->:" + mAccessToken);
@@ -69,7 +78,7 @@ public class MyApplication extends Application {
         initOkGo();
         appManager = AppManager.getAppManager();
 
-        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());

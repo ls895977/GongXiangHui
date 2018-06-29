@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -30,13 +31,17 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.bean.mine.CompanySetBean;
 import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ImageUtils;
 import com.qunxianghui.gxh.utils.PicassoImageLoader;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import java.util.ArrayList;
@@ -465,6 +470,16 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                                 }
                             }
                         }
+
+
+                        //todo upload selected pics
+                        for (ImageItem imageItem:images) {
+                            Log.e("imgPicker:",imageItem.path);
+                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
+                        }
+                        // /storage/emulated/0/DCIM/Screenshots/Screenshot_2018-06-26-22-09-50-699_chinsoft.water.png
+                        //upLoadPic("");
+
                     }
                 }
             } catch (Exception e) {
@@ -483,5 +498,21 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             }
         }
         return mIview;
+    }
+
+    private List<String> upLoadPics = new ArrayList<>();
+    private void upLoadPic(String urls) {
+        OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
+                .params("base64", urls)
+                .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<ImageBean>> response) {
+                        if (response.body().code.equals("0")) {
+                            upLoadPics.add(response.body().data.getFile());
+                            Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
     }
 }
