@@ -1,12 +1,14 @@
 package com.qunxianghui.gxh.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,6 +29,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,8 +71,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @BindView(R.id.et_input_discuss)
     EditText etInputDiscuss;
-    @BindView(R.id.ll_news_detail_bigDiss)
-    LinearLayout llNewsDetailBigDiss;
+
     @BindView(R.id.ll_input_discuss)
     LinearLayout llInputDiscuss;
     @BindView(R.id.iv_news_detail_collect)
@@ -79,10 +82,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailShare;
     @BindView(R.id.iv_news_detail_addAdver)
     ImageView ivNewsDetailAddAdver;
-    @BindView(R.id.tv_newsdetail_commit)
-    TextView tvNewsdetailCommit;
-    @BindView(R.id.et_input_bigDiscuss)
-    EditText etInputBigDiscuss;
+
+
     private WebView mWebView;
     private ProgressBar mProgressBar;
     private Dialog dialog;
@@ -103,6 +104,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private android.os.Handler handler = new android.os.Handler();
     private boolean has_collect;
     private String title;
+    private TextView btn_submit;
+    private EditText inputComment;
+    private PopupWindow popupWindow;
 
     @Override
     protected int getLayoutId() {
@@ -239,10 +243,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initListeners() {
         etInputDiscuss.setOnClickListener(this);
-        llNewsDetailBigDiss.setOnClickListener(this);
+
         ivNewsDetailAddAdver.setOnClickListener(this);
         ivNewsDetailCollect.setOnClickListener(this);
-        tvNewsdetailCommit.setOnClickListener(this);
+
         ivNewsDetailShare.setOnClickListener(this);
     }
 
@@ -314,14 +318,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.et_input_discuss:
                 llInputDiscuss.setVisibility(View.GONE);
-                etInputBigDiscuss.setFocusable(true);
-                etInputBigDiscuss.setFocusableInTouchMode(true);
-                etInputBigDiscuss.requestFocus();
-                llNewsDetailBigDiss.setVisibility(View.VISIBLE);
-               getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                llNewsDetailBigDiss.setVisibility(View.VISIBLE);
+             showPopupCommnet();
 
-                break;
-            case R.id.ll_news_detail_bigDiss:
                 break;
 
             case R.id.tv_addAdver_share:
@@ -349,31 +348,71 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_collect:
                 CollectDataList(uuid);
                 break;
-            case R.id.tv_newsdetail_commit:
-                CommitNewsCommond();
-                break;
+
             case R.id.iv_news_detail_share:
                 showBottomAliert();
                 break;
         }
 
     }
+/*弹出评论框*/
+    @SuppressLint("WrongConstant")
+    private void showPopupCommnet() {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_popupwindow, null);
+        inputComment = view.findViewById(R.id.et_discuss);
+        btn_submit = (TextView) view.findViewById(R.id.tv_confirm);
+        popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, false);
+        popupWindow.setTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction()==MotionEvent.ACTION_OUTSIDE){
+                    popupWindow.dismiss();
+                }
+                return false;
+            }
+        });
 
-    /**
-     * 提交评论
-     */
-    private void CommitNewsCommond() {
+        popupWindow.setFocusable(true);
+        //设置点击窗口外边窗口消失
+        popupWindow.setOutsideTouchable(true);
+        //设置弹出窗体需要软键盘
+        popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+        // 再设置模式，和Activity的一样，覆盖，调整大小。
+        popupWindow
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        ColorDrawable cd = new ColorDrawable(0x000000);
+        popupWindow.setBackgroundDrawable(cd);
+        popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        //    WindowManager.LayoutParams params = getWindow().getAttributes();
+//    params.alpha = 0.4f;
+//    getWindow().setAttributes(params);
+        // 设置popWindow的显示和消失动画
+//    popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        popupWindow.update();
+//        popupInputMethodWindow();
 
-        String CommonText = etInputBigDiscuss.getText().toString().trim();
-        if (TextUtils.isEmpty(CommonText)) {
+        /**
+         * 提交评论
+         */
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String CommonText = inputComment.getText().toString().trim();
+                if (TextUtils.isEmpty(CommonText)) {
 
-            asyncShowToast("请输入评论内容");
-        } else {
+                    asyncShowToast("请输入评论内容");
+                } else {
 
-            RequestNewsCommon(CommonText);
-        }
-
+                    RequestNewsCommon(CommonText);
+                    popupWindow.dismiss();
+                }
+            }
+        });
     }
+
+
 
     /**
      * 请求评论
@@ -390,7 +429,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     public void onSuccess(Response<LzyResponse<CommentBean>> response) {
                         if (response.body().code.equals("0")) {
                             asyncShowToast("评论成功");
-                            llNewsDetailBigDiss.setVisibility(View.GONE);
                             llInputDiscuss.setVisibility(View.GONE);
 
 

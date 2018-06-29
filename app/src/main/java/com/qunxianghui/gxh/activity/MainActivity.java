@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
@@ -22,21 +24,43 @@ import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.rb_home)
-    RadioButton rbHome;
-    @BindView(R.id.rb_mine)
-    RadioButton rbMine;
-    @BindView(R.id.rg_main)
-    RadioGroup rgMain;
-    @BindView(R.id.rb_location)
-    RadioButton rbLocation;
-    @BindView(R.id.rb_fabu)
-    RadioButton rbFabu;
-    @BindView(R.id.rb_generalize)
-    RadioButton rbGeneralize;
+
+    @BindView(R.id.ll_mine)
+    LinearLayout llMine;
+    @BindView(R.id.ll_home)
+    LinearLayout llHome;
+    @BindView(R.id.ll_location)
+    LinearLayout llLocation;
+    @BindView(R.id.ll_issue)
+    LinearLayout llIssue;
+    @BindView(R.id.ll_generation)
+    LinearLayout llGeneration;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
+    @BindView(R.id.iv_home)
+    ImageView ivHome;
+    @BindView(R.id.tv_home)
+    TextView tvHome;
+    @BindView(R.id.iv_location)
+    ImageView ivLocation;
+    @BindView(R.id.tv_location)
+    TextView tvLocation;
+    @BindView(R.id.iv_issue)
+    ImageView ivIssue;
+    @BindView(R.id.tv_issue)
+    TextView tvIssue;
+    @BindView(R.id.iv_generation)
+    ImageView ivGeneration;
+    @BindView(R.id.tv_generation)
+    TextView tvGeneration;
+    @BindView(R.id.iv_mine)
+    ImageView ivMine;
+    @BindView(R.id.tv_mine)
+    TextView tvMine;
     private long exitTime;
 
     private MainBroadCast receiver;
@@ -60,10 +84,14 @@ public class MainActivity extends BaseActivity {
     private void initViewPagers() {
         /** 默认选中第一个选项卡*/
         selectedFragment(0);
+        ivHome.setBackgroundResource(R.drawable.ic_home_checked);
+        tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
+
     }
 
     @Override
-    protected void initListeners() { }
+    protected void initListeners() {
+    }
 
     @Override
     protected void initDatas() {
@@ -75,9 +103,9 @@ public class MainActivity extends BaseActivity {
                 if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
                     boolean hide = intent.getBooleanExtra("hide", false);
                     if (hide == true) {
-                        rgMain.setVisibility(View.GONE);
+                        llMain.setVisibility(View.GONE);
                     } else {
-                        rgMain.setVisibility(View.VISIBLE);
+                        llMain.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -107,7 +135,7 @@ public class MainActivity extends BaseActivity {
                 if (mLocationFragment == null) {
                     mLocationFragment = new LocationFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("tabHeight",rgMain.getMeasuredHeight());
+                    bundle.putInt("tabHeight", llMain.getMeasuredHeight());
                     mLocationFragment.setArguments(bundle);
                     transaction.add(R.id.content, mLocationFragment);
                 } else {
@@ -167,11 +195,9 @@ public class MainActivity extends BaseActivity {
     /**
      * 二次点击返回
      *
-     *
      * @param keyCode
      * @param event
      * @return =======
-     *
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -189,25 +215,82 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @OnClick({R.id.rb_location, R.id.rb_fabu, R.id.rb_generalize, R.id.rb_mine, R.id.rb_home})
+    @OnClick({R.id.ll_home, R.id.ll_location, R.id.ll_generation, R.id.ll_issue, R.id.ll_mine})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rb_home:
+            case R.id.ll_home:
                 selectedFragment(0);
+
+                ivHome.setBackgroundResource(R.drawable.ic_home_checked);
+                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
+                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
+                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
+
+                tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
+                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
                 break;
-            case R.id.rb_location:
+            case R.id.ll_location:
                 selectedFragment(1);
+                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
+                ivLocation.setBackgroundResource(R.drawable.ic_find_checked);
+                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
+                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
+                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvLocation.setTextColor(getResources().getColor(R.color.home_text_color));
+                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
                 break;
-            case R.id.rb_fabu:
+            case R.id.ll_issue:
                 toActivity(PublishActivity.class);
 //                selectedFragment(2);
+                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
+                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
+                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
+                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
+
+                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvIssue.setTextColor(getResources().getColor(R.color.home_text_color));
+                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
                 break;
-            case R.id.rb_generalize:
+            case R.id.ll_generation:
                 selectedFragment(3);
+                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
+                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
+                ivGeneration.setBackgroundResource(R.drawable.ic_journey_checked);
+                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
+
+                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_color));
+                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
                 break;
-            case R.id.rb_mine:
+            case R.id.ll_mine:
                 selectedFragment(4);
+                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
+                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
+                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
+                ivMine.setBackgroundResource(R.drawable.ic_mine_checked);
+
+                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
+                tvMine.setTextColor(getResources().getColor(R.color.home_text_color));
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

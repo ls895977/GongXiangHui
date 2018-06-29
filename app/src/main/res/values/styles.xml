@@ -20,6 +20,19 @@
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@drawable/selector_tab_textcolor</item>
     </style>
+
+
+    <!--首页底部导航栏的style-->
+    <style name="HomeBottomNavagationStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_gravity">bottom</item>
+
+    </style>
+
     <!--titleBar的style-->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
