@@ -1,7 +1,10 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,15 +30,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MyIssureVideoFragment extends BaseFragment {
+public class MyIssureVideoFragment extends BaseFragment implements MineIssueVideoAdapter.MyIssueVideoClikListener {
     @BindView(R.id.recycler_mine_issue_video)
     XRecyclerView recyclerMineIssueVideo;
     Unbinder unbinder;
-
-    private int count=0;
-    private  boolean mIsFirst=true;
-    private boolean mIsRefreshing=false;
-    private List<MineIssueVideoBean.DataBean> dataList=new ArrayList<>();
+    private Handler handler = new Handler();
+    private int count = 0;
+    private boolean mIsFirst = true;
+    private boolean mIsRefreshing = false;
+    private List<MineIssueVideoBean.DataBean> dataList = new ArrayList<>();
     private MineIssueVideoAdapter mineIssueVideoAdapter;
 
     @Override
@@ -56,51 +59,55 @@ public class MyIssureVideoFragment extends BaseFragment {
      */
 
     private void RequestMyIssueVideo() {
-        OkGo.<String>post(Constant.GET_ISSURE_VIDEO_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                com.orhanobut.logger.Logger.d("我爆料的视频+++"+response.body().toString());
-                ParseMineIssueVideo(response.body());
+        OkGo.<String>post(Constant.GET_ISSURE_VIDEO_URL)
+                .params("limit", 5)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        com.orhanobut.logger.Logger.d("我爆料的视频+++" + response.body().toString());
+                        ParseMineIssueVideo(response.body());
 
-            }
-        });
+                    }
+                });
     }
 
     private void ParseMineIssueVideo(String body) {
         final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
 
-        if (mIsRefreshing){
-            mIsRefreshing=false;
+        if (mIsRefreshing) {
+            mIsRefreshing = false;
             dataList.clear();
         }
         dataList.addAll(mineIssueVideoBean.getData());
-        count=dataList.size();
-        if (mineIssueVideoBean.getCode()==0){
-if (mIsFirst){
-    mIsFirst=false;
-    mineIssueVideoAdapter = new MineIssueVideoAdapter(mActivity, dataList);
-    recyclerMineIssueVideo.setAdapter(mineIssueVideoAdapter);
+        count = dataList.size();
+        if (mineIssueVideoBean.getCode() == 0) {
+            if (mIsFirst) {
+                mIsFirst = false;
+                mineIssueVideoAdapter = new MineIssueVideoAdapter(mActivity, dataList);
+                mineIssueVideoAdapter.setMyIssueVideoClikListener(this);
+                recyclerMineIssueVideo.setAdapter(mineIssueVideoAdapter);
 
-    mineIssueVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View v, int position) {
-            Intent intent=new Intent(mActivity, ProtocolActivity.class);
-            intent.putExtra("url", dataList.get(position).getVideo_url());
-            intent.putExtra("title", dataList.get(position).getTitle());
-            startActivity(intent);
-        }
-    });
-}
+                mineIssueVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                        intent.putExtra("url", dataList.get(position).getVideo_url());
+                        intent.putExtra("title", dataList.get(position).getTitle());
+                        startActivity(intent);
+                    }
+                });
+            }
             recyclerMineIssueVideo.refreshComplete();
             mineIssueVideoAdapter.notifyDataSetChanged();
-            mineIssueVideoAdapter.notifyItemChanged(count,dataList.size());
+            mineIssueVideoAdapter.notifyItemChanged(count, dataList.size());
 
         }
     }
 
     @Override
     public void initViews(View view) {
-        recyclerMineIssueVideo.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        recyclerMineIssueVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
 
     }
 
@@ -123,8 +130,8 @@ if (mIsFirst){
         recyclerMineIssueVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                count=0;
-                mIsRefreshing=true;
+                count = 0;
+                mIsRefreshing = true;
                 RequestMyIssueVideo();
             }
 
@@ -139,5 +146,51 @@ if (mIsFirst){
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    /*接口回调  删除视频的操作*/
+
+    @Override
+    public void deleVideoItem(final int position) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("删除提示");
+        builder.setMessage("您确定要删除该条消息吗?");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DeleteVideo(position);
+
+            }
+
+        });
+        mineIssueVideoAdapter.notifyDataSetChanged();
+
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+
+    /*请求接口删除*/
+    private void DeleteVideo(int position) {
+
+        OkGo.<String>post(Constant.DELETE_MYISSUE_URL)
+                .params("uuid", dataList.get(position).getUuid())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(final Response<String> response) {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                asyncShowToast("删除成功");
+
+
+                            }
+                        }, 500);
+
+                    }
+                });
+
+
     }
 }
