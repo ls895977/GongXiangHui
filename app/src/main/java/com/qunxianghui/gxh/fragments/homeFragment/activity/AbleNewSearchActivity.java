@@ -66,7 +66,6 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
         RequestAbleLocation();
 
     }
-
     private void RequestAbleLocation() {
         //定位
         mlocationClient = new AMapLocationClient(mContext);
@@ -151,9 +150,18 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
         });
     }
 
-    private void setItems(DataCityInfo bean) {
+    private void setItems(final DataCityInfo bean) {
+
         MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
         simpleExpandableListview.setAdapter(adapter);
+
+        simpleExpandableListview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//                tvHomeactivityCurrLocation.setText(bean.setData([groupPosition][childPosition]));
+                return true;
+            }
+        });
 
     }
 

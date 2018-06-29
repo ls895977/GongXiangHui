@@ -168,29 +168,31 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
         builder.setNegativeButton("取消", null);
         builder.show();
+
     }
 
-
     /*请求接口删除*/
-    private void DeleteVideo(int position) {
-
+    private void DeleteVideo(final int position) {
         OkGo.<String>post(Constant.DELETE_MYISSUE_URL)
                 .params("uuid", dataList.get(position).getUuid())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(final Response<String> response) {
+                        asyncShowToast("删除成功");
+
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                asyncShowToast("删除成功");
-
-
+                                mineIssueVideoAdapter.notifyDataSetChanged();
                             }
-                        }, 500);
+                        }, 400);
 
+                        mineIssueVideoAdapter.notifyItemChanged(count, dataList.size());
                     }
                 });
 
 
     }
+
+
 }
