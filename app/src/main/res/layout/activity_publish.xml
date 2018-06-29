@@ -40,7 +40,7 @@
     <LinearLayout
         android:id="@+id/ll_baoliao_remember"
         android:layout_width="match_parent"
-        android:visibility="gone"
+
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:background="#33ff454b"
@@ -101,15 +101,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.qunxianghui.gxh.widget.BigGridView
-                android:id="@+id/grid_view"
+            <com.nex3z.flowlayout.FlowLayout
+                android:id="@+id/fl_fabu_photo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:numColumns="4" />
+                android:layout_height="wrap_content">
+
+            </com.nex3z.flowlayout.FlowLayout>
 
         </LinearLayout>
 

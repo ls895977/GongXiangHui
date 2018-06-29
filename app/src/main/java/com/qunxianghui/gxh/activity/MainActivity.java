@@ -199,8 +199,8 @@ public class MainActivity extends BaseActivity {
                 selectedFragment(1);
                 break;
             case R.id.rb_fabu:
-                //                        toActivity(PublishActivity.class);  之前的逻辑  现在换一下
-                selectedFragment(2);
+                toActivity(PublishActivity.class);
+//                selectedFragment(2);
                 break;
             case R.id.rb_generalize:
                 selectedFragment(3);

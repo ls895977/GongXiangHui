@@ -29,15 +29,10 @@ import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONObject;
 
@@ -80,12 +75,10 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
     }
-
     @Override
     protected void initViews() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -135,7 +128,6 @@ public class LoginActivity extends BaseActivity {
                                     } else if (code == 200) {
                                         startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
                                     }
-
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -223,44 +215,10 @@ public class LoginActivity extends BaseActivity {
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);
                 break;
             case R.id.iv_sina_login:
-//                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.SINA, mUmAuthListener);
+                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.SINA, mUmAuthListener);
                 //此方法用于退出登录，想要删除授权的用户
 //                UMShareAPI.get(mContext).deleteOauth(this, SHARE_MEDIA.WEIXIN, null);
 
-                //以下代码是分享示例代码
-                UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
-                final UMWeb web = new UMWeb("http://www.baidu.com"); //切记切记 这里分享的链接必须是http开头
-                web.setTitle("你要分享内容的标题");//标题
-                web.setThumb(image);  //缩略图
-                web.setDescription("你要分享内容的描述");//描述
-                new ShareAction(this)
-                        .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
-                        .setShareboardclickCallback(new ShareBoardlistener() {
-                            @Override
-                            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                                if (share_media == SHARE_MEDIA.QQ) {
-                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.QQ)
-                                            .withMedia(web)
-                                            .setCallback(umShareListener)
-                                            .share();
-                                } else if (share_media == SHARE_MEDIA.WEIXIN) {
-                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
-                                            .withMedia(web)
-                                            .setCallback(umShareListener)
-                                            .share();
-                                } else if (share_media == SHARE_MEDIA.QZONE) {
-                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.QZONE)
-                                            .withMedia(web)
-                                            .setCallback(umShareListener)
-                                            .share();
-                                } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-//                                            .withMedia(web)
-//                                            .setCallback(umShareListener)
-//                                            .share();
-                                }
-                            }
-                        }).open();
                 break;
 
         }

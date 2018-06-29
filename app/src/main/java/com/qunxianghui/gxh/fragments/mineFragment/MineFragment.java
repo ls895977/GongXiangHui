@@ -55,29 +55,44 @@ import butterknife.Unbinder;
 
 public class MineFragment extends BaseFragment {
     private static MineFragment mineFragment;
-    @BindView(R.id.rl_preson_data) RelativeLayout rlPresonData;
-    @BindView(R.id.rl_message_gather) RelativeLayout rlMessageGather;
-    @BindView(R.id.rl_mine_message) RelativeLayout rlMineMessage;
-    @BindView(R.id.rl_mine_collect) RelativeLayout rlMineCollect;
-    @BindView(R.id.mine_fabu) RelativeLayout mineFabu;
-
-    @BindView(R.id.company_set) RelativeLayout companySet;
-    @BindView(R.id.hezuo_call) RelativeLayout hezuoCall;
-    @BindView(R.id.write_advertise) RelativeLayout writeAdvertise;
-    @BindView(R.id.rl_invite_friend) RelativeLayout rlInviteFriend;
-    @BindView(R.id.tv_mine_set) TextView tvMineSet;
-    @BindView(R.id.rl_up_step) RelativeLayout rlUpStep;
-
+    @BindView(R.id.rl_preson_data)
+    RelativeLayout rlPresonData;
+    @BindView(R.id.rl_message_gather)
+    RelativeLayout rlMessageGather;
+    @BindView(R.id.rl_mine_message)
+    RelativeLayout rlMineMessage;
+    @BindView(R.id.rl_mine_collect)
+    RelativeLayout rlMineCollect;
+    @BindView(R.id.mine_fabu)
+    RelativeLayout mineFabu;
+    @BindView(R.id.company_set)
+    RelativeLayout companySet;
+    @BindView(R.id.hezuo_call)
+    RelativeLayout hezuoCall;
+    @BindView(R.id.write_advertise)
+    RelativeLayout writeAdvertise;
+    @BindView(R.id.rl_invite_friend)
+    RelativeLayout rlInviteFriend;
+    @BindView(R.id.tv_mine_set)
+    TextView tvMineSet;
+    @BindView(R.id.rl_up_step)
+    RelativeLayout rlUpStep;
     //头像
-    @BindView(R.id.iv_head) ImageView mIvHead;
+    @BindView(R.id.iv_head)
+    ImageView mIvHead;
     //会员类型
-    @BindView(R.id.tv_member_type) TextView mTvMemberType;
+    @BindView(R.id.tv_member_type)
+    TextView mTvMemberType;
     //用户名
-    @BindView(R.id.mine_quickly_login) TextView mineQuicklyLogin;
-    @BindView(R.id.tv_mine_addlike_count) TextView tvMineAddlikeCount;
+    @BindView(R.id.mine_quickly_login)
+    TextView mineQuicklyLogin;
+    @BindView(R.id.tv_mine_addlike_count)
+    TextView tvMineAddlikeCount;
     Unbinder unbinder;
-    @BindView(R.id.tv_mine_post_count) TextView tvMinePostCount;
-    @BindView(R.id.tv_mine_follow_post_count) TextView tvMineFollowPostCount;
+    @BindView(R.id.tv_mine_post_count)
+    TextView tvMinePostCount;
+    @BindView(R.id.tv_mine_follow_post_count)
+    TextView tvMineFollowPostCount;
 
     private UserDao userDao;
     private int userSize;
@@ -113,12 +128,11 @@ public class MineFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
-                            //                            Logger.d("onSuccess-->:" + response.body().toString());
+
                             parseUserData(response.body());
                             return;
                         }
-                        //  toActivity(LoginActivity.class);
-                        //                        Logger.d("onSuccess-->:" + response.body().toString());
+                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
                 });
     }
@@ -133,16 +147,12 @@ public class MineFragment extends BaseFragment {
             mMobile = data.getString("mobile");
             mAddress = data.getString("address");
             mSex = data.getInt("sex");
-
             like_cnt = data.getInt("like_cnt");
             posts_cnt = data.getInt("posts_cnt");
             comment_cnt = data.getInt("comment_cnt");
-
             mLevelName = data.getJSONObject("level_info").getString("name");
             mTvMemberType.setText(mLevelName);
             mineQuicklyLogin.setText(mNick);
-
-
             tvMineAddlikeCount.setText(String.valueOf(like_cnt));
             tvMinePostCount.setText(String.valueOf(posts_cnt));
             tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
@@ -226,6 +236,9 @@ public class MineFragment extends BaseFragment {
                 requestCall();
                 break;
             case R.id.write_advertise:
+//                TextView tv_addbigimg_to_used = LayoutInflater.from(mActivity).inflate(R.layout.item_addadver_bigimag, null).findViewById(R.id.tv_addbigimg_to_used);
+//                tv_addbigimg_to_used.setVisibility(View.GONE);
+
                 toActivity(AdvertisConmmengtActivity.class);
                 break;
             case R.id.rl_invite_friend:

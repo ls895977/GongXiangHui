@@ -79,10 +79,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailShare;
     @BindView(R.id.iv_news_detail_addAdver)
     ImageView ivNewsDetailAddAdver;
-
     @BindView(R.id.tv_newsdetail_commit)
     TextView tvNewsdetailCommit;
-
     @BindView(R.id.et_input_bigDiscuss)
     EditText etInputBigDiscuss;
     private WebView mWebView;
@@ -92,9 +90,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_addAdver_share;
     private TextView tv_article_share;
     private TextView tv_bottom_alertdialog_cancle;
-
     private LinearLayout ll_share_list;
-
     private ImageView iv_newsdetail_wxshared_friendcircle;
 
 
@@ -143,20 +139,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     //解析内容详情
     private void parseNewsContentData(String body) {
         try {
             final JSONObject jsonObject = new JSONObject(body);
             final JSONObject data = jsonObject.getJSONObject("data");
             has_collect = data.getBoolean("has_collect");
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     @Override
     protected void initDatas() {
         Intent intent = getIntent();
@@ -178,34 +170,27 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             public void onClick(View v) {
 
                 showBottomAliert();
-
             }
         });
-
-
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
-
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onCancel(SHARE_MEDIA platform) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
             }
         };
-
     }
 
     /**
@@ -219,10 +204,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         imageObject.setImageObject(bitmap);
         return imageObject;
     }
-
     //底部弹出对话框
     private void showBottomAliert() {
-
         dialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
         //填充对话框的布局
         alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
@@ -230,10 +213,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         tv_addAdver_share = alertView.findViewById(R.id.tv_addAdver_share);
         tv_article_share = alertView.findViewById(R.id.tv_article_share);
         tv_bottom_alertdialog_cancle = alertView.findViewById(R.id.tv_bottom_alertdialog_cancle);
-
         ll_share_list = alertView.findViewById(R.id.ll_share_list);
-
-
         tv_addAdver_share.setOnClickListener(this);
         tv_article_share.setOnClickListener(this);
         tv_bottom_alertdialog_cancle.setOnClickListener(this);
@@ -258,12 +238,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initListeners() {
-
         etInputDiscuss.setOnClickListener(this);
         llNewsDetailBigDiss.setOnClickListener(this);
         ivNewsDetailAddAdver.setOnClickListener(this);
         ivNewsDetailCollect.setOnClickListener(this);
         tvNewsdetailCommit.setOnClickListener(this);
+        ivNewsDetailShare.setOnClickListener(this);
     }
 
     private void SettingsP() {
@@ -328,17 +308,18 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     @Override
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.et_input_discuss:
                 llInputDiscuss.setVisibility(View.GONE);
-//                ivNewsDetailCollect.setVisibility(View.GONE);
-//                ivNewsDetailMessage.setVisibility(View.GONE);
-//                ivNewsDetailShare.setVisibility(View.GONE);
+                etInputBigDiscuss.setFocusable(true);
+                etInputBigDiscuss.setFocusableInTouchMode(true);
+                etInputBigDiscuss.requestFocus();
                 llNewsDetailBigDiss.setVisibility(View.VISIBLE);
+               getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
                 break;
             case R.id.ll_news_detail_bigDiss:
                 break;
@@ -349,14 +330,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra("url", url);
                 startActivity(intent);
                 dialog.dismiss();
-
-
                 break;
             case R.id.tv_article_share:
-
                 ll_share_list.setVisibility(View.GONE);
-
-
                 StartThirdShare();
                 break;
             case R.id.tv_bottom_alertdialog_cancle:
@@ -375,6 +351,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.tv_newsdetail_commit:
                 CommitNewsCommond();
+                break;
+            case R.id.iv_news_detail_share:
+                showBottomAliert();
                 break;
         }
 
@@ -451,10 +430,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                                     .setCallback(umShareListener)
                                     .share();
                         } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-//                                            .withMedia(web)
-//                                            .setCallback(umShareListener)
-//                                            .share();
+                                    new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                            .withMedia(web)
+                                            .setCallback(umShareListener)
+                                            .share();
                         }
                     }
                 }).open();

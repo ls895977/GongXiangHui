@@ -68,11 +68,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         holder.mTvCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (collect.equals("")) {
-                    holder.mTvCollect.setBackgroundResource(R.drawable.collect_normal);
-                } else if (collect.equals(true)) {
-                    holder.mTvCollect.setBackgroundResource(R.drawable.collect);
-                }
+
                 postOnClickListener.onCollectionItemClick(holder.getAdapterPosition());
             }
         });

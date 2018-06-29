@@ -70,7 +70,7 @@
                     android:drawablePadding="3dp"
                     android:hint="请输入你想评论的内容"
                     android:imeOptions="actionSend"
-                    android:lines="1"
+                    android:lines="3"
                     android:paddingLeft="5dp"
                     android:textSize="16sp" />
 
