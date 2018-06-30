@@ -23,6 +23,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,18 +180,26 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(final Response<String> response) {
-                        asyncShowToast("删除成功");
 
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mineIssueVideoAdapter.notifyDataSetChanged();
+                        try {
+                            JSONObject jsonObject=new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code==0){
+                                asyncShowToast("删除成功");
+                            }else {
+                                asyncShowToast("删除失败");
                             }
-                        }, 400);
+                        } catch (Exception e) {
+                            e.printStackTrace();
 
-                        mineIssueVideoAdapter.notifyItemChanged(count, dataList.size());
+                        }
+
+
                     }
                 });
+
+        mineIssueVideoAdapter.notifyDataSetChanged();
+        mineIssueVideoAdapter.notifyItemChanged(position);
 
 
     }

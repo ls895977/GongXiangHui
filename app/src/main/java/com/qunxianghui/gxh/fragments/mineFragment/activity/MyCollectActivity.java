@@ -68,6 +68,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);
+        mineCommonViewpager.setOffscreenPageLimit(2);
         mineTablayoutCommon.setupWithViewPager(mineCommonViewpager);
 
     }
