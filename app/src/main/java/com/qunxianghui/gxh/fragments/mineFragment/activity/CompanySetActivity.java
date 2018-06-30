@@ -132,9 +132,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 String images = mDataBean.getImages();
                 if (!TextUtils.isEmpty(images)) {
                     String[] split = images.split(",");
-                    for (int i = 0; i < split.length; i++) {
+                    for (String aSplit : split) {
                         ImageItem imageItem = new ImageItem();
-                        imageItem.path = split[i];
+                        imageItem.path = aSplit;
                         this.selImageList.add(imageItem);
                     }
                     if (!this.selImageList.isEmpty()) {
