@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="110dp"
 
-        android:background="@color/tab_color"
+        android:background="@color/home_text_color"
         android:orientation="vertical">
 
 
@@ -331,32 +331,36 @@
 
                 <RadioGroup
                     android:id="@+id/rg_genera_company_paihang"
+
                     android:layout_width="100dp"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/selector_btn_generalize"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rb_genera_company_yuebang"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/selector_btn_generalize"
+                        android:background="@drawable/selector_btn_generalize_opposite"
                         android:button="@null"
                         android:gravity="center"
+                        android:textColor="#000"
+                        android:textSize="12sp"
                         android:text="月榜" />
 
                     <RadioButton
                         android:id="@+id/rb_genera_company_zongbang"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/selector_btn_generalize"
+                        android:background="@drawable/selector_btn_generalize_opposite"
                         android:button="@null"
                         android:gravity="center"
+                        android:textColor="#000"
+                        android:textSize="12sp"
                         android:text="总榜" />
                 </RadioGroup>
             </RelativeLayout>

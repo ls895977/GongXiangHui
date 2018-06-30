@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.qunxianghui.gxh.R;
@@ -11,6 +10,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineAttentionFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineFancesFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssurePostFragment;
+import com.qunxianghui.gxh.widget.NoScrollViewPager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class MessageGatherActivity extends BaseActivity {
     @BindView(R.id.mine_MessageGather_Tablayout_common)
     TabLayout mineMessageGatherTablayoutCommon;
     @BindView(R.id.mine_messageGather_viewpager)
-    ViewPager mineMessageGatherViewpager;
+    NoScrollViewPager mineMessageGatherViewpager;
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     @Override
     protected int getLayoutId() {
@@ -49,6 +49,8 @@ public class MessageGatherActivity extends BaseActivity {
                 finish();
             }
         }).setTitleText("信息汇总");
+
+
         fragments.add(new MyIssurePostFragment());
         fragments.add(new MineAttentionFragment());
         fragments.add(new MineFancesFragment());
@@ -56,5 +58,6 @@ public class MessageGatherActivity extends BaseActivity {
         mineMessageGatherViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMessageGatherViewpager.setOffscreenPageLimit(3);
         mineMessageGatherTablayoutCommon.setupWithViewPager(mineMessageGatherViewpager);
+        mineMessageGatherViewpager.setScroll(true);
     }
 }

@@ -330,6 +330,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             view.findViewById(R.id.tv_alertbottom_up_pic).setOnClickListener(this); //上传图片
             view.findViewById(R.id.tv_alertbottom_up_video).setOnClickListener(this);  //上传视频
             view.findViewById(R.id.tv_alertbottom_video_cancel).setOnClickListener(this);  //取消
+
+
             view.findViewById(R.id.tv_fubu_recode_video).setOnClickListener(this); //录制视频
             view.findViewById(R.id.tv_fabu_location_vodeo).setOnClickListener(this);  //本地视频
             view.findViewById(R.id.bt_fabu_video_cancel).setOnClickListener(this); //取消

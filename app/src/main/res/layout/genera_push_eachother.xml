@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:background="@color/tab_color"
+        android:background="@color/home_text_color"
         android:orientation="vertical">
 
 
