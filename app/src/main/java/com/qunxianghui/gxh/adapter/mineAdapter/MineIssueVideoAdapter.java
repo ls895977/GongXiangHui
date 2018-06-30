@@ -27,9 +27,10 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
     }
 
     @Override
-    protected void convert(MyViewHolder holder, final int position, MineIssueVideoBean.DataBean dataBean) {
+    protected void convert(MyViewHolder holder, final int position, final MineIssueVideoBean.DataBean dataBean) {
 
         final ImageView headImage = holder.getView(R.id.iv_item_issue_video_head);
+
         holder.setText(R.id.tv_item_issue_video_title, dataBean.getTitle());
         holder.setText(R.id.tv_item_issue_vido_time, dataBean.getNewctime());
         GlideApp.with(mContext).load(dataBean.getPicurl()).centerCrop()
@@ -47,9 +48,8 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
             @Override
             public void onClick(View v) {
 
-              myIssueVideoClikListener.deleVideoItem(position);
-
-
+                myIssueVideoClikListener.deleVideoItem(position);
+                notifyDataSetChanged();
 
 
 
