@@ -1,46 +1,38 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.nex3z.flowlayout.FlowLayout;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.LzyResponse;
-import com.qunxianghui.gxh.bean.location.ImageBean;
+import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.mine.CompanySetBean;
 import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
-import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
-import com.qunxianghui.gxh.utils.ImageUtils;
-import com.qunxianghui.gxh.utils.PicassoImageLoader;
+import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
@@ -53,10 +45,10 @@ import butterknife.BindView;
  * Created by Administrator on 2018/3/26 0026.
  */
 
-public class CompanySetActivity extends BaseActivity implements View.OnClickListener {
+public class CompanySetActivity extends BaseActivity implements View.OnClickListener, ImagePickerAdapter.OnRecyclerViewItemClickListener {
     @BindView(R.id.et_mine_companyset_inputCompany)
     EditText etMineCompanysetInputCompany;
-    @BindView(R.id.et_mine_caompanyset_toIndustry)
+    @BindView(R.id.et_mine_companyset_toIndustry)
     EditText etMineCaompanysetToIndustry;
     @BindView(R.id.et_mine_companyset_select_area)
     TextView etMineCompanysetSelectArea;
@@ -72,26 +64,36 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     EditText etMineCompanysetWriteQQ;
     @BindView(R.id.tv_mine_companyset_fabu)
     TextView tvMmineCompanysetFabu;
-    @BindView(R.id.et_mine_companyset_company_lowshow)
-    TextView et_mine_companyset_company_lowshow;
+    @BindView(R.id.et_company_detail)
+    EditText et_mine_companyset_company_lowshow;
     @BindView(R.id.et_mine_companyset_compaydetail)
     TextView et_mine_companyset_compaydetail;
-    @BindView(R.id.fl_company_photo)
-    FlowLayout fl_company_photo;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     @BindView(R.id.iv_companyset_back)
     ImageView ivCompanysetBack;
+    @BindView(R.id.ll_load)
+    View mLoadView;
+
 //    @BindView(R.id.et_mine_companyset_selectcity)
 //    TextView etMineCompanysetSelectcity;
 
-    private CompanySetBean.DataBean dataList;
     private SelectPhotoDialog selectPhotoDialog;
-    private List<Bitmap> mData;
-    private int IMAGE_PICKER = 0x1000;
-    private int REQUEST_CODE_SELECT = 0x1007;
+    public static final int IMAGE_ITEM_ADD = -1;
+    public static final int REQUEST_CODE_SELECT = 100;
+    public static final int REQUEST_CODE_PREVIEW = 101;
     private List<ImageView> imgs = new ArrayList<>();
+    private int maxImgCount = 8;               //允许选择图片最大数
+    private ImagePickerAdapter adapter;
+    private ArrayList<ImageItem> images = new ArrayList<>();
+    private ArrayList<ImageItem> selImageList; //当前选择的所有图片
+    private List<String> upLoadPics = new ArrayList<>();
+    private int[] mPosition = new int[3];
     private ArrayList<ThirdStepCityBean.DataBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
+    private CompanySetBean.DataBean mDataBean;
+
 
     @Override
     protected int getLayoutId() {
@@ -101,85 +103,44 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-        fl_company_photo.setChildSpacing(15);
-        fl_company_photo.setRowSpacing(15);
-        fl_company_photo.setMaxRows(2);
-        fl_company_photo.setFlow(true);
-        for (int i = 0; i < 9; i++) {
-            View inflate = LayoutInflater.from(this).inflate(R.layout.item_grid_photo, null);
-            ImageView mIv = inflate.findViewById(R.id.iv_photo);
-            if (i < 8) {
-                mIv.setVisibility(View.GONE);
-            } else {
-                mIv.setImageResource(R.mipmap.image_add);
-            }
-            fl_company_photo.addView(inflate);
-            imgs.add(mIv);
-            final int j = i;
-            mIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (j == 8) {
-                        if (getAllVisibleCount()) {
-                            ToastUtils.showShortToast(CompanySetActivity.this, "最多添加8张图片");
-                        } else {
-                            selectPhotoDialog.show();
-                        }
-                    } else {
-                        //todo 图片预览，可删除, 使用PhotoView
-                    }
-                }
-            });
-        }
-        ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
-        /**
-         * 获取用户company的信息
-         *
-         */
-        OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseCompanyInfo(response.body());
-            }
-        });
-    }
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
+        imagePicker.setShowCamera(true);                      //显示拍照按钮
+        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
+        imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
+        imagePicker.setSelectLimit(maxImgCount);              //选中数量限制
+        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
+        imagePicker.setFocusWidth(800);                       //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
+        imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
 
-    private boolean getAllVisibleCount() {
-        boolean isAll = true;
-        for (int i = 0; i < imgs.size(); i++) {
-            if (i < 8) {
-                if (imgs.get(i).getVisibility() != View.VISIBLE) {
-                    isAll = false;
-                }
-            }
-        }
-        return isAll;
+        selImageList = new ArrayList<>();
+        adapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
+        adapter.setOnItemClickListener(this);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
     }
 
     private void parseCompanyInfo(String body) {
-//        if (!body.contains("查询失败")) {
-//            final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
-//            if (companySetBean.getCode() == 0) {
-//                dataList = companySetBean.getData();
-//
-//                /**
-//                 * 如果有数据  填充设置的数据
-//                 */
-//                if (dataList != null) {
-//                    fillPersonCompanyData(dataList);
-//                }
-//            }
         final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
         if (companySetBean.getCode() == 0) {
-            dataList = companySetBean.getData();
-
-            /**
-             * 如果有数据  填充设置的数据
-             */
-            if (dataList != null) {
-                fillPersonCompanyData(dataList);
-
+            mDataBean = companySetBean.getData();
+            if (mDataBean != null) {
+                fillPersonCompanyData(mDataBean);
+                String images = mDataBean.getImages();
+                if (!TextUtils.isEmpty(images)) {
+                    String[] split = images.split(",");
+                    for (int i = 0; i < split.length; i++) {
+                        ImageItem imageItem = new ImageItem();
+                        imageItem.path = split[i];
+                        this.selImageList.add(imageItem);
+                    }
+                    if (!this.selImageList.isEmpty()) {
+                        adapter.setImages(selImageList);
+                    }
+                }
             }
         }
     }
@@ -198,6 +159,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final String content = dataList.getContent();  //公司详情
         final String description = dataList.getDescription();  //公司简介
         etMineCompanysetInputCompany.setText(company_name);
+        if (city_name != null) {
+            etMineCompanysetSelectArea.setText(province_name + city_name + area_name);
+        }
         etMineCompanysetDetailAddress.setText(address);
         etMineCompanysetMobilePhoneNumber.setText(mobile);
         etMineCompanysetZuojiPhoneNumber.setText(tel);
@@ -210,7 +174,12 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
-        mData = new ArrayList<>();
+        OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                parseCompanyInfo(response.body());
+            }
+        });
     }
 
     @Override
@@ -222,16 +191,19 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
             public void onTakePhoto() {
-                /*ActivityCompat.requestPermissions(CompanySetActivity.this,
-                        new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        0x009);*/
-                startChoosePhoto(0);
+                ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
+                Intent intent = new Intent(CompanySetActivity.this, ImageGridActivity.class);
+                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+                startActivityForResult(intent, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
 
             @Override
             public void onSelect() {
-                startChoosePhoto(1);
+                //打开选择,本次允许选择的数量
+                ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
+                Intent intent1 = new Intent(CompanySetActivity.this, ImageGridActivity.class);
+                startActivityForResult(intent1, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
 
@@ -242,39 +214,36 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         });
     }
 
-    private void startChoosePhoto(int i) {
-        ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new PicassoImageLoader());//设置图片加载器
-        imagePicker.setShowCamera(false);  //显示拍照按钮
-        imagePicker.setCrop(false);        //允许裁剪（单选才有效）
-        imagePicker.setSaveRectangle(true); //是否按矩形区域保存
-        imagePicker.setSelectLimit(8);    //选中数量限制
-        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
-        imagePicker.setFocusWidth(800);   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setFocusHeight(800);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setOutPutX(1000);//保存文件的宽度。单位像素
-        imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
-        if (i == 0) {
-            Intent intent = new Intent(this, ImageGridActivity.class);
-            intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-            startActivityForResult(intent, REQUEST_CODE_SELECT);
-        } else {
-            Intent intent = new Intent(this, ImageGridActivity.class);
-            startActivityForResult(intent, IMAGE_PICKER);
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.et_mine_caompanyset_toIndustry:
+            case R.id.et_mine_companyset_toIndustry:
                 asyncShowToast("选择行业");
                 break;
             case R.id.et_mine_companyset_select_area:  //所在区域
-                SetCompantSetArea();
+                setCompantSetArea();
                 break;
             case R.id.tv_mine_companyset_fabu:
-                fetchCompayData();
+                //todo upload selected pics
+                if (!isCanUpload()) {
+                    return;
+                }
+                mLoadView.setVisibility(View.VISIBLE);
+                if (selImageList.size() == 0) {
+                    fetchCompayData();
+                } else {
+                    for (int i = 0, length = selImageList.size(); i < length; i++) {
+                        String path = selImageList.get(i).path;
+                        if (!path.contains("http")) {
+                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path), i == length - 1);
+                        } else {
+                            upLoadPics.add(path);
+                            if (i == length -1) {
+                                fetchCompayData();
+                            }
+                        }
+                    }
+                }
                 break;
             case R.id.iv_companyset_back:
                 finish();
@@ -285,62 +254,48 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     /**
      * 企业设置
      */
-    private void SetCompantSetArea() {
+    private void setCompantSetArea() {
         OkGo.<String>get(Constant.HOST_THIRD_STEPAREA_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                Logger.d("请求成功省市区数据" + response.body().toString());
-                ParseThirdStepCity(response.body());
+                final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(response.body(), ThirdStepCityBean.class);
+                ArrayList<ThirdStepCityBean.DataBean> dataList = thirdStepCityBean.getData();
+                options1Items = dataList;
+                for (int i = 0; i < dataList.size(); i++) {  //遍历省份
+                    ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
+                    ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
+                    if (dataList.get(i).sub.size() != 0) {
+                        for (int c = 0; c < dataList.get(i).sub.size(); c++) {//遍历该省份的所有城市
+                            String CityName = dataList.get(i).sub.get(c).name;
+                            CityList.add(CityName);//添加城市
+                            ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
+                            //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
+                            if (dataList.get(i).sub.get(c).sub == null
+                                    || dataList.get(i).sub.get(c).sub.size() == 0) {
+                                City_AreaList.add("");
+                            } else {
+                                for (int i1 = 0; i1 < dataList.get(i).sub.get(c).sub.size(); i1++) {
+                                    City_AreaList.add(dataList.get(i).sub.get(c).sub.get(i1).name);
+                                }
+                            }
+                            Province_AreaList.add(City_AreaList);//添加该省所有地区数据
+                        }
+                    } else {
+                        CityList.add("");
+                        ArrayList<String> City_AreaList = new ArrayList<>();
+                        City_AreaList.add("");
+                        Province_AreaList.add(City_AreaList);
+                    }
+                    options2Items.add(CityList);
+                    options3Items.add(Province_AreaList);
+                }
+                if (thirdStepCityBean.getCode() == 0) {
+                    showPickerView();
+                }
             }
         });
 
     }
-
-    /**
-     * 解析省市区
-     *
-     * @param body
-     */
-    private void ParseThirdStepCity(String body) {
-        final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(body, ThirdStepCityBean.class);
-        ArrayList<ThirdStepCityBean.DataBean> dataList = thirdStepCityBean.getData();
-        /**
-         * 添加省份数据
-         */
-        options1Items = dataList;
-        for (int i = 0; i < dataList.size(); i++) {  //遍历省份
-            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
-            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
-            if (dataList.get(i).sub.size() != 0) {
-                for (int c = 0; c < dataList.get(i).sub.size(); c++) {//遍历该省份的所有城市
-                    String CityName = dataList.get(i).sub.get(c).name;
-                    CityList.add(CityName);//添加城市
-                    ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
-                    //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
-                    if (dataList.get(i).sub.get(c).sub == null
-                            || dataList.get(i).sub.get(c).sub.size() == 0) {
-                        City_AreaList.add("");
-                    } else {
-                        for (int i1 = 0; i1 < dataList.get(i).sub.get(c).sub.size(); i1++) {
-                            City_AreaList.add(dataList.get(i).sub.get(c).sub.get(i1).name);
-                        }
-                    }
-                    Province_AreaList.add(City_AreaList);//添加该省所有地区数据
-                }
-            }else {
-                CityList.add("");
-                ArrayList<String> City_AreaList = new ArrayList<>();
-                City_AreaList.add("");
-                Province_AreaList.add(City_AreaList);
-            }
-            options2Items.add(CityList);
-            options3Items.add(Province_AreaList);
-        }
-        if (thirdStepCityBean.getCode() == 0) {
-            showPickerView();
-        }
-    }
-
 
     /**
      * 弹出选择器
@@ -354,7 +309,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     final String tx = options1Items.get(options1).getPickerViewText() +
                             options2Items.get(options1).get(options2) +
                             options3Items.get(options1).get(options2).get(options3);
-
+                    mPosition[0] = options1;
+                    mPosition[1] = options2;
+                    mPosition[2] = options3;
                     etMineCompanysetSelectArea.setText(tx);
 
                 }
@@ -384,38 +341,48 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final String connectQQ = etMineCompanysetWriteQQ.getText().toString().trim(); //联系人QQ
         final String companyLowshow = et_mine_companyset_company_lowshow.getText().toString().trim(); //企业简介
         final String companyL = et_mine_companyset_compaydetail.getText().toString().trim(); //企业详情
-        if (TextUtils.isEmpty(companyName) || TextUtils.isEmpty(detailAddress) || TextUtils.isEmpty(connectName) || TextUtils.isEmpty(connectPhone)
-                || TextUtils.isEmpty(connectCall) || TextUtils.isEmpty(connectQQ) || TextUtils.isEmpty(companyLowshow)) {
-            asyncShowToast("还有一些信息没有填，仔细检查一下");
-        } else {
-            OkGo.<String>post(Constant.ADD_COMPANY_URL).
-                    params("company_name", companyName)
-                    .params("address", detailAddress)
-                    .params("linkname", connectName)
-                    .params("mobile", connectPhone)
-                    .params("tel", connectCall)
-                    .params("qq", connectQQ)
-                    .params("images", "shdhashd")
-                    .params("description", companyLowshow)
-                    .params("content", companyL)
-                    .params("province_id", "河北")
-                    .params("city_id", "邢台")
-                    .params("area_id", "隆尧")
-                    .params("company_trade", "保洁清洗qqq")
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            Logger.e("发布成功+" + response.body().toString());
-                        }
 
-                        @Override
-                        public void onError(Response<String> response) {
-                            super.onError(response);
-                            asyncShowToast(response.message());
-                        }
-                    });
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0, length = upLoadPics.size(); i < length; i++) {
+            if (i != upLoadPics.size() - 1) {
+                stringBuilder.append(upLoadPics.get(i) + ",");
+            } else {
+                stringBuilder.append(upLoadPics.get(i));
+            }
         }
+        OkGo.<String>post(Constant.ADD_COMPANY_URL).
+                params("company_name", companyName)
+                .params("address", detailAddress)
+                .params("linkname", connectName)
+                .params("mobile", connectPhone)
+                .params("tel", connectCall)
+                .params("qq", connectQQ)
+                .params("images", stringBuilder.toString())
+                .params("description", companyLowshow)
+                .params("content", companyL)
+                .params("province_id", options1Items.isEmpty() ? mDataBean.getProvince_id() : options1Items.get(mPosition[0]).id)
+                .params("city_id", options1Items.isEmpty() ? mDataBean.getCity_id() : options1Items.get(mPosition[0]).sub.get(mPosition[1]).id)
+                .params("area_id", options1Items.isEmpty() ? mDataBean.getArea_id() : options1Items.get(mPosition[0]).sub.get(mPosition[1]).sub.get(mPosition[2]).id)
+                .params("company_trade", "保洁清洗qqq")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        mLoadView.setVisibility(View.GONE);
+                        if (response.body().contains("0")) {
+                            finish();
+                            Logger.e("发布成功+" + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        mLoadView.setVisibility(View.GONE);
+                        asyncShowToast(response.message());
+                    }
+                });
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -426,93 +393,85 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            try {
-                if (data != null) {
-                    final ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                    Bitmap bitmap = null;
-                    ImageView mImgView = null;
-                    if (images != null && !images.isEmpty()) {
-                        if (images.size() == 1) {
-                            mImgView = getInVisibleImgview();
-                            if (mImgView == null) {
-                                ToastUtils.showShortToast(CompanySetActivity.this, "最多添加8张图片");
-                                return;
-                            }
-                            bitmap = BitmapFactory.decodeFile(images.get(0).path);
-                            if (bitmap != null) {
-                                GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this, images.get(0).path))
-                                        .centerCrop()
-                                        .placeholder(R.mipmap.image_add)
-                                        .error(R.mipmap.image_add)
-                                        .into(mImgView);
-                            }
-                            if (!images.get(0).path.isEmpty() && bitmap != null) {
-                                bitmap = ImageUtils.compressBmpToFile(bitmap, images.get(0).path);
-                            }
-                        } else {
-                            for (int i = 0; i < images.size(); i++) {
-                                mImgView = getInVisibleImgview();
-                                if (mImgView == null) {
-                                    ToastUtils.showShortToast(CompanySetActivity.this, "最多添加8张图片");
-                                    break;
-                                }
-                                if (!TextUtils.isEmpty(images.get(i).path)) {
-                                    mImgView.setVisibility(View.VISIBLE);
-                                    bitmap = BitmapFactory.decodeFile(images.get(i).path);
-                                    bitmap = ImageUtils.compressBmpToFile(bitmap, images.get(i).path);
-                                }
-                                if (bitmap != null) {
-                                    GlideApp.with(mContext).load(ImageUtils.getUriFromFile(this, images.get(i).path))
-                                            .centerCrop()
-                                            .placeholder(R.mipmap.image_add)
-                                            .error(R.mipmap.image_add)
-                                            .into(mImgView);
-                                }
-                            }
-                        }
-
-
-                        //todo upload selected pics
-                        for (ImageItem imageItem:images) {
-                            Log.e("imgPicker:",imageItem.path);
-                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
-                        }
-                        // /storage/emulated/0/DCIM/Screenshots/Screenshot_2018-06-26-22-09-50-699_chinsoft.water.png
-                        //upLoadPic("");
-
-                    }
+            //添加图片返回
+            if (data != null && requestCode == REQUEST_CODE_SELECT) {
+                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                if (images != null) {
+                    selImageList.addAll(images);
+                    adapter.setImages(selImageList);
                 }
-            } catch (Exception e) {
-                Log.w("test", e.getMessage());
+            }
+        } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
+            //预览图片返回
+            if (data != null && requestCode == REQUEST_CODE_PREVIEW) {
+                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_IMAGE_ITEMS);
+                if (images != null) {
+                    selImageList.clear();
+                    selImageList.addAll(images);
+                    adapter.setImages(selImageList);
+                }
             }
         }
+        // /storage/emulated/0/DCIM/Screenshots/Screenshot_2018-06-26-22-09-50-699_chinsoft.water.png
+        //upLoadPic("");
     }
 
-    private ImageView getInVisibleImgview() {
-        ImageView mIview = null;
-        for (int i = 0; i < imgs.size(); i++) {
-            if (imgs.get(i).getVisibility() == View.GONE) {
-                imgs.get(i).setVisibility(View.VISIBLE);
-                mIview = imgs.get(i);
-                break;
-            }
-        }
-        return mIview;
-    }
-
-    private List<String> upLoadPics = new ArrayList<>();
-    private void upLoadPic(String urls) {
-        OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
+    private void upLoadPic(String urls, final boolean isUpdate) {
+        OkGo.<String>post(Constant.UP_LOAD_PIC)
                 .params("base64", urls)
-                .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
+                .execute(new StringCallback() {
                     @Override
-                    public void onSuccess(Response<LzyResponse<ImageBean>> response) {
-                        if (response.body().code.equals("0")) {
-                            upLoadPics.add(response.body().data.getFile());
-                            Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Response<String> response) {
+                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                        if (uploadImage.code.equals("0")) {
+                            upLoadPics.add(uploadImage.data.file);
+                            if (isUpdate) {
+                                fetchCompayData();
+                            }
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        mLoadView.setVisibility(View.GONE);
                     }
                 });
+    }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        switch (position) {
+            case IMAGE_ITEM_ADD:
+                selectPhotoDialog.show();
+                break;
+            default:
+                //打开预览
+                Intent intentPreview = new Intent(this, ImagePreviewDelActivity.class);
+                intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, (ArrayList<ImageItem>) adapter.getImages());
+                intentPreview.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
+                intentPreview.putExtra(ImagePicker.EXTRA_FROM_ITEMS, true);
+                startActivityForResult(intentPreview, REQUEST_CODE_PREVIEW);
+                break;
+        }
+    }
+
+    private boolean isCanUpload() {
+        String companyName = etMineCompanysetInputCompany.getText().toString().trim();  //公司名称
+        String detailAddress = etMineCompanysetDetailAddress.getText().toString().trim();  //详细地址
+        String fromIndustry = etMineCaompanysetToIndustry.getText().toString().trim();  //所属行业
+        String fromArea = etMineCompanysetSelectArea.getText().toString().trim();  //所属地区
+        String connectName = etMineCompanysetWritContactName.getText().toString().trim(); //联系人姓名
+        String connectPhone = etMineCompanysetMobilePhoneNumber.getText().toString().trim(); //联系人手机
+        String connectCall = etMineCompanysetZuojiPhoneNumber.getText().toString().trim(); //联系人电话
+        String connectQQ = etMineCompanysetWriteQQ.getText().toString().trim(); //联系人QQ
+        String companyLowshow = et_mine_companyset_company_lowshow.getText().toString().trim(); //企业简介
+        String companyL = et_mine_companyset_compaydetail.getText().toString().trim(); //企业详情
+        if (TextUtils.isEmpty(companyName) || TextUtils.isEmpty(detailAddress) || TextUtils.isEmpty(connectName) || TextUtils.isEmpty(connectPhone)
+                || TextUtils.isEmpty(connectCall) || TextUtils.isEmpty(connectQQ) || TextUtils.isEmpty(companyLowshow) || TextUtils.isEmpty(fromArea)) {
+            asyncShowToast("还有一些信息没有填，仔细检查一下");
+            return false;
+        }
+        return true;
     }
 }
