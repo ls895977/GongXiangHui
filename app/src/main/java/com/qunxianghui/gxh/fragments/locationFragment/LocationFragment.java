@@ -27,21 +27,16 @@ import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.Callback;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
-import com.lzy.okgo.request.base.Request;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
-import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
@@ -52,7 +47,6 @@ import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.qunxianghui.gxh.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -336,6 +330,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             view.findViewById(R.id.tv_alertbottom_up_pic).setOnClickListener(this); //上传图片
             view.findViewById(R.id.tv_alertbottom_up_video).setOnClickListener(this);  //上传视频
             view.findViewById(R.id.tv_alertbottom_video_cancel).setOnClickListener(this);  //取消
+
+
             view.findViewById(R.id.tv_fubu_recode_video).setOnClickListener(this); //录制视频
             view.findViewById(R.id.tv_fabu_location_vodeo).setOnClickListener(this);  //本地视频
             view.findViewById(R.id.bt_fabu_video_cancel).setOnClickListener(this); //取消
@@ -448,6 +444,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         });*/
     }
 
+    /**
+     * 评论的点击
+     * @param position
+     * @param content
+     */
     @Override
     public void onCommentClick(final int position, String content) {
 

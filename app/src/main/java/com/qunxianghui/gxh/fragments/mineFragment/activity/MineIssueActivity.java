@@ -66,6 +66,7 @@ public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSe
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
+        mineMyIssureViewpager.setOffscreenPageLimit(2);
         mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
 
 

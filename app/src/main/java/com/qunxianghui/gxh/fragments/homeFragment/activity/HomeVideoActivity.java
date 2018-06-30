@@ -44,10 +44,12 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     TextView tvHomeVideoIssue;
 
     private PersonDetailVideoAdapter personDetailVideoAdapter;
-    private String follow;
+
     private int count = 0;
     private boolean mIsFirst = true;
- private List<HomeVideoListBean.DataBean.ListBean> videoDataList=new ArrayList<>();
+    private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_video;
@@ -95,7 +97,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         if (homeVideoListBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
-                personDetailVideoAdapter = new PersonDetailVideoAdapter(mContext,videoDataList);
+                personDetailVideoAdapter = new PersonDetailVideoAdapter(mContext, videoDataList);
                 personDetailVideoAdapter.setVideoListClickListener(this);
 
                 xrecyclerHomevideoList.setAdapter(personDetailVideoAdapter);
@@ -164,9 +166,12 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+    /**
+     * 底部弹起
+     */
     private void issueHomeVideo() {
-asyncShowToast("发布视频的操作");
 
+        asyncShowToast("上传视频的操作");
     }
 
 
@@ -184,15 +189,15 @@ asyncShowToast("发布视频的操作");
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             final int code = jsonObject.getInt("code");
-                                    if (code == 0) {
-                                        asyncShowToast("关注成功");
-                                        personDetailVideoAdapter.videoAttention.setText("已关注");
+                            if (code == 0) {
+                                asyncShowToast("关注成功");
+                                personDetailVideoAdapter.videoAttention.setText("已关注");
 
-                                    } else if (code == 202) {
-                                        asyncShowToast("取消关注成功");
-                                        personDetailVideoAdapter.videoAttention.setText("关注");
+                            } else if (code == 202) {
+                                asyncShowToast("取消关注成功");
+                                personDetailVideoAdapter.videoAttention.setText("关注");
 
-                                    }
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -206,10 +211,10 @@ asyncShowToast("发布视频的操作");
                     }
                 });
 
-        Logger.d("视频汇的关注position"+position);
+        Logger.d("视频汇的关注position" + position);
     }
 
-//    视频头像点击
+    //    视频头像点击
     @Override
     public void videoHeadImageClick(int position) {
         Intent intent = new Intent(mContext, PersonDetailActivity.class);

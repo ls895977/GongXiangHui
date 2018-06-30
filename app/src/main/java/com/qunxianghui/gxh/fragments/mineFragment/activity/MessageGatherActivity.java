@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.qunxianghui.gxh.R;
@@ -11,6 +10,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineAttentionFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineFancesFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MyIssurePostFragment;
+import com.qunxianghui.gxh.widget.NoScrollViewPager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
@@ -25,13 +25,11 @@ import butterknife.BindView;
 public class MessageGatherActivity extends BaseActivity {
     private String[] titles = new String[]{"我的帖子", "我的关注", "我的粉丝"};
     private List<Fragment> fragments = new ArrayList<>();
-
     @BindView(R.id.mine_MessageGather_Tablayout_common)
     TabLayout mineMessageGatherTablayoutCommon;
     @BindView(R.id.mine_messageGather_viewpager)
-    ViewPager mineMessageGatherViewpager;
+    NoScrollViewPager mineMessageGatherViewpager;
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_message_gather;
@@ -43,7 +41,6 @@ public class MessageGatherActivity extends BaseActivity {
             mineMessageGatherTablayoutCommon.addTab(mineMessageGatherTablayoutCommon.newTab().setText(tab));
         }
     }
-
     @Override
     protected void initDatas() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -53,12 +50,14 @@ public class MessageGatherActivity extends BaseActivity {
             }
         }).setTitleText("信息汇总");
 
+
         fragments.add(new MyIssurePostFragment());
         fragments.add(new MineAttentionFragment());
         fragments.add(new MineFancesFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMessageGatherViewpager.setAdapter(mineTabViewPagerAdapter);
-        mineMessageGatherViewpager.setOffscreenPageLimit(2);
+        mineMessageGatherViewpager.setOffscreenPageLimit(3);
         mineMessageGatherTablayoutCommon.setupWithViewPager(mineMessageGatherViewpager);
+        mineMessageGatherViewpager.setScroll(true);
     }
 }

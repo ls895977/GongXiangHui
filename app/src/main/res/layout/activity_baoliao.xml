@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -98,22 +99,46 @@
             android:textSize="14sp" />
 
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_baoliao_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:scrollbarStyle="outsideOverlay"
+            tools:listitem="@layout/list_item_image" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/ll_load"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center"
+            android:background="@drawable/loading_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:visibility="gone">
 
-            <com.nex3z.flowlayout.FlowLayout
-                android:id="@+id/fl_baoliao_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ProgressBar
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:indeterminateBehavior="repeat"
+                android:indeterminateDrawable="@drawable/dialog_loading"
+                android:indeterminateOnly="true" />
 
-            </com.nex3z.flowlayout.FlowLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="上传中，请稍等..."
+                android:textColor="#f0f0f0"
+                android:textSize="15sp" />
         </LinearLayout>
-
 
     </LinearLayout>
 

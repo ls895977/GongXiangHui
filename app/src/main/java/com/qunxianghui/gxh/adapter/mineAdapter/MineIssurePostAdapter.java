@@ -5,12 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.mine.MineIssurePostBean;
+import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.MyGridView;
 
 import java.util.List;
@@ -20,11 +22,9 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
     private MyPostOnClickListener postOnClickListener;
     private List<MineIssurePostBean.DataBean.ListBean> mList;
     private Context mContext;
-
     public void setPostOnClickListener(MyPostOnClickListener postOnClickListener) {
         this.postOnClickListener = postOnClickListener;
     }
-
     public MineIssurePostAdapter(Context context, List<MineIssurePostBean.DataBean.ListBean> dataBeanList) {
         mContext = context;
         this.mList = dataBeanList;
@@ -63,6 +63,12 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了评论", Toast.LENGTH_SHORT).show();
+
+                if (postOnClickListener!=null){
+                    postOnClickListener.onCommentClick(position,"");
+                }
+
+
             }
         });
         holder.mTvlike.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +93,17 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             }
         });
 
+//        holder.tv_discuss_commit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String content = holder.tv_discuss_commit.getText().toString().trim();
+//
+//                if (postOnClickListener != null) {
+//                    postOnClickListener.onCommentClick(position, content);
+//                }
+//            }
+//        });
+
 
     }
 
@@ -100,9 +117,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
 
     @Override
     public void cancelCollect(int position) {
-
     }
-
     @Override
     public void onPicClick(int position, int picpostion) {
 
@@ -117,7 +132,9 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         TextView mTvlike;
         TextView mTvDelete;
         TextView mTvCollect;
-
+        TextView click_like_user;
+        EditText comment_edit;
+        BigListView comment_list;
         public ViewHolder(View itemView) {
             super(itemView);
             myGridView = itemView.findViewById(R.id.layout_nine_grid_mineissue_post);
@@ -128,6 +145,11 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             mTvlike = itemView.findViewById(R.id.tv_mine_issue_post_like);
             mTvDelete = itemView.findViewById(R.id.tv_mine_issue_post_delete);
             mTvCollect = itemView.findViewById(R.id.tv_mine_issue_post_collect);
+            mTvCollect = itemView.findViewById(R.id.tv_mine_issue_post_collect);
+            click_like_user = itemView.findViewById(R.id.click_like_user);
+            comment_list = itemView.findViewById(R.id.comment_list);
+            comment_edit = itemView.findViewById(R.id.comment_edit);
+
         }
     }
 
@@ -144,5 +166,8 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
 
         /*删除*/
         void deletePost(int position);
+
+        /*图片点击*/
+        void onCommentClick(int position,String content);
     }
 }
