@@ -60,9 +60,6 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
      */
     @Override
     public T convertResponse(Response response) throws Throwable {
-
-
-
         if (type == null) {
             if (clazz == null) {
                 Type genType = getClass().getGenericSuperclass();
