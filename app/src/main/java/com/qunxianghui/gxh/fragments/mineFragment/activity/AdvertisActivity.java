@@ -64,9 +64,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initDatas() {
-        //设置tabLayout的一个显示方式
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //循环注入标签
         for (int i = 0; i < titles.length; i++) {
             tabLayout.addTab(tabLayout.newTab().setText(titles[i]).setIcon(mImgs[i]));
         }

@@ -95,6 +95,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_addAdver_list:
+                AdvertisActivity.sCurrentPosition = sCurrentPosition;
                 toActivityWithResult(AdvertisActivity.class, 0x0011);
                 break;
             case R.id.iv_top_addAdverBack:

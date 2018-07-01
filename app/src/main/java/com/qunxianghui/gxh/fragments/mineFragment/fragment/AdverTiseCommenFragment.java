@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.AdListBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisConmmengtActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 
 import org.json.JSONException;
@@ -123,6 +124,7 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     @Override
     public void onEditClick(int position) {
+        AdvertisActivity.sCurrentPosition = AdvertisConmmengtActivity.sCurrentPosition;
         jumpPosition = position;
         Intent intent = new Intent(getActivity(), AdvertisActivity.class);
         intent.putExtra("isComingFromColum", true);
@@ -229,22 +231,28 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         if (resultCode == -2) {
             AdListBean.DataBean dataBean = adListAdapter.mList.get(jumpPosition);
             String url = data.getStringExtra("imageUrl");
+            dataBean.images = url;
             switch (mAdType) {
                 case 1:
                 case 3:
                 case 6:
-
+                    dataBean.link = data.getStringExtra("link");
                     break;
                 case 2:
+                    dataBean.settings.name = data.getStringExtra("name");
+                    dataBean.settings.mobile = data.getStringExtra("mobile");
+                    dataBean.settings.address = data.getStringExtra("address");
                     break;
                 case 4:
+                    dataBean.settings.name = data.getStringExtra("twoname");
+                    dataBean.settings.intro = data.getStringExtra("intro");
                     break;
                 case 5:
+                    dataBean.settings.nick = data.getStringExtra("nick");
+                    dataBean.settings.qq = data.getStringExtra("qq");
+                    dataBean.settings.intro = data.getStringExtra("intro");
                     break;
             }
-            String link = data.getStringExtra("link");
-            dataBean.images = url;
-            dataBean.link = link;
             adListAdapter.notifyDataSetChanged();
         }
     }
