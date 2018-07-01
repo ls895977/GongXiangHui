@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +45,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     private AdListAdapter adListAdapter = new AdListAdapter();
     private AdListBean adListBean;
     private int jumpPosition;
-    private String positionStr;
 
     @SuppressLint("ValidFragment")
     public AdverTiseCommenFragment(int index) {
@@ -88,7 +86,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     public void initViews(View view) {
         xrecyclerAddverCommen.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         Intent intent = getActivity().getIntent();
-        positionStr = intent.getStringExtra("position");
         adListAdapter.setType(mAdType).setAdOnClickListen(this);
         xrecyclerAddverCommen.setAdapter(adListAdapter);
     }
@@ -199,10 +196,9 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     }
 
     @Override
-    public void onUsed(int p) {
-        final int position = p;
+    public void onUsed(final int position) {
         OkGo.<String>post(Constant.USED_AD)
-                .params("id", adListAdapter.mList.get(p).id)
+                .params("id", adListAdapter.mList.get(position).id)
                 .params("position", position)
                 .execute(new StringCallback() {
                     @Override
@@ -212,11 +208,9 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                             int code = jsonObject.getInt("code");
                             if (code == 0) {
                                 Intent intent = new Intent();
-                                intent.putExtra("type", 1);
                                 intent.putExtra("url", adListBean.data.get(position).images);
-                                intent.putExtra("position", positionStr);
-                                intent.putExtra("title", adListBean.data.get(position).link);
-                                mActivity.setResult(Activity.RESULT_OK, intent);
+                                intent.putExtra("ad_id", adListBean.data.get(position).id);
+                                mActivity.setResult(0x0022, intent);
                                 mActivity.finish();
                             }
                         } catch (Exception e) {

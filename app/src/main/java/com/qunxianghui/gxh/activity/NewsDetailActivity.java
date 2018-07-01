@@ -3,11 +3,8 @@ package com.qunxianghui.gxh.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,7 +45,6 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-import com.sina.weibo.sdk.api.ImageObject;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -123,14 +119,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void hodeNewsStatus() {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+        OkGo.<String>get(Constant.GET_NEWS_CONTENT_DETAIL_URL)
                 .params("id", id).execute(new StringCallback() {
             @Override
             public void onSuccess(final Response<String> response) {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+                        if (HttpStatusUtil.getStatus(response.body())) {
                             parseNewsContentData(response.body());
                             com.orhanobut.logger.Logger.d("收藏+++" + response.body().toString());
                         }
@@ -143,8 +139,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     //解析内容详情
     private void parseNewsContentData(String body) {
         try {
-            final JSONObject jsonObject = new JSONObject(body);
-            final JSONObject data = jsonObject.getJSONObject("data");
+            JSONObject jsonObject = new JSONObject(body);
+            JSONObject data = jsonObject.getJSONObject("data");
             has_collect = data.getBoolean("has_collect");
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,7 +165,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onClick(View v) {
-
                 showBottomAliert();
             }
         });
@@ -197,17 +192,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         };
     }
 
-    /**
-     * 创建图片消息对象。
-     *
-     * @return 图片消息对象。
-     */
-    private ImageObject getImageObj(Context context) {
-        ImageObject imageObject = new ImageObject();
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_share);
-        imageObject.setImageObject(bitmap);
-        return imageObject;
-    }
 
     //底部弹出对话框
     private void showBottomAliert() {
@@ -340,8 +324,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_addAdver:
                 intent = new Intent(mContext, AddAdverActivity.class);
                 intent.putExtra("url", url);
-                intent.putExtra("title", title);
-
                 startActivity(intent);
                 break;
             case R.id.iv_news_detail_collect:

@@ -158,7 +158,8 @@ public class Constant {
     public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
     //获取我的爆料信息
     public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";
-
+    //获取分享信息
+    public static final String GET_SHARE_INFO = BASE_URL + "user/getShareInfo";
     //删除我的发布
     public static final String DELETE_MYISSUE_URL=BASE_URL+"user/delRelease";
     //获取我发布的爆料
