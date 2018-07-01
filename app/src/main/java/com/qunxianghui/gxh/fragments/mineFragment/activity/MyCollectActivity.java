@@ -24,13 +24,13 @@ import butterknife.BindView;
  */
 
 public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
-
     @BindView(R.id.tv_mycollect_edit)
     TextView tvMycollectEdit;
 

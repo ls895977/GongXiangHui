@@ -41,17 +41,13 @@ public class MyIssueDiscloseFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-
         RequestMyIssueDisClose();
-
-
     }
 
     /**
      * 请求我发布中的我的爆料
      */
     private void RequestMyIssueDisClose() {
-
         OkGo.<String>post(Constant.GET_ISSURE_DISCLOSS_URL)
                 .params("limit", 10)
                 .params("skip", count)
@@ -65,13 +61,10 @@ public class MyIssueDiscloseFragment extends BaseFragment {
 
     private void ParseIssureDiscloseData(String body) {
         final MyIssueDiscloseBean myIssueDiscloseBean = GsonUtils.jsonFromJson(body, MyIssueDiscloseBean.class);
-
-
         if (mIsRefresh){
             mIsRefresh=false;
             dataList.clear();
         }
-
         dataList.addAll(myIssueDiscloseBean.getData());
         count=dataList.size();
         if (myIssueDiscloseBean.getCode() == 0) {

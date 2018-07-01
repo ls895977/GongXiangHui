@@ -149,7 +149,6 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             click_like_user = itemView.findViewById(R.id.click_like_user);
             comment_list = itemView.findViewById(R.id.comment_list);
             comment_edit = itemView.findViewById(R.id.comment_edit);
-
         }
     }
 
