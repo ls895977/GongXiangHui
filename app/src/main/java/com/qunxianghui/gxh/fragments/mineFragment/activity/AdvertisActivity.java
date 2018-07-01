@@ -39,6 +39,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
+    private boolean mIsFromEdit;
     public static int sCurrentPosition = 0;
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
     private int[] mImgs = {R.mipmap.adv_select_big_img, R.mipmap.adv_select_card, R.mipmap.adv_select_san, R.mipmap.adv_select_san, R.mipmap.adv_select_qq, R.mipmap.adv_select_video};
@@ -50,29 +51,15 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void initViews() { }
+    protected void initViews() {
+        mIsFromEdit = getIntent().getBooleanExtra("isComingFromColum", false);
+    }
 
     @Override
     protected void initListeners() {
         super.initListeners();
         tvSaveAddAdverList.setOnClickListener(this);
         iv_top_savedverBack.setOnClickListener(this);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                sCurrentPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     @Override
@@ -96,6 +83,25 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         if (AdvertisConmmengtActivity.sCurrentPosition != 0) {
             viewPager.setCurrentItem(AdvertisConmmengtActivity.sCurrentPosition, false);
         }
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mIsFromEdit) {
+                    finish();
+                }
+                sCurrentPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

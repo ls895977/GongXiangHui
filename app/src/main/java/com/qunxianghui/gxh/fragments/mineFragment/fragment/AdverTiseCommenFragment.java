@@ -139,6 +139,7 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                 intent.putExtra("name", adListAdapter.mList.get(position).settings.name);
                 intent.putExtra("mobile", adListAdapter.mList.get(position).settings.mobile);
                 intent.putExtra("address", adListAdapter.mList.get(position).settings.address);
+                break;
             case 4:
                 intent.putExtra("twoname", adListAdapter.mList.get(position).settings.name);
                 intent.putExtra("intro", adListAdapter.mList.get(position).settings.intro);

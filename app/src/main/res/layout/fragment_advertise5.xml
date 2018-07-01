@@ -1,76 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/et_nick"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
+        android:background="@null"
+        android:hint="QQ昵称" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical">
+        android:background="@color/divider" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/et_qq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:hint="QQ号" />
 
-            android:layout_marginRight="10dp"
-            android:background="@null"
-            android:hint="QQ昵称" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/divider" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/divider" />
+    <EditText
+        android:id="@+id/et_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:hint="添加联系方式" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/divider" />
 
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:hint="QQ号" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="添加图片"
+        android:textSize="15sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/divider" />
+    <com.bm.library.PhotoView
+        android:id="@+id/pv_add_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/image_add" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:hint="添加联系方式" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/divider" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="添加图片"
-            android:textSize="15sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@mipmap/image_add" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
 
