@@ -1,47 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="图片上传"
+        android:textSize="15sp" />
+
+    <com.bm.library.PhotoView
+        android:id="@+id/iv_mine_addColumns_Adver_three"
+        android:layout_width="345dp"
+        android:layout_height="90dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="22dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_image_690_180" />
+
+    <EditText
+        android:id="@+id/et_mine_link_addFragment3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:hint="输入你的连接地址"
+        android:singleLine="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="图片上传"
-            android:textSize="15sp" />
-
-        <com.bm.library.PhotoView
-            android:id="@+id/iv_mine_addColumns_Adver_three"
-            android:layout_width="345dp"
-            android:layout_height="90dp"
-            android:layout_marginTop="22dp"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerInside"
-            android:src="@mipmap/bg_image_690_180" />
-
-        <EditText
-            android:id="@+id/et_mine_link_addFragment3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:hint="输入你的连接地址"
-            android:singleLine="true" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/divider" />
-
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/divider" />
 
 
-</RelativeLayout>
+</LinearLayout>

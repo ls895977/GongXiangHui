@@ -52,7 +52,6 @@ public class Fragment1 extends BaseFragment {
     @BindView(R.id.et_fragment_bigpic_link)
     EditText etFragmentBigpicLink;
     private ImagePicker imagePicker;
-    private String upLoadPics;
     private boolean isComingFromColum = false;
     private int ad_id;
     Unbinder unbinder;
@@ -119,9 +118,6 @@ public class Fragment1 extends BaseFragment {
             @Override
             public void onCropImage(Uri imageUri) {
                 mSelectImgUrl = String.valueOf(imageUri).replace("file://", "");
-
-//                ivMineAddFragment1BigAdver.setImageURI(imageUri);
-                //      使用Glide加载的gif图片同样支持缩放功能
                 GlideApp.with(mActivity)
                         .load(imageUri)
                         .placeholder(R.mipmap.user_moren)
@@ -134,17 +130,12 @@ public class Fragment1 extends BaseFragment {
             @Override
             public void cropConfig(CropImage.ActivityBuilder builder) {
                 builder
-                        // 是否启动多点触摸
                         .setMultiTouchEnabled(false)
-                        // 设置网格显示模式
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        // 圆形/矩形
                         .setCropShape(CropImageView.CropShape.RECTANGLE)
                         .setAutoZoomEnabled(false)
                         .setMinCropWindowSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
-                        // 调整裁剪后的图片最终大小
                         .setRequestedSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
-                        // 宽高比
                         .setAspectRatio(2, 1);
             }
 

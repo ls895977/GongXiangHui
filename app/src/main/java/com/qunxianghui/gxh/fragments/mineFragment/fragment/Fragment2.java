@@ -58,7 +58,6 @@ public class Fragment2 extends BaseFragment {
     PhotoView mPvAddImage;
 
     private ImagePicker imagePicker;
-    private String upLoadPics;
     private boolean isComingFromColum = false;
     private int ad_id;
     private String mImgUrl;
@@ -102,9 +101,6 @@ public class Fragment2 extends BaseFragment {
         return rootView;
     }
 
-    /**
-     * 保存广告2
-     */
     @Override
     public void commitData() {
         super.commitData();
@@ -188,12 +184,6 @@ public class Fragment2 extends BaseFragment {
         }
     }
 
-    /**
-     * 真正的fragment2 名片广告提交
-     */
-    private void commitAdverCardData() {
-    }
-
     @OnClick(R.id.pv_add_image)
     public void onViewClicked() {
         openPhoto();
@@ -220,17 +210,12 @@ public class Fragment2 extends BaseFragment {
             @Override
             public void cropConfig(CropImage.ActivityBuilder builder) {
                 builder
-                        // 是否启动多点触摸
                         .setMultiTouchEnabled(false)
-                        // 设置网格显示模式
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        // 圆形/矩形
                         .setCropShape(CropImageView.CropShape.RECTANGLE)
                         .setAutoZoomEnabled(false)
                         .setMinCropWindowSize(DisplayUtil.dip2px(mActivity, 80), DisplayUtil.dip2px(mActivity, 80))
-                        // 调整裁剪后的图片最终大小
                         .setRequestedSize(DisplayUtil.dip2px(mActivity, 80), DisplayUtil.dip2px(mActivity, 80))
-                        // 宽高比
                         .setAspectRatio(1, 1);
             }
 
