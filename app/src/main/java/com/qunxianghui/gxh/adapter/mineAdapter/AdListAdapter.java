@@ -100,21 +100,21 @@ public class AdListAdapter extends RecyclerView.Adapter<AdListAdapter.ViewHolder
         holder.mTvAddbigimgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onEditClick(holder.getAdapterPosition());
+                listener.onEditClick(holder.getAdapterPosition() - 1);
             }
         });
 
         holder.mTvAddbigimgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onDeleteClick(holder.getAdapterPosition());
+                listener.onDeleteClick(holder.getAdapterPosition() -1 );
             }
         });
 
         holder.mCbAddbigimgAddlunbo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                listener.onAddCarousel(holder.getAdapterPosition(), isChecked);
+                listener.onAddCarousel(holder.getAdapterPosition() - 1, isChecked);
             }
         });
 
@@ -123,7 +123,7 @@ public class AdListAdapter extends RecyclerView.Adapter<AdListAdapter.ViewHolder
             holder.mTvAddbigimgToUsed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onUsed(holder.getAdapterPosition());
+                    listener.onUsed(holder.getAdapterPosition() - 1);
                 }
             });
         }
