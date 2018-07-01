@@ -17,6 +17,7 @@ import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment2;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment3;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment4;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment5;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment6;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         fragments.add(new Fragment3());
         fragments.add(new Fragment4());
         fragments.add(new Fragment5());
-        fragments.add(new Fragment5());
+        fragments.add(new Fragment6());
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), titles, fragments);
         viewPager.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起

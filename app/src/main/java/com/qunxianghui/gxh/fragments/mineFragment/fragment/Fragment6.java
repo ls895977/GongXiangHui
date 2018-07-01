@@ -11,7 +11,7 @@ import com.qunxianghui.gxh.base.BaseFragment;
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class Fragment5 extends BaseFragment {
+public class Fragment6 extends BaseFragment {
 
     @Override
     protected void onLoadData() {
@@ -21,7 +21,7 @@ public class Fragment5 extends BaseFragment {
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        return R.layout.fragment_advertise5;
+        return R.layout.fragment_advertise1;
     }
 
     @Override

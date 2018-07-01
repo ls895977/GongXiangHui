@@ -139,9 +139,10 @@ public class Fragment2 extends BaseFragment {
             post.params("id", ad_id);
         }
         post.params("ad_type", 2)
-                .params("name", mName)
-                .params("mobile", mMobile)
-                .params("address", mAddress)
+                .params("images", mImgUrl)
+                .params("settings[name]", mName)
+                .params("settings[mobile]", mMobile)
+                .params("settings[address]", mAddress)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
