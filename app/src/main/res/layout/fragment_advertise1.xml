@@ -1,53 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_addver_fragment1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="图片上传"
+        android:textSize="15sp" />
 
     <LinearLayout
-        android:id="@+id/ll_addver_fragment1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="图片上传"
-            android:textSize="15sp" />
+        <com.bm.library.PhotoView
+            android:id="@+id/iv_mine_addFragment1BigAdver"
+            android:layout_width="375dp"
+            android:layout_height="183dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/bg_image_75_366" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
-
-            <com.bm.library.PhotoView
-                android:id="@+id/iv_mine_addFragment1BigAdver"
-                android:layout_width="375dp"
-                android:layout_height="183dp"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/bg_image_75_366" />
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="请输入你的连接地址"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/et_fragment_bigpic_link"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="请输入你的连接地址"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/et_fragment_bigpic_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

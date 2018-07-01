@@ -49,19 +49,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void initViews() {
-        /*
-        Intent intent = getIntent();
-        isComingFromColum = intent.getBooleanExtra("isComingFromColum",false);
-        if( isComingFromColum == true ){
-            int index = intent.getIntExtra("index",0);
-            if(index == 0){
-                String url = intent.getStringExtra("imgUrl");
-                String link = intent.getStringExtra("link");
-                int ad_id = intent.getIntExtra("ad_id",0);
-            }
-        }*/
-    }
+    protected void initViews() { }
 
     @Override
     protected void initListeners() {
@@ -113,10 +101,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_addAdver_savelist:
-//                ToastUtils.showLongToast(mContext,"点击");
                 Log.v("植入广告点击保存", this.toString());
-                //ToastUtils.showShortToast(this, "保存");
-                //Toast.makeText(this,"保存",Toast.LENGTH_LONG);
                 fragments.get(sCurrentPosition).commitData();
                 break;
             case R.id.iv_top_savedverBack:
