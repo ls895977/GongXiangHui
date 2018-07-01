@@ -5,15 +5,11 @@
     android:orientation="vertical">
 
     <ImageView
-
-
         android:id="@+id/item_adlist_1"
-
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher" />
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +18,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
-
 
         <TextView
             android:id="@+id/tv_addbigimg_edit"
@@ -36,16 +31,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_toRightOf="@+id/tv_addbigimg_edit"
-
             android:text="删除" />
 
         <TextView
             android:id="@+id/tv_addbigimg_to_used"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginLeft="35dp"
             android:layout_toRightOf="@+id/tv_addbigimg_delete"
-
             android:text="使用此广告" />
 
 
@@ -61,7 +55,6 @@
             android:id="@+id/tv_addbigimg_addlunbo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignParentRight="true"
             android:text="加入轮播" />
     </RelativeLayout>

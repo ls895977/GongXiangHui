@@ -48,7 +48,6 @@ import butterknife.Unbinder;
 
 public class Fragment3 extends BaseFragment implements View.OnClickListener {
 
-
     @BindView(R.id.iv_mine_addColumns_Adver_three)
     PhotoView ivMineAddFragment3_colunmnsAdver;
     Unbinder unbinder;
@@ -77,7 +76,7 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
         Intent intent = getActivity().getIntent();
         isComingFromColum = intent.getBooleanExtra("isComingFromColum", false);
 
-        if (isComingFromColum ) {
+        if (isComingFromColum) {
             index = intent.getIntExtra("index", 0);
             if (index == 3) {
                 mImgUrl = intent.getStringExtra("imgUrl");
@@ -240,9 +239,9 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener {
     private void commitAdverFragment3() {
         String imageUrl = Utils.listToString(upLoadPics);
         final String trim = etMineLinkAddFragment3.getText().toString().trim();
-if (TextUtils.isEmpty(imageUrl)){
-    imageUrl=mImgUrl;
-}
+        if (TextUtils.isEmpty(imageUrl)) {
+            imageUrl = mImgUrl;
+        }
         if (isComingFromColum) {
             OkGo.<String>post(Constant.EDIT_AD)
                     .params("id", ad_id)
@@ -255,7 +254,7 @@ if (TextUtils.isEmpty(imageUrl)){
                             parseFragment3AdvData(response.body());
                         }
                     });
-        }else {
+        } else {
             OkGo.<String>post(Constant.ADD_AD)
                     .params("ad_type", 3)
                     .params("images", imageUrl)
@@ -265,10 +264,11 @@ if (TextUtils.isEmpty(imageUrl)){
                         public void onSuccess(Response<String> response) {
                             parseFragment3AdvData(response.body());
                         }
+
                         @Override
                         public void onError(Response<String> response) {
 
-                            Log.v("ad_add",response.toString());
+                            Log.v("ad_add", response.toString());
                             //super.onError(response);
 
                         }

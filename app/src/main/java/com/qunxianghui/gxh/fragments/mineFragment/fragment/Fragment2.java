@@ -28,7 +28,6 @@ import butterknife.Unbinder;
 
 public class Fragment2 extends BaseFragment implements View.OnClickListener {
 
-
     @BindView(R.id.et_addadv_name_fragment2)
     EditText etAddadvNameFragment2;
     @BindView(R.id.et_addadv_phonenumber_fragment2)
@@ -81,8 +80,6 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
-
     }
 
 
@@ -105,13 +102,11 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(Response<String> response) {
                         MyCollectBean check = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
-                        if (check.getCode()==0){
+                        if (check.getCode() == 0) {
                             commitAdverCardData();
                         }
-
                     }
                 });
-
     }
 
     /**
@@ -121,7 +116,6 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
         final String mAddadverNameFragment2 = etAddadvNameFragment2.getText().toString().trim();
         final String mAddAdverPhoneNumberFragment2 = etAddadvPhonenumberFragment2.getText().toString().trim();
         final String mAddAdverAddressFragment2 = etAddadvAddressFragment2.getText().toString().trim();
-
     }
 
     @Override

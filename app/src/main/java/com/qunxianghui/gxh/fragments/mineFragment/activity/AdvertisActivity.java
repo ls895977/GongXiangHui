@@ -27,7 +27,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class AdvertisActivity extends BaseActivity implements View.OnClickListener, TabLayout.OnTabSelectedListener {
+public class AdvertisActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.iv_top_savedverBack)
     ImageView iv_top_savedverBack;
@@ -38,6 +38,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
+    public static int sCurrentPosition = 0;
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
     private int[] mImgs = {R.mipmap.adv_select_big_img, R.mipmap.adv_select_card, R.mipmap.adv_select_san, R.mipmap.adv_select_san, R.mipmap.adv_select_qq, R.mipmap.adv_select_video};
     private List<BaseFragment> fragments = new ArrayList<>();
@@ -67,6 +68,22 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         super.initListeners();
         tvSaveAddAdverList.setOnClickListener(this);
         iv_top_savedverBack.setOnClickListener(this);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                sCurrentPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -87,6 +104,9 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         viewPager.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起
         tabLayout.setupWithViewPager(viewPager);
+        if (AdvertisConmmengtActivity.sCurrentPosition != 0) {
+            viewPager.setCurrentItem(AdvertisConmmengtActivity.sCurrentPosition, false);
+        }
     }
 
     @Override
@@ -94,10 +114,10 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.tv_addAdver_savelist:
 //                ToastUtils.showLongToast(mContext,"点击");
-                Log.v("植入广告点击保存",this.toString());
+                Log.v("植入广告点击保存", this.toString());
                 //ToastUtils.showShortToast(this, "保存");
                 //Toast.makeText(this,"保存",Toast.LENGTH_LONG);
-                fragments.get(viewPager.getCurrentItem()).commitData();
+                fragments.get(sCurrentPosition).commitData();
                 break;
             case R.id.iv_top_savedverBack:
                 setResult(RESULT_CANCELED);
@@ -105,16 +125,5 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) { }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) { }
 
 }

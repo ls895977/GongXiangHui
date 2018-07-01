@@ -52,7 +52,8 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     }
 
     @Override
-    protected void onLoadData() { }
+    protected void onLoadData() {
+    }
 
     @Override
     public int getLayoutId() {
@@ -61,8 +62,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
 
     @Override
     public void initDatas() {
-        /*SelfTestRecyclerviewAdapter selfTestRecyclerviewAdapter = new SelfTestRecyclerviewAdapter();
-        xrecyclerAddverCommen.setAdapter(selfTestRecyclerviewAdapter);*/
         getData();
     }
 
@@ -95,7 +94,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         xrecyclerAddverCommen.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-
                 xrecyclerAddverCommen.refreshComplete();
             }
 
@@ -120,22 +118,16 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
         unbinder.unbind();
     }
 
-
     @Override
-    public void onEditClick(int p) {
-
+    public void onEditClick(int position) {
         Intent intent = new Intent(getActivity(), AdvertisActivity.class);
         intent.putExtra("isComingFromColum", true);
-        intent.putExtra("index", index);
-
-        String url = adListAdapter.getDatas().get(p).getImages();
-        if (index == 1) {
-            intent.putExtra("imgUrl", url);
-            intent.putExtra("link", adListAdapter.getDatas().get(p).getLink());
-            intent.putExtra("ad_id", adListAdapter.getDatas().get(p).getId());
-        }
+        String url = adListAdapter.getDatas().get(position).getImages();
+        intent.putExtra("imgUrl", url);
+        intent.putExtra("link", adListAdapter.getDatas().get(position).getLink());
+        intent.putExtra("ad_id", adListAdapter.getDatas().get(position).getId());
         //startActivity(intent);
-        jumpPosition = p;
+        jumpPosition = position;
         startActivityForResult(intent, 200);
     }
 
@@ -191,13 +183,11 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
-
                             JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
                             if (code == 0) {
                                 Intent intent = new Intent();
                                 intent.putExtra("type", 1);
-                                intent.putExtra("index", index);
                                 intent.putExtra("url", adListBean.getData().get(position).getImages());
                                 intent.putExtra("position", positionStr);
                                 intent.putExtra("title", adListBean.getData().get(position).getLink());
@@ -206,7 +196,6 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
                             }
 
                         } catch (Exception e) {
-                            e.printStackTrace();
                         }
 
                     }
@@ -217,14 +206,11 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == -2) {
-            if (index == 1) {
-                String url = data.getStringExtra("url");
-                String title = data.getStringExtra("title");
-
-                adListAdapter.getDatas().get(jumpPosition).setImages(url);
-                adListAdapter.getDatas().get(jumpPosition).setLink(title);
-                adListAdapter.notifyDataSetChanged();
-            }
+            String url = data.getStringExtra("url");
+            String title = data.getStringExtra("title");
+            adListAdapter.getDatas().get(jumpPosition).setImages(url);
+            adListAdapter.getDatas().get(jumpPosition).setLink(title);
+            adListAdapter.notifyDataSetChanged();
         }
     }
 }

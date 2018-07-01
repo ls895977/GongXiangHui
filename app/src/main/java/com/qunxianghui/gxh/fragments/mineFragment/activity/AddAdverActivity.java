@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GlideApp;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -31,7 +33,7 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2018/4/2 0002.
  */
-public class AddAdverActivity extends BaseActivity implements View.OnClickListener{
+public class AddAdverActivity extends BaseActivity implements View.OnClickListener {
     final Activity activity = this;
     @BindView(R.id.iv_mineFragment_addTopAdver)
     ImageView ivMineFragmentAddTopAdver;
@@ -69,9 +71,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 StartThirdShare();
-
             }
         });
     }
@@ -123,7 +123,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         url = intent.getStringExtra("url");
         title = intent.getStringExtra("title");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
-
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
         settings.setJavaScriptEnabled(true);
         /* 设置缓存模式,我这里使用的默认,不做多讲解 */
@@ -180,9 +179,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
 
 
-
-
-
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -218,14 +214,18 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_mineFragment_addTopAdver:
-                intent = new Intent(this, AdvertisActivity.class);
-                intent.putExtra("position","top");
+                if (!SPUtils.getBoolean(AddAdverActivity.this, SpConstant.IS_COMPANY, false)) {
+                    Toast.makeText(AddAdverActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(this, AdvertisConmmengtActivity.class);
+                intent.putExtra("position", "top");
                 //startActivity(intent);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.rl_mineFragment_addBottomAdver:
                 intent = new Intent(this, AdvertisConmmengtActivity.class);
-                intent.putExtra("position","bottom");
+                intent.putExtra("position", "bottom");
                 startActivityForResult(intent, 100);
                 break;
         }
@@ -234,12 +234,11 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
 
-            int type = data.getIntExtra("type",0);
-            if (type == 1){
+            int type = data.getIntExtra("type", 0);
+            if (type == 1) {
                 String postion = data.getStringExtra("position");
-
                 if (postion.equalsIgnoreCase("top")) {
                     String url = data.getStringExtra("url");
                     String title = data.getStringExtra("title");
@@ -248,7 +247,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                             .placeholder(R.mipmap.icon_headimage)
                             .error(R.mipmap.icon_headimage)
                             .into(ivMineFragmentAddTopAdver);
-                }else if(postion.equalsIgnoreCase("bottom")){
+                } else if (postion.equalsIgnoreCase("bottom")) {
                     String url = data.getStringExtra("url");
                     String title = data.getStringExtra("title");
                     GlideApp.with(mContext).load(url)

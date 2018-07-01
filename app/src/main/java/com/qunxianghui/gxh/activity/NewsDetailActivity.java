@@ -71,7 +71,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @BindView(R.id.et_input_discuss)
     EditText etInputDiscuss;
-
     @BindView(R.id.ll_input_discuss)
     LinearLayout llInputDiscuss;
     @BindView(R.id.iv_news_detail_collect)
@@ -83,7 +82,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.iv_news_detail_addAdver)
     ImageView ivNewsDetailAddAdver;
 
-
     private WebView mWebView;
     private ProgressBar mProgressBar;
     private Dialog dialog;
@@ -93,7 +91,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_bottom_alertdialog_cancle;
     private LinearLayout ll_share_list;
     private ImageView iv_newsdetail_wxshared_friendcircle;
-
 
     private Bundle params;
     private String url;
@@ -135,7 +132,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     public void run() {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
                             parseNewsContentData(response.body());
-
                             com.orhanobut.logger.Logger.d("收藏+++" + response.body().toString());
                         }
                     }
@@ -143,6 +139,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     //解析内容详情
     private void parseNewsContentData(String body) {
         try {
@@ -153,6 +150,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             e.printStackTrace();
         }
     }
+
     @Override
     protected void initDatas() {
         Intent intent = getIntent();
@@ -160,7 +158,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         title = intent.getStringExtra("title");
         uuid = intent.getIntExtra("uuid", 0);
         id = intent.getIntExtra("id", 0);
-
         SettingsP();
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
@@ -182,14 +179,17 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
+
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onCancel(SHARE_MEDIA platform) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
@@ -208,6 +208,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         imageObject.setImageObject(bitmap);
         return imageObject;
     }
+
     //底部弹出对话框
     private void showBottomAliert() {
         dialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
@@ -312,6 +313,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     @Override
     public void onClick(View v) {
         Intent intent = null;
@@ -319,10 +321,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.et_input_discuss:
                 llInputDiscuss.setVisibility(View.GONE);
 //                llNewsDetailBigDiss.setVisibility(View.VISIBLE);
-             showPopupCommnet();
-
+                showPopupCommnet();
                 break;
-
             case R.id.tv_addAdver_share:
                 Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
                 intent = new Intent(mContext, AddAdverActivity.class);
@@ -338,7 +338,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 dialog.dismiss();
                 break;
             case R.id.iv_news_detail_addAdver:
-
                 intent = new Intent(mContext, AddAdverActivity.class);
                 intent.putExtra("url", url);
                 intent.putExtra("title", title);
@@ -355,7 +354,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         }
 
     }
-/*弹出评论框*/
+
+    /*弹出评论框*/
     @SuppressLint("WrongConstant")
     private void showPopupCommnet() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.comment_popupwindow, null);
@@ -367,13 +367,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         popupWindow.setTouchInterceptor(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_OUTSIDE){
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     popupWindow.dismiss();
                 }
                 return false;
             }
         });
-
         popupWindow.setFocusable(true);
         //设置点击窗口外边窗口消失
         popupWindow.setOutsideTouchable(true);
@@ -413,14 +412,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
 
-
     /**
      * 请求评论
      *
      * @param commonText
      */
     private void RequestNewsCommon(String commonText) {
-
         OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", uuid)
                 .params("content", commonText)
@@ -468,10 +465,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                                     .setCallback(umShareListener)
                                     .share();
                         } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-                                    new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                                            .withMedia(web)
-                                            .setCallback(umShareListener)
-                                            .share();
+                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
                         }
                     }
                 }).open();

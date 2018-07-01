@@ -16,7 +16,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     private String[] mTitles ;
     private List<BaseFragment> fragments;
 
-
     public MyFragmentPagerAdapter(FragmentManager fm, String[] mTitles, List<BaseFragment> fragments) {
         super(fm);
         this.mTitles = mTitles;

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.bm.library.PhotoView;
 import com.linchaolong.android.imagepicker.ImagePicker;
@@ -22,6 +21,7 @@ import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.PostRequest;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.LzyResponse;
@@ -56,10 +56,10 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     private ImagePicker imagePicker;
     private List<String> upLoadPics;
     private boolean isComingFromColum = false;
-    private int index;
     private int ad_id;
     Unbinder unbinder;
     private String mImgUrl;
+    private String mSelectImgUrl;
 
     @Override
     public int getLayoutId() {
@@ -76,19 +76,16 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         Intent intent = getActivity().getIntent();
         isComingFromColum = intent.getBooleanExtra("isComingFromColum", false);
         if (isComingFromColum) {
-            index = intent.getIntExtra("index", 0);
-            if (index == 1) {
-                mImgUrl = intent.getStringExtra("imgUrl");
-                String link = intent.getStringExtra("link");
-                ad_id = intent.getIntExtra("ad_id", 0);
+            mImgUrl = intent.getStringExtra("imgUrl");
+            String link = intent.getStringExtra("link");
+            ad_id = intent.getIntExtra("ad_id", 0);
 
-                GlideApp.with(mActivity)
-                        .load(mImgUrl)
-                        .placeholder(R.mipmap.user_moren)
-                        .error(R.mipmap.user_moren)
-                        .into(ivMineAddFragment1BigAdver);
-                etFragmentBigpicLink.setText(link);
-            }
+            GlideApp.with(mActivity)
+                    .load(mImgUrl)
+                    .placeholder(R.mipmap.user_moren)
+                    .error(R.mipmap.user_moren)
+                    .into(ivMineAddFragment1BigAdver);
+            etFragmentBigpicLink.setText(link);
         }
         imagePicker = new ImagePicker();
         imagePicker.setCropImage(true);
@@ -124,7 +121,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                 openPhoto();
                 break;
         }
-
     }
 
     private void openPhoto() {
@@ -143,9 +139,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             //剪裁图片回调
             @Override
             public void onCropImage(Uri imageUri) {
-
-                final String url = String.valueOf(imageUri).replace("file://", "");
-                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+                mSelectImgUrl = String.valueOf(imageUri).replace("file://", "");
 
 //                ivMineAddFragment1BigAdver.setImageURI(imageUri);
                 //      使用Glide加载的gif图片同样支持缩放功能
@@ -166,8 +160,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         // 设置网格显示模式
                         .setGuidelines(CropImageView.Guidelines.ON)
                         // 圆形/矩形
-                        .setCropShape(CropImageView.CropShape
-                                .RECTANGLE)
+                        .setCropShape(CropImageView.CropShape.RECTANGLE)
+                        .setAutoZoomEnabled(false)
+                        .setMinCropWindowSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
                         // 调整裁剪后的图片最终大小
                         .setRequestedSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
                         // 宽高比
@@ -184,35 +179,23 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private void upLoadPic(String s) {
-        OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
-                .params("base64", s)
-                .execute(new DialogCallback<LzyResponse<ImageBean>>(mActivity) {
-                    @Override
-                    public void onSuccess(Response<LzyResponse<ImageBean>> response) {
-                        if (response.body().code.equals("0")) {
-                            upLoadPics = new ArrayList<>();
-                            upLoadPics.add(response.body().data.getFile());
-                            Toast.makeText(mActivity, "上传图片成功", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
     @Override
     public void commitData() {
         super.commitData();
-        if (upLoadPics.size() == 0) {
-            ToastUtils.showShortToast(mActivity, "请先上传图片");
+        if (TextUtils.isEmpty(mSelectImgUrl) && TextUtils.isEmpty(mImgUrl)) {
+            ToastUtils.showShortToast(mActivity, "请先添加图片");
         } else {
             OkGo.<String>post(Constant.CHECK_ADD)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
-                            //Log.e(TAG, "onSuccess: -----------------------"+response.body() );
                             MyCollectBean check = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                             if (check.getCode() == 0) {
-                                commit();
+                                if (TextUtils.isEmpty(mSelectImgUrl)) {
+                                    commit();
+                                } else {
+                                    upLoadPic();
+                                }
                             }
                         }
 
@@ -221,66 +204,47 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                             Log.e(TAG, "onSuccess: -----------------------" + response.body());
                         }
                     });
-            /*
-            OkGo.<LzyResponse<String>>post(Constant.CHECK_ADD)
-                    .execute(new DialogCallback<LzyResponse<String>>(mActivity) {
-                        @Override
-                        public void onSuccess(Response<LzyResponse<String>> response) {
-                            if (response.body().code.equals("0")) {
-                                commit();
-                            } else {
-                                ToastUtils.showShortToast(mActivity, response.body().message);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Response<LzyResponse<String>> response) {
-
-                            ToastUtils.showShortToast(mActivity, response.body().message);
-                        }
-                    });
-                    */
         }
     }
 
+    private void upLoadPic() {
+        OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
+                .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(mSelectImgUrl))
+                .execute(new DialogCallback<LzyResponse<ImageBean>>(mActivity) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<ImageBean>> response) {
+                        if (response.body().code.equals("0")) {
+                            upLoadPics = new ArrayList<>();
+                            upLoadPics.add(response.body().data.getFile());
+                            commit();
+                        }
+                    }
+                });
+    }
+
     private void commit() {
-        String imagUrl = Utils.listToString(upLoadPics);
-        String trim = etFragmentBigpicLink.getText().toString().trim();
-        if (isComingFromColum) {
-            if (TextUtils.isEmpty(imagUrl)) {
-                imagUrl = mImgUrl;
-            }
-            OkGo.<String>post(Constant.EDIT_AD)
-                    .params("id", ad_id)
-                    .params("ad_type", 1)
-                    .params("images", imagUrl)
-                    .params("link", trim)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            parseFragment1AdvData(response.body());
-                        }
-                    });
-        } else {
-            OkGo.<String>post(Constant.ADD_AD)
-                    .params("ad_type", 1)
-                    .params("images", imagUrl)
-                    .params("link", trim)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            parseFragment1AdvData(response.body());
-                        }
-
-                        @Override
-                        public void onError(Response<String> response) {
-
-                            Log.v("ad_add", response.toString());
-                            //super.onError(response);
-
-                        }
-                    });
+        if (!TextUtils.isEmpty(mSelectImgUrl)) {
+            mImgUrl = Utils.listToString(upLoadPics);
         }
+        String link = etFragmentBigpicLink.getText().toString().trim();
+        PostRequest<String> post = OkGo.post(isComingFromColum ? Constant.EDIT_AD : Constant.ADD_AD);
+        if (isComingFromColum) {
+            post.params("id", ad_id);
+        }
+        post.params("ad_type", 1)
+                .params("images", mImgUrl)
+                .params("link", link)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseFragment1AdvData(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        Log.v("ad_add", response.toString());
+                    }
+                });
     }
 
     private void parseFragment1AdvData(String body) {
@@ -288,20 +252,13 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             JSONObject jsonObject = new JSONObject(body);
             final int code = jsonObject.getInt("code");
             if (code == 0) {
-//                com.orhanobut.logger.Logger.d("错误信息+"+body.toString());
-//                Intent intent = new Intent();
-//                intent.putExtra("index", 0);
-//                mActivity.setResult(Activity.RESULT_OK, intent);
-//                mActivity.finish();
-                final String imagUrl = Utils.listToString(upLoadPics);
-                final String trim = etFragmentBigpicLink.getText().toString().trim();
+                String link = etFragmentBigpicLink.getText().toString().trim();
                 Intent intent = new Intent();
                 intent.putExtra("type", 1);
                 intent.putExtra("position", getActivity().getIntent().getStringExtra("position"));
-                intent.putExtra("index", 0);
-                intent.putExtra("url", imagUrl);
-                intent.putExtra("title", trim);
-                mActivity.setResult(isComingFromColum == false ? Activity.RESULT_OK : -2, intent);
+                intent.putExtra("url", mImgUrl);
+                intent.putExtra("title", link);
+                mActivity.setResult(!isComingFromColum ? Activity.RESULT_OK : -2, intent);
                 mActivity.finish();
             }
         } catch (Exception e) {
@@ -309,7 +266,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         }
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

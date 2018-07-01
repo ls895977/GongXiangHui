@@ -176,14 +176,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
 
                 }, 1000);
 
-                final Toast toast = Toast.makeText(mActivity, "已经为你推荐了"+dataList.size()+"条新闻", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(mActivity, "已经为你推荐了"+dataList.size()+"条新闻", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.TOP,0,0);
                 toast.show();
-
-
-
-
-
             }
         });
         //设置加载出来看的动画
@@ -218,9 +213,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                                 }
                             }
                             homeItemListAdapter1.notifyDataSetChanged();
-
-
-
                         }
                     }
                 });

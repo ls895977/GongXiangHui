@@ -23,7 +23,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener, TabLayout.OnTabSelectedListener {
+public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.iv_top_addAdverBack)
     ImageView ivTopAddAdverBack;
@@ -33,6 +33,9 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     TabLayout tabLayout_adver_commen;
     @BindView(R.id.viewPager_adver_commen)
     ViewPager viewPager_adver_commen;
+
+    public static boolean sIsFromNews = true;
+    public static int sCurrentPosition = 0;
 
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
     private int[] mImgs = {R.mipmap.adv_select_big_img, R.mipmap.adv_select_card, R.mipmap.adv_select_san, R.mipmap.adv_select_san, R.mipmap.adv_select_qq, R.mipmap.adv_select_video};
@@ -58,6 +61,22 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         super.initListeners();
         tvAddAdverList.setOnClickListener(this);
         ivTopAddAdverBack.setOnClickListener(this);
+        viewPager_adver_commen.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                sCurrentPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -76,7 +95,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_addAdver_list:
-                toActivityWithResult(AdvertisActivity.class, 0);
+                toActivityWithResult(AdvertisActivity.class, 0x0011);
                 break;
             case R.id.iv_top_addAdverBack:
                 finish();
@@ -85,27 +104,16 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        viewPager_adver_commen.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            int index = data.getIntExtra("index", 0);
-            viewPager_adver_commen.setCurrentItem(index);
-            fragments.get(index).initDatas();
+            fragments.get(sCurrentPosition).initDatas();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sIsFromNews = true;
     }
 }

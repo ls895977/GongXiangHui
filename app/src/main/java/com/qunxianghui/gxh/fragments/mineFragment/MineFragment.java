@@ -238,7 +238,7 @@ public class MineFragment extends BaseFragment {
             case R.id.write_advertise:
 //                TextView tv_addbigimg_to_used = LayoutInflater.from(mActivity).inflate(R.layout.item_addadver_bigimag, null).findViewById(R.id.tv_addbigimg_to_used);
 //                tv_addbigimg_to_used.setVisibility(View.GONE);
-
+                AdvertisConmmengtActivity.sIsFromNews = false;
                 toActivity(AdvertisConmmengtActivity.class);
                 break;
             case R.id.rl_invite_friend:
@@ -250,8 +250,6 @@ public class MineFragment extends BaseFragment {
             case R.id.tv_mine_set:
                 toActivity(SettingActivity.class);
                 break;
-
-
         }
     }
 
