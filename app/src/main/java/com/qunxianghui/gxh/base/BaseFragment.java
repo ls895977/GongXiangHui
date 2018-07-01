@@ -86,7 +86,7 @@ public abstract class BaseFragment extends Fragment {
         }, time);
     }
 
-    protected abstract void onLoadData();
+    protected void onLoadData(){}
 
     /**
      * 不可见
@@ -180,7 +180,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 初始化控件
      */
-    public abstract void initViews(View view);
+    public void initViews(View view){}
 
     /**
      * 子类可以复写此方法初始化事件

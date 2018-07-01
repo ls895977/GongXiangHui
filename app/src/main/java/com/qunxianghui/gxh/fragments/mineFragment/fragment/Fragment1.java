@@ -36,25 +36,23 @@ import com.qunxianghui.gxh.utils.Utils;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class Fragment1 extends BaseFragment implements View.OnClickListener {
+public class Fragment1 extends BaseFragment {
 
     @BindView(R.id.iv_mine_addFragment1BigAdver)
     PhotoView ivMineAddFragment1BigAdver;
     @BindView(R.id.et_fragment_bigpic_link)
     EditText etFragmentBigpicLink;
     private ImagePicker imagePicker;
-    private List<String> upLoadPics;
+    private String upLoadPics;
     private boolean isComingFromColum = false;
     private int ad_id;
     Unbinder unbinder;
@@ -76,8 +74,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         Intent intent = getActivity().getIntent();
         isComingFromColum = intent.getBooleanExtra("isComingFromColum", false);
         if (isComingFromColum) {
-            mImgUrl = intent.getStringExtra("imgUrl");
-            String link = intent.getStringExtra("link");
+            mImgUrl = intent.getStringExtra("imageUrl");
             ad_id = intent.getIntExtra("ad_id", 0);
 
             GlideApp.with(mActivity)
@@ -85,15 +82,10 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                     .placeholder(R.mipmap.user_moren)
                     .error(R.mipmap.user_moren)
                     .into(ivMineAddFragment1BigAdver);
-            etFragmentBigpicLink.setText(link);
+            etFragmentBigpicLink.setText(intent.getStringExtra("link"));
         }
         imagePicker = new ImagePicker();
         imagePicker.setCropImage(true);
-    }
-
-    @Override
-    protected void initListeners() {
-        ivMineAddFragment1BigAdver.setOnClickListener(this);
     }
 
     @Override
@@ -105,22 +97,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected void onLoadData() {
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_mine_addFragment1BigAdver:
-                openPhoto();
-                break;
-        }
     }
 
     private void openPhoto() {
@@ -196,6 +175,8 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                                 } else {
                                     upLoadPic();
                                 }
+                            } else {
+                                asyncShowToast(check.getMessage());
                             }
                         }
 
@@ -214,8 +195,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
                         if (response.body().code.equals("0")) {
-                            upLoadPics = new ArrayList<>();
-                            upLoadPics.add(response.body().data.getFile());
+                            mImgUrl = response.body().data.getFile();
                             commit();
                         }
                     }
@@ -223,9 +203,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     }
 
     private void commit() {
-        if (!TextUtils.isEmpty(mSelectImgUrl)) {
-            mImgUrl = Utils.listToString(upLoadPics);
-        }
         String link = etFragmentBigpicLink.getText().toString().trim();
         PostRequest<String> post = OkGo.post(isComingFromColum ? Constant.EDIT_AD : Constant.ADD_AD);
         if (isComingFromColum) {
@@ -254,22 +231,24 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             if (code == 0) {
                 String link = etFragmentBigpicLink.getText().toString().trim();
                 Intent intent = new Intent();
-                intent.putExtra("type", 1);
-                intent.putExtra("position", getActivity().getIntent().getStringExtra("position"));
-                intent.putExtra("url", mImgUrl);
-                intent.putExtra("title", link);
+                intent.putExtra("imageUrl", mImgUrl);
+                intent.putExtra("link", link);
                 mActivity.setResult(!isComingFromColum ? Activity.RESULT_OK : -2, intent);
                 mActivity.finish();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         imagePicker.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @OnClick(R.id.iv_mine_addFragment1BigAdver)
+    public void onViewClicked() {
+        openPhoto();
     }
 }
 
