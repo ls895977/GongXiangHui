@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MyFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverTiseCommenFragment;
+import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.tabLayout_adver_commen)
     TabLayout tabLayout_adver_commen;
     @BindView(R.id.viewPager_adver_commen)
-    ViewPager viewPager_adver_commen;
+    NoScrollViewPager viewPager_adver_commen;
 
     public static boolean sIsFromNews = true;
     public static int sCurrentPosition = 0;
@@ -61,19 +61,20 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         super.initListeners();
         tvAddAdverList.setOnClickListener(this);
         ivTopAddAdverBack.setOnClickListener(this);
-        viewPager_adver_commen.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager_adver_commen.setScroll(false);
+        tabLayout_adver_commen.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                sCurrentPosition = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onPageSelected(int position) {
-                sCurrentPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });

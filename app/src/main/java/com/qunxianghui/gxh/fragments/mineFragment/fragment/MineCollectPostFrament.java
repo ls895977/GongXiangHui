@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectPostBean;
-import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -33,8 +31,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MineCollectPostFrament extends BaseFragment implements MineCollectPostAdapter.MycollectPostListener {
+
     @BindView(R.id.recycler_mycollect_post)
     XRecyclerView recyclerMycollectPost;
+
     Unbinder unbinder;
     private List<MineCollectPostBean.DataBean> dataList = new ArrayList<>();
     private boolean mIsRefresh = false;
@@ -49,10 +49,7 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
 
     @Override
     public void initDatas() {
-
         RequestMyCollectPost();
-
-
     }
 
     private void RequestMyCollectPost() {
@@ -67,11 +64,9 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
                 });
     }
 
-
     private void parseCollectPostDaTA(String body) {
         Logger.d("我收藏帖子的内容+++" + body.toString());
         final MineCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MineCollectPostBean.class);
-
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -86,11 +81,8 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
                 mineCollectPostAdapter.setMycollectPostListener(this);
                 asyncShowToast("请求成功");
             }
-
             recyclerMycollectPost.refreshComplete();
             mineCollectPostAdapter.notifyDataSetChanged();
-
-
         }
     }
 
@@ -108,25 +100,18 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
     @Override
-    protected void onLoadData() {
-
-    }
-
-    @Override
     protected void initListeners() {
         super.initListeners();
         recyclerMycollectPost.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mIsRefresh=true;
-                count=0;
+                mIsRefresh = true;
+                count = 0;
                 RequestMyCollectPost();
-
             }
 
             @Override
             public void onLoadMore() {
-
                 RequestMyCollectPost();
             }
         });
@@ -137,13 +122,6 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
-    /**
-     * 取消收藏
-     *
-     * @param position
-     */
 
     @Override
     public void cancelCollect(int position) {
@@ -162,12 +140,6 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
 
-    /**
-     * 图片点击
-     *
-     * @param position
-     * @param picpostion
-     */
     @Override
     public void onPicClick(int position, int picpostion) {
         List<String> imageList = dataList.get(position).getImages();
@@ -184,7 +156,6 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
     private void CancelCollectPostData() {
-
         Toast.makeText(mActivity, "取消成功", Toast.LENGTH_SHORT).show();
     }
 }

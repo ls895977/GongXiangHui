@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
  */
 
 public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
+
     @BindView(R.id.mine_MyIssureTablayout_common)
     TabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)

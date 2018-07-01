@@ -56,7 +56,6 @@ public class NoScrollViewPager extends ViewPager {
      * 反之，则拦截，并交给自己的实现进行滑动处理
      */
     public void setScroll(boolean scroll) {
-
         isScroll = scroll;
     }
 }

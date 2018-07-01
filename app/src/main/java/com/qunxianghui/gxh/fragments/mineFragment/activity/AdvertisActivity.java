@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +17,7 @@ import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment3;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment4;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment5;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.Fragment6;
+import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    NoScrollViewPager viewPager;
 
     private boolean mIsFromEdit;
     public static int sCurrentPosition = 0;
@@ -58,6 +58,7 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initListeners() {
         super.initListeners();
+        viewPager.setScroll(false);
         tvSaveAddAdverList.setOnClickListener(this);
         iv_top_savedverBack.setOnClickListener(this);
     }
@@ -81,22 +82,22 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         if (AdvertisConmmengtActivity.sCurrentPosition != 0) {
             viewPager.setCurrentItem(AdvertisConmmengtActivity.sCurrentPosition, false);
         }
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
+            public void onTabSelected(TabLayout.Tab tab) {
                 if (mIsFromEdit) {
                     finish();
                 }
-                sCurrentPosition = position;
+                sCurrentPosition = tab.getPosition();
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });

@@ -13,9 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.broadcast.MainBroadCast;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -27,6 +30,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 
@@ -49,11 +55,17 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout rlMineFragmentAddTopAdver;
     @BindView(R.id.rl_mineFragment_addBottomAdver)
     RelativeLayout rlMineFragmentAddBottomAdver;
+
     private UMShareListener umShareListener;
     private String url;
-    private MainBroadCast receiver;
-    static final String INTENT_BROADCAST_ADVERTISE = "android.intent.action.advertise";
     private String title;
+    private int mTopId;
+    private int mMiddleId;
+    private int mVideoId;
+    private int mBottomId;
+    private int mIsFloat;
+    //添加位置0顶部，1中间，2底部
+    private int mAddPosition = -1;
 
     @Override
     protected int getLayoutId() {
@@ -71,15 +83,42 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StartThirdShare();
+                getShareInfo();
             }
         });
+    }
+
+    private void getShareInfo() {
+        String[] split = url.split("/");
+        String uuid = split[split.length - 1].split("\\.")[0];
+        OkGo.<String>post(Constant.GET_SHARE_INFO)
+                .params("uuid", uuid)
+                .params("topAd", mTopId)
+                .params("middleAd", mMiddleId)
+                .params("videoAd", mVideoId)
+                .params("bottomAd", mBottomId)
+                .params("isFloat", mIsFloat)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            if (jsonObject.getInt("code") == 0 && data != null) {
+                                startThirdShare(data.getString("url"), data.getString("title"), data.getString("imgUrl"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     /**
      * 三方分享
      */
-    private void StartThirdShare() {
+    private void startThirdShare(String url, String title, String imgUrl) {
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
@@ -218,14 +257,13 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(AddAdverActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                mAddPosition = 0;
                 intent = new Intent(this, AdvertisConmmengtActivity.class);
-                intent.putExtra("position", "top");
-                //startActivity(intent);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.rl_mineFragment_addBottomAdver:
+                mAddPosition = 2;
                 intent = new Intent(this, AdvertisConmmengtActivity.class);
-                intent.putExtra("position", "bottom");
                 startActivityForResult(intent, 100);
                 break;
         }
@@ -233,32 +271,24 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == Activity.RESULT_OK) {
-
-            int type = data.getIntExtra("type", 0);
-            if (type == 1) {
-                String postion = data.getStringExtra("position");
-                if (postion.equalsIgnoreCase("top")) {
-                    String url = data.getStringExtra("url");
-                    String title = data.getStringExtra("title");
-                    GlideApp.with(mContext).load(url)
-                            .centerCrop()
-                            .placeholder(R.mipmap.icon_headimage)
-                            .error(R.mipmap.icon_headimage)
-                            .into(ivMineFragmentAddTopAdver);
-                } else if (postion.equalsIgnoreCase("bottom")) {
-                    String url = data.getStringExtra("url");
-                    String title = data.getStringExtra("title");
-                    GlideApp.with(mContext).load(url)
-                            .centerCrop()
-                            .placeholder(R.mipmap.icon_headimage)
-                            .error(R.mipmap.icon_headimage)
-                            .into(ivMineFragmentAddBottomAdver);
-                }
-
+        if (resultCode == 0x0022) {
+            if (mAddPosition == 0) {
+                mTopId = data.getIntExtra("ad_id", 0);
+                String url = data.getStringExtra("url");
+                GlideApp.with(mContext).load(url)
+                        .centerCrop()
+                        .placeholder(R.mipmap.icon_headimage)
+                        .error(R.mipmap.icon_headimage)
+                        .into(ivMineFragmentAddTopAdver);
+            } else if (mAddPosition == 2) {
+                mBottomId = data.getIntExtra("ad_id", 0);
+                String url = data.getStringExtra("url");
+                GlideApp.with(mContext).load(url)
+                        .centerCrop()
+                        .placeholder(R.mipmap.icon_headimage)
+                        .error(R.mipmap.icon_headimage)
+                        .into(ivMineFragmentAddBottomAdver);
             }
-
         }
     }
 }
