@@ -52,7 +52,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private int count;
     private boolean mIsRefresh = false;
     private int mMemberId;
-
+    private String newsUrl;
 
 
     @Override
@@ -62,6 +62,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     @Override
     public void initDatas() {
+
+        Intent intent = mActivity.getIntent();
+        newsUrl = intent.getStringExtra("url");
         if (getArguments() != null) {
             mMemberId = getArguments().getInt("member_id");
         }
@@ -107,6 +110,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                     public void onItemClick(View v, int position) {
                         Intent intent=new Intent(mActivity, NewsDetailActivity.class);
                         intent.putExtra("uurd",dataList.get(position).getData_uuid());
+                        intent.putExtra("url",newsUrl);
                         startActivity(intent);
 
                     }

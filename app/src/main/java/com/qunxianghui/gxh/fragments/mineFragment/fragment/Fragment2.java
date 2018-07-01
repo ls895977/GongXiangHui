@@ -139,6 +139,7 @@ public class Fragment2 extends BaseFragment {
             post.params("id", ad_id);
         }
         post.params("ad_type", 2)
+                .params("images",mImgUrl)
                 .params("name", mName)
                 .params("mobile", mMobile)
                 .params("address", mAddress)
