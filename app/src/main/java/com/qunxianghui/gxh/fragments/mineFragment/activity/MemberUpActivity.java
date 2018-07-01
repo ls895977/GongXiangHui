@@ -17,6 +17,10 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -36,6 +40,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     LinearLayout llActiviteTop;
     @BindView(R.id.ll_unactivite_top)
     LinearLayout llUnactiviteTop;
+    private JSONArray data;
 
 
     @Override
@@ -48,6 +53,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
+
 
 
     }
@@ -96,9 +102,20 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                         @Override
                         public void onSuccess(Response<String> response) {
 
-                            asyncShowToast("该账号已激活");
-                            llUnactiviteTop.setVisibility(View.GONE);
-                            llActiviteTop.setVisibility(View.VISIBLE);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body());
+                                int code = jsonObject.getInt("code");
+                                data = jsonObject.getJSONArray("data");
+                                if (code == 0) {
+                                    asyncShowToast("该账号已激活");
+                                    llUnactiviteTop.setVisibility(View.GONE);
+                                    llActiviteTop.setVisibility(View.VISIBLE);
+                                } else if (code==101){
+                                    asyncShowToast("序列号不存在");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
 
                         }
