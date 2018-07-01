@@ -96,6 +96,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     Unbinder unbinder;
+    private String cityCode;
+    private String adCode;
 
     @Override
     public int getLayoutId() {
@@ -396,10 +398,15 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 runOnUiThread(new Runnable() {
+                    private String adCode;
+
                     @Override
                     public void run() {
                         tvHomeLocation.setText(aMapLocation.getDistrict());
+                        cityCode = aMapLocation.getCityCode();
+                        adCode = aMapLocation.getAdCode();
                     }
+
                 });
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。

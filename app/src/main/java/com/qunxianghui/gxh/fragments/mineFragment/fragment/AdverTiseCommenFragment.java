@@ -226,24 +226,24 @@ public class AdverTiseCommenFragment extends BaseFragment implements AdListAdapt
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == -2) {
+            AdListBean.DataBean dataBean = adListAdapter.mList.get(jumpPosition);
+            String url = data.getStringExtra("imageUrl");
             switch (mAdType) {
                 case 1:
+                case 3:
+                case 6:
+
                     break;
                 case 2:
-                    break;
-                case 3:
                     break;
                 case 4:
                     break;
                 case 5:
                     break;
-                case 6:
-                    break;
             }
-            String url = data.getStringExtra("imageUrl");
             String link = data.getStringExtra("link");
-            adListAdapter.mList.get(jumpPosition).images = url;
-            adListAdapter.mList.get(jumpPosition).link = link;
+            dataBean.images = url;
+            dataBean.link = link;
             adListAdapter.notifyDataSetChanged();
         }
     }
