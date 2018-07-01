@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -103,7 +105,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        asyncShowToast("这里实现跳转详情的动作 目前没有字段不会跳");
+                        Intent intent=new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("uurd",dataList.get(position).getData_uuid());
+                        startActivity(intent);
 
                     }
                 });
