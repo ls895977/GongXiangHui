@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +53,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     TextView tvBletopLocation;
     private AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
+    private String currcity;
 
     @Override
     protected int getLayoutId() {
@@ -61,9 +64,15 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     protected void initViews() {
 //        setSystemBarTransparent();
 
+        SharedPreferences sp = getSharedPreferences("currcity", 0);
+        currcity = sp.getString("currcity", "");
+
+
         simpleExpandableListview.setGroupIndicator(null);
 
         RequestAbleLocation();
+
+
 
     }
 
@@ -160,17 +169,22 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 String areaname = bean.getData().getA().get(groupPosition).getAreas().get(childPosition).getAreaname();
                 tvHomeactivityCurrLocation.setText(areaname);
+
+                final Intent intent = new Intent();
+                intent.putExtra("cityinfo",areaname);
+                setResult(RESULT_OK,intent);
+                finish();
                 return true;
             }
         });
 
     }
 
-
     @Override
     protected void initListeners() {
         tvHomeactivitySetcurrLocation.setOnClickListener(this);
         ivBlelocationBack.setOnClickListener(this);
+
 
     }
 
@@ -210,8 +224,15 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvHomeactivityCurrLocation.setText(aMapLocation.getDistrict());
-                        tvBletopLocation.setText("当前位置" + " " + aMapLocation.getDistrict());
+                        tvHomeactivityCurrLocation.setText(currcity);
+                        tvBletopLocation.setText("当前位置" + " " +currcity);
+                        tvHomeactivitySetcurrLocation.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tvHomeactivityCurrLocation.setText(aMapLocation.getDistrict());
+                                finish();
+                            }
+                        });
                     }
                 });
             } else {
@@ -231,6 +252,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             case R.id.iv_blelocation_back:
                 finish();
                 break;
+
         }
 
     }

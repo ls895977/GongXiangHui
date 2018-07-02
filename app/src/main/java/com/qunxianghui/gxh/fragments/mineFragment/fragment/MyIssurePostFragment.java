@@ -86,7 +86,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Logger.e("我发布的帖子+++++" + response.body().toString());
+                        Logger.d("我发布的帖子+++++" + response.body().toString());
                         parseIssuePostData(response.body());
                     }
                 });
@@ -199,7 +199,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     protected void initListeners() {
         super.initListeners();
 
-
         IssuePostCommentSend.setOnClickListener(this);
 
         recyclerMineissuePost.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -209,13 +208,11 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 count = 0;
                 RequestMyIssurePost();
             }
-
             @Override
             public void onLoadMore() {
                 RequestMyIssurePost();
             }
         });
-
 
     }
 

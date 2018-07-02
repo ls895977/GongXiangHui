@@ -233,6 +233,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         ivNewsDetailCollect.setOnClickListener(this);
 
         ivNewsDetailShare.setOnClickListener(this);
+        ivNewsDetailMessage.setOnClickListener(this);
     }
 
     private void SettingsP() {
@@ -303,7 +304,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         Intent intent = null;
         switch (v.getId()) {
             case R.id.et_input_discuss:
-                llInputDiscuss.setVisibility(View.GONE);
+
 //                llNewsDetailBigDiss.setVisibility(View.VISIBLE);
                 showPopupCommnet();
                 break;
@@ -332,6 +333,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             case R.id.iv_news_detail_share:
                 showBottomAliert();
+                break;
+
+            case R.id.iv_news_detail_message:
+                showPopupCommnet();
                 break;
         }
 

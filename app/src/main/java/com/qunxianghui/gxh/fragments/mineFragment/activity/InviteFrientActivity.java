@@ -16,7 +16,6 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
-
 import com.qunxianghui.gxh.adapter.MyAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.JsonBean;

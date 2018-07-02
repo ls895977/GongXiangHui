@@ -295,21 +295,9 @@
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
 
-            <View style="@style/dividerStyle" />
 
-            <RelativeLayout
-                android:id="@+id/rl_invite_friend"
-                style="@style/RelativeStyle">
 
-                <TextView
-                    style="@style/MineListStyle"
-                    android:drawableLeft="@mipmap/bianmin_call"
-                    android:text="邀请好友" />
 
-                <ImageView
-                    style="@style/rightBackStyle"
-                    android:layout_alignParentRight="true" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

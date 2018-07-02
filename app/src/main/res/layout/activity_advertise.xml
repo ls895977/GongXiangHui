@@ -16,10 +16,10 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         app:tabBackground="@drawable/selected"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="#CC33FF"
+        app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabTextColor="#000" />
 

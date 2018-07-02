@@ -1,9 +1,18 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +27,9 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
+import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -48,7 +59,14 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     private int count = 0;
     private boolean mIsFirst = true;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
-
+    private Dialog dialog;
+    private View alertView;
+    private TextView tv_shoot_video;
+    private TextView tv_location_video;
+    private TextView tv_video_cancle;
+    private Intent intent;
+    private String filePath;
+    private Dialog quickUpDialog;
 
     @Override
     protected int getLayoutId() {
@@ -58,15 +76,12 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initViews() {
         xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-
     }
 
     @Override
     protected void initDatas() {
 
         RequestHomeVideoList();
-
-
     }
 
     private void RequestHomeVideoList() {
@@ -90,8 +105,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     private void parsePersonDetailVideoData(String body) {
 
         final HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
-
-
         videoDataList.addAll(homeVideoListBean.getData().getList());
         count = videoDataList.size();
         if (homeVideoListBean.getCode() == 0) {
@@ -114,8 +127,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
             });
 
             personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
-
-
         }
     }
 
@@ -131,16 +142,11 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 videoDataList.clear();
                 count = 0;
                 RequestHomeVideoList();
-
-
             }
 
             @Override
             public void onLoadMore() {
-
                 RequestHomeVideoList();
-
-
             }
         });
     }
@@ -159,22 +165,70 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.tv_home_video_issue:
-                issueHomeVideo();
-
+                showBottomAliert();
+                break;
+            case R.id.tv_shoot_video:
+                //创建一个请求视频的意图
+                intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);// 设置视频的质量，值为0-1，
+                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 20);// 设置视频的录制长度，s为单位
+                intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 20 * 1024 * 1024L);// 设置视频文件大小，字节为单位
+                startActivityForResult(intent, Code.VIDEO_RECORD_REQUEST);// 设置请求码，在onActivityResult()方法中接收结果
+                dialog.dismiss();
+                break;
+            case R.id.tv_location_video:
+                intent = new Intent(HomeVideoActivity.this, VideoListActivity.class);
+                startActivityForResult(intent, Code.LOCAL_VIDEO_REQUEST);
+                dialog.dismiss();
+                break;
+            case R.id.tv_video_cancle:
+                dialog.dismiss();
+                break;
+            case R.id.tv_quickly_up_video:
+                /**
+                 *   这里可以添加上传视频的方法
+                 *
+                 */
+                asyncShowToast("模拟文件上传成功");
+                quickUpDialog.dismiss();
+                break;
+            case R.id.bt_quickly_up_video_cancel:
+                quickUpDialog.dismiss();
                 break;
         }
-
     }
-
     /**
      * 底部弹起
      */
-    private void issueHomeVideo() {
+    private void showBottomAliert() {
+        dialog = new Dialog(HomeVideoActivity.this, R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertvido_dialog, null);
+        //初始化控件
+        tv_shoot_video = alertView.findViewById(R.id.tv_shoot_video);
+        tv_location_video = alertView.findViewById(R.id.tv_location_video);
+        tv_video_cancle = alertView.findViewById(R.id.tv_video_cancle);
+        tv_shoot_video.setOnClickListener(this);
+        tv_location_video.setOnClickListener(this);
+        tv_video_cancle.setOnClickListener(this);
 
-        asyncShowToast("上传视频的操作");
+        //将布局设置给dialog
+        dialog.setContentView(alertView);
+        //获取当前activity所在的窗体
+        final Window dialogWindow = dialog.getWindow();
+        //设置dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        //获得窗体的属性
+        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+
+        final WindowManager windowManager = getWindowManager();
+        final Display display = windowManager.getDefaultDisplay();
+        lp.width = (int) display.getWidth();  //设置宽度
+        lp.y = 5;  //设置dialog距离底部的距离
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        dialog.show();
     }
-
-
     /**
      * 视频列表的关注
      *
@@ -196,14 +250,11 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                             } else if (code == 202) {
                                 asyncShowToast("取消关注成功");
                                 personDetailVideoAdapter.videoAttention.setText("关注");
-
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
@@ -220,5 +271,65 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         Intent intent = new Intent(mContext, PersonDetailActivity.class);
         intent.putExtra("member_id", videoDataList.get(position).getMember_id());
         startActivity(intent);
+    }
+
+    private void showUploadVideoDialog() {
+        if (quickUpDialog == null) {
+            quickUpDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View upVideoDialogView = LayoutInflater.from(mContext).inflate(R.layout.bottom_video_up_quickly_alertdialog, null);
+            //初始化控件
+            upVideoDialogView.findViewById(R.id.tv_quickly_up_video).setOnClickListener(this);
+            upVideoDialogView.findViewById(R.id.bt_quickly_up_video_cancel).setOnClickListener(this);
+            //将布局设置给dialog
+            quickUpDialog.setContentView(upVideoDialogView);
+            //获取当前activity所在的窗体
+            final Window dialogWindow = quickUpDialog.getWindow();
+            //设置dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            //获得窗体的属性
+            final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            final WindowManager windowManager = getWindowManager();
+            final Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 20;  //设置dialog距离底部的距离
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
+        quickUpDialog.show();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case Code.VIDEO_RECORD_REQUEST:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    if (uri == null) {
+                        return;
+                    } else {
+                        Cursor cursor = getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DATA}, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            filePath = cursor.getString(0);
+                            showUploadVideoDialog();
+
+                        }
+                    }
+                }
+                break;
+
+            case Code.LOCAL_VIDEO_REQUEST:
+                if (resultCode == Code.LOCAL_VIDEO_RESULT && data != null) {
+                    filePath = data.getStringExtra("path");
+                    showUploadVideoDialog();
+
+                    break;
+                }
+
+
+        }
     }
 }

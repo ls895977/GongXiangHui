@@ -52,7 +52,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         tabLayout_adver_commen.setTabMode(TabLayout.MODE_SCROLLABLE);
         //循环注入标签
         for (int i = 0; i < titles.length; i++) {
-            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setText(titles[i]).setIcon(mImgs[i]));
+            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setIcon(mImgs[i]).setText(titles[i]));
         }
     }
 

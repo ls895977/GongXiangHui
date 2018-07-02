@@ -34,6 +34,10 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     TextView tvHomeairBottomDayDetail;
     @BindView(R.id.iv_home_air_back)
     ImageView ivHomeAirBack;
+    @BindView(R.id.home_air_city)
+    TextView homeAirCity;
+    @BindView(R.id.home_air_area)
+    TextView homeAirArea;
     private String cityId;
     private String areaId;
 
@@ -56,19 +60,19 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
 
     private void RequestAirList() {
         OkGo.<String>post(Constant.HOME_AIRLIST_URL)
-                .headers("X-cityId",cityId)
-                .headers("X-areaId",areaId)
+                .headers("X-cityId", cityId)
+                .headers("X-areaId", areaId)
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                final HomeAirBean homeAirBean = GsonUtil.parseJsonWithGson(response.body(), HomeAirBean.class);
-                final HomeAirBean.DataBean data = homeAirBean.getData();
-                SetTopAirDetail(data);
-                final List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        final HomeAirBean homeAirBean = GsonUtil.parseJsonWithGson(response.body(), HomeAirBean.class);
+                        final HomeAirBean.DataBean data = homeAirBean.getData();
+                        SetTopAirDetail(data);
+                        final List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();
 
-                xrecycler.setAdapter(new HomeAirListAdapter(mContext, forecast));
-            }
-        });
+                        xrecycler.setAdapter(new HomeAirListAdapter(mContext, forecast));
+                    }
+                });
 
     }
 
@@ -90,6 +94,9 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initDatas() {
 
+
+        homeAirCity.setText(cityId);
+        homeAirArea.setText(areaId);
 
     }
 
@@ -120,7 +127,7 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_home_air_back:
                 finish();
                 break;

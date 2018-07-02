@@ -15,12 +15,13 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+
 import com.qunxianghui.gxh.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionSheetDialog {
+public class ActionSheetCommonDialog {
 	private Context context;
 	private Dialog dialog;
 	private TextView txt_title;
@@ -31,14 +32,15 @@ public class ActionSheetDialog {
 	private List<SheetItem> sheetItemList;
 	private Display display;
 
-	public ActionSheetDialog(Context context) {
+	public ActionSheetCommonDialog(Context context) {
 		this.context = context;
 		WindowManager windowManager = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);
 		display = windowManager.getDefaultDisplay();
 	}
 
-	public ActionSheetDialog builder() {
+
+	public ActionSheetCommonDialog builder() {
 		// 获取Dialog布局
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.view_actionsheet, null);
@@ -72,19 +74,19 @@ public class ActionSheetDialog {
 		return this;
 	}
 
-	public ActionSheetDialog setTitle(String title) {
+	public ActionSheetCommonDialog setTitle(String title) {
 		showTitle = true;
 		txt_title.setVisibility(View.VISIBLE);
 		txt_title.setText(title);
 		return this;
 	}
 
-	public ActionSheetDialog setCancelable(boolean cancel) {
+	public ActionSheetCommonDialog setCancelable(boolean cancel) {
 		dialog.setCancelable(cancel);
 		return this;
 	}
 
-	public ActionSheetDialog setCanceledOnTouchOutside(boolean cancel) {
+	public ActionSheetCommonDialog setCanceledOnTouchOutside(boolean cancel) {
 		dialog.setCanceledOnTouchOutside(cancel);
 		return this;
 	}
@@ -98,8 +100,8 @@ public class ActionSheetDialog {
 	 * @param listener
 	 * @return
 	 */
-	public ActionSheetDialog addSheetItem(String strItem, SheetItemColor color,
-                                          OnSheetItemClickListener listener) {
+	public ActionSheetCommonDialog addSheetItem(String strItem, SheetItemColor color,
+												OnSheetItemClickListener listener) {
 		if (sheetItemList == null) {
 			sheetItemList = new ArrayList<SheetItem>();
 		}

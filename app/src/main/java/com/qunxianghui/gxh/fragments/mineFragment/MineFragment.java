@@ -26,7 +26,6 @@ import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisConmmengtActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.InviteFrientActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MessageGatherActivity;
@@ -71,8 +70,7 @@ public class MineFragment extends BaseFragment {
     RelativeLayout hezuoCall;
     @BindView(R.id.write_advertise)
     RelativeLayout writeAdvertise;
-    @BindView(R.id.rl_invite_friend)
-    RelativeLayout rlInviteFriend;
+
     @BindView(R.id.tv_mine_set)
     TextView tvMineSet;
     @BindView(R.id.rl_up_step)
@@ -201,7 +199,7 @@ public class MineFragment extends BaseFragment {
     private void toCollectView() {
     }
 
-    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise, R.id.rl_invite_friend, R.id.mine_quickly_login})
+    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise, R.id.mine_quickly_login})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -241,9 +239,7 @@ public class MineFragment extends BaseFragment {
                 AdvertisConmmengtActivity.sIsFromNews = false;
                 toActivity(AdvertisConmmengtActivity.class);
                 break;
-            case R.id.rl_invite_friend:
-                toActivity(InviteFrientActivity.class);
-                break;
+
             case R.id.mine_quickly_login:
                 toActivity(LoginActivity.class);
                 break;

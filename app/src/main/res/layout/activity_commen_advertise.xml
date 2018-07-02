@@ -12,15 +12,22 @@
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:background="#cdcdcd" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout_adver_commen"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         app:tabBackground="@drawable/selected"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="#CC33FF"
+
+        app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabTextColor="#000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
 
     <com.qunxianghui.gxh.widget.NoScrollViewPager
         android:id="@+id/viewPager_adver_commen"

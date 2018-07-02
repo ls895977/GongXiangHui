@@ -16,7 +16,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.utils.PhotoUtil;
 import com.qunxianghui.gxh.utils.UriPathUtils;
-import com.qunxianghui.gxh.widget.ActionSheetDialog;
+import com.qunxianghui.gxh.widget.ActionSheetCommonDialog;
 
 import java.io.File;
 
@@ -160,15 +160,15 @@ public class PublishStateActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void options() {
-        ActionSheetDialog mDialog = new ActionSheetDialog(this).builder();
+        ActionSheetCommonDialog mDialog = new ActionSheetCommonDialog(this).builder();
         mDialog.setTitle("选择");
         mDialog.setCancelable(false);
-        mDialog.addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+        mDialog.addSheetItem("拍照", ActionSheetCommonDialog.SheetItemColor.Blue, new ActionSheetCommonDialog.OnSheetItemClickListener() {
             @Override
             public void onClick(int which) {
                 PhotoUtil.photograph(PublishStateActivity.this);
             }
-        }).addSheetItem("从相冊选取", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+        }).addSheetItem("从相冊选取", ActionSheetCommonDialog.SheetItemColor.Blue, new ActionSheetCommonDialog.OnSheetItemClickListener() {
             @Override
             public void onClick(int which) {
                 PhotoUtil.selectPictureFromAlbum(PublishStateActivity.this);

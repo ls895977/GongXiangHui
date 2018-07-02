@@ -72,7 +72,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     ImageButton ibHomeSearch;
     @BindView(R.id.ib_home_scan)
     ImageButton ibHomeScan;
-//    @BindView(R.id.toolbar)
+    //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
     @BindView(R.id.tv_home_location)
     TextView tvHomeLocation;
@@ -100,6 +100,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     Unbinder unbinder;
     private String cityCode;
     private String adCode;
+    private String cityinfo;
 
     @Override
     public int getLayoutId() {
@@ -371,6 +372,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             case R.id.tv_home_location:
 //                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
+                intent.putExtra("homecity",cityinfo);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
         }
@@ -387,13 +389,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
+                    cityinfo = data.getStringExtra("cityinfo");
                     if (data == null) {
-                    }
-                    final String cityinfo = data.getStringExtra("cityinfo");
-                    if (cityinfo == null) {
+                        return;
+                    } else if (cityinfo == null) {
                         return;
                     }
                     tvHomeLocation.setText(cityinfo);
+                    saveCurrCity(cityinfo);
                     break;
 
                 }
@@ -410,13 +413,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
                     @Override
                     public void run() {
-                        tvHomeLocation.setText(aMapLocation.getDistrict());
-                        cityCode = aMapLocation.getCityCode();
-                        adCode = aMapLocation.getAdCode();
-
+                        String currCity = aMapLocation.getDistrict();
+                        tvHomeLocation.setText(currCity);
+                        cityCode = aMapLocation.getCity();
+                        adCode = aMapLocation.getDistrict();
                         SaveLocationData(cityCode, adCode);
-                    }
 
+
+                    }
                 });
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -428,14 +432,27 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         mlocationClient.stopLocation();
     }
 
+    /**
+     * 保存当前城市
+     * @param cityinfo
+     */
+    private void saveCurrCity(String cityinfo) {
+        SharedPreferences currcity = getActivity().getSharedPreferences("currcity", 0);
+        SharedPreferences.Editor editor = currcity.edit();
+        editor.putString("currcity", cityinfo);
+        editor.commit();
+    }
+
     /*sp存储一些信息*/
     private void SaveLocationData(String cityCode, String adCode) {
         SharedPreferences location = getActivity().getSharedPreferences("location", 0);
         SharedPreferences.Editor editor = location.edit();
-        editor.putString("X-cityId",cityCode );
-        editor.putString("X-areaId",adCode );
+        editor.putString("X-cityId", cityCode);
+        editor.putString("X-areaId", adCode);
         editor.commit();
     }
+
+
 
 
     public static HomeFragment getInstance() {
