@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Display;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
@@ -55,7 +53,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     TextView tvHomeVideoIssue;
 
     private PersonDetailVideoAdapter personDetailVideoAdapter;
-
     private int count = 0;
     private boolean mIsFirst = true;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
@@ -80,7 +77,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initDatas() {
-
         RequestHomeVideoList();
     }
 
@@ -103,8 +99,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
      * @param body
      */
     private void parsePersonDetailVideoData(String body) {
-
-        final HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
+        HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
         videoDataList.addAll(homeVideoListBean.getData().getList());
         count = videoDataList.size();
         if (homeVideoListBean.getCode() == 0) {
@@ -112,11 +107,9 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 mIsFirst = false;
                 personDetailVideoAdapter = new PersonDetailVideoAdapter(mContext, videoDataList);
                 personDetailVideoAdapter.setVideoListClickListener(this);
-
                 xrecyclerHomevideoList.setAdapter(personDetailVideoAdapter);
             }
             xrecyclerHomevideoList.refreshComplete();
-
             personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
@@ -125,7 +118,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                     startActivity(intent);
                 }
             });
-
             personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
         }
     }
@@ -135,7 +127,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         super.initListeners();
         ivHomeVideoBack.setOnClickListener(this);
         tvHomeVideoIssue.setOnClickListener(this);
-
         xrecyclerHomevideoList.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -149,13 +140,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 RequestHomeVideoList();
             }
         });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -197,6 +181,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 break;
         }
     }
+
     /**
      * 底部弹起
      */
@@ -229,13 +214,14 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         dialogWindow.setAttributes(lp);
         dialog.show();
     }
+
     /**
      * 视频列表的关注
      *
      * @param position
      */
     @Override
-    public void attentionClick(int position) {
+    public void attentionClick(final int position) {
         OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
                 .execute(new StringCallback() {
                     @Override
@@ -245,23 +231,23 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                             final int code = jsonObject.getInt("code");
                             if (code == 0) {
                                 asyncShowToast("关注成功");
-                                personDetailVideoAdapter.videoAttention.setText("已关注");
-
+                                videoDataList.get(position).setFollow("1");
                             } else if (code == 202) {
+                                videoDataList.get(position).setFollow("");
                                 asyncShowToast("取消关注成功");
-                                personDetailVideoAdapter.videoAttention.setText("关注");
                             }
+                            personDetailVideoAdapter.notifyItemChanged(position + 1);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
                         Logger.e("视频关注" + response.body().toString());
                     }
                 });
-
         Logger.d("视频汇的关注position" + position);
     }
 
@@ -297,13 +283,11 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
             dialogWindow.setAttributes(lp);
         }
         quickUpDialog.show();
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case Code.VIDEO_RECORD_REQUEST:
                 if (data != null) {
@@ -315,7 +299,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                         if (cursor != null && cursor.moveToFirst()) {
                             filePath = cursor.getString(0);
                             showUploadVideoDialog();
-
                         }
                     }
                 }
@@ -325,11 +308,8 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 if (resultCode == Code.LOCAL_VIDEO_RESULT && data != null) {
                     filePath = data.getStringExtra("path");
                     showUploadVideoDialog();
-
-                    break;
                 }
-
-
+                break;
         }
     }
 }
