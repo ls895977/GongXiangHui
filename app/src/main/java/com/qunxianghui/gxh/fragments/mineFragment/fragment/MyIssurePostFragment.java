@@ -64,6 +64,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     private LinearLayout IssuePostCommentView;
     private TextView IssuePostCommentSend;
     private int scrollOffsetY = 0;
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -72,7 +73,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initDatas() {
-
         RequestMyIssurePost();
     }
 
@@ -109,7 +109,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
                 }
                 recyclerMineissuePost.refreshComplete();
-
                 mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
             }
         } else {
@@ -125,6 +124,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         IssuePostCommentSend = view.findViewById(R.id.issuepost_comment_to_send);  //底部提交
         SoftKeyView();
     }
+
     /**
      * 软键盘的顶起
      */
@@ -134,23 +134,23 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
             public void keyBoardShow(int height) {
                 Logger.i("xxx-yyy jump :" + commentPosition);
                 //View item = recyclerView.getChildAt(commentPosition + 1);
-                View item =recyclerMineissuePost.getLayoutManager().findViewByPosition(commentPosition + 1);
+                View item = recyclerMineissuePost.getLayoutManager().findViewByPosition(commentPosition + 1);
                 int offset = 5;
                 int keyboardoffset = 80;
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) IssuePostCommentView.getLayoutParams();
                 layoutParams.bottomMargin = height - offset;
                 IssuePostCommentView.setLayoutParams(layoutParams);
 
-                if(item!=null){
+                if (item != null) {
                     int[] location = new int[2];
                     item.getLocationOnScreen(location);
                     int x = location[0];
                     int y = location[1];
                     Logger.v("xxx-yyy item " + item);
-                    Logger.v("xxx-yyy item height :",item.getMeasuredHeight());
+                    Logger.v("xxx-yyy item height :", item.getMeasuredHeight());
                     Logger.v("xxx-yyy y :" + y);
-                    recyclerMineissuePost.scrollBy(0,(y + item.getMeasuredHeight() ) - (recyclerMineissuePost.getMeasuredHeight()  - height) + keyboardoffset);
-                }else  {
+                    recyclerMineissuePost.scrollBy(0, (y + item.getMeasuredHeight()) - (recyclerMineissuePost.getMeasuredHeight() - height) + keyboardoffset);
+                } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
             }
@@ -189,19 +189,18 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                         break;
                 }
             }
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 scrollOffsetY = scrollOffsetY + dy;
             }
         });
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
-
-
         IssuePostCommentSend.setOnClickListener(this);
-
         recyclerMineissuePost.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -225,11 +224,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-
     }
 
     @Override
@@ -316,7 +310,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     /*删除帖子*/
     @Override
     public void deletePost(int position) {
-
         OkGo.<String>post(Constant.DELETE_POST_URL)
                 .params("uuid", dataList.get(position).getUuid())
                 .execute(new DialogCallback<String>(getActivity()) {
@@ -326,7 +319,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
                     }
                 });
-
     }
 
     /**
@@ -385,8 +377,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
             }
         });
-
-
     }
 
     private void hideSoftKeyboard(EditText editText, Context context) {
@@ -404,11 +394,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
             int code = jsonObject.getInt("code");
             if (code == 0) {
                 asyncShowToast("删除成功");
-
-
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -419,8 +405,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         switch (v.getId()) {
 
         }
-
     }
-
 
 }

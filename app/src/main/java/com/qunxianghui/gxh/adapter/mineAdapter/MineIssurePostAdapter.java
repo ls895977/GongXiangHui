@@ -67,8 +67,6 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
                 if (postOnClickListener!=null){
                     postOnClickListener.onCommentClick(position,"");
                 }
-
-
             }
         });
         holder.mTvlike.setOnClickListener(new View.OnClickListener() {
@@ -106,9 +104,6 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
 
 
     }
-
-
-
 
     @Override
     public int getItemCount() {

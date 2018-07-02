@@ -21,38 +21,25 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
         this.myIssueVideoClikListener = myIssueVideoClikListener;
     }
 
-
     public MineIssueVideoAdapter(Context context, List<MineIssueVideoBean.DataBean> datas) {
         super(context, datas);
     }
 
     @Override
     protected void convert(MyViewHolder holder, final int position, final MineIssueVideoBean.DataBean dataBean) {
-
         final ImageView headImage = holder.getView(R.id.iv_item_issue_video_head);
-
         holder.setText(R.id.tv_item_issue_video_title, dataBean.getTitle());
         holder.setText(R.id.tv_item_issue_vido_time, dataBean.getNewctime());
         GlideApp.with(mContext).load(dataBean.getPicurl()).centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(headImage);
-
-/**
- * 删除视频
- *
- */
         final TextView deleteVideo = holder.getView(R.id.tv_item_issue_video_delete);
-
         deleteVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 myIssueVideoClikListener.deleVideoItem(position);
                 notifyDataSetChanged();
-
-
-
             }
         });
     }
