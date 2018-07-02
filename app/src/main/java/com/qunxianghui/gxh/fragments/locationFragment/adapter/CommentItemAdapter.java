@@ -1,13 +1,13 @@
 package com.qunxianghui.gxh.fragments.locationFragment.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -16,11 +16,8 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.qunxianghui.gxh.widget.BigListView;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class CommentItemAdapter extends BaseAdapter {
 
@@ -82,9 +79,9 @@ public class CommentItemAdapter extends BaseAdapter {
         showView(holder, position, parent);
         UserUtil user = UserUtil.getInstance();
         CommentBean comment = mList.get(position);
-        if (user.mNick.equalsIgnoreCase(comment.getMember_name())){
+        if (!TextUtils.isEmpty(user.mNick) && user.mNick.equalsIgnoreCase(comment.getMember_name())) {
             holder.tv_item_discuss_delete.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.tv_item_discuss_delete.setVisibility(View.GONE);
         }
 
