@@ -186,6 +186,8 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                             int code = jsonObject.getInt("code");
                             if (code==0){
                                 asyncShowToast("删除成功");
+                                mineIssueVideoAdapter.notifyItemChanged(position);
+                                mineIssueVideoAdapter.notifyDataSetChanged();
                             }else {
                                 asyncShowToast("删除失败");
                             }

@@ -2,11 +2,11 @@ package com.qunxianghui.gxh.fragments.homeFragment;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,12 +36,14 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.Utils;
@@ -70,8 +72,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     ImageButton ibHomeSearch;
     @BindView(R.id.ib_home_scan)
     ImageButton ibHomeScan;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
     @BindView(R.id.tv_home_location)
     TextView tvHomeLocation;
     //TabLayout标签
@@ -96,6 +98,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     Unbinder unbinder;
+    private String cityCode;
+    private String adCode;
 
     @Override
     public int getLayoutId() {
@@ -350,6 +354,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ib_home_camera:            //爆料
+
+                if (!LoginMsgHelper.isLogin(getContext())) {
+                    toActivity(LoginActivity.class);
+                    mActivity.finish();
+                    return;
+                }
                 toActivity(BaoLiaoActivity.class);
                 break;
             case R.id.ib_home_scan:            //扫描二维码
@@ -396,10 +406,17 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 runOnUiThread(new Runnable() {
+                    private String adCode;
+
                     @Override
                     public void run() {
                         tvHomeLocation.setText(aMapLocation.getDistrict());
+                        cityCode = aMapLocation.getCityCode();
+                        adCode = aMapLocation.getAdCode();
+
+                        SaveLocationData(cityCode, adCode);
                     }
+
                 });
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -410,6 +427,16 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         }
         mlocationClient.stopLocation();
     }
+
+    /*sp存储一些信息*/
+    private void SaveLocationData(String cityCode, String adCode) {
+        SharedPreferences location = getActivity().getSharedPreferences("location", 0);
+        SharedPreferences.Editor editor = location.edit();
+        editor.putString("X-cityId",cityCode );
+        editor.putString("X-areaId",adCode );
+        editor.commit();
+    }
+
 
     public static HomeFragment getInstance() {
         if (homeFragment == null) {

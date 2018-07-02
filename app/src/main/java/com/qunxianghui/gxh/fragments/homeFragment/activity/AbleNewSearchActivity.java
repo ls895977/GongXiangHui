@@ -59,13 +59,14 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
 
     @Override
     protected void initViews() {
-        setSystemBarTransparent();
+//        setSystemBarTransparent();
 
         simpleExpandableListview.setGroupIndicator(null);
 
         RequestAbleLocation();
 
     }
+
     private void RequestAbleLocation() {
         //定位
         mlocationClient = new AMapLocationClient(mContext);
@@ -94,10 +95,10 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                 Log.i(TAG, "--->" + json);
 
                 DataCityInfo bean = GsonUtil.parseJsonWithGson(json, DataCityInfo.class);
+
                 if (bean.getCode() == 0) {
                     setItems(bean);
                     DataCityInfo.DataBean dataBean = bean.getData();
-
                     Map<String, Integer> letterMap = new HashMap<>();
                     int index = 0;
                     letterMap.put("A", index);//0-2
@@ -154,11 +155,11 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
 
         MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
         simpleExpandableListview.setAdapter(adapter);
-
         simpleExpandableListview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-//                tvHomeactivityCurrLocation.setText(bean.setData([groupPosition][childPosition]));
+                String areaname = bean.getData().getA().get(groupPosition).getAreas().get(childPosition).getAreaname();
+                tvHomeactivityCurrLocation.setText(areaname);
                 return true;
             }
         });
@@ -210,7 +211,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                     @Override
                     public void run() {
                         tvHomeactivityCurrLocation.setText(aMapLocation.getDistrict());
-                        tvBletopLocation.setText("当前位置"+" "+ aMapLocation.getDistrict());
+                        tvBletopLocation.setText("当前位置" + " " + aMapLocation.getDistrict());
                     }
                 });
             } else {
@@ -226,7 +227,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_blelocation_back:
                 finish();
                 break;

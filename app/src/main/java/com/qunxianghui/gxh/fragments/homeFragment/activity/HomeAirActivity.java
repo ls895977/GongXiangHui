@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
@@ -17,7 +17,6 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeAirBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
 
@@ -35,6 +34,8 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     TextView tvHomeairBottomDayDetail;
     @BindView(R.id.iv_home_air_back)
     ImageView ivHomeAirBack;
+    private String cityId;
+    private String areaId;
 
     @Override
     protected int getLayoutId() {
@@ -46,13 +47,18 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
         xrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         RequestAirList();
 
+        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
+        cityId = spLocation.getString("X-cityId", "");
+        areaId = spLocation.getString("X-areaId", "");
+
 
     }
 
     private void RequestAirList() {
-        OkGo.<String>get(Constant.HOME_AIRLIST_URL).tag(TAG)
-                .cacheKey("cachePostKey").
-                cacheMode(CacheMode.DEFAULT).execute(new StringCallback() {
+        OkGo.<String>post(Constant.HOME_AIRLIST_URL)
+                .headers("X-cityId",cityId)
+                .headers("X-areaId",areaId)
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 final HomeAirBean homeAirBean = GsonUtil.parseJsonWithGson(response.body(), HomeAirBean.class);

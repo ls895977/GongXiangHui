@@ -144,7 +144,6 @@ public class Fragment2 extends BaseFragment {
                     public void onSuccess(Response<String> response) {
                         parseFragment1AdvData(response.body());
                     }
-
                     @Override
                     public void onError(Response<String> response) {
                         Log.v("ad_add", response.toString());

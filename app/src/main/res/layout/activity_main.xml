@@ -22,7 +22,7 @@
     <LinearLayout
         android:id="@+id/ll_main"
         android:layout_width="match_parent"
-        android:layout_height="57dp"
+        android:layout_height="45dp"
         android:orientation="horizontal">
 
 
@@ -71,8 +71,8 @@
 
             <ImageView
                 android:id="@+id/iv_home"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/selector_tab_home" />
 
             <TextView
@@ -90,8 +90,8 @@
 
             <ImageView
                 android:id="@+id/iv_location"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/selector_tab_find" />
 
             <TextView
@@ -106,7 +106,7 @@
         <LinearLayout
             android:id="@+id/ll_issue"
             android:layout_width="0dp"
-            android:layout_height="73dp"
+            android:layout_height="60dp"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -114,8 +114,8 @@
 
             <ImageView
                 android:id="@+id/iv_issue"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="41dp"
+                android:layout_height="41dp"
                 android:layout_gravity="center"
                 android:background="@drawable/selector_tab_fabu" />
 
@@ -134,8 +134,8 @@
 
             <ImageView
                 android:id="@+id/iv_generation"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/selector_tab_journey" />
 
             <TextView
@@ -153,8 +153,8 @@
 
             <ImageView
                 android:id="@+id/iv_mine"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/selector_tab_mine" />
 
             <TextView

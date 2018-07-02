@@ -40,8 +40,10 @@ import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -452,6 +454,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onCommentClick(final int position, String content) {
 
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
         commentPosition = position;
         commentView.setVisibility(View.VISIBLE);
         comment_edit.setFocusable(true);
@@ -538,6 +545,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
+
+
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
         if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() == 0) {
             if (dataList.get(position).getClick_like().size() <= 0) {
                 dataList.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
@@ -599,6 +613,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onCollectionClick(final int position) {
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
             @Override

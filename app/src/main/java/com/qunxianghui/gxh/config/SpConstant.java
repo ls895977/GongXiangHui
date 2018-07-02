@@ -11,7 +11,7 @@ public class SpConstant {
 
     public static final String ACCESS_TOKEN = "access_token";//用户登录凭证
 
-    public static final String IS_COMPANY = "is_company";//是否是企业会员
+public static final String IS_COMPANY = "is_company";//是否是企业会员
 
-    public static final String HISTORIES = "histories";//保存用户搜索历史
-}
+public static final String HISTORIES = "histories";//保存用户搜索历史
+        }
