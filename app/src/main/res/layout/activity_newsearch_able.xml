@@ -8,35 +8,33 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
 
         <ImageView
-
             android:id="@+id/iv_blelocation_back"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:background="@mipmap/icon_back" />
 
 
         <TextView
-
             android:id="@+id/tv_bletop_location"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="定位城市" />
+            android:text="定位城市"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <TextView
-        android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:text="当前定位城市:" />
 

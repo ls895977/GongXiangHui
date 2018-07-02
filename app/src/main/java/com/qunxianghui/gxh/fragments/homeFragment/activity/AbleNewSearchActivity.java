@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class AbleNewSearchActivity extends BaseActivity implements AbsListView.OnScrollListener, View.OnClickListener, AMapLocationListener {
 
@@ -53,7 +52,10 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     TextView tvBletopLocation;
     private AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
-    private String currcity;
+    private String mCurrentCity;
+    private SharedPreferences mSp;
+    private String mCityId;
+    private String mAreaId;
 
     @Override
     protected int getLayoutId() {
@@ -63,17 +65,10 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     @Override
     protected void initViews() {
 //        setSystemBarTransparent();
-
-        SharedPreferences sp = getSharedPreferences("currcity", 0);
-        currcity = sp.getString("currcity", "");
-
-
+        mSp = getSharedPreferences("location", MODE_PRIVATE);
+        tvHomeactivityCurrLocation.setText(mSp.getString("currcity", ""));
         simpleExpandableListview.setGroupIndicator(null);
-
         RequestAbleLocation();
-
-
-
     }
 
     private void RequestAbleLocation() {
@@ -96,7 +91,6 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
 
     @Override
     protected void initDatas() {
-
         OkGo.<String>post(Constant.CITY_LIST_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -161,33 +155,28 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     }
 
     private void setItems(final DataCityInfo bean) {
-
         MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
         simpleExpandableListview.setAdapter(adapter);
         simpleExpandableListview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                String areaname = bean.getData().getA().get(groupPosition).getAreas().get(childPosition).getAreaname();
+                DataCityInfo.DataBean.CityBean.AreasBean areasBean = bean.getData().getA().get(groupPosition).getAreas().get(childPosition);
+                String areaname = areasBean.getAreaname();
                 tvHomeactivityCurrLocation.setText(areaname);
-
                 final Intent intent = new Intent();
-                intent.putExtra("cityinfo",areaname);
-                setResult(RESULT_OK,intent);
+                mSp.edit().putString("currcity", areaname).putString("X-cityId", String.valueOf(areasBean.getCityid())).putString("X-areaId", String.valueOf(areasBean.getAreaid())).commit();
+                setResult(RESULT_OK, intent);
                 finish();
                 return true;
             }
         });
-
     }
 
     @Override
     protected void initListeners() {
         tvHomeactivitySetcurrLocation.setOnClickListener(this);
         ivBlelocationBack.setOnClickListener(this);
-
-
     }
-
 
     /**
      * 设置沉浸式状态栏
@@ -213,28 +202,22 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-
     }
-
 
     @Override
     public void onLocationChanged(final AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvHomeactivityCurrLocation.setText(currcity);
-                        tvBletopLocation.setText("当前位置" + " " +currcity);
-                        tvHomeactivitySetcurrLocation.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                tvHomeactivityCurrLocation.setText(aMapLocation.getDistrict());
-                                finish();
-                            }
-                        });
-                    }
-                });
+                mCurrentCity = aMapLocation.getDistrict();
+                mCityId = aMapLocation.getCityCode();
+                mAreaId = aMapLocation.getAdCode();
+                String city = mSp.getString("currcity", "");
+                if (!TextUtils.isEmpty(city)) {
+                    tvHomeactivityCurrLocation.setText(city);
+                } else {
+                    tvHomeactivityCurrLocation.setText(mCurrentCity);
+                }
+                tvBletopLocation.setText("当前位置" + " " + aMapLocation.getCity());
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "locations Error, ErrCode:"
@@ -243,7 +226,6 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             }
         }
         mlocationClient.stopLocation();
-
     }
 
     @Override
@@ -252,15 +234,11 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             case R.id.iv_blelocation_back:
                 finish();
                 break;
-
+            case R.id.tv_homeactivity_setcurr_location:
+                mSp.edit().putString("currcity", mCurrentCity).putString("X-cityId", mCityId).putString("X-areaId", mAreaId).commit();
+                tvHomeactivityCurrLocation.setText(mCurrentCity);
+                finish();
+                break;
         }
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

@@ -1,12 +1,14 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -57,7 +59,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
-import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 
 
 /**
@@ -166,11 +167,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         shade_right = mActivity.findViewById(R.id.shade_right);
         mViewPager = mActivity.findViewById(R.id.home_view_pager);
 
-
         //一进来进行定位
-
         RequestHomeLocation();
-
     }
 
     private void RequestHomeLocation() {
@@ -190,7 +188,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         mlocationClient.setLocationOption(mLocationOption);
         mlocationClient.startLocation();
     }
-
 
     private void setChangelView() {
 //        initColumnData();
@@ -327,10 +324,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     @Override
-    protected void onLoadData() {
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -355,7 +348,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ib_home_camera:            //爆料
-
                 if (!LoginMsgHelper.isLogin(getContext())) {
                     toActivity(LoginActivity.class);
                     mActivity.finish();
@@ -372,7 +364,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             case R.id.tv_home_location:
 //                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
-                intent.putExtra("homecity",cityinfo);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
         }
@@ -389,16 +380,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    cityinfo = data.getStringExtra("cityinfo");
-                    if (data == null) {
-                        return;
-                    } else if (cityinfo == null) {
-                        return;
-                    }
-                    tvHomeLocation.setText(cityinfo);
-                    saveCurrCity(cityinfo);
+                    String city = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).getString("currcity", "");
+                    tvHomeLocation.setText(city);
                     break;
-
                 }
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -408,20 +392,16 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void onLocationChanged(final AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                runOnUiThread(new Runnable() {
-                    private String adCode;
-
-                    @Override
-                    public void run() {
-                        String currCity = aMapLocation.getDistrict();
-                        tvHomeLocation.setText(currCity);
-                        cityCode = aMapLocation.getCity();
-                        adCode = aMapLocation.getDistrict();
-                        SaveLocationData(cityCode, adCode);
-
-
-                    }
-                });
+                String currCity = aMapLocation.getDistrict();
+                String city = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).getString("currcity", "");
+                if (!TextUtils.isEmpty(city)) {
+                    tvHomeLocation.setText(city);
+                } else {
+                    tvHomeLocation.setText(currCity);
+                    cityCode = aMapLocation.getCityCode();
+                    adCode = aMapLocation.getAdCode();
+                    SaveLocationData(cityCode, adCode);
+                }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "locations Error, ErrCode:"
@@ -432,17 +412,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         mlocationClient.stopLocation();
     }
 
-    /**
-     * 保存当前城市
-     * @param cityinfo
-     */
-    private void saveCurrCity(String cityinfo) {
-        SharedPreferences currcity = getActivity().getSharedPreferences("currcity", 0);
-        SharedPreferences.Editor editor = currcity.edit();
-        editor.putString("currcity", cityinfo);
-        editor.commit();
-    }
-
     /*sp存储一些信息*/
     private void SaveLocationData(String cityCode, String adCode) {
         SharedPreferences location = getActivity().getSharedPreferences("location", 0);
@@ -451,9 +420,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         editor.putString("X-areaId", adCode);
         editor.commit();
     }
-
-
-
 
     public static HomeFragment getInstance() {
         if (homeFragment == null) {

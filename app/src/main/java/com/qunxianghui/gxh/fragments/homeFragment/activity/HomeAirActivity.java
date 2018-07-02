@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.qunxianghui.gxh.utils.GsonUtil;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class HomeAirActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.xrecycler)
@@ -44,7 +42,6 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     private String cityId;
     private String areaId;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private String cityinfo;
 
     @Override
     protected int getLayoutId() {
@@ -55,12 +52,9 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     protected void initViews() {
         xrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         RequestAirList();
-
         SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
         cityId = spLocation.getString("X-cityId", "");
         areaId = spLocation.getString("X-areaId", "");
-
-
     }
 
     private void RequestAirList() {
@@ -74,7 +68,6 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
                         final HomeAirBean.DataBean data = homeAirBean.getData();
                         SetTopAirDetail(data);
                         final List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();
-
                         xrecycler.setAdapter(new HomeAirListAdapter(mContext, forecast));
                     }
                 });
@@ -87,22 +80,14 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
         final String windPower = data.getForecast().get(0).getDay().getWindPower();
         final String windDirection = data.getForecast().get(0).getDay().getWindDirection();
         final String dateTime = data.getForecast().get(0).getDate();
-
-
         tvHomeairTopBigDegree.setText(wendu + "°C");
         tvHomeairMiddleAirdetail.setText(weather + "|" + windDirection + windPower);
         tvHomeairBottomDayDetail.setText(dateTime);
-
-
     }
 
     @Override
     protected void initDatas() {
-
-
-        homeAirLocation.setText(cityId+areaId);
-
-
+        homeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
     }
 
     @Override
@@ -125,13 +110,6 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_home_air_back:
@@ -139,7 +117,6 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.ll_homeair_location:
                 Intent intent = new Intent(mContext, AbleNewSearchActivity.class);
-                intent.putExtra("homecity", cityinfo);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
         }
@@ -147,22 +124,14 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    cityinfo = data.getStringExtra("cityinfo");
-                    if (data == null) {
-                        return;
-                    } else if (cityinfo == null) {
-                        return;
-                    }
-                    homeAirLocation.setText(cityinfo);
-
+                    homeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
                     break;
 
                 }
-                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
