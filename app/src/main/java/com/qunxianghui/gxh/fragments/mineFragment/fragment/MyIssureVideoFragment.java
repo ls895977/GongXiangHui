@@ -50,16 +50,12 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     @Override
     public void initDatas() {
-
         RequestMyIssueVideo();
-
-
     }
 
     /**
      * 请求我的发布中的视频
      */
-
     private void RequestMyIssueVideo() {
         OkGo.<String>post(Constant.GET_ISSURE_VIDEO_URL)
                 .params("limit", 5)
@@ -76,7 +72,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     private void ParseMineIssueVideo(String body) {
         final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
-
         if (mIsRefreshing) {
             mIsRefreshing = false;
             dataList.clear();
@@ -110,7 +105,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
     @Override
     public void initViews(View view) {
         recyclerMineIssueVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-
     }
 
     @Override
@@ -119,11 +113,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-
     }
 
     @Override
@@ -154,7 +143,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     @Override
     public void deleVideoItem(final int position) {
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("删除提示");
         builder.setMessage("您确定要删除该条消息吗?");
@@ -162,15 +150,12 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DeleteVideo(position);
-
             }
 
         });
         mineIssueVideoAdapter.notifyDataSetChanged();
-
         builder.setNegativeButton("取消", null);
         builder.show();
-
     }
 
     /*请求接口删除*/
@@ -180,15 +165,14 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(final Response<String> response) {
-
                         try {
-                            JSONObject jsonObject=new JSONObject(response.body());
+                            JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
-                            if (code==0){
+                            if (code == 0) {
                                 asyncShowToast("删除成功");
-                                mineIssueVideoAdapter.notifyItemChanged(position);
+                                dataList.remove(position);
                                 mineIssueVideoAdapter.notifyDataSetChanged();
-                            }else {
+                            } else {
                                 asyncShowToast("删除失败");
                             }
                         } catch (Exception e) {
@@ -199,12 +183,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
                     }
                 });
-
-        mineIssueVideoAdapter.notifyDataSetChanged();
-        mineIssueVideoAdapter.notifyItemChanged(position);
-
-
     }
-
 
 }
