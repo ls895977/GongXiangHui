@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +16,8 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
+
 import com.qunxianghui.gxh.adapter.MyAdapter;
-import com.qunxianghui.gxh.adapter.mineAdapter.MyFansAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.JsonBean;
 import com.qunxianghui.gxh.utils.GetJsonDataUtil;
@@ -45,6 +44,8 @@ public class InviteFrientActivity extends BaseActivity {
     Button btInviteParsedata;
     @BindView(R.id.xre_xrv)
     XRecyclerView xreXrv;
+    @BindView(R.id.bt_skip)
+    Button btSkip;
     private boolean isLoaded = false;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private int curr;
@@ -193,8 +194,8 @@ public class InviteFrientActivity extends BaseActivity {
 
             @Override
             public void onLoadMore() {
-  //在上拉加载的时候 以为第一次获取10个数据  所也在获取的时候就要在加10的地方开始获取
-                curr=curr+10;
+                //在上拉加载的时候 以为第一次获取10个数据  所也在获取的时候就要在加10的地方开始获取
+                curr = curr + 10;
                 getData(curr);
                 xreXrv.refreshComplete();
             }
@@ -210,7 +211,7 @@ public class InviteFrientActivity extends BaseActivity {
 
     private void getData(int number) {
 
-        for (int i = number; i < number+10; i++) {
+        for (int i = number; i < number + 10; i++) {
             list.add("数据是第" + i + "个");
         }
 
@@ -251,6 +252,12 @@ public class InviteFrientActivity extends BaseActivity {
             }
         });
 
+        btSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void showPickerView() {

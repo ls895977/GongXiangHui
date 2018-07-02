@@ -43,7 +43,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.search.model.CityEntity;
 import com.qunxianghui.gxh.fragments.homeFragment.search.utils.JsonReadUtil;
-import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.qunxianghui.gxh.widget.LetterListView;
 import com.qunxianghui.gxh.widget.ViewBinder;
 
@@ -103,14 +102,14 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
 
         //默认软键盘不弹出
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        setSystemBarTransparent();
+//        setSystemBarTransparent();
 
         ViewBinder.bind(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int top = ScreenUtils.getSystemBarHeight();
-            mToolbar.setPadding(0, top, 0, 0);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            int top = ScreenUtils.getSystemBarHeight();
+//            mToolbar.setPadding(0, top, 0, 0);
+//        }
         handler = new Handler();
         overlayThread = new OverlayThread();
         searchCityListAdapter = new SearchCityListAdapter(mContext, searchCityList);

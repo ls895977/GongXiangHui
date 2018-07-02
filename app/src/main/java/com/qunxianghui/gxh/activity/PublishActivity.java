@@ -25,6 +25,8 @@ import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
@@ -218,6 +220,12 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_home_baoliao_fabu:
+
+                if (!LoginMsgHelper.isLogin(mContext)) {
+                    toActivity(LoginActivity.class);
+                    finish();
+                    return;
+                }
                 if (!isCanUpload()) {
                     return;
                 }

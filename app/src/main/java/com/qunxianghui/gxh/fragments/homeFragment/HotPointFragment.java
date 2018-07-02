@@ -36,9 +36,11 @@ import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
@@ -399,6 +401,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_home_paste_artical:
+                if (!LoginMsgHelper.isLogin(getContext())) {
+                    toActivity(LoginActivity.class);
+                    mActivity.finish();
+                    return;
+                }
                 //粘贴板有数据并且是文本
                 if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);

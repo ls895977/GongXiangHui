@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.DataCityInfo;
@@ -170,7 +169,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
         TextView child_text = (TextView) convertView.findViewById(R.id.child);
 
-
         child_text.setText(childText);
 
         return convertView;
@@ -179,6 +177,10 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+
+
+
     }
+
 
 }
