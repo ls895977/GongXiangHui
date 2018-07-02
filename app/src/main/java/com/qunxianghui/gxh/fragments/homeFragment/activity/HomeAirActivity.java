@@ -1,10 +1,12 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -34,12 +36,15 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     TextView tvHomeairBottomDayDetail;
     @BindView(R.id.iv_home_air_back)
     ImageView ivHomeAirBack;
-    @BindView(R.id.home_air_city)
-    TextView homeAirCity;
-    @BindView(R.id.home_air_area)
-    TextView homeAirArea;
+
+    @BindView(R.id.ll_homeair_location)
+    LinearLayout llHomeairLocation;
+    @BindView(R.id.home_air_location)
+    TextView homeAirLocation;
     private String cityId;
     private String areaId;
+    public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+    private String cityinfo;
 
     @Override
     protected int getLayoutId() {
@@ -95,8 +100,8 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     protected void initDatas() {
 
 
-        homeAirCity.setText(cityId);
-        homeAirArea.setText(areaId);
+        homeAirLocation.setText(cityId+areaId);
+
 
     }
 
@@ -116,6 +121,7 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
         });
 
         ivHomeAirBack.setOnClickListener(this);
+        llHomeairLocation.setOnClickListener(this);
     }
 
     @Override
@@ -131,6 +137,32 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
             case R.id.iv_home_air_back:
                 finish();
                 break;
+            case R.id.ll_homeair_location:
+                Intent intent = new Intent(mContext, AbleNewSearchActivity.class);
+                intent.putExtra("homecity", cityinfo);
+                startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+
+            case CITY_SELECT_RESULT_FRAG:
+                if (resultCode == RESULT_OK) {
+                    cityinfo = data.getStringExtra("cityinfo");
+                    if (data == null) {
+                        return;
+                    } else if (cityinfo == null) {
+                        return;
+                    }
+                    homeAirLocation.setText(cityinfo);
+
+                    break;
+
+                }
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

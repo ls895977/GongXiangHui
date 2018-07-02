@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -37,6 +38,7 @@ import com.qunxianghui.gxh.bean.home.MoreTypeBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
@@ -56,6 +58,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import kr.co.namee.permissiongen.PermissionGen;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -90,6 +94,10 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private int total = 0;
     private int mChannelId = 0;
     private String image_url;
+    private TextView mhomeLocalLocation;
+    private View localLocationView;
+    public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+    private String cityinfo;
 
     @Override
     public int getLayoutId() {
@@ -113,7 +121,21 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             initGridHomeNavigator();
             //加载首页轮播图
             initLunBoShow();
+        }else if (mChannelId==0){
+            localLocationView = LayoutInflater.from(mActivity).inflate(R.layout.home_local_location, null);
+            mhomeLocalLocation = localLocationView.findViewById(R.id.tv_home_local_location);
+            mhomeLocalLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
+                    intent.putExtra("homecity", cityinfo);
+                    startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
+                }
+            });
         }
+
+
+
         View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
         //这句是调取粘贴的系统服务
         mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -135,6 +157,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         if (mChannelId == -1) {
             homeItemListAdapter1.addHeaderView(headerNavigator);
             homeItemListAdapter1.addHeaderView(headerVp, 1);
+        }else if (mChannelId==0){
+            homeItemListAdapter1.addHeaderView(localLocationView);
         }
         homeItemListAdapter1.addFooterView(footer);
 
@@ -302,7 +326,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     }
                 });
     }
-
     private void initGridHomeNavigator() {
         BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
@@ -365,7 +388,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -373,12 +395,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     protected void onLoadData() {
-
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -390,7 +409,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         super.onDestroy();
         mActivity.finish();
     }
-
     /**
      * 粘贴文章的处理
      *
@@ -419,6 +437,25 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 break;
         }
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
 
+            case CITY_SELECT_RESULT_FRAG:
+                if (resultCode == RESULT_OK) {
+                    cityinfo = data.getStringExtra("cityinfo");
+                    if (data == null) {
+                        return;
+                    } else if (cityinfo == null) {
+                        return;
+                    }
+                    mhomeLocalLocation.setText(cityinfo);
+
+                    break;
+
+                }
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 }

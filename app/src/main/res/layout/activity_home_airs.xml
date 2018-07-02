@@ -84,10 +84,10 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_homeair_location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-
                 android:layout_weight="1"
                 android:gravity="right|center_vertical">
 
@@ -97,22 +97,15 @@
                     android:background="@mipmap/icon_home_location" />
 
                 <TextView
-                    android:id="@+id/home_air_city"
+                    android:id="@+id/home_air_location"
                     android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="邢台市"
+                    android:text="邢台市  隆尧"
                     android:textColor="@color/white" />
 
-                <TextView
-                    android:id="@+id/home_air_area"
-                    android:textSize="15sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="隆尧"
-                    android:textColor="@color/white" />
+
 
             </LinearLayout>
 
