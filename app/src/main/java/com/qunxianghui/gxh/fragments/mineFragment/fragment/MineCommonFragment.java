@@ -96,9 +96,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         }
         dataList.addAll(myCollectPostBean.getData());
         count = dataList.size();
-        for (int i = 0; i < dataList.size(); i++) {
-            data_uuid = dataList.get(i).getData_uuid();
-        }
         if (myCollectPostBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
@@ -108,9 +105,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        Intent intent=new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("uurd",dataList.get(position).getData_uuid());
-                        intent.putExtra("url",newsUrl);
+                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("uurd", dataList.get(position).getData_uuid());
+                        intent.putExtra("url", newsUrl);
                         startActivity(intent);
 
                     }
@@ -144,7 +141,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 LoadMycolectNews();
             }
         });
-
     }
 
     @Override
@@ -167,14 +163,14 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     }
 
     @Override
-    public void cancelNewsCollect(int position) {
+    public void cancelNewsCollect(final int position) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("删除提示");
         builder.setMessage("您确定要删除该条消息吗?");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                CancelNewsData();
+                CancelNewsData(position);
 
             }
         });
@@ -185,9 +181,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     /**
      * 取消收藏
      */
-    private void CancelNewsData() {
+    private void CancelNewsData(final int position) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", data_uuid)
+                .params("data_uuid", dataList.get(position).getData_uuid())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(final Response<String> response) {
@@ -196,6 +192,8 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                             public void run() {
                                 Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
                                 com.orhanobut.logger.Logger.e("取消收藏+" + response.body().toString());
+                                dataList.remove(position);
+                                myCollectPostAdapter.notifyDataSetChanged();
                             }
                         });
                     }

@@ -124,14 +124,14 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
     @Override
-    public void cancelCollect(int position) {
+    public void cancelCollect(final int position) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("删除提示");
         builder.setMessage("您确定要删除该条消息吗?");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                CancelCollectPostData();
+                CancelCollectPostData(position);
 
             }
         });
@@ -155,7 +155,28 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
 
     }
 
-    private void CancelCollectPostData() {
+    private void CancelCollectPostData(final int position) {
         Toast.makeText(mActivity, "取消成功", Toast.LENGTH_SHORT).show();
+        OkGo.<String>post(Constant.ADD_COLLECT_URL)
+                .params("data_uuid", dataList.get(position).getData_uuid())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(final Response<String> response) {
+                        Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                        com.orhanobut.logger.Logger.e("取消收藏+" + response.body().toString());
+                        dataList.remove(position);
+                        mineCollectPostAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+
+                        Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
     }
 }

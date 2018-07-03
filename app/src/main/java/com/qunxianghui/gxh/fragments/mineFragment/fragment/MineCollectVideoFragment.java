@@ -38,7 +38,7 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
-
+        RequestMineCollectVideo();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-     RequestMineCollectVideo();
+
 
     }
 
@@ -70,14 +70,12 @@ public class MineCollectVideoFragment extends BaseFragment {
                 });
 
     }
-
     private void ParseMineCollectVideo(String body) {
         final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
 
         if (mIsRefresh){
             mIsRefresh=false;
             dataList.clear();
-
         }
         dataList.addAll(mineCollectVideoBean.getData());
         count=dataList.size();

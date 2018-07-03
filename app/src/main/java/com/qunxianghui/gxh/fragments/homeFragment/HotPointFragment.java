@@ -96,12 +96,10 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     private String cityinfo;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
-
     @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
@@ -140,7 +138,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 }
         );
     }
-
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
@@ -155,7 +152,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             homeItemListAdapter1.addHeaderView(localLocationView);
         }
         homeItemListAdapter1.addFooterView(footer);
-
         //上拉加载更多哦
         homeItemListAdapter1.setLoadMoreView(new CustomLoadMoreView());
         homeItemListAdapter1.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -176,7 +172,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
         // 设置下拉进度的主题颜色
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-
         // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -188,20 +183,17 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         swipeRefreshLayout.setRefreshing(true);
                         count = 0;
 //                        parseData();
-
                         //首页下拉刷新
                         HomePullRefresh();
-
                     }
 
                 }, 1000);
-
                 Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.TOP, 0, 0);
                 toast.show();
             }
         });
-        //设置加载出来看的动画
+//        //设置加载出来看的动画
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
     }
@@ -249,7 +241,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
-
     private void parseHomeLunBoPager(String body) {
         final HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
 
@@ -279,14 +270,12 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         public void OnBannerClick(int position) {
                             Intent intent = new Intent(mActivity, ProtocolActivity.class);
                             intent.putExtra("url", lunboData.get(position).getImage_url());
-
                             startActivity(intent);
                         }
                     })
                     .start();
         }
     }
-
     private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
@@ -348,7 +337,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 3:
                         //跳转优惠
-//                        toActivity(SalerActivity.class);
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.YouXuan);

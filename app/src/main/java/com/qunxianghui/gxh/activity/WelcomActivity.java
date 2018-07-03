@@ -41,17 +41,13 @@ public class WelcomActivity extends BaseActivity {
             startActivity(intent);
             finish();
         }
-
-
         return count;
     }
-
     @Override
     protected int getLayoutId() {
 
         return R.layout.activity_welcom;
     }
-
     @Override
     protected void initViews() {
         // 初始化控件对象
@@ -59,7 +55,6 @@ public class WelcomActivity extends BaseActivity {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_text);
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
-
     }
 
     @Override

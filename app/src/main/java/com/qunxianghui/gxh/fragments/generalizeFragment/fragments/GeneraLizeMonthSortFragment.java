@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.generaAdapter.GeneralizeSortAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -27,14 +26,11 @@ import butterknife.Unbinder;
 
 @SuppressLint("ValidFragment")
 public class GeneraLizeMonthSortFragment extends BaseFragment {
-
     private static String queryType = "";
-
     private static GeneraLizeMonthSortFragment mGenerMonthSortFragment;
 
     public GeneraLizeMonthSortFragment() {
     }
-
     public static GeneraLizeMonthSortFragment newInstance(String type) {
 
         if(mGenerMonthSortFragment == null || !type.equals(queryType)){
@@ -43,14 +39,9 @@ public class GeneraLizeMonthSortFragment extends BaseFragment {
         }
         return mGenerMonthSortFragment;
     }
-
-
-
-
     @BindView(R.id.recycler_generalize_month_sort)
     RecyclerView recyclerGeneralizeMonthSort;
     Unbinder unbinder;
-
     private String url = Constant.GENERALIZE_PAIHANG_URL + "?type=";
 
     @Override
@@ -61,12 +52,9 @@ public class GeneraLizeMonthSortFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Response<String> response) {
                         parseGeneralizeSortData(response.body());
-
                     }
                 });
-
     }
-
     private void parseGeneralizeSortData(String body) {
         final EmployeePaiHangBean employeePaiHangBean = GsonUtils.jsonFromJson(body, EmployeePaiHangBean.class);
         if (employeePaiHangBean.getCode() == 0) {

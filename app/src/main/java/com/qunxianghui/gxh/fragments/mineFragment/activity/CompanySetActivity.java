@@ -75,10 +75,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     ImageView ivCompanysetBack;
     @BindView(R.id.ll_load)
     View mLoadView;
-
-//    @BindView(R.id.et_mine_companyset_selectcity)
+    //    @BindView(R.id.et_mine_companyset_selectcity)
 //    TextView etMineCompanysetSelectcity;
-
     private SelectPhotoDialog selectPhotoDialog;
     public static final int IMAGE_ITEM_ADD = -1;
     public static final int REQUEST_CODE_SELECT = 100;
@@ -96,9 +94,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private CompanySetBean.DataBean mDataBean;
 
-
     @Override
     protected int getLayoutId() {
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_company_set;
     }
@@ -116,7 +114,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
         imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
-
         selImageList = new ArrayList<>();
         adapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
         adapter.setOnItemClickListener(this);
@@ -127,7 +124,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     private void parseCompanyInfo(String body) {
         final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
-        if (companySetBean.getCode() == 0) {
+
+        int code = companySetBean.getCode();
+        if (code == 0) {
             mDataBean = companySetBean.getData();
             if (mDataBean != null) {
                 fillPersonCompanyData(mDataBean);
@@ -144,6 +143,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     }
                 }
             }
+        } else if (code == 101) {
+            asyncShowToast("查询失败 请添加后再查询！");
         }
     }
 
@@ -176,6 +177,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
+
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -240,7 +242,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                             upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path), i == length - 1);
                         } else {
                             upLoadPics.add(path);
-                            if (i == length -1) {
+                            if (i == length - 1) {
                                 fetchCompayData();
                             }
                         }
@@ -402,12 +404,11 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
-            }else if (data!=null&&requestCode==IMAGE_PICKER){
-                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                    selImageList.addAll(images);
-                    adapter.setImages(selImageList);
-
-            }else {
+            } else if ( requestCode == IMAGE_PICKER) {
+                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                selImageList.addAll(images);
+                adapter.setImages(selImageList);
+            } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {

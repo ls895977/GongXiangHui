@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.LzyResponse;
@@ -43,7 +44,6 @@ import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -77,7 +77,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailShare;
     @BindView(R.id.iv_news_detail_addAdver)
     ImageView ivNewsDetailAddAdver;
-
     private WebView mWebView;
     private ProgressBar mProgressBar;
     private Dialog dialog;
@@ -87,15 +86,13 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_bottom_alertdialog_cancle;
     private LinearLayout ll_share_list;
     private ImageView iv_newsdetail_wxshared_friendcircle;
-
     private Bundle params;
     private String url;
     private int uuid;
     private int id;
-
     private UMShareListener umShareListener;
     private android.os.Handler handler = new android.os.Handler();
-    private boolean has_collect;
+    private String has_collect;
     private String title;
     private TextView btn_submit;
     private EditText inputComment;
@@ -108,47 +105,17 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void initViews() {
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
         //微信朋友圈
         mProgressBar = (ProgressBar) findViewById(R.id.progress_newsdetail);
         mWebView.loadUrl(this.url);
-
-        //获取内容状态
-        hodeNewsStatus();
-    }
-
-    private void hodeNewsStatus() {
-        OkGo.<String>get(Constant.GET_NEWS_CONTENT_DETAIL_URL)
-                .params("id", id).execute(new StringCallback() {
-            @Override
-            public void onSuccess(final Response<String> response) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (HttpStatusUtil.getStatus(response.body())) {
-                            parseNewsContentData(response.body());
-                            com.orhanobut.logger.Logger.d("收藏+++" + response.body().toString());
-                        }
-                    }
-                }, 200);
-            }
-        });
-    }
-
-    //解析内容详情
-    private void parseNewsContentData(String body) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            JSONObject data = jsonObject.getJSONObject("data");
-            has_collect = data.getBoolean("has_collect");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void initDatas() {
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         title = intent.getStringExtra("title");
@@ -192,6 +159,41 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         };
     }
 
+    @Override
+    protected void initDatas() {
+        //获取内容状态
+        hodeNewsStatus();
+    }
+
+    private void hodeNewsStatus() {
+        OkGo.<String>get(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id", id).execute(new StringCallback() {
+            @Override
+            public void onSuccess(final Response<String> response) {
+                parseNewsContentData(response.body());
+            }
+        });
+    }
+
+    //解析内容详情
+    private void parseNewsContentData(String body) {
+        try {
+            JSONObject jsonObject = new JSONObject(body);
+            JSONObject data = jsonObject.getJSONObject("data");
+            has_collect = data.getString("has_collect");
+            Logger.d("收藏状态" + has_collect);
+            int code = jsonObject.getInt("code");
+            if (code == 0) {
+                if (has_collect.length() == 0 || has_collect == null) {
+                    ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
+                } else {
+                    ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     //底部弹出对话框
     private void showBottomAliert() {
@@ -413,7 +415,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         if (response.body().code.equals("0")) {
                             asyncShowToast("评论成功");
                             llInputDiscuss.setVisibility(View.VISIBLE);
+                            mWebView.reload();
                             popupWindow.dismiss();
+
 
                         }
                     }
@@ -475,9 +479,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private void parseCollectData(String body) {
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
         if (myCollectBean.getCode() == 0) {
-            has_collect = (has_collect == true ? false : true);
-            ivNewsDetailCollect.setBackgroundResource(has_collect == true ? R.drawable.collect : R.drawable.collect_normal);
-            Toast.makeText(mContext, has_collect == true ? "收藏成功" : "取消收藏成功", Toast.LENGTH_SHORT).show();
+            asyncShowToast("收藏成功");
+            ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
+        } else if (myCollectBean.getCode() == 202) {
+            asyncShowToast("取消收藏成功");
+            ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
         }
     }
 

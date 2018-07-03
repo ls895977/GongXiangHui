@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,7 +35,6 @@ import butterknife.Unbinder;
  */
 
 public class GeneraCompanyFragment extends BaseFragment implements View.OnClickListener {
-
     @BindView(R.id.view_company)
     View viewCompany;
     @BindView(R.id.rb_genera_company_yuebang)
@@ -47,7 +45,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     RadioGroup rgGeneraCompanyPaihang;
     @BindView(R.id.vp_generalize_company_main)
     ViewPager vpGeneralizeCompanyMain;
-
     @BindView(R.id.app_bar)
     AppBarLayout appBar;
     Unbinder unbinder;
@@ -67,7 +64,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     TextView tvArticleTransmitRate;
     @BindView(R.id.collapsing_layout)
     CollapsingToolbarLayout collapsingLayout;
-
     @Override
     protected void onLoadData() {
 
@@ -77,46 +73,32 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
                 parseGeneraLizeStaticsData(response.body());
             }
         });
-
     }
-
     private void parseGeneraLizeStaticsData(String body) {
         final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
-
         if (generalizeCompanyStaticsBean.getCode() == 0) {
             final GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
             final int staff_cnt = dataBean.getStaff_cnt();  //规模
             final String ad_prize = dataBean.getAd_prize();  //广告费
-
             final String view_cnt = dataBean.getView_cnt(); //文章曝光
             final int article_cnt = dataBean.getArticle_cnt(); //文章总数
             final String forward_cnt = dataBean.getForward_cnt();  //文章转发
             final String click_cnt = dataBean.getClick_cnt();   //广告点击
             final String click_rate = dataBean.getClick_rate();   //广告点击率
             final String forward_rate = dataBean.getForward_rate(); //文章转发率
-
-
             tvGeneralizeCompanyMoneyCount.setText("节省广告费：" + ad_prize + " 元" + " 规模:" + String.valueOf(staff_cnt));
-
             tvArticleExposureCount.setText(view_cnt);
-
             tvArticleCount.setText(String.valueOf(article_cnt));
-
             tvArticleTransmitCount.setText(forward_cnt);
-
             tvAdverClickCount.setText(click_cnt);
-
             tvAdverClickRate.setText(click_rate);
-
             tvArticleTransmitRate.setText(forward_rate);
         }
     }
-
     @Override
     public int getLayoutId() {
         return R.layout.genera_company;
     }
-
     @Override
     public void initDatas() {
         rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -132,11 +114,8 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
                 }
             }
         });
-
-
         vpGeneralizeCompanyMain.addOnPageChangeListener(viewPagerListenter);
     }
-
     @Override
     public void initViews(View view) {
         final List<Fragment> fragments = new ArrayList<>();
@@ -151,7 +130,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }
-
 
     /**
      * ==================viewpager滑动监听=====================

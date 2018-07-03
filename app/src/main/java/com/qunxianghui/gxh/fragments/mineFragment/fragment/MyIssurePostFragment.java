@@ -64,18 +64,15 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     private LinearLayout IssuePostCommentView;
     private TextView IssuePostCommentSend;
     private int scrollOffsetY = 0;
-
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_mine_issure;
     }
-
     @Override
     public void initDatas() {
         RequestMyIssurePost();
     }
-
     /**
      * 网络请求我发布的帖子
      */

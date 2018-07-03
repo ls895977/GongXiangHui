@@ -1,30 +1,19 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
-import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GlideApp;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 /**
  * 我收藏贴子的适配器

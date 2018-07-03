@@ -43,9 +43,9 @@ public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelect
         fragments.add(GeneraLizeMonthSortFragment.newInstance("click_cnt"));
         fragments.add(GeneraLizeMonthSortFragment.newInstance("forward_cnt"));
         fragments.add(GeneraLizeMonthSortFragment.newInstance("article_cnt"));
-
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(mActivity.getSupportFragmentManager(), fragments, titles);
         generaCampanyPaihangViewpager.setAdapter(mineTabViewPagerAdapter);
+        generaCampanyPaihangViewpager.setOffscreenPageLimit(fragments.size());
         generaCompanyPaihangTablayoutCommon.setupWithViewPager(generaCampanyPaihangViewpager);
     }
 
