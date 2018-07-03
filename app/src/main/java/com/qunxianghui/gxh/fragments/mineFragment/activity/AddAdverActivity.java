@@ -104,8 +104,11 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             JSONObject data = jsonObject.getJSONObject("data");
-                            if (jsonObject.getInt("code") == 0 && data != null) {
+                            int code = jsonObject.getInt("code");
+                            if (code == 0 && data != null) {
                                 startThirdShare(data.getString("url"), data.getString("title"), data.getString("imgUrl"));
+                            }else if (code==105){
+                                asyncShowToast("请在首次会员激活的设备上进行分享");
                             }
 
                         } catch (JSONException e) {
@@ -114,7 +117,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                     }
                 });
     }
-
     /**
      * 三方分享
      */

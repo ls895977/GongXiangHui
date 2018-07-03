@@ -103,6 +103,8 @@ public class MineFragment extends BaseFragment {
     private int like_cnt;
     private int posts_cnt;
     private int comment_cnt;
+    private Object companyInfo;
+    private String expires_time;
 
     @Override
     public int getLayoutId() {
@@ -139,6 +141,8 @@ public class MineFragment extends BaseFragment {
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
+//            JSONObject accessTokenInfo = jsonObject.getJSONObject("accessTokenInfo");
+//            expires_time = accessTokenInfo.getString("expires_time");
 
             mNick = data.getString("nick");
             mAvatar = data.getString("avatar");
@@ -155,7 +159,6 @@ public class MineFragment extends BaseFragment {
             tvMinePostCount.setText(String.valueOf(posts_cnt));
             tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
 
-
             GlideApp.with(getActivity()).load(mAvatar).
                     placeholder(R.mipmap.user_moren).
                     error(R.mipmap.user_moren).
@@ -163,7 +166,8 @@ public class MineFragment extends BaseFragment {
                     into(mIvHead);
 
 
-            Object companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+            companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
             } else if (companyInfo instanceof Object) {
@@ -225,6 +229,7 @@ public class MineFragment extends BaseFragment {
                 toActivity(MineIssueActivity.class);
                 break;
             case R.id.rl_up_step:
+
                 toActivity(MemberUpActivity.class);
                 break;
             case R.id.company_set:

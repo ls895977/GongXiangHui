@@ -74,7 +74,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.img.setVisibility(View.VISIBLE);
             GlideApp.with(mContext).load(imageList.get(0))
                     .centerCrop()
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.default_img)
                     .error(R.mipmap.ic_launcher)
                     .into(holder.img);
             holder.img.setOnClickListener(new View.OnClickListener() {

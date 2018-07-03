@@ -390,9 +390,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
                     asyncShowToast("请输入评论内容");
                 } else {
-
                     RequestNewsCommon(CommonText);
-                    popupWindow.dismiss();
+
                 }
             }
         });
@@ -413,8 +412,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     public void onSuccess(Response<LzyResponse<CommentBean>> response) {
                         if (response.body().code.equals("0")) {
                             asyncShowToast("评论成功");
-                            llInputDiscuss.setVisibility(View.GONE);
-
+                            llInputDiscuss.setVisibility(View.VISIBLE);
+                            popupWindow.dismiss();
 
                         }
                     }

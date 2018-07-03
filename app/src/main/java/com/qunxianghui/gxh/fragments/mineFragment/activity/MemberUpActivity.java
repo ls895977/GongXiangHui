@@ -18,7 +18,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
@@ -41,23 +40,15 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.ll_unactivite_top)
     LinearLayout llUnactiviteTop;
     private JSONArray data;
-
-
-    @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_member_up;
-
 
     }
 
     @Override
     protected void initViews() {
-
-
-
     }
-
     @Override
     protected void initDatas() {
         new TitleBuilder(MemberUpActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -66,15 +57,12 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                 finish();
             }
         }).setTitleText("产品介绍");
-
     }
-
     @Override
     protected void initListeners() {
         super.initListeners();
         tvMemberUpQuicklyActivate.setOnClickListener(this);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

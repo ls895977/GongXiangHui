@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -82,6 +83,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     public static final int IMAGE_ITEM_ADD = -1;
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
+    public static final int IMAGE_PICKER = 102;
     private List<ImageView> imgs = new ArrayList<>();
     private int maxImgCount = 8;               //允许选择图片最大数
     private ImagePickerAdapter adapter;
@@ -194,7 +196,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
                 Intent intent = new Intent(CompanySetActivity.this, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-                startActivityForResult(intent, REQUEST_CODE_SELECT);
+                startActivityForResult(intent, IMAGE_PICKER);
                 selectPhotoDialog.dismiss();
             }
 
@@ -400,6 +402,13 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
+            }else if (data!=null&&requestCode==IMAGE_PICKER){
+                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                    selImageList.addAll(images);
+                    adapter.setImages(selImageList);
+
+            }else {
+                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
             //预览图片返回

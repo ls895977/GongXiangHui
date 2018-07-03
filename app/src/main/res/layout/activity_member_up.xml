@@ -60,9 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-
                         android:text="请拨打以下热线咨询:400-180-6969" />
-
 
                     <View
                         android:layout_width="match_parent"
@@ -80,8 +78,6 @@
                         android:text="立即激活"
                         android:textColor="@color/tab_color" />
                 </LinearLayout>
-
-
 
             </LinearLayout>
             <LinearLayout

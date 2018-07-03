@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
-
     @BindView(R.id.ll_mine)
     LinearLayout llMine;
     @BindView(R.id.ll_home)
@@ -62,7 +61,6 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_mine)
     TextView tvMine;
     private long exitTime;
-
     private MainBroadCast receiver;
     static final String INTENT_BROADCAST_HIDE_TAB = "android.intent.action.HIDE_TAB";
     private HomeFragment mHomeFragment;

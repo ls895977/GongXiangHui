@@ -3,7 +3,9 @@ package com.qunxianghui.gxh.base;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
@@ -25,6 +27,7 @@ import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CityPickerutil;
 import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -76,12 +79,12 @@ public class MyApplication extends Application {
         appManager = AppManager.getAppManager();
 
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-//            StrictMode.setVmPolicy(builder.build());
-//        }
-//
-//        ScreenUtils.init(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+
+        ScreenUtils.init(this);
         /**
          * 预先加载三级列表显示省市区的数据
          */

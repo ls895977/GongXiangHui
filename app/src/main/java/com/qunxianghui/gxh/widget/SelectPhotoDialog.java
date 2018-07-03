@@ -71,7 +71,6 @@ public class SelectPhotoDialog extends Dialog implements View.OnClickListener {
                 break;
         }
     }
-
     public interface SelectPhotoListener{
         void onTakePhoto();
         void onSelect();
