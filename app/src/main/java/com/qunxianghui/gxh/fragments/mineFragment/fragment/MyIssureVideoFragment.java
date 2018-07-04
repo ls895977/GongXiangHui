@@ -15,10 +15,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
+import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
@@ -65,11 +67,9 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                     public void onSuccess(Response<String> response) {
                         com.orhanobut.logger.Logger.d("我爆料的视频+++" + response.body().toString());
                         ParseMineIssueVideo(response.body());
-
                     }
                 });
     }
-
     private void ParseMineIssueVideo(String body) {
         final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
         if (mIsRefreshing) {
@@ -84,21 +84,46 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 mineIssueVideoAdapter = new MineIssueVideoAdapter(mActivity, dataList);
                 mineIssueVideoAdapter.setMyIssueVideoClikListener(this);
                 recyclerMineIssueVideo.setAdapter(mineIssueVideoAdapter);
-
                 mineIssueVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                        intent.putExtra("url", dataList.get(position).getVideo_url());
-                        intent.putExtra("title", dataList.get(position).getTitle());
-                        startActivity(intent);
+                        int uuid = dataList.get(position-1).getUuid();
+                        SkipMyIssueVideoDetail(uuid);
                     }
                 });
             }
             recyclerMineIssueVideo.refreshComplete();
             mineIssueVideoAdapter.notifyDataSetChanged();
             mineIssueVideoAdapter.notifyItemChanged(count, dataList.size());
+        }
+    }
+    /**
+     * 跳转我的发布的视频详情页
+     * @param uuid
+     */
+    private void SkipMyIssueVideoDetail(int uuid) {
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", uuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        ParseMyIssueVideoDetail(response.body());
+                    }
+                });
+    }
 
+    /**
+     * 解析我的发布视频详情
+     * @param body
+     */
+    private void ParseMyIssueVideoDetail(String body) {
+        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(body, MyCollectVideoDetailBean.class);
+        int code = myCollectVideoDetailBean.getCode();
+        if (code == 0) {
+            String url = myCollectVideoDetailBean.getData().getUrl();
+            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
         }
     }
 
@@ -125,14 +150,12 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 mIsRefreshing = true;
                 RequestMyIssueVideo();
             }
-
             @Override
             public void onLoadMore() {
                 RequestMyIssueVideo();
             }
         });
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -157,7 +180,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
         builder.setNegativeButton("取消", null);
         builder.show();
     }
-
     /*请求接口删除*/
     private void DeleteVideo(final int position) {
         OkGo.<String>post(Constant.DELETE_MYISSUE_URL)
@@ -177,10 +199,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-
                         }
-
-
                     }
                 });
     }

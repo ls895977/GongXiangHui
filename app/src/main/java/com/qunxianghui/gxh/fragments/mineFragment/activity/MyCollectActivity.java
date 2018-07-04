@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
@@ -31,8 +30,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
-    @BindView(R.id.tv_mycollect_edit)
-    TextView tvMycollectEdit;
 
 
     private String[] titles = new String[]{"资讯", "视频", "帖子"};
@@ -60,7 +57,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         //设置tablayout的点击事件
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
-        tvMycollectEdit.setOnClickListener(this);
+
 
         fragments.add(new MineCommonFragment());
         fragments.add(new MineCollectVideoFragment());
@@ -95,8 +92,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
             case R.id.iv_myCollect_back:
                 finish();
                 break;
-            case R.id.tv_mycollect_edit:
-                break;
+
         }
     }
 }

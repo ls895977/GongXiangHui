@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.CollectBean;
+import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
@@ -47,12 +48,11 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
 
     private Handler handler = new Handler();
-    private int data_uuid;
+
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
     private int mMemberId;
-    private String newsUrl;
 
 
     @Override
@@ -63,8 +63,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     @Override
     public void initDatas() {
 
-        Intent intent = mActivity.getIntent();
-        newsUrl = intent.getStringExtra("url");
+
         if (getArguments() != null) {
             mMemberId = getArguments().getInt("member_id");
         }
@@ -103,13 +102,13 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 myCollectPostAdapter.setCollectOnClickListener(this);
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+
+                    private int data_uuid;
+
                     @Override
                     public void onItemClick(View v, int position) {
-                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("uurd", dataList.get(position).getData_uuid());
-                        intent.putExtra("url", newsUrl);
-                        startActivity(intent);
-
+                        data_uuid = dataList.get(position-1).getData_uuid();
+                        SkipMycollectNewsDetail(data_uuid);
                     }
                 });
             }
@@ -117,6 +116,38 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             myCollectPostAdapter.notifyDataSetChanged();
             myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
+    }
+    /**
+     * 跳转新闻详情页
+     * @param data_uuid
+     */
+    private void SkipMycollectNewsDetail(int data_uuid) {
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id",data_uuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        ParseMyCollectNewsDetail(response.body());
+                    }
+                });
+    }
+
+    /**
+     * 解析我的收藏资讯新闻
+     * @param body
+     */
+    private void ParseMyCollectNewsDetail(String body) {
+        MyColleNewsDetailBean myColleNewsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
+        int code = myColleNewsDetailBean.getCode();
+        if (code==0){
+            String url = myColleNewsDetailBean.getData().getUrl();
+            Intent intent=new Intent(mActivity, NewsDetailActivity.class);
+            intent.putExtra("url",url);
+            startActivity(intent);
+        }
+
+
+
+
     }
 
 

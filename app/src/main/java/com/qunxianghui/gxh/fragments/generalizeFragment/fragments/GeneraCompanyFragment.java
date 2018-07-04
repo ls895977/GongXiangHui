@@ -120,13 +120,13 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     public void initViews(View view) {
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(new MonthFragment());
-        fragments.add(new GeneraPushFragment());
+        fragments.add(new MonthFragment());
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
         vpGeneralizeCompanyMain.setAdapter(adapter);
         /** 禁止滑动*/
         //        vpGeneralizeCompanyMain.setScroll(false);
         /**增加缓存页面的数量*/
-        vpGeneralizeCompanyMain.setOffscreenPageLimit(fragments.size() - 1);
+        vpGeneralizeCompanyMain.setOffscreenPageLimit(fragments.size()-1);
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }

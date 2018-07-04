@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -12,10 +13,12 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
+import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -33,7 +36,7 @@ public class MineCollectVideoFragment extends BaseFragment {
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
-    private List<MineCollectVideoBean.DataBean> dataList=new ArrayList<>();
+    private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
     private MineCollectVideoAdapter mineCollectVideoAdapter;
 
     @Override
@@ -48,15 +51,12 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-
-
     }
 
     /**
      * 请求我收藏的视频
      */
     private void RequestMineCollectVideo() {
-
         OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
                 .params("limit", 5)
                 .params("skip", count)
@@ -65,64 +65,86 @@ public class MineCollectVideoFragment extends BaseFragment {
                     public void onSuccess(Response<String> response) {
                         Logger.d("我爆料的视频+++" + response.body().toString());
                         ParseMineCollectVideo(response.body());
-
                     }
                 });
-
     }
+
     private void ParseMineCollectVideo(String body) {
         final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
 
-        if (mIsRefresh){
-            mIsRefresh=false;
+        if (mIsRefresh) {
+            mIsRefresh = false;
             dataList.clear();
         }
         dataList.addAll(mineCollectVideoBean.getData());
-        count=dataList.size();
+        count = dataList.size();
         if (mineCollectVideoBean.getCode() == 0) {
-        if (mIsFirst){
-            mIsFirst=false;
-            mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
-            xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
-            mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    asyncShowToast("点击了");
-                }
-            });
-        }
+            if (mIsFirst) {
+                mIsFirst = false;
+                mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
+                xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
+                mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        int data_uuid = dataList.get(position-1).getData_uuid();
+                        SkipMycollectVideoDetail(data_uuid);
+                    }
+                });
+            }
             xrecyclerMycollectVideo.refreshComplete();
             mineCollectVideoAdapter.notifyDataSetChanged();
-            mineCollectVideoAdapter.notifyItemRangeChanged(count,mineCollectVideoBean.getData().size());
-
-
+            mineCollectVideoAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
         }
     }
-
+    /**
+     * 跳转我的收藏的视频详情页
+     *
+     * @param data_uuid
+     */
+    private void SkipMycollectVideoDetail(int data_uuid) {
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", data_uuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        ParseMyCollectVideoDetail(response.body());
+                    }
+                });
+    }
+    /**
+     * 解析我的收藏视频详情
+     *
+     * @param body
+     */
+    private void ParseMyCollectVideoDetail(String body) {
+        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(body, MyCollectVideoDetailBean.class);
+        int code = myCollectVideoDetailBean.getCode();
+        if (code == 0) {
+            String url = myCollectVideoDetailBean.getData().getUrl();
+            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
+        }
+    }
     @Override
     protected void initListeners() {
         super.initListeners();
         xrecyclerMycollectVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-             mIsRefresh=true;
-             count=0;
+                mIsRefresh = true;
+                count = 0;
                 RequestMineCollectVideo();
             }
-
             @Override
             public void onLoadMore() {
                 RequestMineCollectVideo();
             }
         });
     }
-
     @Override
     public void initViews(View view) {
         xrecyclerMycollectVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -130,7 +152,6 @@ public class MineCollectVideoFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
