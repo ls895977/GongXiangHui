@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
@@ -69,6 +70,8 @@ public class MainActivity extends BaseActivity {
     private MineFragment mMineFragment;
     private GeneralizeFragment mGeneralizeFragment;
 
+    private FragmentManager supportFragmentManager;
+
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -78,6 +81,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViews() {
         initViewPagers();
+
     }
 
     private void initViewPagers() {
@@ -90,6 +94,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initListeners() {
+
     }
 
     @Override
@@ -116,7 +121,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void selectedFragment(int position) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+
         hideFragment(transaction);
         switch (position) {
             //首页

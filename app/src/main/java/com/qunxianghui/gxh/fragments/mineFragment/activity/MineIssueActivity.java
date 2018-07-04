@@ -23,12 +23,10 @@ import butterknife.BindView;
  */
 
 public class MineIssueActivity extends BaseActivity {
-
     @BindView(R.id.mine_MyIssureTablayout_common)
     TabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)
     ViewPager mineMyIssureViewpager;
-
     private String[] titles = new String[]{"爆料", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
@@ -62,7 +60,7 @@ public class MineIssueActivity extends BaseActivity {
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
-        mineMyIssureViewpager.setOffscreenPageLimit(2);
+        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
         mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
     }
 

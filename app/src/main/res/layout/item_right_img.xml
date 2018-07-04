@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/eye_test"
                 android:drawablePadding="3dp"
+                android:layout_marginLeft="15dp"
                 android:text="52万"
                 android:layout_marginRight="3dp"
                 android:textSize="14sp"/>

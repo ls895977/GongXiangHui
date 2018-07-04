@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -70,7 +71,6 @@ public class MineFragment extends BaseFragment {
     RelativeLayout hezuoCall;
     @BindView(R.id.write_advertise)
     RelativeLayout writeAdvertise;
-
     @BindView(R.id.tv_mine_set)
     TextView tvMineSet;
     @BindView(R.id.rl_up_step)
@@ -91,6 +91,10 @@ public class MineFragment extends BaseFragment {
     TextView tvMinePostCount;
     @BindView(R.id.tv_mine_follow_post_count)
     TextView tvMineFollowPostCount;
+    @BindView(R.id.ll_mine_post)
+    LinearLayout llMinePost;
+    @BindView(R.id.ll_mine_fllow_post)
+    LinearLayout llMineFllowPost;
 
     private UserDao userDao;
     private int userSize;
@@ -105,6 +109,7 @@ public class MineFragment extends BaseFragment {
     private int comment_cnt;
     private Object companyInfo;
     private String expires_time;
+
 
     @Override
     public int getLayoutId() {
@@ -203,7 +208,8 @@ public class MineFragment extends BaseFragment {
     private void toCollectView() {
     }
 
-    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise, R.id.mine_quickly_login})
+    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise,
+            R.id.mine_quickly_login, R.id.ll_mine_post,R.id.ll_mine_fllow_post})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -250,6 +256,13 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.tv_mine_set:
                 toActivity(SettingActivity.class);
+                break;
+            case R.id.ll_mine_post:
+                asyncShowToast("点击了帖子");
+
+                break;
+            case R.id.ll_mine_fllow_post:
+                asyncShowToast("点击了跟帖");
                 break;
         }
     }
@@ -301,4 +314,7 @@ public class MineFragment extends BaseFragment {
         }
         return mineFragment;
     }
+
+
+
 }

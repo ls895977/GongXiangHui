@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -106,7 +105,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
         imagePicker.setShowCamera(true);                      //显示拍照按钮
-        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
+        imagePicker.setCrop(false);                           //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
         imagePicker.setSelectLimit(maxImgCount);              //选中数量限制
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
@@ -174,14 +173,17 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCompanysetWritContactName.setText(linkname);
         etMineCaompanysetToIndustry.setText(company_trade_name);
     }
-
     @Override
     protected void initDatas() {
 
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                parseCompanyInfo(response.body());
+      Logger.d("企业设置的信息"+response.body().toString());
+                if (mDataBean != null) {
+                    parseCompanyInfo(response.body());
+                }
+
             }
         });
     }
@@ -198,7 +200,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
                 Intent intent = new Intent(CompanySetActivity.this, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-                startActivityForResult(intent, IMAGE_PICKER);
+                startActivityForResult(intent, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
 
@@ -404,12 +406,6 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
-            } else if ( requestCode == IMAGE_PICKER) {
-                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                selImageList.addAll(images);
-                adapter.setImages(selImageList);
-            } else {
-                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
             //预览图片返回
