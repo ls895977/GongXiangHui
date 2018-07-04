@@ -29,7 +29,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <application
         android:name="com.qunxianghui.gxh.base.MyApplication"
         android:allowBackup="true"
@@ -38,9 +37,9 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <!--app的入口-->
-        <activity android:name="com.qunxianghui.gxh.activity.WelcomActivity">
+        <activity android:name="com.qunxianghui.gxh.activity.WelcomActivity"
+            android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -81,11 +80,6 @@
             </intent-filter>
         </activity>
 
-        <!--欢迎界面的广告界面-->
-        <activity
-            android:name=".activity.WelcomAdverActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--主页面MainActivity-->
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"

@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
@@ -46,7 +49,6 @@ public class MyApplication extends Application {
     private static MyApplication SINSTANCE;
     public static AppManager appManager;
     private String mAccessToken;
-
     public static MyApplication getMyApplicaiton() {
         return SINSTANCE;
     }
@@ -77,14 +79,14 @@ public class MyApplication extends Application {
 
         initOkGo();
         appManager = AppManager.getAppManager();
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
 
         ScreenUtils.init(this);
+
+
         /**
          * 预先加载三级列表显示省市区的数据
          */

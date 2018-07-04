@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -8,7 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="StartTheme" parent="AppTheme">
+     <item name="android:windowBackground">@mipmap/icon_starpage</item>
+     <item name="windowNoTitle">true</item>
 
+    </style>
     <!-- 首页radiobutton style-->
     <style name="MainRadioButtonStyle">
         <item name="android:layout_height">wrap_content</item>
