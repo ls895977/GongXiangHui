@@ -65,8 +65,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private static LocationFragment locationFragment;
     @BindView(R.id.tv_location_mine_fabu)
     TextView tvLocationMineFabu;
-    //    @BindView(R.id.photo_view)
-//    PhotoView photoView;
     LinearLayout commentView;
     EditText comment_edit;
     TextView send_btn;
@@ -220,17 +218,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
             recyclerView.refreshComplete();
             mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
-            /*
-            for (int i = 0; i < dataList.size(); i++) {
 
-                TestMode.DataBean.ListBean listBean = dataList.get(i);
-                if (listBean.getClick_like().size() > 0) {
-                    mAdapter = new NineGridTest2Adapter(mActivity, dataList);
-                    mAdapter.setOnClickLitener(this);
-                    recyclerView.setAdapter(mAdapter);
-
-                }
-            }*/
         }
     }
 

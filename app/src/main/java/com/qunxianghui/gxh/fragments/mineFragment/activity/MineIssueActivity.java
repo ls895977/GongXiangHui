@@ -43,6 +43,10 @@ public class MineIssueActivity extends BaseActivity {
         for (String tab : titles) {
             mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
         }
+
+
+        int position = getIntent().getIntExtra("index", 0);
+    
     }
 
     @Override
@@ -53,6 +57,9 @@ public class MineIssueActivity extends BaseActivity {
                 finish();
             }
         }).setTitleText("我的发布");
+
+
+
 
         fragments.add(new MyIssueDiscloseFragment());
         fragments.add(new MyIssureVideoFragment());

@@ -125,8 +125,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
         initHistories();
     }
-
-
     /**
      * ==================猜你想要的数据=====================
      */
@@ -140,10 +138,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             }
         });
         rvSearchGuess.setAdapter(adapter);
-
-
     }
-
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(mContext, SpConstant.HISTORIES, "");
@@ -165,9 +160,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             });
             rvSearchHistory.setAdapter(historyAdapter);
         }
-
     }
-
 
     /**
      * ==================点击猜你想要是的进行搜索=====================

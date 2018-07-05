@@ -49,7 +49,6 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2018/4/14 0014.
  */
-
 public class MyIssurePostFragment extends BaseFragment implements MineIssurePostAdapter.MyPostOnClickListener, View.OnClickListener {
     @BindView(R.id.recycler_mineissue_post)
     XRecyclerView recyclerMineissuePost;
@@ -88,7 +87,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     }
                 });
     }
-
     private void parseIssuePostData(String body) {
         final MineIssurePostBean mineIssurePostBean = GsonUtils.jsonFromJson(body, MineIssurePostBean.class);
         if (mineIssurePostBean.getCode() == 0) {

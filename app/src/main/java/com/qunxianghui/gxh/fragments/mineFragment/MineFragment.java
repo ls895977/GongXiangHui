@@ -209,7 +209,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise,
-            R.id.mine_quickly_login, R.id.ll_mine_post,R.id.ll_mine_fllow_post})
+            R.id.mine_quickly_login, R.id.ll_mine_post, R.id.ll_mine_fllow_post})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -260,6 +260,9 @@ public class MineFragment extends BaseFragment {
             case R.id.ll_mine_post:
                 asyncShowToast("点击了帖子");
 
+                intent = new Intent(mActivity, MineIssueActivity.class);
+                intent.putExtra("index", 2);
+                startActivity(intent);
                 break;
             case R.id.ll_mine_fllow_post:
                 asyncShowToast("点击了跟帖");
@@ -314,7 +317,6 @@ public class MineFragment extends BaseFragment {
         }
         return mineFragment;
     }
-
 
 
 }

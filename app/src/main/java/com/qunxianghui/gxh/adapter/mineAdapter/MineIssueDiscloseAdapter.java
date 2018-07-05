@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 
 
 import android.content.Context;
-import android.view.View;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
@@ -33,7 +32,7 @@ public class MineIssueDiscloseAdapter extends BaseRecycleViewAdapter<MyIssueDisc
         //设置九宫格图片
         //设置宫格数据
 
-              gridLayout.setAdapter(new LocationGridAdapter(mContext,images));
+        gridLayout.setAdapter(new LocationGridAdapter(mContext,images));
 
     }
 

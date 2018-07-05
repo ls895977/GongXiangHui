@@ -15,17 +15,13 @@ import com.qunxianghui.gxh.widget.RoundImageView;
 import java.util.List;
 
 public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoListBean.DataBean.ListBean> {
-
     private VideoListClickListener videoListClickListener;
-
     public void setVideoListClickListener(VideoListClickListener videoListClickListener) {
         this.videoListClickListener = videoListClickListener;
     }
-
     public PersonDetailVideoAdapter(Context context, List<HomeVideoListBean.DataBean.ListBean> datas) {
         super(context, datas);
     }
-
     @Override
     protected void convert(MyViewHolder holder, final int position, HomeVideoListBean.DataBean.ListBean listBean) {
         final ImageView videoImag = holder.getView(R.id.iv_item_collect_video_head);
@@ -73,12 +69,10 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
             }
         });
     }
-
     @Override
     protected int getItemView() {
         return R.layout.item_mine_collect_video;
     }
-
     public interface VideoListClickListener {
         /* 视频关注*/
         void attentionClick(int position);

@@ -88,11 +88,9 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(Response<String> response) {
                         parsePersonDetailVideoData(response.body());
-
                     }
                 });
     }
-
     /**
      * 解析首页视频列表
      *
@@ -115,13 +113,13 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 public void onItemClick(View v, int position) {
                     Intent intent = new Intent(mContext, NewsDetailActivity.class);
                     intent.putExtra("url", videoDataList.get(position - 1).getUrl());
+                    intent.putExtra("uuid",videoDataList.get(position-1).getUuid());
                     startActivity(intent);
                 }
             });
             personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
         }
     }
-
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -181,7 +179,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 break;
         }
     }
-
     /**
      * 底部弹起
      */
@@ -196,7 +193,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         tv_shoot_video.setOnClickListener(this);
         tv_location_video.setOnClickListener(this);
         tv_video_cancle.setOnClickListener(this);
-
         //将布局设置给dialog
         dialog.setContentView(alertView);
         //获取当前activity所在的窗体
@@ -214,7 +210,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         dialogWindow.setAttributes(lp);
         dialog.show();
     }
-
     /**
      * 视频列表的关注
      *
@@ -222,31 +217,30 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
      */
     @Override
     public void attentionClick(final int position) {
-        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            final int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                asyncShowToast("关注成功");
-                                videoDataList.get(position).setFollow("1");
-                            } else if (code == 202) {
-                                videoDataList.get(position).setFollow("");
-                                asyncShowToast("取消关注成功");
-                            }
-                            personDetailVideoAdapter.notifyItemChanged(position + 1);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        Logger.e("视频关注" + response.body().toString());
-                    }
+                        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response.body());
+                                            final int code = jsonObject.getInt("code");
+                                            if (code == 0) {
+                                                asyncShowToast("关注成功");
+                                                videoDataList.get(position).setFollow("true");
+                                            } else if (code == 202) {
+                                                videoDataList.get(position).setFollow("");
+                                                asyncShowToast("取消关注成功");
+                                            }
+                                            personDetailVideoAdapter.notifyItemChanged(position + 1);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    @Override
+                                    public void onError(Response<String> response) {
+                                        super.onError(response);
+                                        Logger.e("视频关注" + response.body().toString());
+                                    }
                 });
         Logger.d("视频汇的关注position" + position);
     }

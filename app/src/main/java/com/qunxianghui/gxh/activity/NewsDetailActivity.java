@@ -97,19 +97,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView btn_submit;
     private EditText inputComment;
     private PopupWindow popupWindow;
-
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_news_detail;
     }
-
     @Override
     protected void onResume() {
         super.onResume();
-
     }
-
     @Override
     protected void initViews() {
         mWebView = (WebView) findViewById(R.id.wed_news_detail);

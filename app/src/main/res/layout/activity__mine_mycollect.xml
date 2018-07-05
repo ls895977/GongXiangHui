@@ -4,20 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp">
-
+        android:layout_marginTop="30dp">
         <ImageView
             android:id="@+id/iv_myCollect_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:background="@mipmap/icon_back" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,27 +22,25 @@
             android:text="我的收藏"
             android:textColor="#000"
             android:textSize="18sp" />
-
-
-
     </RelativeLayout>
-
-
     <android.support.design.widget.TabLayout
-        android:layout_marginTop="15dp"
         android:id="@+id/mine_tablayout_common"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="15dp"
         app:tabIndicatorColor="@color/tab_color"
         app:tabSelectedTextColor="@color/tab_color"
         app:tabTextColor="#000" />
 
-    <android.support.v4.view.ViewPager
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
 
+    <android.support.v4.view.ViewPager
         android:id="@+id/mine_common_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-
 </LinearLayout>
