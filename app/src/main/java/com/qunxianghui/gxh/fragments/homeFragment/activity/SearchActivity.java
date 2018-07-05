@@ -135,6 +135,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             public void onItemClick(View v, int position) {
                 searchText = guessBean.get(position).getTitle();
                 refreshSearchText();
+                tvCancel.performClick();
             }
         });
         rvSearchGuess.setAdapter(adapter);
@@ -156,6 +157,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 public void onItemClick(View v, int position) {
                     searchText = historyDatas.get(position);
                     refreshSearchText();
+                    tvCancel.performClick();
                 }
             });
             rvSearchHistory.setAdapter(historyAdapter);
