@@ -1,19 +1,15 @@
 package com.qunxianghui.gxh.adapter.locationAdapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.utils.GlideApp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocationGridAdapter extends BaseAdapter {
@@ -74,8 +70,8 @@ public class LocationGridAdapter extends BaseAdapter {
 
         GlideApp.with(context).load(imageList.get(position))
                 .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.default_img)
+                .error(R.mipmap.default_img)
                 .into(holder.iv);
 
         return convertView;

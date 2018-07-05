@@ -259,7 +259,6 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_mine_post:
                 asyncShowToast("点击了帖子");
-
                 intent = new Intent(mActivity, MineIssueActivity.class);
                 intent.putExtra("index", 2);
                 startActivity(intent);

@@ -46,7 +46,9 @@ public class MineIssueActivity extends BaseActivity {
 
 
         int position = getIntent().getIntExtra("index", 0);
-    
+        if (position!=0){
+            mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab(),2);
+        }
     }
 
     @Override
@@ -58,13 +60,9 @@ public class MineIssueActivity extends BaseActivity {
             }
         }).setTitleText("我的发布");
 
-
-
-
         fragments.add(new MyIssueDiscloseFragment());
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssurePostFragment());
-
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());

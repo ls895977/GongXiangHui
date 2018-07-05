@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,16 +33,17 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
+import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -52,8 +52,6 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
-
-import org.json.JSONObject;
 
 import butterknife.BindView;
 
@@ -85,27 +83,30 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_article_share;
     private TextView tv_bottom_alertdialog_cancle;
     private LinearLayout ll_share_list;
-    private ImageView iv_newsdetail_wxshared_friendcircle;
-    private Bundle params;
+
     private String url;
     private int uuid;
     private int id;
     private UMShareListener umShareListener;
     private android.os.Handler handler = new android.os.Handler();
-    private String has_collect;
+
     private String title;
     private TextView btn_submit;
     private EditText inputComment;
     private PopupWindow popupWindow;
+    private boolean has_collect=false;
+
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_news_detail;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
     }
+
     @Override
     protected void initViews() {
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
@@ -131,6 +132,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 showBottomAliert();
             }
         });
+
+
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -157,40 +160,30 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
-        //获取内容状态
-        hodeNewsStatus();
+        HoldeNewsDetail();
     }
-
-    private void hodeNewsStatus() {
-        OkGo.<String>get(Constant.GET_NEWS_CONTENT_DETAIL_URL)
-                .params("id", id).execute(new StringCallback() {
-            @Override
-            public void onSuccess(final Response<String> response) {
-                parseNewsContentData(response.body());
-            }
-        });
+    private void HoldeNewsDetail() {
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                      ParseNewsDetailData(response.body());
+                    }
+                });
     }
-
-    //解析内容详情
-    private void parseNewsContentData(String body) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            JSONObject data = jsonObject.getJSONObject("data");
-            has_collect = data.getString("has_collect");
-            Logger.d("收藏状态" + has_collect);
-            int code = jsonObject.getInt("code");
-            if (code == 0) {
-                if (has_collect.length() == 0 || has_collect == null) {
-                    ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
-                } else {
-                    ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void ParseNewsDetailData(String body) {
+        MyColleNewsDetailBean newsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
+        if (newsDetailBean.getCode()==0){
+            MyColleNewsDetailBean.DataBean dataList = newsDetailBean.getData();
+            has_collect = dataList.isHas_collect();
+          if (has_collect){
+              ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
+          }else {
+              ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
+          }
         }
     }
-
     //底部弹出对话框
     private void showBottomAliert() {
         dialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
@@ -222,18 +215,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         dialogWindow.setAttributes(lp);
         dialog.show();
     }
-
     @Override
     protected void initListeners() {
         etInputDiscuss.setOnClickListener(this);
-
         ivNewsDetailAddAdver.setOnClickListener(this);
         ivNewsDetailCollect.setOnClickListener(this);
-
         ivNewsDetailShare.setOnClickListener(this);
         ivNewsDetailMessage.setOnClickListener(this);
     }
-
     private void SettingsP() {
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -250,7 +239,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-
                 return false;
             }
 
@@ -279,11 +267,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
         mWebView.loadUrl(url);
-
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-
                 if (newProgress == 100) {
                     // 网页加载完成
                     mProgressBar.setVisibility(View.GONE);
@@ -296,14 +282,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     @Override
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.et_input_discuss:
-
-//                llNewsDetailBigDiss.setVisibility(View.VISIBLE);
                 showPopupCommnet();
                 break;
             case R.id.tv_addAdver_share:
@@ -328,18 +311,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_collect:
                 CollectDataList(uuid);
                 break;
-
             case R.id.iv_news_detail_share:
                 showBottomAliert();
                 break;
-
             case R.id.iv_news_detail_message:
                 showPopupCommnet();
                 break;
         }
-
     }
-
     /*弹出评论框*/
     @SuppressLint("WrongConstant")
     private void showPopupCommnet() {
@@ -458,10 +437,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         }
                     }
                 }).open();
-
     }
-
-
     private void CollectDataList(int uuid) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", uuid).execute(new StringCallback() {
@@ -471,7 +447,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     private void parseCollectData(String body) {
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
         if (myCollectBean.getCode() == 0) {

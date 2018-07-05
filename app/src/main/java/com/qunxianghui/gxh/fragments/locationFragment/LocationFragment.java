@@ -1,22 +1,15 @@
 package com.qunxianghui.gxh.fragments.locationFragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -38,10 +31,8 @@ import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
-import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
@@ -72,31 +63,20 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     Unbinder unbinder;
     NineGridTest2Adapter mAdapter;
     private RelativeLayout topNav;
-    private Dialog picVideo_dialog;
-    private LinearLayout ll_fabu_first_list;
-    private LinearLayout ll_fabu_second_list;
-    private String filPaths;
-    private Dialog upDialog;
-    private Dialog quickUpDialog;
     private int count = 0;
-    private int page = 1;
     private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
-    private int currentPosition;
     private boolean mIsFirst = true;
     private int commentPosition;
     private int scrollOffsetY = 0;
-
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_location;
     }
-
     @Override
     public void initDatas() {
         RequestLocationData();
     }
-
     @Override
     public void initViews(View view) {
         commentView = view.findViewById(R.id.location_send_comment_view);
@@ -108,32 +88,28 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-
-
                 Logger.i("xxx-yyy jump :" + commentPosition);
                 //View item = recyclerView.getChildAt(commentPosition + 1);
-                View item =recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
-
+                View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
                 int offset = 5;
                 int keyboardoffset = 80;
                 int tabHeight = getArguments().getInt("tabHeight");
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
                 layoutParams.bottomMargin = height - tabHeight - offset;
                 commentView.setLayoutParams(layoutParams);
-
                 Logger.i("xxx-yyy scrollOffsetY " + scrollOffsetY);
-                if(item!=null){
+                if (item != null) {
                     int[] location = new int[2];
                     item.getLocationOnScreen(location);
                     int x = location[0];
                     int y = location[1];
                     Logger.v("xxx-yyy item " + item);
-                    Logger.v("xxx-yyy item height :",item.getMeasuredHeight());
+                    Logger.v("xxx-yyy item height :", item.getMeasuredHeight());
                     Logger.v("xxx-yyy y :" + y);
-                    Logger.v("xxx-yyy nav top :" +  topNav.getMeasuredHeight());
+                    Logger.v("xxx-yyy nav top :" + topNav.getMeasuredHeight());
                     Logger.v("xxx-yyy scroll :" + (y + item.getMeasuredHeight() - topNav.getMeasuredHeight()));
-                    recyclerView.scrollBy(0,(y + item.getMeasuredHeight() - topNav.getMeasuredHeight()) - (recyclerView.getMeasuredHeight() + tabHeight - height) + keyboardoffset);
-                }else  {
+                    recyclerView.scrollBy(0, (y + item.getMeasuredHeight() - topNav.getMeasuredHeight()) - (recyclerView.getMeasuredHeight() + tabHeight - height) + keyboardoffset);
+                } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
             }
@@ -154,7 +130,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //super.onScrolled(recyclerView, dx, dy);
@@ -265,138 +240,17 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_location_mine_fabu:
-                showBottomAliert();
+                toActivity(PublishActivity.class);
                 break;
             case R.id.tv_alertbottom_up_pic:
                 toActivity(PublishActivity.class);
-                picVideo_dialog.dismiss();
-                break;
-            case R.id.tv_alertbottom_up_video:
-                ll_fabu_first_list.setVisibility(View.GONE);
-                ll_fabu_second_list.setVisibility(View.VISIBLE);
-                break;
-            case R.id.tv_fubu_recode_video:  //发布录制视频
-                intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE); //创建一个请求视频的意图
-                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);  //设置视频的质量，值为0-1
-                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 20); //设置视频的录制长度，s为单位
-                intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 20 * 1024 * 1024); //设置视频的文件大小
-                startActivityForResult(intent, Code.VIDEO_RECORD_REQUEST);
-                picVideo_dialog.dismiss();
-                break;
-            case R.id.tv_fabu_location_vodeo:  //发布本地视频
-                intent = new Intent(mActivity, VideoListActivity.class);
-                startActivityForResult(intent, Code.LOCAL_VIDEO_REQUEST);
-                picVideo_dialog.dismiss();
-                break;
-            case R.id.bt_fabu_video_cancel:   //第二栏的取消
-                picVideo_dialog.dismiss();
-                break;
-            case R.id.tv_alertbottom_video_cancel:   //第一栏的取消
-                picVideo_dialog.dismiss();
-                break;
-            case R.id.tv_quickly_up_video:
-                /**
-                 *   这里可以添加上传视频的方法
-                 *
-                 */
-                asyncShowToast("模拟文件上传成功");
-                quickUpDialog.dismiss();
-
-                break;
-            case R.id.bt_quickly_up_video_cancel:
-                quickUpDialog.dismiss();
                 break;
         }
     }
-
-    private void showBottomAliert() {
-        if (picVideo_dialog == null) {
-            picVideo_dialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
-            //填充对话框的布局
-            View view = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_alertdialog, null);
-            //初始化控件
-            ll_fabu_first_list = view.findViewById(R.id.ll_fabu_first_list);
-            ll_fabu_second_list = view.findViewById(R.id.ll_fabu_second_list);
-            view.findViewById(R.id.tv_alertbottom_up_pic).setOnClickListener(this); //上传图片
-            view.findViewById(R.id.tv_alertbottom_up_video).setOnClickListener(this);  //上传视频
-            view.findViewById(R.id.tv_alertbottom_video_cancel).setOnClickListener(this);  //取消
-
-
-            view.findViewById(R.id.tv_fubu_recode_video).setOnClickListener(this); //录制视频
-            view.findViewById(R.id.tv_fabu_location_vodeo).setOnClickListener(this);  //本地视频
-            view.findViewById(R.id.bt_fabu_video_cancel).setOnClickListener(this); //取消
-            //将布局设置给dialog
-            picVideo_dialog.setContentView(view);
-            //获取当前activity所在的窗体
-            Window dialogWindow = picVideo_dialog.getWindow();
-            //设置dialog从窗体底部弹出
-            dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            WindowManager windowManager = mActivity.getWindowManager();
-            Display display = windowManager.getDefaultDisplay();
-            lp.width = (int) display.getWidth();  //设置宽度
-            lp.y = 20;  //设置dialog距离底部的距离
-            //将属性设置给窗体
-            dialogWindow.setAttributes(lp);
-        }
-        picVideo_dialog.show();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case Code.VIDEO_RECORD_REQUEST:
-                if (data != null) {
-                    final Uri uri = data.getData();
-                    if (uri == null) {
-                        return;
-                    } else {
-                        final Cursor cursor = mActivity.getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DATA}, null, null, null);
-
-                        if (cursor != null && cursor.moveToFirst()) {
-                            filPaths = cursor.getString(0);
-                            showUploadVideoDialog();
-                        }
-                    }
-                }
-                break;
-            case Code.LOCAL_VIDEO_REQUEST:
-                if (resultCode == Code.LOCAL_VIDEO_RESULT && data != null) {
-                    filPaths = data.getStringExtra("path");
-                    showUploadVideoDialog();
-                }
-                break;
-        }
     }
-
-    private void showUploadVideoDialog() {
-        if (quickUpDialog == null) {
-            quickUpDialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
-            //填充对话框的布局
-            View upVideoDialogView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_up_quickly_alertdialog, null);
-            //初始化控件
-            upVideoDialogView.findViewById(R.id.tv_quickly_up_video).setOnClickListener(this);
-            upVideoDialogView.findViewById(R.id.bt_quickly_up_video_cancel).setOnClickListener(this);
-            //将布局设置给dialog
-            quickUpDialog.setContentView(upVideoDialogView);
-            //获取当前activity所在的窗体
-            final Window dialogWindow = quickUpDialog.getWindow();
-            //设置dialog从窗体底部弹出
-            dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
-            final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            final WindowManager windowManager = mActivity.getWindowManager();
-            final Display display = windowManager.getDefaultDisplay();
-            lp.width = (int) display.getWidth();  //设置宽度
-            lp.y = 20;  //设置dialog距离底部的距离
-            //将属性设置给窗体
-            dialogWindow.setAttributes(lp);
-        }
-        quickUpDialog.show();
-    }
-
     @Override
     public void onPicClick(int position, int picpostion) {
         List<String> imageList = dataList.get(position).getImages();
@@ -436,12 +290,12 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     /**
      * 评论的点击
+     *
      * @param position
      * @param content
      */
     @Override
     public void onCommentClick(final int position, String content) {
-
         if (!LoginMsgHelper.isLogin(getContext())) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -474,15 +328,14 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     commentBeanList.add(comment);
                     mAdapter.notifyDataSetChanged();
                     mAdapter.notifyItemChanged(position);
-
                     OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
-                            .params("uuid",uuid)
+                            .params("uuid", uuid)
                             .params("content", comment_edit.getText().toString())
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                    if (comment.getCode()==0) {
+                                    if (comment.getCode() == 0) {
                                         comment_edit.setText("");
                                         hideSoftKeyboard(comment_edit, getActivity());
                                     }
@@ -518,7 +371,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         }
     }
-
     void requestCommentList(int uuid) {
         OkGo.<String>post(Constant.COMMENT_LIST)
                 .params("uuid", uuid)
@@ -533,8 +385,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
-
-
         if (!LoginMsgHelper.isLogin(getContext())) {
             toActivity(LoginActivity.class);
             mActivity.finish();
