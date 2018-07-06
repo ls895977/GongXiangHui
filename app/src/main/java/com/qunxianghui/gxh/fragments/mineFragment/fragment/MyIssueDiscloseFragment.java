@@ -31,19 +31,16 @@ public class MyIssueDiscloseFragment extends BaseFragment {
     private int count = 0;
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
-    private List<MyIssueDiscloseBean.DataBean> dataList=new ArrayList<>();
+    private List<MyIssueDiscloseBean.DataBean> dataList = new ArrayList<>();
     private MineIssueDiscloseAdapter mineIssueDiscloseAdapter;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_issue_disclose;
     }
-
     @Override
     public void initDatas() {
         RequestMyIssueDisClose();
     }
-
     /**
      * 请求我发布中的我的爆料
      */
@@ -52,35 +49,31 @@ public class MyIssueDiscloseFragment extends BaseFragment {
                 .params("limit", 10)
                 .params("skip", count)
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                ParseIssureDiscloseData(response.body());
-            }
-        });
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        ParseIssureDiscloseData(response.body());
+                    }
+                });
     }
-
     private void ParseIssureDiscloseData(String body) {
         final MyIssueDiscloseBean myIssueDiscloseBean = GsonUtils.jsonFromJson(body, MyIssueDiscloseBean.class);
-        if (mIsRefresh){
-            mIsRefresh=false;
+        if (mIsRefresh) {
+            mIsRefresh = false;
             dataList.clear();
         }
         dataList.addAll(myIssueDiscloseBean.getData());
-        count=dataList.size();
+        count = dataList.size();
         if (myIssueDiscloseBean.getCode() == 0) {
-           if (mIsFirst){
-               mIsFirst=false;
-               mineIssueDiscloseAdapter = new MineIssueDiscloseAdapter(mActivity, dataList);
-               recyclerMineissueDisclose.setAdapter(mineIssueDiscloseAdapter);
-           }
+            if (mIsFirst) {
+                mIsFirst = false;
+                mineIssueDiscloseAdapter = new MineIssueDiscloseAdapter(mActivity, dataList);
+                recyclerMineissueDisclose.setAdapter(mineIssueDiscloseAdapter);
+            }
             recyclerMineissueDisclose.refreshComplete();
-
             mineIssueDiscloseAdapter.notifyDataSetChanged();
-            mineIssueDiscloseAdapter.notifyItemRangeChanged(count,dataList.size());
-
+            mineIssueDiscloseAdapter.notifyItemRangeChanged(count, dataList.size());
         }
     }
-
     @Override
     public void initViews(View view) {
         recyclerMineissueDisclose.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -105,8 +98,8 @@ public class MyIssueDiscloseFragment extends BaseFragment {
         recyclerMineissueDisclose.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                count=0;
-                mIsRefresh=true;
+                count = 0;
+                mIsRefresh = true;
                 RequestMyIssueDisClose();
 
             }

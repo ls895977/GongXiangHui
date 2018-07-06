@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -39,7 +38,7 @@ public class WelcomActivity extends BaseActivity {
     @BindView(R.id.ll_welcom_skip)
     LinearLayout llWelcomSkip;
     private Animation animation;
-    private int count = 4;
+    private int count = 5;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -55,9 +54,10 @@ public class WelcomActivity extends BaseActivity {
     private int getCount() {
         count--;
         if (count == 0) {
-            toActivity(MainActivity.class);
+            Intent intent=new Intent(WelcomActivity.this,MainActivity.class);
+            startActivity(intent);
             finish();
-        }else if (count==2){
+        }else if (count==3){
             llWelcomSkip.setVisibility(View.VISIBLE);
         }
         return count;

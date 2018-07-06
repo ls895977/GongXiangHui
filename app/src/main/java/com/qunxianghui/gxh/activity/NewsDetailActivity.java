@@ -160,6 +160,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
+
         HoldeNewsDetail();
     }
     private void HoldeNewsDetail() {
@@ -178,9 +179,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             MyColleNewsDetailBean.DataBean dataList = newsDetailBean.getData();
             has_collect = dataList.isHas_collect();
           if (has_collect){
-              ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
-          }else {
               ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
+          }else {
+
+              ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
           }
         }
     }
@@ -374,7 +376,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         });
     }
 
-
     /**
      * 请求评论
      *
@@ -451,6 +452,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
         if (myCollectBean.getCode() == 0) {
             asyncShowToast("收藏成功");
+
             ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
         } else if (myCollectBean.getCode() == 202) {
             asyncShowToast("取消收藏成功");

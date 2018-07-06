@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.fragments.mineFragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -95,7 +96,6 @@ public class MineFragment extends BaseFragment {
     LinearLayout llMinePost;
     @BindView(R.id.ll_mine_fllow_post)
     LinearLayout llMineFllowPost;
-
     private UserDao userDao;
     private int userSize;
     private String mAvatar;//头像
@@ -109,6 +109,7 @@ public class MineFragment extends BaseFragment {
     private int comment_cnt;
     private Object companyInfo;
     private String expires_time;
+    private String companyName;
 
 
     @Override
@@ -133,7 +134,6 @@ public class MineFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
-
                             parseUserData(response.body());
                             return;
                         }
@@ -158,6 +158,8 @@ public class MineFragment extends BaseFragment {
             posts_cnt = data.getInt("posts_cnt");
             comment_cnt = data.getInt("comment_cnt");
             mLevelName = data.getJSONObject("level_info").getString("name");
+            companyName = data.getJSONObject("company_info").getString("company_name");
+
             mTvMemberType.setText(mLevelName);
             mineQuicklyLogin.setText(mNick);
             tvMineAddlikeCount.setText(String.valueOf(like_cnt));
@@ -183,6 +185,16 @@ public class MineFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+/**
+ * 保存自己的公司名称
+ */
+
+        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
+        SharedPreferences.Editor editor = spConpanyname.edit();
+        editor.putString("selfcompayname", companyName);
+        editor.commit();
+
+
     }
 
     @Override
@@ -265,6 +277,9 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_mine_fllow_post:
                 asyncShowToast("点击了跟帖");
+                intent = new Intent(mActivity, MineMessageActivity.class);
+                intent.putExtra("index", 1);
+                startActivity(intent);
                 break;
         }
     }

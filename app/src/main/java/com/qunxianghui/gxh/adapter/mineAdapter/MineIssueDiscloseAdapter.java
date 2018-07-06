@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.mine.MyIssueDiscloseBean;
 import com.qunxianghui.gxh.widget.MyGridView;
 
@@ -27,13 +26,9 @@ public class MineIssueDiscloseAdapter extends BaseRecycleViewAdapter<MyIssueDisc
         holder.setText(R.id.tv_mine_issure_title,dataBean.getTitle());
         holder.setText(R.id.tv_mineissue_disclose_item_time,dataBean.getCtime());
         holder.setText(R.id.tv_mineissue_item_status,dataBean.getStatus());
-
-
         //设置九宫格图片
         //设置宫格数据
-
-        gridLayout.setAdapter(new LocationGridAdapter(mContext,images));
-
+        gridLayout.setAdapter(new MycollectPostGridAdapter(mContext,images));
     }
 
     @Override

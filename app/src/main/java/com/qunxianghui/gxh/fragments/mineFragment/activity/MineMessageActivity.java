@@ -32,6 +32,7 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
     private String[] titles = new String[]{"评论我的", "我的跟帖", "系统消息"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
+    private int index;
 
     @Override
     protected int getLayoutId() {
@@ -46,6 +47,8 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
         for (String tab : titles) {
             mineMyMessaageTablayoutCommon.addTab(mineMyMessaageTablayoutCommon.newTab().setText(tab));
         }
+
+        index = getIntent().getIntExtra("index", 0);
 
     }
 
@@ -67,6 +70,10 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMymessageViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMyMessaageTablayoutCommon.setupWithViewPager(mineMymessageViewpager);
+
+        if (index!=0){
+            mineMymessageViewpager.setCurrentItem(index,false);
+        }
     }
 
     @Override

@@ -21,7 +21,6 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-
 public class MineIssueActivity extends BaseActivity {
     @BindView(R.id.mine_MyIssureTablayout_common)
     TabLayout mineMyIssureTablayoutCommon;
@@ -30,12 +29,11 @@ public class MineIssueActivity extends BaseActivity {
     private String[] titles = new String[]{"爆料", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-
+    private int position;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mine_issue;
     }
-
     @Override
     protected void initViews() {
         //设置tablayout的一个显示方式
@@ -43,14 +41,8 @@ public class MineIssueActivity extends BaseActivity {
         for (String tab : titles) {
             mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
         }
-
-
-        int position = getIntent().getIntExtra("index", 0);
-        if (position!=0){
-            mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab(),2);
-        }
+        position = getIntent().getIntExtra("index", 0);
     }
-
     @Override
     protected void initDatas() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -65,8 +57,12 @@ public class MineIssueActivity extends BaseActivity {
         fragments.add(new MyIssurePostFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
+
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
         mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
+//viewpager的切换
+        if (position != 0) {
+            mineMyIssureViewpager.setCurrentItem(position, false);
+        }
     }
-
 }
