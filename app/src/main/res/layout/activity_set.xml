@@ -71,12 +71,14 @@
     </RelativeLayout>
 
     <Button
+        android:background="@drawable/shape_button_gray"
         android:id="@+id/bt_setting_quit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="25dp"
+        android:textColor="@color/white"
         android:text="退出登录"
         android:textSize="16sp" />
 </LinearLayout>

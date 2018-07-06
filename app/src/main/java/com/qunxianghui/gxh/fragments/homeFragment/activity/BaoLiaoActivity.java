@@ -117,7 +117,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 startActivityForResult(intent, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
-
             @Override
             public void onSelect() {
                 //打开选择,本次允许选择的数量
@@ -126,22 +125,17 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
-
             @Override
             public void onDismiss() {
                 selectPhotoDialog.dismiss();
             }
         });
-
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
     }
-
-
     @Override
     public void onClick(View v) {
         final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
@@ -154,7 +148,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 if (!isCanUpload()) {
                     return;
                 }
-
                 mLoadView.setVisibility(View.VISIBLE);
 //                requestBaoLiaoFaBu(faBuTitle, faBuContent);
 
@@ -214,54 +207,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                     }
                 });
     }
-
-
-//    private void requestBaoLiaoFaBu(String faBuTitle, String faBuContent) {
-//
-//        if (TextUtils.isEmpty(faBuContent) && TextUtils.isEmpty(faBuContent)) {
-//            asyncShowToast("标题和内容不能为空");
-//        } else {
-//            mLoadView.setVisibility(View.VISIBLE);
-//            for (int i = 0, length = selImageList.size(); i < length; i++) {
-//                String path = selImageList.get(i).path;
-//                if (!path.contains("http")) {
-//                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path));
-//                } else {
-//                    upLoadPics.add(path);
-//
-//                }
-//            }
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (int i = 0, length = upLoadPics.size(); i < length; i++) {
-//                if (i != upLoadPics.size() - 1) {
-//                    stringBuilder.append(upLoadPics.get(i) + ",");
-//                } else {
-//                    stringBuilder.append(upLoadPics.get(i));
-//                }
-//            }
-//
-//
-//            OkGo.<String>post(Constant.HOME_DISCLOSS_URL)
-//                    .params("title", faBuTitle)
-//                    .params("content", faBuContent)
-//                    .params("images", stringBuilder.toString())
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onSuccess(Response<String> response) {
-//                            mLoadView.setVisibility(View.GONE);
-//                            parseBaoLiaoData(response.body());
-//                        }
-//
-//                        @Override
-//                        public void onError(Response<String> response) {
-//                            super.onError(response);
-//                            mLoadView.setVisibility(View.GONE);
-//                            asyncShowToast(response.message());
-//                        }
-//                    });
-//        }
-//
-//    }
 
     /**
      * 上传图片

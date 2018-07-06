@@ -37,7 +37,6 @@
             android:drawablePadding="5dp"
             android:text="n分钟之前" />
 
-
         <TextView
             android:id="@+id/tv_mineissue_item_status"
             android:layout_marginLeft="20dp"

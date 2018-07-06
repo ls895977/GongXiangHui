@@ -1,11 +1,13 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -27,22 +29,23 @@ import butterknife.Unbinder;
 
 public class GeneraPushFragment extends BaseFragment implements View.OnClickListener {
 
+    @BindView(R.id.tv_generapush_companyname)
+    TextView tvGenerapushCompanyname;
+    @BindView(R.id.tv_generalize_company_des)
+    TextView tvGeneralizeCompanyDes;
     private List<String> datas = new ArrayList<>();
     @BindView(R.id.xrecycler_generapush)
     XRecyclerView xrecyclerGenerapush;
     Unbinder unbinder;
-
+    private String selfcompayname;
+    private int staff_cnt;
     @Override
     public int getLayoutId() {
-
         return R.layout.genera_push_eachother;
     }
-
     @Override
     public void initDatas() {
         xrecyclerGenerapush.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-
-
         for (int i = 0; i < 10; i++) {
             datas.add(i + 1 + "");
         }
@@ -59,20 +62,20 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
             public void onRefresh() {
                 xrecyclerGenerapush.refreshComplete();
             }
-
             @Override
             public void onLoadMore() {
                 xrecyclerGenerapush.refreshComplete();
             }
         });
-
+        tvGenerapushCompanyname.setText(selfcompayname);
+        tvGeneralizeCompanyDes.setText(String.valueOf("规模:"+staff_cnt));
     }
-
     @Override
     public void initViews(View view) {
-
+        SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
+        selfcompayname = spCompanymessage.getString("selfcompayname", "");
+        staff_cnt = spCompanymessage.getInt("staff_cnt", 0);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -80,12 +83,9 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     protected void onLoadData() {
-
     }
-
     @Override
     protected void initListeners() {
         super.initListeners();

@@ -94,7 +94,6 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
                 clickPosition = position;
             }
         }
-
         @Override
         public void onClick(View v) {
             if (listener != null) listener.onItemClick(v, clickPosition);

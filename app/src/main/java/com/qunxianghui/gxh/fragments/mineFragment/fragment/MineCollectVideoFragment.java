@@ -20,7 +20,10 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MineCollectVideoFragment extends BaseFragment {
+public class MineCollectVideoFragment extends BaseFragment implements MineCollectVideoAdapter.MyCollectVideoClickListener {
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
     Unbinder unbinder;
@@ -82,11 +85,12 @@ public class MineCollectVideoFragment extends BaseFragment {
             if (mIsFirst) {
                 mIsFirst = false;
                 mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
+                mineCollectVideoAdapter.setMyCollectVideoClickListener(this);
                 xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
                 mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        int data_uuid = dataList.get(position-1).getData_uuid();
+                        int data_uuid = dataList.get(position - 1).getData_uuid();
                         SkipMycollectVideoDetail(data_uuid);
                     }
                 });
@@ -96,6 +100,7 @@ public class MineCollectVideoFragment extends BaseFragment {
             mineCollectVideoAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
         }
     }
+
     /**
      * 跳转我的收藏的视频详情页
      *
@@ -110,6 +115,7 @@ public class MineCollectVideoFragment extends BaseFragment {
                     }
                 });
     }
+
     /**
      * 解析我的收藏视频详情
      *
@@ -125,6 +131,7 @@ public class MineCollectVideoFragment extends BaseFragment {
             startActivity(intent);
         }
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -135,12 +142,14 @@ public class MineCollectVideoFragment extends BaseFragment {
                 count = 0;
                 RequestMineCollectVideo();
             }
+
             @Override
             public void onLoadMore() {
                 RequestMineCollectVideo();
             }
         });
     }
+
     @Override
     public void initViews(View view) {
         xrecyclerMycollectVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -156,5 +165,44 @@ public class MineCollectVideoFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+    @Override
+    public void attentionClick(final int position) {
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", dataList.get(position - 1).getId())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+
+                            final int code = jsonObject.getInt("code");
+                            if (code == 0) {
+                                asyncShowToast("关注成功");
+                                dataList.get(position).getMember().setFollow("true");
+                            } else if (code == 202) {
+                                asyncShowToast("取消关注成功");
+                                dataList.get(position).getMember().setFollow("");
+                            }else if (code==101){
+                                asyncShowToast("请不要自己关注自己");
+                            }
+                            mineCollectVideoAdapter.notifyItemChanged(position);
+                            mineCollectVideoAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Logger.e("视频关注" + response.body().toString());
+                    }
+                });
+        Logger.d("视频汇的关注position" + position);
+    }
+    @Override
+    public void videoHeadImageClick(int position) {
+        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+        intent.putExtra("member_id", dataList.get(position).getMember_id());
+        startActivity(intent);
     }
 }

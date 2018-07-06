@@ -125,8 +125,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
         initHistories();
     }
-
-
     /**
      * ==================猜你想要的数据=====================
      */
@@ -137,13 +135,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             public void onItemClick(View v, int position) {
                 searchText = guessBean.get(position).getTitle();
                 refreshSearchText();
+                tvCancel.performClick();
             }
         });
         rvSearchGuess.setAdapter(adapter);
-
-
     }
-
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(mContext, SpConstant.HISTORIES, "");
@@ -161,13 +157,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 public void onItemClick(View v, int position) {
                     searchText = historyDatas.get(position);
                     refreshSearchText();
+                    tvCancel.performClick();
                 }
             });
             rvSearchHistory.setAdapter(historyAdapter);
         }
-
     }
-
 
     /**
      * ==================点击猜你想要是的进行搜索=====================

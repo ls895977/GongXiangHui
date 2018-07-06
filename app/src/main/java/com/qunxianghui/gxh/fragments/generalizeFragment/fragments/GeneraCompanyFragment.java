@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -64,41 +66,19 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     TextView tvArticleTransmitRate;
     @BindView(R.id.collapsing_layout)
     CollapsingToolbarLayout collapsingLayout;
+    @BindView(R.id.tv_generacompany_name)
+    TextView tvGeneracompanyName;
+    private String selfcompayname;
     @Override
     protected void onLoadData() {
 
-        OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseGeneraLizeStaticsData(response.body());
-            }
-        });
     }
-    private void parseGeneraLizeStaticsData(String body) {
-        final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
-        if (generalizeCompanyStaticsBean.getCode() == 0) {
-            final GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
-            final int staff_cnt = dataBean.getStaff_cnt();  //规模
-            final String ad_prize = dataBean.getAd_prize();  //广告费
-            final String view_cnt = dataBean.getView_cnt(); //文章曝光
-            final int article_cnt = dataBean.getArticle_cnt(); //文章总数
-            final String forward_cnt = dataBean.getForward_cnt();  //文章转发
-            final String click_cnt = dataBean.getClick_cnt();   //广告点击
-            final String click_rate = dataBean.getClick_rate();   //广告点击率
-            final String forward_rate = dataBean.getForward_rate(); //文章转发率
-            tvGeneralizeCompanyMoneyCount.setText("节省广告费：" + ad_prize + " 元" + " 规模:" + String.valueOf(staff_cnt));
-            tvArticleExposureCount.setText(view_cnt);
-            tvArticleCount.setText(String.valueOf(article_cnt));
-            tvArticleTransmitCount.setText(forward_cnt);
-            tvAdverClickCount.setText(click_cnt);
-            tvAdverClickRate.setText(click_rate);
-            tvArticleTransmitRate.setText(forward_rate);
-        }
-    }
+
     @Override
     public int getLayoutId() {
         return R.layout.genera_company;
     }
+
     @Override
     public void initDatas() {
         rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -118,6 +98,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     }
     @Override
     public void initViews(View view) {
+        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
+        selfcompayname = spCompany.getString("selfcompayname", "");
+        /*获取企业推广的数据*/
+        HoldReneraCompanyData();
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(new MonthFragment());
         fragments.add(new MonthFragment());
@@ -126,9 +110,47 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         /** 禁止滑动*/
         //        vpGeneralizeCompanyMain.setScroll(false);
         /**增加缓存页面的数量*/
-        vpGeneralizeCompanyMain.setOffscreenPageLimit(fragments.size()-1);
+        vpGeneralizeCompanyMain.setOffscreenPageLimit(fragments.size() - 1);
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
+    }
+    private void HoldReneraCompanyData() {
+        OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                parseGeneraLizeStaticsData(response.body());
+            }
+        });
+
+    }
+    /*解析企业推广的数据*/
+    private void parseGeneraLizeStaticsData(String body) {
+        final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
+        if (generalizeCompanyStaticsBean.getCode() == 0) {
+            final GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
+            final int staff_cnt = dataBean.getStaff_cnt();  //规模
+            final String ad_prize = dataBean.getAd_prize();  //广告费
+            final String view_cnt = dataBean.getView_cnt(); //文章曝光
+            final int article_cnt = dataBean.getArticle_cnt(); //文章总数
+            final String forward_cnt = dataBean.getForward_cnt();  //文章转发
+            final String click_cnt = dataBean.getClick_cnt();   //广告点击
+            final String click_rate = dataBean.getClick_rate();   //广告点击率
+            final String forward_rate = dataBean.getForward_rate(); //文章转发率
+            tvGeneralizeCompanyMoneyCount.setText("节省广告费：" + ad_prize + " 元" + " 规模:" + String.valueOf(staff_cnt));
+            tvArticleExposureCount.setText(view_cnt);
+            tvArticleCount.setText(String.valueOf(article_cnt));
+            tvArticleTransmitCount.setText(forward_cnt);
+            tvAdverClickCount.setText(click_cnt);
+            tvAdverClickRate.setText(click_rate);
+            tvArticleTransmitRate.setText(forward_rate);
+            tvGeneracompanyName.setText(selfcompayname);
+
+            SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
+            SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
+            spCompanymessageEditor.putString("selfcompayname",selfcompayname);
+            spCompanymessageEditor.putInt("staff_cnt",staff_cnt);
+            spCompanymessageEditor.commit();
+        }
     }
 
     /**

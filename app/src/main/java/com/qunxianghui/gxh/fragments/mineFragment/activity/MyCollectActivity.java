@@ -30,18 +30,13 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
-
-
     private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity__mine_mycollect;
     }
-
     @Override
     protected void initViews() {
         //设置tabLayout的一个显示方式

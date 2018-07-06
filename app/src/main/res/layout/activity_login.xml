@@ -25,7 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/bianmin_call" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/login_phone" />
 
         <EditText
             android:id="@+id/et_login_phone"
@@ -52,7 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/bianmin_call" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/login_pass" />
 
         <EditText
             android:id="@+id/et_login_password"

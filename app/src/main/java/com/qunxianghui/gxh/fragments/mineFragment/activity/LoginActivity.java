@@ -91,7 +91,6 @@ public class LoginActivity extends BaseActivity {
         //数据库操作类
         userDao = new UserDao(this);
     }
-
     @Override
     protected void initDatas() {
         mShareAPI = UMShareAPI.get(this);
@@ -99,7 +98,6 @@ public class LoginActivity extends BaseActivity {
         mUmAuthListener = new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) { }
-
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
                 /**
@@ -144,20 +142,17 @@ public class LoginActivity extends BaseActivity {
             public void onError(SHARE_MEDIA platform, int action, Throwable t) {
 //                Log.w("test", "性别: " + data.get("gender"));
             }
-
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
                 Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
             }
         };
-
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
-
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(LoginActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();

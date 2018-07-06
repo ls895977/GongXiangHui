@@ -4,35 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!--<android.support.design.widget.AppBarLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
-
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize">-->
-
-        <!--</android.support.v7.widget.Toolbar>-->
-
-    <!--</android.support.design.widget.AppBarLayout>-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:gravity="center_vertical">
-
-        <!--<ImageButton-->
-        <!--android:id="@+id/ib_home_camera"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_marginLeft="25dp"-->
-        <!--android:background="@mipmap/home_camera" />-->
 
         <TextView
             android:id="@+id/ib_home_camera"
@@ -45,7 +21,6 @@
             android:drawableTop="@mipmap/home_camera"
             android:text="爆料"
             android:textSize="13sp" />
-
         <TextView
             android:id="@+id/tv_home_location"
             android:layout_width="wrap_content"
@@ -63,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@mipmap/home_logo" />
-
         <ImageButton
             android:id="@+id/ib_home_search"
             android:layout_width="wrap_content"

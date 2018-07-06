@@ -2,12 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<ImageView
-    android:id="@+id/iv_welcomadver"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
 
-qweRTY
+    <ImageView
+        android:id="@+id/iv_welcomadver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -47,7 +46,6 @@ qweRTY
 
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_welcom_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +53,8 @@ qweRTY
         android:layout_marginRight="15dp"
         android:layout_marginTop="25dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="75dp"
@@ -64,7 +63,7 @@ qweRTY
             android:gravity="center"
             android:text="跳过广告"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
 </FrameLayout>

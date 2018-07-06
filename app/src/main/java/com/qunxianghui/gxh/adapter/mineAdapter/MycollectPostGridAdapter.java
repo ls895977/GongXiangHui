@@ -1,4 +1,4 @@
-package com.qunxianghui.gxh.adapter.locationAdapter;
+package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,14 +12,14 @@ import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
-public class LocationGridAdapter extends BaseAdapter {
+public class MycollectPostGridAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private List<String> imageList;
     private ImageOnClickListener listener;
 
 
-    public LocationGridAdapter(Context context, List<String> imageList) {
+    public MycollectPostGridAdapter(Context context, List<String> imageList) {
 
         this.context = context;
         this.imageList = imageList;
@@ -60,12 +60,12 @@ public class LocationGridAdapter extends BaseAdapter {
         //holder.iv.setTag(position);
 
 
-        holder.iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClick(v,position);
-            }
-        });
+//        holder.iv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                listener.onClick(v,position);
+//            }
+//        });
 
 
         GlideApp.with(context).load(imageList.get(position))
