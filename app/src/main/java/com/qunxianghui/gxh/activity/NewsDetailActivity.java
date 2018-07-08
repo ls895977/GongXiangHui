@@ -83,30 +83,25 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private TextView tv_article_share;
     private TextView tv_bottom_alertdialog_cancle;
     private LinearLayout ll_share_list;
-
     private String url;
     private int uuid;
     private int id;
     private UMShareListener umShareListener;
     private android.os.Handler handler = new android.os.Handler();
-
     private String title;
     private TextView btn_submit;
     private EditText inputComment;
     private PopupWindow popupWindow;
     private boolean has_collect=false;
-
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_news_detail;
     }
-
     @Override
     protected void onResume() {
         super.onResume();
     }
-
     @Override
     protected void initViews() {
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
@@ -140,7 +135,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
-
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
@@ -160,12 +154,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initDatas() {
-
         HoldeNewsDetail();
     }
     private void HoldeNewsDetail() {
         OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
-                .params("id", id)
+                .params("id", uuid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -177,11 +170,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         MyColleNewsDetailBean newsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
         if (newsDetailBean.getCode()==0){
             MyColleNewsDetailBean.DataBean dataList = newsDetailBean.getData();
+
             has_collect = dataList.isHas_collect();
           if (has_collect){
               ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
           }else {
-
               ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
           }
         }
@@ -452,8 +445,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         final MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(body, MyCollectBean.class);
         if (myCollectBean.getCode() == 0) {
             asyncShowToast("收藏成功");
-
             ivNewsDetailCollect.setBackgroundResource(R.drawable.collect);
+
         } else if (myCollectBean.getCode() == 202) {
             asyncShowToast("取消收藏成功");
             ivNewsDetailCollect.setBackgroundResource(R.drawable.collect_normal);
