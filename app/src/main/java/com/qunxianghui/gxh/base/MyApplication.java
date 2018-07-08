@@ -95,7 +95,7 @@ public class MyApplication extends Application {
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL); // 友盟统计场景：普通统计场景类型
         PlatformConfig.setWeixin("wx8dd50e08a25101d7", "b84c68b1fc941afec1aabda8360e34e1");//微信APPID和AppSecret
         PlatformConfig.setQQZone("1106763297", "KEYMQmvgOw2V73MXMZF");//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("1367342454", "774db026cf85b9e14bcee6f822cc5d5d", "http://api.qunxianghui.com.cn/v1/user/callback/weibo");//微博
+        PlatformConfig.setSinaWeibo("3748625219", "774db026cf85b9e14bcee6f822cc5d5d", "http://api.qunxianghui.com.cn/v1/user/callback/weibo");//微博
         /**
          * 创建日志
          */
