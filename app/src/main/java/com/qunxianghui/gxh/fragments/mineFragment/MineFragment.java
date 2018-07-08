@@ -257,8 +257,6 @@ public class MineFragment extends BaseFragment {
                 requestCall();
                 break;
             case R.id.write_advertise:
-//                TextView tv_addbigimg_to_used = LayoutInflater.from(mActivity).inflate(R.layout.item_addadver_bigimag, null).findViewById(R.id.tv_addbigimg_to_used);
-//                tv_addbigimg_to_used.setVisibility(View.GONE);
                 AdvertisConmmengtActivity.sIsFromNews = false;
                 toActivity(AdvertisConmmengtActivity.class);
                 break;

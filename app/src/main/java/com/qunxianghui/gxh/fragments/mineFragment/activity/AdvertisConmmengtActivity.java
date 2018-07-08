@@ -33,10 +33,8 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     TabLayout tabLayout_adver_commen;
     @BindView(R.id.viewPager_adver_commen)
     NoScrollViewPager viewPager_adver_commen;
-
     public static boolean sIsFromNews = true;
     public static int sCurrentPosition = 0;
-
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
     private int[] mImgs = {R.mipmap.adv_select_big_img, R.mipmap.adv_select_card, R.mipmap.adv_select_san, R.mipmap.adv_select_san, R.mipmap.adv_select_qq, R.mipmap.adv_select_video};
     private List<BaseFragment> fragments = new ArrayList<>();
