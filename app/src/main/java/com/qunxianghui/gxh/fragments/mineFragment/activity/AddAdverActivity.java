@@ -108,7 +108,8 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                             if (code == 0 && data != null) {
                                 startThirdShare(data.getString("url"), data.getString("title"), data.getString("imgUrl"));
                             }else if (code==105){
-                                asyncShowToast("请在首次会员激活的设备上进行分享");
+
+                                Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {

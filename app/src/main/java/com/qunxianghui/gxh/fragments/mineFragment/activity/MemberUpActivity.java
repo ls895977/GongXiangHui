@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -39,7 +40,12 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     LinearLayout llActiviteTop;
     @BindView(R.id.ll_unactivite_top)
     LinearLayout llUnactiviteTop;
+    @BindView(R.id.ll_memberup_startstatus)
+    LinearLayout llMemberupStartstatus;
     private JSONArray data;
+    private String selfcompayname;
+    private String expire_time;
+
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_member_up;
@@ -48,7 +54,13 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
+        SharedPreferences companyData = getSharedPreferences("conpanyname", 0);
+        selfcompayname = companyData.getString("selfcompayname", "");
+        expire_time = companyData.getString("expire_time", "");
+
+
     }
+
     @Override
     protected void initDatas() {
         new TitleBuilder(MemberUpActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -57,12 +69,20 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                 finish();
             }
         }).setTitleText("产品介绍");
+
+        if (selfcompayname != null) {
+            llActiviteTop.setVisibility(View.VISIBLE);
+            llMemberupStartstatus.setVisibility(View.GONE);
+            tvCompanyActiveTime.setText("您当前的状态:已激活"+expire_time);
+        }
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
         tvMemberUpQuicklyActivate.setOnClickListener(this);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +118,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                                     asyncShowToast("该账号已激活");
                                     llUnactiviteTop.setVisibility(View.GONE);
                                     llActiviteTop.setVisibility(View.VISIBLE);
-                                } else if (code==101){
+                                } else if (code == 101) {
                                     asyncShowToast("序列号不存在");
                                 }
                             } catch (Exception e) {

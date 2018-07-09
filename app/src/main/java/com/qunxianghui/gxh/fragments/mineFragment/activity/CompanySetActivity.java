@@ -180,9 +180,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(Response<String> response) {
       Logger.d("企业设置的信息"+response.body().toString());
-                if (mDataBean != null) {
-                    parseCompanyInfo(response.body());
-                }
+          if(response.body().toString().length()>0){
+              parseCompanyInfo(response.body());
+          }
 
             }
         });

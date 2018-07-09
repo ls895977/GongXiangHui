@@ -96,6 +96,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 finish();
+                DataCleanManager.cleanInternalCache(getApplicationContext());
             }
         });
     }

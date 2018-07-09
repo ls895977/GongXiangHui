@@ -110,6 +110,7 @@ public class MineFragment extends BaseFragment {
     private Object companyInfo;
     private String expires_time;
     private String companyName;
+    private String expire_time;
 
 
     @Override
@@ -158,6 +159,7 @@ public class MineFragment extends BaseFragment {
             like_cnt = data.getInt("like_cnt");
             posts_cnt = data.getInt("posts_cnt");
             comment_cnt = data.getInt("comment_cnt");
+            expire_time = data.getString("expire_time");
             mLevelName = data.getJSONObject("level_info").getString("name");
             companyName = data.getJSONObject("company_info").getString("company_name");
 
@@ -193,6 +195,7 @@ public class MineFragment extends BaseFragment {
         SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
         SharedPreferences.Editor editor = spConpanyname.edit();
         editor.putString("selfcompayname", companyName);
+        editor.putString("expire_time",expire_time);
         editor.commit();
 
 
@@ -258,8 +261,6 @@ public class MineFragment extends BaseFragment {
                 requestCall();
                 break;
             case R.id.write_advertise:
-//                TextView tv_addbigimg_to_used = LayoutInflater.from(mActivity).inflate(R.layout.item_addadver_bigimag, null).findViewById(R.id.tv_addbigimg_to_used);
-//                tv_addbigimg_to_used.setVisibility(View.GONE);
                 AdvertisConmmengtActivity.sIsFromNews = false;
                 toActivity(AdvertisConmmengtActivity.class);
                 break;

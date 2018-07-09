@@ -46,12 +46,10 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     protected void onLoadData() {
         RequestMineCollectVideo();
     }
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_collect_video;
     }
-
     @Override
     public void initDatas() {
     }
@@ -168,7 +166,7 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     }
     @Override
     public void attentionClick(final int position) {
-        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", dataList.get(position - 1).getId())
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", dataList.get(position).getId())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
