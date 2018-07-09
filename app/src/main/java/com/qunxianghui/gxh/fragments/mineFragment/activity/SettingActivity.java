@@ -143,7 +143,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 loadingDialog = createLoadingDialog(SettingActivity.this, "清理中...");
                 loadingDialog.show();
                 try {
-                    DataCleanManager.cleanInternalCache(getApplicationContext());
+//                    DataCleanManager.cleanInternalCache(getApplicationContext());
+                    DataCleanManager.deleteFile_Dir(getCacheDir());
                     msg.what = 0x01;
                 } catch (Exception e) {
                     e.printStackTrace();
