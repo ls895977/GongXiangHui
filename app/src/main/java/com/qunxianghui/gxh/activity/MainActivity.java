@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         return R.layout.activity_main;
     }
 

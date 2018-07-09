@@ -4,19 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="190dp"
         android:background="@mipmap/mine_top_bg">
-
         <TextView
+            android:layout_marginTop="25dp"
             android:id="@+id/tv_mine_set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
+
             android:text="设置"
             android:textSize="20sp" />
 

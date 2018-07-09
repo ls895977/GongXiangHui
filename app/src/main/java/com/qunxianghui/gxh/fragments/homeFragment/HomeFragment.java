@@ -172,13 +172,14 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     private void RequestHomeLocation() {
+
         //定位
         mlocationClient = new AMapLocationClient(mActivity);
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
         //设置返回地址信息，默认为true
         mLocationOption.setNeedAddress(true);
-//                //设置定位监听
+        //设置定位监听
         mlocationClient.setLocationListener(this);
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
@@ -187,8 +188,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         //设置定位参数
         mlocationClient.setLocationOption(mLocationOption);
         mlocationClient.startLocation();
-    }
 
+    }
     private void setChangelView() {
 //        initColumnData();
         initTabColumn();

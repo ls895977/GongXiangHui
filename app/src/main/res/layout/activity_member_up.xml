@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="12dp"
     android:orientation="vertical">
-
     <include layout="@layout/activity_title" />
 
     <ScrollView
@@ -80,16 +80,17 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
-                android:layout_marginTop="30dp"
                 android:id="@+id/ll_activite_top"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="18dp"
+                android:layout_marginTop="30dp"
                 android:background="@color/white"
-                android:gravity="center_horizontal|center_vertical">
+                android:gravity="center_horizontal|center_vertical"
+                android:visibility="gone">
 
                 <TextView
 
