@@ -92,14 +92,11 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private CompanySetBean.DataBean mDataBean;
-
     @Override
     protected int getLayoutId() {
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_company_set;
     }
-
     @Override
     protected void initViews() {
         ImagePicker imagePicker = ImagePicker.getInstance();
@@ -181,6 +178,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
             public void onSuccess(Response<String> response) {
       Logger.d("企业设置的信息"+response.body().toString());
           if(response.body().toString().length()>0){
+              tvMmineCompanysetFabu.setText("修改");
               parseCompanyInfo(response.body());
           }
 

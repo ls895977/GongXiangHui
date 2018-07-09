@@ -3,21 +3,20 @@ package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-import com.qunxianghui.gxh.adapter.generaAdapter.GeneraPushFragmentAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.qunxianghui.gxh.bean.generalize.GeneraLizeCompanyPushBean;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,63 +28,69 @@ import butterknife.Unbinder;
 
 public class GeneraPushFragment extends BaseFragment implements View.OnClickListener {
 
+
     @BindView(R.id.tv_generapush_companyname)
     TextView tvGenerapushCompanyname;
     @BindView(R.id.tv_generalize_company_des)
     TextView tvGeneralizeCompanyDes;
-    private List<String> datas = new ArrayList<>();
-    @BindView(R.id.xrecycler_generapush)
-    XRecyclerView xrecyclerGenerapush;
+
+    @BindView(R.id.bt_genera_push_address)
+    Button btGeneraPushAddress;
     Unbinder unbinder;
+    @BindView(R.id.bt_genera_push_company)
+    Button btGeneraPushCompany;
     private String selfcompayname;
     private int staff_cnt;
+
     @Override
     public int getLayoutId() {
         return R.layout.genera_push_eachother;
     }
+
     @Override
     public void initDatas() {
-        xrecyclerGenerapush.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        for (int i = 0; i < 10; i++) {
-            datas.add(i + 1 + "");
-        }
-        final GeneraPushFragmentAdapter generaPushFragmentAdapter = new GeneraPushFragmentAdapter(mActivity, datas);
-        generaPushFragmentAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Toast.makeText(mActivity, "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        xrecyclerGenerapush.setAdapter(generaPushFragmentAdapter);
-        xrecyclerGenerapush.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                xrecyclerGenerapush.refreshComplete();
-            }
-            @Override
-            public void onLoadMore() {
-                xrecyclerGenerapush.refreshComplete();
-            }
-        });
         tvGenerapushCompanyname.setText(selfcompayname);
-        tvGeneralizeCompanyDes.setText(String.valueOf("规模:"+staff_cnt));
+        tvGeneralizeCompanyDes.setText(String.valueOf("规模:" + staff_cnt));
     }
+
     @Override
     public void initViews(View view) {
         SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
         selfcompayname = spCompanymessage.getString("selfcompayname", "");
         staff_cnt = spCompanymessage.getInt("staff_cnt", 0);
+
+        RequestCompanyPushData();
+
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+
+    private void RequestCompanyPushData() {
+        OkGo.<String>post(Constant.GENERALIZE_COMPANY_PUSH_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                ParseGeneraCompanyData(response.body());
+
+            }
+        });
     }
+
+    private void ParseGeneraCompanyData(String body) {
+        GeneraLizeCompanyPushBean generaLizeCompanyPushBean = GsonUtils.jsonFromJson(body, GeneraLizeCompanyPushBean.class);
+        int code = generaLizeCompanyPushBean.getCode();
+        GeneraLizeCompanyPushBean.DataBean dataList = generaLizeCompanyPushBean.getData();
+
+        if (code == 0) {
+            String company_name = dataList.getCompany_list().get(0).getCompany_name();
+
+            btGeneraPushCompany.setText(company_name);
+        }
+
+
+    }
+
     @Override
     protected void onLoadData() {
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -103,5 +108,13 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
 
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 }

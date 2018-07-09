@@ -94,18 +94,15 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.content.setText(mList.get(position).getContent());
 
         /**
-         * 删除帖子
+         * 删除评论
          */
         holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-
-
                 OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
                         params("id", mList.get(position).getId()).execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
                         //Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                         deleteItemView(position);
 

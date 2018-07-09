@@ -174,6 +174,7 @@ public class Constant {
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
     public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRanking";
+    public static final String GENERALIZE_COMPANY_PUSH_URL = BASE_URL + "promote/getPushCompany";
     //推广公司统计
     public static final String GENERALIZE_COMPANY_STATICS_URL = BASE_URL + "promote/getCompanyStatistics";
     //我的推广列表
