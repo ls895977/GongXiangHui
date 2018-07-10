@@ -129,7 +129,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         web.setThumb(image);  //缩略图
 //        web.setDescription("你要分享内容的描述");//描述
         new ShareAction(this)
-                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.SINA)
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
@@ -149,10 +149,15 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                                     .setCallback(umShareListener)
                                     .share();
                         } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-//                                            .withMedia(web)
-//                                            .setCallback(umShareListener)
-//                                            .share();
+                                    new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                            .withMedia(web)
+                                            .setCallback(umShareListener)
+                                            .share();
+                        }else if (share_media==SHARE_MEDIA.SINA){
+                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.SINA)
+                                    .withMedia(web)
+                                    .setCallback(umShareListener)
+                                    .share();
                         }
                     }
                 }).open();

@@ -56,6 +56,7 @@ public class Constant {
     // 真正的开发   先前的先忽略
 
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -170,6 +171,7 @@ public class Constant {
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
     public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+    public static final String UP_LOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行

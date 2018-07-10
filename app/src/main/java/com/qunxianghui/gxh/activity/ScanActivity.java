@@ -5,12 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.dfqin.grantor.PermissionListener;
@@ -18,12 +15,10 @@ import com.github.dfqin.grantor.PermissionsUtil;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.bean.ZxingConfig;
 import com.yzq.zxinglibrary.common.Constant;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /** 二维码扫描界面
@@ -41,7 +36,6 @@ public class ScanActivity extends BaseActivity {
 
         return R.layout.activity_sacn;
     }
-
 
     @Override
     protected void initViews() {

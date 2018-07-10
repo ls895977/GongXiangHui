@@ -33,7 +33,6 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     TextView tvGenerapushCompanyname;
     @BindView(R.id.tv_generalize_company_des)
     TextView tvGeneralizeCompanyDes;
-
     @BindView(R.id.bt_genera_push_address)
     Button btGeneraPushAddress;
     Unbinder unbinder;
@@ -41,18 +40,15 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     Button btGeneraPushCompany;
     private String selfcompayname;
     private int staff_cnt;
-
     @Override
     public int getLayoutId() {
         return R.layout.genera_push_eachother;
     }
-
     @Override
     public void initDatas() {
         tvGenerapushCompanyname.setText(selfcompayname);
         tvGeneralizeCompanyDes.setText(String.valueOf("规模:" + staff_cnt));
     }
-
     @Override
     public void initViews(View view) {
         SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
@@ -60,9 +56,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
         staff_cnt = spCompanymessage.getInt("staff_cnt", 0);
 
         RequestCompanyPushData();
-
     }
-
     private void RequestCompanyPushData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_PUSH_URL).execute(new StringCallback() {
             @Override
@@ -72,7 +66,6 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
             }
         });
     }
-
     private void ParseGeneraCompanyData(String body) {
         GeneraLizeCompanyPushBean generaLizeCompanyPushBean = GsonUtils.jsonFromJson(body, GeneraLizeCompanyPushBean.class);
         int code = generaLizeCompanyPushBean.getCode();

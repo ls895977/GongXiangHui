@@ -148,9 +148,9 @@ public class MineFragment extends BaseFragment {
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
+            int code = jsonObject.getInt("code");
 //            JSONObject accessTokenInfo = jsonObject.getJSONObject("accessTokenInfo");
 //            expires_time = accessTokenInfo.getString("expires_time");
-
             mNick = data.getString("nick");
             mAvatar = data.getString("avatar");
             mMobile = data.getString("mobile");
@@ -162,21 +162,19 @@ public class MineFragment extends BaseFragment {
             expire_time = data.getString("expire_time");
             mLevelName = data.getJSONObject("level_info").getString("name");
             companyName = data.getJSONObject("company_info").getString("company_name");
-
-            mTvMemberType.setText(mLevelName);
-            mineQuicklyLogin.setText(mNick);
-            tvMineAddlikeCount.setText(String.valueOf(like_cnt));
-            tvMinePostCount.setText(String.valueOf(posts_cnt));
-            tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-
-            GlideApp.with(getActivity()).load(mAvatar).
-                    placeholder(R.mipmap.user_moren).
-                    error(R.mipmap.user_moren).
-                    circleCrop().
-                    into(mIvHead);
-
-
             companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+                mTvMemberType.setText(mLevelName);
+                mineQuicklyLogin.setText(mNick);
+                tvMineAddlikeCount.setText(String.valueOf(like_cnt));
+                tvMinePostCount.setText(String.valueOf(posts_cnt));
+                tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
+                GlideApp.with(getActivity()).load(mAvatar).
+                        placeholder(R.mipmap.user_moren).
+                        error(R.mipmap.user_moren).
+                        circleCrop().
+                        into(mIvHead);
+
+
 
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
@@ -195,7 +193,7 @@ public class MineFragment extends BaseFragment {
         SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
         SharedPreferences.Editor editor = spConpanyname.edit();
         editor.putString("selfcompayname", companyName);
-        editor.putString("expire_time",expire_time);
+        editor.putString("expire_time", expire_time);
         editor.commit();
 
 
