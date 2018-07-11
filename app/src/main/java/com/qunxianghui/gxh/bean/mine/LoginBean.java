@@ -1,19 +1,8 @@
 package com.qunxianghui.gxh.bean.mine;
 
-import android.text.TextUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.qunxianghui.gxh.utils.ListUtils;
-
 import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginBean implements Serializable {
-
-
     /**
      * id : 1000175
      * level_id : 1

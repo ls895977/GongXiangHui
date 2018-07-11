@@ -381,7 +381,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 .execute(new DialogCallback<LzyResponse<CommentBean>>(NewsDetailActivity.this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<CommentBean>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             asyncShowToast("评论成功");
                             llInputDiscuss.setVisibility(View.VISIBLE);
                             mWebView.reload();

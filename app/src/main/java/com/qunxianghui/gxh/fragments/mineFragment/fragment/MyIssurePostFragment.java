@@ -230,7 +230,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                         dataList.get(position).setLike_info_res("true");
                         mineIssurePostAdapter.notifyDataSetChanged();
                         mineIssurePostAdapter.notifyItemChanged(position);
-
                         asyncShowToast("点赞成功");
                     } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
                         List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();

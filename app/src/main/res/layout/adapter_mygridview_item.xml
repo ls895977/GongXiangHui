@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+
         android:background="@drawable/subscribe_item_bg"
         android:gravity="center"
         android:minHeight="38.0dip"

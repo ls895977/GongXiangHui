@@ -113,7 +113,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             holder.llCommentBody.setVisibility(View.GONE);
         }
         //点赞用户
-        if ( mList.get(position).getTem().size() != 0 ){
+        if ( mList.get(position).getTem().size() >0 ){
             holder.llCommentBody.setVisibility(View.VISIBLE);
             holder.click_like_user.setVisibility(View.VISIBLE);
             String content = "";

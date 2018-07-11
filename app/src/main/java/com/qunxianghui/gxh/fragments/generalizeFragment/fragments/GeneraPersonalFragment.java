@@ -119,7 +119,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                     @Override
                     public void onItemClick(View v, int position) {
                         final String url = dataList.get(position).getUrl();
-                        final int uuid = dataList.get(position).getUuid();
+                        final int uuid = dataList.get(position).getData_uuid();
                         final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                         intent.putExtra("url", url);
                         intent.putExtra("uuid", uuid);

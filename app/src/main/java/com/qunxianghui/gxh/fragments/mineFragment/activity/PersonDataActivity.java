@@ -211,7 +211,7 @@ public class PersonDataActivity extends BaseActivity {
                 .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             upLoadPics.add(response.body().data.getFile());
                             Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();
                         }

@@ -159,7 +159,7 @@ public class Fragment3 extends BaseFragment {
                 .execute(new DialogCallback<LzyResponse<ImageBean>>(mActivity) {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             mImgUrl = response.body().data.getFile();
                             commit();
                         }

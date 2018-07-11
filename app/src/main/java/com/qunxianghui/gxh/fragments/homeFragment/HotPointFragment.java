@@ -207,7 +207,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             swipeRefreshLayout.setRefreshing(false);
                             List<HomeNewListBean> list = response.body().data;
                             if (list == null || list.size() == 0) {
@@ -285,7 +285,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             swipeRefreshLayout.setRefreshing(false);
                             List<HomeNewListBean> list = response.body().data;
                             if (list == null || list.size() == 0) {
