@@ -30,9 +30,10 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
-import com.qunxianghui.gxh.bean.mine.MineIssurePostBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
@@ -180,7 +181,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 mineIssurePostAdapter.notifyItemChanged(position);
             }
         });
-
     }
 
     /**
@@ -190,33 +190,68 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
      */
     @Override
     public void onLaunLikeClick(final int position) {
-        OkGo.<String>post(Constant.LIKE_URL)
-                .params("data_uuid", dataList.get(position - 1).getUuid())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-//                                     try {
-//                            JSONObject jsonObject = new JSONObject(response.body());
-//                            int code = jsonObject.getInt("code");
-//                            if (code == 0) {
-//                                Toast.makeText(getActivity(), "点赞成功", Toast.LENGTH_SHORT).show();
-//                            } else if (code == 202) {
-//                                Toast.makeText(getActivity(), "取消点赞成功", Toast.LENGTH_SHORT).show();
-//                            }
-//                            mineIssurePostAdapter.notifyDataSetChanged();
-//                            mineIssurePostAdapter.notifyItemChanged(position);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
+        if (!LoginMsgHelper.isLogin(getContext())) {
+            toActivity(LoginActivity.class);
+            mActivity.finish();
+            return;
+        }
+        if (dataList.get(position).getClick_like() != null && dataList.get(position).getClick_like().toString().length() == 0) {
+            if (dataList.get(position).getClick_like().size() <= 0) {
+                dataList.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
+            }
+            TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
+            UserUtil user = UserUtil.getInstance();
+            like.setMember_name(user.mNick);
+            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = dataList.get(position).getClick_like();
+            likeBeanList.add(like);
+            mineIssurePostAdapter.notifyDataSetChanged();
+            mineIssurePostAdapter.notifyItemChanged(position);
+            OkGo.<String>post(Constant.LIKE_URL)
+                    .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
+                @Override
+                public void onSuccess(Response<String> response) {
+                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
 
-                        TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                        if (like.getMessage().equalsIgnoreCase("点赞成功")) {
-                            asyncShowToast("点赞成功");
-                        } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
-                            asyncShowToast("取消点赞成功");
+                    //Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
+                    //Handler haner = new Handler()
+                }
+            });
+        } else {
+            OkGo.<String>post(Constant.LIKE_URL)
+                    .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
+                @Override
+                public void onSuccess(Response<String> response) {
+                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
+                    UserUtil user = UserUtil.getInstance();
+                    like.setMember_name(user.mNick);
+                    if (like.getMessage().equalsIgnoreCase("点赞成功")) {
+                        dataList.get(position).getTem().add(like);
+                        dataList.get(position).setLike_info_res("true");
+                        mineIssurePostAdapter.notifyDataSetChanged();
+                        mineIssurePostAdapter.notifyItemChanged(position);
+
+                        asyncShowToast("点赞成功");
+                    } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
+                        List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
+                        for (int i = 0; i < dataList.get(position).getTem().size(); i++) {
+                            TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);
+                            if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
+                                if (dataList.get(position).getClick_like().size() == 1 && dataList.get(position).getTem().size() == 1) {
+                                    dataList.get(position).setClick_like("");
+                                }
+                                dataList.get(position).getTem().remove(tem);
+                                break;
+                            }
                         }
+                        dataList.get(position).setLike_info_res("");
+                        mineIssurePostAdapter.notifyDataSetChanged();
+                        mineIssurePostAdapter.notifyItemChanged(position);
+                        asyncShowToast("取消点赞成功");
                     }
-                });
+                }
+            });
+        }
     }
 
     /* 图片点击*/
@@ -257,22 +292,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
      */
     @Override
     public void onCommentClick(final int position, String content) {
-
-//        OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
-//                .params("uuid", "uuid")
-//                .params("content", IssuePostCommentEdit.getText().toString())
-//                .execute(new StringCallback() {
-//                    @Override
-
-//                    public void onSuccess(Response<String> response) {
-//                        CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-//                        if (comment.getCode() == 0) {
-//                            IssuePostCommentEdit.setText("");
-//
-//                        }
-//                    }
-//                });
-
         showMyIssuePopupWindow(position, content);
 
     }

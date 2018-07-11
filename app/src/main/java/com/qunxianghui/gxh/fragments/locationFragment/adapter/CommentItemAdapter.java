@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,7 +72,7 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.name = convertView.findViewById(R.id.name);
             holder.content = convertView.findViewById(R.id.content);
             holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
-
+            holder.ll_comment_selflist=convertView.findViewById(R.id.ll_comment_selflist);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -117,6 +118,7 @@ public class CommentItemAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         TextView name, content, tv_item_discuss_delete;
+        LinearLayout ll_comment_selflist;
 
 
     }

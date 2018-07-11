@@ -17,7 +17,7 @@ public class GeneraLizePersonTopBean {
 
     private int code;
     private String message;
-    private DataBean data;
+    private  DataBean data;
 
     public static GeneraLizePersonTopBean objectFromData(String str) {
 
@@ -48,7 +48,7 @@ public class GeneraLizePersonTopBean {
         this.message = message;
     }
 
-    public DataBean getData() {
+    public  DataBean getData() {
         return data;
     }
 

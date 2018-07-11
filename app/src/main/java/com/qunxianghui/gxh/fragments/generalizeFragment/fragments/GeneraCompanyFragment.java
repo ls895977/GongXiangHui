@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.GeneralizeCompanyStaticsBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -118,7 +119,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                parseGeneraLizeStaticsData(response.body());
+                if (response.body().toString()!=null){
+                    parseGeneraLizeStaticsData(response.body());
+                }
+
             }
         });
 
@@ -144,12 +148,13 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
             tvAdverClickRate.setText(click_rate);
             tvArticleTransmitRate.setText(forward_rate);
             tvGeneracompanyName.setText(selfcompayname);
-
             SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
             spCompanymessageEditor.putString("selfcompayname",selfcompayname);
             spCompanymessageEditor.putInt("staff_cnt",staff_cnt);
             spCompanymessageEditor.commit();
+        }else if (generalizeCompanyStaticsBean.getCode()==1000){
+            toActivity(LoginActivity.class);
         }
     }
 

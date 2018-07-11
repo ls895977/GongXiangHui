@@ -63,7 +63,8 @@ public class GeneraPersonalFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        parseGeneraPersonTopData(response.body());
+                            parseGeneraPersonTopData(response.body());
+
                     }
                 });
     }

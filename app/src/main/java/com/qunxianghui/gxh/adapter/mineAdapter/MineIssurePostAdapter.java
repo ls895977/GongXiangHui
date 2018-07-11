@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,10 @@ import com.qunxianghui.gxh.widget.MyGridView;
 import java.util.List;
 
 public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAdapter.ViewHolder> implements MineCollectPostAdapter.MycollectPostListener {
-
     private MyPostOnClickListener postOnClickListener;
-
     private List<TestMode.DataBean.ListBean> mList;
     private Context mContext;
     private CommentItemAdapter commentItemAdapter;
-
     public void setPostOnClickListener(MyPostOnClickListener postOnClickListener) {
         this.postOnClickListener = postOnClickListener;
     }
@@ -35,13 +33,11 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         mContext = context;
         this.mList = dataBeanList;
     }
-
     @Override
     public MineIssurePostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View convertView = LayoutInflater.from(mContext).inflate(R.layout.item_mine_issue_post, parent, false);
         return new ViewHolder(convertView);
     }
-
     @Override
     public void onBindViewHolder(final MineIssurePostAdapter.ViewHolder holder, final int position) {
         TestMode.DataBean.ListBean listBean = mList.get(position);
@@ -55,15 +51,16 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             holder.mIvCollect.setBackgroundResource(R.drawable.collect_normal);
         }
         List<TestMode.DataBean.ListBean.ClickLikeBean> click_like = mList.get(position).getClick_like();
+        String like_info_res = mList.get(position).getLike_info_res();
 
-        if (click_like.toString() != null) {
+        if (!TextUtils.isEmpty(like_info_res)) {
             holder.mTvlike.setText("已赞");
-            holder.mIvLike.setBackgroundResource(R.mipmap.icon_good);
+            holder.mIvLike.setBackgroundResource(R.mipmap.icon_good_true);
         } else {
             holder.mTvlike.setText("点赞");
-            holder.mIvLike.setBackgroundResource(R.mipmap.icon_collect);
-        }
 
+            holder.mIvLike.setBackgroundResource(R.mipmap.icon_good);
+        }
         List<String> images = ((List<String>) mList.get(position).getImages());
         holder.mTvMineName.setText(listBean.getMember_name());
         holder.mTvMineContent.setText(listBean.getContent());
@@ -90,7 +87,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             @Override
             public void onClick(View v) {
 
-                postOnClickListener.onLaunLikeClick(holder.getAdapterPosition());
+                postOnClickListener.onLaunLikeClick(position);
             }
         });
         holder.mLLCollect.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +111,19 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             holder.comment_list.setAdapter(commentItemAdapter);
         } else {
             holder.llCommentBody.setVisibility(View.GONE);
+        }
+        //点赞用户
+        if ( mList.get(position).getTem().size() != 0 ){
+            holder.llCommentBody.setVisibility(View.VISIBLE);
+            holder.click_like_user.setVisibility(View.VISIBLE);
+            String content = "";
+            for (int i = 0; i<mList.get(position).getTem().size(); i++){
+                TestMode.DataBean.ListBean.ClickLikeBean like = mList.get(position).getTem().get(i);
+                content = content + like.getMember_name() + " ";
+            }
+            holder.click_like_user.setText(content);
+        }else {
+            holder.click_like_user.setVisibility(View.GONE);
         }
 
     }

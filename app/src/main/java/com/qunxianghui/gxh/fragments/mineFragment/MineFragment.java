@@ -111,8 +111,6 @@ public class MineFragment extends BaseFragment {
     private String expires_time;
     private String companyName;
     private String expire_time;
-
-
     @Override
     public int getLayoutId() {
 
@@ -143,7 +141,6 @@ public class MineFragment extends BaseFragment {
                     }
                 });
     }
-
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
@@ -209,7 +206,6 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         if (!LoginMsgHelper.isLogin(getContext())) {
             toActivity(LoginActivity.class);
             mActivity.finish();

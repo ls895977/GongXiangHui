@@ -1,8 +1,5 @@
 package com.qunxianghui.gxh.activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +18,6 @@ import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
-import com.qunxianghui.gxh.utils.UserUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,27 +94,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-        receiver = new MainBroadCast() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(this,"Broad",Toast.LENGTH_LONG).show();
-                //super.onReceive(context, intent);
-                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
-                    boolean hide = intent.getBooleanExtra("hide", false);
-                    if (hide == true) {
-                        llMain.setVisibility(View.GONE);
-                    } else {
-                        llMain.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(INTENT_BROADCAST_HIDE_TAB);
-        registerReceiver(receiver, filter);
-        UserUtil.getInstance();
+//        receiver = new MainBroadCast() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                //Toast.makeText(this,"Broad",Toast.LENGTH_LONG).show();
+//                //super.onReceive(context, intent);
+//                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
+//                    boolean hide = intent.getBooleanExtra("hide", false);
+//                    if (hide == true) {
+//                        llMain.setVisibility(View.GONE);
+//                    } else {
+//                        llMain.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//        };
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(INTENT_BROADCAST_HIDE_TAB);
+//        registerReceiver(receiver, filter);
+//        UserUtil.getInstance();
     }
-
     private void selectedFragment(int position) {
         supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();

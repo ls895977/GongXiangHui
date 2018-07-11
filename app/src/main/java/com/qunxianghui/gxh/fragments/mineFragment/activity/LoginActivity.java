@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
@@ -67,7 +66,6 @@ public class LoginActivity extends BaseActivity {
     ImageView ivQqLogin;
     @BindView(R.id.iv_sina_login)
     ImageView ivSinaLogin;
-
     private UMShareAPI mShareAPI;
     private UMAuthListener mUmAuthListener;
     private UMShareListener umShareListener;
@@ -75,10 +73,12 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
     }
+
     @Override
     protected void initViews() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -91,13 +91,16 @@ public class LoginActivity extends BaseActivity {
         //数据库操作类
         userDao = new UserDao(this);
     }
+
     @Override
     protected void initDatas() {
         mShareAPI = UMShareAPI.get(this);
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
-            public void onStart(SHARE_MEDIA platform) { }
+            public void onStart(SHARE_MEDIA platform) {
+            }
+
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
                 /**
@@ -142,6 +145,7 @@ public class LoginActivity extends BaseActivity {
             public void onError(SHARE_MEDIA platform, int action, Throwable t) {
 //                Log.w("test", "性别: " + data.get("gender"));
             }
+
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
                 Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
@@ -153,6 +157,7 @@ public class LoginActivity extends BaseActivity {
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
+
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(LoginActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
@@ -183,17 +188,17 @@ public class LoginActivity extends BaseActivity {
                     asyncShowToast("手机号格式不正确");
                 } else {
                     doLogin(phone, password);
-                    //                    final User user = userDao.dbQueryOneByUsername(phone);
-                    //                    if (userDao.dbQueryOneByUsername(phone) == null) {
-                    //                        Toast.makeText(mContext, "此用户不存在", Toast.LENGTH_SHORT).show();
-                    //                    } else {
-                    //                        if (!user.getPassword().equals(password)) {
-                    //                            Toast.makeText(mContext, "密码错误", Toast.LENGTH_SHORT).show();
-                    //                        } else {
-                    //                            Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
-                    //                            toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
-                    //                    }
-                    //                    }
+//                                        final User user = userDao.dbQueryOneByUsername(phone);
+//                                        if (userDao.dbQueryOneByUsername(phone) == null) {
+//                                            Toast.makeText(mContext, "此用户不存在", Toast.LENGTH_SHORT).show();
+//                                        } else {
+//                                            if (!user.getPassword().equals(password)) {
+//                                                Toast.makeText(mContext, "密码错误", Toast.LENGTH_SHORT).show();
+//                                            } else {
+//                                                Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
+//                                                toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
+//                                        }
+//                                        }
                 }
 
                 break;
@@ -211,17 +216,12 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.iv_sina_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.SINA, mUmAuthListener);
-                //此方法用于退出登录，想要删除授权的用户
-//                UMShareAPI.get(mContext).deleteOauth(this, SHARE_MEDIA.WEIXIN, null);
-
                 break;
-
         }
     }
 
     private void doLogin(String phone, String password) {
-        OkGo.<LzyResponse<LoginBean>>get(Constant.LOGIN_URL).tag(TAG).cacheKey("cachePostKey").
-                cacheMode(CacheMode.DEFAULT).
+        OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).tag(TAG).
                 params("mobile", phone).
                 params("password", password).
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
@@ -236,59 +236,15 @@ public class LoginActivity extends BaseActivity {
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
+                        } else if (response.body().code.equals("105")) {
+                            asyncShowToast("用户名或密码错误！");
+
                         } else {
                             asyncShowToast(response.body().message);
                         }
                     }
                 });
-//                execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(Response<String> response) {
-//
-//                        if (HttpStatusUtil.getStatus(response.body().toString())) {
-//
-//                            Logger.d("onSuccess-->:" + response.body().toString());
-//
-//                            try {
-//                                JSONObject jsonObject = new JSONObject(response.body().toString());
-//                                JSONObject  data = jsonObject.getJSONObject("data");
-//                                JSONObject accessTokenInfo = data.getJSONObject("accessTokenInfo");
-//                                String access_token = accessTokenInfo.getString("access_token");
-//                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-//                                MyApplication.getApp().setAccessToken(access_token);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//
-//                            asyncShowToast("登录成功");
-//                            toActivity(MainActivity.class);
-//                            finish();
-//                            return;
-//                        }
-//                        asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().toString()));
-//                    }
-//
-//
-//                });
     }
-
-    //    /**
-    //     * 显示当前的token信息
-    //     * @param hasExisted  配置文件中是否已存在 token 信息并且合法
-    //     */
-    //    private void updateTokenView(boolean hasExisted) {
-    //        String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
-    //                new java.util.Date(mAccessToken.getExpiresTime()));
-    //        String format = getString(R.string.weibosdk_demo_token_to_string_format_1);
-    //
-    //
-    //        String message = String.format(format, mAccessToken.getToken(), date);
-    //        if (hasExisted) {
-    //            message = getString(R.string.weibosdk_demo_token_has_existed) + "\n" + message;
-    //        }
-    //    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
