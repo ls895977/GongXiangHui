@@ -21,29 +21,23 @@ import com.yzq.zxinglibrary.common.Constant;
 
 import butterknife.ButterKnife;
 
-/** 二维码扫描界面
+/**
+ * 二维码扫描界面
  * Created by Administrator on 2018/3/10 0010.
  */
 
 public class ScanActivity extends BaseActivity {
-
-
     private int REQUEST_CODE_SCAN = 111;
     private AlertDialog.Builder builder;
-
     @Override
     protected int getLayoutId() {
-
         return R.layout.activity_sacn;
     }
-
     @Override
     protected void initViews() {
         requestCamera();
     }
-
     private void requestCamera() {
-
         if (PermissionsUtil.hasPermission(mContext, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             //有访问摄像头的权限
             Intent intent = new Intent(mContext, CaptureActivity.class);
@@ -71,10 +65,8 @@ public class ScanActivity extends BaseActivity {
                     config.setPlayBeep(true);
                     config.setShake(true);
                     intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
-
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                 }
-
                 @Override
                 public void permissionDenied(@NonNull String[] permissions) {
                     //用户拒绝了访问摄像头的申请
@@ -89,20 +81,8 @@ public class ScanActivity extends BaseActivity {
             }, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE});
         }
     }
-
     @Override
     protected void initDatas() {
-//                    new TitleBuilder(ScanActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            finish();
-//                        }
-//                    }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Toast.makeText(mContext, "分享界面", Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     @Override
@@ -162,7 +142,7 @@ public class ScanActivity extends BaseActivity {
 
 
         }
-        finish();
+
 
     }
 

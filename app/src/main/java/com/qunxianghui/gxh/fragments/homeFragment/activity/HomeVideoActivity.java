@@ -103,7 +103,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
     }
-
     /**
      * 解析首页视频列表
      *

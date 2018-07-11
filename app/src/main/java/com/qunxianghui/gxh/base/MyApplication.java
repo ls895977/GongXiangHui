@@ -28,6 +28,7 @@ import com.qunxianghui.gxh.utils.CityPickerutil;
 import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ScreenUtils;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -44,12 +45,19 @@ public class MyApplication extends Application {
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
     private static MyApplication SINSTANCE;
+    private static IWXAPI SWXAPI;
     public static AppManager appManager;
     private String mAccessToken;
     public static MyApplication getMyApplicaiton() {
         return SINSTANCE;
     }
+    public static IWXAPI getWxApi() {
+        return SWXAPI;
+    }
 
+    public static void setWxApi(IWXAPI api) {
+        SWXAPI = api;
+    }
     private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread thread, Throwable ex) {
             //发生崩溃异常时,重启应用

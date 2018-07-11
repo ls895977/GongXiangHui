@@ -28,6 +28,7 @@ import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -73,6 +74,7 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
+    private IWXAPI mWxApi;
 
     @Override
     protected int getLayoutId() {
@@ -95,6 +97,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initDatas() {
         mShareAPI = UMShareAPI.get(this);
+        mWxApi = MyApplication.getWxApi();
+
+
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
@@ -209,7 +214,11 @@ public class LoginActivity extends BaseActivity {
                 toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
-                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                if (mWxApi!=null&&mWxApi.isWXAppInstalled()){
+                    mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                }else {
+                    Toast.makeText(this, "用户未安装微信", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.iv_qq_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);
@@ -227,7 +236,7 @@ public class LoginActivity extends BaseActivity {
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<LoginBean>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code.equals(0)) {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
@@ -236,7 +245,7 @@ public class LoginActivity extends BaseActivity {
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
-                        } else if (response.body().code.equals("105")) {
+                        } else if (response.body().code.equals(105)) {
                             asyncShowToast("用户名或密码错误！");
 
                         } else {
