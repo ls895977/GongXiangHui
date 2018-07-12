@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,9 +53,11 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     protected void initViews() {
         xrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         RequestAirList();
-        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
-        cityId = spLocation.getString("X-cityId", "");
-        areaId = spLocation.getString("X-areaId", "");
+//        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
+//        cityId = spLocation.getString("X-cityId", "");
+//        areaId = spLocation.getString("X-areaId", "");
+//        Log.e("cityID",cityId);
+//        Log.e("areaId",areaId);
     }
 
     private void RequestAirList() {
@@ -86,8 +89,16 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void initDatas() {
+    protected void onResume() {
+        super.onResume();
         homeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
+        cityId = spLocation.getString("X-cityId", "");
+        areaId = spLocation.getString("X-areaId", "");
+    }
+
+    @Override
+    protected void initDatas() {
     }
 
     @Override
