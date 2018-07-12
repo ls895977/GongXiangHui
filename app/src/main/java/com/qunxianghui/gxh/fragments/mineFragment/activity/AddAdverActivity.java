@@ -130,10 +130,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                 .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.SINA)
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA
-
-
-                            share_media) {
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
                         if (share_media == SHARE_MEDIA.QQ) {
                             new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
                                     .withMedia(web)
