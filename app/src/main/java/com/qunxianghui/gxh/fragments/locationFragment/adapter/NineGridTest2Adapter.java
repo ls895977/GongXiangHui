@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.fragments.locationFragment.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
+import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
@@ -62,6 +64,15 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
+
+        UserUtil user = UserUtil.getInstance();
+        final TestMode.DataBean.ListBean listBean = dataBeanList.get(position);
+        if (!TextUtils.isEmpty(user.mNick) && user.mNick.equalsIgnoreCase(listBean.getMember_name())) {
+            holder.deleteBtn.setVisibility(View.VISIBLE);
+        } else {
+            holder.deleteBtn.setVisibility(View.GONE);
+        }
+
         //holder.img.setVisibility(View.INVISIBLE);
         final List<String> imageList = dataBeanList.get(position).getImages();
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
@@ -106,7 +117,12 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         } else {
             holder.digCommentBody.setVisibility(View.GONE);
         }
-
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.deletePost(position);
+            }
+        });
 
         //收藏
 //        holder.ll_location_style_collect.setOnClickListener(new View.OnClickListener() {
@@ -181,21 +197,21 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             @Override
             public void onClick(View v) {
                 //弹出popupwindow
-                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position),mContext);
+                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position), mContext);
             }
         });
 
         //点赞用户
-        if ( dataBeanList.get(position).getTem().size() != 0 ){
+        if (dataBeanList.get(position).getTem().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
             String content = "";
-            for (int i = 0; i<dataBeanList.get(position).getTem().size(); i++){
+            for (int i = 0; i < dataBeanList.get(position).getTem().size(); i++) {
                 TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(position).getTem().get(i);
                 content = content + like.getMember_name() + " ";
             }
             holder.clickusertext.setText(content);
-        }else {
+        } else {
             holder.clickusertext.setVisibility(View.GONE);
         }
 
@@ -220,7 +236,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         TextView tv_location_circle_inform;
         TextView tv_location_person_name;
         TextView tv_location_person_content;
-        TextView tv_location_issure_name;
+        TextView tv_location_issure_name, deleteBtn;
         TextView tv_location_comment;
         ImageView iv_location_style_collect, snsBtn, img;
         RoundImageView iv_location_person_head;
@@ -247,6 +263,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
+            deleteBtn = itemView.findViewById(R.id.deleteBtn);
+
             snsBtn = itemView.findViewById(R.id.snsBtn);
             img = itemView.findViewById(R.id.img);
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());
@@ -274,6 +292,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
         /* 头像点击*/
         void headImageClick(int position);
+
+        /*删除*/
+        void deletePost(int position);
 
 
     }

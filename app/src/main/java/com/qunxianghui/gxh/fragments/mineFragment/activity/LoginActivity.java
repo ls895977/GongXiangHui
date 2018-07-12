@@ -245,15 +245,12 @@ public class LoginActivity extends BaseActivity {
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
-                        } else if (response.body().code==105) {
-                            asyncShowToast("用户名或密码错误！");
                         } else {
-                            asyncShowToast(response.body().message);
+                            asyncShowToast("用户名或密码错误！");
                         }
                     }
                 });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

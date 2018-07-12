@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.fragments.locationFragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +43,8 @@ import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,15 +72,18 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private boolean mIsFirst = true;
     private int commentPosition;
     private int scrollOffsetY = 0;
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_location;
     }
+
     @Override
     public void initDatas() {
         RequestLocationData();
     }
+
     @Override
     public void initViews(View view) {
         commentView = view.findViewById(R.id.location_send_comment_view);
@@ -166,6 +173,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
+
     private void RequestLocationData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("limit", 10)
@@ -246,10 +254,12 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 break;
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     @Override
     public void onPicClick(int position, int picpostion) {
         List<String> imageList = dataList.get(position).getImages();
@@ -262,29 +272,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         intent.putExtra("position", picpostion);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
-        /*
-        Intent broadcast = new Intent("android.intent.action.HIDE_TAB");
-        broadcast.putExtra("hide",true);
-        getActivity().sendBroadcast(broadcast);
-        List<String> imageList = dataList.get(position).getImages();
-        String url = imageList.get(picpostion);
-        GlideApp.with(getContext()).load(url)
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(photoView);
-        photoView.setVisibility(View.VISIBLE);
-        //LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
 
-        photoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setVisibility(View.INVISIBLE);
-                Intent broadcast = new Intent("android.intent.action.HIDE_TAB");
-                broadcast.putExtra("hide",false);
-                getActivity().sendBroadcast(broadcast);
-            }
-        });*/
     }
 
     /**
@@ -341,23 +329,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                                 }
                             });
 
-                    /*
-                    OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
-                            .params("uuid", uuid)
-                            .params("content", comment_edit.getText().toString())
-                            .execute(new DialogCallback<LzyResponse<CommentBean>>(getActivity()) {
-                                @Override
-                                public void onSuccess(Response<LzyResponse<CommentBean>> response) {
-                                    if (response.body().code.equals("0")) {
-                                        //requestCommentList(uuid);
-                                        Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_LONG).show();
-                                        comment_edit.setText("");
-                                        hideSoftKeyboard(comment_edit, getActivity());
 
-                                    }
-                                }
-                            });
-                            */
                 }
             }
         });
@@ -370,6 +342,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         }
     }
+
     void requestCommentList(int uuid) {
         OkGo.<String>post(Constant.COMMENT_LIST)
                 .params("uuid", uuid)
@@ -471,7 +444,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 mAdapter.notifyItemChanged(position);
             }
         });
-
     }
 
     /**
@@ -484,6 +456,49 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         Intent intent = new Intent(mActivity, PersonDetailActivity.class);
         intent.putExtra("member_id", dataList.get(position).getMember_id());
         startActivity(intent);
+    }
+
+    /**
+     * @param position
+     */
+    @Override
+    public void deletePost(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("删除提示");
+        builder.setMessage("您确定要删除该条记录么?");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                OkGo.<String>post(Constant.DELETE_POST_URL)
+                        .params("uuid", dataList.get(position).getUuid())
+                        .execute(new DialogCallback<String>(getActivity()) {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                parseDeletePostAData(response.body(), position);
+                            }
+                        });
+            }
+        });
+        builder.setNeutralButton("考虑一下", null);
+        builder.setNegativeButton("取消", null);
+        builder.show();
+
+    }
+
+    /*解析删除的内容*/
+    private void parseDeletePostAData(String body, int position) {
+        try {
+            JSONObject jsonObject = new JSONObject(body);
+            int code = jsonObject.getInt("code");
+            if (code == 0) {
+                dataList.remove(position);
+                mAdapter.notifyDataSetChanged();
+                asyncShowToast("删除成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static LocationFragment getInstance() {

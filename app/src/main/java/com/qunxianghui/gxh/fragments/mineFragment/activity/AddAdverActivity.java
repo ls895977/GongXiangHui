@@ -108,10 +108,8 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                             if (code == 0 && data != null) {
                                 startThirdShare(data.getString("url"), data.getString("title"), data.getString("imgUrl"));
                             }else if (code==105){
-
                                 Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -132,7 +130,10 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                 .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.SINA)
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA
+
+
+                            share_media) {
                         if (share_media == SHARE_MEDIA.QQ) {
                             new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
                                     .withMedia(web)

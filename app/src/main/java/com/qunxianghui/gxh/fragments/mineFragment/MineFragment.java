@@ -170,14 +170,10 @@ public class MineFragment extends BaseFragment {
                         error(R.mipmap.user_moren).
                         circleCrop().
                         into(mIvHead);
-
-
-
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
             } else if (companyInfo instanceof Object) {
                 Logger.d("fillUserData-->对象:");
-
             }
 
         } catch (Exception e) {
@@ -186,7 +182,6 @@ public class MineFragment extends BaseFragment {
 /**
  * 保存自己的公司名称
  */
-
         SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
         SharedPreferences.Editor editor = spConpanyname.edit();
         editor.putString("selfcompayname", companyName);

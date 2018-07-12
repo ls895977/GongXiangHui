@@ -76,7 +76,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     public void initDatas() {
         RequestMyIssurePost();
     }
-
     /**
      * 网络请求我发布的帖子
      */
@@ -116,7 +115,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
             asyncShowToast("数据出错了  请重新加载");
         }
     }
-
     @Override
     public void initViews(View view) {
         recyclerMineissuePost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -124,7 +122,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         IssuePostCommentView = view.findViewById(R.id.issuepost_send_comment_view); //底部根布局
         IssuePostCommentSend = view.findViewById(R.id.issuepost_comment_to_send);  //底部提交
     }
-
     @Override
     protected void initListeners() {
         super.initListeners();
