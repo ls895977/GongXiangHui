@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.fragments.mineFragment.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -76,6 +78,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     public void initDatas() {
         RequestMyIssurePost();
     }
+
     /**
      * 网络请求我发布的帖子
      */
@@ -93,7 +96,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     }
 
     private void parseIssuePostData(String body) {
-        final TestMode mineIssurePostBean= GsonUtils.jsonFromJson(body, TestMode.class);
+        final TestMode mineIssurePostBean = GsonUtils.jsonFromJson(body, TestMode.class);
         if (mineIssurePostBean.getCode() == 0) {
             if (mIsRefresh) {
                 mIsRefresh = false;
@@ -115,6 +118,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
             asyncShowToast("数据出错了  请重新加载");
         }
     }
+
     @Override
     public void initViews(View view) {
         recyclerMineissuePost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -122,6 +126,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         IssuePostCommentView = view.findViewById(R.id.issuepost_send_comment_view); //底部根布局
         IssuePostCommentSend = view.findViewById(R.id.issuepost_comment_to_send);  //底部提交
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -269,15 +274,27 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     /*删除帖子*/
     @Override
     public void deletePost(final int position) {
-        OkGo.<String>post(Constant.DELETE_POST_URL)
-                .params("uuid", dataList.get(position).getUuid())
-                .execute(new DialogCallback<String>(getActivity()) {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        parseDeletePostAData(response.body(), position);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("删除提示");
+        builder.setMessage("您确定要删除该条消息吗?");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                OkGo.<String>post(Constant.DELETE_POST_URL)
+                        .params("uuid", dataList.get(position).getUuid())
+                        .execute(new DialogCallback<String>(getActivity()) {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                parseDeletePostAData(response.body(), position);
 
-                    }
-                });
+                            }
+                        });
+
+            }
+        });
+        builder.setNeutralButton("取消", null);
+        builder.show();
+
     }
 
     /**

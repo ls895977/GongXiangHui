@@ -34,7 +34,6 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     TextView tvHomeairBottomDayDetail;
     @BindView(R.id.iv_home_air_back)
     ImageView ivHomeAirBack;
-
     @BindView(R.id.ll_homeair_location)
     LinearLayout llHomeairLocation;
     @BindView(R.id.home_air_location)
@@ -51,7 +50,7 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initViews() {
         xrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        RequestAirList();
+
 //        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
 //        cityId = spLocation.getString("X-cityId", "");
 //        areaId = spLocation.getString("X-areaId", "");
@@ -94,6 +93,7 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
         SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
         cityId = spLocation.getString("X-cityId", "");
         areaId = spLocation.getString("X-areaId", "");
+        RequestAirList();
     }
 
     @Override

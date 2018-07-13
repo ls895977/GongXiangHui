@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,6 +58,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -102,14 +102,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private String cityCode;
     private String adCode;
     private String cityinfo;
-
     @Override
     public int getLayoutId() {
         mScreenWidth = Utils.getWindowsWidth(mActivity);
         mItemWidth = mScreenWidth / 7; // 一个Item宽度为屏幕的1/7
         return R.layout.home_layout;
     }
-
     @Override
     public void initDatas() {
         //频道列表（用户订阅的频道）
@@ -169,6 +167,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         //一进来进行定位
         RequestHomeLocation();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvHomeLocation.setText(mActivity.getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
     }
 
     private void RequestHomeLocation() {
@@ -307,7 +311,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private void initColumnData() {
         userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
     }
-
     @Override
     protected void initListeners() {
         ibHomeCamera.setOnClickListener(this);
@@ -323,13 +326,11 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mViewPager.setCurrentItem(tab.getPosition());
@@ -337,12 +338,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
     }
-
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-
     }
 
     @Override
@@ -381,7 +379,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 break;
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    String city = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).getString("currcity", "");
+                    String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
                     tvHomeLocation.setText(city);
                     break;
                 }
@@ -394,7 +392,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 String currCity = aMapLocation.getDistrict();
-                String city = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).getString("currcity", "");
+                String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
                 if (!TextUtils.isEmpty(city)) {
                     tvHomeLocation.setText(city);
                 } else {

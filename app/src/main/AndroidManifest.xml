@@ -39,6 +39,7 @@
         android:theme="@style/AppTheme">
         <!--app的入口-->
         <activity android:name="com.qunxianghui.gxh.activity.WelcomActivity"
+
             android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

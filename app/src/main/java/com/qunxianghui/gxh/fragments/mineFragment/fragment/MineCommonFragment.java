@@ -205,7 +205,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
             }
         });
-        builder.setNegativeButton("取消", null);
+        builder.setNeutralButton("取消", null);
         builder.show();
     }
 

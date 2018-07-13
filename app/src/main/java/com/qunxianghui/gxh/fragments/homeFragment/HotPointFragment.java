@@ -7,6 +7,7 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -60,6 +61,7 @@ import butterknife.Unbinder;
 import kr.co.namee.permissiongen.PermissionGen;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -96,6 +98,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     private String cityinfo;
+    private SharedPreferences mSp;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
@@ -138,6 +142,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 }
         );
     }
+
+
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
@@ -197,6 +203,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
     }
+
 
     /**
      * 首页下拉刷新 新的接口
@@ -427,7 +434,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    mhomeLocalLocation.setText(getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).getString("currcity", ""));
+                    mhomeLocalLocation.setText(getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
                     break;
 
                 }

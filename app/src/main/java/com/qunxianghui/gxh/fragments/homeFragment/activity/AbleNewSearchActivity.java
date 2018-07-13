@@ -64,13 +64,9 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
 
     @Override
     protected void initViews() {
-//        setSystemBarTransparent();
-        mSp = getSharedPreferences("location", MODE_PRIVATE);
-        tvHomeactivityCurrLocation.setText(mSp.getString("currcity", ""));
-        simpleExpandableListview.setGroupIndicator(null);
         RequestAbleLocation();
+     setSystemBarTransparent();
     }
-
     private void RequestAbleLocation() {
         //定位
         mlocationClient = new AMapLocationClient(mContext);
@@ -87,6 +83,15 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
         //设置定位参数
         mlocationClient.setLocationOption(mLocationOption);
         mlocationClient.startLocation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mSp = getSharedPreferences("location", MODE_PRIVATE);
+        tvHomeactivityCurrLocation.setText(mSp.getString("currcity", ""));
+        simpleExpandableListview.setGroupIndicator(null);
     }
 
     @Override
@@ -153,7 +158,6 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             }
         });
     }
-
     private void setItems(final DataCityInfo bean) {
         MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
         simpleExpandableListview.setAdapter(adapter);

@@ -479,8 +479,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         });
             }
         });
-        builder.setNeutralButton("考虑一下", null);
-        builder.setNegativeButton("取消", null);
+        builder.setNeutralButton("取消", null);
+
         builder.show();
 
     }
