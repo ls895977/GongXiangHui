@@ -419,7 +419,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
                     final CharSequence text = item.getText();
-                    Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                     intent.putExtra("url", text);
                     startActivity(intent);
                 } else {

@@ -1,8 +1,14 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -28,8 +34,6 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,6 +70,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private int mIsFloat;
     //添加位置0顶部，1中间，2底部
     private int mAddPosition = -1;
+    private Dialog dialog;
 
     @Override
     protected int getLayoutId() {
@@ -126,39 +131,83 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
 //        web.setDescription("你要分享内容的描述");//描述
-        new ShareAction(this)
-                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.SINA)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                        if (share_media == SHARE_MEDIA.QQ) {
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        } else if (share_media == SHARE_MEDIA.WEIXIN) {
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        } else if (share_media == SHARE_MEDIA.QZONE) {
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QZONE)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-                                    new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                                            .withMedia(web)
-                                            .setCallback(umShareListener)
-                                            .share();
-                        }else if (share_media==SHARE_MEDIA.SINA){
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.SINA)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        }
-                    }
-                }).open();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
+        RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
+        RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);
+        RelativeLayout rl_share_qq = view.findViewById(R.id.rl_share_qq);
+        RelativeLayout rl_share_qqzone = view.findViewById(R.id.rl_share_qqzone);
+        RelativeLayout rl_share_sina = view.findViewById(R.id.rl_share_sina);
+        RelativeLayout rl_share_link = view.findViewById(R.id.rl_share_link);
+        TextView share_cancel_btn = view.findViewById(R.id.share_cancel_btn);
+        // 设置style 控制默认dialog带来的边距问题
+        dialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
+        dialog.setContentView(view);
+        View.OnClickListener listener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.rl_share_wx:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_wxfriend:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_qq:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_qqzone:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QZONE)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_sina:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.SINA)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_link:
+                        asyncShowToast("实现粘贴板的逻辑");
+                        break;
+                    case R.id.share_cancel_btn:
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        };
+        rl_share_wx.setOnClickListener(listener);
+        rl_share_wxfriend.setOnClickListener(listener);
+        rl_share_qq.setOnClickListener(listener);
+        rl_share_qqzone.setOnClickListener(listener);
+        rl_share_sina.setOnClickListener(listener);
+        rl_share_link.setOnClickListener(listener);
+        share_cancel_btn.setOnClickListener(listener);
+
+        //获取当前activity所在的窗体
+        final Window dialogWindow = dialog.getWindow();
+        //设置dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        //获得窗体的属性
+        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+
+        final WindowManager windowManager = getWindowManager();
+        final Display display = windowManager.getDefaultDisplay();
+        lp.width = (int) display.getWidth();  //设置宽度
+        lp.y = 5;  //设置dialog距离底部的距离
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        dialog.show();
 
     }
 

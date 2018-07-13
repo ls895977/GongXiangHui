@@ -70,6 +70,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
     private String selfcompayname;
+
     @Override
     protected void onLoadData() {
 
@@ -97,10 +98,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         });
         vpGeneralizeCompanyMain.addOnPageChangeListener(viewPagerListenter);
     }
+
     @Override
     public void initViews(View view) {
-        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
-        selfcompayname = spCompany.getString("selfcompayname", "");
+
         /*获取企业推广的数据*/
         HoldReneraCompanyData();
         final List<Fragment> fragments = new ArrayList<>();
@@ -115,11 +116,19 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
+        selfcompayname = spCompany.getString("selfcompayname", "");
+    }
+
     private void HoldReneraCompanyData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                if (response.body().toString()!=null){
+                if (response.body().toString() != null) {
                     parseGeneraLizeStaticsData(response.body());
                 }
 
@@ -127,6 +136,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         });
 
     }
+
     /*解析企业推广的数据*/
     private void parseGeneraLizeStaticsData(String body) {
         final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
@@ -150,10 +160,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
             tvGeneracompanyName.setText(selfcompayname);
             SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-            spCompanymessageEditor.putString("selfcompayname",selfcompayname);
-            spCompanymessageEditor.putInt("staff_cnt",staff_cnt);
+            spCompanymessageEditor.putString("selfcompayname", selfcompayname);
+            spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
             spCompanymessageEditor.commit();
-        }else if (generalizeCompanyStaticsBean.getCode()==1000){
+        } else if (generalizeCompanyStaticsBean.getCode() == 1000) {
             toActivity(LoginActivity.class);
         }
     }

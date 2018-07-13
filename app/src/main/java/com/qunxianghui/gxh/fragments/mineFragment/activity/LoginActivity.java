@@ -214,11 +214,7 @@ public class LoginActivity extends BaseActivity {
                 toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
-                if (mWxApi!=null&&mWxApi.isWXAppInstalled()){
-                    mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
-                }else {
-                    Toast.makeText(this, "用户未安装微信", Toast.LENGTH_SHORT).show();
-                }
+                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
                 break;
             case R.id.iv_qq_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);
@@ -228,7 +224,6 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     }
-
     private void doLogin(String phone, String password) {
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).tag(TAG).
                 params("mobile", phone).
@@ -236,7 +231,7 @@ public class LoginActivity extends BaseActivity {
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<LoginBean>> response) {
-                        if (response.body().code==0) {
+                        if (response.body().code == 0) {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
@@ -251,6 +246,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -267,4 +263,5 @@ public class LoginActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 }
+
 

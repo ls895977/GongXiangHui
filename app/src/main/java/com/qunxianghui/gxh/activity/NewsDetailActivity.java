@@ -3,6 +3,8 @@ package com.qunxianghui.gxh.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -92,6 +94,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private EditText inputComment;
     private PopupWindow popupWindow;
     private boolean has_collect = false;
+    private ClipboardManager mClipboardManager;
 
     @Override
     protected int getLayoutId() {
@@ -106,6 +109,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
+
+        //这句是调取粘贴的系统服务
+        mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
         //微信朋友圈
         mProgressBar = (ProgressBar) findViewById(R.id.progress_newsdetail);
@@ -326,7 +332,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     /*三方分享唤起*/
     private void showShareDialog() {
 
-
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
@@ -380,10 +385,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                                 .share();
                         break;
                     case R.id.rl_share_link:
-                        asyncShowToast("点击了连接");
+                       asyncShowToast("实现粘贴板的逻辑");
                         break;
                     case R.id.share_cancel_btn:
-                 dialog.dismiss();
+                        dialog.dismiss();
                         break;
                 }
             }
