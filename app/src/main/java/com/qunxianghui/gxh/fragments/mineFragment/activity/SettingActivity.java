@@ -108,21 +108,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switchButtonMineSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String s;
+                if (isChecked) {
+                    s = "选中做的处理";
 
-                //消息通知走的处理
-                //                String s;
-                //                if(isChecked){
-                //                    s="选中做的处理";
-                //
-                //                }else {
-                //                    s="关闭";
-                //                }
-                //                asyncShowToast(s);
+                } else {
+                    s = "关闭";
+                }
+                asyncShowToast(s);
 
             }
         });
     }
-
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {

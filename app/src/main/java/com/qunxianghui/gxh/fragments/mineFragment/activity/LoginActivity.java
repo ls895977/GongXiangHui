@@ -284,6 +284,8 @@ public class LoginActivity extends BaseActivity {
                             MyApplication.getApp().setAccessToken(access_token);
                             Log.e(TAG, "onSuccess: " + access_token);
                             asyncShowToast("登录成功");
+
+
                             toActivity(MainActivity.class);
                             finish();
                         } else {
@@ -292,6 +294,8 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

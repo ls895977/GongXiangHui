@@ -2,7 +2,11 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -71,6 +75,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     //添加位置0顶部，1中间，2底部
     private int mAddPosition = -1;
     private Dialog dialog;
+    private UMWeb web;
 
     @Override
     protected int getLayoutId() {
@@ -112,7 +117,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                             int code = jsonObject.getInt("code");
                             if (code == 0 && data != null) {
                                 startThirdShare(data.getString("url"), data.getString("title"), data.getString("imgUrl"));
-                            }else if (code==105){
+                            } else if (code == 105) {
                                 Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -127,7 +132,8 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private void startThirdShare(String url, String title, String imgUrl) {
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
-        final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
+        //切记切记 这里分享的链接必须是http开头
+        web = new UMWeb(url);
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
 //        web.setDescription("你要分享内容的描述");//描述
@@ -178,7 +184,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                                 .share();
                         break;
                     case R.id.rl_share_link:
-                        asyncShowToast("实现粘贴板的逻辑");
+                        ClipContent();
                         break;
                     case R.id.share_cancel_btn:
                         dialog.dismiss();
@@ -210,7 +216,14 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         dialog.show();
 
     }
-
+    /*粘贴url*/
+    private void ClipContent() {
+        ClipboardManager mClipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(String.valueOf(web)));
+        mClipboardManager.setPrimaryClip(clipData);
+        asyncShowToast("复制成功");
+        dialog.dismiss();
+    }
     @Override
     protected void initDatas() {
         final Intent intent = getIntent();
@@ -252,16 +265,13 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                     //加载成功后显示的内容
                 }
                 super.onProgressChanged(view, newProgress);
-
             }
         });
-
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return super.shouldOverrideUrlLoading(view, url);
@@ -271,8 +281,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
-
-
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -284,7 +292,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(AddAdverActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
                 Toast.makeText(AddAdverActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();

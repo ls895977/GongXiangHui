@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -63,7 +64,6 @@ import butterknife.BindView;
  */
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
-
     @BindView(R.id.et_input_discuss)
     EditText etInputDiscuss;
     @BindView(R.id.ll_input_discuss)
@@ -95,13 +95,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private PopupWindow popupWindow;
     private boolean has_collect = false;
     private ClipboardManager mClipboardManager;
-
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_news_detail;
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -109,7 +107,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-
         //这句是调取粘贴的系统服务
         mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
@@ -135,8 +132,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 showBottomAliert();
             }
         });
-
-
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -160,7 +155,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         };
     }
-
     @Override
     protected void initDatas() {
         HoldeNewsDetail();
@@ -190,7 +184,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         }
     }
-
     //底部弹出对话框
     private void showBottomAliert() {
         dialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
@@ -220,7 +213,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         dialogWindow.setAttributes(lp);
         dialog.show();
     }
-
     @Override
     protected void initListeners() {
         etInputDiscuss.setOnClickListener(this);
@@ -248,7 +240,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.e("用户单机超链接", url);
@@ -326,13 +317,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_message:
                 showPopupCommnet();
                 break;
-
         }
     }
-
     /*三方分享唤起*/
     private void showShareDialog() {
-
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
@@ -386,7 +374,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                                 .share();
                         break;
                     case R.id.rl_share_link:
-              
+                        ClipContent();
                         break;
                     case R.id.share_cancel_btn:
                         dialog.dismiss();
@@ -416,6 +404,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
         dialog.show();
+
+    }
+/*粘贴url*/
+    private void ClipContent() {
+        ClipboardManager mClipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(url));
+        mClipboardManager.setPrimaryClip(clipData);
+        asyncShowToast("复制成功");
+        dialog.dismiss();
 
     }
 

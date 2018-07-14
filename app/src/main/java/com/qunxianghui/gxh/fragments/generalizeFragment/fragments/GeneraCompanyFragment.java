@@ -116,7 +116,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -136,7 +135,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         });
 
     }
-
     /*解析企业推广的数据*/
     private void parseGeneraLizeStaticsData(String body) {
         final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);

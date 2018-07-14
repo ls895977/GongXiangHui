@@ -53,6 +53,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
     Unbinder unbinder;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_generalizes;

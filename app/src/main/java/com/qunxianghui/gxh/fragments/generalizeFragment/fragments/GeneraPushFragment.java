@@ -46,17 +46,23 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     }
     @Override
     public void initDatas() {
-        tvGenerapushCompanyname.setText(selfcompayname);
-        tvGeneralizeCompanyDes.setText(String.valueOf("规模:" + staff_cnt));
     }
     @Override
     public void initViews(View view) {
         SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
         selfcompayname = spCompanymessage.getString("selfcompayname", "");
         staff_cnt = spCompanymessage.getInt("staff_cnt", 0);
-
         RequestCompanyPushData();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvGenerapushCompanyname.setText(selfcompayname);
+        tvGeneralizeCompanyDes.setText(String.valueOf("规模:" + staff_cnt));
+
+    }
+
     private void RequestCompanyPushData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_PUSH_URL).execute(new StringCallback() {
             @Override
