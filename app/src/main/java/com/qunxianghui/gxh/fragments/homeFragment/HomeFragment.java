@@ -1,11 +1,16 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -102,6 +107,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private String cityCode;
     private String adCode;
     private String cityinfo;
+    private int REQUEST_PERMISSION_CAMERA_CODE=10010;
+
     @Override
     public int getLayoutId() {
         mScreenWidth = Utils.getWindowsWidth(mActivity);
@@ -164,7 +171,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         shade_left = mActivity.findViewById(R.id.shade_left);
         shade_right = mActivity.findViewById(R.id.shade_right);
         mViewPager = mActivity.findViewById(R.id.home_view_pager);
-
         //一进来进行定位
         RequestHomeLocation();
     }
@@ -177,21 +183,45 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     private void RequestHomeLocation() {
 
-        //定位
-        mlocationClient = new AMapLocationClient(mActivity);
-        //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
-        //设置返回地址信息，默认为true
-        mLocationOption.setNeedAddress(true);
-        //设置定位监听
-        mlocationClient.setLocationListener(this);
-        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(2000);
-        //设置定位参数
-        mlocationClient.setLocationOption(mLocationOption);
-        mlocationClient.startLocation();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                //定位
+                mlocationClient = new AMapLocationClient(mActivity);
+                //初始化定位参数
+                mLocationOption = new AMapLocationClientOption();
+                //设置返回地址信息，默认为true
+                mLocationOption.setNeedAddress(true);
+                //设置定位监听
+                mlocationClient.setLocationListener(this);
+                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+                //设置定位间隔,单位毫秒,默认为2000ms
+                mLocationOption.setInterval(2000);
+                //设置定位参数
+                mlocationClient.setLocationOption(mLocationOption);
+                mlocationClient.startLocation();
+            }else {
+              ActivityCompat.requestPermissions(mActivity,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
+
+            }
+        }else {
+            //定位
+            mlocationClient = new AMapLocationClient(mActivity);
+            //初始化定位参数
+            mLocationOption = new AMapLocationClientOption();
+            //设置返回地址信息，默认为true
+            mLocationOption.setNeedAddress(true);
+            //设置定位监听
+            mlocationClient.setLocationListener(this);
+            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //设置定位间隔,单位毫秒,默认为2000ms
+            mLocationOption.setInterval(2000);
+            //设置定位参数
+            mlocationClient.setLocationOption(mLocationOption);
+            mlocationClient.startLocation();
+        }
+
 
     }
     private void setChangelView() {

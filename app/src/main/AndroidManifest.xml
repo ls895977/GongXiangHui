@@ -121,11 +121,6 @@
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.SeekPasswordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--首页优选界面-->
-        <activity
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.SalerActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--首页搜索界面-->
         <activity
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity"
@@ -189,11 +184,6 @@
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--我的板块的邀请朋友界面-->
-        <activity
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.InviteFrientActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--我的板块的合作热线界面-->
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.CooperationCallActivity"
@@ -242,11 +232,6 @@
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--自己测试的车辆详情的界面-->
-        <activity
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.CarDetailActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--首页便民服务界面-->
         <activity
             android:name=".activity.BianMinServiceActivity"
@@ -257,11 +242,7 @@
             android:name=".fragments.mineFragment.activity.MemberUpActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--首页本地服务界面  已经暂停使用-->
-        <activity
-            android:name=".fragments.homeFragment.activity.LocationServiceActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <!--本地圈板块的举报界面-->
         <activity
             android:name=".fragments.locationFragment.activity.InFormActivity"

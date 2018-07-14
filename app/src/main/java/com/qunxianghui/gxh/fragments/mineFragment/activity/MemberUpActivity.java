@@ -44,7 +44,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     LinearLayout llMemberupStartstatus;
     private JSONArray data;
     private String selfcompayname;
-    private int expire_time;
+    private String expire_time;
 
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -56,7 +56,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     protected void initViews() {
         SharedPreferences companyData = getSharedPreferences("conpanyname", 0);
         selfcompayname = companyData.getString("selfcompayname", "");
-        expire_time = companyData.getInt("expire_time", 0);
+        expire_time = companyData.getString("expire_time", "");
 
 
     }

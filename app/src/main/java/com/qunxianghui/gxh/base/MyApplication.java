@@ -91,7 +91,6 @@ public class MyApplication extends Application {
 
         ScreenUtils.init(this);
 
-
         /**
          * 预先加载三级列表显示省市区的数据
          */

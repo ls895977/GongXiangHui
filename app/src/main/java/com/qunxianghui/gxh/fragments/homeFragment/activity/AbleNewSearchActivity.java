@@ -1,9 +1,13 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +60,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     private SharedPreferences mSp;
     private String mCityId;
     private String mAreaId;
+    private int REQUEST_PERMISSION_CAMERA_CODE=10010;
 
     @Override
     protected int getLayoutId() {
@@ -68,27 +73,49 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
      setSystemBarTransparent();
     }
     private void RequestAbleLocation() {
-        //定位
-        mlocationClient = new AMapLocationClient(mContext);
-        //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
-        //设置返回地址信息，默认为true
-        mLocationOption.setNeedAddress(true);
-//                //设置定位监听
-        mlocationClient.setLocationListener(this);
-        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(2000);
-        //设置定位参数
-        mlocationClient.setLocationOption(mLocationOption);
-        mlocationClient.startLocation();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                //定位
+                mlocationClient = new AMapLocationClient(mContext);
+                //初始化定位参数
+                mLocationOption = new AMapLocationClientOption();
+                //设置返回地址信息，默认为true
+                mLocationOption.setNeedAddress(true);
+                //设置定位监听
+                mlocationClient.setLocationListener(this);
+                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+                //设置定位间隔,单位毫秒,默认为2000ms
+                mLocationOption.setInterval(2000);
+                //设置定位参数
+                mlocationClient.setLocationOption(mLocationOption);
+                mlocationClient.startLocation();
+            }else {
+                ActivityCompat.requestPermissions(AbleNewSearchActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
+
+            }
+        }else {
+            //定位
+            mlocationClient = new AMapLocationClient(mContext);
+            //初始化定位参数
+            mLocationOption = new AMapLocationClientOption();
+            //设置返回地址信息，默认为true
+            mLocationOption.setNeedAddress(true);
+            //设置定位监听
+            mlocationClient.setLocationListener(this);
+            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //设置定位间隔,单位毫秒,默认为2000ms
+            mLocationOption.setInterval(2000);
+            //设置定位参数
+            mlocationClient.setLocationOption(mLocationOption);
+            mlocationClient.startLocation();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         mSp = getSharedPreferences("location", MODE_PRIVATE);
         tvHomeactivityCurrLocation.setText(mSp.getString("currcity", ""));
         simpleExpandableListview.setGroupIndicator(null);
@@ -101,9 +128,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             public void onSuccess(Response<String> response) {
                 String json = response.body().toString();
                 Log.i(TAG, "--->" + json);
-
                 DataCityInfo bean = GsonUtil.parseJsonWithGson(json, DataCityInfo.class);
-
                 if (bean.getCode() == 0) {
                     setItems(bean);
                     DataCityInfo.DataBean dataBean = bean.getData();
@@ -164,6 +189,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
         simpleExpandableListview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
                 DataCityInfo.DataBean.CityBean.AreasBean areasBean = bean.getData().getA().get(groupPosition).getAreas().get(childPosition);
                 String areaname = areasBean.getAreaname();
                 tvHomeactivityCurrLocation.setText(areaname);

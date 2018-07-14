@@ -13,24 +13,38 @@
         android:text="xxxxx"
         android:textColor="@color/tab_color" />
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:orientation="vertical"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="0dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_item_collect_video_head"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher" />
-    </android.support.v7.widget.CardView>
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            card_view:cardCornerRadius="2dp"
+            card_view:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/iv_item_collect_video_head"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:scaleType="fitXY"
+
+                android:src="@mipmap/ic_launcher" />
+        </android.support.v7.widget.CardView>
+
+        <ImageView
+            android:layout_width="50dp"
+
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:src="@mipmap/icon_player" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,7 +57,7 @@
             android:id="@+id/round_item_collect_video_personhead"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/default_img" />
 
         <TextView
             android:id="@+id/tv_item_collect_video_personname"
@@ -67,6 +81,7 @@
             android:drawableLeft="@mipmap/icon_message"
             android:drawablePadding="5dp"
             android:text="0" />
+
 
         <TextView
             android:id="@+id/tv_mycollect_video_attention"

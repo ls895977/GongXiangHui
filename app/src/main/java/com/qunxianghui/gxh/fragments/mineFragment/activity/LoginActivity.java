@@ -75,6 +75,9 @@ public class LoginActivity extends BaseActivity {
     private String password;
     private UserDao userDao;
     private IWXAPI mWxApi;
+    private String openId;
+    /*1为QQ,2为微信*/
+    private String thirdType;
 
     @Override
     protected int getLayoutId() {
@@ -97,48 +100,124 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initDatas() {
         mShareAPI = UMShareAPI.get(this);
-        mWxApi = MyApplication.getWxApi();
-
-
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
             }
-
+            /**
+             * @param platform 平台名称
+             * @param action   行为序号，开发者用不上
+             * @param data     用户资料返回
+             * @desc 授权成功的回调
+             */
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-                /**
-                 * qq登录完成后的回掉
-                 */
-                OkGo.<String>post(Constant.QQ_RESPONSE_URL)
-                        .params("status", true)
-                        .params("accessToken", data.get("accessToken"))
-                        .params("openId", data.get("uid"))
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response.body());
-                                    JSONObject data = jsonObject.getJSONObject("data");
-                                    int code = jsonObject.getInt("code");
-                                    if (code == 0) {
-                                        String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                        SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-                                        SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                        MyApplication.getApp().setAccessToken(access_token);
-                                        Log.e(TAG, "onSuccess: " + access_token);
-                                        asyncShowToast("登录成功");
-                                        toActivity(MainActivity.class);
-                                        finish();
-                                    } else if (code == 200) {
-                                        startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                for (Map.Entry<String, String> entry : data.entrySet()) {
+                    Log.d(TAG, "onComplete: " + entry.getKey() + ":" + entry.getValue());
+                }
+                switch (platform) {
+                    case QQ:
+                        /**
+                         * qq登录完成后的回掉
+                         */
+                        OkGo.<String>post(Constant.QQ_RESPONSE_URL)
+                                .params("status", true)
+                                .params("accessToken", data.get("accessToken"))
+                                .params("openId", data.get("uid"))
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response.body());
+                                            JSONObject data = jsonObject.getJSONObject("data");
+                                            int code = jsonObject.getInt("code");
+                                            if (code == 0) {
+                                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                                SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                                MyApplication.getApp().setAccessToken(access_token);
+                                                Log.e(TAG, "onSuccess: " + access_token);
+                                                asyncShowToast("登录成功");
+                                                toActivity(MainActivity.class);
+                                                finish();
+                                            } else if (code == 200) {
+                                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                                });
+                        break;
+                    case WEIXIN:
+                        /**
+                         * weixin登录完成后的回掉
+                         */
+                        OkGo.<String>post(Constant.WEIXIN_RESPONSE_URL)
+                                .params("status", true)
+                                .params("accessToken", data.get("accessToken"))
+                                .params("openId", data.get("uid"))
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response.body());
+                                            JSONObject data = jsonObject.getJSONObject("data");
+                                            int code = jsonObject.getInt("code");
+                                            if (code == 0) {
+                                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                                SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                                MyApplication.getApp().setAccessToken(access_token);
+                                                Log.e(TAG, "onSuccess: " + access_token);
+                                                asyncShowToast("登录成功");
+                                                toActivity(MainActivity.class);
+                                                finish();
+                                            } else if (code == 200) {
+                                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                        break;
+                    case SINA:
+                        /**
+                         * sina登录完成后的回掉
+                         */
+                        OkGo.<String>post(Constant.SINA_RESPONSE_URL)
+                                .params("status", true)
+                                .params("accessToken", data.get("accessToken"))
+                                .params("openId", data.get("uid"))
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response.body());
+                                            JSONObject data = jsonObject.getJSONObject("data");
+                                            int code = jsonObject.getInt("code");
+                                            if (code == 0) {
+                                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
+                                                SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                                MyApplication.getApp().setAccessToken(access_token);
+                                                Log.e(TAG, "onSuccess: " + access_token);
+                                                asyncShowToast("登录成功");
+                                                toActivity(MainActivity.class);
+                                                finish();
+                                            } else if (code == 200) {
+                                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        break;
+                }
                 Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
                 Log.w("test", "openid: " + data.get("uid"));
                 Log.w("test", "昵称: " + data.get("name"));
@@ -156,28 +235,6 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
             }
         };
-        //此回调用于分享
-        umShareListener = new UMShareListener() {
-            @Override
-            public void onStart(SHARE_MEDIA platform) {
-                //分享开始的回调
-            }
-
-            @Override
-            public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(LoginActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(LoginActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(LoginActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-            }
-        };
     }
 
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
@@ -193,19 +250,7 @@ public class LoginActivity extends BaseActivity {
                     asyncShowToast("手机号格式不正确");
                 } else {
                     doLogin(phone, password);
-//                                        final User user = userDao.dbQueryOneByUsername(phone);
-//                                        if (userDao.dbQueryOneByUsername(phone) == null) {
-//                                            Toast.makeText(mContext, "此用户不存在", Toast.LENGTH_SHORT).show();
-//                                        } else {
-//                                            if (!user.getPassword().equals(password)) {
-//                                                Toast.makeText(mContext, "密码错误", Toast.LENGTH_SHORT).show();
-//                                            } else {
-//                                                Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
-//                                                toActivityWithResult(MainActivity.class, LOGIN_REQUEST);
-//                                        }
-//                                        }
                 }
-
                 break;
             case R.id.tv_login_regist:
                 toActivity(RegistActivity.class);
@@ -224,6 +269,7 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     }
+
     private void doLogin(String phone, String password) {
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).tag(TAG).
                 params("mobile", phone).
