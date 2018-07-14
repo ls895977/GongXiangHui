@@ -17,11 +17,7 @@ import java.util.List;
  */
 
 public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, BaseViewHolder> {
-
-
     private List<String> images;
-
-
     public HomeItemListAdapter1() {
         super(null);
         setMultiTypeDelegate(new MultiTypeDelegate<HomeNewListBean>() {
@@ -63,8 +59,8 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, Base
                 baseViewHolder.setText(R.id.tv_right_iamge_bottom_science3, ctime);
                 imageView = baseViewHolder.getView(R.id.iv_item_right_iamge);
                 GlideApp.with(mContext).load(images.get(0))
-                        .centerCrop().placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
+                        .centerCrop().placeholder(R.mipmap.default_img)
+                        .error(R.mipmap.default_img)
                         .into(imageView);
                 break;
             case 2:
@@ -78,29 +74,29 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, Base
                 if (images.size()<3){
                     GlideApp.with(mContext).load(images.get(0))
                             .centerCrop()
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img)
                             .into(imageView1);
                     GlideApp.with(mContext).load(images.get(1))
                             .centerCrop()
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img)
                             .into(imageView2);
                 }else {
                     GlideApp.with(mContext).load(images.get(0))
                             .centerCrop()
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img)
                             .into(imageView1);
                     GlideApp.with(mContext).load(images.get(1))
                             .centerCrop()
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img)
                             .into(imageView2);
                     GlideApp.with(mContext).load(images.get(2))
                             .centerCrop()
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img)
                             .into(imageView3);
                 }
 

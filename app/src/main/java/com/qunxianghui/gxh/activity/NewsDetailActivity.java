@@ -248,6 +248,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.e("用户单机超链接", url);
@@ -385,7 +386,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                                 .share();
                         break;
                     case R.id.rl_share_link:
-                       asyncShowToast("实现粘贴板的逻辑");
+              
                         break;
                     case R.id.share_cancel_btn:
                         dialog.dismiss();

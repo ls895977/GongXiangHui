@@ -143,8 +143,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 }
         );
     }
-
-
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
@@ -206,8 +204,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
     }
-
-
     /**
      * 首页下拉刷新 新的接口
      */
