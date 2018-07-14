@@ -1,1 +1,1 @@
-include ':app', ':letterindexlibrary'
+include ':app', ':letterindexlibrary', ':mydemo'
