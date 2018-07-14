@@ -19,7 +19,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private List<DataCityInfo.DataBean.CityBean> header; // header titles
     private HashMap<DataCityInfo.DataBean.CityBean, List<DataCityInfo.DataBean.CityBean.AreasBean>> child;
     private final DataCityInfo.DataBean mDataBean;
-     private Context context;
+    private Context context;
 //	public MyExpandableAdapter(List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
 //		this.header = listDataHeader;
 //		this.child = listChildData;
@@ -76,13 +76,13 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
+    public DataCityInfo.DataBean.CityBean getGroup(int groupPosition) {
         // Get header position
         return this.header.get(groupPosition);
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
+    public DataCityInfo.DataBean.CityBean.AreasBean getChild(int groupPosition, int childPosition) {
         // This will return the child
         return this.child.get(this.header.get(groupPosition)).get(childPosition);
     }
@@ -120,7 +120,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         TextView index_tv = (TextView) convertView.findViewById(R.id.index_tv);
         if (groupPosition == 0) {
             index_tv.setVisibility(View.VISIBLE);
-            index_tv.setText(cityBean.getPinyin().substring(0,1).toUpperCase());
+            index_tv.setText(cityBean.getPinyin().substring(0, 1).toUpperCase());
         } else {
             DataCityInfo.DataBean.CityBean lastCityBean = (DataCityInfo.DataBean.CityBean) getGroup(groupPosition - 1);
             String currentTag = cityBean.getPinyin().substring(0, 1);
@@ -128,7 +128,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
             if (!currentTag.equals(lastTag)) {
                 index_tv.setVisibility(View.VISIBLE);
                 index_tv.setText(currentTag.toUpperCase());
-            }else {
+            } else {
                 index_tv.setVisibility(View.GONE);
             }
         }
@@ -177,7 +177,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
-
 
 
     }

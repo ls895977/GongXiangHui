@@ -60,7 +60,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     private SharedPreferences mSp;
     private String mCityId;
     private String mAreaId;
-    private int REQUEST_PERMISSION_CAMERA_CODE=10010;
+    private int REQUEST_PERMISSION_CAMERA_CODE = 10010;
 
     @Override
     protected int getLayoutId() {
@@ -70,8 +70,9 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     @Override
     protected void initViews() {
         RequestAbleLocation();
-     setSystemBarTransparent();
+        setSystemBarTransparent();
     }
+
     private void RequestAbleLocation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -90,11 +91,11 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                 //设置定位参数
                 mlocationClient.setLocationOption(mLocationOption);
                 mlocationClient.startLocation();
-            }else {
-                ActivityCompat.requestPermissions(AbleNewSearchActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
+            } else {
+                ActivityCompat.requestPermissions(AbleNewSearchActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
 
             }
-        }else {
+        } else {
             //定位
             mlocationClient = new AMapLocationClient(mContext);
             //初始化定位参数
@@ -183,14 +184,15 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
             }
         });
     }
+
     private void setItems(final DataCityInfo bean) {
-        MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
+        final MyExpandableAdapter adapter = new MyExpandableAdapter(bean);
         simpleExpandableListview.setAdapter(adapter);
         simpleExpandableListview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-                DataCityInfo.DataBean.CityBean.AreasBean areasBean = bean.getData().getA().get(groupPosition).getAreas().get(childPosition);
+                /*DataCityInfo.DataBean.CityBean.AreasBean areasBean = bean.getData().getA().get(groupPosition).getAreas().get(childPosition);*/
+                DataCityInfo.DataBean.CityBean.AreasBean areasBean = adapter.getChild(groupPosition, childPosition);
                 String areaname = areasBean.getAreaname();
                 tvHomeactivityCurrLocation.setText(areaname);
                 final Intent intent = new Intent();
