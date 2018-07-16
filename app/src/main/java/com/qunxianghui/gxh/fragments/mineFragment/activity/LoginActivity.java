@@ -75,10 +75,12 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
     }
+
     @Override
     protected void initViews() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -91,13 +93,16 @@ public class LoginActivity extends BaseActivity {
         //数据库操作类
         userDao = new UserDao(this);
     }
+
     @Override
     protected void initDatas() {
         mShareAPI = UMShareAPI.get(this);
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
-            public void onStart(SHARE_MEDIA platform) { }
+            public void onStart(SHARE_MEDIA platform) {
+            }
+
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
                 /**
@@ -142,6 +147,7 @@ public class LoginActivity extends BaseActivity {
             public void onError(SHARE_MEDIA platform, int action, Throwable t) {
 //                Log.w("test", "性别: " + data.get("gender"));
             }
+
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
                 Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
@@ -153,6 +159,7 @@ public class LoginActivity extends BaseActivity {
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
+
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(LoginActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
@@ -220,8 +227,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLogin(String phone, String password) {
-        OkGo.<LzyResponse<LoginBean>>get(Constant.LOGIN_URL).tag(TAG).cacheKey("cachePostKey").
-                cacheMode(CacheMode.DEFAULT).
+        OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
                 params("mobile", phone).
                 params("password", password).
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
@@ -236,9 +242,12 @@ public class LoginActivity extends BaseActivity {
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
+                        } else if (response.body().code.equals("105")) {
+                            asyncShowToast("用户名或密码错误");
                         } else {
                             asyncShowToast(response.body().message);
                         }
+
                     }
                 });
 //                execute(new StringCallback() {

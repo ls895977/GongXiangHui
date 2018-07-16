@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -76,6 +77,7 @@ public class ProtocolActivity extends BaseActivity {
 
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void initDatas() {
         Intent intent = getIntent();
@@ -97,6 +99,8 @@ public class ProtocolActivity extends BaseActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(false);
+        settings.setSupportZoom(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setDisplayZoomControls(false);
         settings.setDefaultTextEncodingName("utf-8");
@@ -117,7 +121,7 @@ public class ProtocolActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
-                return false;
+                return true;
             }
 
             @Override
