@@ -285,9 +285,13 @@ public class LoginActivity extends BaseActivity {
                             asyncShowToast("登录成功");
                             toActivity(MainActivity.class);
                             finish();
-                        } else {
-                            asyncShowToast("用户名或密码错误！");
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<LzyResponse<LoginBean>> response) {
+                        super.onError(response);
+                        asyncShowToast("用户名或密码错误！");
                     }
                 });
     }
