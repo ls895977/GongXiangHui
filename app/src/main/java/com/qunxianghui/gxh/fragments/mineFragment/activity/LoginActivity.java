@@ -269,7 +269,6 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     }
-
     private void doLogin(String phone, String password) {
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).tag(TAG).
                 params("mobile", phone).
@@ -284,8 +283,6 @@ public class LoginActivity extends BaseActivity {
                             MyApplication.getApp().setAccessToken(access_token);
                             Log.e(TAG, "onSuccess: " + access_token);
                             asyncShowToast("登录成功");
-
-
                             toActivity(MainActivity.class);
                             finish();
                         } else {

@@ -235,7 +235,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     protected void onLoadData() {
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -334,7 +333,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
-
     public static void hideSoftKeyboard(EditText editText, Context context) {
         if (editText != null && context != null) {
             InputMethodManager imm = (InputMethodManager) context
@@ -353,7 +351,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     }
                 });
     }
-
     //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
@@ -397,7 +394,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                         dataList.get(position).setLike_info_res("true");
                         mAdapter.notifyDataSetChanged();
                         mAdapter.notifyItemChanged(position);
-
                         asyncShowToast("点赞成功");
                     } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
                         List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
@@ -420,7 +416,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             });
         }
     }
-
     @Override
     public void onCollectionClick(final int position) {
         if (!LoginMsgHelper.isLogin(getContext())) {
