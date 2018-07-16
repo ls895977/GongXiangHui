@@ -72,6 +72,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     TextView tvHomeLocation;
     @BindView(R.id.et_home_search)
     EditText etHomeSearch;
+    @BindView(R.id.ll_home_location)
+    LinearLayout llHomeLocation;
+    @BindView(R.id.home_view_pager)
+    ViewPager homeViewPager;
     //TabLayout标签
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
@@ -335,7 +339,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     @Override
     protected void initListeners() {
-        tvHomeLocation.setOnClickListener(this);
+        llHomeLocation.setOnClickListener(this);
         etHomeSearch.setOnClickListener(this);
     }
 
@@ -372,7 +376,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
             case R.id.et_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
-            case R.id.tv_home_location:
+            case R.id.ll_home_location:
 //                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);

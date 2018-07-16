@@ -79,14 +79,13 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
-<<<<<<< HEAD
-=======
+
     private IWXAPI mWxApi;
     private String openId;
     /*1为QQ,2为微信*/
     private String thirdType;
     private String companyName;
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
+
 
     @Override
     protected int getLayoutId() {
@@ -114,16 +113,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onStart(SHARE_MEDIA platform) {
             }
-<<<<<<< HEAD
 
-=======
-            /**
-             * @param platform 平台名称
-             * @param action   行为序号，开发者用不上
-             * @param data     用户资料返回
-             * @desc 授权成功的回调
-             */
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
                 for (Map.Entry<String, String> entry : data.entrySet()) {
@@ -248,7 +238,7 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
             }
         };
-<<<<<<< HEAD
+
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -271,8 +261,7 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(LoginActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
             }
         };
-=======
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
+
     }
 
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
@@ -308,11 +297,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
     private void doLogin(String phone, String password) {
-<<<<<<< HEAD
+
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
-=======
-        OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).tag(TAG).
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
+
                 params("mobile", phone).
                 params("password", password).
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
@@ -329,13 +316,7 @@ public class LoginActivity extends BaseActivity {
                             HoldReneraCompanyData();
                             toActivity(MainActivity.class);
                             finish();
-<<<<<<< HEAD
-                        } else if (response.body().code.equals("105")) {
-                            asyncShowToast("用户名或密码错误");
-                        } else {
-                            asyncShowToast(response.body().message);
-=======
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
+
                         }
 
                     }

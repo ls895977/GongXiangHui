@@ -126,14 +126,8 @@ public class ProtocolActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
-<<<<<<< HEAD
                 return true;
-=======
-                Logger.d("shouldOverrideUrlLoading--->:" + request.toString());
-                return false;
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
             }
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Logger.d("shouldOverrideUrlLoading--->:" + url);

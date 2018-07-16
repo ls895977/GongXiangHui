@@ -30,14 +30,11 @@ public class Constant {
     public static final String HPTEL_ZHUSU = "http://app.zzbcar.com/zzb/helpcenter/user8.html";
     //首页链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
-<<<<<<< HEAD
+
     public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice";
 
 
-=======
-    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
->>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
-    // 真正的开发   先前的先忽略
+
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
