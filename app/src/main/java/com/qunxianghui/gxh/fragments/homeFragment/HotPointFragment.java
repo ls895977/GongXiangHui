@@ -7,7 +7,6 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -79,13 +78,12 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private List<MoreTypeBean> mDatas;
     Unbinder unbinder;
     private Banner viewpagerHome;
-    private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
     private ClipboardManager mClipboardManager;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
-    private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
+    private String[] iconName = {"天气", "视频汇", "本地服务", "精选", "便民"};
 
     private HomeItemListAdapter1 homeItemListAdapter1;
     private View headerNavigator;
@@ -98,8 +96,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private TextView mhomeLocalLocation;
     private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private String cityinfo;
-    private SharedPreferences mSp;
+
 
     @Override
     public int getLayoutId() {

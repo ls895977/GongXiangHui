@@ -92,10 +92,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!--二维码扫描界面-->
-        <activity
-            android:name="com.qunxianghui.gxh.activity.ScanActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--我的板块的个人资料界面-->
         <activity
             android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity"

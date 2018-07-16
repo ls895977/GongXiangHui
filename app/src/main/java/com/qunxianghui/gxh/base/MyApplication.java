@@ -37,8 +37,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
-
-
 public class MyApplication extends Application {
     private static MyApplication mAppApplication;
     private SQLHelper sqlHelper;
@@ -88,7 +86,6 @@ public class MyApplication extends Application {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
-
         ScreenUtils.init(this);
 
         /**
@@ -132,7 +129,6 @@ public class MyApplication extends Application {
         super.onTerminate();
         //整体摧毁的时候调用这个方法
     }
-
     private void initOkGo() {
         if (LoginMsgHelper.isLogin(this)) {
             mAccessToken = SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");

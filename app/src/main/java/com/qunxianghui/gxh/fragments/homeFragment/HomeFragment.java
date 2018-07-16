@@ -18,7 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,21 +35,17 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.Utils;
@@ -72,16 +68,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener, AMapLocationListener {
     private static HomeFragment homeFragment;
-    @BindView(R.id.ib_home_camera)
-    TextView ibHomeCamera;
-    @BindView(R.id.ib_home_search)
-    ImageButton ibHomeSearch;
-    @BindView(R.id.ib_home_scan)
-    ImageButton ibHomeScan;
-    //    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
     @BindView(R.id.tv_home_location)
     TextView tvHomeLocation;
+    @BindView(R.id.et_home_search)
+    EditText etHomeSearch;
     //TabLayout标签
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
@@ -107,7 +97,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private String cityCode;
     private String adCode;
     private String cityinfo;
-    private int REQUEST_PERMISSION_CAMERA_CODE=10010;
+    private int REQUEST_PERMISSION_CAMERA_CODE = 10010;
 
     @Override
     public int getLayoutId() {
@@ -115,6 +105,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         mItemWidth = mScreenWidth / 7; // 一个Item宽度为屏幕的1/7
         return R.layout.home_layout;
     }
+
     @Override
     public void initDatas() {
         //频道列表（用户订阅的频道）
@@ -180,6 +171,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         super.onResume();
         tvHomeLocation.setText(mActivity.getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
     }
+
     private void RequestHomeLocation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -198,11 +190,11 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 //设置定位参数
                 mlocationClient.setLocationOption(mLocationOption);
                 mlocationClient.startLocation();
-            }else {
-              ActivityCompat.requestPermissions(mActivity,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
+            } else {
+                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
 
             }
-        }else {
+        } else {
             //定位
             mlocationClient = new AMapLocationClient(mActivity);
             //初始化定位参数
@@ -222,6 +214,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
 
     }
+
     private void setChangelView() {
 //        initColumnData();
         initTabColumn();
@@ -339,12 +332,11 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private void initColumnData() {
         userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
     }
+
     @Override
     protected void initListeners() {
-        ibHomeCamera.setOnClickListener(this);
-        ibHomeSearch.setOnClickListener(this);
-        ibHomeScan.setOnClickListener(this);
         tvHomeLocation.setOnClickListener(this);
+        etHomeSearch.setOnClickListener(this);
     }
 
     @Override
@@ -354,11 +346,13 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mViewPager.setCurrentItem(tab.getPosition());
@@ -367,6 +361,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
     }
+
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
     }
@@ -374,18 +369,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ib_home_camera:            //爆料
-                if (!LoginMsgHelper.isLogin(getContext())) {
-                    toActivity(LoginActivity.class);
-                    mActivity.finish();
-                    return;
-                }
-                toActivity(BaoLiaoActivity.class);
-                break;
-            case R.id.ib_home_scan:            //扫描二维码
-                toActivity(ScanActivity.class);
-                break;
-            case R.id.ib_home_search:          //搜索
+            case R.id.et_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
             case R.id.tv_home_location:
