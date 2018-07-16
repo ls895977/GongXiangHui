@@ -97,7 +97,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                     .execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
                         @Override
                         public void onSuccess(Response<LzyResponse<LoginBean>> response) {
-                                if (response.body().code.equals("0")) {
+                                if (response.body().code==0) {
                                     String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                                     SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
                                     SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);

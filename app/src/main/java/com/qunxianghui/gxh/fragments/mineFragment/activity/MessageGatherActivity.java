@@ -34,7 +34,6 @@ public class MessageGatherActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_message_gather;
     }
-
     @Override
     protected void initViews() {
         for (String tab : titles) {

@@ -69,6 +69,7 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMymessageViewpager.setAdapter(mineTabViewPagerAdapter);
+        mineMymessageViewpager.setOffscreenPageLimit(fragments.size());
         mineMyMessaageTablayoutCommon.setupWithViewPager(mineMymessageViewpager);
 
         if (index!=0){

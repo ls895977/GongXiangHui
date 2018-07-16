@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
-        android:background="#cdcdcd" />
+        android:background="@color/divider" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -22,6 +22,11 @@
         app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabTextColor="#000" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/divider" />
 
     <com.qunxianghui.gxh.widget.NoScrollViewPager
         android:id="@+id/viewPager"

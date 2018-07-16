@@ -42,8 +42,14 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     private boolean mIsFromEdit;
     public static int sCurrentPosition = 0;
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
-    private int[] mImgs = {R.mipmap.adv_select_big_img, R.mipmap.adv_select_card, R.mipmap.adv_select_san, R.mipmap.adv_select_san, R.mipmap.adv_select_qq, R.mipmap.adv_select_video};
+
     private List<BaseFragment> fragments = new ArrayList<>();
+    private TabLayout.Tab one;
+    private TabLayout.Tab two;
+    private TabLayout.Tab three;
+    private TabLayout.Tab four;
+    private TabLayout.Tab five;
+    private TabLayout.Tab six;
 
     @Override
     protected int getLayoutId() {
@@ -66,8 +72,8 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initDatas() {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        for (int i = 0; i < titles.length; i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(titles[i]).setIcon(mImgs[i]));
+        for (String tab : titles) {
+            tabLayout.addTab(tabLayout.newTab().setText(tab));
         }
         fragments.add(new Fragment1());
         fragments.add(new Fragment2());
@@ -79,6 +85,21 @@ public class AdvertisActivity extends BaseActivity implements View.OnClickListen
         viewPager.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起
         tabLayout.setupWithViewPager(viewPager);
+        //指定tab的位置
+        one = tabLayout.getTabAt(0);
+        two = tabLayout.getTabAt(1);
+        three = tabLayout.getTabAt(2);
+        four = tabLayout.getTabAt(3);
+        five = tabLayout.getTabAt(4);
+        six = tabLayout.getTabAt(5);
+        //设置tab的图标
+        one.setIcon(R.mipmap.adv_select_big_img);
+        two.setIcon(R.mipmap.adv_select_card);
+        three.setIcon(R.mipmap.adv_select_san);
+        four.setIcon(R.mipmap.adv_select_san);
+        five.setIcon(R.mipmap.adv_select_qq);
+        six.setIcon(R.mipmap.adv_select_video);
+
         if (AdvertisConmmengtActivity.sCurrentPosition != 0) {
             viewPager.setCurrentItem(AdvertisConmmengtActivity.sCurrentPosition, false);
         }

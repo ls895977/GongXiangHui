@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.GeneralizeCompanyStaticsBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -69,6 +70,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
     private String selfcompayname;
+
     @Override
     protected void onLoadData() {
 
@@ -96,10 +98,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         });
         vpGeneralizeCompanyMain.addOnPageChangeListener(viewPagerListenter);
     }
+
     @Override
     public void initViews(View view) {
-        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
-        selfcompayname = spCompany.getString("selfcompayname", "");
+
         /*获取企业推广的数据*/
         HoldReneraCompanyData();
         final List<Fragment> fragments = new ArrayList<>();
@@ -114,14 +116,23 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
+        selfcompayname = spCompany.getString("selfcompayname", "");
+    }
+
     private void HoldReneraCompanyData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                parseGeneraLizeStaticsData(response.body());
+                if (response.body().toString() != null) {
+                    parseGeneraLizeStaticsData(response.body());
+                }
+
             }
         });
-
     }
     /*解析企业推广的数据*/
     private void parseGeneraLizeStaticsData(String body) {
@@ -144,12 +155,13 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
             tvAdverClickRate.setText(click_rate);
             tvArticleTransmitRate.setText(forward_rate);
             tvGeneracompanyName.setText(selfcompayname);
-
             SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-            spCompanymessageEditor.putString("selfcompayname",selfcompayname);
-            spCompanymessageEditor.putInt("staff_cnt",staff_cnt);
+            spCompanymessageEditor.putString("selfcompayname", selfcompayname);
+            spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
             spCompanymessageEditor.commit();
+        } else if (generalizeCompanyStaticsBean.getCode() == 1000) {
+            toActivity(LoginActivity.class);
         }
     }
 
@@ -170,13 +182,11 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         }
 
     };
-
     @Override
     protected void initListeners() {
         super.initListeners();
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -184,13 +194,11 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

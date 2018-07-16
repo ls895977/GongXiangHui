@@ -8,12 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
@@ -25,12 +24,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
@@ -38,8 +37,7 @@ import butterknife.ButterKnife;
 
 public class ProtocolActivity extends BaseActivity {
     final Activity activity = this;
-    @BindView(R.id.ll_protocol_main)
-    LinearLayout llProtocolMain;
+    @BindView(R.id.ll_protocol_main) LinearLayout llProtocolMain;
     private WebView webView;
     private Dialog loadingDialog;
 
@@ -84,6 +82,9 @@ public class ProtocolActivity extends BaseActivity {
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
 
+        Logger.d("initDatas--->:" + url.toString());
+
+
         new TitleBuilder(this).setTitleText(title).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +92,10 @@ public class ProtocolActivity extends BaseActivity {
             }
         });
         webView = new WebView(this);
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView.setLayoutParams(params);
+        llProtocolMain.addView(webView);
+
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -116,26 +121,32 @@ public class ProtocolActivity extends BaseActivity {
                 }
             }
         });
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
+<<<<<<< HEAD
                 return true;
+=======
+                Logger.d("shouldOverrideUrlLoading--->:" + request.toString());
+                return false;
+>>>>>>> d02370956f2d6b0bbc29a887ea0d1b2be7f2f708
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.e("用户单机超链接",url);
+                Logger.d("shouldOverrideUrlLoading--->:" + url);
+                Log.e("用户单机超链接", url);
                 //判断用户单机的是那个超链接
-                String tag ="tel";
+                String tag = "tel";
                 if (url.contains(tag)) {
                     final String mobile = url.substring(url.lastIndexOf("/") + 1);
                     Log.e("mobile----------->", mobile);
                     final Intent mIntent = new Intent(Intent.ACTION_CALL);
                     final Uri data = Uri.parse(mobile);
                     mIntent.setData(data);
-                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                         startActivity(mIntent);
                         //这个超连接,java已经处理了，webview不要处理
                         return true;
@@ -150,7 +161,7 @@ public class ProtocolActivity extends BaseActivity {
         });
         webView.loadUrl(url);
 
-        llProtocolMain.addView(webView);
+        Logger.d("initDatas--->:" );
     }
 
     @Override
@@ -165,13 +176,6 @@ public class ProtocolActivity extends BaseActivity {
         super.onPause();
         webView.onPause();
         webView.pauseTimers();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

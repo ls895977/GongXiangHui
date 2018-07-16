@@ -53,6 +53,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
     Unbinder unbinder;
+    private String selfcompayname;
 
     @Override
     public int getLayoutId() {
@@ -75,7 +76,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 /** 禁止滑动*/
                 vpGeneralizeMain.setScroll(true);
                 /**增加缓存页面的数量*/
-                vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
+                vpGeneralizeMain.setOffscreenPageLimit(fragments.size()-1);
                 /**默认显示第一个选项卡*/
                 rgGeneralizeMain.check(R.id.rb_genera_personal);
             } else {
@@ -98,7 +99,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void initViews(View view) {
-        initViewPagers();
     }
 
     @Override
@@ -125,7 +125,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
     }
 
-    private void initViewPagers() { }
 
     @Override
     public void onClick(View v) {
@@ -167,7 +166,8 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    protected void onLoadData() { }
+    protected void onLoadData() {
+    }
 
     @Override
     public void onDestroyView() {

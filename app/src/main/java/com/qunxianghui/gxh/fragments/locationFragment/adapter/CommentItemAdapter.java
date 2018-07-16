@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,7 +72,7 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.name = convertView.findViewById(R.id.name);
             holder.content = convertView.findViewById(R.id.content);
             holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
-
+            holder.ll_comment_selflist=convertView.findViewById(R.id.ll_comment_selflist);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -94,18 +95,15 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.content.setText(mList.get(position).getContent());
 
         /**
-         * 删除帖子
+         * 删除评论
          */
         holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-
-
                 OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
                         params("id", mList.get(position).getId()).execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
                         //Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                         deleteItemView(position);
 
@@ -120,6 +118,7 @@ public class CommentItemAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         TextView name, content, tv_item_discuss_delete;
+        LinearLayout ll_comment_selflist;
 
 
     }

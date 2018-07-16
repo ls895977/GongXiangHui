@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.DragGrid;
 import com.qunxianghui.gxh.widget.OtherGridView;
+import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.channel);
-
         initView();
         initData();
     }
@@ -77,6 +77,18 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
+        new TitleBuilder(ChannelActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userAdapter.isListChanged()) {
+                    Intent intent = new Intent();
+                    setResult(HomeFragment.CHANNELRESULT, intent);
+                    finish();
+                } else {
+                    finish();
+                }
+            }
+        }).setTitleText("频道管理");
         ArrayList<ChannelItem> userChannelListData = (ArrayList<ChannelItem>) getIntent().getSerializableExtra(USER_CHANNEL);
         if (userChannelListData != null) {
             userChannelList = userChannelListData;
@@ -123,8 +135,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化布局
      */
     private void initView() {
-        userGridView =  findViewById(R.id.userGridView);
-        otherGridView =  findViewById(R.id.otherGridView);
+        userGridView = findViewById(R.id.userGridView);
+        otherGridView = findViewById(R.id.otherGridView);
     }
 
     /**
@@ -316,7 +328,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
     @Override
     public void onBackPressed() {
-        saveChannel();
+//        saveChannel();
         if (userAdapter.isListChanged()) {
             Intent intent = new Intent();
             setResult(HomeFragment.CHANNELRESULT, intent);

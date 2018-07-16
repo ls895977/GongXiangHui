@@ -42,15 +42,15 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
          * 加载视频第一张默认图
          */
         GlideApp.with(mContext).load(picurl).centerCrop()
-                .placeholder(R.mipmap.ic_test_1)
-                .error(R.mipmap.ic_test_0)
+                .placeholder(R.mipmap.default_img)
+                .error(R.mipmap.default_img)
                 .into(videoImag);
 /**
  * 加载人的头像
  */
         GlideApp.with(mContext).load(member_avatar).centerCrop()
-                .placeholder(R.mipmap.ic_test_1)
-                .error(R.mipmap.ic_test_0)
+                .placeholder(R.mipmap.default_img)
+                .error(R.mipmap.default_img)
                 .into(personHeadImag);
         personHeadImag.setOnClickListener(new View.OnClickListener() {
             @Override

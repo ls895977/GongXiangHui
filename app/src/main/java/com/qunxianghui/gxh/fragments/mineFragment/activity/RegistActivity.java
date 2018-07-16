@@ -36,7 +36,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.OkHttpUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.widget.NoLineClickSpan;
 import com.qunxianghui.gxh.widget.TitleBuilder;
@@ -129,7 +128,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
                     }
                 });
-                builder.setNegativeButton("取消", null);
+                builder.setNeutralButton("取消", null);
                 builder.show();
             }
         };

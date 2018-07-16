@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.mineFragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -111,10 +110,9 @@ public class MineFragment extends BaseFragment {
     private String expires_time;
     private String companyName;
     private String expire_time;
-
-
     @Override
     public int getLayoutId() {
+
         return R.layout.fragment_mine;
     }
 
@@ -142,14 +140,13 @@ public class MineFragment extends BaseFragment {
                     }
                 });
     }
-
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
+            int code = jsonObject.getInt("code");
 //            JSONObject accessTokenInfo = jsonObject.getJSONObject("accessTokenInfo");
 //            expires_time = accessTokenInfo.getString("expires_time");
-
             mNick = data.getString("nick");
             mAvatar = data.getString("avatar");
             mMobile = data.getString("mobile");
@@ -161,41 +158,34 @@ public class MineFragment extends BaseFragment {
             expire_time = data.getString("expire_time");
             mLevelName = data.getJSONObject("level_info").getString("name");
             companyName = data.getJSONObject("company_info").getString("company_name");
-
-            mTvMemberType.setText(mLevelName);
-            mineQuicklyLogin.setText(mNick);
-            tvMineAddlikeCount.setText(String.valueOf(like_cnt));
-            tvMinePostCount.setText(String.valueOf(posts_cnt));
-            tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-
-            GlideApp.with(getActivity()).load(mAvatar).
-                    placeholder(R.mipmap.user_moren).
-                    error(R.mipmap.user_moren).
-                    circleCrop().
-                    into(mIvHead);
-
-
             companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
-
+                mTvMemberType.setText(mLevelName);
+                mineQuicklyLogin.setText(mNick);
+                tvMineAddlikeCount.setText(String.valueOf(like_cnt));
+                tvMinePostCount.setText(String.valueOf(posts_cnt));
+                tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
+                GlideApp.with(getActivity()).load(mAvatar).
+                        placeholder(R.mipmap.user_moren).
+                        error(R.mipmap.user_moren).
+                        circleCrop().
+                        into(mIvHead);
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
             } else if (companyInfo instanceof Object) {
                 Logger.d("fillUserData-->对象:");
-
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-/**
- * 保存自己的公司名称
- */
-
-        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
-        SharedPreferences.Editor editor = spConpanyname.edit();
-        editor.putString("selfcompayname", companyName);
-        editor.putString("expire_time",expire_time);
-        editor.commit();
+///**
+// * 保存自己的公司名称
+// */
+//        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
+//        SharedPreferences.Editor editor = spConpanyname.edit();
+//        editor.putString("selfcompayname", companyName);
+//        editor.putString("expire_time", expire_time);
+//        editor.commit();
 
 
     }
@@ -210,7 +200,6 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         if (!LoginMsgHelper.isLogin(getContext())) {
             toActivity(LoginActivity.class);
             mActivity.finish();

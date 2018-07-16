@@ -36,8 +36,13 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     public static boolean sIsFromNews = true;
     public static int sCurrentPosition = 0;
     private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
-    private int[] mImgs = {R.mipmap.adv_select_big_img, R.mipmap.adv_select_card, R.mipmap.adv_select_san, R.mipmap.adv_select_san, R.mipmap.adv_select_qq, R.mipmap.adv_select_video};
     private List<BaseFragment> fragments = new ArrayList<>();
+    private TabLayout.Tab one;
+    private TabLayout.Tab two;
+    private TabLayout.Tab three;
+    private TabLayout.Tab four;
+    private TabLayout.Tab five;
+    private TabLayout.Tab six;
 
     @Override
     protected int getLayoutId() {
@@ -49,10 +54,15 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         //设置tabLayout的一个显示方式
         tabLayout_adver_commen.setTabMode(TabLayout.MODE_SCROLLABLE);
         //循环注入标签
-        for (int i = 0; i < titles.length; i++) {
-            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setIcon(mImgs[i]).setText(titles[i]));
+//        for (int i = 0; i < titles.length; i++) {
+//            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setIcon(mImgs[i]).setText(titles[i]));
+//    }
+
+        for (String tab : titles) {
+            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setText(tab));
         }
     }
+
 
     @Override
     protected void initListeners() {
@@ -88,6 +98,20 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         viewPager_adver_commen.setAdapter(adapter);
         //将TabLayout与ViewPager绑定在一起
         tabLayout_adver_commen.setupWithViewPager(viewPager_adver_commen);
+        //指定tab的位置
+        one = tabLayout_adver_commen.getTabAt(0);
+        two = tabLayout_adver_commen.getTabAt(1);
+        three = tabLayout_adver_commen.getTabAt(2);
+        four = tabLayout_adver_commen.getTabAt(3);
+        five = tabLayout_adver_commen.getTabAt(4);
+        six = tabLayout_adver_commen.getTabAt(5);
+        //设置tab的图标
+        one.setIcon(R.mipmap.adv_select_big_img);
+        two.setIcon(R.mipmap.adv_select_card);
+        three.setIcon(R.mipmap.adv_select_san);
+        four.setIcon(R.mipmap.adv_select_san);
+        five.setIcon(R.mipmap.adv_select_qq);
+        six.setIcon(R.mipmap.adv_select_video);
     }
 
     @Override

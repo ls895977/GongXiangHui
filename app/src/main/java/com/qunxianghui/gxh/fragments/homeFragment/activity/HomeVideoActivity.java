@@ -3,15 +3,19 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,10 +34,12 @@ import com.qunxianghui.gxh.config.Code;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.locationFragment.activity.VideoListActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
+import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,14 +50,12 @@ import butterknife.BindView;
  */
 
 public class HomeVideoActivity extends BaseActivity implements View.OnClickListener, PersonDetailVideoAdapter.VideoListClickListener {
-
     @BindView(R.id.xrecycler_homevideo_list)
     XRecyclerView xrecyclerHomevideoList;
     @BindView(R.id.iv_home_video_back)
     ImageView ivHomeVideoBack;
     @BindView(R.id.tv_home_video_issue)
     TextView tvHomeVideoIssue;
-
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private int count = 0;
     private boolean mIsFirst = true;
@@ -64,6 +68,14 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     private Intent intent;
     private String filePath;
     private Dialog quickUpDialog;
+    private TextView tv_quickly_up_video;
+    private TextView tv_quickly_up_video_cancel;
+    private EditText et_secondvideoup_title;
+    private EditText et_secondvideoup_content;
+    private String videoTitle;
+    private String videoContent;
+    private ImageView ivUploadvideoThumb;
+    private Bitmap frameAtTime;
 
     @Override
     protected int getLayoutId() {
@@ -113,13 +125,14 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 public void onItemClick(View v, int position) {
                     Intent intent = new Intent(mContext, NewsDetailActivity.class);
                     intent.putExtra("url", videoDataList.get(position - 1).getUrl());
-                    intent.putExtra("uuid",videoDataList.get(position-1).getUuid());
+                    intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
                     startActivity(intent);
                 }
             });
             personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
         }
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -167,18 +180,43 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 dialog.dismiss();
                 break;
             case R.id.tv_quickly_up_video:
+                videoTitle = et_secondvideoup_title.getText().toString().trim();
+                videoContent = et_secondvideoup_content.getText().toString().trim();
                 /**
                  *   这里可以添加上传视频的方法
                  *
                  */
-                asyncShowToast("模拟文件上传成功");
-                quickUpDialog.dismiss();
+
+                if (TextUtils.isEmpty(videoTitle)) {
+                    asyncShowToast("请上传视频标题和内容");
+                } else {
+                    UpLoadVidep();
+
+                }
                 break;
-            case R.id.bt_quickly_up_video_cancel:
+            case R.id.tv_quickly_up_video_cancel:
                 quickUpDialog.dismiss();
                 break;
         }
     }
+
+    /*上传视频*/
+    private void UpLoadVidep() {
+        File file = new File(filePath);
+        OkGo.<String>post(Constant.UP_LOAD_VIDEO_URL)
+                .params("file", file)
+                .params("thumb", String.valueOf(frameAtTime))
+                .params("title", videoTitle)
+                .params("description", videoContent)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Logger.d("上传的视频" + response.body().toString());
+                    }
+                });
+        quickUpDialog.dismiss();
+    }
+
     /**
      * 底部弹起
      */
@@ -217,30 +255,30 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
      */
     @Override
     public void attentionClick(final int position) {
-                        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response.body());
-                                            final int code = jsonObject.getInt("code");
-                                            if (code == 0) {
-                                                asyncShowToast("关注成功");
-                                                videoDataList.get(position).setFollow("true");
-                                            } else if (code == 202) {
-                                                videoDataList.get(position).setFollow("");
-                                                asyncShowToast("取消关注成功");
-                                            }
-                                            personDetailVideoAdapter.notifyItemChanged(position + 1);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    @Override
-                                    public void onError(Response<String> response) {
-                                        super.onError(response);
-                                        Logger.e("视频关注" + response.body().toString());
-                                    }
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            final int code = jsonObject.getInt("code");
+                            if (code == 0) {
+                                asyncShowToast("关注成功");
+                                videoDataList.get(position).setFollow("true");
+                            } else if (code == 202) {
+                                videoDataList.get(position).setFollow("");
+                                asyncShowToast("取消关注成功");
+                            }
+                            personDetailVideoAdapter.notifyItemChanged(position + 1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Logger.e("视频关注" + response.body().toString());
+                    }
                 });
         Logger.d("视频汇的关注position" + position);
     }
@@ -252,15 +290,19 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         intent.putExtra("member_id", videoDataList.get(position).getMember_id());
         startActivity(intent);
     }
-
     private void showUploadVideoDialog() {
         if (quickUpDialog == null) {
-            quickUpDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
+            quickUpDialog = new Dialog(mContext);
             //填充对话框的布局
             View upVideoDialogView = LayoutInflater.from(mContext).inflate(R.layout.bottom_video_up_quickly_alertdialog, null);
             //初始化控件
-            upVideoDialogView.findViewById(R.id.tv_quickly_up_video).setOnClickListener(this);
-            upVideoDialogView.findViewById(R.id.bt_quickly_up_video_cancel).setOnClickListener(this);
+            tv_quickly_up_video = upVideoDialogView.findViewById(R.id.tv_quickly_up_video);
+            tv_quickly_up_video_cancel = upVideoDialogView.findViewById(R.id.tv_quickly_up_video_cancel);
+            et_secondvideoup_title = upVideoDialogView.findViewById(R.id.et_secondvideoup_title);
+            et_secondvideoup_content = upVideoDialogView.findViewById(R.id.et_secondvideoup_content);
+            ivUploadvideoThumb = upVideoDialogView.findViewById(R.id.iv_uploadvideo_thumb);
+            tv_quickly_up_video.setOnClickListener(this);
+            tv_quickly_up_video_cancel.setOnClickListener(this);
             //将布局设置给dialog
             quickUpDialog.setContentView(upVideoDialogView);
             //获取当前activity所在的窗体
@@ -278,7 +320,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         }
         quickUpDialog.show();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -293,17 +334,41 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                         if (cursor != null && cursor.moveToFirst()) {
                             filePath = cursor.getString(0);
                             showUploadVideoDialog();
+                            getVideoThumb(filePath);
                         }
                     }
                 }
                 break;
-
             case Code.LOCAL_VIDEO_REQUEST:
                 if (resultCode == Code.LOCAL_VIDEO_RESULT && data != null) {
                     filePath = data.getStringExtra("path");
+                    Logger.e("视频地址++++++++++"+filePath.toString());
                     showUploadVideoDialog();
+                    getVideoThumb(filePath);
                 }
                 break;
         }
     }
+    /**
+     * 获取视频第一帧缩略图
+     *
+     * @param
+     * @return
+     */
+    private Bitmap getVideoThumb(String filePath) {
+
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(filePath);
+        frameAtTime = media.getFrameAtTime();
+        ivUploadvideoThumb.setImageBitmap(frameAtTime);
+        GlideApp.with(mContext).load(frameAtTime)
+
+                .centerCrop()
+                .placeholder(R.mipmap.ic_test_0)
+                .error(R.mipmap.ic_test_1)
+                .into(ivUploadvideoThumb);
+        return frameAtTime;
+    }
+
+
 }

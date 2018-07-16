@@ -1,19 +1,8 @@
 package com.qunxianghui.gxh.bean.mine;
 
-import android.text.TextUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.qunxianghui.gxh.utils.ListUtils;
-
 import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginBean implements Serializable {
-
-
     /**
      * id : 1000175
      * level_id : 1
@@ -41,9 +30,6 @@ public class LoginBean implements Serializable {
     private int company_id;
     private AccessTokenInfoBean accessTokenInfo;
     private Object company_info;
-
-
-
     public int getId() {
         return id;
     }
@@ -143,7 +129,7 @@ public class LoginBean implements Serializable {
     }
 
 
-    public static class CompanyInfoBean{
+    public static class CompanyInfoBean {
 
         /**
          * id : 64
@@ -189,7 +175,7 @@ public class LoginBean implements Serializable {
         private int push_id;
         private int change_ad_id;
 
-        public int getId(){
+        public int getId() {
             return id;
         }
 
@@ -348,6 +334,11 @@ public class LoginBean implements Serializable {
         public void setChange_ad_id(int change_ad_id) {
             this.change_ad_id = change_ad_id;
         }
+
+        @Override
+        public String toString() {
+            return "CompanyInfoBean{" + "id=" + id + ", member_id=" + member_id + ", company_name='" + company_name + '\'' + ", description='" + description + '\'' + ", company_trade='" + company_trade + '\'' + ", tel='" + tel + '\'' + ", mobile='" + mobile + '\'' + ", qq='" + qq + '\'' + ", province_id=" + province_id + ", city_id=" + city_id + ", area_id=" + area_id + ", address='" + address + '\'' + ", images='" + images + '\'' + ", linkname='" + linkname + '\'' + ", content='" + content + '\'' + ", ctime=" + ctime + ", view_cnt=" + view_cnt + ", status=" + status + ", push_id=" + push_id + ", change_ad_id=" + change_ad_id + '}';
+        }
     }
 
 
@@ -431,11 +422,15 @@ public class LoginBean implements Serializable {
                 this.deviceId = deviceId;
             }
         }
+
+        @Override
+        public String toString() {
+            return "AccessTokenInfoBean{" + "access_token='" + access_token + '\'' + ", expires_time=" + expires_time + ", client=" + client + '}';
+        }
     }
 
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "LoginBean{" + "id=" + id + ", level_id=" + level_id + ", sex=" + sex + ", address='" + address + '\'' + ", nick='" + nick + '\'' + ", username='" + username + '\'' + ", mobile=" + mobile + ", email='" + email + '\'' + ", avatar='" + avatar + '\'' + ", company_id=" + company_id + ", accessTokenInfo=" + accessTokenInfo + ", company_info=" + company_info + '}';
+    }
 }

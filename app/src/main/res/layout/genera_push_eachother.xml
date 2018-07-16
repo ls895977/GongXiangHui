@@ -10,9 +10,6 @@
         android:background="@color/home_text_color"
         android:orientation="vertical">
 
-
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +22,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="杭州共享汇信息技术有限公司"
-
                 android:textColor="@color/white" />
 
             <TextView
@@ -39,8 +35,6 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
-
-
     </RelativeLayout>
 
     <View
@@ -48,10 +42,151 @@
         android:layout_height="1dp"
         android:background="@color/divider" />
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/xrecycler_generapush"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/genera_push_company"
+                android:drawablePadding="5dp"
+                android:text="互推企业"
+                android:textColor="#000" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bt_genera_push_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="企业" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/genera_push_company"
+                    android:drawablePadding="5dp"
+                    android:text="互推行业"
+                    android:textColor="#000" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/bt_genera_push_industray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IT" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/genera_push_company"
+                    android:drawablePadding="5dp"
+                    android:text="互推地区"
+                    android:textColor="#000" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/bt_genera_push_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="全国" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/genera_push_company"
+                    android:drawablePadding="5dp"
+                    android:text="广告模板"
+                    android:textColor="#000" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="微信营销必备工具"
+                    android:textColor="#000" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@mipmap/genera_push_banner1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="微信营销必备工具"
+                    android:textColor="#000" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@mipmap/genera_push_banner1" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,7 @@ import butterknife.Unbinder;
 import kr.co.namee.permissiongen.PermissionGen;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -76,13 +78,12 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private List<MoreTypeBean> mDatas;
     Unbinder unbinder;
     private Banner viewpagerHome;
-    private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
     private ClipboardManager mClipboardManager;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
-    private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
+    private String[] iconName = {"天气", "视频汇", "本地服务", "精选", "便民"};
 
     private HomeItemListAdapter1 homeItemListAdapter1;
     private View headerNavigator;
@@ -95,7 +96,8 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private TextView mhomeLocalLocation;
     private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private String cityinfo;
+
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
@@ -188,8 +190,10 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     }
 
                 }, 1000);
+                Display display = mActivity.getWindowManager().getDefaultDisplay();
+                int height = display.getHeight();
                 Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.setGravity(Gravity.TOP, 0, height/7);
                 toast.show();
             }
         });
@@ -197,7 +201,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
     }
-
     /**
      * 首页下拉刷新 新的接口
      */
@@ -207,7 +210,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             swipeRefreshLayout.setRefreshing(false);
                             List<HomeNewListBean> list = response.body().data;
                             if (list == null || list.size() == 0) {
@@ -279,13 +282,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
-                .params("limit", 10)
+                .params("limit", 12)
                 .params("skip", count)
                 .params("channel_id", mChannelId)
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code.equals("0")) {
+                        if (response.body().code==0) {
                             swipeRefreshLayout.setRefreshing(false);
                             List<HomeNewListBean> list = response.body().data;
                             if (list == null || list.size() == 0) {
@@ -328,7 +331,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-//                        toActivity(LocationServiceActivity.class);
+
                         Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
@@ -412,7 +415,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
                     final CharSequence text = item.getText();
-                    Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                     intent.putExtra("url", text);
                     startActivity(intent);
                 } else {
@@ -427,7 +430,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    mhomeLocalLocation.setText(getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).getString("currcity", ""));
+                    mhomeLocalLocation.setText(getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
                     break;
 
                 }

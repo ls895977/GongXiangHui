@@ -1,8 +1,18 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -28,8 +38,6 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,6 +74,8 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private int mIsFloat;
     //添加位置0顶部，1中间，2底部
     private int mAddPosition = -1;
+    private Dialog dialog;
+    private UMWeb web;
 
     @Override
     protected int getLayoutId() {
@@ -107,11 +117,9 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                             int code = jsonObject.getInt("code");
                             if (code == 0 && data != null) {
                                 startThirdShare(data.getString("url"), data.getString("title"), data.getString("imgUrl"));
-                            }else if (code==105){
-
+                            } else if (code == 105) {
                                 Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -124,41 +132,98 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private void startThirdShare(String url, String title, String imgUrl) {
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
-        final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
+        //切记切记 这里分享的链接必须是http开头
+        web = new UMWeb(url);
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
 //        web.setDescription("你要分享内容的描述");//描述
-        new ShareAction(this)
-                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                        if (share_media == SHARE_MEDIA.QQ) {
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        } else if (share_media == SHARE_MEDIA.WEIXIN) {
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        } else if (share_media == SHARE_MEDIA.QZONE) {
-                            new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QZONE)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
-                        } else if (share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-//                                    new ShareAction(LoginActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-//                                            .withMedia(web)
-//                                            .setCallback(umShareListener)
-//                                            .share();
-                        }
-                    }
-                }).open();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
+        RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
+        RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);
+        RelativeLayout rl_share_qq = view.findViewById(R.id.rl_share_qq);
+        RelativeLayout rl_share_qqzone = view.findViewById(R.id.rl_share_qqzone);
+        RelativeLayout rl_share_sina = view.findViewById(R.id.rl_share_sina);
+        RelativeLayout rl_share_link = view.findViewById(R.id.rl_share_link);
+        TextView share_cancel_btn = view.findViewById(R.id.share_cancel_btn);
+        // 设置style 控制默认dialog带来的边距问题
+        dialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
+        dialog.setContentView(view);
+        View.OnClickListener listener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.rl_share_wx:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_wxfriend:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_qq:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_qqzone:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QZONE)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_sina:
+                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.SINA)
+                                .withMedia(web)
+                                .setCallback(umShareListener)
+                                .share();
+                        break;
+                    case R.id.rl_share_link:
+                        ClipContent();
+                        break;
+                    case R.id.share_cancel_btn:
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        };
+        rl_share_wx.setOnClickListener(listener);
+        rl_share_wxfriend.setOnClickListener(listener);
+        rl_share_qq.setOnClickListener(listener);
+        rl_share_qqzone.setOnClickListener(listener);
+        rl_share_sina.setOnClickListener(listener);
+        rl_share_link.setOnClickListener(listener);
+        share_cancel_btn.setOnClickListener(listener);
+
+        //获取当前activity所在的窗体
+        final Window dialogWindow = dialog.getWindow();
+        //设置dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        //获得窗体的属性
+        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+
+        final WindowManager windowManager = getWindowManager();
+        final Display display = windowManager.getDefaultDisplay();
+        lp.width = (int) display.getWidth();  //设置宽度
+        lp.y = 5;  //设置dialog距离底部的距离
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        dialog.show();
 
     }
-
+    /*粘贴url*/
+    private void ClipContent() {
+        ClipboardManager mClipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(String.valueOf(web)));
+        mClipboardManager.setPrimaryClip(clipData);
+        asyncShowToast("复制成功");
+        dialog.dismiss();
+    }
     @Override
     protected void initDatas() {
         final Intent intent = getIntent();
@@ -200,16 +265,13 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                     //加载成功后显示的内容
                 }
                 super.onProgressChanged(view, newProgress);
-
             }
         });
-
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return super.shouldOverrideUrlLoading(view, url);
@@ -219,8 +281,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
 
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webViewMineFragmentAdver.setWebViewClient(new WebViewClient());
-
-
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -232,7 +292,6 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(AddAdverActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
                 Toast.makeText(AddAdverActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();

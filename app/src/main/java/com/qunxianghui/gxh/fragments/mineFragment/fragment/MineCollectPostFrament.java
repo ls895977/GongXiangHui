@@ -135,7 +135,7 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
 
             }
         });
-        builder.setNegativeButton("取消", null);
+        builder.setNeutralButton("取消", null);
         builder.show();
     }
 

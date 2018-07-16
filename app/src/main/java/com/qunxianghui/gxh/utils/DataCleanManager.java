@@ -197,5 +197,28 @@ public class DataCleanManager {
 	public static String getCacheSize(File file) throws Exception {
 		return getFormatSize(getFolderSize(file));
 	}
-
+    /**
+     * 递归删除目录下的所有文件及子目录下所有文件
+     *
+     * @param dir 将要删除的文件目录
+     */
+    public static boolean deleteFile_Dir(File dir) {
+        //是否为文件夹和是否已经存在
+        if (dir.isDirectory() && dir.exists()) {
+            String[] children = dir.list();
+            //递归删除目录中的子目录下
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteFile_Dir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        // 目录此时为空，可以删除
+        boolean tag = dir.delete();
+        if (tag) {
+//			Log.d("删除APP文件文件夹 成功", dir.getName());
+        }
+        return tag;
+    }
 }

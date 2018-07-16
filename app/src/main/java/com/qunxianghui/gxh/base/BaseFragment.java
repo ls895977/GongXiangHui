@@ -27,7 +27,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * Fragment当前状态是否可见
      */
-    protected boolean isVisible;
+    protected boolean isVisible ;
 
 
     @Override
