@@ -53,11 +53,13 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.tv_genera_edit)
     TextView tvGeneraEdit;
     Unbinder unbinder;
+    private String selfcompayname;
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_generalizes;
     }
+
     @Override
     public void initDatas() {
         if (LoginMsgHelper.isLogin(getContext())) {
@@ -74,7 +76,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 /** 禁止滑动*/
                 vpGeneralizeMain.setScroll(true);
                 /**增加缓存页面的数量*/
-                vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
+                vpGeneralizeMain.setOffscreenPageLimit(fragments.size()-1);
                 /**默认显示第一个选项卡*/
                 rgGeneralizeMain.check(R.id.rb_genera_personal);
             } else {
@@ -85,6 +87,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
             }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -93,9 +96,9 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
             mActivity.finish();
         }
     }
+
     @Override
     public void initViews(View view) {
-        initViewPagers();
     }
 
     @Override
@@ -121,7 +124,8 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         });
         vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
     }
-    private void initViewPagers() { }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -129,6 +133,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 break;
         }
     }
+
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
         public void onPageSelected(int position) {
@@ -151,6 +156,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
             }
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -158,13 +164,17 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
-    protected void onLoadData() { }
+    protected void onLoadData() {
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     public static GeneralizeFragment getInstance() {
         if (generalizeFragment == null) {
             generalizeFragment = new GeneralizeFragment();

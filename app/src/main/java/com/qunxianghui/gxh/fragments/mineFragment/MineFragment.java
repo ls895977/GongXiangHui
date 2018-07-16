@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.mineFragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -179,14 +178,14 @@ public class MineFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-/**
- * 保存自己的公司名称
- */
-        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
-        SharedPreferences.Editor editor = spConpanyname.edit();
-        editor.putString("selfcompayname", companyName);
-        editor.putString("expire_time", expire_time);
-        editor.commit();
+///**
+// * 保存自己的公司名称
+// */
+//        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
+//        SharedPreferences.Editor editor = spConpanyname.edit();
+//        editor.putString("selfcompayname", companyName);
+//        editor.putString("expire_time", expire_time);
+//        editor.commit();
 
 
     }

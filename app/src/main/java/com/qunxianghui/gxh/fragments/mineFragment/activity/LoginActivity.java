@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -25,6 +28,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.StudentDao;
 import com.qunxianghui.gxh.db.UserDao;
+import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
@@ -34,6 +38,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -78,6 +83,7 @@ public class LoginActivity extends BaseActivity {
     private String openId;
     /*1为QQ,2为微信*/
     private String thirdType;
+    private String companyName;
 
     @Override
     protected int getLayoutId() {
@@ -283,11 +289,12 @@ public class LoginActivity extends BaseActivity {
                             MyApplication.getApp().setAccessToken(access_token);
                             Log.e(TAG, "onSuccess: " + access_token);
                             asyncShowToast("登录成功");
+                            fillUserData();
+                            HoldReneraCompanyData();
                             toActivity(MainActivity.class);
                             finish();
                         }
                     }
-
                     @Override
                     public void onError(Response<LzyResponse<LoginBean>> response) {
                         super.onError(response);
@@ -296,6 +303,67 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
+    private void HoldReneraCompanyData() {
+        OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                if (response.body().toString() != null) {
+                    parseGeneraLizeStaticsData(response.body());
+                }
+            }
+        });
+    }
+    private void parseGeneraLizeStaticsData(String body) {
+        try {
+            JSONObject jsonObject = new JSONObject(body);
+            JSONObject data = jsonObject.getJSONObject("data");
+            int staff_cnt = data.getInt("staff_cnt");
+            SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
+            SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
+            spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
+            spCompanymessageEditor.commit();
+        } catch (JSONException e) {
+
+        }
+    }
+    /*获取个人资料*/
+    private void fillUserData() {
+        OkGo.<String>post(Constant.CATCH_USERDATA_URL).
+                execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+                            parseUserData(response.body());
+                            return;
+                        }
+                        Logger.d("onSuccess-->:" + response.body().toString());
+                    }
+                });
+    }
+/*解析个人资料数据*/
+    private void parseUserData(String body) {
+        try {
+            JSONObject jsonObject = new JSONObject(body);
+            JSONObject data = jsonObject.getJSONObject("data");
+            int code = jsonObject.getInt("code");
+            if (code==0){
+                companyName = data.getJSONObject("company_info").getString("company_name");
+                String expire_time = data.getString("expire_time");
+                /**
+                 * 保存自己的公司名称
+                 */
+                SharedPreferences spConpanyname = getSharedPreferences("conpanyname", 0);
+                SharedPreferences.Editor editor = spConpanyname.edit();
+                editor.putString("selfcompayname", companyName);
+                editor.putString("expire_time", expire_time);
+                editor.commit();
+            }
+
+        } catch (Exception e) {
+
+
+        }
+    }
 
 
     @Override

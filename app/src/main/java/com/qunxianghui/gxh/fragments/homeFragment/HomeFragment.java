@@ -180,9 +180,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         super.onResume();
         tvHomeLocation.setText(mActivity.getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
     }
-
     private void RequestHomeLocation() {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //定位

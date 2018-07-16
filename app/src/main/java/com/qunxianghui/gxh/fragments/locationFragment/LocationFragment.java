@@ -173,7 +173,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
-
     private void RequestLocationData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("limit", 10)

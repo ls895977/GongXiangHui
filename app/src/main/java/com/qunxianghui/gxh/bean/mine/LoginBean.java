@@ -30,8 +30,6 @@ public class LoginBean implements Serializable {
     private int company_id;
     private AccessTokenInfoBean accessTokenInfo;
     private Object company_info;
-
-
     public int getId() {
         return id;
     }

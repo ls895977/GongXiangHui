@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,8 +26,6 @@ import butterknife.Unbinder;
  */
 
 public class GeneraPushFragment extends BaseFragment implements View.OnClickListener {
-
-
     @BindView(R.id.tv_generapush_companyname)
     TextView tvGenerapushCompanyname;
     @BindView(R.id.tv_generalize_company_des)
@@ -40,6 +37,8 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     Button btGeneraPushCompany;
     private String selfcompayname;
     private int staff_cnt;
+    private SharedPreferences spCompany;
+
     @Override
     public int getLayoutId() {
         return R.layout.genera_push_eachother;
@@ -49,9 +48,10 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     }
     @Override
     public void initViews(View view) {
-        SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
-        selfcompayname = spCompanymessage.getString("selfcompayname", "");
-        staff_cnt = spCompanymessage.getInt("staff_cnt", 0);
+        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
+        selfcompayname = spCompany.getString("selfcompayname", "");
+        spCompany = mActivity.getSharedPreferences("companymessage", 0);
+        staff_cnt = spCompany.getInt("staff_cnt", 0);
         RequestCompanyPushData();
     }
 
@@ -60,15 +60,12 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
         super.onResume();
         tvGenerapushCompanyname.setText(selfcompayname);
         tvGeneralizeCompanyDes.setText(String.valueOf("规模:" + staff_cnt));
-
     }
-
     private void RequestCompanyPushData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_PUSH_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 ParseGeneraCompanyData(response.body());
-
             }
         });
     }
@@ -82,14 +79,10 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
 
             btGeneraPushCompany.setText(company_name);
         }
-
-
     }
-
     @Override
     protected void onLoadData() {
     }
-
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -108,7 +101,6 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
 
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view

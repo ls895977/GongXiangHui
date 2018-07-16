@@ -285,7 +285,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
-                .params("limit", 10)
+                .params("limit", 12)
                 .params("skip", count)
                 .params("channel_id", mChannelId)
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {

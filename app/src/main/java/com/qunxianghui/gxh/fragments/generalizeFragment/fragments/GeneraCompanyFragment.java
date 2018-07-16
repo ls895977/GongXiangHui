@@ -133,7 +133,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
 
             }
         });
-
     }
     /*解析企业推广的数据*/
     private void parseGeneraLizeStaticsData(String body) {
@@ -183,13 +182,11 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         }
 
     };
-
     @Override
     protected void initListeners() {
         super.initListeners();
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -197,13 +194,11 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
