@@ -26,13 +26,10 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisConmmengtActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MemberUpActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.MessageGatherActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
@@ -56,23 +53,15 @@ import butterknife.Unbinder;
 public class MineFragment extends BaseFragment {
     private static MineFragment mineFragment;
     @BindView(R.id.rl_preson_data)
-    RelativeLayout rlPresonData;
-    @BindView(R.id.rl_message_gather)
     RelativeLayout rlMessageGather;
     @BindView(R.id.rl_mine_message)
-    RelativeLayout rlMineMessage;
-    @BindView(R.id.rl_mine_collect)
     RelativeLayout rlMineCollect;
     @BindView(R.id.mine_fabu)
-    RelativeLayout mineFabu;
-    @BindView(R.id.company_set)
     RelativeLayout companySet;
     @BindView(R.id.hezuo_call)
     RelativeLayout hezuoCall;
     @BindView(R.id.write_advertise)
     RelativeLayout writeAdvertise;
-    @BindView(R.id.tv_mine_set)
-    TextView tvMineSet;
     @BindView(R.id.rl_up_step)
     RelativeLayout rlUpStep;
     //头像
@@ -95,6 +84,8 @@ public class MineFragment extends BaseFragment {
     LinearLayout llMinePost;
     @BindView(R.id.ll_mine_fllow_post)
     LinearLayout llMineFllowPost;
+    @BindView(R.id.ll_mine_set)
+    RelativeLayout llMineSet;
     private UserDao userDao;
     private int userSize;
     private String mAvatar;//头像
@@ -126,7 +117,6 @@ public class MineFragment extends BaseFragment {
             }
         }
     }
-
     private void fillUserData() {
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).
                 execute(new StringCallback() {
@@ -155,20 +145,18 @@ public class MineFragment extends BaseFragment {
             like_cnt = data.getInt("like_cnt");
             posts_cnt = data.getInt("posts_cnt");
             comment_cnt = data.getInt("comment_cnt");
-            expire_time = data.getString("expire_time");
             mLevelName = data.getJSONObject("level_info").getString("name");
-            companyName = data.getJSONObject("company_info").getString("company_name");
             companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
-                mTvMemberType.setText(mLevelName);
-                mineQuicklyLogin.setText(mNick);
-                tvMineAddlikeCount.setText(String.valueOf(like_cnt));
-                tvMinePostCount.setText(String.valueOf(posts_cnt));
-                tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-                GlideApp.with(getActivity()).load(mAvatar).
-                        placeholder(R.mipmap.user_moren).
-                        error(R.mipmap.user_moren).
-                        circleCrop().
-                        into(mIvHead);
+            mTvMemberType.setText(mLevelName);
+            mineQuicklyLogin.setText(mNick);
+            tvMineAddlikeCount.setText(String.valueOf(like_cnt));
+            tvMinePostCount.setText(String.valueOf(posts_cnt));
+            tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
+            GlideApp.with(getActivity()).load(mAvatar).
+                    placeholder(R.mipmap.user_moren).
+                    error(R.mipmap.user_moren).
+                    circleCrop().
+                    into(mIvHead);
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
             } else if (companyInfo instanceof Object) {
@@ -178,18 +166,8 @@ public class MineFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-///**
-// * 保存自己的公司名称
-// */
-//        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
-//        SharedPreferences.Editor editor = spConpanyname.edit();
-//        editor.putString("selfcompayname", companyName);
-//        editor.putString("expire_time", expire_time);
-//        editor.commit();
-
 
     }
-
     @Override
     public void initViews(View view) {
         userDao = new UserDao(mActivity);
@@ -206,14 +184,10 @@ public class MineFragment extends BaseFragment {
             return;
         }
         fillUserData();
-//        toCollectView();
     }
 
-    private void toCollectView() {
-    }
-
-    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise,
-            R.id.mine_quickly_login, R.id.ll_mine_post, R.id.ll_mine_fllow_post})
+    @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise,
+            R.id.mine_quickly_login, R.id.ll_mine_post, R.id.ll_mine_fllow_post,R.id.ll_mine_set})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -226,15 +200,7 @@ public class MineFragment extends BaseFragment {
                 bundle.putInt(PersonDataActivity.SEX, mSex);
                 toActivity(PersonDataActivity.class, bundle);
                 break;
-            case R.id.rl_message_gather:
-                toActivity(MessageGatherActivity.class);
-                break;
-            case R.id.rl_mine_message:
-                toActivity(MineMessageActivity.class);
-                break;
-            case R.id.rl_mine_collect:
-                toActivity(MyCollectActivity.class);
-                break;
+
             case R.id.mine_fabu:
                 toActivity(MineIssueActivity.class);
                 break;
@@ -242,9 +208,7 @@ public class MineFragment extends BaseFragment {
 
                 toActivity(MemberUpActivity.class);
                 break;
-            case R.id.company_set:
-                toActivity(CompanySetActivity.class);
-                break;
+
             case R.id.hezuo_call:
                 requestCall();
                 break;
@@ -256,7 +220,7 @@ public class MineFragment extends BaseFragment {
             case R.id.mine_quickly_login:
                 toActivity(LoginActivity.class);
                 break;
-            case R.id.tv_mine_set:
+            case R.id.ll_mine_set:
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:

@@ -331,7 +331,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-
+//                        toActivity(CompanySetActivity.class);
                         Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
