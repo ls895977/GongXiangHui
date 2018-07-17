@@ -1,12 +1,24 @@
 package com.qunxianghui.gxh.activity;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,9 +27,11 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
+import com.qunxianghui.gxh.utils.UserUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +70,10 @@ public class MainActivity extends BaseActivity {
     ImageView ivMine;
     @BindView(R.id.tv_mine)
     TextView tvMine;
+    @BindView(R.id.content)
+    FrameLayout content;
+    @BindView(R.id.ll_home_main)
+    LinearLayout llHomeMain;
     private long exitTime;
     private MainBroadCast receiver;
     static final String INTENT_BROADCAST_HIDE_TAB = "android.intent.action.HIDE_TAB";
@@ -64,19 +82,21 @@ public class MainActivity extends BaseActivity {
     private IssureFragment mIssureFragment;
     private MineFragment mMineFragment;
     private GeneralizeFragment mGeneralizeFragment;
-
     private FragmentManager supportFragmentManager;
+    private RecyclerView recycler_onekey_issue_navigator;
+    private int[] images = {R.mipmap.onekey_issue_video, R.mipmap.onekey_issue_localcircle, R.mipmap.onekey_issue_baoliao
+            , R.mipmap.onekey_issue_localservice, R.mipmap.onekey_issue_choiceness,};
+    private String[] iconName = {"视频", "本地圈", "爆料", "本地服务", "精选"};
+    private Dialog dialog;
+    private View view;
 
-    @Override
     protected int getLayoutId() {
-
         return R.layout.activity_main;
     }
 
     @Override
     protected void initViews() {
         initViewPagers();
-
     }
 
     private void initViewPagers() {
@@ -94,26 +114,27 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-//        receiver = new MainBroadCast() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                //Toast.makeText(this,"Broad",Toast.LENGTH_LONG).show();
-//                //super.onReceive(context, intent);
-//                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
-//                    boolean hide = intent.getBooleanExtra("hide", false);
-//                    if (hide == true) {
-//                        llMain.setVisibility(View.GONE);
-//                    } else {
-//                        llMain.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//        };
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(INTENT_BROADCAST_HIDE_TAB);
-//        registerReceiver(receiver, filter);
-//        UserUtil.getInstance();
+        receiver = new MainBroadCast() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Toast.makeText(this,"Broad",Toast.LENGTH_LONG).show();
+                //super.onReceive(context, intent);
+                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
+                    boolean hide = intent.getBooleanExtra("hide", false);
+                    if (hide == true) {
+                        llMain.setVisibility(View.GONE);
+                    } else {
+                        llMain.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(INTENT_BROADCAST_HIDE_TAB);
+        registerReceiver(receiver, filter);
+        UserUtil.getInstance();
     }
+
     private void selectedFragment(int position) {
         supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
@@ -142,7 +163,6 @@ public class MainActivity extends BaseActivity {
                     transaction.show(mLocationFragment);
                 }
                 break;
-
             //发布
             case 2:
                 if (mIssureFragment == null) {
@@ -191,8 +211,6 @@ public class MainActivity extends BaseActivity {
         if (mMineFragment != null)
             transaction.hide(mMineFragment);
     }
-
-
     /**
      * 二次点击返回
      *
@@ -211,22 +229,18 @@ public class MainActivity extends BaseActivity {
                 System.exit(0);
             }
             return true;
-
         }
         return super.onKeyDown(keyCode, event);
     }
-
     @OnClick({R.id.ll_home, R.id.ll_location, R.id.ll_generation, R.id.ll_issue, R.id.ll_mine})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_home:
                 selectedFragment(0);
-
                 ivHome.setBackgroundResource(R.drawable.ic_home_checked);
                 ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
                 ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
                 ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
-
                 tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
                 tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
                 tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
@@ -246,7 +260,8 @@ public class MainActivity extends BaseActivity {
                 tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
                 break;
             case R.id.ll_issue:
-                toActivity(PublishActivity.class);
+                showOneKeyIssuePop();
+
 //                selectedFragment(2);
                 ivHome.setBackgroundResource(R.drawable.ic_home_normal);
                 ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
@@ -287,6 +302,70 @@ public class MainActivity extends BaseActivity {
                 break;
         }
     }
+
+
+
+
+
+    /*弹出一键发布的pop*/
+    private void showOneKeyIssuePop() {
+        view = LayoutInflater.from(mContext).inflate(R.layout.pop_onekey_issue, null);
+        RelativeLayout rl_iv_onekey_issue_video = view.findViewById(R.id.rl_iv_onekey_issue_video);
+        RelativeLayout rl_onekey_issue_localcircle = view.findViewById(R.id.rl_onekey_issue_localcircle);
+        RelativeLayout rl_onekey_issue_baoliao = view.findViewById(R.id.rl_onekey_issue_baoliao);
+        RelativeLayout rl_onekey_issue_localservice = view.findViewById(R.id.rl_onekey_issue_localservice);
+        RelativeLayout rl_onekey_issue_choiceness = view.findViewById(R.id.rl_onekey_issue_choiceness);
+        ImageView iv_onekey_issue_close = view.findViewById(R.id.iv_onekey_issue_close);
+        // 设置style 控制默认dialog带来的边距问题
+        dialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
+        dialog.setContentView(view);
+        View.OnClickListener listener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.rl_iv_onekey_issue_video:
+                        break;
+                    case R.id.rl_onekey_issue_localcircle:
+                        toActivity(PublishActivity.class);
+                        dialog.dismiss();
+                        break;
+                    case R.id.rl_onekey_issue_baoliao:
+                        toActivity(BaoLiaoActivity.class);
+                        dialog.dismiss();
+                        break;
+                    case R.id.rl_onekey_issue_localservice:
+                        break;
+                    case R.id.rl_onekey_issue_choiceness:
+                        break;
+                    case R.id.iv_onekey_issue_close:
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        };
+        rl_iv_onekey_issue_video.setOnClickListener(listener);
+        rl_onekey_issue_localcircle.setOnClickListener(listener);
+        rl_onekey_issue_baoliao.setOnClickListener(listener);
+        rl_iv_onekey_issue_video.setOnClickListener(listener);
+        rl_onekey_issue_localservice.setOnClickListener(listener);
+        rl_onekey_issue_choiceness.setOnClickListener(listener);
+        iv_onekey_issue_close.setOnClickListener(listener);
+        //获取当前activity所在的窗体
+        final Window dialogWindow = dialog.getWindow();
+        //设置dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        //获得窗体的属性
+        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        final WindowManager windowManager = getWindowManager();
+        final Display display = windowManager.getDefaultDisplay();
+        lp.width = (int) display.getWidth();  //设置宽度
+        lp.y = 5;  //设置dialog距离底部的距离
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        dialog.show();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

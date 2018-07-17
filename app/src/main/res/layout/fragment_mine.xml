@@ -153,6 +153,7 @@
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="30dp"
+        android:id="@+id/rl_mine_person_data"
         android:background="@drawable/shape_white_bg"
         android:orientation="horizontal">
 
@@ -177,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="立即登录"
+                android:text="用户名字"
                 android:textColor="#000"
                 android:textSize="17sp" />
 
@@ -186,20 +187,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:textSize="12sp"
-                tool:text="普通用户" />
+                tool:text="公司名称" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_member_type"
             android:layout_width="67dp"
             android:layout_height="25dp"
-            android:gravity="center"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/shape_red_stroke"
+            android:gravity="center"
             android:textColor="#DF2929"
             android:textSize="13sp"
             tool:text="普通用户" />
@@ -256,7 +257,6 @@
                     android:text="关注"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -283,6 +283,5 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-
 
 </FrameLayout>

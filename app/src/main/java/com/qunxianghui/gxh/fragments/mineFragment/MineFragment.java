@@ -86,6 +86,10 @@ public class MineFragment extends BaseFragment {
     LinearLayout llMineFllowPost;
     @BindView(R.id.ll_mine_set)
     RelativeLayout llMineSet;
+    @BindView(R.id.tv_mine_company_name)
+    TextView tvMineCompanyName;
+    @BindView(R.id.rl_mine_person_data)
+    RelativeLayout rlMinePersonData;
     private UserDao userDao;
     private int userSize;
     private String mAvatar;//头像
@@ -101,6 +105,7 @@ public class MineFragment extends BaseFragment {
     private String expires_time;
     private String companyName;
     private String expire_time;
+
     @Override
     public int getLayoutId() {
 
@@ -117,6 +122,7 @@ public class MineFragment extends BaseFragment {
             }
         }
     }
+
     private void fillUserData() {
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).
                 execute(new StringCallback() {
@@ -135,8 +141,6 @@ public class MineFragment extends BaseFragment {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
             int code = jsonObject.getInt("code");
-//            JSONObject accessTokenInfo = jsonObject.getJSONObject("accessTokenInfo");
-//            expires_time = accessTokenInfo.getString("expires_time");
             mNick = data.getString("nick");
             mAvatar = data.getString("avatar");
             mMobile = data.getString("mobile");
@@ -147,11 +151,15 @@ public class MineFragment extends BaseFragment {
             comment_cnt = data.getInt("comment_cnt");
             mLevelName = data.getJSONObject("level_info").getString("name");
             companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+            companyName = data.getJSONObject("company_info").getString("company_name");
             mTvMemberType.setText(mLevelName);
             mineQuicklyLogin.setText(mNick);
             tvMineAddlikeCount.setText(String.valueOf(like_cnt));
             tvMinePostCount.setText(String.valueOf(posts_cnt));
             tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
+            tvMineCompanyName.setText(companyName);
+
+
             GlideApp.with(getActivity()).load(mAvatar).
                     placeholder(R.mipmap.user_moren).
                     error(R.mipmap.user_moren).
@@ -168,6 +176,7 @@ public class MineFragment extends BaseFragment {
         }
 
     }
+
     @Override
     public void initViews(View view) {
         userDao = new UserDao(mActivity);
@@ -186,19 +195,13 @@ public class MineFragment extends BaseFragment {
         fillUserData();
     }
 
-    @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise,
-            R.id.mine_quickly_login, R.id.ll_mine_post, R.id.ll_mine_fllow_post,R.id.ll_mine_set})
+    @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
+            R.id.ll_mine_fllow_post, R.id.ll_mine_set,R.id.rl_mine_person_data})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_preson_data:
-                Bundle bundle = new Bundle();
-                bundle.putString(PersonDataActivity.AVATAR, mAvatar);
-                bundle.putString(PersonDataActivity.NICK, mNick);
-                bundle.putString(PersonDataActivity.MOBILE, mMobile);
-                bundle.putString(PersonDataActivity.ADDRESS, mAddress);
-                bundle.putInt(PersonDataActivity.SEX, mSex);
-                toActivity(PersonDataActivity.class, bundle);
+
                 break;
 
             case R.id.mine_fabu:
@@ -208,7 +211,15 @@ public class MineFragment extends BaseFragment {
 
                 toActivity(MemberUpActivity.class);
                 break;
-
+                case R.id.rl_mine_person_data:
+                    Bundle bundle = new Bundle();
+                    bundle.putString(PersonDataActivity.AVATAR, mAvatar);
+                    bundle.putString(PersonDataActivity.NICK, mNick);
+                    bundle.putString(PersonDataActivity.MOBILE, mMobile);
+                    bundle.putString(PersonDataActivity.ADDRESS, mAddress);
+                    bundle.putInt(PersonDataActivity.SEX, mSex);
+                    toActivity(PersonDataActivity.class, bundle);
+                    break;
             case R.id.hezuo_call:
                 requestCall();
                 break;
@@ -216,21 +227,17 @@ public class MineFragment extends BaseFragment {
                 AdvertisConmmengtActivity.sIsFromNews = false;
                 toActivity(AdvertisConmmengtActivity.class);
                 break;
-
-            case R.id.mine_quickly_login:
-                toActivity(LoginActivity.class);
-                break;
             case R.id.ll_mine_set:
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-                asyncShowToast("点击了帖子");
+
                 intent = new Intent(mActivity, MineIssueActivity.class);
                 intent.putExtra("index", 2);
                 startActivity(intent);
                 break;
             case R.id.ll_mine_fllow_post:
-                asyncShowToast("点击了跟帖");
+
                 intent = new Intent(mActivity, MineMessageActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
