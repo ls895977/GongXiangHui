@@ -9,6 +9,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="im_line_color">#dadada</color>
+    <color name="dialog_bg_color">#80ffffff</color>
 
     <color name="actionsheet_blue">#2298EF</color>
 

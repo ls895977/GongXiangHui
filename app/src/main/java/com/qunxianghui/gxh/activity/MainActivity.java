@@ -211,6 +211,7 @@ public class MainActivity extends BaseActivity {
         if (mMineFragment != null)
             transaction.hide(mMineFragment);
     }
+
     /**
      * 二次点击返回
      *
@@ -232,6 +233,7 @@ public class MainActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
     @OnClick({R.id.ll_home, R.id.ll_location, R.id.ll_generation, R.id.ll_issue, R.id.ll_mine})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -304,9 +306,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
-
-
     /*弹出一键发布的pop*/
     private void showOneKeyIssuePop() {
         view = LayoutInflater.from(mContext).inflate(R.layout.pop_onekey_issue, null);
@@ -359,10 +358,17 @@ public class MainActivity extends BaseActivity {
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         final WindowManager windowManager = getWindowManager();
         final Display display = windowManager.getDefaultDisplay();
+        lp.alpha = 0.9f;
+
         lp.width = (int) display.getWidth();  //设置宽度
-        lp.y = 5;  //设置dialog距离底部的距离
+        lp.y = 3;  //设置dialog距离底部的距离
+        dialogWindow.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
+                WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
+
+
         dialog.show();
     }
 
