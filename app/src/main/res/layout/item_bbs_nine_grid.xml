@@ -15,9 +15,9 @@
 
         <com.qunxianghui.gxh.widget.RoundImageView
             android:id="@+id/iv_location_person_head"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@mipmap/icon_headimage" />
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@mipmap/user_moren" />
 
 
         <LinearLayout
@@ -31,7 +31,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_location_person_name"
@@ -41,12 +42,15 @@
                     android:textColor="@android:color/holo_blue_dark" />
 
                 <TextView
-                    android:id="@+id/tv_location_circle_inform"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tv_location_issure_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="举报"
-                    android:textColor="@color/tab_color" />
+                    android:layout_gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="ssss"
+                    android:textColor="@color/gray_6"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
 
@@ -79,23 +83,12 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_location_issure_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="ssss"
-
-                    android:textColor="@color/gray_6"
-                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/deleteBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dip"
                     android:paddingLeft="3dp"
                     android:paddingRight="3dp"
                     android:text="删除"
@@ -111,7 +104,7 @@
                     android:id="@+id/snsBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/im_snsimg" />
+                    android:src="@mipmap/icon_local_message" />
             </LinearLayout>
 
 
@@ -154,15 +147,9 @@
                     android:divider="@null"
                     android:dividerHeight="0dp"
                     android:scrollbars="none" />
-
             </LinearLayout>
-
-
         </LinearLayout>
-
-
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/ll_location_discuss_commit"
@@ -183,6 +170,7 @@
             android:background="@null"
             android:hint="请输入您的评论..."
             android:lines="5"
+            android:focusable="false"
             android:paddingLeft="10dp"
             android:textSize="14sp" />
 

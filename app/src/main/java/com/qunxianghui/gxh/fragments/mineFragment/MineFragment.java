@@ -136,6 +136,7 @@ public class MineFragment extends BaseFragment {
                     }
                 });
     }
+
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
@@ -196,12 +197,15 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
-            R.id.ll_mine_fllow_post, R.id.ll_mine_set,R.id.rl_mine_person_data})
+            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_preson_data:
 
+                break;
+            case R.id.rl_mine_message:
+                toActivity(MineMessageActivity.class);
                 break;
 
             case R.id.mine_fabu:
@@ -211,15 +215,15 @@ public class MineFragment extends BaseFragment {
 
                 toActivity(MemberUpActivity.class);
                 break;
-                case R.id.rl_mine_person_data:
-                    Bundle bundle = new Bundle();
-                    bundle.putString(PersonDataActivity.AVATAR, mAvatar);
-                    bundle.putString(PersonDataActivity.NICK, mNick);
-                    bundle.putString(PersonDataActivity.MOBILE, mMobile);
-                    bundle.putString(PersonDataActivity.ADDRESS, mAddress);
-                    bundle.putInt(PersonDataActivity.SEX, mSex);
-                    toActivity(PersonDataActivity.class, bundle);
-                    break;
+            case R.id.rl_mine_person_data:
+                Bundle bundle = new Bundle();
+                bundle.putString(PersonDataActivity.AVATAR, mAvatar);
+                bundle.putString(PersonDataActivity.NICK, mNick);
+                bundle.putString(PersonDataActivity.MOBILE, mMobile);
+                bundle.putString(PersonDataActivity.ADDRESS, mAddress);
+                bundle.putInt(PersonDataActivity.SEX, mSex);
+                toActivity(PersonDataActivity.class, bundle);
+                break;
             case R.id.hezuo_call:
                 requestCall();
                 break;

@@ -3,8 +3,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#D81717">
+    android:layout_height="match_parent">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,12 +13,13 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="120dp"
+            android:background="#D81717" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="#10C0C0C0">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,12 +149,12 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_mine_person_data"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="30dp"
-        android:id="@+id/rl_mine_person_data"
         android:background="@drawable/shape_white_bg"
         android:orientation="horizontal">
 

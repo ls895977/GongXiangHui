@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/top_bar"
-              android:gravity="center_vertical">
+    android:id="@+id/top_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:id="@+id/title_bar"
@@ -31,10 +31,11 @@
 
         <ImageView
             android:id="@+id/title_rightIco"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="17dp"
+            android:layout_height="21dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

@@ -14,29 +14,32 @@
         <RelativeLayout
             android:id="@+id/loaction_top_nav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_marginTop="13dp">
+            <TextView
+                android:id="@+id/tv_localcircle_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="9dp"
+                android:drawableLeft="@mipmap/icon_local_location"
+                android:drawablePadding="5dp"
+                android:text="西湖区"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="25dp"
                 android:text="本地圈"
-                android:textColor="#000"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/tv_location_mine_fabu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="25dp"
-                android:text="我要发布"
-                android:textColor="#f00"
+                android:textColor="#282828"
                 android:textSize="15sp" />
+
         </RelativeLayout>
+
+
 
         <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/recyclerView_location"

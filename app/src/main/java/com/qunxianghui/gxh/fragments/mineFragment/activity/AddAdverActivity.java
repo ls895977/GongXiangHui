@@ -85,12 +85,12 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initViews() {
         //微信
-        new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+        new TitleBuilder(this).setTitleText("编辑广告").setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
-        }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
+        }).setRightIco(R.mipmap.addadver_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getShareInfo();

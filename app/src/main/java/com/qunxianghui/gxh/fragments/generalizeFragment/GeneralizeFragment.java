@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
@@ -17,7 +16,6 @@ import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
-import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPushFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -48,18 +46,12 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     RadioButton rbGeneraPersonal;
     @BindView(R.id.rb_genera_company)
     RadioButton rbGeneraCompany;
-    @BindView(R.id.rb_genera_push)
-    RadioButton rbGeneraPush;
-    @BindView(R.id.tv_genera_edit)
-    TextView tvGeneraEdit;
     Unbinder unbinder;
-    private String selfcompayname;
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_generalizes;
     }
-
     @Override
     public void initDatas() {
         if (LoginMsgHelper.isLogin(getContext())) {
@@ -70,7 +62,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 final List<Fragment> fragments = new ArrayList<>();
                 fragments.add(new GeneraPersonalFragment());
                 fragments.add(new GeneraCompanyFragment());
-                fragments.add(new GeneraPushFragment());
+
                 MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
                 vpGeneralizeMain.setAdapter(adapter);
                 /** 禁止滑动*/
@@ -103,7 +95,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
     @Override
     protected void initListeners() {
-        tvGeneraEdit.setOnClickListener(this);
         rgGeneralizeMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -115,10 +106,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
                         vpGeneralizeMain.setCurrentItem(1, false);
                         break;
-                    case R.id.rb_genera_push:
 
-                        vpGeneralizeMain.setCurrentItem(2, false);
-                        break;
                 }
             }
         });
@@ -129,8 +117,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_genera_back:
-                break;
+
         }
     }
 
@@ -141,18 +128,15 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 case 0:
                     rbGeneraPersonal.setChecked(true);
                     rbGeneraCompany.setChecked(false);
-                    rbGeneraPush.setChecked(false);
+
                     break;
                 case 1:
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(true);
-                    rbGeneraPush.setChecked(false);
+
+
                     break;
-                case 2:
-                    rbGeneraPersonal.setChecked(false);
-                    rbGeneraCompany.setChecked(false);
-                    rbGeneraPush.setChecked(true);
-                    break;
+
             }
         }
     };
