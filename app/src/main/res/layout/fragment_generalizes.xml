@@ -7,36 +7,24 @@
     <LinearLayout
         android:id="@+id/ll_genera"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/home_text_color">
+        android:layout_height="68dp"
+        android:background="#D81717">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <ImageView
-                android:id="@+id/iv_genera_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="20dp"
-                android:background="@mipmap/icon_back"
-                android:visibility="invisible" />
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
 
             <RadioGroup
                 android:id="@+id/rg_generalize_main"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
-
                 <RadioButton
                     android:id="@+id/rb_genera_personal"
-                    android:layout_width="0dp"
+                    android:layout_width="70dp"
                     android:layout_height="35dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_btn_generalize"
@@ -48,9 +36,8 @@
 
                 <RadioButton
                     android:id="@+id/rb_genera_company"
-                    android:layout_width="0dp"
+                    android:layout_width="70dp"
                     android:layout_height="35dp"
-                    android:layout_weight="1"
                     android:background="@drawable/selector_btn_generalize"
                     android:button="@null"
                     android:gravity="center"
@@ -58,32 +45,9 @@
                     android:textColor="@color/generalize_text_color"
                     android:textSize="14sp" />
 
-                <RadioButton
-                    android:id="@+id/rb_genera_push"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_btn_generalize"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="互推"
-                    android:textColor="@color/generalize_text_color"
-                    android:textSize="14sp" />
+
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/tv_genera_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center"
-                android:text="编辑"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 
@@ -91,8 +55,7 @@
         android:id="@+id/vp_generalize_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#fff" />
+        android:layout_weight="1" />
 
     <RelativeLayout
         android:id="@+id/rl_person"

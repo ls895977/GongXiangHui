@@ -11,6 +11,7 @@
     <color name="im_line_color">#dadada</color>
 
     <color name="actionsheet_blue">#2298EF</color>
+    <color name="app_style_color">#D81717</color>
 
     //新添加的搜索需要的color
     <color name="gray_f8">#F8F8F8</color>

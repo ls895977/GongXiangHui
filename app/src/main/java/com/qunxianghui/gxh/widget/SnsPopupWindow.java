@@ -4,17 +4,12 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.ActionItem;
@@ -22,7 +17,6 @@ import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.utils.DensityUtil;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * 朋友圈点赞评论的popupwindow
@@ -37,7 +31,6 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
     private String collect;
     private String click_like;
     private Context mContext;
-
     // 实例化一个矩形
     private Rect mRect = new Rect();
     // 坐标的位置（x、y）
@@ -129,30 +122,24 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
             addAction(new ActionItem("取消赞"));
         }
         if (collect == null || collect.length()==0){
-            addAction(new ActionItem("收藏"));
+            addAction(new ActionItem("举报"));
             //colletBtn.setText("取消");
-            colletBtn.setText("收藏");
-        }else {
-            colletBtn.setText("取消收藏");
-            addAction(new ActionItem("取消收藏"));
+            colletBtn.setText("举报");
         }
         addAction(new ActionItem("评论"));
         //addAction(new ActionItem("取消收藏"));
     }
-
-
     public void showPopupWindow(View parent, TestMode.DataBean.ListBean listBean, Context context) {
         parent.getLocationOnScreen(mLocation);
         // 设置矩形的大小
-
         mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
         //Log.v("xxxx-yyyy",mRect.toString());
 
        // digBtn.setText(mActionItems.get(0).mTitle);
         //判断当前状态
-        Drawable like = parent.getResources().getDrawable(R.mipmap.icon_good);
+        Drawable like = parent.getResources().getDrawable(R.mipmap.icon_local_good_normal);
         like.setBounds(0,0, like.getIntrinsicWidth(), like.getMinimumHeight());
-        Drawable collection = parent.getResources().getDrawable(R.drawable.collect_normal);
+        Drawable collection = parent.getResources().getDrawable(R.mipmap.icon_local_report);
         collection.setBounds(0,0,collection.getIntrinsicWidth(),collection.getIntrinsicHeight());
         if (listBean.getCollect().equals("true")&&listBean.getLike_info_res().equalsIgnoreCase("true")){
 
@@ -201,7 +188,6 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
                 break;
         }
     }
-
     /**
      * 添加子类项
      */

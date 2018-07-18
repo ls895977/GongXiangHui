@@ -1,19 +1,14 @@
 package com.qunxianghui.gxh.adapter.locationAdapter;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
@@ -48,7 +43,8 @@ public class ImageAdapter extends PagerAdapter {
         GlideApp.with(activity)
                 .load(url)
                 .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.default_img)
+                .error(R.mipmap.default_img)
                 .into(photoView);
         container.addView(photoView);
         photoView.setOnClickListener(new View.OnClickListener() {

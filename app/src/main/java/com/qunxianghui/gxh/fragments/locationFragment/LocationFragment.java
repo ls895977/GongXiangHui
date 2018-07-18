@@ -30,11 +30,12 @@ import com.qunxianghui.gxh.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.activity.PublishActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.location.CommentBean;
-import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
+import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
@@ -52,27 +53,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
 
 public class LocationFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
     private static LocationFragment locationFragment;
-    @BindView(R.id.tv_location_mine_fabu)
-    TextView tvLocationMineFabu;
     LinearLayout commentView;
     EditText comment_edit;
     TextView send_btn;
     XRecyclerView recyclerView;
     Unbinder unbinder;
     NineGridTest2Adapter mAdapter;
+    @BindView(R.id.tv_localcircle_location)
+    TextView tvLocalcircleLocation;
     private RelativeLayout topNav;
     private int count = 0;
     private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
     private boolean mIsFirst = true;
     private int commentPosition;
     private int scrollOffsetY = 0;
-
+    public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -173,6 +177,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
+
     private void RequestLocationData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("limit", 10)
@@ -199,13 +204,12 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
             recyclerView.refreshComplete();
             mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
-
         }
     }
 
     @Override
     protected void initListeners() {
-        tvLocationMineFabu.setOnClickListener(this);
+        tvLocalcircleLocation.setOnClickListener(this);
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -234,6 +238,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     protected void onLoadData() {
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -244,11 +249,14 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.tv_location_mine_fabu:
-                toActivity(PublishActivity.class);
-                break;
+
             case R.id.tv_alertbottom_up_pic:
                 toActivity(PublishActivity.class);
+                break;
+
+            case R.id.tv_localcircle_location:
+                intent = new Intent(mActivity, AbleNewSearchActivity.class);
+                startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
         }
     }
@@ -256,6 +264,14 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case CITY_SELECT_RESULT_FRAG:
+                if (resultCode==RESULT_OK){
+                    String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
+                    tvLocalcircleLocation.setText(city);
+                }
+                break;
+        }
     }
 
     @Override
@@ -270,7 +286,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         intent.putExtra("position", picpostion);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
-
     }
 
     /**
@@ -332,6 +347,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
+
     public static void hideSoftKeyboard(EditText editText, Context context) {
         if (editText != null && context != null) {
             InputMethodManager imm = (InputMethodManager) context
@@ -350,6 +366,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                     }
                 });
     }
+
     //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
@@ -415,29 +432,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             });
         }
     }
+
     @Override
     public void onCollectionClick(final int position) {
-        if (!LoginMsgHelper.isLogin(getContext())) {
-            toActivity(LoginActivity.class);
-            mActivity.finish();
-            return;
-        }
-        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
-            @Override
-            public void onSuccess(Response<String> response) {
-                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
-                if (myCollectBean.getCode() == 0) {
-                    Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-                    dataList.get(position).setCollect("true");
-                } else if (myCollectBean.getCode() == 202) {
-                    Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
-                    dataList.get(position).setCollect("");
-                }
-                mAdapter.notifyDataSetChanged();
-                mAdapter.notifyItemChanged(position);
-            }
-        });
+        toActivity(InFormActivity.class);
     }
 
     /**

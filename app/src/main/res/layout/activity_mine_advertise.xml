@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_title" />
+    <include
+        layout="@layout/activity_title" />
 
     <RelativeLayout
         android:id="@+id/rl_mineFragment_addTopAdver"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="86dp"
         android:orientation="vertical">
 
         <ImageView
@@ -24,8 +25,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:drawableLeft="@mipmap/addadver_toppic"
+            android:drawablePadding="5dp"
             android:text="增加顶部广告"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:layout_below="@+id/tv_mingFragment_addTopAdver"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/add_adver_top_alert"
+            android:gravity="center"
+            android:text="顶部只支持通栏广告"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -33,12 +48,12 @@
         android:id="@+id/webView_mineFragment_Adver"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <RelativeLayout
         android:id="@+id/rl_mineFragment_addBottomAdver"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="86dp"
         android:orientation="vertical">
 
         <ImageView
@@ -47,12 +62,27 @@
             android:layout_height="match_parent" />
 
         <TextView
+
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:layout_above="@+id/tv_mingFragment_addBottomAdver"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/add_adver_bottom_alert"
+            android:gravity="center"
+            android:text="顶部只支持通栏广告"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
             android:id="@+id/tv_mingFragment_addBottomAdver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:drawableLeft="@mipmap/addadver_bottompic"
+            android:drawablePadding="5dp"
             android:text="增加底部广告"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

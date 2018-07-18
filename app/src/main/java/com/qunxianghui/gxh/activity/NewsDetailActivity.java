@@ -489,7 +489,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                             mWebView.reload();
                             popupWindow.dismiss();
 
-
                         }
                     }
                 });
