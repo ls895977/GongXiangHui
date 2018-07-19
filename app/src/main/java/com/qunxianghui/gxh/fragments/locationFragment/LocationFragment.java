@@ -1,8 +1,6 @@
 package com.qunxianghui.gxh.fragments.locationFragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,6 +75,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     private int commentPosition;
     private int scrollOffsetY = 0;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -264,9 +263,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
-                if (resultCode==RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
                     tvLocalcircleLocation.setText(city);
                 }
@@ -450,32 +449,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         startActivity(intent);
     }
 
-    /**
-     * @param position
-     */
+    /*用户的回复评论*/
     @Override
-    public void deletePost(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("删除提示");
-        builder.setMessage("您确定要删除该条记录么?");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                OkGo.<String>post(Constant.DELETE_POST_URL)
-                        .params("uuid", dataList.get(position).getUuid())
-                        .execute(new DialogCallback<String>(getActivity()) {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                parseDeletePostAData(response.body(), position);
-                            }
-                        });
-            }
-        });
-        builder.setNeutralButton("取消", null);
-
-        builder.show();
+    public void CommenRecall(final int position) {
+        asyncShowToast("点击了回复" + position);
 
     }
+
 
     /*解析删除的内容*/
     private void parseDeletePostAData(String body, int position) {
