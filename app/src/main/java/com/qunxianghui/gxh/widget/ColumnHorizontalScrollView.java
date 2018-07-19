@@ -75,7 +75,7 @@ public class ColumnHorizontalScrollView extends HorizontalScrollView {
         }
         if (paramInt1 == 0) {
             leftImage.setVisibility(View.GONE);
-            rightImage.setVisibility(View.VISIBLE);
+            rightImage.setVisibility(View.GONE);
             return;
         }
         if (ll_content.getWidth() - paramInt1 + ll_more.getWidth() + rl_column.getLeft() == mScreenWitdh) {
@@ -84,7 +84,7 @@ public class ColumnHorizontalScrollView extends HorizontalScrollView {
             return;
         }
         leftImage.setVisibility(View.VISIBLE);
-        rightImage.setVisibility(View.VISIBLE);
+            rightImage.setVisibility(View.GONE);
     }
 
     /**
@@ -117,7 +117,7 @@ public class ColumnHorizontalScrollView extends HorizontalScrollView {
         //如果滑动在最左边时候，左边阴影隐藏，右边显示
         if (getLeft() == 0) {
             leftImage.setVisibility(View.GONE);
-            rightImage.setVisibility(View.VISIBLE);
+            rightImage.setVisibility(View.GONE);
             return;
         }
         //如果滑动在最右边时候，左边阴影显示，右边隐藏
@@ -128,6 +128,6 @@ public class ColumnHorizontalScrollView extends HorizontalScrollView {
         }
         //否则，说明在中间位置，左、右阴影都显示
         leftImage.setVisibility(View.VISIBLE);
-        rightImage.setVisibility(View.VISIBLE);
+        rightImage.setVisibility(View.GONE);
     }
 }
