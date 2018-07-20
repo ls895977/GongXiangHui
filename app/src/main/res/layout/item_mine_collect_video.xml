@@ -9,40 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="203dp">
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <cn.jzvd.JZVideoPlayerStandard
+            android:id="@+id/videoplayer"
             android:layout_width="match_parent"
-            android:layout_height="203dp"
+            android:layout_height="200dp" />
 
-            android:layout_marginTop="3dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardElevation="0dp">
-
-            <ImageView
-                android:id="@+id/iv_item_collect_video_head"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_test_1" />
-        </android.support.v7.widget.CardView>
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/icon_player" />
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_mycollect_video_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="xxxxx"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
 
 
     <com.qunxianghui.gxh.widget.RoundImageView
@@ -96,15 +68,19 @@
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
+
+            <ImageView
+                android:id="@+id/iv_item_collect_video_like"
+                android:background="@mipmap/home_video_collect_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/tv_item_collect_video_collect"
+                android:id="@+id/tv_item_collect_video_likecountt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/tv_item_collect_video_personmessage"
-                android:drawableLeft="@mipmap/home_video_collect_normal"
-                android:drawablePadding="5dp"
+                android:layout_marginLeft="5dp"
                 android:text="0" />
 
 

@@ -3,7 +3,9 @@ package com.qunxianghui.gxh.fragments.homeFragment.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,6 +32,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.jzvd.JZMediaManager;
+import cn.jzvd.JZUtils;
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerManager;
+
 public class HomeVideoListFragment extends BaseFragment implements View.OnClickListener, PersonDetailVideoAdapter.VideoListClickListener {
     @BindView(R.id.xrecycler_homevideo_list)
     XRecyclerView xrecyclerHomevideoList;
@@ -38,15 +45,41 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
     private boolean mIsFirst = true;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_homevideo_list;
     }
+
+    @Override
+    public void initViews(View view) {
+        super.initViews(view);
+
+    }
+
     @Override
     public void initDatas() {
         xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         RequestHomeVideoList();
     }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -57,12 +90,14 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
                 count = 0;
                 RequestHomeVideoList();
             }
+
             @Override
             public void onLoadMore() {
                 RequestHomeVideoList();
             }
         });
     }
+
     private void RequestHomeVideoList() {
         OkGo.<String>post(Constant.HOME_VIDEO_LIST_URL)
                 .params("limit", 10)
@@ -74,6 +109,7 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
                     }
                 });
     }
+
     private void parsePersonDetailVideoData(String body) {
         HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
         videoDataList.addAll(homeVideoListBean.getData().getList());
@@ -84,17 +120,36 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
                 personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoDataList);
                 personDetailVideoAdapter.setVideoListClickListener(this);
                 xrecyclerHomevideoList.setAdapter(personDetailVideoAdapter);
+
+                personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("url", videoDataList.get(position - 1).getUrl());
+                        intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
+                        startActivity(intent);
+                    }
+                });
+                xrecyclerHomevideoList.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+                    @Override
+                    public void onChildViewAttachedToWindow(View view) {
+
+                    }
+
+                    @Override
+                    public void onChildViewDetachedFromWindow(View view) {
+                        JZVideoPlayer jzvd = view.findViewById(R.id.videoplayer);
+                        if (jzvd != null && JZUtils.dataSourceObjectsContainsUri(jzvd.dataSourceObjects, JZMediaManager.getCurrentDataSource())) {
+                            JZVideoPlayer currentJzvd = JZVideoPlayerManager.getCurrentJzvd();
+                            if (currentJzvd != null && currentJzvd.currentScreen != JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
+                                JZVideoPlayer.releaseAllVideos();
+                            }
+                        }
+                    }
+                });
             }
             xrecyclerHomevideoList.refreshComplete();
-            personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                    intent.putExtra("url", videoDataList.get(position - 1).getUrl());
-                    intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
-                    startActivity(intent);
-                }
-            });
+
             personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
         }
     }
@@ -118,6 +173,7 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
 
     }
 
+
     @Override
     public void attentionClick(final int position) {
         OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
@@ -139,13 +195,15 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
                         Logger.e("视频关注" + response.body().toString());
                     }
+
                 });
-        Logger.d("视频汇的关注position" + position);
+
     }
 
     @Override
@@ -154,4 +212,21 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
         intent.putExtra("member_id", videoDataList.get(position).getMember_id());
         startActivity(intent);
     }
+
+    @Override
+    public void videoLikeItemClick(int position) {
+        OkGo.<String>post(Constant.LIKE_URL).params("data_uuid", videoDataList.get(position).getUuid()).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body());
+                    JSONObject data = jsonObject.getJSONObject("data");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
 }

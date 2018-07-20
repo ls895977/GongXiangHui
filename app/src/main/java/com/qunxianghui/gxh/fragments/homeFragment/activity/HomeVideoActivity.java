@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jzvd.JZVideoPlayer;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
@@ -74,12 +75,21 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_home_video_back:
                 finish();
                 break;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
