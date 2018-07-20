@@ -28,7 +28,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         final RoundImageView personHeadImag = holder.getView(R.id.round_item_collect_video_personhead);
         TextView videoAttention = holder.getView(R.id.tv_mycollect_video_attention);
         if (TextUtils.isEmpty(listBean.getFollow())) {
-            videoAttention.setText("关注");
+            videoAttention.setText("+关注");
         } else {
             videoAttention.setText("已关注");
         }
