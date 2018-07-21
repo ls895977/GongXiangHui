@@ -221,9 +221,17 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
                 try {
                     JSONObject jsonObject = new JSONObject(response.body());
                     JSONObject data = jsonObject.getJSONObject("data");
+                    JSONObject like_one_res = data.getJSONObject("like_one_res");
+                    if (like_one_res.toString()!=null){
+                        asyncShowToast("点赞成功");
+                    }else {
+                        asyncShowToast("取消点赞");
+
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                personDetailVideoAdapter.notifyDataSetChanged();
             }
         });
     }

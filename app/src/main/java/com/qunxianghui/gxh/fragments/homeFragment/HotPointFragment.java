@@ -193,7 +193,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 Display display = mActivity.getWindowManager().getDefaultDisplay();
                 int height = display.getHeight();
                 Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, height/7);
+                toast.setGravity(Gravity.TOP, 0, height/8);
                 toast.show();
             }
         });

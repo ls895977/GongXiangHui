@@ -14,6 +14,7 @@ import java.util.List;
 
 public abstract class TreeItemGroup<D> extends TreeItem<D> {
 
+
     /**
      * 持有的子item
      */
@@ -58,9 +59,13 @@ public abstract class TreeItemGroup<D> extends TreeItem<D> {
      */
     protected void onExpand() {
         isExpand = true;
-        int itemPosition = getItemManager().getItemPosition(this);
-        getItemManager().addItems(itemPosition + 1, getExpandChild());
-        getItemManager().notifyDataChanged();
+        ItemManager itemManager = getItemManager();
+        if (itemManager != null) {
+            int itemPosition = itemManager.getItemPosition(this);
+            List datas = itemManager.getAdapter().getDatas();
+            datas.addAll(itemPosition + 1, getExpandChild());
+            itemManager.notifyDataChanged();
+        }
     }
 
     /**
@@ -68,8 +73,12 @@ public abstract class TreeItemGroup<D> extends TreeItem<D> {
      */
     protected void onCollapse() {
         isExpand = false;
-        getItemManager().removeItems(getExpandChild());
-        getItemManager().notifyDataChanged();
+        ItemManager itemManager = getItemManager();
+        if (itemManager != null) {
+            List datas = itemManager.getAdapter().getDatas();
+            datas.removeAll(getExpandChild());
+            itemManager.notifyDataChanged();
+        }
     }
 
     /**
@@ -83,12 +92,12 @@ public abstract class TreeItemGroup<D> extends TreeItem<D> {
 
 
     /**
-     * 获得所有childs,包括子item的childs
+     * 获得所有展开的childs,包括子item的childs
      *
      * @return
      */
     @Nullable
-    public List<TreeItem> getExpandChild() {
+    private List<TreeItem> getExpandChild() {
         if (getChild() == null) {
             return null;
         }
@@ -139,6 +148,7 @@ public abstract class TreeItemGroup<D> extends TreeItem<D> {
      * @param data
      * @return
      */
+    @Nullable
     protected abstract List<TreeItem> initChildList(D data);
 
     /**
@@ -151,16 +161,4 @@ public abstract class TreeItemGroup<D> extends TreeItem<D> {
         return false;
     }
 
-//    /**
-//     * 相应RecyclerView的点击事件 展开或关闭某节点
-//     */
-//    public void expandOrCollapse() {
-//        //展开,折叠
-//        setExpand(!isExpand);
-//    }
-
-    @Override
-    public int getSpanSize() {
-        return super.getSpanSize();
-    }
 }

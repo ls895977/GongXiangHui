@@ -86,6 +86,7 @@
         <activity
             android:name="com.qunxianghui.gxh.activity.MainActivity"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait" />
         <!--首页便民服务页面-->
         <activity
@@ -282,11 +283,7 @@
             android:name=".fragments.mineFragment.activity.AdvertisConmmengtActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--选取省份的的activity-->
-        <activity
-            android:name=".fragments.mineFragment.activity.CompanySetProvinceActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <!--大图image的界面-->
         <activity
             android:name=".activity.PhotoBrowserActivity"

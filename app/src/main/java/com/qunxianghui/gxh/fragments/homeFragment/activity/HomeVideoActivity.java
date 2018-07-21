@@ -71,6 +71,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     protected void initListeners() {
         super.initListeners();
         ivHomeVideoBack.setOnClickListener(this);
+        tvHomeVideoIssue.setOnClickListener(this);
     }
 
     @Override
@@ -78,6 +79,9 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.iv_home_video_back:
                 finish();
+                break;
+            case R.id.tv_home_video_issue:
+                toActivity(LocationActivity.class);
                 break;
         }
 

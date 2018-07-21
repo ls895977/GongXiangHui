@@ -36,10 +36,12 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         ImageView ivCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
 
         if (TextUtils.isEmpty(listBean.getFollow())) {
-            videoAttention.setText("关注");
+            videoAttention.setText("+关注");
         } else {
             videoAttention.setText("已关注");
         }
+
+
 
         final String member_name = listBean.getMember_name();
         final String member_avatar = listBean.getMember_avatar();

@@ -2,39 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    android:layout_marginTop="10dp"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:layout_marginLeft="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
+        android:layout_height="35dp">
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="一级"
 
-            android:textColor="#000"
-            android:textSize="17sp" />
+            android:layout_centerVertical="true"
+            android:text="一级"
+            android:textColor="#282828"
+            android:textSize="16sp" />
+
 
         <ImageView
-            android:id="@+id/iv_oneStep_rightIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-
-            android:background="@mipmap/icon_right" />
+            android:layout_marginRight="15dp"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/home_videolocation_down" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/divider" />
 
 </LinearLayout>
