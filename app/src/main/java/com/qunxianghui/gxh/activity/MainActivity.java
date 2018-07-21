@@ -31,6 +31,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import butterknife.BindView;
@@ -155,9 +156,7 @@ public class MainActivity extends BaseActivity {
             case 1:
                 if (mLocationFragment == null) {
                     mLocationFragment = new LocationFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("tabHeight", llMain.getMeasuredHeight());
-                    mLocationFragment.setArguments(bundle);
+                    SPUtils.saveInt(mContext,"tabHeight",llMain.getMeasuredHeight());
                     transaction.add(R.id.content, mLocationFragment);
                 } else {
                     transaction.show(mLocationFragment);

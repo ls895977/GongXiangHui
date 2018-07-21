@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="fill_parent"--><!--android:layout_height="fill_parent" >-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/loactionn_fragment_relative_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/location_line_layout"
@@ -17,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginTop="13dp">
+
             <TextView
                 android:id="@+id/tv_localcircle_location"
                 android:layout_width="wrap_content"
@@ -41,76 +43,23 @@
         </RelativeLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/rl_column"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/localcircle_tablayout"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_weight="1.0">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            app:tabIndicatorColor="@color/tab_color"
+            app:tabSelectedTextColor="@color/tab_color"
+            app:tabTextColor="#000" />
 
-            <com.qunxianghui.gxh.widget.ColumnHorizontalScrollView
-                android:id="@+id/mColumnHorizontalScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:scrollbars="none">
 
-                <LinearLayout
-                    android:id="@+id/mRadioGroup_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
-            </com.qunxianghui.gxh.widget.ColumnHorizontalScrollView>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/local_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white" />
 
-            <ImageView
-                android:id="@+id/shade_left"
-                android:layout_width="10.0dip"
-                android:layout_height="40.0dip"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/channel_leftblock"
-                android:visibility="gone" />
-
-            <ImageView
-
-                android:id="@+id/shade_right"
-                android:layout_width="10.0dip"
-                android:layout_height="40.0dip"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/channel_rightblock"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_more_columns"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/button_more_columns"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="8dp"
-                android:src="@mipmap/channel_glide_day_bg" />
-        </LinearLayout>
     </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/local_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white" />
-</LinearLayout>
 </LinearLayout>

@@ -27,6 +27,7 @@
             android:layout_height="50dp"
             android:layout_gravity="top"
             android:layout_weight="4"
+            android:focusable="false"
             android:background="@null"
             android:hint="请输入您的评论..."
             android:lines="5"

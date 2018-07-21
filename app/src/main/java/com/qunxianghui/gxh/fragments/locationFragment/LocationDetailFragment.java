@@ -38,6 +38,7 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 import com.tencent.mm.opensdk.utils.Log;
 
@@ -66,9 +67,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int count = 0;
     private static LocationFragment locationFragment;
 
-
-
-
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -86,9 +84,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
                 int offset = 5;
                 int keyboardoffset = 80;
-                int tabHeight = getArguments().getInt("tabHeight");
+
+                int tabHeight = SPUtils.getInt(mActivity, "tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                layoutParams.bottomMargin = height - tabHeight - offset;
+                layoutParams.bottomMargin = height -tabHeight - offset;
                 commentView.setLayoutParams(layoutParams);
                 Logger.i("xxx-yyy scrollOffsetY " + scrollOffsetY);
                 if (item != null) {
@@ -100,7 +99,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     Logger.v("xxx-yyy item height :", item.getMeasuredHeight());
                     Logger.v("xxx-yyy y :" + y);
 
-                    recyclerView.scrollBy(0, (y + item.getMeasuredHeight() - (recyclerView.getMeasuredHeight() + tabHeight - height) + keyboardoffset));
+                    recyclerView.scrollBy(0, (y + item.getMeasuredHeight() - (recyclerView.getMeasuredHeight()  - height) + keyboardoffset));
                 } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
@@ -236,10 +235,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 toActivity(PublishActivity.class);
                 break;
 
-
         }
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
