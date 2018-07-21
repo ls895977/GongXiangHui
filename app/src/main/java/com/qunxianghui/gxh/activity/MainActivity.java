@@ -31,6 +31,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
@@ -334,6 +335,8 @@ public class MainActivity extends BaseActivity {
                         dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_localservice:
+                        toActivity(CompanySetActivity.class);
+                        dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_choiceness:
                         break;
