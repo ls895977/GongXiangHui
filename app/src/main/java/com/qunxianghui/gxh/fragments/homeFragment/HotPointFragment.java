@@ -28,6 +28,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
+import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
@@ -95,6 +96,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private TextView mhomeLocalLocation;
     private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+
 
 
     @Override
@@ -330,11 +332,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-//                        toActivity(CompanySetActivity.class);
                         Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.BenDiService);
+                        intent.putExtra("tag",1);
                         startActivity(intent);
                         break;
                     case 3:
@@ -342,6 +344,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.YouXuan);
+                        intent.putExtra("tag",2);
                         startActivity(intent);
                         break;
                     case 4:

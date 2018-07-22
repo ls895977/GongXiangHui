@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,17 +28,26 @@ import android.widget.TextView;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
  */
 
-public class ProtocolActivity extends BaseActivity {
+public class ProtocolActivity extends BaseActivity implements View.OnClickListener {
     final Activity activity = this;
-    @BindView(R.id.ll_protocol_main) LinearLayout llProtocolMain;
+    @BindView(R.id.ll_protocol_main)
+    LinearLayout llProtocolMain;
+    @BindView(R.id.iv_webback)
+    ImageView ivWebback;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_newsdetail_issue)
+    TextView tvNewsdetailIssue;
     private WebView webView;
     private Dialog loadingDialog;
 
@@ -81,16 +91,16 @@ public class ProtocolActivity extends BaseActivity {
         Intent intent = getIntent();
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
+        int tag = intent.getIntExtra("tag", 0);
+        if (tag==1){
+            tvNewsdetailIssue.setVisibility(View.VISIBLE);
+        }else {
+            tvNewsdetailIssue.setVisibility(View.GONE);
+        }
 
         Logger.d("initDatas--->:" + url.toString());
 
-
-        new TitleBuilder(this).setTitleText(title).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        tvTitle.setText(title);
         webView = new WebView(this);
         ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView.setLayoutParams(params);
@@ -128,6 +138,7 @@ public class ProtocolActivity extends BaseActivity {
 
                 return true;
             }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Logger.d("shouldOverrideUrlLoading--->:" + url);
@@ -155,7 +166,7 @@ public class ProtocolActivity extends BaseActivity {
         });
         webView.loadUrl(url);
 
-        Logger.d("initDatas--->:" );
+        Logger.d("initDatas--->:");
     }
 
     @Override
@@ -182,5 +193,31 @@ public class ProtocolActivity extends BaseActivity {
         llProtocolMain.removeAllViews();
         llProtocolMain = null;
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        ivWebback.setOnClickListener(this);
+            tvNewsdetailIssue.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_webback:
+                finish();
+                break;
+            case R.id.tv_newsdetail_issue:
+                toActivity(CompanySetActivity.class);
+                break;
+        }
     }
 }

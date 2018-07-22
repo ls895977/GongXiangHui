@@ -88,6 +88,12 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.GuidActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
+
         <!--首页便民服务页面-->
         <activity
             android:windowSoftInputMode="stateAlwaysHidden"

@@ -19,6 +19,7 @@
         android:layout_height="60dp"
         app:tabBackground="@drawable/selected"
         app:tabMode="scrollable"
+        app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabTextColor="#000" />

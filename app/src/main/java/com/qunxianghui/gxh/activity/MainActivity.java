@@ -85,13 +85,8 @@ public class MainActivity extends BaseActivity {
     private MineFragment mMineFragment;
     private GeneralizeFragment mGeneralizeFragment;
     private FragmentManager supportFragmentManager;
-    private RecyclerView recycler_onekey_issue_navigator;
-    private int[] images = {R.mipmap.onekey_issue_video, R.mipmap.onekey_issue_localcircle, R.mipmap.onekey_issue_baoliao
-            , R.mipmap.onekey_issue_localservice, R.mipmap.onekey_issue_choiceness,};
-    private String[] iconName = {"视频", "本地圈", "爆料", "本地服务", "精选"};
     private Dialog dialog;
     private View view;
-
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -106,21 +101,16 @@ public class MainActivity extends BaseActivity {
         selectedFragment(0);
         ivHome.setBackgroundResource(R.drawable.ic_home_checked);
         tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
-
     }
-
     @Override
     protected void initListeners() {
 
     }
-
     @Override
     protected void initDatas() {
         receiver = new MainBroadCast() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(this,"Broad",Toast.LENGTH_LONG).show();
-                //super.onReceive(context, intent);
                 if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
                     boolean hide = intent.getBooleanExtra("hide", false);
                     if (hide == true) {
@@ -136,7 +126,6 @@ public class MainActivity extends BaseActivity {
         registerReceiver(receiver, filter);
         UserUtil.getInstance();
     }
-
     private void selectedFragment(int position) {
         supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
@@ -324,6 +313,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.rl_iv_onekey_issue_video:
+
                         break;
                     case R.id.rl_onekey_issue_localcircle:
                         toActivity(PublishActivity.class);
@@ -338,6 +328,7 @@ public class MainActivity extends BaseActivity {
                         dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_choiceness:
+                        toActivity(GuidActivity.class);
                         break;
                     case R.id.iv_onekey_issue_close:
                         dialog.dismiss();
