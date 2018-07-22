@@ -8,11 +8,16 @@
 
     <include
         layout="@layout/activity_title" />
+    <View
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 
     <RelativeLayout
         android:id="@+id/rl_mineFragment_addTopAdver"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="80dp"
+        android:background="@color/divider"
         android:orientation="vertical">
 
         <ImageView
@@ -53,7 +58,8 @@
     <RelativeLayout
         android:id="@+id/rl_mineFragment_addBottomAdver"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="80dp"
+        android:background="@color/divider"
         android:orientation="vertical">
 
         <ImageView

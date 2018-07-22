@@ -84,7 +84,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频汇", "本地服务", "精选", "便民"};
-
     private HomeItemListAdapter1 homeItemListAdapter1;
     private View headerNavigator;
     private View footer;
@@ -193,7 +192,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 Display display = mActivity.getWindowManager().getDefaultDisplay();
                 int height = display.getHeight();
                 Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, height/7);
+                toast.setGravity(Gravity.TOP, 0, height/8);
                 toast.show();
             }
         });

@@ -19,12 +19,12 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#10C0C0C0">
+            android:background="#05C0C0C0">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="70dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -152,8 +152,8 @@
         android:id="@+id/rl_mine_person_data"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/shape_white_bg"
         android:orientation="horizontal">

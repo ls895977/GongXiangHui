@@ -1,12 +1,12 @@
 package com.qunxianghui.gxh.fragments.locationFragment.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -18,34 +18,36 @@ import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
-import com.qunxianghui.gxh.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
-import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
-import com.qunxianghui.gxh.widget.TagGroup;
 
 import java.util.List;
 
 /**
  * Created by HMY on 2016/8/6
  */
-public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.ViewHolder> {
-    private int collectFlag = 0;
+public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.myViewHolder> implements CommentItemAdapter.CommentRecallListener {
     private Context mContext;
-
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
     private CircleOnClickListener listener;
     public CommentItemAdapter commentItemAdapter;
     private LocationFragment context;
-    private int model_id;
+    private final int MAX_LINE_COUNT = 6;//最大显示行数
+    private final int STATE_UNKNOW = -1;//未知状态
+    private final int STATE_NOT_OVERFLOW = 1;//文本行数小于最大可显示行数
+    private final int STATE_COLLAPSED = 2;//折叠状态
+    private final int STATE_EXPANDED = 3;//展开状态
+
+    private SparseArray<Integer> mTextStateList; //保存文本状态集合
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
         this.dataBeanList = dataBeanList;
         inflater = LayoutInflater.from(context);
+        mTextStateList = new SparseArray<>();
     }
 
     public void setOnClickLitener(CircleOnClickListener listener) {
@@ -53,26 +55,57 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View convertView = inflater.inflate(R.layout.item_bbs_nine_grid, parent, false);
-        return new ViewHolder(convertView);
+        return new myViewHolder(convertView);
     }
+
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        model_id = dataBeanList.get(position).getId();
+    public void onBindViewHolder(final myViewHolder holder, final int position) {
+
+        final int state = mTextStateList.get(position, STATE_UNKNOW);
+
+        if (state == STATE_UNKNOW) {
+            holder.tv_location_person_content.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    //这个回掉会调用多次，获取玩行数后记得注销监听
+                    holder.tv_location_person_content.getViewTreeObserver().removeOnPreDrawListener(this);
+                    //如果内容显示的行数大于限定显示行数
+                    if (holder.tv_location_person_content.getLineCount() > MAX_LINE_COUNT) {
+                        holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);//设置最大显示行数
+                        holder.tvShoworHide.setVisibility(View.VISIBLE);
+                        holder.tvShoworHide.setText("全文");//设置其文字为全文
+                        mTextStateList.put(position, STATE_COLLAPSED);
+                    } else {
+                        holder.tvShoworHide.setVisibility(View.GONE);//显示全文隐藏
+                        mTextStateList.put(position, STATE_NOT_OVERFLOW);//让其不能超过限定的行数
+                    }
+                    return true;
+                }
+            });
+        } else {
+            //            如果之前已经初始化过了，则使用保存的状态，无需在获取一次
+            switch (state) {
+                case STATE_NOT_OVERFLOW:
+                    holder.tvShoworHide.setVisibility(View.GONE);
+                    break;
+                case STATE_COLLAPSED:
+                    holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);
+                    holder.tvShoworHide.setVisibility(View.VISIBLE);
+                    holder.tvShoworHide.setText("全文");
+                    break;
+                case STATE_EXPANDED:
+                    holder.tv_location_person_content.setMaxLines(Integer.MAX_VALUE);
+                    holder.tvShoworHide.setVisibility(View.VISIBLE);
+                    holder.tvShoworHide.setText("收起");
+                    break;
+            }
+        }
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
 
-        UserUtil user = UserUtil.getInstance();
-        final TestMode.DataBean.ListBean listBean = dataBeanList.get(position);
-        if (!TextUtils.isEmpty(user.mNick) && user.mNick.equalsIgnoreCase(listBean.getMember_name())) {
-            holder.deleteBtn.setVisibility(View.VISIBLE);
-        } else {
-            holder.deleteBtn.setVisibility(View.GONE);
-        }
-
-        //holder.img.setVisibility(View.INVISIBLE);
         final List<String> imageList = dataBeanList.get(position).getImages();
         GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
                 .centerCrop()
@@ -102,7 +135,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             adapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
                 @Override
                 public void onClick(View v, int p) {
-                    //Toast.makeText(mContext,"test : " + position,Toast.LENGTH_LONG).show();
                     listener.onPicClick(position, p);
                 }
 
@@ -112,14 +144,25 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         if (dataBeanList.get(position).getComment_res().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             commentItemAdapter = new CommentItemAdapter(mContext, dataBeanList.get(position).getComment_res(), holder.comment_list);
+            commentItemAdapter.setCommentRecallListener(this);
             holder.comment_list.setAdapter(commentItemAdapter);
         } else {
             holder.digCommentBody.setVisibility(View.GONE);
         }
-        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+        holder.tvShoworHide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.deletePost(position);
+                if (state == STATE_COLLAPSED) {
+                    holder.tv_location_person_content.setMaxLines(Integer.MAX_VALUE);
+                    holder.tvShoworHide.setText("收起");
+                    mTextStateList.put(position, STATE_EXPANDED);
+                    notifyDataSetChanged();
+                } else if (state == STATE_EXPANDED) {
+                    holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);
+                    holder.tvShoworHide.setText("全文");
+                    mTextStateList.put(position, STATE_COLLAPSED);
+                    notifyDataSetChanged();
+                }
             }
         });
 
@@ -131,7 +174,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 if (listener != null) {
                     listener.onCommentClick(position, content);
                 }
-                //holder.ll_location_discuss_commit.setVisibility(View.GONE);
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
@@ -144,11 +186,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             public void onItemClick(ActionItem item, int p) {
                 switch (p) {
                     case 0://点赞
-                        //Toast.makeText(mContext, "点击了点赞", Toast.LENGTH_SHORT).show();
                         listener.onLaunClick(position);
                         break;
                     case 1:
-                        //Toast.makeText(mContext, "点击了收藏", Toast.LENGTH_SHORT).show();
                         listener.onCollectionClick(position);
                         break;
 
@@ -156,7 +196,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                         if (listener != null) {
                             listener.onCommentClick(position, "");
                         }
-                        //holder.ll_location_discuss_commit.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -197,59 +236,49 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     }
 
-    private void toInformActivity() {
-        Intent intent = new Intent(mContext, InFormActivity.class);
-        intent.putExtra("model_id", model_id);
-        mContext.startActivity(intent);
-    }
-
     @Override
     public int getItemCount() {
         return dataBeanList.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    /*回复评论的接口回调*/
+    @Override
+    public void recommentcontentListener(int position) {
+        listener.CommenRecall(position);
+
+    }
+
+    public class myViewHolder extends RecyclerView.ViewHolder {
         SnsPopupWindow snsPopupWindow;
         GridView gridLayout;
-        TextView tv_location_style_collect;
-        TextView tv_location_style_pointgood;
         TextView tv_location_person_name;
         TextView tv_location_person_content;
-        TextView tv_location_issure_name, deleteBtn;
+        TextView tv_location_issure_name, tvShoworHide;
         TextView tv_location_comment;
-        ImageView iv_location_style_collect, snsBtn, img;
+        ImageView snsBtn, img;
         RoundImageView iv_location_person_head;
-        LinearLayout ll_location_style_collect;
-        LinearLayout ll_location_discuss_commit, digCommentBody, mLayoutLike;
+        LinearLayout digCommentBody;
         TextView tv_location_discuss_commit;
         EditText comment_edit;
         BigListView comment_list;
-        TagGroup mTagGroup;
         TextView clickusertext;
 
-        public ViewHolder(View itemView) {
+        public myViewHolder(View itemView) {
             super(itemView);
             gridLayout = itemView.findViewById(R.id.layout_nine_grid);
-//            tv_location_style_collect = itemView.findViewById(R.id.tv_location_style_collect);
-//            tv_location_style_pointgood = itemView.findViewById(R.id.tv_location_style_pointgood);
-//            iv_location_style_collect = itemView.findViewById(R.id.iv_location_style_collect);
-//            ll_location_style_collect = itemView.findViewById(R.id.ll_location_style_collect);
-//            ll_location_discuss_commit = itemView.findViewById(R.id.ll_location_discuss_commit);
-
             tv_location_person_name = itemView.findViewById(R.id.tv_location_person_name);
             tv_location_person_content = itemView.findViewById(R.id.tv_location_person_content);
             tv_location_issure_name = itemView.findViewById(R.id.tv_location_issure_name);
             iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
-            deleteBtn = itemView.findViewById(R.id.deleteBtn);
+            tvShoworHide = itemView.findViewById(R.id.tv_show_or_hide);
 
             snsBtn = itemView.findViewById(R.id.snsBtn);
             img = itemView.findViewById(R.id.img);
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());
             comment_edit = itemView.findViewById(R.id.comment_edit);
             digCommentBody = itemView.findViewById(R.id.digCommentBody);
-            //mLayoutLike = itemView.findViewById(R.id.mLayoutLike);
-            //mTagGroup = itemView.findViewById(R.id.mTagGroup);
             clickusertext = itemView.findViewById(R.id.click_like_user);
             comment_list = itemView.findViewById(R.id.comment_list);
         }
@@ -271,9 +300,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         /* 头像点击*/
         void headImageClick(int position);
 
-        /*删除*/
-        void deletePost(int position);
-
+        /*回复评论*/
+        void CommenRecall(int position);
 
     }
 

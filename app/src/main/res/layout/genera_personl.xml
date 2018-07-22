@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="#10C0C0C0"
+        android:background="#05C0C0C0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -25,15 +25,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="3dp"
-            android:layout_marginTop="80dp" />
+            android:layout_marginTop="70dp" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_white_bg"
         android:orientation="vertical">

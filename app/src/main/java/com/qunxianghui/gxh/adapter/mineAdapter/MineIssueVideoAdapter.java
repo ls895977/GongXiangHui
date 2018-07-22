@@ -2,13 +2,11 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -27,13 +25,7 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
 
     @Override
     protected void convert(MyViewHolder holder, final int position, final MineIssueVideoBean.DataBean dataBean) {
-        final ImageView headImage = holder.getView(R.id.iv_item_issue_video_head);
-        holder.setText(R.id.tv_item_issue_video_title, dataBean.getTitle());
         holder.setText(R.id.tv_item_issue_vido_time, dataBean.getNewctime());
-        GlideApp.with(mContext).load(dataBean.getPicurl()).centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(headImage);
         final TextView deleteVideo = holder.getView(R.id.tv_item_issue_video_delete);
         deleteVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +35,6 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
             }
         });
     }
-
 
     @Override
     protected int getItemView() {
