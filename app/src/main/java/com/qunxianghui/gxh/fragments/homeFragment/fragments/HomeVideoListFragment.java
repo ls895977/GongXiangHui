@@ -133,7 +133,6 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
                 xrecyclerHomevideoList.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
                     @Override
                     public void onChildViewAttachedToWindow(View view) {
-
                     }
 
                     @Override

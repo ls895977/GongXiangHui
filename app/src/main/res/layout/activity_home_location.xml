@@ -48,8 +48,9 @@
             android:drawableLeft="@mipmap/home_video_location"
             android:drawablePadding="5dp"
             android:gravity="center"
+            android:textColor="#282828"
             android:text="西湖区"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
 
         <TextView
@@ -60,8 +61,9 @@
             android:drawableLeft="@mipmap/home_videolocation_current"
             android:drawablePadding="5dp"
             android:gravity="center"
-            android:text="西湖区"
-            android:textSize="16sp" />
+            android:text="当前位置"
+            android:textColor="#D81717"
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

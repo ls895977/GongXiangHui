@@ -102,7 +102,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         //解决嵌套滑动的问题
         rvSearchGuess.setNestedScrollingEnabled(false);
         rvSearchHistory.setNestedScrollingEnabled(false);
-        rvSearchGuess.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        rvSearchGuess.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvSearchGuess.addItemDecoration(new SpacesItemDecoration(new SpaceSize(20, 12, 20, 12)));
         rvSearchHistory.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         rvSearchHistory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));

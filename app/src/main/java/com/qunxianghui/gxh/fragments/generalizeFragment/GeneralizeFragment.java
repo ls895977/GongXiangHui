@@ -1,6 +1,4 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment;
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
@@ -103,18 +100,13 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                         vpGeneralizeMain.setCurrentItem(0, false);
                         break;
                     case R.id.rb_genera_company:
-
                         vpGeneralizeMain.setCurrentItem(1, false);
-
                         break;
-
                 }
             }
         });
         vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
     }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

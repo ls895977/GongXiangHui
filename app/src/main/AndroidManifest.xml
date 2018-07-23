@@ -93,6 +93,8 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden"
             />
+        <!--上传视频界面-->
+        <activity android:name=".fragments.homeFragment.activity.UpLoadVideoActivity"/>
 
         <!--首页便民服务页面-->
         <activity

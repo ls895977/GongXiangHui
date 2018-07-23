@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -28,6 +27,7 @@ import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.UpLoadVideoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
@@ -90,12 +90,10 @@ public class MainActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
-
     @Override
     protected void initViews() {
         initViewPagers();
     }
-
     private void initViewPagers() {
         /** 默认选中第一个选项卡*/
         selectedFragment(0);
@@ -313,7 +311,8 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.rl_iv_onekey_issue_video:
-
+                        toActivity(UpLoadVideoActivity.class);
+                        dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_localcircle:
                         toActivity(PublishActivity.class);

@@ -18,7 +18,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -71,11 +70,18 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @BindView(R.id.tv_home_location)
     TextView tvHomeLocation;
     @BindView(R.id.et_home_search)
-    EditText etHomeSearch;
+    TextView etHomeSearch;
     @BindView(R.id.ll_home_location)
     LinearLayout llHomeLocation;
     @BindView(R.id.home_view_pager)
     ViewPager homeViewPager;
+    @BindView(R.id.ll_home_search)
+    LinearLayout llHomeSearch;
+    @BindView(R.id.button_more_columns)
+    ImageView buttonMoreColumns;
+    @BindView(R.id.ll_more_columns)
+    LinearLayout llMoreColumns;
+
     //TabLayout标签
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
@@ -340,7 +346,8 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     protected void initListeners() {
         llHomeLocation.setOnClickListener(this);
-        etHomeSearch.setOnClickListener(this);
+        llHomeSearch.setOnClickListener(this);
+
     }
 
     @Override
@@ -373,9 +380,10 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.et_home_search:          //搜索
+            case R.id.ll_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
+
             case R.id.ll_home_location:
 //                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
