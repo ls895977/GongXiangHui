@@ -93,6 +93,8 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden"
             />
+        <activity android:name=".activity.GuidSlideActivity"/>
+        <activity android:name=".fragments.mineFragment.activity.CheckBoxActivity"/>
         <!--上传视频界面-->
         <activity android:name=".fragments.homeFragment.activity.UpLoadVideoActivity"/>
 
