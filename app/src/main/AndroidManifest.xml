@@ -238,18 +238,9 @@
             android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--我的板块植入广告界面-->
-        <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
+
         <!--我的板块的植入广告头部 navigator界面-->
-        <activity
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--首页频道activity-->
         <activity
             android:windowSoftInputMode="stateAlwaysHidden"

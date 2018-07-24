@@ -28,7 +28,6 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.BianMinServiceActivity;
-import com.qunxianghui.gxh.activity.MainActivity;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
@@ -317,9 +316,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private void initGridHomeNavigator() {
         BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
-        homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnClickListener() {
+        homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
+            public void onpicItemClick(int position) {
                 Intent intent = null;
                 switch (position) {
                     case 0:

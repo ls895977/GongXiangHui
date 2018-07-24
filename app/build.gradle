@@ -89,7 +89,7 @@ dependencies {
     //Gson解析
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.8'
     //视频库
-    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v1.4.1'
+
     //相册
     implementation 'com.linchaolong.android:imagepicker:1.2'
     implementation 'com.lzy.widget:imagepicker:0.6.1'

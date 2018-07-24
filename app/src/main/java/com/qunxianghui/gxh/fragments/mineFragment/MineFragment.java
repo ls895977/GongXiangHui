@@ -199,7 +199,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
-            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data,R.id.ll_mine_mycollect})
+            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -230,8 +230,9 @@ public class MineFragment extends BaseFragment {
                 requestCall();
                 break;
             case R.id.write_advertise:
-                AdvertisConmmengtActivity.sIsFromNews = false;
-                toActivity(AdvertisConmmengtActivity.class);
+                intent = new Intent(mActivity, AdvertisConmmengtActivity.class);
+                intent.putExtra("adverTag", 1);
+                startActivity(intent);
                 break;
             case R.id.ll_mine_set:
                 toActivity(SettingActivity.class);

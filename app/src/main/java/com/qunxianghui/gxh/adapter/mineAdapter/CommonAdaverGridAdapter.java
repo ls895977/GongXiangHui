@@ -1,4 +1,4 @@
-package com.qunxianghui.gxh.adapter.homeAdapter;
+package com.qunxianghui.gxh.adapter.mineAdapter;
 
 
 import android.content.Context;
@@ -16,14 +16,17 @@ import com.qunxianghui.gxh.R;
  * Created by Administrator on 2018/4/16 0016.
  */
 
-public class BianMinGridAdapter extends RecyclerView.Adapter {
+public class CommonAdaverGridAdapter extends RecyclerView.Adapter {
     private LayoutInflater layoutInflater;
     private int[] images;
     private String[] text;
     private OnItemClickListener mOnItemClickListener;
 
+    public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
 
-    public BianMinGridAdapter(Context context, int[] images, String[] text) {
+    public CommonAdaverGridAdapter(Context context, int[] images, String[] text) {
         this.images = images;
         this.text = text;
         layoutInflater = LayoutInflater.from(context);
@@ -31,7 +34,7 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TabViewHolde(layoutInflater.inflate(R.layout.bianmin_service_item, parent, false));
+        return new TabViewHolde(layoutInflater.inflate(R.layout.common_adver_item, parent, false));
     }
 
     @Override
@@ -49,9 +52,6 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
         });
     }
 
-    public void setOnClickListener(OnItemClickListener onClickListener){
-        this.mOnItemClickListener = onClickListener;
-    }
 
     @Override
     public int getItemCount() {

@@ -2,142 +2,135 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.MyFragmentPagerAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.CommonAdaverGridAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverTiseCommenFragment;
-import com.qunxianghui.gxh.widget.NoScrollViewPager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener {
+public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
 
-    @BindView(R.id.iv_top_addAdverBack)
-    ImageView ivTopAddAdverBack;
-    @BindView(R.id.tv_addAdver_list)
-    TextView tvAddAdverList;
-    @BindView(R.id.tabLayout_adver_commen)
-    TabLayout tabLayout_adver_commen;
-    @BindView(R.id.viewPager_adver_commen)
-    NoScrollViewPager viewPager_adver_commen;
-    public static boolean sIsFromNews = true;
-    public static int sCurrentPosition = 0;
-    private String[] titles = new String[]{"大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "贴图广告"};
-    private List<BaseFragment> fragments = new ArrayList<>();
-    private TabLayout.Tab one;
-    private TabLayout.Tab two;
-    private TabLayout.Tab three;
-    private TabLayout.Tab four;
-    private TabLayout.Tab five;
-    private TabLayout.Tab six;
+    @BindView(R.id.rb_adver_bottom)
+    RadioButton rbAdverBottom;
+    @BindView(R.id.rb_adver_top)
+    RadioButton rbAdverTop;
+    @BindView(R.id.rb_adver_video_poster)
+    RadioButton rbAdverVideoPoster;
+    @BindView(R.id.rg_advercommon_main)
+    RadioGroup rgAdverCommonMain;
+    @BindView(R.id.recycler_commonadver_bottom)
+    RecyclerView recyclerCommonadverBottom;
+    //广告底部导航的坐标匹配
+    private int[] images = {R.mipmap.icon_adver_company_material, R.mipmap.icon_adver_common_material, R.mipmap.icon_adver_bigpic, R.mipmap.icon_adver_card,
+            R.mipmap.icon_adver_banner, R.mipmap.icon_adver_scan, R.mipmap.icon_adver_qq, R.mipmap.icon_adver_shop
+            , R.mipmap.icon_adver_image_text, R.mipmap.icon_adver_education};
+
+    private String[] iconName = {"企业素材", "通用素材", "大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "店铺广告", "图文广告", "教学视频"};
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_commen_advertise;
+        return R.layout.activity_advercomment;
     }
 
     @Override
     protected void initViews() {
-        //设置tabLayout的一个显示方式
-        tabLayout_adver_commen.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //循环注入标签
-//        for (int i = 0; i < titles.length; i++) {
-//            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setIcon(mImgs[i]).setText(titles[i]));
-//    }
-
-        for (String tab : titles) {
-            tabLayout_adver_commen.addTab(tabLayout_adver_commen.newTab().setText(tab));
+        Intent intent = getIntent();
+        int adverTag = intent.getIntExtra("adverTag", 0);
+        if (adverTag == 1) {
+            rbAdverVideoPoster.setVisibility(View.VISIBLE);
         }
-    }
-
-
-    @Override
-    protected void initListeners() {
-        super.initListeners();
-        tvAddAdverList.setOnClickListener(this);
-        ivTopAddAdverBack.setOnClickListener(this);
-        viewPager_adver_commen.setScroll(false);
-        tabLayout_adver_commen.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                sCurrentPosition = tab.getPosition();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        recyclerCommonadverBottom.setLayoutManager(new GridLayoutManager(mContext, 5));
     }
 
     @Override
     protected void initDatas() {
-        for (int i = 0; i < 6; i++) {
-            fragments.add(new AdverTiseCommenFragment(i + 1));
-        }
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), titles, fragments);
-        viewPager_adver_commen.setOffscreenPageLimit(3);
-        viewPager_adver_commen.setAdapter(adapter);
-        //将TabLayout与ViewPager绑定在一起
-        tabLayout_adver_commen.setupWithViewPager(viewPager_adver_commen);
-        //指定tab的位置
-        one = tabLayout_adver_commen.getTabAt(0);
-        two = tabLayout_adver_commen.getTabAt(1);
-        three = tabLayout_adver_commen.getTabAt(2);
-        four = tabLayout_adver_commen.getTabAt(3);
-        five = tabLayout_adver_commen.getTabAt(4);
-        six = tabLayout_adver_commen.getTabAt(5);
-        //设置tab的图标
-        one.setIcon(R.mipmap.adv_select_big_img);
-        two.setIcon(R.mipmap.adv_select_card);
-        three.setIcon(R.mipmap.adv_select_san);
-        four.setIcon(R.mipmap.adv_select_san);
-        five.setIcon(R.mipmap.adv_select_qq);
-        six.setIcon(R.mipmap.adv_select_video);
+        CommonAdaverGridAdapter commonBottomAdverAdapter = new CommonAdaverGridAdapter(mContext, images, iconName);
+
+        recyclerCommonadverBottom.setAdapter(commonBottomAdverAdapter);
+        commonBottomAdverAdapter.setmOnItemClickListener(new CommonAdaverGridAdapter.OnItemClickListener() {
+            @Override
+            public void onpicItemClick(int position) {
+                switch (position) {
+                    case 0:
+                        asyncShowToast("企业素材");
+                        break;
+
+                    case 1:
+                        asyncShowToast("通用素材");
+                        break;
+
+                    case 2:
+                        asyncShowToast("大图通栏");
+                        break;
+                    case 3:
+                        asyncShowToast("名片广告");
+                        break;
+                    case 4:
+                        asyncShowToast("通栏广告");
+                        break;
+                    case 5:
+                        asyncShowToast("二维码广告");
+                        break;
+                    case 6:
+                        asyncShowToast("QQ广告");
+                        break;
+                    case 7:
+                        asyncShowToast("店铺广告");
+
+                        break;
+                    case 8:
+                        asyncShowToast("图文广告");
+                        break;
+                    case 9:
+                        asyncShowToast("教学视频");
+
+                        break;
+
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        rgAdverCommonMain.setOnCheckedChangeListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_addAdver_list:
-                AdvertisActivity.sCurrentPosition = sCurrentPosition;
-                toActivityWithResult(AdvertisActivity.class, 0x0011);
-                break;
-            case R.id.iv_top_addAdverBack:
-                finish();
-                break;
-        }
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            fragments.get(sCurrentPosition).initDatas();
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        sIsFromNews = true;
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId){
+            case R.id.rb_adver_top:
+                break;
+            case R.id.rb_adver_bottom:
+                asyncShowToast("点击了底部");
+                break;
+        }
     }
 }
