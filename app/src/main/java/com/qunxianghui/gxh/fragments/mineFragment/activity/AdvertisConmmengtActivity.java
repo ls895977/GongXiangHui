@@ -3,15 +3,22 @@ package com.qunxianghui.gxh.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.mineAdapter.CommonAdaverGridAdapter;
+import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverCommonBottomFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.fragment.AdverCommonTopFragment;
+import com.qunxianghui.gxh.widget.NoScrollViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,8 +27,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/4/2 0002.
  */
 
-public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
-
+public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
     @BindView(R.id.rb_adver_bottom)
     RadioButton rbAdverBottom;
     @BindView(R.id.rb_adver_top)
@@ -30,14 +36,10 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     RadioButton rbAdverVideoPoster;
     @BindView(R.id.rg_advercommon_main)
     RadioGroup rgAdverCommonMain;
-    @BindView(R.id.recycler_commonadver_bottom)
-    RecyclerView recyclerCommonadverBottom;
-    //广告底部导航的坐标匹配
-    private int[] images = {R.mipmap.icon_adver_company_material, R.mipmap.icon_adver_common_material, R.mipmap.icon_adver_bigpic, R.mipmap.icon_adver_card,
-            R.mipmap.icon_adver_banner, R.mipmap.icon_adver_scan, R.mipmap.icon_adver_qq, R.mipmap.icon_adver_shop
-            , R.mipmap.icon_adver_image_text, R.mipmap.icon_adver_education};
+    @BindView(R.id.vp_addadver_common_main)
+    NoScrollViewPager vpAddadverCommonMain;
+    final List<Fragment> fragments = new ArrayList<>();
 
-    private String[] iconName = {"企业素材", "通用素材", "大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "店铺广告", "图文广告", "教学视频"};
 
     @Override
     protected int getLayoutId() {
@@ -51,70 +53,43 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
         if (adverTag == 1) {
             rbAdverVideoPoster.setVisibility(View.VISIBLE);
         }
-        recyclerCommonadverBottom.setLayoutManager(new GridLayoutManager(mContext, 5));
+
+
     }
 
     @Override
     protected void initDatas() {
-        CommonAdaverGridAdapter commonBottomAdverAdapter = new CommonAdaverGridAdapter(mContext, images, iconName);
-
-        recyclerCommonadverBottom.setAdapter(commonBottomAdverAdapter);
-        commonBottomAdverAdapter.setmOnItemClickListener(new CommonAdaverGridAdapter.OnItemClickListener() {
-            @Override
-            public void onpicItemClick(int position) {
-                switch (position) {
-                    case 0:
-                        asyncShowToast("企业素材");
-                        break;
-
-                    case 1:
-                        asyncShowToast("通用素材");
-                        break;
-
-                    case 2:
-                        asyncShowToast("大图通栏");
-                        break;
-                    case 3:
-                        asyncShowToast("名片广告");
-                        break;
-                    case 4:
-                        asyncShowToast("通栏广告");
-                        break;
-                    case 5:
-                        asyncShowToast("二维码广告");
-                        break;
-                    case 6:
-                        asyncShowToast("QQ广告");
-                        break;
-                    case 7:
-                        asyncShowToast("店铺广告");
-
-                        break;
-                    case 8:
-                        asyncShowToast("图文广告");
-                        break;
-                    case 9:
-                        asyncShowToast("教学视频");
-
-                        break;
-
-                }
-            }
-        });
+        fragments.add(new AdverCommonBottomFragment());
+        fragments.add(new AdverCommonTopFragment());
+        MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);
+        vpAddadverCommonMain.setAdapter(adapter);
+        /*禁止滑动*/
+        vpAddadverCommonMain.setScroll(false);
+        /**增加缓存页面的数量*/
+        vpAddadverCommonMain.setOffscreenPageLimit(fragments.size() - 1);
+        /**默认显示第一个选项卡*/
+        rgAdverCommonMain.check(R.id.rb_adver_bottom);
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!LoginMsgHelper.isLogin(mContext)) {
+            toActivity(LoginActivity.class);
+            finish();
+        }
+    }
     @Override
     protected void initListeners() {
         super.initListeners();
         rgAdverCommonMain.setOnCheckedChangeListener(this);
+        vpAddadverCommonMain.setOnPageChangeListener(this);
     }
-
     @Override
     public void onClick(View v) {
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,12 +100,42 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId){
-            case R.id.rb_adver_top:
-                break;
+        switch (checkedId) {
+
             case R.id.rb_adver_bottom:
-                asyncShowToast("点击了底部");
+                vpAddadverCommonMain.setCurrentItem(0, false);
+                break;
+            case R.id.rb_adver_top:
+                vpAddadverCommonMain.setCurrentItem(1, false);
+                break;
+
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                rbAdverBottom.setChecked(true);
+                rbAdverTop.setChecked(false);
+                break;
+            case 1:
+                rbAdverTop.setChecked(true);
+                rbAdverBottom.setChecked(false);
+
                 break;
         }
     }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+
 }

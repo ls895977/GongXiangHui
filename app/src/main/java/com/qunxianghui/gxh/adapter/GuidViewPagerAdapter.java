@@ -2,11 +2,9 @@ package com.qunxianghui.gxh.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +13,6 @@ import java.util.List;
 
 public class GuidViewPagerAdapter extends PagerAdapter {
     private List<View> viewList;
-
-    private int size;  //页数
 
     public GuidViewPagerAdapter(List<View> viewList) {
         this.viewList = viewList;

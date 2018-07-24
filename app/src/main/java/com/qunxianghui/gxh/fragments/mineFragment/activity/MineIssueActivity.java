@@ -21,7 +21,7 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-public class MineIssueActivity extends BaseActivity {
+public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
     @BindView(R.id.mine_MyIssureTablayout_common)
     TabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)
@@ -30,19 +30,24 @@ public class MineIssueActivity extends BaseActivity {
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     private int position;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mine_issue;
     }
+
     @Override
     protected void initViews() {
+
+        position = getIntent().getIntExtra("index", 0);
         //设置tablayout的一个显示方式
         mineMyIssureTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         for (String tab : titles) {
             mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
         }
-        position = getIntent().getIntExtra("index", 0);
+
     }
+
     @Override
     protected void initDatas() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
@@ -51,18 +56,35 @@ public class MineIssueActivity extends BaseActivity {
                 finish();
             }
         }).setTitleText("我的发布");
-
+        mineMyIssureTablayoutCommon.setOnTabSelectedListener(this);
         fragments.add(new MyIssueDiscloseFragment());
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssurePostFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
-
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
         mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
+
 //viewpager的切换
         if (position != 0) {
             mineMyIssureViewpager.setCurrentItem(position, false);
         }
+
+
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        mineMyIssureViewpager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }

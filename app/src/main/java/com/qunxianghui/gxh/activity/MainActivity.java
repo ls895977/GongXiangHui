@@ -333,10 +333,10 @@ public class MainActivity extends BaseActivity {
                         dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_choiceness:
-//                        toActivity(GuidActivity.class);
-                        toActivity(GuidSlideActivity.class);
+////                        toActivity(GuidActivity.class);
+//                        toActivity(GuidSlideActivity.class);
 
-//                        toActivity(CheckBoxActivity.class);
+                        toActivity(CheckBoxActivity.class);
                         break;
                     case R.id.iv_onekey_issue_close:
                         dialog.dismiss();

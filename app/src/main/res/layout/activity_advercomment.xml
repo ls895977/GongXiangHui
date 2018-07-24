@@ -81,19 +81,14 @@
     </LinearLayout>
 
 
-    <android.support.v4.view.ViewPager
+    <com.qunxianghui.gxh.widget.NoScrollViewPager
+        android:id="@+id/vp_addadver_common_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="34dp"
-        android:layout_marginRight="34dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"></android.support.v4.view.ViewPager>
+        android:layout_weight="1" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_commonadver_bottom"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_height="160dp"></android.support.v7.widget.RecyclerView>
+
+
 
 </LinearLayout>
