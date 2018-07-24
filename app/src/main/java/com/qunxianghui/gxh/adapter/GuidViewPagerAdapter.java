@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,31 +14,43 @@ import java.util.List;
  */
 
 public class GuidViewPagerAdapter extends PagerAdapter {
-    private List<View> views;
+    private List<View> viewList;
 
-    public GuidViewPagerAdapter(List<View> views) {
-        this.views = views;
+    private int size;  //页数
+
+    public GuidViewPagerAdapter(List<View> viewList) {
+        this.viewList = viewList;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        container.addView(views.get(position));
-        return views.get(position);
+        try {
+            container.addView(viewList.get(position));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return viewList.get(position);
     }
+
 
     @Override
     public int getCount() {
-        return views.size();
+        return viewList == null ? 0 : viewList.size();
     }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view==object;
+        return view == object;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView(views.get(position));
+        container.removeView((View) object);
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 }

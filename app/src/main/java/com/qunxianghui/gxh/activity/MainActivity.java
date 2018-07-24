@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.CheckBoxActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
@@ -332,7 +333,10 @@ public class MainActivity extends BaseActivity {
                         dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_choiceness:
-                        toActivity(GuidActivity.class);
+//                        toActivity(GuidActivity.class);
+                        toActivity(GuidSlideActivity.class);
+
+//                        toActivity(CheckBoxActivity.class);
                         break;
                     case R.id.iv_onekey_issue_close:
                         dialog.dismiss();
@@ -364,7 +368,6 @@ public class MainActivity extends BaseActivity {
 
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
-
 
         dialog.show();
     }
