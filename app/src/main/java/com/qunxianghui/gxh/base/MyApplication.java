@@ -177,4 +177,5 @@ public class MyApplication extends Application {
         mAccessToken = accessToken;
         initOkGo();
     }
+
 }

@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.GlideApp;
@@ -90,6 +91,8 @@ public class MineFragment extends BaseFragment {
     TextView tvMineCompanyName;
     @BindView(R.id.rl_mine_person_data)
     RelativeLayout rlMinePersonData;
+    @BindView(R.id.ll_mine_mycollect)
+    LinearLayout llMineMycollect;
     private UserDao userDao;
     private int userSize;
     private String mAvatar;//头像
@@ -102,9 +105,8 @@ public class MineFragment extends BaseFragment {
     private int posts_cnt;
     private int comment_cnt;
     private Object companyInfo;
-    private String expires_time;
     private String companyName;
-    private String expire_time;
+
 
     @Override
     public int getLayoutId() {
@@ -197,7 +199,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
-            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data})
+            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data,R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -245,6 +247,10 @@ public class MineFragment extends BaseFragment {
                 intent = new Intent(mActivity, MineMessageActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
+                break;
+
+            case R.id.ll_mine_mycollect:
+                toActivity(MyCollectActivity.class);
                 break;
         }
     }

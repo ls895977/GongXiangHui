@@ -27,7 +27,6 @@ import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.UpLoadVideoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
@@ -87,23 +86,28 @@ public class MainActivity extends BaseActivity {
     private FragmentManager supportFragmentManager;
     private Dialog dialog;
     private View view;
+
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
+
     @Override
     protected void initViews() {
         initViewPagers();
     }
+
     private void initViewPagers() {
         /** 默认选中第一个选项卡*/
         selectedFragment(0);
         ivHome.setBackgroundResource(R.drawable.ic_home_checked);
         tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
     }
+
     @Override
     protected void initListeners() {
 
     }
+
     @Override
     protected void initDatas() {
         receiver = new MainBroadCast() {
@@ -124,6 +128,7 @@ public class MainActivity extends BaseActivity {
         registerReceiver(receiver, filter);
         UserUtil.getInstance();
     }
+
     private void selectedFragment(int position) {
         supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
@@ -144,7 +149,7 @@ public class MainActivity extends BaseActivity {
             case 1:
                 if (mLocationFragment == null) {
                     mLocationFragment = new LocationFragment();
-                    SPUtils.saveInt(mContext,"tabHeight",llMain.getMeasuredHeight());
+                    SPUtils.saveInt(mContext, "tabHeight", llMain.getMeasuredHeight());
                     transaction.add(R.id.content, mLocationFragment);
                 } else {
                     transaction.show(mLocationFragment);
@@ -311,7 +316,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.rl_iv_onekey_issue_video:
-                        toActivity(UpLoadVideoActivity.class);
+                        RequestVideoBlums();
                         dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_localcircle:
@@ -362,6 +367,11 @@ public class MainActivity extends BaseActivity {
 
 
         dialog.show();
+    }
+
+    private void RequestVideoBlums() {
+
+
     }
 
 

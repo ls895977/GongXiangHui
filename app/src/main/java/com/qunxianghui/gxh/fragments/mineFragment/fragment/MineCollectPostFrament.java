@@ -34,7 +34,6 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
 
     @BindView(R.id.recycler_mycollect_post)
     XRecyclerView recyclerMycollectPost;
-
     Unbinder unbinder;
     private List<MineCollectPostBean.DataBean> dataList = new ArrayList<>();
     private boolean mIsRefresh = false;
