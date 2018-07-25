@@ -9,12 +9,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
@@ -27,6 +29,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,16 +40,20 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener {
+public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener, View.OnClickListener {
 
 
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
+    @BindView(R.id.bt_mycollectnews_all_select)
+    Button btMycollectnewsAllSelect;
+    @BindView(R.id.bt_mycollectnews_reverse_select)
+    Button btMycollectnewsReverseSelect;
     private List<CollectBean.ListBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
-
+    private final HashMap<Integer, Boolean> map = new HashMap<>();
     private Handler handler = new Handler();
 
     private boolean mIsFirst = true;
@@ -107,7 +114,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
                     @Override
                     public void onItemClick(View v, int position) {
-                        data_uuid = dataList.get(position-1).getData_uuid();
+                        data_uuid = dataList.get(position - 1).getData_uuid();
                         SkipMycollectNewsDetail(data_uuid);
                     }
                 });
@@ -117,12 +124,14 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
     }
+
     /**
      * 跳转新闻详情页
+     *
      * @param data_uuid
      */
     private void SkipMycollectNewsDetail(int data_uuid) {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id",data_uuid)
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", data_uuid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -133,19 +142,18 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     /**
      * 解析我的收藏资讯新闻
+     *
      * @param body
      */
     private void ParseMyCollectNewsDetail(String body) {
         MyColleNewsDetailBean myColleNewsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
         int code = myColleNewsDetailBean.getCode();
-        if (code==0){
+        if (code == 0) {
             String url = myColleNewsDetailBean.getData().getUrl();
-            Intent intent=new Intent(mActivity, NewsDetailActivity.class);
-            intent.putExtra("url",url);
+            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+            intent.putExtra("url", url);
             startActivity(intent);
         }
-
-
 
 
     }
@@ -159,6 +167,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     @Override
     protected void initListeners() {
         super.initListeners();
+
+        btMycollectnewsAllSelect.setOnClickListener(this);
+        btMycollectnewsReverseSelect.setOnClickListener(this);
         xrecycler_mine_collect_news.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -209,6 +220,8 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         builder.show();
     }
 
+    /*checkbox选择框的选择*/
+
     /**
      * 取消收藏
      */
@@ -222,7 +235,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                             @Override
                             public void run() {
                                 Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                                com.orhanobut.logger.Logger.e("取消收藏+" + response.body().toString());
+                                Logger.e("取消收藏+" + response.body().toString());
                                 dataList.remove(position);
                                 myCollectPostAdapter.notifyDataSetChanged();
                             }
@@ -241,4 +254,15 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_mycollectnews_all_select:
+
+                break;
+            case R.id.bt_mycollectnews_reverse_select:
+
+                break;
+        }
+    }
 }

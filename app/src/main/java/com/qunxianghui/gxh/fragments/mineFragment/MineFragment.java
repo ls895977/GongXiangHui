@@ -107,11 +107,10 @@ public class MineFragment extends BaseFragment {
     private int comment_cnt;
     private Object companyInfo;
     private String companyName;
-
+    private int code;
 
     @Override
     public int getLayoutId() {
-
         return R.layout.fragment_mine;
     }
 
@@ -137,6 +136,14 @@ public class MineFragment extends BaseFragment {
                         }
                         Logger.d("onSuccess-->:" + response.body().toString());
                     }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        if (code==1000){
+                            asyncShowToast("您的账号在异地登录");
+                        }
+                    }
                 });
     }
 
@@ -144,32 +151,33 @@ public class MineFragment extends BaseFragment {
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
-            int code = jsonObject.getInt("code");
-            mNick = data.getString("nick");
-            mAvatar = data.getString("avatar");
-            mMobile = data.getString("mobile");
-            mAddress = data.getString("address");
-            mSex = data.getInt("sex");
-            like_cnt = data.getInt("like_cnt");
-            posts_cnt = data.getInt("posts_cnt");
-            comment_cnt = data.getInt("comment_cnt");
-            mLevelName = data.getJSONObject("level_info").getString("name");
-            companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
-            companyName = data.getJSONObject("company_info").getString("company_name");
-            mTvMemberType.setText(mLevelName);
-            mineQuicklyLogin.setText(mNick);
-            tvMineAddlikeCount.setText(String.valueOf(like_cnt));
-            tvMinePostCount.setText(String.valueOf(posts_cnt));
-            tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-            tvMineCompanyName.setText(companyName);
+            code = jsonObject.getInt("code");
+            if (code == 0) {
+                mNick = data.getString("nick");
+                mAvatar = data.getString("avatar");
+                mMobile = data.getString("mobile");
+                mAddress = data.getString("address");
+                mSex = data.getInt("sex");
+                like_cnt = data.getInt("like_cnt");
+                posts_cnt = data.getInt("posts_cnt");
+                comment_cnt = data.getInt("comment_cnt");
+                mLevelName = data.getJSONObject("level_info").getString("name");
+                companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+                companyName = data.getJSONObject("company_info").getString("company_name");
+                mTvMemberType.setText(mLevelName);
+                mineQuicklyLogin.setText(mNick);
+                tvMineAddlikeCount.setText(String.valueOf(like_cnt));
+                tvMinePostCount.setText(String.valueOf(posts_cnt));
+                tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
+                tvMineCompanyName.setText(companyName);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.user_moren);
+                options.error(R.mipmap.user_moren);
+                options.centerCrop();
+                options.circleCrop();
+                Glide.with(getActivity()).load(mAvatar).apply(options).into(mIvHead);
 
-
-            RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.user_moren);
-            options.error(R.mipmap.user_moren);
-            options.centerCrop();
-            options.circleCrop();
-            Glide.with(getActivity()).load(mAvatar).apply(options).into(mIvHead);
+            }
 
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
