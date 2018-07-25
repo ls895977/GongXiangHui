@@ -13,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
@@ -42,6 +43,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private final int STATE_EXPANDED = 3;//展开状态
 
     private SparseArray<Integer> mTextStateList; //保存文本状态集合
+    private RequestOptions options;
 
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
@@ -107,19 +109,22 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
 
         final List<String> imageList = dataBeanList.get(position).getImages();
-        GlideApp.with(mContext).load(dataBeanList.get(position).getMember_avatar())
-                .centerCrop()
-                .placeholder(R.mipmap.user_moren)
-                .error(R.mipmap.user_moren)
-                .into(holder.iv_location_person_head);
+
+        options = new RequestOptions();
+        options.placeholder(R.mipmap.user_moren);
+        options.error(R.mipmap.user_moren);
+        options.centerCrop();
+        Glide.with(mContext).load(dataBeanList.get(position).getMember_avatar()).apply(options).into(holder.iv_location_person_head);
+
         if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
-            GlideApp.with(mContext).load(imageList.get(0))
-                    .centerCrop()
-                    .placeholder(R.mipmap.default_img)
-                    .error(R.mipmap.default_img)
-                    .into(holder.img);
+
+            options.placeholder(R.mipmap.default_img);
+            options.error(R.mipmap.default_img);
+            options.centerCrop();
+            Glide.with(mContext).load(imageList.get(0)).apply(options).into(holder.img);
+
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

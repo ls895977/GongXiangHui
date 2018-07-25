@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
 import com.lzy.okgo.OkGo;
@@ -33,7 +35,6 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 
 import org.json.JSONArray;
@@ -163,11 +164,13 @@ public class MineFragment extends BaseFragment {
             tvMineCompanyName.setText(companyName);
 
 
-            GlideApp.with(getActivity()).load(mAvatar).
-                    placeholder(R.mipmap.user_moren).
-                    error(R.mipmap.user_moren).
-                    circleCrop().
-                    into(mIvHead);
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.user_moren);
+            options.error(R.mipmap.user_moren);
+            options.centerCrop();
+            options.circleCrop();
+            Glide.with(getActivity()).load(mAvatar).apply(options).into(mIvHead);
+
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
             } else if (companyInfo instanceof Object) {

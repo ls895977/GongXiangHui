@@ -4,11 +4,11 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
-import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -37,11 +37,13 @@ public class MyGeneralizePersonAdapter extends BaseRecycleViewAdapter<GeneraPers
         holder.setText(R.id.tv_generalize_person_seecount, String.valueOf(view_cnt));
         holder.setText(R.id.tv_generalize_person_share, String.valueOf(share_cnt));
         if (images.size() >= 1) {
-            GlideApp.with(mContext).load(images.get(0))
-                    .centerCrop()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_test_1)
-                    .into(collectHeadImag);
+
+
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.default_img);
+            options.placeholder(R.mipmap.default_img);
+            options.centerCrop();
+            Glide.with(mContext).load(images.get(0)).apply(options).into(collectHeadImag);
         }
 
     }

@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -30,7 +32,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
@@ -76,6 +77,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
     private int mAddPosition = -1;
     private Dialog dialog;
     private UMWeb web;
+    private RequestOptions options;
 
     @Override
     protected int getLayoutId() {
@@ -337,19 +339,21 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
             if (mAddPosition == 0) {
                 mTopId = data.getIntExtra("ad_id", 0);
                 String url = data.getStringExtra("url");
-                GlideApp.with(mContext).load(url)
-                        .centerCrop()
-                        .placeholder(R.mipmap.icon_headimage)
-                        .error(R.mipmap.icon_headimage)
-                        .into(ivMineFragmentAddTopAdver);
+
+                options = new RequestOptions();
+                options.placeholder(R.mipmap.icon_headimage);
+                options.error(R.mipmap.icon_headimage);
+                options.centerCrop();
+                Glide.with(mContext).load(url).apply(options).into(ivMineFragmentAddTopAdver);
+
             } else if (mAddPosition == 2) {
                 mBottomId = data.getIntExtra("ad_id", 0);
                 String url = data.getStringExtra("url");
-                GlideApp.with(mContext).load(url)
-                        .centerCrop()
-                        .placeholder(R.mipmap.icon_headimage)
-                        .error(R.mipmap.icon_headimage)
-                        .into(ivMineFragmentAddBottomAdver);
+
+                options.placeholder(R.mipmap.icon_headimage);
+                options.error(R.mipmap.icon_headimage);
+                options.centerCrop();
+                Glide.with(mContext).load(url).apply(options).into(ivMineFragmentAddBottomAdver);
             }
         }
     }

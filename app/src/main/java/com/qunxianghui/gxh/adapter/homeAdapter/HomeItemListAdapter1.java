@@ -3,12 +3,13 @@ package com.qunxianghui.gxh.adapter.homeAdapter;
 
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import java.util.List;
 
 public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, BaseViewHolder> {
     private List<String> images;
+    private RequestOptions options;
+
     public HomeItemListAdapter1() {
         super(null);
         setMultiTypeDelegate(new MultiTypeDelegate<HomeNewListBean>() {
@@ -33,7 +36,6 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, Base
                 .registerItemType(1, R.layout.item_right_img)
                 .registerItemType(2, R.layout.item_three_img);
     }
-
     @Override
     protected void convert(BaseViewHolder baseViewHolder, HomeNewListBean dataBean) {
         ImageView imageView = null;
@@ -48,20 +50,23 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, Base
                 //没有图片
                 baseViewHolder.setText(R.id.tv_homelistItem_text_content, title);
                 baseViewHolder.setText(R.id.tv_recycler_bottom_science, source);
-                baseViewHolder.setText(R.id.tv_recycler_bottom_science2,String.valueOf(view_cnt) );
+                baseViewHolder.setText(R.id.tv_recycler_bottom_science2, String.valueOf(view_cnt));
                 baseViewHolder.setText(R.id.tv_recycler_bottom_science3, ctime);
                 break;
             case 1:
                 //一张图片
                 baseViewHolder.setText(R.id.tv_item_right_image_title, title);
                 baseViewHolder.setText(R.id.tv_right_iamge_bottom_science, source);
-                baseViewHolder.setText(R.id.tv_right_iamge_bottom_science2,String.valueOf(view_cnt));
+                baseViewHolder.setText(R.id.tv_right_iamge_bottom_science2, String.valueOf(view_cnt));
                 baseViewHolder.setText(R.id.tv_right_iamge_bottom_science3, ctime);
                 imageView = baseViewHolder.getView(R.id.iv_item_right_iamge);
-                GlideApp.with(mContext).load(images.get(0))
-                        .centerCrop().placeholder(R.mipmap.default_img)
-                        .error(R.mipmap.default_img)
-                        .into(imageView);
+
+                options = new RequestOptions();
+                options.placeholder(R.mipmap.default_img);
+                options.error(R.mipmap.default_img);
+                options.centerCrop();
+                Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
+
                 break;
             case 2:
                 //三张图片的
@@ -69,35 +74,24 @@ public class HomeItemListAdapter1 extends BaseQuickAdapter<HomeNewListBean, Base
                 ImageView imageView1 = baseViewHolder.getView(R.id.iv_itemthree_imgfirst);
                 ImageView imageView2 = baseViewHolder.getView(R.id.iv_itemthree_second);
                 ImageView imageView3 = baseViewHolder.getView(R.id.iv_itemthree_third);
+                if (images.size() < 3) {
+                    options = new RequestOptions();
+                    options.placeholder(R.mipmap.default_img);
+                    options.error(R.mipmap.default_img);
+                    options.centerCrop();
+                    Glide.with(mContext).load(images.get(0)).apply(options).into(imageView1);
+                    Glide.with(mContext).load(images.get(1)).apply(options).into(imageView2);
 
 
-                if (images.size()<3){
-                    GlideApp.with(mContext).load(images.get(0))
-                            .centerCrop()
-                            .placeholder(R.mipmap.default_img)
-                            .error(R.mipmap.default_img)
-                            .into(imageView1);
-                    GlideApp.with(mContext).load(images.get(1))
-                            .centerCrop()
-                            .placeholder(R.mipmap.default_img)
-                            .error(R.mipmap.default_img)
-                            .into(imageView2);
-                }else {
-                    GlideApp.with(mContext).load(images.get(0))
-                            .centerCrop()
-                            .placeholder(R.mipmap.default_img)
-                            .error(R.mipmap.default_img)
-                            .into(imageView1);
-                    GlideApp.with(mContext).load(images.get(1))
-                            .centerCrop()
-                            .placeholder(R.mipmap.default_img)
-                            .error(R.mipmap.default_img)
-                            .into(imageView2);
-                    GlideApp.with(mContext).load(images.get(2))
-                            .centerCrop()
-                            .placeholder(R.mipmap.default_img)
-                            .error(R.mipmap.default_img)
-                            .into(imageView3);
+                } else {
+                    options = new RequestOptions();
+                    options.placeholder(R.mipmap.default_img);
+                    options.error(R.mipmap.default_img);
+                    options.centerCrop();
+                    Glide.with(mContext).load(images.get(0)).apply(options).into(imageView1);
+                    Glide.with(mContext).load(images.get(1)).apply(options).into(imageView2);
+                    Glide.with(mContext).load(images.get(2)).apply(options).into(imageView3);
+
                 }
 
                 break;

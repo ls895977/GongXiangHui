@@ -6,10 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import cn.jzvd.JZVideoPlayerStandard;
 
 public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoListBean.DataBean.ListBean> {
     private VideoListClickListener videoListClickListener;
+    private RequestOptions options;
 
 
     public void setVideoListClickListener(VideoListClickListener videoListClickListener) {
@@ -55,14 +57,22 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         videpPlayer.setUp(video_url, JZVideoPlayer.SCREEN_WINDOW_LIST,
                 title);
 
-        GlideApp.with(mContext).load(picurl).into(videpPlayer.thumbImageView);
+
+        options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        Glide.with(mContext).load(picurl).apply(options).into(videpPlayer.thumbImageView);
+
 /**
  * 加载人的头像
  */
-        GlideApp.with(mContext).load(member_avatar).centerCrop()
-                .placeholder(R.mipmap.default_img)
-                .error(R.mipmap.default_img)
-                .into(personHeadImag);
+
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        options.centerCrop();
+        options.circleCrop();
+        Glide.with(mContext).load(member_avatar).apply(options).into(personHeadImag);
+
         personHeadImag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

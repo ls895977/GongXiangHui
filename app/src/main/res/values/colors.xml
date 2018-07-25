@@ -10,7 +10,7 @@
     <color name="black">#000000</color>
     <color name="im_line_color">#dadada</color>
     <color name="dialog_bg_color">#80ffffff</color>
-
+    <color name="color_f6">#f6f6f6</color>
     <color name="actionsheet_blue">#2298EF</color>
     <color name="app_style_color">#D81717</color>
 

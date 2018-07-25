@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
@@ -21,12 +22,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.qunxianghui.gxh.fragments.homeFragment.activity.UpLoadVideoActivity;
 import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
@@ -34,6 +40,9 @@ import com.qunxianghui.gxh.fragments.mineFragment.activity.CheckBoxActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -317,7 +326,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.rl_iv_onekey_issue_video:
-                        RequestVideoBlums();
+                        FitchVideo();
                         dialog.dismiss();
                         break;
                     case R.id.rl_onekey_issue_localcircle:
@@ -360,23 +369,23 @@ public class MainActivity extends BaseActivity {
         final WindowManager windowManager = getWindowManager();
         final Display display = windowManager.getDefaultDisplay();
         lp.alpha = 0.9f;
-
         lp.width = (int) display.getWidth();  //设置宽度
         lp.y = 3;  //设置dialog距离底部的距离
         dialogWindow.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
-
         dialog.show();
     }
 
-    private void RequestVideoBlums() {
-
+    /*获取系统的视频和录像*/
+    private void FitchVideo() {
+        PictureSelector.create(MainActivity.this)
+                .openGallery(PictureMimeType.ofVideo())
+                .selectionMode(PictureConfig.SINGLE)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
 
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -384,4 +393,27 @@ public class MainActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    Intent intent = new Intent(mContext, UpLoadVideoActivity.class);
+                    intent.putParcelableArrayListExtra("videodata", (ArrayList<? extends Parcelable>) selectList);
+                    startActivity(intent);
+                    break;
+
+            }
+        }
+    }
 }
+

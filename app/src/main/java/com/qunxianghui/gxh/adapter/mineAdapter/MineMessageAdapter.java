@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MineMessageCommentBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.List;
  */
 
 public class MineMessageAdapter extends BaseRecycleViewAdapter<MineMessageCommentBean.DataBean> {
-private CommontMeClickListener commontMeClickListener;
+    private CommontMeClickListener commontMeClickListener;
+    private RequestOptions options;
 
     public void setCommontMeClickListener(CommontMeClickListener commontMeClickListener) {
         this.commontMeClickListener = commontMeClickListener;
@@ -38,19 +40,16 @@ private CommontMeClickListener commontMeClickListener;
         holder.setText(R.id.tv_mineMessage_issueTime, dataBean.getCtime());
         holder.setText(R.id.mineMessage_discuss_message, dataBean.getContent());
 
-        //本人头像
-        GlideApp.with(mContext).load(dataBean.getPosts_member_avatar())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .centerCrop()
-                .into(issueHead);
 
+        //本人头像
+        options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.circleCrop();
+        options.centerCrop();
+        Glide.with(mContext).load(dataBean.getPosts_member_avatar()).apply(options).into(issueHead);
         //加载回复头像
-        GlideApp.with(mContext).load(dataBean.getReply_member_avatar())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .centerCrop()
-                .into(commenHead);
+        Glide.with(mContext).load(dataBean.getReply_member_avatar()).apply(options).into(commenHead);
+
         tv_mineMessage_response.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +63,8 @@ private CommontMeClickListener commontMeClickListener;
     protected int getItemView() {
         return R.layout.mine_message_list;
     }
-    public interface  CommontMeClickListener{
-        void  ResponseCommentListener(int position);
+
+    public interface CommontMeClickListener {
+        void ResponseCommentListener(int position);
     }
 }

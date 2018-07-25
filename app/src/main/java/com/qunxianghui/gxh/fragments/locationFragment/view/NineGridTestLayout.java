@@ -1,14 +1,12 @@
 package com.qunxianghui.gxh.fragments.locationFragment.view;
 
 import android.content.Context;
-import android.graphics.PointF;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -20,6 +18,7 @@ import java.util.List;
 public class NineGridTestLayout extends NineGridLayout {
 
     protected static final int MAX_W_H_RATIO = 3;
+    private RequestOptions options;
 
     public NineGridTestLayout(Context context) {
         super(context);
@@ -32,26 +31,24 @@ public class NineGridTestLayout extends NineGridLayout {
     @Override
     protected boolean displayOneImage(final RatioImageView imageView, String url, final int parentWidth) {
 
-        GlideApp
-                .with(mContext)
-                .load(url)
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageView);
+        options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(mContext).load(url).apply(options).into(imageView);
+
+
         return false;
     }
 
     @Override
     protected void displayImage(final RatioImageView imageView, String url) {
 
-        GlideApp
-                .with(mContext)
-                .load(url)
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageView);
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(mContext).load(url).apply(options).into(imageView);
+
 
     }
 

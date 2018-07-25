@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal">
-
             <RadioGroup
                 android:id="@+id/rg_generalize_main"
                 android:layout_width="wrap_content"
@@ -26,23 +25,22 @@
                     android:id="@+id/rb_genera_personal"
                     android:layout_width="70dp"
                     android:layout_height="35dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_btn_generalize"
+                    android:background="@drawable/selector_btn_generalize2"
                     android:button="@null"
                     android:gravity="center"
                     android:text="个人"
-                    android:textColor="@color/generalize_text_color"
+                    android:textColor="@color/generalize_text_color2"
                     android:textSize="14sp" />
 
                 <RadioButton
                     android:id="@+id/rb_genera_company"
                     android:layout_width="70dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/selector_btn_generalize"
+                    android:background="@drawable/selector_btn_generalize2"
                     android:button="@null"
                     android:gravity="center"
                     android:text="企业"
-                    android:textColor="@color/generalize_text_color"
+                    android:textColor="@color/generalize_text_color2"
                     android:textSize="14sp" />
 
 

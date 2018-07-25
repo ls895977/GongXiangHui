@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.GuidViewPagerAdapter;
@@ -109,8 +108,7 @@ public class AdverCommonBottomFragment extends BaseFragment {
     private void addPage(String text) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);//获取LayoutInflater的实例
         View view = inflater.inflate(R.layout.guidslide_item, null);//调用LayoutInflater实例的inflate()方法来加载页面的布局
-        TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
-        textView.setText(text);//展示数据
+
         viewList.add(view);
         guidViewPagerAdapter.notifyDataSetChanged();
     }

@@ -4,14 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -67,8 +66,13 @@ public class GvAdapter extends BaseAdapter {
             vh= (ViewHolder) v.getTag();
         }
         if (position==mMaxPosition-1){//说明要显示
-            GlideApp.with(context).load(R.mipmap.image_add).dontAnimate()
-                    .centerCrop().into(vh.img);
+
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.ic_launcher);
+            options.placeholder(R.mipmap.ic_launcher);
+            Glide.with(context).load(R.mipmap.image_add).apply(options).into(vh.img);
+
+
 //            vh.img.setImageResource(R.drawable.id_photo);
             vh.img.setVisibility(View.VISIBLE);
             vh.demimg.setVisibility(View.GONE);

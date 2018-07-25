@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -18,7 +20,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.WelcomAdverBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import butterknife.BindView;
@@ -94,11 +95,11 @@ public class WelcomActivity extends BaseActivity {
         if (welcomAdverBean.getCode() == 0) {
             final WelcomAdverBean.DataBean data = welcomAdverBean.getData();
             final String image = data.getImage();
-
-            GlideApp.with(mContext).load(image).centerCrop()
-                    .placeholder(R.mipmap.icon_starpage)
-                    .error(R.mipmap.icon_starpage)
-                    .into(ivWelcomadver);
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.icon_starpage);
+            options.error(R.mipmap.icon_starpage);
+            options.centerCrop();
+            Glide.with(mContext).load(image).apply(options).into(ivWelcomadver);
         }
     }
 

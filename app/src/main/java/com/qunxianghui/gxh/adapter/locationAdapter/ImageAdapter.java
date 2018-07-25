@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -40,12 +41,12 @@ public class ImageAdapter extends PagerAdapter {
 //        photoView.setLayoutParams(lp);
         photoView.setLayoutParams(layout);
 
-        GlideApp.with(activity)
-                .load(url)
-                .centerCrop()
-                .placeholder(R.mipmap.default_img)
-                .error(R.mipmap.default_img)
-                .into(photoView);
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(activity).load(url).apply(options).into(photoView);
+
         container.addView(photoView);
         photoView.setOnClickListener(new View.OnClickListener() {
             @Override
