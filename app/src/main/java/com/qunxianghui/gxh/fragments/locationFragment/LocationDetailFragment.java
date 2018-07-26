@@ -287,7 +287,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 if (comment_edit.getText().toString().length() <= 0) {
                     Toast.makeText(getActivity(), "请输入评论内容", Toast.LENGTH_LONG).show();
                 } else {
-                    final int uuid = localDataList.get(position).getUuid();
+                    final int uuid = localDataList.get(position-1).getUuid();
                     if (localDataList.get(position).getComment_res().size() <= 0) {
                         localDataList.get(position).setComment_res(new ArrayList<CommentBean>());
                         //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
@@ -368,12 +368,19 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     //Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
                     //Handler haner = new Handler()
                 }
+
+                @Override
+                public void onError(Response<String> response) {
+                    super.onError(response);
+                    asyncShowToast("登陆账号异常");
+                }
             });
         } else {
             OkGo.<String>post(Constant.LIKE_URL)
                     .params("data_uuid", localDataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
+
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
                     //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
                     UserUtil user = UserUtil.getInstance();
@@ -401,6 +408,14 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         mAdapter.notifyItemChanged(position);
                         asyncShowToast("取消点赞成功");
                     }
+                }
+
+                @Override
+                public void onError(Response<String> response) {
+                    super.onError(response);
+                   asyncShowToast("登陆账号异常");
+
+
                 }
             });
         }

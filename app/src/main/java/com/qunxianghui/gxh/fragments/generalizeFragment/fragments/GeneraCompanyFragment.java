@@ -3,8 +3,6 @@ package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -48,9 +46,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     RadioGroup rgGeneraCompanyPaihang;
     @BindView(R.id.vp_generalize_company_main)
     ViewPager vpGeneralizeCompanyMain;
-    @BindView(R.id.app_bar)
-    AppBarLayout appBar;
-    Unbinder unbinder;
     @BindView(R.id.tv_generalize_company_money_count)
     TextView tvGeneralizeCompanyMoneyCount;
     @BindView(R.id.tv_article_exposure_count)
@@ -65,10 +60,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     TextView tvAdverClickRate;
     @BindView(R.id.tv_article_transmit_rate)
     TextView tvArticleTransmitRate;
-    @BindView(R.id.collapsing_layout)
-    CollapsingToolbarLayout collapsingLayout;
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
+    Unbinder unbinder;
+
     private String selfcompayname;
 
     @Override
@@ -116,6 +111,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         /**默认显示第一个选项卡*/
         rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -134,6 +130,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
             }
         });
     }
+
     /*解析企业推广的数据*/
     private void parseGeneraLizeStaticsData(String body) {
         final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
@@ -182,11 +179,13 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         }
 
     };
+
     @Override
     protected void initListeners() {
         super.initListeners();
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -194,11 +193,13 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
