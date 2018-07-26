@@ -361,7 +361,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
                 toActivity(SearchActivity.class);
                 break;
             case R.id.tv_home_location:
-//                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;
@@ -415,9 +414,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private void SaveLocationData(String cityCode, String adCode) {
         SharedPreferences location = getActivity().getSharedPreferences("location", 0);
         SharedPreferences.Editor editor = location.edit();
-        editor.putString("X-cityId", cityCode);
-        editor.putString("X-areaId", adCode);
-        editor.commit();
+        editor.putString("X-cityId", cityCode).putString("X-areaId", adCode).apply();
     }
 
     public static HomeFragment getInstance() {

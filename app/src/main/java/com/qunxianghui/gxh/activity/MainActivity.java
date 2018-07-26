@@ -20,7 +20,6 @@ import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
@@ -286,12 +285,5 @@ public class MainActivity extends BaseActivity {
                 tvMine.setTextColor(getResources().getColor(R.color.home_text_color));
                 break;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }
