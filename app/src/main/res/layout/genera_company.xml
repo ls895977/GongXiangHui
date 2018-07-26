@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textSize="13sp"
                 android:text="企业名称"
 
                 android:textColor="@color/white" />
@@ -37,7 +38,7 @@
                 android:layout_marginTop="15dp"
                 android:text="节省广告费:  181280元  规模：57人"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
 
