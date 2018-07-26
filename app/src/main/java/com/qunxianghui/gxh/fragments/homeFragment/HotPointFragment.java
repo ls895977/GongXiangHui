@@ -97,11 +97,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
 
 
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
+
     @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
@@ -140,6 +140,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 }
         );
     }
+
     @Override
     public void initDatas() {
         mDatas = new ArrayList<>();
@@ -193,7 +194,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 Display display = mActivity.getWindowManager().getDefaultDisplay();
                 int height = display.getHeight();
                 Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, height/8);
+                toast.setGravity(Gravity.TOP, 0, height / 8);
                 toast.show();
             }
         });
@@ -210,29 +211,31 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code==0) {
-                            swipeRefreshLayout.setRefreshing(false);
-                            List<HomeNewListBean> list = response.body().data;
-                            if (list == null || list.size() == 0) {
-                                homeItemListAdapter1.loadMoreEnd();
-                                return;
-                            } else {
-                                dataList.clear();
-                                dataList.addAll(list);
-                                total = dataList.size();
-                                if (count + 10 <= total) {
-                                    count += 10;
-                                    homeItemListAdapter1.loadMoreComplete();
-                                } else {
+                        if (response.body().code == 0) {
+                            if (swipeRefreshLayout != null) {
+                                swipeRefreshLayout.setRefreshing(false);
+                                List<HomeNewListBean> list = response.body().data;
+                                if (list == null || list.size() == 0) {
                                     homeItemListAdapter1.loadMoreEnd();
+                                    return;
+                                } else {
+                                    dataList.clear();
+                                    dataList.addAll(list);
+                                    total = dataList.size();
+                                    if (count + 10 <= total) {
+                                        count += 10;
+                                        homeItemListAdapter1.loadMoreComplete();
+                                    } else {
+                                        homeItemListAdapter1.loadMoreEnd();
+                                    }
                                 }
+                                homeItemListAdapter1.notifyDataSetChanged();
                             }
-                            homeItemListAdapter1.notifyDataSetChanged();
+
                         }
                     }
                 });
     }
-
     /**
      * 加载轮播图
      */
@@ -244,6 +247,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
+
     private void parseHomeLunBoPager(String body) {
         final HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
 
@@ -279,6 +283,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     .start();
         }
     }
+
     private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
@@ -288,7 +293,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code==0) {
+                        if (response.body().code == 0) {
                             swipeRefreshLayout.setRefreshing(false);
                             List<HomeNewListBean> list = response.body().data;
                             if (list == null || list.size() == 0) {
@@ -335,7 +340,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.BenDiService);
-                        intent.putExtra("tag",1);
+                        intent.putExtra("tag", 1);
                         startActivity(intent);
                         break;
                     case 3:
@@ -343,7 +348,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.YouXuan);
-                        intent.putExtra("tag",2);
+                        intent.putExtra("tag", 2);
                         startActivity(intent);
                         break;
                     case 4:

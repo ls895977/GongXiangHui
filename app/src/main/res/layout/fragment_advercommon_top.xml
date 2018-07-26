@@ -19,6 +19,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_company_material"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,6 +42,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_common_material"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,6 +65,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_common_adver"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -91,6 +94,7 @@
             android:layout_weight="1"></LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_eduvideo"
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:layout_marginRight="10dp"

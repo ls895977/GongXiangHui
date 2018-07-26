@@ -41,10 +41,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     LinearLayout locationLineLayout;
     @BindView(R.id.loactionn_fragment_relative_layout)
     LinearLayout loactionnFragmentRelativeLayout;
-    Unbinder unbinder;
+
     @BindView(R.id.tv_localcircle_location)
     TextView tvLocalcircleLocation;
-    Unbinder unbinder1;
+    Unbinder unbinder;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     @BindView(R.id.localcircle_tablayout)
     TabLayout localcircleTablayout;
@@ -92,7 +92,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        unbinder1 = ButterKnife.bind(this, rootView);
+        unbinder= ButterKnife.bind(this, rootView);
         return rootView;
     }
 
