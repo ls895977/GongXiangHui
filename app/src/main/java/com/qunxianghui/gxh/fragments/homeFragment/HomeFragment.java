@@ -1,11 +1,16 @@
 package com.qunxianghui.gxh.fragments.homeFragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,7 +18,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,21 +34,17 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.activity.ScanActivity;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.AbleNewSearchActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.Utils;
@@ -67,16 +67,21 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener, AMapLocationListener {
     private static HomeFragment homeFragment;
-    @BindView(R.id.ib_home_camera)
-    TextView ibHomeCamera;
-    @BindView(R.id.ib_home_search)
-    ImageButton ibHomeSearch;
-    @BindView(R.id.ib_home_scan)
-    ImageButton ibHomeScan;
-    //    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
     @BindView(R.id.tv_home_location)
     TextView tvHomeLocation;
+    @BindView(R.id.et_home_search)
+    TextView etHomeSearch;
+    @BindView(R.id.ll_home_location)
+    LinearLayout llHomeLocation;
+    @BindView(R.id.home_view_pager)
+    ViewPager homeViewPager;
+    @BindView(R.id.ll_home_search)
+    LinearLayout llHomeSearch;
+    @BindView(R.id.button_more_columns)
+    ImageView buttonMoreColumns;
+    @BindView(R.id.ll_more_columns)
+    LinearLayout llMoreColumns;
+
     //TabLayout标签
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
@@ -102,12 +107,15 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private String cityCode;
     private String adCode;
     private String cityinfo;
+    private int REQUEST_PERMISSION_CAMERA_CODE = 10010;
+
     @Override
     public int getLayoutId() {
         mScreenWidth = Utils.getWindowsWidth(mActivity);
         mItemWidth = mScreenWidth / 7; // 一个Item宽度为屏幕的1/7
         return R.layout.home_layout;
     }
+
     @Override
     public void initDatas() {
         //频道列表（用户订阅的频道）
@@ -164,7 +172,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         shade_left = mActivity.findViewById(R.id.shade_left);
         shade_right = mActivity.findViewById(R.id.shade_right);
         mViewPager = mActivity.findViewById(R.id.home_view_pager);
-
         //一进来进行定位
         RequestHomeLocation();
     }
@@ -176,24 +183,48 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     private void RequestHomeLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                //定位
+                mlocationClient = new AMapLocationClient(mActivity);
+                //初始化定位参数
+                mLocationOption = new AMapLocationClientOption();
+                //设置返回地址信息，默认为true
+                mLocationOption.setNeedAddress(true);
+                //设置定位监听
+                mlocationClient.setLocationListener(this);
+                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+                //设置定位间隔,单位毫秒,默认为2000ms
+                mLocationOption.setInterval(2000);
+                //设置定位参数
+                mlocationClient.setLocationOption(mLocationOption);
+                mlocationClient.startLocation();
+            } else {
+                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CAMERA_CODE);
 
-        //定位
-        mlocationClient = new AMapLocationClient(mActivity);
-        //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
-        //设置返回地址信息，默认为true
-        mLocationOption.setNeedAddress(true);
-        //设置定位监听
-        mlocationClient.setLocationListener(this);
-        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(2000);
-        //设置定位参数
-        mlocationClient.setLocationOption(mLocationOption);
-        mlocationClient.startLocation();
+            }
+        } else {
+            //定位
+            mlocationClient = new AMapLocationClient(mActivity);
+            //初始化定位参数
+            mLocationOption = new AMapLocationClientOption();
+            //设置返回地址信息，默认为true
+            mLocationOption.setNeedAddress(true);
+            //设置定位监听
+            mlocationClient.setLocationListener(this);
+            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //设置定位间隔,单位毫秒,默认为2000ms
+            mLocationOption.setInterval(2000);
+            //设置定位参数
+            mlocationClient.setLocationOption(mLocationOption);
+            mlocationClient.startLocation();
+        }
+
 
     }
+
     private void setChangelView() {
 //        initColumnData();
         initTabColumn();
@@ -311,12 +342,12 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private void initColumnData() {
         userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
     }
+
     @Override
     protected void initListeners() {
-        ibHomeCamera.setOnClickListener(this);
-        ibHomeSearch.setOnClickListener(this);
-        ibHomeScan.setOnClickListener(this);
-        tvHomeLocation.setOnClickListener(this);
+        llHomeLocation.setOnClickListener(this);
+        llHomeSearch.setOnClickListener(this);
+
     }
 
     @Override
@@ -326,11 +357,13 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mViewPager.setCurrentItem(tab.getPosition());
@@ -339,6 +372,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
     }
+
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
     }
@@ -346,21 +380,11 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ib_home_camera:            //爆料
-                if (!LoginMsgHelper.isLogin(getContext())) {
-                    toActivity(LoginActivity.class);
-                    mActivity.finish();
-                    return;
-                }
-                toActivity(BaoLiaoActivity.class);
-                break;
-            case R.id.ib_home_scan:            //扫描二维码
-                toActivity(ScanActivity.class);
-                break;
-            case R.id.ib_home_search:          //搜索
+            case R.id.ll_home_search:          //搜索
                 toActivity(SearchActivity.class);
                 break;
-            case R.id.tv_home_location:
+            case R.id.ll_home_location:
+//                toActivity(LocationActivity.class);
                 Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
                 startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
                 break;

@@ -3,8 +3,6 @@ package com.qunxianghui.gxh.fragments.generalizeFragment.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -48,9 +46,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     RadioGroup rgGeneraCompanyPaihang;
     @BindView(R.id.vp_generalize_company_main)
     ViewPager vpGeneralizeCompanyMain;
-    @BindView(R.id.app_bar)
-    AppBarLayout appBar;
-    Unbinder unbinder;
     @BindView(R.id.tv_generalize_company_money_count)
     TextView tvGeneralizeCompanyMoneyCount;
     @BindView(R.id.tv_article_exposure_count)
@@ -65,10 +60,10 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     TextView tvAdverClickRate;
     @BindView(R.id.tv_article_transmit_rate)
     TextView tvArticleTransmitRate;
-    @BindView(R.id.collapsing_layout)
-    CollapsingToolbarLayout collapsingLayout;
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
+    Unbinder unbinder;
+
     private String selfcompayname;
 
     @Override
@@ -134,7 +129,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
 
             }
         });
-
     }
 
     /*解析企业推广的数据*/

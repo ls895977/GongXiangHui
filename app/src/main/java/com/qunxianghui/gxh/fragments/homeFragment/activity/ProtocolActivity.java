@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,11 +9,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
@@ -24,8 +25,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -35,10 +38,16 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/24 0024.
  */
 
-public class ProtocolActivity extends BaseActivity {
+public class ProtocolActivity extends BaseActivity implements View.OnClickListener {
     final Activity activity = this;
     @BindView(R.id.ll_protocol_main)
     LinearLayout llProtocolMain;
+    @BindView(R.id.iv_webback)
+    ImageView ivWebback;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_newsdetail_issue)
+    TextView tvNewsdetailIssue;
     private WebView webView;
     private Dialog loadingDialog;
 
@@ -76,19 +85,27 @@ public class ProtocolActivity extends BaseActivity {
 
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void initDatas() {
         Intent intent = getIntent();
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
+        int tag = intent.getIntExtra("tag", 0);
+        if (tag==1){
+            tvNewsdetailIssue.setVisibility(View.VISIBLE);
+        }else {
+            tvNewsdetailIssue.setVisibility(View.GONE);
+        }
 
-        new TitleBuilder(this).setTitleText(title).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        Logger.d("initDatas--->:" + url.toString());
+
+        tvTitle.setText(title);
         webView = new WebView(this);
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView.setLayoutParams(params);
+        llProtocolMain.addView(webView);
+
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -97,6 +114,8 @@ public class ProtocolActivity extends BaseActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(false);
+        settings.setSupportZoom(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setDisplayZoomControls(false);
         settings.setDefaultTextEncodingName("utf-8");
@@ -112,26 +131,27 @@ public class ProtocolActivity extends BaseActivity {
                 }
             }
         });
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
-                return false;
+                return true;
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.e("用户单机超链接",url);
+                Logger.d("shouldOverrideUrlLoading--->:" + url);
+                Log.e("用户单机超链接", url);
                 //判断用户单机的是那个超链接
-                String tag ="tel";
+                String tag = "tel";
                 if (url.contains(tag)) {
                     final String mobile = url.substring(url.lastIndexOf("/") + 1);
                     Log.e("mobile----------->", mobile);
                     final Intent mIntent = new Intent(Intent.ACTION_CALL);
                     final Uri data = Uri.parse(mobile);
                     mIntent.setData(data);
-                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                         startActivity(mIntent);
                         //这个超连接,java已经处理了，webview不要处理
                         return true;
@@ -146,7 +166,7 @@ public class ProtocolActivity extends BaseActivity {
         });
         webView.loadUrl(url);
 
-        llProtocolMain.addView(webView);
+        Logger.d("initDatas--->:");
     }
 
     @Override
@@ -164,13 +184,6 @@ public class ProtocolActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         webView.removeAllViews();
@@ -180,5 +193,31 @@ public class ProtocolActivity extends BaseActivity {
         llProtocolMain.removeAllViews();
         llProtocolMain = null;
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        ivWebback.setOnClickListener(this);
+            tvNewsdetailIssue.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_webback:
+                finish();
+                break;
+            case R.id.tv_newsdetail_issue:
+                toActivity(CompanySetActivity.class);
+                break;
+        }
     }
 }

@@ -2,18 +2,18 @@ package com.qunxianghui.gxh.fragments.homeFragment.activity;
 
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
+import com.alibaba.fastjson.JSON;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.homeAdapter.TreeRecyclerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.HomeLocationBean;
-import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.bean.home.ProvinceBean;
+import com.qunxianghui.gxh.item.ItemHelperFactory;
+import com.qunxianghui.gxh.item.TreeRecyclerType;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ public class LocationActivity extends BaseActivity {
 
     @BindView(R.id.recyclerview_location_city)
     RecyclerView recyclerviewLocationCity;
-
+    TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter(TreeRecyclerType.SHOW_EXPAND);
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_location;
@@ -34,26 +34,31 @@ public class LocationActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        recyclerviewLocationCity.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
+        recyclerviewLocationCity.setLayoutManager(new GridLayoutManager(mContext,3));
+        recyclerviewLocationCity.setAdapter(treeRecyclerAdapter);
     }
 
     @Override
     protected void initDatas() {
-        OkGo.<String> get(Constant.CITY_LIST_URL).execute(new StringCallback() {
+        new Thread() {
             @Override
-            public void onSuccess(Response<String> response) {
-                ParseHomeLocationData(response.body());
+            public void run() {
+                super.run();
+            String string = getResources().getString(R.string.location);
+            List<ProvinceBean> cityBeen = JSON.parseArray(string, ProvinceBean.class);
+            refresh(cityBeen);
+        }
+    }.start();
+
+}
+
+    private void refresh(final List<ProvinceBean> cityBeen) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                treeRecyclerAdapter.getItemManager().replaceAllItem(ItemHelperFactory.createItems(cityBeen, null));
             }
         });
-
-    }
-
-    private void ParseHomeLocationData(String body) {
-        Logger.d("城市列表+++"+body.toString());
-        final HomeLocationBean homeLocationBean = GsonUtils.jsonFromJson(body, HomeLocationBean.class);
-        if (homeLocationBean.getCode()==0){
-
-        }
     }
 
     @Override

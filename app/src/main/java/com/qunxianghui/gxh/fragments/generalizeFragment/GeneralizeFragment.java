@@ -1,6 +1,4 @@
 package com.qunxianghui.gxh.fragments.generalizeFragment;
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
@@ -17,7 +14,6 @@ import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
-import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPushFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -29,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
@@ -48,11 +43,8 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     RadioButton rbGeneraPersonal;
     @BindView(R.id.rb_genera_company)
     RadioButton rbGeneraCompany;
-    @BindView(R.id.rb_genera_push)
-    RadioButton rbGeneraPush;
-    @BindView(R.id.tv_genera_edit)
-    TextView tvGeneraEdit;
     Unbinder unbinder;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_generalizes;
@@ -67,13 +59,13 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 final List<Fragment> fragments = new ArrayList<>();
                 fragments.add(new GeneraPersonalFragment());
                 fragments.add(new GeneraCompanyFragment());
-                fragments.add(new GeneraPushFragment());
+
                 MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
                 vpGeneralizeMain.setAdapter(adapter);
                 /** 禁止滑动*/
                 vpGeneralizeMain.setScroll(true);
                 /**增加缓存页面的数量*/
-                vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
+                vpGeneralizeMain.setOffscreenPageLimit(fragments.size()-1);
                 /**默认显示第一个选项卡*/
                 rgGeneralizeMain.check(R.id.rb_genera_personal);
             } else {
@@ -84,6 +76,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
             }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -92,14 +85,13 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
             mActivity.finish();
         }
     }
+
     @Override
     public void initViews(View view) {
-        initViewPagers();
     }
 
     @Override
     protected void initListeners() {
-        tvGeneraEdit.setOnClickListener(this);
         rgGeneralizeMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -108,26 +100,20 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                         vpGeneralizeMain.setCurrentItem(0, false);
                         break;
                     case R.id.rb_genera_company:
-
                         vpGeneralizeMain.setCurrentItem(1, false);
-                        break;
-                    case R.id.rb_genera_push:
-
-                        vpGeneralizeMain.setCurrentItem(2, false);
                         break;
                 }
             }
         });
         vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
     }
-    private void initViewPagers() { }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_genera_back:
-                break;
+
         }
     }
+
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
         public void onPageSelected(int position) {
@@ -135,21 +121,19 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 case 0:
                     rbGeneraPersonal.setChecked(true);
                     rbGeneraCompany.setChecked(false);
-                    rbGeneraPush.setChecked(false);
+
                     break;
                 case 1:
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(true);
-                    rbGeneraPush.setChecked(false);
+
+
                     break;
-                case 2:
-                    rbGeneraPersonal.setChecked(false);
-                    rbGeneraCompany.setChecked(false);
-                    rbGeneraPush.setChecked(true);
-                    break;
+
             }
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -157,13 +141,17 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
-    protected void onLoadData() { }
+    protected void onLoadData() {
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     public static GeneralizeFragment getInstance() {
         if (generalizeFragment == null) {
             generalizeFragment = new GeneralizeFragment();

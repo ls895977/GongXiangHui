@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.fragments.mineFragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
 import com.lzy.okgo.OkGo;
@@ -27,16 +28,13 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AdvertisConmmengtActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MemberUpActivity;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.MessageGatherActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 
 import org.json.JSONArray;
@@ -57,23 +55,15 @@ import butterknife.Unbinder;
 public class MineFragment extends BaseFragment {
     private static MineFragment mineFragment;
     @BindView(R.id.rl_preson_data)
-    RelativeLayout rlPresonData;
-    @BindView(R.id.rl_message_gather)
     RelativeLayout rlMessageGather;
     @BindView(R.id.rl_mine_message)
-    RelativeLayout rlMineMessage;
-    @BindView(R.id.rl_mine_collect)
     RelativeLayout rlMineCollect;
     @BindView(R.id.mine_fabu)
-    RelativeLayout mineFabu;
-    @BindView(R.id.company_set)
     RelativeLayout companySet;
     @BindView(R.id.hezuo_call)
     RelativeLayout hezuoCall;
     @BindView(R.id.write_advertise)
     RelativeLayout writeAdvertise;
-    @BindView(R.id.tv_mine_set)
-    TextView tvMineSet;
     @BindView(R.id.rl_up_step)
     RelativeLayout rlUpStep;
     //头像
@@ -96,6 +86,14 @@ public class MineFragment extends BaseFragment {
     LinearLayout llMinePost;
     @BindView(R.id.ll_mine_fllow_post)
     LinearLayout llMineFllowPost;
+    @BindView(R.id.ll_mine_set)
+    RelativeLayout llMineSet;
+    @BindView(R.id.tv_mine_company_name)
+    TextView tvMineCompanyName;
+    @BindView(R.id.rl_mine_person_data)
+    RelativeLayout rlMinePersonData;
+    @BindView(R.id.ll_mine_mycollect)
+    LinearLayout llMineMycollect;
     private UserDao userDao;
     private int userSize;
     private String mAvatar;//头像
@@ -108,12 +106,11 @@ public class MineFragment extends BaseFragment {
     private int posts_cnt;
     private int comment_cnt;
     private Object companyInfo;
-    private String expires_time;
     private String companyName;
-    private String expire_time;
+    private int code;
+
     @Override
     public int getLayoutId() {
-
         return R.layout.fragment_mine;
     }
 
@@ -139,37 +136,49 @@ public class MineFragment extends BaseFragment {
                         }
                         Logger.d("onSuccess-->:" + response.body().toString());
                     }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        if (code==1000){
+                            asyncShowToast("您的账号在异地登录");
+                        }
+                    }
                 });
     }
+
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
             JSONObject data = jsonObject.getJSONObject("data");
-            int code = jsonObject.getInt("code");
-//            JSONObject accessTokenInfo = jsonObject.getJSONObject("accessTokenInfo");
-//            expires_time = accessTokenInfo.getString("expires_time");
-            mNick = data.getString("nick");
-            mAvatar = data.getString("avatar");
-            mMobile = data.getString("mobile");
-            mAddress = data.getString("address");
-            mSex = data.getInt("sex");
-            like_cnt = data.getInt("like_cnt");
-            posts_cnt = data.getInt("posts_cnt");
-            comment_cnt = data.getInt("comment_cnt");
-            expire_time = data.getString("expire_time");
-            mLevelName = data.getJSONObject("level_info").getString("name");
-            companyName = data.getJSONObject("company_info").getString("company_name");
-            companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+            code = jsonObject.getInt("code");
+            if (code == 0) {
+                mNick = data.getString("nick");
+                mAvatar = data.getString("avatar");
+                mMobile = data.getString("mobile");
+                mAddress = data.getString("address");
+                mSex = data.getInt("sex");
+                like_cnt = data.getInt("like_cnt");
+                posts_cnt = data.getInt("posts_cnt");
+                comment_cnt = data.getInt("comment_cnt");
+                mLevelName = data.getJSONObject("level_info").getString("name");
+                companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
+                companyName = data.getJSONObject("company_info").getString("company_name");
                 mTvMemberType.setText(mLevelName);
                 mineQuicklyLogin.setText(mNick);
                 tvMineAddlikeCount.setText(String.valueOf(like_cnt));
                 tvMinePostCount.setText(String.valueOf(posts_cnt));
                 tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-                GlideApp.with(getActivity()).load(mAvatar).
-                        placeholder(R.mipmap.user_moren).
-                        error(R.mipmap.user_moren).
-                        circleCrop().
-                        into(mIvHead);
+                tvMineCompanyName.setText(companyName);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.user_moren);
+                options.error(R.mipmap.user_moren);
+                options.centerCrop();
+                options.circleCrop();
+                Glide.with(getActivity()).load(mAvatar).apply(options).into(mIvHead);
+
+            }
+
             if (companyInfo instanceof JSONArray) {
                 Logger.d("fillUserData-->数组:");
             } else if (companyInfo instanceof Object) {
@@ -179,15 +188,6 @@ public class MineFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-/**
- * 保存自己的公司名称
- */
-        SharedPreferences spConpanyname = mActivity.getSharedPreferences("conpanyname", 0);
-        SharedPreferences.Editor editor = spConpanyname.edit();
-        editor.putString("selfcompayname", companyName);
-        editor.putString("expire_time", expire_time);
-        editor.commit();
-
 
     }
 
@@ -207,18 +207,28 @@ public class MineFragment extends BaseFragment {
             return;
         }
         fillUserData();
-//        toCollectView();
     }
 
-    private void toCollectView() {
-    }
-
-    @OnClick({R.id.rl_preson_data, R.id.rl_message_gather, R.id.rl_mine_message, R.id.rl_mine_collect, R.id.mine_fabu, R.id.company_set, R.id.hezuo_call, R.id.tv_mine_set, R.id.rl_up_step, R.id.write_advertise,
-            R.id.mine_quickly_login, R.id.ll_mine_post, R.id.ll_mine_fllow_post})
+    @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
+            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_preson_data:
+
+                break;
+            case R.id.rl_mine_message:
+                toActivity(MineMessageActivity.class);
+                break;
+
+            case R.id.mine_fabu:
+                toActivity(MineIssueActivity.class);
+                break;
+            case R.id.rl_up_step:
+
+                toActivity(MemberUpActivity.class);
+                break;
+            case R.id.rl_mine_person_data:
                 Bundle bundle = new Bundle();
                 bundle.putString(PersonDataActivity.AVATAR, mAvatar);
                 bundle.putString(PersonDataActivity.NICK, mNick);
@@ -227,50 +237,32 @@ public class MineFragment extends BaseFragment {
                 bundle.putInt(PersonDataActivity.SEX, mSex);
                 toActivity(PersonDataActivity.class, bundle);
                 break;
-            case R.id.rl_message_gather:
-                toActivity(MessageGatherActivity.class);
-                break;
-            case R.id.rl_mine_message:
-                toActivity(MineMessageActivity.class);
-                break;
-            case R.id.rl_mine_collect:
-                toActivity(MyCollectActivity.class);
-                break;
-            case R.id.mine_fabu:
-                toActivity(MineIssueActivity.class);
-                break;
-            case R.id.rl_up_step:
-
-                toActivity(MemberUpActivity.class);
-                break;
-            case R.id.company_set:
-                toActivity(CompanySetActivity.class);
-                break;
             case R.id.hezuo_call:
                 requestCall();
                 break;
             case R.id.write_advertise:
-                AdvertisConmmengtActivity.sIsFromNews = false;
-                toActivity(AdvertisConmmengtActivity.class);
+                intent = new Intent(mActivity, AdvertisConmmengtActivity.class);
+                intent.putExtra("adverTag", 1);
+                startActivity(intent);
                 break;
-
-            case R.id.mine_quickly_login:
-                toActivity(LoginActivity.class);
-                break;
-            case R.id.tv_mine_set:
+            case R.id.ll_mine_set:
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-                asyncShowToast("点击了帖子");
+
                 intent = new Intent(mActivity, MineIssueActivity.class);
                 intent.putExtra("index", 2);
                 startActivity(intent);
                 break;
             case R.id.ll_mine_fllow_post:
-                asyncShowToast("点击了跟帖");
+
                 intent = new Intent(mActivity, MineMessageActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
+                break;
+
+            case R.id.ll_mine_mycollect:
+                toActivity(MyCollectActivity.class);
                 break;
         }
     }

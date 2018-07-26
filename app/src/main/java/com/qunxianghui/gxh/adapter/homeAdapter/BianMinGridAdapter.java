@@ -20,7 +20,8 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
     private LayoutInflater layoutInflater;
     private int[] images;
     private String[] text;
-    private OnClickListener mOnClickListener;
+    private OnItemClickListener mOnItemClickListener;
+
 
     public BianMinGridAdapter(Context context, int[] images, String[] text) {
         this.images = images;
@@ -41,15 +42,15 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
         holde.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickListener != null) {
-                    mOnClickListener.onClick(holde.getAdapterPosition());
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onpicItemClick(holde.getAdapterPosition());
                 }
             }
         });
     }
 
-    public void setOnClickListener(OnClickListener onClickListener){
-        this.mOnClickListener = onClickListener;
+    public void setOnClickListener(OnItemClickListener onClickListener){
+        this.mOnItemClickListener = onClickListener;
     }
 
     @Override
@@ -68,8 +69,8 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface OnClickListener{
-        void onClick(int position);
+    public interface OnItemClickListener{
+        void onpicItemClick(int position);
     }
 
 }

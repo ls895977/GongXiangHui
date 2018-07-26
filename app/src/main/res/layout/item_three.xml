@@ -2,23 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#cdcdcd"
+    android:background="#e6e6e6"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:gravity="center_vertical"
             android:text="三级"
-
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
 
     </RelativeLayout>

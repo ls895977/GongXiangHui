@@ -2,22 +2,21 @@ package com.qunxianghui.gxh.item;
 
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.bean.home.CityBean;
+import com.qunxianghui.gxh.bean.home.ProvinceBean;
 
 import java.util.List;
 
 /**
  */
-public class CountyItemParent extends TreeItemGroup<CityBean.CitysBean> {
+public class CountyItemParent extends TreeItemGroup<ProvinceBean.CityBean> {
 
     @Override
-    public List<TreeItem> initChildList(CityBean.CitysBean data) {
-        return ItemHelperFactory.createTreeItemList(data.getAreas(), AreaItem.class, this);
+    public List<TreeItem> initChildList(ProvinceBean.CityBean data) {
+        return ItemHelperFactory.createItems(data.getAreas(),  this);
     }
 
-
     @Override
-    public int initLayoutId() {
+    protected int initLayoutId() {
         return R.layout.item_two;
     }
 
@@ -25,14 +24,5 @@ public class CountyItemParent extends TreeItemGroup<CityBean.CitysBean> {
     @Override
     public void onBindViewHolder(ViewHolder holder) {
         holder.setText(R.id.tv_content, getData().getCityName());
-
-
-
-
     }
-//
-//    @Override
-//    public boolean isCanExpand() {
-//        return data.getCityName().equals("朝阳区");
-//    }
 }

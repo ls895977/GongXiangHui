@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
+    android:id="@+id/ll_home_main"
     android:orientation="vertical"
     tools:context="com.qunxianghui.gxh.activity.MainActivity">
 
@@ -71,15 +72,15 @@
 
             <ImageView
                 android:id="@+id/iv_home"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/selector_tab_home" />
 
             <TextView
                 android:id="@+id/tv_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+
                 android:text="首页"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -90,15 +91,14 @@
 
             <ImageView
                 android:id="@+id/iv_location"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/selector_tab_find" />
 
             <TextView
                 android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="本地圈"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -114,8 +114,8 @@
 
             <ImageView
                 android:id="@+id/iv_issue"
-                android:layout_width="41dp"
-                android:layout_height="41dp"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
                 android:layout_gravity="center"
                 android:background="@drawable/selector_tab_fabu" />
 
@@ -123,7 +123,6 @@
                 android:id="@+id/tv_issue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="一键发布"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -134,15 +133,14 @@
 
             <ImageView
                 android:id="@+id/iv_generation"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/selector_tab_journey" />
 
             <TextView
                 android:id="@+id/tv_generation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="推广"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -153,15 +151,14 @@
 
             <ImageView
                 android:id="@+id/iv_mine"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/selector_tab_mine" />
 
             <TextView
                 android:id="@+id/tv_mine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="我的"
                 android:textSize="12sp" />
         </LinearLayout>

@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.mine.CollectBean;
-import com.qunxianghui.gxh.utils.GlideApp;
-
 
 import java.util.List;
 
@@ -43,15 +43,11 @@ public class MinCollectAdapter extends RecyclerView.Adapter<MinCollectAdapter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         myViewHolder.tv_myCollect_item.setText(data.get(i).getName());
-        GlideApp
-                .with(mContext)
-                .load(data.get(i).getImgUrl())
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(myViewHolder.iv_myCollect);
 
-
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        Glide.with(mContext).load(data.get(i).getImgUrl()).apply(options).into(myViewHolder.iv_myCollect);
     }
 
 

@@ -3,12 +3,15 @@ package com.qunxianghui.gxh.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,9 +48,9 @@ import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.AddAdverActivity;
+import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -55,6 +58,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -63,7 +67,6 @@ import butterknife.BindView;
  */
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
-
     @BindView(R.id.et_input_discuss)
     EditText etInputDiscuss;
     @BindView(R.id.ll_input_discuss)
@@ -76,6 +79,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     ImageView ivNewsDetailShare;
     @BindView(R.id.iv_news_detail_addAdver)
     ImageView ivNewsDetailAddAdver;
+    @BindView(R.id.iv_newsdetail_back)
+    ImageView ivNewsdetailBack;
+    @BindView(R.id.iv_news_detail_topshare)
+    ImageView ivNewsDetailTopshare;
+    @BindView(R.id.tv_newsdetail_issue)
+    TextView tvNewsdetailIssue;
     private WebView mWebView;
     private ProgressBar mProgressBar;
     private Dialog dialog;
@@ -88,7 +97,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private int uuid;
     private int id;
     private UMShareListener umShareListener;
-    private android.os.Handler handler = new android.os.Handler();
+    private Handler handler = new Handler();
     private String title;
     private TextView btn_submit;
     private EditText inputComment;
@@ -109,7 +118,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-
         //这句是调取粘贴的系统服务
         mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         mWebView = (WebView) findViewById(R.id.wed_news_detail);
@@ -122,19 +130,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         uuid = intent.getIntExtra("uuid", 0);
         id = intent.getIntExtra("id", 0);
         SettingsP();
-        new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }).setRightIco(R.mipmap.icon_share).setRightIcoListening(new View.OnClickListener() {
-            private View inflate;
-
-            @Override
-            public void onClick(View v) {
-                showBottomAliert();
-            }
-        });
 
 
         //此回调用于分享
@@ -228,6 +223,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         ivNewsDetailCollect.setOnClickListener(this);
         ivNewsDetailShare.setOnClickListener(this);
         ivNewsDetailMessage.setOnClickListener(this);
+        ivNewsdetailBack.setOnClickListener(this);
+        ivNewsDetailTopshare.setOnClickListener(this);
+        tvNewsdetailIssue.setOnClickListener(this);
     }
 
     private void SettingsP() {
@@ -248,6 +246,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.e("用户单机超链接", url);
@@ -259,7 +258,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     final Intent mIntent = new Intent(Intent.ACTION_CALL);
                     final Uri data = Uri.parse(mobile);
                     mIntent.setData(data);
-                    if (ActivityCompat.checkSelfPermission(NewsDetailActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(NewsDetailActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                         startActivity(mIntent);
                         //这个超连接,java已经处理了，webview不要处理
                         return true;
@@ -325,13 +324,17 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_message:
                 showPopupCommnet();
                 break;
-
+            case R.id.iv_newsdetail_back:
+                finish();
+                break;
+            case R.id.iv_news_detail_topshare:
+                showBottomAliert();
+                break;
         }
     }
 
     /*三方分享唤起*/
     private void showShareDialog() {
-
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
@@ -385,10 +388,13 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                                 .share();
                         break;
                     case R.id.rl_share_link:
-                       asyncShowToast("实现粘贴板的逻辑");
+                        ClipContent();
                         break;
                     case R.id.share_cancel_btn:
                         dialog.dismiss();
+                        break;
+                    case R.id.tv_newsdetail_issue:
+                        toActivity(CompanySetActivity.class);
                         break;
                 }
             }
@@ -415,6 +421,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
         dialog.show();
+
+    }
+
+    /*粘贴url*/
+    private void ClipContent() {
+        ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(url));
+        mClipboardManager.setPrimaryClip(clipData);
+        asyncShowToast("复制成功");
+        dialog.dismiss();
 
     }
 
@@ -490,7 +506,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                             llInputDiscuss.setVisibility(View.VISIBLE);
                             mWebView.reload();
                             popupWindow.dismiss();
-
 
                         }
                     }
@@ -570,4 +585,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

@@ -7,13 +7,13 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,14 +78,12 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private List<MoreTypeBean> mDatas;
     Unbinder unbinder;
     private Banner viewpagerHome;
-    private int[] icons = {R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3, R.mipmap.ic_test_0, R.mipmap.ic_test_1, R.mipmap.ic_test_2, R.mipmap.ic_test_3};
     private ClipboardManager mClipboardManager;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
-    private String[] iconName = {"天气", "视频", "本地服务", "优选", "便民"};
-
+    private String[] iconName = {"天气", "视频汇", "本地服务", "精选", "便民"};
     private HomeItemListAdapter1 homeItemListAdapter1;
     private View headerNavigator;
     private View footer;
@@ -97,13 +95,13 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private TextView mhomeLocalLocation;
     private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private String cityinfo;
-    private SharedPreferences mSp;
+
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
+
     @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
@@ -193,8 +191,10 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     }
 
                 }, 1000);
+                Display display = mActivity.getWindowManager().getDefaultDisplay();
+                int height = display.getHeight();
                 Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.setGravity(Gravity.TOP, 0, height / 8);
                 toast.show();
             }
         });
@@ -202,8 +202,6 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recyclerviewList.setAdapter(homeItemListAdapter1);
     }
-
-
     /**
      * 首页下拉刷新 新的接口
      */
@@ -213,29 +211,31 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code==0) {
-                            swipeRefreshLayout.setRefreshing(false);
-                            List<HomeNewListBean> list = response.body().data;
-                            if (list == null || list.size() == 0) {
-                                homeItemListAdapter1.loadMoreEnd();
-                                return;
-                            } else {
-                                dataList.clear();
-                                dataList.addAll(list);
-                                total = dataList.size();
-                                if (count + 10 <= total) {
-                                    count += 10;
-                                    homeItemListAdapter1.loadMoreComplete();
-                                } else {
+                        if (response.body().code == 0) {
+                            if (swipeRefreshLayout != null) {
+                                swipeRefreshLayout.setRefreshing(false);
+                                List<HomeNewListBean> list = response.body().data;
+                                if (list == null || list.size() == 0) {
                                     homeItemListAdapter1.loadMoreEnd();
+                                    return;
+                                } else {
+                                    dataList.clear();
+                                    dataList.addAll(list);
+                                    total = dataList.size();
+                                    if (count + 10 <= total) {
+                                        count += 10;
+                                        homeItemListAdapter1.loadMoreComplete();
+                                    } else {
+                                        homeItemListAdapter1.loadMoreEnd();
+                                    }
                                 }
+                                homeItemListAdapter1.notifyDataSetChanged();
                             }
-                            homeItemListAdapter1.notifyDataSetChanged();
+
                         }
                     }
                 });
     }
-
     /**
      * 加载轮播图
      */
@@ -247,6 +247,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
             }
         });
     }
+
     private void parseHomeLunBoPager(String body) {
         final HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
 
@@ -282,16 +283,17 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                     .start();
         }
     }
+
     private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
-                .params("limit", 10)
+                .params("limit", 12)
                 .params("skip", count)
                 .params("channel_id", mChannelId)
                 .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code==0) {
+                        if (response.body().code == 0) {
                             swipeRefreshLayout.setRefreshing(false);
                             List<HomeNewListBean> list = response.body().data;
                             if (list == null || list.size() == 0) {
@@ -319,9 +321,9 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     private void initGridHomeNavigator() {
         BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
-        homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnClickListener() {
+        homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
+            public void onpicItemClick(int position) {
                 Intent intent = null;
                 switch (position) {
                     case 0:
@@ -334,11 +336,11 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         break;
                     case 2:
                         //跳转生活圈
-//                        toActivity(LocationServiceActivity.class);
                         Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.BenDiService);
+                        intent.putExtra("tag", 1);
                         startActivity(intent);
                         break;
                     case 3:
@@ -346,6 +348,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.YouXuan);
+                        intent.putExtra("tag", 2);
                         startActivity(intent);
                         break;
                     case 4:

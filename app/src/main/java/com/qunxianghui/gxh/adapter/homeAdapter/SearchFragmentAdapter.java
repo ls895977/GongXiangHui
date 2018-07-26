@@ -3,11 +3,12 @@ package com.qunxianghui.gxh.adapter.homeAdapter;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.home.SearchBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
     public static final int TYPE_1 = 1;//一张图片
     public static final int TYPE_2 = 2;//二张图片
     public static final int TYPE_3 = 3;//三张图片
+    private RequestOptions options;
 
 
     public SearchFragmentAdapter(List<SearchBean.DataBean.ListBean> data) {
@@ -75,8 +77,12 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
                         helper.getView(R.id.tv_right_iamge_bottom_science).setVisibility(View.VISIBLE);
                         helper.getView(R.id.tv_right_iamge_bottom_science2).setVisibility(View.VISIBLE);
 
+                        options = new RequestOptions();
+                        options.placeholder(R.mipmap.ic_launcher);
+                        options.error(R.mipmap.ic_launcher);
+                        options.centerCrop();
+                        Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
 
-                        GlideApp.with(mContext).load(images.get(0)).centerCrop().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView);
 
                         break;
 
@@ -87,8 +93,11 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
                         ImageView imageView2 = helper.getView(R.id.iv_itemthree_second);
                         helper.getView(R.id.iv_itemthree_third).setVisibility(View.INVISIBLE);
 
-                        GlideApp.with(mContext).load(images.get(0)).centerCrop().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView1);
-                        GlideApp.with(mContext).load(images.get(1)).centerCrop().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView2);
+                        options.placeholder(R.mipmap.ic_launcher);
+                        options.error(R.mipmap.ic_launcher);
+                        Glide.with(mContext).load(images.get(0)).apply(options).into(imageView1);
+                        Glide.with(mContext).load(images.get(0)).apply(options).into(imageView2);
+
                         break;
 
                     case TYPE_3:
@@ -96,23 +105,13 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
 
                         helper.getView(R.id.iv_itemthree_third).setVisibility(View.VISIBLE);
 
-                        GlideApp.with(mContext).load(images.get(0)).
-                                centerCrop().
-                                placeholder(R.mipmap.ic_launcher).
-                                error(R.mipmap.ic_launcher).
-                                into((ImageView) helper.getView(R.id.iv_itemthree_imgfirst));
+                        options.placeholder(R.mipmap.ic_launcher);
+                        options.error(R.mipmap.ic_launcher);
+                        options.centerCrop();
+                        Glide.with(mContext).load(images.get(0)).apply(options).into((ImageView) helper.getView(R.id.iv_itemthree_imgfirst));
+                        Glide.with(mContext).load(images.get(0)).apply(options).into((ImageView) helper.getView(R.id.iv_itemthree_second));
+                        Glide.with(mContext).load(images.get(0)).apply(options).into((ImageView) helper.getView(R.id.iv_itemthree_third));
 
-                        GlideApp.with(mContext).load(images.get(1)).
-                                centerCrop().
-                                placeholder(R.mipmap.ic_launcher).
-                                error(R.mipmap.ic_launcher).
-                                into((ImageView) helper.getView(R.id.iv_itemthree_second));
-
-                        GlideApp.with(mContext).load(images.get(2)).
-                                centerCrop().
-                                placeholder(R.mipmap.ic_launcher).
-                                error(R.mipmap.ic_launcher).
-                                into((ImageView) helper.getView(R.id.iv_itemthree_third));
 
                         break;
                 }
@@ -143,7 +142,12 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
                         helper.getView(R.id.tv_right_iamge_bottom_science2).setVisibility(View.GONE);
 
                         ImageView imageView = helper.getView(R.id.iv_item_right_iamge);
-                        GlideApp.with(mContext).load(images.get(0)).centerCrop().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView);
+
+                        options.placeholder(R.mipmap.ic_launcher);
+                        options.error(R.mipmap.ic_launcher);
+                        options.centerCrop();
+                        Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
+
 
                         break;
 
@@ -153,8 +157,13 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
                         ImageView imageView2 = helper.getView(R.id.iv_itemthree_second);
                         helper.getView(R.id.iv_itemthree_third).setVisibility(View.INVISIBLE);
 
-                        GlideApp.with(mContext).load(images.get(0)).centerCrop().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView1);
-                        GlideApp.with(mContext).load(images.get(1)).centerCrop().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView2);
+                        options.placeholder(R.mipmap.ic_launcher);
+                        options.error(R.mipmap.ic_launcher);
+                        options.centerCrop();
+                        Glide.with(mContext).load(images.get(0)).apply(options).into(imageView1);
+                        Glide.with(mContext).load(images.get(1)).apply(options).into(imageView2);
+
+
                         break;
 
                     case TYPE_3:
@@ -162,23 +171,12 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
 
                         helper.getView(R.id.iv_itemthree_third).setVisibility(View.VISIBLE);
 
-                        GlideApp.with(mContext).load(images.get(0)).
-                                centerCrop().
-                                placeholder(R.mipmap.ic_launcher).
-                                error(R.mipmap.ic_launcher).
-                                into((ImageView) helper.getView(R.id.iv_itemthree_imgfirst));
-
-                        GlideApp.with(mContext).load(images.get(1)).
-                                centerCrop().
-                                placeholder(R.mipmap.ic_launcher).
-                                error(R.mipmap.ic_launcher).
-                                into((ImageView) helper.getView(R.id.iv_itemthree_second));
-
-                        GlideApp.with(mContext).load(images.get(2)).
-                                centerCrop().
-                                placeholder(R.mipmap.ic_launcher).
-                                error(R.mipmap.ic_launcher).
-                                into((ImageView) helper.getView(R.id.iv_itemthree_third));
+                        options.placeholder(R.mipmap.ic_launcher);
+                        options.error(R.mipmap.ic_launcher);
+                        options.centerCrop();
+                        Glide.with(mContext).load(images.get(0)).apply(options).into((ImageView) helper.getView(R.id.iv_itemthree_imgfirst));
+                        Glide.with(mContext).load(images.get(1)).apply(options).into((ImageView) helper.getView(R.id.iv_itemthree_second));
+                        Glide.with(mContext).load(images.get(2)).apply(options).into((ImageView) helper.getView(R.id.iv_itemthree_third));
 
                         break;
 

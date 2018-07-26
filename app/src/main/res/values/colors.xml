@@ -9,8 +9,10 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="im_line_color">#dadada</color>
-
+    <color name="dialog_bg_color">#80ffffff</color>
+    <color name="color_f6">#f6f6f6</color>
     <color name="actionsheet_blue">#2298EF</color>
+    <color name="app_style_color">#D81717</color>
 
     //新添加的搜索需要的color
     <color name="gray_f8">#F8F8F8</color>
@@ -21,7 +23,7 @@
     <color name="home_text_color">#f00</color>
     <color name="home_text_nomal_color">#000</color>
     <color name="main_40">#40ACD6</color>
-    <color name="gray_9">#999999</color>
+    <color name="gray_9">#e8e8e8</color>
     <color name="gray_6">#666666</color>
     <color name="line">#E5E5E5</color>
     <color name="mainColor">#6BC8EC</color>

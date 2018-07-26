@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
-
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_height="42dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="15dp">
 
         <ImageView
@@ -17,14 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:background="@mipmap/icon_back" />
+            android:background="@mipmap/home_video_back" />
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="视频汇"
+            android:layout_marginLeft="31dp"
+            android:background="@mipmap/home_video_collect_search"
             android:textSize="18sp" />
 
         <TextView
@@ -33,27 +33,29 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="我要发布"
-            android:textColor="@color/tab_color" />
+            android:drawableLeft="@mipmap/home_video_location"
+            android:drawablePadding="5dp"
+            android:text="西湖" />
 
 
     </RelativeLayout>
 
 
-    <!--<ListView-->
-    <!--android:id="@+id/listview"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:scrollbars="none" />-->
-
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-
-        android:id="@+id/xrecycler_homevideo_list"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/homevideo_tablayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        app:tabIndicatorColor="@color/tab_color"
+        app:tabSelectedTextColor="@color/tab_color"
+        app:tabTextColor="#000" />
 
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/home_video_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 
 </LinearLayout>

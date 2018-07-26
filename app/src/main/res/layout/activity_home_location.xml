@@ -5,13 +5,75 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/activity_title" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="10dp">
 
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/home_video_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="定位"
+            android:textColor="#282828"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:text="当前定位城市" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/home_video_location"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:textColor="#282828"
+            android:text="西湖区"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:drawableLeft="@mipmap/home_videolocation_current"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="当前位置"
+            android:textColor="#D81717"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_location_city"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+
+        android:layout_marginTop="23dp">
+
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

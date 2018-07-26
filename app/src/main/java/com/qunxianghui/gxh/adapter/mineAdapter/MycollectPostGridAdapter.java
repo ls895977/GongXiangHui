@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -68,11 +69,13 @@ public class MycollectPostGridAdapter extends BaseAdapter {
 //        });
 
 
-        GlideApp.with(context).load(imageList.get(position))
-                .centerCrop()
-                .placeholder(R.mipmap.default_img)
-                .error(R.mipmap.default_img)
-                .into(holder.iv);
+
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.placeholder(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(context).load(imageList.get(position)).apply(options).into(holder.iv);
+
 
         return convertView;
     }

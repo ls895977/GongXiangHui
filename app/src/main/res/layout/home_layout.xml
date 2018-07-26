@@ -3,78 +3,96 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D81717"
     android:orientation="vertical">
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="44dp"
         android:layout_marginTop="30dp"
         android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/ib_home_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="15dp"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/home_camera"
-            android:text="爆料"
-            android:textSize="13sp" />
-        <TextView
-            android:id="@+id/tv_home_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/ib_home_camera"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/icon_home_location"
-            android:text="定位"
-            android:textSize="13sp" />
 
-        <ImageButton
+        <LinearLayout
+            android:id="@+id/ll_home_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@mipmap/home_logo" />
-        <ImageButton
-            android:id="@+id/ib_home_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/ib_home_scan"
-            android:layout_marginEnd="41dp"
-            android:layout_marginRight="41dp"
-            android:background="@mipmap/home_search" />
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/icon_home_location" />
 
-        <ImageButton
-            android:id="@+id/ib_home_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="25dp"
-            android:layout_toLeftOf="@+id/ib_home_search"
-            android:background="@mipmap/home_scan" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_home_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:drawablePadding="5dp"
+                android:text="定位"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_home_search"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_home_top_button"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@mipmap/home_icon_search" />
+
+                <TextView
+                    android:id="@+id/et_home_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:hint="请输入搜索内容"
+                    android:gravity="center_vertical"
+                    android:textColorHint="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#fff3f3f3"
+        android:background="@color/white"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:id="@+id/rl_column"
             android:layout_width="match_parent"
-            android:layout_height="40.0dip"
+            android:layout_height="42dp"
             android:layout_weight="1.0">
 
             <com.qunxianghui.gxh.widget.ColumnHorizontalScrollView
                 android:id="@+id/mColumnHorizontalScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="40.0dip"
+                android:layout_height="42dp"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -98,26 +116,28 @@
                 android:visibility="gone" />
 
             <ImageView
+
                 android:id="@+id/shade_right"
                 android:layout_width="10.0dip"
                 android:layout_height="40.0dip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/channel_rightblock"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_more_columns"
             android:layout_width="wrap_content"
-            android:layout_height="40.0dip">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/button_more_columns"
-                android:layout_width="40.0dip"
-                android:layout_height="40.0dip"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/channel_glide_day_bg" />
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/channel_glide_day_bg" />
         </LinearLayout>
     </LinearLayout>
 
@@ -125,5 +145,6 @@
         android:id="@+id/home_view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="@color/white" />
 </LinearLayout>

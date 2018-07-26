@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -20,7 +22,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.MineCommonFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.fragment.PersonDetailVideoFragment;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
@@ -116,8 +117,12 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         if (userDetailInforBean.getCode() == 0) {
             tvPersonDetailName.setText(dataList.getNick());
             tvPersonDetailSetep.setText(dataList.getLevel_info().getName());
-            GlideApp.with(mContext).load(dataList.getMember_avatar()).centerCrop()
-                    .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(ivPersonDetailHead);
+
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.ic_launcher);
+            options.error(R.mipmap.ic_launcher);
+            Glide.with(mContext).load(dataList.getMember_avatar()).apply(options).into(ivPersonDetailHead);
+
         }
     }
 

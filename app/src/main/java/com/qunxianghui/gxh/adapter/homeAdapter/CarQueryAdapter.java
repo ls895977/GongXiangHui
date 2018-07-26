@@ -1,14 +1,14 @@
 package com.qunxianghui.gxh.adapter.homeAdapter;
 
 
-
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.home.QueryBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -37,13 +37,11 @@ public class CarQueryAdapter extends BaseRecycleViewAdapter<QueryBean.DataBean> 
         holder.setText(R.id.tv_car_price, "￥" + price + "/天");
         holder.setText(R.id.tv_car_detail, String.format("接单%s次 收藏0次", orderCount));
         final ImageView imageView = holder.getView(R.id.iv_car_pic);
-        GlideApp
-                .with(mContext)
-                .load(pics)
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageView);
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.placeholder(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(mContext).load(pics).apply(options).into(imageView);
     }
 
     @Override

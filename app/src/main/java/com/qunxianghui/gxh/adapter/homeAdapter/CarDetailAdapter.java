@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 /**
  * Created by Administrator on 2018/4/11 0011.
@@ -38,7 +39,12 @@ public class CarDetailAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
         ImageView view = (ImageView) View.inflate(mContext, R.layout.vp_item, null);
-        GlideApp.with(mContext).load(mImageViews[position % mImageViews.length]).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(view);
+
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.ic_launcher);
+        options.placeholder(R.mipmap.ic_launcher);
+        Glide.with(mContext).load(mImageViews[position % mImageViews.length]).apply(options).into(view);
+
         container.addView(view);
         return view;
     }

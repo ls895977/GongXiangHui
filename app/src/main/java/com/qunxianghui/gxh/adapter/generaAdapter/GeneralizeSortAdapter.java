@@ -1,14 +1,13 @@
 package com.qunxianghui.gxh.adapter.generaAdapter;
 
 
-
 import android.content.Context;
-import android.view.View;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.generalize.EmployeePaiHangBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
@@ -27,10 +26,11 @@ public class GeneralizeSortAdapter extends BaseRecycleViewAdapter<EmployeePaiHan
         holder.setText(R.id.iv_generalize_person_name,dataBean.getMember_name());
         holder.setText(R.id.iv_generalize_person_count,dataBean.getCnt()+"次");
 
-        GlideApp.with(mContext).load(dataBean.getMember_avatar()).centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.mipmap.ic_launcher)
-                .into(generalizePersonHead);
+
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.ic_launcher);
+        options.error(R.mipmap.ic_launcher);
+        Glide.with(mContext).load(dataBean.getMember_avatar()).apply(options).into(generalizePersonHead);
     }
 
     @Override

@@ -8,9 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.home.CarBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 
 import java.util.List;
 
@@ -58,13 +59,11 @@ public class CarBrandAdapter extends BaseAdapter {
     private void initializeViews(CarBean.DataBean data, ViewHolder holder) {
         //TODO implement
         holder.tvCar.setText(data.getName());
-        GlideApp
-                .with(context)
-                .load(data.getLogo())
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(holder.ivCar);
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.placeholder(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(context).load(data.getLogo()).apply(options).into(holder.ivCar);
     }
 
     protected class ViewHolder {

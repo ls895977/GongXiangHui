@@ -1,33 +1,27 @@
 package com.qunxianghui.gxh.item;
 
 import android.support.annotation.NonNull;
-
-
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by baozi on 2017/4/29.
- */
 
 public class ItemHelperFactory {
 
-    public static List<TreeItem> createTreeItemList(List<? extends BaseItemData> list, TreeItemGroup treeParentItem) {
+    public static List<TreeItem> createItems(@Nullable List list, @Nullable TreeItemGroup treeParentItem) {
         if (null == list) {
             return null;
         }
         ArrayList<TreeItem> treeItemList = new ArrayList<>();
         int size = list.size();
-
         for (int i = 0; i < size; i++) {
             try {
-                BaseItemData itemData = list.get(i);
-                int viewItemType = itemData.getViewItemType();
+                Object itemData = list.get(i);
+                Class<? extends TreeItem> treeItemClass = getTypeClass(itemData);
                 TreeItem treeItem;
                 //判断是否是TreeItem的子类
-                if (ItemConfig.getTreeViewHolderType(viewItemType) != null) {
-                    Class<? extends TreeItem> treeItemClass = ItemConfig.getTreeViewHolderType(viewItemType);
+                if (treeItemClass != null) {
                     treeItem = treeItemClass.newInstance();
                     treeItem.setData(itemData);
                     treeItem.setParentItem(treeParentItem);
@@ -40,7 +34,33 @@ public class ItemHelperFactory {
         return treeItemList;
     }
 
-    public static List<TreeItem> createTreeItemList(List list, Class<? extends TreeItem> iClass, TreeItemGroup treeParentItem) {
+    /**
+     * 获取ItemClass
+     *
+     * @param itemData
+     * @return
+     */
+    private static Class<? extends TreeItem> getTypeClass(Object itemData) {
+        Class<? extends TreeItem> treeItemClass = null;
+        //先判断是否继承了ItemData,适用于跨模块获取
+        if (itemData instanceof BaseItemData) {
+            int viewItemType = ((BaseItemData) itemData).getViewItemType();
+            treeItemClass = ItemConfig.getTreeViewHolderType(viewItemType);
+        } else {
+            //判断是否使用注解绑定了ItemClass,适用当前模块
+            TreeItemClass annotation = itemData.getClass().getAnnotation(TreeItemClass.class);
+            if (annotation != null) {
+                treeItemClass = annotation.iClass();
+            }
+        }
+        return treeItemClass;
+    }
+
+    public static List<TreeItem> createTreeItemList(@Nullable List list, Class<? extends TreeItem> iClass) {
+        return createTreeItemList(list, iClass, null);
+    }
+
+    public static List<TreeItem> createTreeItemList(@Nullable List list, Class<? extends TreeItem> iClass, @Nullable TreeItemGroup treeParentItem) {
         if (null == list) {
             return null;
         }
@@ -66,12 +86,11 @@ public class ItemHelperFactory {
      * 创建排序List
      *
      * @param list
-     * @param iClass
      * @param sortKey
      * @param treeParentItem
      * @return
      */
-    public static List<TreeItem> createTreeSortList(List list, Class<? extends TreeSortItem> iClass, Object sortKey, TreeItemGroup treeParentItem) {
+    public static List<TreeItem> createTreeSortList(@Nullable List list, Class<? extends TreeSortItem> iClass, Object sortKey, @Nullable TreeItemGroup treeParentItem) {
         if (null == list) {
             return null;
         }
@@ -94,16 +113,54 @@ public class ItemHelperFactory {
         return treeItemList;
     }
 
+    /**
+     * 创建排序List
+     *
+     * @param list
+     * @param sortKey
+     * @param treeParentItem
+     * @return
+     */
+    public static List<TreeItem> createTreeSortList(@Nullable List list, Object sortKey, @Nullable TreeItemGroup treeParentItem) {
+        if (null == list) {
+            return null;
+        }
+        ArrayList<TreeItem> treeItemList = new ArrayList<>();
+
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            try {
+                Object itemData = list.get(i);
+                Class<? extends TreeItem> iClass = getTypeClass(itemData);
+                if (iClass != null && iClass == TreeSortItem.class) {
+                    TreeSortItem sortItem = (TreeSortItem) iClass.newInstance();
+                    sortItem.setData(itemData);
+                    sortItem.setSortKey(sortKey);
+                    sortItem.setParentItem(treeParentItem);
+                    treeItemList.add(sortItem);
+                }
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
+        }
+        return treeItemList;
+    }
+
 
     /**
      * 确定item的class类型,并且添加到了itemConfig,用该方法创建TreeItem
      *
      * @return
      */
-    public static <D extends BaseItemData> TreeItem createTreeItem(D d) {
+    public static <D> TreeItem createTreeItem(D d) {
         TreeItem treeItem = null;
         try {
-            Class<? extends TreeItem> itemClass = ItemConfig.getTreeViewHolderType(d.getViewItemType());
+            Class<? extends TreeItem> itemClass;
+            if (d instanceof BaseItemData) {
+                itemClass = ItemConfig.getTreeViewHolderType(((BaseItemData) d).getViewItemType());
+            } else {
+                itemClass = getTypeClass(d);
+            }
             if (itemClass != null) {
                 treeItem = itemClass.newInstance();
                 treeItem.setData(d);
@@ -122,57 +179,40 @@ public class ItemHelperFactory {
      * @return
      */
     @NonNull
-    public static ArrayList<TreeItem> getChildItemsWithType(TreeItemGroup itemGroup, TreeRecyclerType type) {
-        ArrayList<TreeItem> baseItems = new ArrayList<>();
-        List allChild = itemGroup.getChild();
-        if (allChild == null) return baseItems;
-        int childCount = allChild.size();
-        for (int i = 0; i < childCount; i++) {
-            //下级
-            TreeItem baseItem = (TreeItem) allChild.get(i);
-            baseItems.add(baseItem);
-            //判断下级是否为TreeItemGroup
-            if (baseItem instanceof TreeItemGroup) {
-                List list = null;
-                switch (type) {
-                    case SHOW_ALL:
-                        //调用下级的getAllChilds遍历,相当于递归遍历
-                        list = ((TreeItemGroup) baseItem).getAllChilds();
-                        break;
-                    case SHOW_EXPAND:
-                        //根据isExpand,来决定是否展示
-                        if (((TreeItemGroup) baseItem).isExpand()) {
-                            list = ((TreeItemGroup) baseItem).getExpandChild();
-                        }
-                        break;
-                    case SHOW_DEFUTAL:
-                        break;
-                }
-                if (list != null && list.size() > 0) {
-                    baseItems.addAll(list);
-                }
-            }
-        }
-        return baseItems;
+    public static ArrayList<TreeItem> getChildItemsWithType(@Nullable TreeItemGroup itemGroup, @Nullable TreeRecyclerType type) {
+        return getChildItemsWithType(itemGroup.getChild(), type);
     }
 
     @NonNull
-    public static ArrayList<TreeItem> getChildItemsWithType(List<TreeItem> treeItems, TreeRecyclerType type) {
-        if (type == TreeRecyclerType.SHOW_DEFUTAL) {
-            return (ArrayList<TreeItem>) treeItems;
+    public static ArrayList<TreeItem> getChildItemsWithType(@Nullable List<TreeItem> items, @NonNull TreeRecyclerType type) {
+        ArrayList<TreeItem> returnItems = new ArrayList<>();
+        if (items == null) {
+            return returnItems;
         }
-        ArrayList<TreeItem> baseItems = new ArrayList<TreeItem>();
-        int childCount = treeItems.size();
+        int childCount = items.size();
         for (int i = 0; i < childCount; i++) {
-            TreeItem treeItem = treeItems.get(i);
-            baseItems.add(treeItem);
-            if (treeItem instanceof TreeItemGroup) {
-                ArrayList<TreeItem> childItems = getChildItemsWithType((TreeItemGroup) treeItem, type);
-                if (!childItems.isEmpty()) {
-                    baseItems.addAll(childItems);
+            TreeItem childItem = items.get(i);//获取当前一级
+            returnItems.add(childItem);
+            if (childItem instanceof TreeItemGroup) {//获取下一级
+                List list = null;
+                switch (type) {
+                    case SHOW_ALL:
+                        //调用下级的getAllChild遍历,相当于递归遍历
+                        list = getChildItemsWithType((TreeItemGroup) childItem, type);
+                        break;
+                    case SHOW_EXPAND:
+                        //根据isExpand,来决定是否展示
+                        if (((TreeItemGroup) childItem).isExpand()) {
+                            list = getChildItemsWithType((TreeItemGroup) childItem, type);
+                        }
+                        break;
+                }
+                if (list != null && list.size() > 0) {
+                    returnItems.addAll(list);
                 }
             }
+
         }
-        return baseItems;
+        return returnItems;
     }
 }

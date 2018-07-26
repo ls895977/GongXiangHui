@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
@@ -27,7 +29,6 @@ import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.utils.Utils;
 
 import org.json.JSONException;
@@ -89,11 +90,13 @@ public class PersonDataActivity extends BaseActivity {
         int sex = getIntent().getIntExtra(SEX, -1);
         if (!TextUtils.isEmpty(avatar)) {
             //头像
-            GlideApp.with(this).load(avatar).
-                    placeholder(R.mipmap.user_moren).
-                    error(R.mipmap.user_moren).
-                    circleCrop().
-                    into(ivPersonDataImg);
+
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.user_moren);
+            options.error(R.mipmap.user_moren);
+            options.circleCrop();
+            options.centerCrop();
+            Glide.with(mContext).load(avatar).apply(options).into(ivPersonDataImg);
         }
         etPersonDataPhone.setText(getIntent().getStringExtra(MOBILE));
         etPersonDataAddress.setText(getIntent().getStringExtra(ADDRESS));
@@ -173,11 +176,13 @@ public class PersonDataActivity extends BaseActivity {
                 upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
 
                 //                //头像
-                GlideApp.with(PersonDataActivity.this).load(imageUri).
-                        placeholder(R.mipmap.user_moren).
-                        error(R.mipmap.user_moren).
-                        circleCrop().
-                        into(ivPersonDataImg);
+
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.user_moren);
+                options.error(R.mipmap.user_moren);
+                options.circleCrop();
+                Glide.with(mContext).load(imageUri).apply(options).into(ivPersonDataImg);
+
             }
 
             //自定义剪裁

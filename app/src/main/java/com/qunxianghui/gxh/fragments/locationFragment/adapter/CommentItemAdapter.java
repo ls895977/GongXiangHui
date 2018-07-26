@@ -26,7 +26,11 @@ public class CommentItemAdapter extends BaseAdapter {
     private Context context;
     private List<CommentBean> mList;
     private ListView listView;
+    private CommentRecallListener commentRecallListener;
 
+    public void setCommentRecallListener(CommentRecallListener commentRecallListener) {
+        this.commentRecallListener = commentRecallListener;
+    }
 
     public CommentItemAdapter(Context context, List<CommentBean> mList, ListView listView) {
         this.context = context;
@@ -71,8 +75,9 @@ public class CommentItemAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.item_comment, parent, false);
             holder.name = convertView.findViewById(R.id.name);
             holder.content = convertView.findViewById(R.id.content);
+            holder.ll_comment_view = convertView.findViewById(R.id.ll_comment_view);
             holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
-            holder.ll_comment_selflist=convertView.findViewById(R.id.ll_comment_selflist);
+            holder.ll_comment_selflist = convertView.findViewById(R.id.ll_comment_selflist);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -104,12 +109,18 @@ public class CommentItemAdapter extends BaseAdapter {
                         params("id", mList.get(position).getId()).execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        //Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                         deleteItemView(position);
 
                     }
                 });
 
+            }
+        });
+
+        holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentRecallListener.recommentcontentListener(position);
             }
         });
 
@@ -119,9 +130,14 @@ public class CommentItemAdapter extends BaseAdapter {
     public static class ViewHolder {
         TextView name, content, tv_item_discuss_delete;
         LinearLayout ll_comment_selflist;
+        LinearLayout ll_comment_view;
 
 
     }
 
+
+    public interface CommentRecallListener {
+        public void recommentcontentListener(int position);
+    }
 
 }

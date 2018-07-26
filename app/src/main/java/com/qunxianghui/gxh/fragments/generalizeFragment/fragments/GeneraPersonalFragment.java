@@ -66,6 +66,12 @@ public class GeneraPersonalFragment extends BaseFragment {
                             parseGeneraPersonTopData(response.body());
 
                     }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        asyncShowToast("账号登陆异常");
+                    }
                 });
     }
 

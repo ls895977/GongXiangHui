@@ -6,27 +6,8 @@ package com.qunxianghui.gxh.config;
 
 public class Constant {
     public static final long TIME_OUT = 3000;//网络请求超时时间
-    public static final String URL = "http://112.124.22.238:8081/course_api/wares/hot?pageSize=8&curPage=1";
-    public static final String SERVE_URL = "http://www.zzbcar.com/";
-    /*主页*/
-    public static final String API_MAIN_PAGE = SERVE_URL + "zzb/app/compound/mainpage";
-    public static final String API_CAR_DETAIL = SERVE_URL + "zzb/app/car/queryCar";
-    /*车辆品牌*/
-    public static final String API_CAR_BRAND = SERVE_URL + "zzb/app/car/brand";
-
-    /*车系*/
-    public static final String API_CAR_SERIES = SERVE_URL + "zzb/app/car/series";
-    /*获取热搜内容*/
-    public static final String API_FIRE_SEARCH = SERVE_URL + "zzb/app/car/searchfreq";
-
-    /*车辆筛选*/
-    public static final String API_CAR_QUERY = SERVE_URL + "zzb/app/car/queryCarByCondition";
-
-    /*获取短信验证码*/
-    public static final String API_GET_CODE = SERVE_URL + "zzb/app/common/smscode";
     //平台规则
     public static final String PTGZ = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
-    //加载的网页链接
     //常用电话
     public static final String COMMON_PHONE = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
     //查快递
@@ -47,33 +28,26 @@ public class Constant {
     public static final String ALMANAC = "http://app.zzbcar.com/zzb/helpcenter/user7.html";
     //酒店住宿
     public static final String HPTEL_ZHUSU = "http://app.zzbcar.com/zzb/helpcenter/user8.html";
-
     //首页链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
-    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice/#/";
-
-
-    // 真正的开发   先前的先忽略
-
+    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice";
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页下拉刷新
-    public static final String HOME_PULL_REFRESH_URL=BASE_URL+"news/getRecommendList";
+    public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份
-    public static final String FETCH_PROVINCE_URL=BASE_URL+"province/getProvince";
+    public static final String FETCH_PROVINCE_URL = BASE_URL + "province/getProvince";
     //获取城市
-    public static final String FETCH_CITY_URL=BASE_URL+"city/getCity";
+    public static final String FETCH_CITY_URL = BASE_URL + "city/getCity";
     //获取县城
-    public static final String FETCH_COUNTRY_URL=BASE_URL+"area/getArea";
+    public static final String FETCH_COUNTRY_URL = BASE_URL + "area/getArea";
     //获取省市区
-    public static final String FETCH_COUNTRY_ADRESS = BASE_URL+"region/getAllArea";
-
+    public static final String FETCH_COUNTRY_ADRESS = BASE_URL + "region/getAllArea";
     //首页轮播图
     public static final String HOME_PAGE_LUNBO_URL = BASE_URL + "ad/getList?place=首页图片轮播";
     //首页爆料
@@ -93,7 +67,7 @@ public class Constant {
     //登录接口
     public static final String LOGIN_URL = BASE_URL + "user/login";
     //用户登出
-    public static final String LOGIN_OUT_URL=BASE_URL+"user/logout";
+    public static final String LOGIN_OUT_URL = BASE_URL + "user/logout";
     //找回密码
     public static final String SEEK_PASSWORD_URL = BASE_URL + "user/findPassword";
     //首页天气列表
@@ -109,11 +83,11 @@ public class Constant {
     //获取个人资料
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
     //获取用户详情
-    public static final String GET_USER_DETAIL_URL=BASE_URL+"user/getUserInfo";
+    public static final String GET_USER_DETAIL_URL = BASE_URL + "user/getUserInfo";
     //添加收藏
     public static final String ADD_COLLECT_URL = BASE_URL + "collect/addCollect";
     //取消收藏
-    public static final String CANCEL_COLLECT_URL=BASE_URL+"user/unCollect";
+    public static final String CANCEL_COLLECT_URL = BASE_URL + "user/unCollect";
     //获取我发布帖子
     public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
     //我的粉丝
@@ -122,9 +96,8 @@ public class Constant {
     public static final String MYFOCUS_URL = BASE_URL + "user/myFollow";
     //获取收藏的新闻
     public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
-
     //获取内容详情
-    public static final String GET_NEWS_CONTENT_DETAIL_URL=BASE_URL+"detail/getInfo";
+    public static final String GET_NEWS_CONTENT_DETAIL_URL = BASE_URL + "detail/getInfo";
     //获取我收藏的视频
     public static final String GET_COLLECT_VIDEO_URL = BASE_URL + "user/getCollect&model=video";
     //获取我收藏帖子
@@ -133,10 +106,12 @@ public class Constant {
     public static final String LOCATION_NEWS_LIST_URL = BASE_URL + "posts/getList";
     //发布评论
     public static final String ISSURE_DISUSS_URL = BASE_URL + "comment/addComment";
+    //回复评论
+    public static final String REPAY_COMMENT_URL = BASE_URL + "comment/replyComment";
     //删除评论
     public static final String DELETE_DISCUSS_URL = BASE_URL + "comment/delComment";
     //删除帖子
-    public static final String DELETE_POST_URL=BASE_URL+"posts/delete";
+    public static final String DELETE_POST_URL = BASE_URL + "posts/delete";
     //评论列表
     public static final String COMMENT_LIST = BASE_URL + "comment/getList";
     // 推广统计个人上面的头部
@@ -144,15 +119,15 @@ public class Constant {
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
     //关注
-    public static final String ATTENTION_URL=BASE_URL+"follow/addFollow";
+    public static final String ATTENTION_URL = BASE_URL + "follow/addFollow";
     //不喜欢
     public static final String UNLIKE_URL = BASE_URL + "like/unClickLike";
     //发布帖子
     public static final String MYPOST_TIEZI_URL = BASE_URL + "posts/publish";
     //获取三级省市区
-    public static final String  HOST_THIRD_STEPAREA_URL=BASE_URL+"region/getAllArea";
+    public static final String HOST_THIRD_STEPAREA_URL = BASE_URL + "region/getAllArea";
     //添加举报信息
-    public static final String  ADD_REPORT_URL=BASE_URL+"report/reportAdd";
+    public static final String ADD_REPORT_URL = BASE_URL + "report/reportAdd";
     //搜索结果
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
     //获取搜索自动完成数据
@@ -162,7 +137,7 @@ public class Constant {
     //获取分享信息
     public static final String GET_SHARE_INFO = BASE_URL + "user/getShareInfo";
     //删除我的发布
-    public static final String DELETE_MYISSUE_URL=BASE_URL+"user/delRelease";
+    public static final String DELETE_MYISSUE_URL = BASE_URL + "user/delRelease";
     //获取我发布的爆料
     public static final String GET_ISSURE_DISCLOSS_URL = BASE_URL + "user/getMyInfo";
     //获取我发布的视频
@@ -188,11 +163,11 @@ public class Constant {
     //我的消息的我的跟帖
     public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
     //我的植入广告
-    public static final String GET_AD_LIST = BASE_URL+"user/getAdList";
+    public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
     //广告权限
-    public static final String CHECK_ADD = BASE_URL +"user/checkAddAd";
+    public static final String CHECK_ADD = BASE_URL + "user/checkAddAd";
     //添加广告
-    public static final String ADD_AD = BASE_URL+"user/addAd";
+    public static final String ADD_AD = BASE_URL + "user/addAd";
     //删除单条广告
     public static final String DELETE_AD = BASE_URL + "user/delAd";
     //使用广告
@@ -202,14 +177,16 @@ public class Constant {
     //修改某条广告
     public static final String EDIT_AD = BASE_URL + "user/editAd";
     //企业添加
-    public static final String ADD_COMPANY_URL=BASE_URL+"service/addCompany";
+    public static final String ADD_COMPANY_URL = BASE_URL + "service/addCompany";
     //企业设置   获取
-    public static final String GET_COMPANY_URL=BASE_URL+"service/getCompany";
+    public static final String GET_COMPANY_URL = BASE_URL + "service/getCompany";
     //企业修改
-    public static final String EDIT_COMPANY_URL=BASE_URL+"service/editCompany";
+    public static final String EDIT_COMPANY_URL = BASE_URL + "service/editCompany";
     //第一次登录绑定手机号
-    public static final String LOGIN_BINE_MOBILE_URL=BASE_URL+"user/bindMobile";
+    public static final String LOGIN_BINE_MOBILE_URL = BASE_URL + "user/bindMobile";
     //QQ登录回调
-    public static final String QQ_RESPONSE_URL=BASE_URL+"user/callback/qq";
-    public static final String WEIXIN_RESPONSE_URL=BASE_URL+"user/callback/weixin ";
+    public static final String QQ_RESPONSE_URL = BASE_URL + "user/callback/qq";
+
+    public static final String WEIXIN_RESPONSE_URL = BASE_URL + "user/callback/weixin ";
+    public static final String SINA_RESPONSE_URL = BASE_URL + "user/callback/sina";
 }

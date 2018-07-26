@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MineMessageFollowBean;
-import com.qunxianghui.gxh.utils.GlideApp;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class MineMessageFollewAdapter extends BaseRecycleViewAdapter <MineMessag
 
     private TextView mMineMessageResponse;
     private MineMessageResponseListener mineMessageResponseListener;
+    private RequestOptions options;
 
     public void setMineMessageResponseListener(MineMessageResponseListener mineMessageResponseListener) {
         this.mineMessageResponseListener = mineMessageResponseListener;
@@ -39,18 +41,15 @@ public class MineMessageFollewAdapter extends BaseRecycleViewAdapter <MineMessag
         holder.setText(R.id.tv_mineMessagefollow_issueTime,dataBean.getCtime());
         holder.setText(R.id.mineMessagefollow_discuss_message,dataBean.getContent());
         //本人头像
-        GlideApp.with(mContext).load(dataBean.getPosts_member_avatar())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .centerCrop()
-                .into(issueHead);
+        options = new RequestOptions();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        options.centerCrop();
+        Glide.with(mContext).load(dataBean.getPosts_member_avatar()).apply(options).into(issueHead);
 
         //加载回复头像
-        GlideApp.with(mContext).load(dataBean.getReply_member_avatar())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .centerCrop()
-                .into(commenHead);
+        Glide.with(mContext).load(dataBean.getReply_member_avatar()).apply(options).into(commenHead);
+
         mMineMessageResponse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

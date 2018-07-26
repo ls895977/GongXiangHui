@@ -25,11 +25,8 @@ public class BianMinServiceActivity extends BaseActivity {
             , R.mipmap.bianmin_phone_dollar, R.mipmap.bianmin_bus_check, R.mipmap.bianmin_car_piao, R.mipmap.bianmin_train, R.mipmap.bianmin_air, R.mipmap.bianmin_calendar, R.mipmap.bianmin_hotel, R.mipmap.bianmin_see_work, R.mipmap.bianmin_see_work};
     private String[] iconName = {"常用电话", "查快递", "寄快递", "充话费", "公交查询"
             , "汽车票", "火车票", "飞机票", "农历黄历", "酒店住宿", "找工作", "常用银行"};
-
     @BindView(R.id.grid_bianmin)
     RecyclerView gridBianmin;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_service_bianmin;
@@ -39,9 +36,9 @@ public class BianMinServiceActivity extends BaseActivity {
     protected void initViews() {
         final BianMinGridAdapter bianMinGridAdapter = new BianMinGridAdapter(mContext, images, iconName);
         gridBianmin.setAdapter(bianMinGridAdapter);
-        bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnClickListener() {
+        bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
+            public void onpicItemClick(int position) {
                 Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                 intent.putExtra("title", iconName[position]);
                 intent.putExtra("url", Constant.COMMON_PHONE);
@@ -49,7 +46,6 @@ public class BianMinServiceActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     protected void initDatas() {

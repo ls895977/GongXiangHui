@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="fill_parent"--><!--android:layout_height="fill_parent" >-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/loactionn_fragment_relative_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/location_line_layout"
@@ -14,71 +16,50 @@
         <RelativeLayout
             android:id="@+id/loaction_top_nav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_marginTop="13dp">
+
+            <TextView
+                android:id="@+id/tv_localcircle_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="9dp"
+                android:drawableLeft="@mipmap/icon_local_location"
+                android:drawablePadding="5dp"
+                android:text="西湖区"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="25dp"
                 android:text="本地圈"
-                android:textColor="#000"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/tv_location_mine_fabu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="25dp"
-                android:text="我要发布"
-                android:textColor="#f00"
+                android:textColor="#282828"
                 android:textSize="15sp" />
+
         </RelativeLayout>
 
-        <com.jcodecraeer.xrecyclerview.XRecyclerView
-            android:id="@+id/recyclerView_location"
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/localcircle_tablayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/location_send_comment_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-
-        <EditText
-            android:id="@+id/loaction_comment_edit"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="top"
-            android:layout_weight="4"
-            android:background="@null"
-            android:hint="请输入您的评论..."
-            android:lines="5"
-            android:paddingLeft="10dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/location_comment_to_send"
-            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/butn_oval"
-            android:gravity="center"
-            android:text="提交" />
-    </LinearLayout>
+            app:tabIndicatorColor="@color/tab_color"
+            app:tabSelectedTextColor="@color/tab_color"
+            app:tabTextColor="#000" />
 
-</RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/local_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+    </LinearLayout>
+</LinearLayout>
