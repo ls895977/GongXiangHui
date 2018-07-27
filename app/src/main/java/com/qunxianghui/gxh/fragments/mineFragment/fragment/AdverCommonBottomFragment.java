@@ -65,7 +65,7 @@ public class AdverCommonBottomFragment extends BaseFragment {
                         //添加页面
                         String text = "页面" + count;
                         count++;
-                        addPage(text);
+                        addPage();
                         break;
 
                     case 1:
@@ -105,7 +105,7 @@ public class AdverCommonBottomFragment extends BaseFragment {
 
     }
 
-    private void addPage(String text) {
+    private void addPage() {
         LayoutInflater inflater = LayoutInflater.from(mActivity);//获取LayoutInflater的实例
         View view = inflater.inflate(R.layout.guidslide_item, null);//调用LayoutInflater实例的inflate()方法来加载页面的布局
 
