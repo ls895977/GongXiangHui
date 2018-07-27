@@ -68,6 +68,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class HotPointFragment extends BaseFragment implements View.OnClickListener {
+
     @BindView(R.id.swip)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerview_list)

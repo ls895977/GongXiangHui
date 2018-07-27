@@ -347,7 +347,7 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     protected void initListeners() {
         llHomeLocation.setOnClickListener(this);
         llHomeSearch.setOnClickListener(this);
-
+        onVisible();
     }
 
     @Override

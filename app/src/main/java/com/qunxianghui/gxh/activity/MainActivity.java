@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
@@ -33,13 +34,11 @@ import com.qunxianghui.gxh.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.fragments.homeFragment.activity.UpLoadVideoActivity;
-import com.qunxianghui.gxh.fragments.issureFragment.IssureFragment;
 import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CheckBoxActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.FastBlurUtility;
-import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.util.ArrayList;
@@ -49,73 +48,54 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.ll_mine)
-    LinearLayout llMine;
-    @BindView(R.id.ll_home)
-    LinearLayout llHome;
-    @BindView(R.id.ll_location)
-    LinearLayout llLocation;
-    @BindView(R.id.ll_issue)
-    LinearLayout llIssue;
-    @BindView(R.id.ll_generation)
-    LinearLayout llGeneration;
-    @BindView(R.id.ll_main)
-    LinearLayout llMain;
-    @BindView(R.id.iv_home)
-    ImageView ivHome;
-    @BindView(R.id.tv_home)
-    TextView tvHome;
-    @BindView(R.id.iv_location)
-    ImageView ivLocation;
-    @BindView(R.id.tv_location)
-    TextView tvLocation;
-    @BindView(R.id.iv_issue)
-    ImageView ivIssue;
-    @BindView(R.id.tv_issue)
-    TextView tvIssue;
-    @BindView(R.id.iv_generation)
-    ImageView ivGeneration;
-    @BindView(R.id.tv_generation)
-    TextView tvGeneration;
-    @BindView(R.id.iv_mine)
-    ImageView ivMine;
-    @BindView(R.id.tv_mine)
-    TextView tvMine;
+
+    static final String INTENT_BROADCAST_HIDE_TAB = "android.intent.action.HIDE_TAB";
+
     @BindView(R.id.content)
-    FrameLayout content;
-    @BindView(R.id.ll_home_main)
-    LinearLayout llHomeMain;
+    FrameLayout mContent;
+    @BindView(R.id.tv_home)
+    TextView mTvHome;
+    @BindView(R.id.tv_location)
+    TextView mTvLocation;
+    @BindView(R.id.iv_issue)
+    ImageView mIvIssue;
+    @BindView(R.id.tv_issue)
+    TextView mTvIssue;
+    @BindView(R.id.ll_issue)
+    LinearLayout mLlIssue;
+    @BindView(R.id.tv_generation)
+    TextView mTvGeneration;
+    @BindView(R.id.tv_mine)
+    TextView mTvMine;
+    @BindView(R.id.ll_main)
+    LinearLayout mLlMain;
+
     private long exitTime;
     private MainBroadCast receiver;
-    static final String INTENT_BROADCAST_HIDE_TAB = "android.intent.action.HIDE_TAB";
-    private HomeFragment mHomeFragment;
-    private LocationFragment mLocationFragment;
-    private IssureFragment mIssureFragment;
-    private MineFragment mMineFragment;
-    private GeneralizeFragment mGeneralizeFragment;
-    private FragmentManager supportFragmentManager;
+    private View mCurrentView;
+    private Fragment mCurrentFragment;
+    private Fragment[] mFragments = new Fragment[4];
+    private FragmentManager mFragmentManager;
     private Dialog dialog;
-    private View view;
+
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
 
     @Override
     protected void initViews() {
-        initViewPagers();
+        mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        mFragments[0] = new HomeFragment();
+        mFragments[1] = new LocationFragment();
+        mFragments[2] = new GeneralizeFragment();
+        mFragments[3] = new MineFragment();
+        mCurrentFragment = mFragments[0];
+        fragmentTransaction.add(R.id.content, mCurrentFragment).commitAllowingStateLoss();
+        mCurrentView = mTvHome;
+        mTvHome.setSelected(true);
     }
 
-    private void initViewPagers() {
-        /** 默认选中第一个选项卡*/
-        selectedFragment(0);
-        ivHome.setBackgroundResource(R.drawable.ic_home_checked);
-        tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
-    }
-
-    @Override
-    protected void initListeners() {
-
-    }
     @Override
     protected void initDatas() {
         receiver = new MainBroadCast() {
@@ -123,10 +103,10 @@ public class MainActivity extends BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
                     boolean hide = intent.getBooleanExtra("hide", false);
-                    if (hide == true) {
-                        llMain.setVisibility(View.GONE);
+                    if (hide) {
+                        mLlMain.setVisibility(View.GONE);
                     } else {
-                        llMain.setVisibility(View.VISIBLE);
+                        mLlMain.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -148,79 +128,68 @@ public class MainActivity extends BaseActivity {
         UserUtil.getInstance();
     }
 
-    private void selectedFragment(int position) {
-        supportFragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-
-        hideFragment(transaction);
-        switch (position) {
-            //首页
-            case 0:
-                if (mHomeFragment == null) {
-                    mHomeFragment = new HomeFragment();
-                    transaction.add(R.id.content, mHomeFragment);
-                } else {
-                    transaction.show(mHomeFragment);
-                }
+    @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})
+    public void onViewClicked(View view) {
+        if (mCurrentView == view) return;
+        mCurrentView = view;
+        mTvHome.setSelected(false);
+        mTvLocation.setSelected(false);
+        mTvIssue.setSelected(false);
+        mTvGeneration.setSelected(false);
+        mTvMine.setSelected(false);
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        Fragment fragment = null;
+        switch (view.getId()) {
+            case R.id.tv_home:
+                mTvHome.setSelected(true);
+                fragment = mFragments[0];
                 break;
-
-            //本地圈
-            case 1:
-                if (mLocationFragment == null) {
-                    mLocationFragment = new LocationFragment();
-                    SPUtils.saveInt(mContext, "tabHeight", llMain.getMeasuredHeight());
-                    transaction.add(R.id.content, mLocationFragment);
-                } else {
-                    transaction.show(mLocationFragment);
-                }
+            case R.id.tv_location:
+                mTvLocation.setSelected(true);
+                fragment = mFragments[1];
                 break;
-            //发布
-            case 2:
-                if (mIssureFragment == null) {
-                    mIssureFragment = new IssureFragment();
-                    transaction.add(R.id.content, mIssureFragment);
-                } else {
-                    transaction.show(mIssureFragment);
-                }
+            case R.id.ll_issue:
+                showOneKeyIssuePop();
+                mTvIssue.setSelected(true);
                 break;
-
-            //推广页面
-            case 3:
-                if (mGeneralizeFragment == null) {
-                    mGeneralizeFragment = new GeneralizeFragment();
-
-                    transaction.add(R.id.content, mGeneralizeFragment);
-                } else {
-                    transaction.show(mGeneralizeFragment);
-                }
+            case R.id.tv_generation:
+                mTvGeneration.setSelected(true);
+                fragment = mFragments[2];
                 break;
-            //我的界面
-            case 4:
-                if (mMineFragment == null) {
-                    mMineFragment = new MineFragment();
-                    transaction.add(R.id.content, mMineFragment);
-                } else {
-                    transaction.show(mMineFragment);
-                }
+            case R.id.tv_mine:
+                mTvMine.setSelected(true);
+                fragment = mFragments[3];
                 break;
         }
-        transaction.commit();
+        if (fragment != null && fragment.isAdded()) {
+            fragmentTransaction.show(fragment).hide(mCurrentFragment);
+            mCurrentFragment = fragment;
+        } else if (fragment != null) {
+            fragmentTransaction.add(R.id.content, fragment).hide(mCurrentFragment);
+            mCurrentFragment = fragment;
+        }
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
-    /**
-     * ==================先全部隐藏=====================
-     */
-    private void hideFragment(FragmentTransaction transaction) {
-        if (mHomeFragment != null)
-            transaction.hide(mHomeFragment);
-        if (mLocationFragment != null)
-            transaction.hide(mLocationFragment);
-        if (mIssureFragment != null)
-            transaction.hide(mIssureFragment);
-        if (mGeneralizeFragment != null)
-            transaction.hide(mGeneralizeFragment);
-        if (mMineFragment != null)
-            transaction.hide(mMineFragment);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    Intent intent = new Intent(mContext, UpLoadVideoActivity.class);
+                    intent.putParcelableArrayListExtra("videodata", (ArrayList<? extends Parcelable>) selectList);
+                    startActivity(intent);
+                    break;
+            }
+        }
     }
 
     /**
@@ -245,88 +214,17 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @OnClick({R.id.ll_home, R.id.ll_location, R.id.ll_generation, R.id.ll_issue, R.id.ll_mine})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.ll_home:
-                selectedFragment(0);
-                ivHome.setBackgroundResource(R.drawable.ic_home_checked);
-                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
-                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
-                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
-                tvHome.setTextColor(getResources().getColor(R.color.home_text_color));
-                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                break;
-            case R.id.ll_location:
-                selectedFragment(1);
-                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
-                ivLocation.setBackgroundResource(R.drawable.ic_find_checked);
-                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
-                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
-                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvLocation.setTextColor(getResources().getColor(R.color.home_text_color));
-                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                break;
-            case R.id.ll_issue:
-                showOneKeyIssuePop();
-
-//                selectedFragment(2);
-                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
-                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
-                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
-                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
-
-                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvIssue.setTextColor(getResources().getColor(R.color.home_text_color));
-                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                break;
-            case R.id.ll_generation:
-                selectedFragment(3);
-                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
-                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
-                ivGeneration.setBackgroundResource(R.drawable.ic_journey_checked);
-                ivMine.setBackgroundResource(R.drawable.ic_mine_normal);
-
-                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_color));
-                tvMine.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                break;
-            case R.id.ll_mine:
-                selectedFragment(4);
-                ivHome.setBackgroundResource(R.drawable.ic_home_normal);
-                ivLocation.setBackgroundResource(R.drawable.ic_find_normal);
-                ivGeneration.setBackgroundResource(R.drawable.ic_journey_normal);
-                ivMine.setBackgroundResource(R.drawable.ic_mine_checked);
-
-                tvHome.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvLocation.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvIssue.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvGeneration.setTextColor(getResources().getColor(R.color.home_text_nomal_color));
-                tvMine.setTextColor(getResources().getColor(R.color.home_text_color));
-                break;
-        }
-    }
-
     /*弹出一键发布的pop*/
     private void showOneKeyIssuePop() {
-        view = LayoutInflater.from(mContext).inflate(R.layout.pop_onekey_issue, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_onekey_issue, null);
         RelativeLayout rl_iv_onekey_issue_video = view.findViewById(R.id.rl_iv_onekey_issue_video);
         RelativeLayout rl_onekey_issue_localcircle = view.findViewById(R.id.rl_onekey_issue_localcircle);
         RelativeLayout rl_onekey_issue_baoliao = view.findViewById(R.id.rl_onekey_issue_baoliao);
         RelativeLayout rl_onekey_issue_localservice = view.findViewById(R.id.rl_onekey_issue_localservice);
         RelativeLayout rl_onekey_issue_choiceness = view.findViewById(R.id.rl_onekey_issue_choiceness);
         ImageView iv_onekey_issue_close = view.findViewById(R.id.iv_onekey_issue_close);
-        RelativeLayout pop_ll=view.findViewById(R.id.pop_ll);
-        LinearLayout pop_block=view.findViewById(R.id.pop_ll_block);
+        RelativeLayout pop_ll = view.findViewById(R.id.pop_ll);
+        LinearLayout pop_block = view.findViewById(R.id.pop_ll_block);
         pop_ll.setBackground(new BitmapDrawable(FastBlurUtility.getBlurBackgroundDrawer(this)));
         // 设置style 控制默认dialog带来的边距问题
         dialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
@@ -362,9 +260,9 @@ public class MainActivity extends BaseActivity {
                         dialog.dismiss();
                         break;
                     case R.id.pop_ll_block:
-                            if(dialog!=null&&dialog.isShowing()){
-                                dialog.dismiss();
-                            }
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                         break;
                 }
             }
@@ -381,20 +279,18 @@ public class MainActivity extends BaseActivity {
         final Window dialogWindow = dialog.getWindow();
         //设置dialog从窗体底部弹出
         dialogWindow.setGravity(Gravity.BOTTOM);
-
         //获得窗体的属性
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         final WindowManager windowManager = getWindowManager();
         final Display display = windowManager.getDefaultDisplay();
 //        lp.alpha = 0.9f;
         lp.width = (int) display.getWidth();  //设置宽度
-        lp.height=WindowManager.LayoutParams.FILL_PARENT;//设置dialog高度
+        lp.height = WindowManager.LayoutParams.FILL_PARENT;//设置dialog高度
         lp.y = 3;  //设置dialog距离底部的距离
         dialogWindow.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
-
         dialog.show();
     }
 
@@ -404,29 +300,6 @@ public class MainActivity extends BaseActivity {
                 .openGallery(PictureMimeType.ofVideo())
                 .selectionMode(PictureConfig.SINGLE)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PictureConfig.CHOOSE_REQUEST:
-                    // 图片、视频、音频选择结果回调
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
-                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                    Intent intent = new Intent(mContext, UpLoadVideoActivity.class);
-                    intent.putParcelableArrayListExtra("videodata", (ArrayList<? extends Parcelable>) selectList);
-                    startActivity(intent);
-                    break;
-
-            }
-        }
     }
 }
 

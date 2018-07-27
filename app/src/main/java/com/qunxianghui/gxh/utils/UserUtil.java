@@ -22,9 +22,11 @@ public class UserUtil {
     public int id;
 
     public static UserUtil getInstance() {
-        synchronized (UserUtil.class) {
-            if (instance == null) {
-                instance = new UserUtil();
+        if (instance == null) {
+            synchronized (UserUtil.class) {
+                if (instance == null) {
+                    instance = new UserUtil();
+                }
             }
         }
         return instance;
@@ -76,50 +78,5 @@ public class UserUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            JSONObject data = jsonObject.getJSONObject("data");
-
-            mNick = data.getString("nick");
-            mAvatar = data.getString("avatar");
-            mMobile = data.getString("mobile");
-            mAddress = data.getString("address");
-            mSex = data.getInt("sex");
-
-            like_cnt = data.getInt("like_cnt");
-            posts_cnt = data.getInt("posts_cnt");
-            comment_cnt = data.getInt("comment_cnt");
-
-            mLevelName = data.getJSONObject("level_info").getString("name");
-            mTvMemberType.setText(mLevelName);
-            mineQuicklyLogin.setText(mNick);
-
-
-            tvMineAddlikeCount.setText(String.valueOf(like_cnt));
-            tvMinePostCount.setText(String.valueOf(posts_cnt));
-            tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-
-
-            GlideApp.with(getActivity()).load(mAvatar).
-                    placeholder(R.mipmap.user_moren).
-                    error(R.mipmap.user_moren).
-                    circleCrop().
-                    into(mIvHead);
-
-
-            Object companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
-            if (companyInfo instanceof JSONArray) {
-                Logger.d("fillUserData-->数组:");
-            } else if (companyInfo instanceof Object) {
-                Logger.d("fillUserData-->对象:");
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-
     }
 }

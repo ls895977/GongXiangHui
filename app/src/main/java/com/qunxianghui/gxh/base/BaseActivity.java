@@ -38,8 +38,8 @@ public abstract class BaseActivity extends FragmentActivity {
         mResources = getResources();
         ButterKnife.bind(this);
         initViews();
-        initListeners();
         initDatas();
+        initListeners();
         //  MyApplication.appManager.addActivity(this);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

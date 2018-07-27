@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 import com.qunxianghui.gxh.bean.SigninBean;
@@ -13,47 +12,38 @@ public final class SPUtils {
     private final static String name = "config";
     private final static int mode = Context.MODE_PRIVATE;
 
+    public static SharedPreferences getSp(Context context) {
+        return context.getSharedPreferences(name, mode);
+    }
+
     /**
      * 保存首选项
      */
     public static void saveBoolean(Context context, String key, boolean value) {
-        SharedPreferences sp = context.getSharedPreferences(name, mode);
-        Editor edit = sp.edit();
-        edit.putBoolean(key, value);
-        edit.commit();
+        getSp(context).edit().putBoolean(key, value).apply();
     }
 
     public static void saveInt(Context context, String key, int value) {
-        SharedPreferences sp = context.getSharedPreferences(name, mode);
-        Editor edit = sp.edit();
-        edit.putInt(key, value);
-        edit.commit();
+        getSp(context).edit().putInt(key, value).apply();
     }
 
     public static void saveString(Context context, String key, String value) {
-        SharedPreferences sp = context.getSharedPreferences(name, mode);
-        Editor edit = sp.edit();
-        edit.putString(key, value);
-        edit.commit();
+        getSp(context).edit().putString(key, value).apply();
     }
-
 
     /**
      * 获取首选项
      */
     public static boolean getBoolean(Context context, String key, boolean defValue) {
-        SharedPreferences sp = context.getSharedPreferences(name, mode);
-        return sp.getBoolean(key, defValue);
+        return getSp(context).getBoolean(key, defValue);
     }
 
     public static int getInt(Context context, String key, int defValue) {
-        SharedPreferences sp = context.getSharedPreferences(name, mode);
-        return sp.getInt(key, defValue);
+        return getSp(context).getInt(key, defValue);
     }
 
     public static String getString(Context context, String key, String defValue) {
-        SharedPreferences sp = context.getSharedPreferences(name, mode);
-        return sp.getString(key, defValue);
+        return getSp(context).getString(key, defValue);
     }
 
 
@@ -124,7 +114,9 @@ public final class SPUtils {
         }
     }
 
-    /** ==================清除保存的数据===================== */
+    /**
+     * ==================清除保存的数据=====================
+     */
     public static void removePreference(Context context, final String key) {
         SharedPreferences settings = context.getSharedPreferences(name, mode);
         if (settings.contains(key)) {

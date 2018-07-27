@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,15 +19,14 @@ import butterknife.ButterKnife;
 
 
 public abstract class BaseFragment extends Fragment {
-    protected final String TAG = getClass().getSimpleName();
-    public Handler mLoadHandler;
 
+    protected final String TAG = getClass().getSimpleName();
     public FragmentActivity mActivity;
     /**
      * Fragment当前状态是否可见
      */
-    protected boolean isVisible ;
-
+    protected boolean isVisible;
+    public boolean isPrepared = false;
 
     @Override
     public void onAttach(Context context) {
@@ -37,12 +35,11 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /*
-         * 返回一个需要展示的View
-         */
+     * 返回一个需要展示的View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        mActivity = getActivity();
         View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -51,6 +48,7 @@ public abstract class BaseFragment extends Fragment {
     /*界面初始化后即处理数据*/
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        isPrepared = true;
         initViews(view);
         initDatas();
         initListeners();
@@ -72,28 +70,29 @@ public abstract class BaseFragment extends Fragment {
      * 可见
      */
     protected void onVisible() {
-        loadData();
+        if (isPrepared && isVisible) {
+            isPrepared = false;
+            onLoadData();
+        }
     }
 
-    public void loadData() {
-        long time = 100;
-        mLoadHandler =  new Handler();
-        mLoadHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onLoadData();
-            }
-        }, time);
-    }
+//    public void loadData() {
+//        long time = 100;
+//        mLoadHandler =  new Handler();
+//        mLoadHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                onLoadData();
+//            }
+//        }, time);
+//    }
 
-    protected void onLoadData(){}
+    protected void onLoadData() { }
 
     /**
      * 不可见
      */
-    protected void onInvisible() {
-    }
-
+    protected void onInvisible() { }
 
     /**
      * 需要登陆才能跳转的aty
@@ -111,7 +110,6 @@ public abstract class BaseFragment extends Fragment {
             final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo(mActivity);
             if (signInfo == null) {
                 Toast.makeText(mActivity, "请先登录", Toast.LENGTH_SHORT).show();
-
                 toActivity(LoginActivity.class, bundle);
                 MyApplication.next = target;
             } else toActivity(target, bundle);
@@ -154,11 +152,10 @@ public abstract class BaseFragment extends Fragment {
     /*
      * 当Activity初始化之后可以在这里进行一些数据的初始化操作
      */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-//        initDatas();
-    }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
     /**
      * 子类实现此抽象方法返回View进行展示
@@ -180,13 +177,12 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 初始化控件
      */
-    public void initViews(View view){}
+    public void initViews(View view) { }
 
     /**
      * 子类可以复写此方法初始化事件
      */
     protected void initListeners() {
-
     }
 
     protected void setBackButon(View view, int id) {
@@ -198,7 +194,6 @@ public abstract class BaseFragment extends Fragment {
             }
         });
     }
-    public void commitData(){
 
-    }
+    public void commitData() { }
 }

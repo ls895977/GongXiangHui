@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    android:id="@+id/ll_home_main"
     android:orientation="vertical"
     tools:context="com.qunxianghui.gxh.activity.MainActivity">
 
@@ -17,7 +15,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.4dp"
+        android:layout_height="0.5dp"
         android:background="@color/divider" />
 
     <LinearLayout
@@ -26,82 +24,17 @@
         android:layout_height="45dp"
         android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/tv_home"
+            style="@style/BottomNavigationStyle"
+            android:drawableTop="@drawable/selector_tab_home"
+            android:text="首页" />
 
-        <!--<RadioGroup-->
-        <!--android:layout_gravity="center"-->
-        <!--android:id="@+id/rg_main"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="2dp"-->
-        <!--android:background="@color/Gxh_BG"-->
-        <!--android:orientation="horizontal">-->
-        <!--<RadioButton-->
-        <!--android:id="@+id/rb_home"-->
-        <!--android:checked="true"-->
-        <!--style="@style/MainRadioButtonStyle"-->
-        <!--android:drawableTop="@drawable/selector_tab_home"-->
-        <!--android:text="首页" />-->
-        <!--<RadioButton-->
-        <!--android:id="@+id/rb_location"-->
-        <!--style="@style/MainRadioButtonStyle"-->
-        <!--android:drawableTop="@drawable/selector_tab_find"-->
-        <!--android:text="本地圈" />-->
-        <!--<RadioButton-->
-        <!--android:id="@+id/rb_fabu"-->
-        <!--style="@style/MainRadioButtonStyle"-->
-        <!--android:drawableTop="@drawable/selector_tab_fabu"-->
-        <!--android:text="一键发布" />-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/rb_generalize"-->
-        <!--style="@style/MainRadioButtonStyle"-->
-        <!--android:drawableTop="@drawable/selector_tab_journey"-->
-        <!--android:text="推广" />-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/rb_mine"-->
-        <!--style="@style/MainRadioButtonStyle"-->
-        <!--android:drawableTop="@drawable/selector_tab_mine"-->
-        <!--android:text="我的" />-->
-        <!--</RadioGroup>-->
-
-
-        <LinearLayout
-            android:id="@+id/ll_home"
-            style="@style/HomeBottomNavagationStyle">
-
-            <ImageView
-                android:id="@+id/iv_home"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/selector_tab_home" />
-
-            <TextView
-                android:id="@+id/tv_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="首页"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_location"
-            style="@style/HomeBottomNavagationStyle">
-
-            <ImageView
-                android:id="@+id/iv_location"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/selector_tab_find" />
-
-            <TextView
-                android:id="@+id/tv_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="本地圈"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_location"
+            style="@style/BottomNavigationStyle"
+            android:drawableTop="@drawable/selector_tab_find"
+            android:text="本地圈" />
 
         <LinearLayout
             android:id="@+id/ll_issue"
@@ -124,44 +57,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="一键发布"
+                android:textColor="@color/main_bottom_selector_color"
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_generation"
-            style="@style/HomeBottomNavagationStyle">
+        <TextView
+            android:id="@+id/tv_generation"
+            style="@style/BottomNavigationStyle"
+            android:drawableTop="@drawable/selector_tab_journey"
+            android:text="推广" />
 
-            <ImageView
-                android:id="@+id/iv_generation"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/selector_tab_journey" />
-
-            <TextView
-                android:id="@+id/tv_generation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推广"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_mine"
-            style="@style/HomeBottomNavagationStyle">
-
-            <ImageView
-                android:id="@+id/iv_mine"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/selector_tab_mine" />
-
-            <TextView
-                android:id="@+id/tv_mine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我的"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_mine"
+            style="@style/BottomNavigationStyle"
+            android:drawableTop="@drawable/selector_tab_mine"
+            android:text="我的" />
 
     </LinearLayout>
 </LinearLayout>

@@ -38,7 +38,6 @@ import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
 public class MyApplication extends MultiDexApplication {
-    private static MyApplication mAppApplication;
     private SQLHelper sqlHelper;
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
@@ -56,61 +55,12 @@ public class MyApplication extends MultiDexApplication {
     public static void setWxApi(IWXAPI api) {
         SWXAPI = api;
     }
-    private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
-        public void uncaughtException(Thread thread, Throwable ex) {
-            //发生崩溃异常时,重启应用
-            Intent intent = new Intent(mAppApplication, WelcomActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mAppApplication.startActivity(intent);
-            android.os.Process.killProcess(android.os.Process.myPid());  //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
-        }
-    };
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        if("debug".equals(BuildConfig.BUILD_TYPE)) {
-            CrashHandler.getInstance().init(getApplicationContext());
-        }else{
-            Thread.setDefaultUncaughtExceptionHandler(restartHandler);
-        }
-
-        mAppApplication = this;
-        SINSTANCE = this;
-        Logger.d("onCreate-->:" + mAccessToken);
-
-        initOkGo();
-        appManager = AppManager.getAppManager();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-        }
-        ScreenUtils.init(this);
-
-        /**
-         * 预先加载三级列表显示省市区的数据
-         */
-        CityListLoader.getInstance().loadProData(this);
-        //重复 ？
-        CityPickerutil.initDatas(this);
-
-        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null); //  友盟初始化
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL); // 友盟统计场景：普通统计场景类型
-        PlatformConfig.setWeixin("wx8dd50e08a25101d7", "b84c68b1fc941afec1aabda8360e34e1");//微信APPID和AppSecret
-        PlatformConfig.setQQZone("1106763297", "KEYMQmvgOw2V73MXMZF");//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("3748625219", "774db026cf85b9e14bcee6f822cc5d5d", "http://api.qunxianghui.com.cn/v1/user/callback/weibo");//微博
-        /**
-         * 创建日志
-         */
-        initLogger();
-    }
 
     /**
      * 获取Application
      */
     public static MyApplication getApp() {
-        return mAppApplication;
+        return SINSTANCE;
     }
 
     /**
@@ -118,17 +68,27 @@ public class MyApplication extends MultiDexApplication {
      */
     public SQLHelper getSQLHelper() {
         if (sqlHelper == null)
-            sqlHelper = new SQLHelper(mAppApplication);
+            sqlHelper = new SQLHelper(SINSTANCE);
         return sqlHelper;
     }
 
     @Override
-    public void onTerminate() {
-        if (sqlHelper != null)
-            sqlHelper.close();
-        super.onTerminate();
-        //整体摧毁的时候调用这个方法
+    public void onCreate() {
+        super.onCreate();
+        if("debug".equals(BuildConfig.BUILD_TYPE)) {
+            CrashHandler.getInstance().init(getApplicationContext());
+        }else{
+            Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+        }
+        SINSTANCE = this;
+        appManager = AppManager.getAppManager();
+
+        Logger.d("onCreate-->:" + mAccessToken);
+
+        initOkGo();
+        initThirdLib();
     }
+
     private void initOkGo() {
         if (LoginMsgHelper.isLogin(this)) {
             mAccessToken = SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");
@@ -154,11 +114,27 @@ public class MyApplication extends MultiDexApplication {
                 setCacheMode(CacheMode.NO_CACHE).
                 setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE).
                 setRetryCount(3)
-        .addCommonHeaders(header);
-
+                .addCommonHeaders(header);
     }
 
-    private void initLogger() {
+    private void initThirdLib() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+        ScreenUtils.init(this);
+        /**
+         * 预先加载三级列表显示省市区的数据
+         */
+        CityListLoader.getInstance().loadProData(this);
+        //重复 ？
+        CityPickerutil.initDatas(this);
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null); //  友盟初始化
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL); // 友盟统计场景：普通统计场景类型
+        PlatformConfig.setWeixin("wx8dd50e08a25101d7", "b84c68b1fc941afec1aabda8360e34e1");//微信APPID和AppSecret
+        PlatformConfig.setQQZone("1106763297", "KEYMQmvgOw2V73MXMZF");//QQAPPID和AppSecret
+        PlatformConfig.setSinaWeibo("3748625219", "774db026cf85b9e14bcee6f822cc5d5d", "http://api.qunxianghui.com.cn/v1/user/callback/weibo");//微博
+
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(1)
                 .methodOffset(0)
@@ -176,6 +152,24 @@ public class MyApplication extends MultiDexApplication {
     public void setAccessToken(String accessToken) {
         mAccessToken = accessToken;
         initOkGo();
+    }
+
+    private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
+        public void uncaughtException(Thread thread, Throwable ex) {
+            //发生崩溃异常时,重启应用
+            Intent intent = new Intent(SINSTANCE, WelcomActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            SINSTANCE.startActivity(intent);
+            android.os.Process.killProcess(android.os.Process.myPid());  //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
+        }
+    };
+
+    @Override
+    public void onTerminate() {
+        if (sqlHelper != null)
+            sqlHelper.close();
+        super.onTerminate();
+        //整体摧毁的时候调用这个方法
     }
 
 }
