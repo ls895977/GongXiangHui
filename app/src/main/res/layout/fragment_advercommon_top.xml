@@ -4,11 +4,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_advercommon_top"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="370dp"
-        android:layout_marginTop="10dp"></android.support.v4.view.ViewPager>
+        android:layout_marginTop="10dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_advercommon_top"
+            android:layout_width="match_parent"
+            android:layout_height="370dp"></android.support.v4.view.ViewPager>
+
+        <FrameLayout
+            android:layout_alignParentBottom="true"
+            android:id="@+id/framlayout_adver_guidpoint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+
+                android:id="@+id/layout_adver_guidpoint"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"></LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +40,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_company_material"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,6 +63,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_common_material"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,6 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_common_adver"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -91,6 +115,7 @@
             android:layout_weight="1"></LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_advercommon_top_eduvideo"
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:layout_marginRight="10dp"

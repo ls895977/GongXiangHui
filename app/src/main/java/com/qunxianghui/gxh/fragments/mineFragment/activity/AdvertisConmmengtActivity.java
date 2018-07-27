@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
@@ -39,6 +41,10 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.vp_addadver_common_main)
     NoScrollViewPager vpAddadverCommonMain;
     final List<Fragment> fragments = new ArrayList<>();
+    @BindView(R.id.iv_advercommon_back)
+    ImageView ivAdvercommonBack;
+    @BindView(R.id.tv_advercommon_save)
+    TextView tvAdvercommonSave;
 
 
     @Override
@@ -80,16 +86,29 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
             finish();
         }
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
         rgAdverCommonMain.setOnCheckedChangeListener(this);
         vpAddadverCommonMain.setOnPageChangeListener(this);
+        vpAddadverCommonMain.setOnPageChangeListener(this);
+        ivAdvercommonBack.setOnClickListener(this);
+        tvAdvercommonSave.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.tv_advercommon_save:
+                asyncShowToast("点击保存的操作");
+                break;
+            case R.id.iv_advercommon_back:
+                finish();
+                break;
+        }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

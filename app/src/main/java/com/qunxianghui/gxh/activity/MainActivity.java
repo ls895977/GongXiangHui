@@ -99,7 +99,6 @@ public class MainActivity extends BaseActivity {
     private FragmentManager supportFragmentManager;
     private Dialog dialog;
     private View view;
-
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -120,7 +119,6 @@ public class MainActivity extends BaseActivity {
     protected void initListeners() {
 
     }
-
     @Override
     protected void initDatas() {
         receiver = new MainBroadCast() {
@@ -133,6 +131,17 @@ public class MainActivity extends BaseActivity {
                     } else {
                         llMain.setVisibility(View.VISIBLE);
                     }
+                }
+
+                try {
+                    unregisterReceiver(receiver);
+                } catch (Exception e) {
+                    if (e.getMessage().contains("Receiver not registered")) {
+
+                    } else {
+                        throw e;
+                    }
+
                 }
             }
         };
