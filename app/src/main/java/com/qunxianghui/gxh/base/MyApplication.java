@@ -1,11 +1,11 @@
 package com.qunxianghui.gxh.base;
 
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.multidex.MultiDexApplication;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static MyApplication mAppApplication;
     private SQLHelper sqlHelper;
     public static Class<?> next = null;
