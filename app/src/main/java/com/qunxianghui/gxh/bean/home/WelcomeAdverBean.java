@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WelcomAdverBean {
+public class WelcomeAdverBean {
 
     /**
      * code : 0
@@ -19,14 +19,14 @@ public class WelcomAdverBean {
     private String message;
     private DataBean data;
 
-    public static WelcomAdverBean objectFromData(String str) {
+    public static WelcomeAdverBean objectFromData(String str) {
 
-        return new Gson().fromJson(str, WelcomAdverBean.class);
+        return new Gson().fromJson(str, WelcomeAdverBean.class);
     }
 
-    public static List<WelcomAdverBean> arrayWelcomAdverBeanFromData(String str) {
+    public static List<WelcomeAdverBean> arrayWelcomAdverBeanFromData(String str) {
 
-        Type listType = new TypeToken<ArrayList<WelcomAdverBean>>() {
+        Type listType = new TypeToken<ArrayList<WelcomeAdverBean>>() {
         }.getType();
 
         return new Gson().fromJson(str, listType);

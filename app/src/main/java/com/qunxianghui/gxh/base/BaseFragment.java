@@ -16,12 +16,14 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.ButterKnife;
-
+import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
 
     protected final String TAG = getClass().getSimpleName();
     public FragmentActivity mActivity;
+    Unbinder unbinder;
+
     /**
      * Fragment当前状态是否可见
      */
@@ -41,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -147,6 +149,12 @@ public abstract class BaseFragment extends Fragment {
                 Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /*

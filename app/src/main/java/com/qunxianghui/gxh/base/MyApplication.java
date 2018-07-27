@@ -22,7 +22,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.SQLHelper;
-import com.qunxianghui.gxh.ui.activity.WelcomActivity;
+import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CityPickerutil;
 import com.qunxianghui.gxh.utils.CrashHandler;
@@ -157,7 +157,7 @@ public class MyApplication extends MultiDexApplication {
     private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread thread, Throwable ex) {
             //发生崩溃异常时,重启应用
-            Intent intent = new Intent(SINSTANCE, WelcomActivity.class);
+            Intent intent = new Intent(SINSTANCE, WelcomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SINSTANCE.startActivity(intent);
             android.os.Process.killProcess(android.os.Process.myPid());  //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前

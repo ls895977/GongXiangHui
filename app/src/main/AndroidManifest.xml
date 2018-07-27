@@ -51,7 +51,7 @@
 
         <!--app的入口-->
         <activity
-            android:name=".ui.activity.WelcomActivity"
+            android:name=".ui.activity.WelcomeActivity"
             android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -232,8 +232,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
-
         <!--我的板块的植入广告头部 navigator界面-->
         <!--首页频道activity-->
         <activity
@@ -248,7 +246,6 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页点击条目跳转的详情界面-->
         <activity
-
             android:name=".ui.activity.NewsDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -324,7 +321,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <!--大图image的界面-->
         <activity
             android:name=".ui.activity.PhotoBrowserActivity"

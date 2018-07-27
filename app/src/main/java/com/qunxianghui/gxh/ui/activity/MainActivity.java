@@ -22,12 +22,14 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.UpLoadVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.util.ArrayList;
@@ -119,10 +121,14 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})
     public void onViewClicked(View view) {
-        if (mCurrentView == view){
+        if (mCurrentView == view) {
             if (view.getId() == R.id.ll_issue) {
                 showOneKeyIssuePop();
             }
+            return;
+        }
+        if ((view.getId() == R.id.tv_generation || view.getId() == R.id.tv_mine) && !LoginMsgHelper.isLogin(MainActivity.this)) {
+            toActivity(LoginActivity.class);
             return;
         }
         mCurrentView = view;
@@ -200,7 +206,6 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
                 System.exit(0);
             }
             return true;

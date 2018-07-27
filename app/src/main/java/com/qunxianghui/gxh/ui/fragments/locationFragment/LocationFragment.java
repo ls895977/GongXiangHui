@@ -1,13 +1,10 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -44,7 +39,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     @BindView(R.id.tv_localcircle_location)
     TextView tvLocalcircleLocation;
-    Unbinder unbinder;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     @BindView(R.id.localcircle_tablayout)
     TabLayout localcircleTablayout;
@@ -84,26 +78,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     protected void initListeners() {
         localcircleTablayout.setOnTabSelectedListener(this);
         tvLocalcircleLocation.setOnClickListener(this);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
-        unbinder= ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override

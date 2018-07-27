@@ -18,7 +18,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.WelcomAdverBean;
+import com.qunxianghui.gxh.bean.home.WelcomeAdverBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -30,13 +30,15 @@ import butterknife.BindView;
  * Created by Administrator on 2018/3/26 0026.
  */
 
-public class WelcomActivity extends BaseActivity {
-    @BindView(R.id.iv_welcomadver)
-    ImageView ivWelcomadver;
+public class WelcomeActivity extends BaseActivity {
+
+    @BindView(R.id.iv_welcomeadver)
+    ImageView mIvWelcomeadver;
     @BindView(R.id.textView)
-    TextView textView;
-    @BindView(R.id.ll_welcom_skip)
-    LinearLayout llWelcomSkip;
+    TextView mTextView;
+    @BindView(R.id.ll_welcome_skip)
+    LinearLayout mLlWelcomeSkip;
+
     private Animation animation;
     private int count = 5;
 
@@ -45,29 +47,17 @@ public class WelcomActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
-                textView.setText(getCount() + "");
+                mTextView.setText(String.valueOf(getCount()));
                 handler.sendEmptyMessageDelayed(0, 1000);
                 animation.reset();
-                textView.startAnimation(animation);
+                mTextView.startAnimation(animation);
             }
         }
     };
 
-    private int getCount() {
-        count--;
-        if (count == 0) {
-            Intent intent = new Intent(WelcomActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (count == 3) {
-            llWelcomSkip.setVisibility(View.VISIBLE);
-        }
-        return count;
-    }
-
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_welcom;
+        return R.layout.activity_welcome;
     }
 
     @Override
@@ -77,33 +67,38 @@ public class WelcomActivity extends BaseActivity {
         handler.sendEmptyMessageDelayed(0, 1000);
     }
 
+    private int getCount() {
+        count--;
+        if (count == 0) {
+            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (count == 3) {
+            mLlWelcomeSkip.setVisibility(View.VISIBLE);
+        }
+        return count;
+    }
+
     /**
      * 请求网络广告
      */
-    private void RequestWelcomAdver() {
-        /**
-         * 增加欢迎页广告
-         */
-
+    private void RequestWelcomeAdver() {
         OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                parseWelcomData(response.body());
+                WelcomeAdverBean welcomeAdverBean = GsonUtils.jsonFromJson(response.body(), WelcomeAdverBean.class);
+                if (welcomeAdverBean.getCode() == 0) {
+                    WelcomeAdverBean.DataBean data = welcomeAdverBean.getData();
+                    String image = data.getImage();
+                    Glide.with(mContext)
+                            .load(image)
+                            .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
+                                    .error(R.mipmap.icon_starpage)
+                                    .centerCrop())
+                            .into(mIvWelcomeadver);
+                }
             }
         });
-    }
-
-    private void parseWelcomData(final String body) {
-        final WelcomAdverBean welcomAdverBean = GsonUtils.jsonFromJson(body, WelcomAdverBean.class);
-        if (welcomAdverBean.getCode() == 0) {
-            final WelcomAdverBean.DataBean data = welcomAdverBean.getData();
-            final String image = data.getImage();
-            RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.icon_starpage);
-            options.error(R.mipmap.icon_starpage);
-            options.centerCrop();
-            Glide.with(mContext).load(image).apply(options).into(ivWelcomadver);
-        }
     }
 
     @Override
@@ -111,7 +106,7 @@ public class WelcomActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                RequestWelcomAdver();
+                RequestWelcomeAdver();
             }
         }, 1000);
     }
@@ -119,7 +114,7 @@ public class WelcomActivity extends BaseActivity {
     @Override
     protected void initListeners() {
         super.initListeners();
-        llWelcomSkip.setOnClickListener(new View.OnClickListener() {
+        mLlWelcomeSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toActivity(MainActivity.class);
@@ -134,4 +129,5 @@ public class WelcomActivity extends BaseActivity {
         handler.removeCallbacksAndMessages(null);
         finish();
     }
+
 }

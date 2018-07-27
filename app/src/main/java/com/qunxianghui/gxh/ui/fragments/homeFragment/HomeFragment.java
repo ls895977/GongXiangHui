@@ -15,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -54,8 +53,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -66,7 +63,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener, View.OnClickListener, AMapLocationListener {
-    private static HomeFragment homeFragment;
+
     @BindView(R.id.tv_home_location)
     TextView tvHomeLocation;
     @BindView(R.id.et_home_search)
@@ -103,7 +100,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public AMapLocationClientOption mLocationOption = null;
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-    Unbinder unbinder;
     private String cityCode;
     private String adCode;
     private String cityinfo;
@@ -351,20 +347,6 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mViewPager.setCurrentItem(tab.getPosition());
     }
@@ -441,10 +423,4 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
         editor.putString("X-cityId", cityCode).putString("X-areaId", adCode).apply();
     }
 
-    public static HomeFragment getInstance() {
-        if (homeFragment == null) {
-            homeFragment = new HomeFragment();
-        }
-        return homeFragment;
-    }
 }

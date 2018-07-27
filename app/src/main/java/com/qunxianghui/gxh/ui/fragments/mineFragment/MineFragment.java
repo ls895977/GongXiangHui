@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,10 +23,8 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertisConmmengtActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
@@ -44,7 +40,6 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -53,7 +48,7 @@ import butterknife.Unbinder;
  */
 
 public class MineFragment extends BaseFragment {
-    private static MineFragment mineFragment;
+
     @BindView(R.id.rl_preson_data)
     RelativeLayout rlMessageGather;
     @BindView(R.id.rl_mine_message)
@@ -125,28 +120,6 @@ public class MineFragment extends BaseFragment {
         }
     }
 
-    private void fillUserData() {
-        OkGo.<String>post(Constant.CATCH_USERDATA_URL).
-                execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        if (HttpStatusUtil.getStatus(response.body().toString())) {
-                            parseUserData(response.body());
-                            return;
-                        }
-                        Logger.d("onSuccess-->:" + response.body().toString());
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        if (code==1000){
-                            asyncShowToast("您的账号在异地登录");
-                        }
-                    }
-                });
-    }
-
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
@@ -197,16 +170,32 @@ public class MineFragment extends BaseFragment {
         userSize = userDao.dbGetUserSize();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
-        if (!LoginMsgHelper.isLogin(getContext())) {
-            toActivity(LoginActivity.class);
-            mActivity.finish();
-            return;
-        }
         fillUserData();
+    }
+
+    private void fillUserData() {
+        OkGo.<String>post(Constant.CATCH_USERDATA_URL).
+                execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+                            parseUserData(response.body());
+                            return;
+                        }
+                        Logger.d("onSuccess-->:" + response.body().toString());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        if (code==1000){
+                            asyncShowToast("您的账号在异地登录");
+                        }
+                    }
+                });
     }
 
     @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
@@ -288,32 +277,5 @@ public class MineFragment extends BaseFragment {
             }, new String[]{Manifest.permission.CALL_PHONE});
         }
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    public static MineFragment getInstance() {
-        if (mineFragment == null) {
-            mineFragment = new MineFragment();
-        }
-        return mineFragment;
-    }
-
 
 }

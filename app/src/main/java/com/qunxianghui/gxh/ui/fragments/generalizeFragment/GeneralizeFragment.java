@@ -1,10 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.generalizeFragment;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -24,14 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
 
 public class GeneralizeFragment extends BaseFragment implements View.OnClickListener {
-    private static GeneralizeFragment generalizeFragment;
+
     @BindView(R.id.ll_genera)
     View mLlGenera;
     @BindView(R.id.rl_person)
@@ -44,12 +39,10 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     RadioButton rbGeneraPersonal;
     @BindView(R.id.rb_genera_company)
     RadioButton rbGeneraCompany;
-    Unbinder unbinder;
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_generalizes;
-    }
+    public int getLayoutId() { return R.layout.fragment_generalizes; }
+
     @Override
     public void initDatas() {
         if (LoginMsgHelper.isLogin(getContext())) {
@@ -133,28 +126,4 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         }
     };
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    public static GeneralizeFragment getInstance() {
-        if (generalizeFragment == null) {
-            generalizeFragment = new GeneralizeFragment();
-        }
-        return generalizeFragment;
-    }
 }
