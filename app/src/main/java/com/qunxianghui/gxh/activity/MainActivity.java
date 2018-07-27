@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +38,7 @@ import com.qunxianghui.gxh.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CheckBoxActivity;
 import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
+import com.qunxianghui.gxh.utils.FastBlurUtility;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
@@ -323,6 +325,9 @@ public class MainActivity extends BaseActivity {
         RelativeLayout rl_onekey_issue_localservice = view.findViewById(R.id.rl_onekey_issue_localservice);
         RelativeLayout rl_onekey_issue_choiceness = view.findViewById(R.id.rl_onekey_issue_choiceness);
         ImageView iv_onekey_issue_close = view.findViewById(R.id.iv_onekey_issue_close);
+        RelativeLayout pop_ll=view.findViewById(R.id.pop_ll);
+        LinearLayout pop_block=view.findViewById(R.id.pop_ll_block);
+        pop_ll.setBackground(new BitmapDrawable(FastBlurUtility.getBlurBackgroundDrawer(this)));
         // 设置style 控制默认dialog带来的边距问题
         dialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
         dialog.setContentView(view);
@@ -356,6 +361,11 @@ public class MainActivity extends BaseActivity {
                     case R.id.iv_onekey_issue_close:
                         dialog.dismiss();
                         break;
+                    case R.id.pop_ll_block:
+                            if(dialog!=null&&dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                        break;
                 }
             }
         };
@@ -366,21 +376,25 @@ public class MainActivity extends BaseActivity {
         rl_onekey_issue_localservice.setOnClickListener(listener);
         rl_onekey_issue_choiceness.setOnClickListener(listener);
         iv_onekey_issue_close.setOnClickListener(listener);
+        pop_block.setOnClickListener(listener);
         //获取当前activity所在的窗体
         final Window dialogWindow = dialog.getWindow();
         //设置dialog从窗体底部弹出
         dialogWindow.setGravity(Gravity.BOTTOM);
+
         //获得窗体的属性
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         final WindowManager windowManager = getWindowManager();
         final Display display = windowManager.getDefaultDisplay();
-        lp.alpha = 0.9f;
+//        lp.alpha = 0.9f;
         lp.width = (int) display.getWidth();  //设置宽度
+        lp.height=WindowManager.LayoutParams.FILL_PARENT;//设置dialog高度
         lp.y = 3;  //设置dialog距离底部的距离
         dialogWindow.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
+
         dialog.show();
     }
 

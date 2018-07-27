@@ -10,8 +10,8 @@ public class Constant {
     public static final String PTGZ = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
     //常用电话
     public static final String COMMON_PHONE = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
-    //查快递
-    public static final String CHECK_EXPRESS = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
+    //首页的黄历
+    public static final String CALENDAR_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttoutiao";
     //寄快递
     public static final String SEND_EXPRESS = "http://app.zzbcar.com/zzb/helpcenter/user1.html";
     //充话费
