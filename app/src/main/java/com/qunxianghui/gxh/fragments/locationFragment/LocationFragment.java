@@ -92,7 +92,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        unbinder1 = ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
