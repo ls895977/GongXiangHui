@@ -3,7 +3,8 @@ package com.qunxianghui.gxh.listener;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 
-import com.qunxianghui.gxh.fragments.homeFragment.activity.GestureDetectorActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.GestureDetectorActivity;
+
 
 /**
  * 返回手势监听接口

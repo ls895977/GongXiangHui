@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 
 import java.util.ArrayList;
 import java.util.List;

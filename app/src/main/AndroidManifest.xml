@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:anyDensity="true"
-    package="com.qunxianghui.gxh">
+    package="com.qunxianghui.gxh"
+    android:anyDensity="true">
     <!--高德相应权限-->
     <!--用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -30,6 +29,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name="com.qunxianghui.gxh.base.MyApplication"
         android:allowBackup="true"
@@ -40,18 +40,18 @@
         android:theme="@style/AppTheme">
         <!--视频库适配android6.0权限-->
         <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="${applicationId}.provider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/file_paths" />-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="${applicationId}.provider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/file_paths" />-->
         <!--</provider>-->
 
         <!--app的入口-->
-        <activity android:name="com.qunxianghui.gxh.activity.WelcomActivity"
-
+        <activity
+            android:name=".ui.activity.WelcomActivity"
             android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -95,248 +95,248 @@
 
         <!--主页面MainActivity-->
         <activity
-            android:name="com.qunxianghui.gxh.activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <activity android:name=".activity.GuidActivity"
+        <activity
+            android:name=".ui.activity.GuidActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            />
-        <activity android:name=".activity.GuidSlideActivity"/>
-        <activity android:name=".fragments.mineFragment.activity.CheckBoxActivity"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".ui.activity.GuidSlideActivity" />
+        <activity android:name=".ui.fragments.mineFragment.activity.CheckBoxActivity" />
         <!--上传视频界面-->
-        <activity android:name=".fragments.homeFragment.activity.UpLoadVideoActivity"/>
+        <activity android:name=".ui.fragments.homeFragment.activity.UpLoadVideoActivity" />
 
         <!--二维码扫描界面-->
         <!--我的板块的个人资料界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.PersonDataActivity"
+            android:name=".ui.fragments.mineFragment.activity.PersonDataActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的登录界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity"
+            android:name=".ui.fragments.mineFragment.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的注册界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.RegistActivity"
+            android:name=".ui.fragments.mineFragment.activity.RegistActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的设置界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.SettingActivity"
+            android:name=".ui.fragments.mineFragment.activity.SettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的找回密码页面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.SeekPasswordActivity"
+            android:name=".ui.fragments.mineFragment.activity.SeekPasswordActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页搜索界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.SearchActivity"
+            android:name=".ui.fragments.homeFragment.activity.SearchActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页左上角爆料界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.BaoLiaoActivity"
+            android:name=".ui.fragments.homeFragment.activity.BaoLiaoActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页生活圈界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.LiftStyleActivity"
+            android:name=".ui.fragments.homeFragment.activity.LiftStyleActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--本地圈发布动态界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.locationFragment.activity.PublishStateActivity"
+            android:name=".ui.fragments.locationFragment.activity.PublishStateActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块消息汇总给界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MessageGatherActivity"
+            android:name=".ui.fragments.mineFragment.activity.MessageGatherActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块我的收藏界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MyCollectActivity"
+            android:name=".ui.fragments.mineFragment.activity.MyCollectActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的用户协议板块-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.ProtocolActivity"
+            android:name=".ui.fragments.homeFragment.activity.ProtocolActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页视频汇界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeVideoActivity"
+            android:name=".ui.fragments.homeFragment.activity.HomeVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--剪裁image界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
             android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Base.Theme.AppCompat" />
+            android:theme="@style/Base.Theme.AppCompat"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的我的发布界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MineIssueActivity"
+            android:name=".ui.fragments.mineFragment.activity.MineIssueActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的我的消息界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.MineMessageActivity"
+            android:name=".ui.fragments.mineFragment.activity.MineMessageActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的企业设置板块-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.CompanySetActivity"
+            android:name=".ui.fragments.mineFragment.activity.CompanySetActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的合作热线界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.mineFragment.activity.CooperationCallActivity"
+            android:name=".ui.fragments.mineFragment.activity.CooperationCallActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页数据库添加栏目的界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeAddTabActivity"
+            android:name=".ui.fragments.homeFragment.activity.HomeAddTabActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--自己测试玩的界面可以忽略-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.HomeSeachLocationActivity"
+            android:name=".ui.fragments.homeFragment.activity.HomeSeachLocationActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
 
         <!--我的板块的植入广告头部 navigator界面-->
         <!--首页频道activity-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.ChannelActivity"
+            android:name=".ui.fragments.homeFragment.activity.ChannelActivity"
             android:launchMode="standard"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--此activity可以忽略-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.GestureDetectorActivity"
-            android:launchMode="singleTask" />
+            android:name=".ui.fragments.homeFragment.activity.GestureDetectorActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页点击条目跳转的详情界面-->
         <activity
 
-            android:name="com.qunxianghui.gxh.activity.NewsDetailActivity"
+            android:name=".ui.activity.NewsDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateVisible|stateAlwaysHidden" />
 
         <!--首页第一个定位的界面  其实真是的定位界面是NewSearchActivity-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.fragments.homeFragment.activity.LocationActivity"
+            android:name=".ui.fragments.homeFragment.activity.LocationActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页便民服务界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".activity.BianMinServiceActivity"
+            android:name=".ui.activity.BianMinServiceActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--我的板块的会员升级板块-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.mineFragment.activity.MemberUpActivity"
+            android:name=".ui.fragments.mineFragment.activity.MemberUpActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!--本地圈板块的举报界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.locationFragment.activity.InFormActivity"
+            android:name=".ui.fragments.locationFragment.activity.InFormActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--首页真正的定位城市搜索界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.homeFragment.activity.NewSearchActivity"
+            android:name=".ui.fragments.homeFragment.activity.NewSearchActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.homeFragment.activity.AbleNewSearchActivity"
+            android:name=".ui.fragments.homeFragment.activity.AbleNewSearchActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--本地圈界面我要发布视频的界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.locationFragment.activity.VideoListActivity"
+            android:name=".ui.fragments.locationFragment.activity.VideoListActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--重新设置密码界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.mineFragment.activity.ResetPasswordActivity"
+            android:name=".ui.fragments.mineFragment.activity.ResetPasswordActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.homeFragment.activity.HomeAirActivity"
+            android:name=".ui.fragments.homeFragment.activity.HomeAirActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--搜索结果页面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".activity.PublishActivity"
+            android:name=".ui.activity.PublishActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--个人信息详情页-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.mineFragment.activity.PersonDetailActivity"
+            android:name=".ui.fragments.mineFragment.activity.PersonDetailActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.mineFragment.activity.AdvertisConmmengtActivity"
+            android:name=".ui.fragments.mineFragment.activity.AdvertisConmmengtActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!--大图image的界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".activity.PhotoBrowserActivity"
+            android:name=".ui.activity.PhotoBrowserActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <!--绑定手机号界面-->
         <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name=".fragments.mineFragment.activity.BindMobileActivity"
+            android:name=".ui.fragments.mineFragment.activity.BindMobileActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

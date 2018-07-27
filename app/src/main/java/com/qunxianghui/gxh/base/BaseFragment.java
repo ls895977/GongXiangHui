@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.qunxianghui.gxh.bean.SigninBean;
-import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.ButterKnife;

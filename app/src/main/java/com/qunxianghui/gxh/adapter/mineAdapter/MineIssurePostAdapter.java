@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.TestMode;
-import com.qunxianghui.gxh.fragments.locationFragment.adapter.CommentItemAdapter;
+import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.CommentItemAdapter;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.MyGridView;
 
