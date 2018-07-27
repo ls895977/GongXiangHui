@@ -109,12 +109,6 @@
         <!--上传视频界面-->
         <activity android:name=".fragments.homeFragment.activity.UpLoadVideoActivity"/>
 
-        <!--首页便民服务页面-->
-        <activity
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.qunxianghui.gxh.activity.BianMinActiviry"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!--二维码扫描界面-->
         <!--我的板块的个人资料界面-->
         <activity

@@ -50,11 +50,21 @@
     </LinearLayout>
 
 
-    <com.qunxianghui.gxh.widget.NoScrollViewPager
-        android:id="@+id/vp_generalize_main"
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent">
+
+
+
+        <com.qunxianghui.gxh.widget.MyViewPager
+            android:id="@+id/vp_generalize_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </android.support.v4.widget.NestedScrollView>
+
+
     <RelativeLayout
         android:id="@+id/rl_person"
         android:layout_width="match_parent"

@@ -17,7 +17,7 @@ import com.qunxianghui.gxh.fragments.generalizeFragment.fragments.GeneraPersonal
 import com.qunxianghui.gxh.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.utils.SPUtils;
-import com.qunxianghui.gxh.widget.NoScrollViewPager;
+import com.qunxianghui.gxh.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.rg_generalize_main)
     RadioGroup rgGeneralizeMain;
     @BindView(R.id.vp_generalize_main)
-    NoScrollViewPager vpGeneralizeMain;
+    MyViewPager vpGeneralizeMain;
     @BindView(R.id.rb_genera_personal)
     RadioButton rbGeneraPersonal;
     @BindView(R.id.rb_genera_company)
@@ -62,8 +62,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
 
                 MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
                 vpGeneralizeMain.setAdapter(adapter);
-                /** 禁止滑动*/
-                vpGeneralizeMain.setScroll(true);
                 /**增加缓存页面的数量*/
                 vpGeneralizeMain.setOffscreenPageLimit(fragments.size()-1);
                 /**默认显示第一个选项卡*/
