@@ -86,11 +86,11 @@ public class DragAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.channel_item, null);
-        item_text = (TextView) view.findViewById(R.id.text_item);
+        item_text = view.findViewById(R.id.text_item);
         ChannelItem channel = getItem(position);
         item_text.setText(channel.getName());
 //        if ((position == 0) || (position == 1)) {
-        if (position == 0) {
+        if (position == 0 || position == 1) {
             item_text.setEnabled(false);
         }
         if (isChanged && (position == holdPosition) && !isItemShow) {

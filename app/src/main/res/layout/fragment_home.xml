@@ -4,13 +4,13 @@
     xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D81717"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="74dp"
+        android:background="#D81717"
+        android:paddingTop="30dp"
         android:gravity="center_vertical">
 
         <LinearLayout
@@ -75,12 +75,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tl:tl_tab_width="60dp"
             tl:tl_indicator_width="18dp"
             tl:tl_indicator_color="#D81717"
             tl:tl_indicator_width_equal_title="false"
             tl:tl_indicator_corner_radius="1.5dp"
             tl:tl_indicator_height="3dp"
+            tl:tl_tab_padding="15dp"
             tl:tl_textSelectColor="#202020"
             tl:tl_textBold="SELECT"
             tl:tl_textUnselectColor="#676767"

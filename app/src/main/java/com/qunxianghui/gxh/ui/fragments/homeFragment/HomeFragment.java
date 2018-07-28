@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -74,11 +73,10 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
-    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
-        return R.layout.home_layout;
+        return R.layout.fragment_home;
     }
 
     @Override
@@ -180,18 +178,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
      * 初始化Fragment
      */
     private void initFragment() {
-        fragments.clear();//清空
-        int count = userChannelList.size();
-        HotPointFragment newFragment;
-        Bundle bundle;
-        for (int i = 0; i < count; i++) {
-            newFragment = new HotPointFragment();
-            bundle = new Bundle();
-            bundle.putInt("channel_id", userChannelList.get(i).getId());
-            newFragment.setArguments(bundle);
-            fragments.add(newFragment);
-        }
-        mViewPager.setAdapter(new NewsFragmentPagerAdapter(getChildFragmentManager(), fragments, userChannelList));
+        mViewPager.setAdapter(new NewsFragmentPagerAdapter(getChildFragmentManager(), userChannelList));
         mTopSlidingLayout.setViewPager(mViewPager);
     }
 

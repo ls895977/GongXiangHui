@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -69,7 +68,7 @@ public class MainActivity extends BaseActivity {
     private Fragment mCurrentFragment;
     private Fragment[] mFragments = new Fragment[4];
     private FragmentManager mFragmentManager;
-    private Dialog dialog;
+    private OnekeyIssueDialog dialog;
 
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -226,7 +225,7 @@ public class MainActivity extends BaseActivity {
         if (dialog == null) {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
-        dialog.show();
+        dialog.blurBg().show();
     }
 }
 

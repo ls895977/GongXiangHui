@@ -75,7 +75,6 @@ public class HotPointFragment extends BaseFragment {
     private HomeItemListAdapter homeItemListAdapter;
     private List<HomeNewListBean> dataList = new ArrayList<>();
     private int mCount = 0;
-    private int total = 0;
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
@@ -103,7 +102,7 @@ public class HotPointFragment extends BaseFragment {
             initGuideAndBanner();
             homeItemListAdapter.addHeaderView(headerNavigator);
             homeItemListAdapter.addHeaderView(headerVp, 1);
-        } else if (mChannelId == 0) {
+        } else if ("本地".equals(getArguments().getString("channel_name"))) {
             View localLocationView = LayoutInflater.from(mActivity).inflate(R.layout.home_local_location, null);
             mhomeLocalLocation = localLocationView.findViewById(R.id.tv_home_local_location);
             mhomeLocalLocation.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +163,7 @@ public class HotPointFragment extends BaseFragment {
                     dataList.clear();
                 }
                 dataList.addAll(list);
-                total = dataList.size();
+                int total = dataList.size();
                 if (mCount + 10 <= total) {
                     mCount += 10;
                     homeItemListAdapter.loadMoreComplete();
