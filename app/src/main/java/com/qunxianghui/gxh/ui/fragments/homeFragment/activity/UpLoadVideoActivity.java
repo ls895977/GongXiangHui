@@ -13,6 +13,7 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.common.TextSelectBean;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class UpLoadVideoActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.bt_upload_select)
     Button btUploadSelect;
 
+    private ArrayList<TextSelectBean> cardItem = new ArrayList<>();
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload_video;
@@ -74,7 +76,11 @@ public class UpLoadVideoActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
+                String tx = cardItem.get(options1).getPickerViewText();
+                btUploadSelect.setText(tx);
+
             }
         });
+
     }
 }
