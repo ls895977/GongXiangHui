@@ -42,6 +42,7 @@ public class VideoListActivity extends BaseActivity {
     TextView tvNodata;
     private Intent lastIntent;
     ArrayList<VideoInfo> vList;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_video_list;
