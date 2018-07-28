@@ -101,10 +101,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void initDatas() {
-    }
-
-    @Override
     protected void initListeners() {
         ivBaoliaoClose.setOnClickListener(this);
         tvHomeBaoliaoFabu.setOnClickListener(this);

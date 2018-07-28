@@ -91,10 +91,6 @@ public class MineMessageSystemFragment extends BaseFragment {
         return R.layout.fragment_mine_message_system;
     }
 
-    @Override
-    public void initDatas() {
-
-    }
 
     @Override
     protected void initListeners() {

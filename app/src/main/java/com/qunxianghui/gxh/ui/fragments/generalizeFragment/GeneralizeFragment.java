@@ -44,7 +44,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     public int getLayoutId() { return R.layout.fragment_generalizes; }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         if (LoginMsgHelper.isLogin(getContext())) {
             if (SPUtils.getBoolean(getActivity(), SpConstant.IS_COMPANY, false)) {
                 mLlGenera.setVisibility(View.VISIBLE);

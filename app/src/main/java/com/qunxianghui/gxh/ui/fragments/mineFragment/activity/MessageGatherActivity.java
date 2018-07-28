@@ -41,7 +41,7 @@ public class MessageGatherActivity extends BaseActivity {
         }
     }
     @Override
-    protected void initDatas() {
+    protected void initData() {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -51,7 +51,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         //设置tablayout的点击事件
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);

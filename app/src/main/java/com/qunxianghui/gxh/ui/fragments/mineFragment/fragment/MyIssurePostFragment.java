@@ -75,7 +75,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         RequestMyIssurePost();
     }
 

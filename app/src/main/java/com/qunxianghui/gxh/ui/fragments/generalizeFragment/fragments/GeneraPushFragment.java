@@ -43,9 +43,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     public int getLayoutId() {
         return R.layout.genera_push_eachother;
     }
-    @Override
-    public void initDatas() {
-    }
+
     @Override
     public void initViews(View view) {
         SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);

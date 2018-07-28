@@ -104,9 +104,6 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
     }
 
     @Override
-    public void initDatas() {
-    }
-    @Override
     public void initViews(View view) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setSmoothScrollbarEnabled(false);

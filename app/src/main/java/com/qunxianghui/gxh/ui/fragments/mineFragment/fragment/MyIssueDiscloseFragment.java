@@ -38,7 +38,7 @@ public class MyIssueDiscloseFragment extends BaseFragment {
         return R.layout.fragment_issue_disclose;
     }
     @Override
-    public void initDatas() {
+    public void initData() {
         RequestMyIssueDisClose();
     }
     /**

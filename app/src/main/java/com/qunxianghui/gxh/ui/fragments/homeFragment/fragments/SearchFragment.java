@@ -51,7 +51,7 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
      * 子类在此方法中实现数据的初始化
      */
     @Override
-    public void initDatas() {
+    public void initData() {
         String string = getArguments().getString(DATA);
         if (string != null) {
             int type = getArguments().getInt(TYPE, 0);

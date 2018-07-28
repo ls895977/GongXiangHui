@@ -45,10 +45,8 @@ public class MineAttentionFragment extends BaseFragment {
 
 
     @Override
-    public void initDatas() {
+    public void initData() {
         RequestAttentionData();
-
-
     }
 
     private void RequestAttentionData() {

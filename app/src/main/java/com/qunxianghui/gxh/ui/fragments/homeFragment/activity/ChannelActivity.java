@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,17 +65,14 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     private String mAccessToken;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.channel);
-        initView();
-        initData();
+    protected int getLayoutId() {
+        return R.layout.channel;
     }
 
     /**
      * 初始化数据
      */
-    private void initData() {
+    protected void initData() {
         new TitleBuilder(ChannelActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,13 +124,13 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             otherAdapter = new OtherAdapter(this, otherChannelList);
             otherGridView.setAdapter(otherAdapter);
         }
-
     }
 
     /**
      * 初始化布局
      */
-    private void initView() {
+    @Override
+    protected void initViews() {
         userGridView = findViewById(R.id.userGridView);
         otherGridView = findViewById(R.id.otherGridView);
     }

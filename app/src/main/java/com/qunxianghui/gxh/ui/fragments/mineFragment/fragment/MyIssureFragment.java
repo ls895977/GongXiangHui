@@ -25,7 +25,7 @@ public class MyIssureFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         OkGo.<String>get(Constant.GET_DISCLOSS_INFO_URL)
                 .execute(new StringCallback() {
                     @Override

@@ -111,7 +111,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         //猜你想要的数据
         OkGo.<String>get(Constant.SEARCH_GUESS_URL).execute(new StringCallback() {
             @Override

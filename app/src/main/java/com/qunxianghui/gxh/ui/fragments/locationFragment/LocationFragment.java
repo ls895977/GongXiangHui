@@ -52,7 +52,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         fragments.add(new LocationDetailFragment());
         fragments.add(new LocationDetailFragment());
         fragments.add(new LocationDetailFragment());

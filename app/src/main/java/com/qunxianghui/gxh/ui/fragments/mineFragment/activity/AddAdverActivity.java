@@ -227,7 +227,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         dialog.dismiss();
     }
     @Override
-    protected void initDatas() {
+    protected void initData() {
         final Intent intent = getIntent();
         url = intent.getStringExtra("url");
         title = intent.getStringExtra("title");

@@ -97,10 +97,6 @@ public class HomeAirActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void initDatas() {
-    }
-
-    @Override
     protected void initListeners() {
         super.initListeners();
         xrecycler.setLoadingListener(new XRecyclerView.LoadingListener() {

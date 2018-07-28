@@ -46,7 +46,7 @@ public class HomeVideoActivity_bak extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         //首页视频数据
         OkGo.<String>get(Constant.HOME_VIDEO_LIST_URL)
                 .execute(new StringCallback() {

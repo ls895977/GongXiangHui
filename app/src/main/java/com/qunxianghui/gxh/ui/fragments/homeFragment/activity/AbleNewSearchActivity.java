@@ -123,7 +123,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         OkGo.<String>post(Constant.CITY_LIST_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {

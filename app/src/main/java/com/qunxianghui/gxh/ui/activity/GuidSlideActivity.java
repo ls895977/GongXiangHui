@@ -42,10 +42,6 @@ public class GuidSlideActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void initDatas() {
-
-    }
     /**
      * 添加选项菜单
      * 为了不影响ViewPager每个页面的一致性，这里使用选项菜单来操作添加和删除页面的点击事件

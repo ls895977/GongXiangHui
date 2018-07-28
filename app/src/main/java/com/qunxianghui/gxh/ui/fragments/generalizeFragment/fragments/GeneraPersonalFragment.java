@@ -53,7 +53,7 @@ public class GeneraPersonalFragment extends BaseFragment {
         return R.layout.genera_personl;
     }
     @Override
-    public void initDatas() {
+    public void initData() {
         //显示推广头部的信息
         DisplayPersonData();
     }

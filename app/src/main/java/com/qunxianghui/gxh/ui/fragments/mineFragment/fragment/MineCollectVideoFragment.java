@@ -50,9 +50,6 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     public int getLayoutId() {
         return R.layout.fragment_mine_collect_video;
     }
-    @Override
-    public void initDatas() {
-    }
 
     /**
      * 请求我收藏的视频

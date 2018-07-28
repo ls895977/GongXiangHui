@@ -51,7 +51,7 @@ public class AdverCommonBottomFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         CommonAdaverGridAdapter commonBottomAdverAdapter = new CommonAdaverGridAdapter(mActivity, images, iconName);
 
         recyclerCommonadverBottom.setAdapter(commonBottomAdverAdapter);

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
@@ -41,7 +40,6 @@ import com.qunxianghui.gxh.widget.NoLineClickSpan;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/12 0012.
@@ -166,18 +164,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         tvLoginQuickly.setOnClickListener(this);
         btRegisterQuickly.setOnClickListener(this);
         tvRegistCode.setOnClickListener(this);
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.listener.BackGestureListener;
 
 /**
@@ -14,7 +14,7 @@ import com.qunxianghui.gxh.listener.BackGestureListener;
  * Created by Mjj on 2016/11/18.
  */
 
-public class GestureDetectorActivity extends Activity {
+public abstract class GestureDetectorActivity extends BaseActivity {
 
     /**
      * 手势监听

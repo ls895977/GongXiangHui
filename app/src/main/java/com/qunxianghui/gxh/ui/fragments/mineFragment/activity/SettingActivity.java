@@ -91,7 +91,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         new TitleBuilder(this).setTitleText("设置").setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

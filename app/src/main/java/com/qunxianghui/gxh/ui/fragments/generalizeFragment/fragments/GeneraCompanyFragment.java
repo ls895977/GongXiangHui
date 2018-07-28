@@ -77,7 +77,7 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

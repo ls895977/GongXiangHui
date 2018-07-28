@@ -171,7 +171,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCaompanysetToIndustry.setText(company_trade_name);
     }
     @Override
-    protected void initDatas() {
+    protected void initData() {
 
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override

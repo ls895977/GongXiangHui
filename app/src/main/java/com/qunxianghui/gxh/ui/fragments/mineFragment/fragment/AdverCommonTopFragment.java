@@ -51,7 +51,7 @@ public class AdverCommonTopFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         guidTopViewPagerAdapter = new GuidViewPagerAdapter(viewList);
 
         vpAdvercommonTop.setAdapter(guidTopViewPagerAdapter);

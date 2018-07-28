@@ -52,7 +52,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         isPrepared = true;
         initViews(view);
-        initDatas();
+        initData();
         initListeners();
     }
 
@@ -180,7 +180,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 子类在此方法中实现数据的初始化
      */
-    public abstract void initDatas();
+    public void initData(){};
 
     /**
      * 初始化控件

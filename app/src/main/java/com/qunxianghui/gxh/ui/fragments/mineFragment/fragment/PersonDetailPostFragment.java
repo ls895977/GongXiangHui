@@ -42,10 +42,8 @@ public class PersonDetailPostFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         final PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
-
-
         /**
          * 获取帖子列表
          */

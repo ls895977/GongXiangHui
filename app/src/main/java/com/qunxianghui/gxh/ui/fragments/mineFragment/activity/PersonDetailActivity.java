@@ -70,7 +70,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         final Intent intent = getIntent();
         member_id = intent.getIntExtra("member_id", 1);
         FetchPersonData();

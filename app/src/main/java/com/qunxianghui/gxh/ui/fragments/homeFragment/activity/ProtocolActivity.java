@@ -86,7 +86,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     @SuppressLint("NewApi")
     @Override
-    protected void initDatas() {
+    protected void initData() {
         Intent intent = getIntent();
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");

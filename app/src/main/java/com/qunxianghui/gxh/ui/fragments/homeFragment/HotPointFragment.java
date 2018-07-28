@@ -143,7 +143,7 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         mDatas = new ArrayList<>();
         //请求数据
         parseData();

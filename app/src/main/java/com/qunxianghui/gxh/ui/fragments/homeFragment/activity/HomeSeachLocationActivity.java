@@ -53,7 +53,7 @@ public class HomeSeachLocationActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         list.add("看着飞舞的尘埃   掉下来");
         list.add("没人发现它存在");
         list.add("多自由自在");
