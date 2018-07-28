@@ -5,33 +5,29 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swip"
-        android:layout_marginTop="5dp"
+        android:id="@+id/sw"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_list"
+            android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_home_paste_artical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/iv_home_paste_artical"
+        android:layout_width="52dp"
+        android:layout_height="57dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp">
-
-        <ImageView
-            android:layout_width="52dp"
-            android:layout_height="57dp"
-            android:background="@mipmap/iv_add_artical"
-            android:focusable="true" />
-
-    </LinearLayout>
+        android:layout_marginBottom="50dp"
+        android:background="@mipmap/iv_add_artical"
+        android:focusable="true" />
 
 </RelativeLayout>

@@ -49,24 +49,23 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      */
     private DragGrid userGridView; // GridView
     DragAdapter userAdapter; // 适配器
-    ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
+    ArrayList<ChannelItem> userChannelList = new ArrayList<>();
 
     /**
      * 其它栏目
      */
     private OtherGridView otherGridView; // GridView
     OtherAdapter otherAdapter; // 适配器
-    ArrayList<ChannelItem> otherChannelList = new ArrayList<ChannelItem>(); // 数据源
+    ArrayList<ChannelItem> otherChannelList = new ArrayList<>(); // 数据源
 
     /**
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
      */
     boolean isMove = false;
-    private String mAccessToken;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.channel;
+        return R.layout.activity_channel;
     }
 
     /**
@@ -156,7 +155,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                         newTextView.getLocationInWindow(startLocation);
                         final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);//获取点击的频道内容
                         otherAdapter.setVisible(false);
-
                         //频道列表（用户订阅的频道）
                         OkGo.<String>post(Constant.CHANNEL_DELETE_CHANNEL)
                                 .params("channel_id", channel.getId())
@@ -185,8 +183,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     }
                 }
                 break;
-
-
             case R.id.otherGridView:
                 // 其它GridView
                 final ImageView moveImageView = getView(view);

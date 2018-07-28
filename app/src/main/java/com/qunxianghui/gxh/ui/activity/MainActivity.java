@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kr.co.namee.permissiongen.PermissionGen;
 
 public class MainActivity extends BaseActivity {
 
@@ -117,6 +119,12 @@ public class MainActivity extends BaseActivity {
         filter.addAction(INTENT_BROADCAST_HIDE_TAB);
         registerReceiver(receiver, filter);
         UserUtil.getInstance();
+        PermissionGen.needPermission(MainActivity.this, 105,
+                new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }
+        );
     }
 
     @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})

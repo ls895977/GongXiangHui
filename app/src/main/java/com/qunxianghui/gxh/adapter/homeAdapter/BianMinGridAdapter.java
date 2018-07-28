@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by Administrator on 2018/4/16 0016.
@@ -22,7 +25,6 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
     private String[] text;
     private OnItemClickListener mOnItemClickListener;
 
-
     public BianMinGridAdapter(Context context, int[] images, String[] text) {
         this.images = images;
         this.text = text;
@@ -31,12 +33,12 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TabViewHolde(layoutInflater.inflate(R.layout.bianmin_service_item, parent, false));
+        return new TabViewHolder(layoutInflater.inflate(R.layout.bianmin_service_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final TabViewHolde holde = (TabViewHolde) holder;
+        final TabViewHolder holde = (TabViewHolder) holder;
         holde.iv .setImageResource(images[position]);
         holde.name.setText(text[position]);
         holde.itemView.setOnClickListener(new View.OnClickListener() {
@@ -58,14 +60,15 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
         return images.length;
     }
 
-    private static class TabViewHolde extends RecyclerView.ViewHolder {
+    public static class TabViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_bianmin_text)
         TextView name;
+        @BindView(R.id.iv_bianmin_image)
         ImageView iv;
 
-        TabViewHolde(View itemView) {
+        TabViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tv_bianmin_text);
-            iv = itemView.findViewById(R.id.iv_bianmin_image);
+            ButterKnife.bind(this, itemView);
         }
     }
 

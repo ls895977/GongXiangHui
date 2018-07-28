@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,9 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="朋友印象贾浩洋：小程序即可高频还能持久，用完即走无意义"
-            android:textColor="#000"
-            android:textSize="16sp" />
-
+            android:textColor="#282828"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +32,6 @@
                 android:layout_height="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-
                 android:src="@mipmap/ic_test_2" />
 
             <View
@@ -60,10 +57,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 android:src="@mipmap/ic_test_1" />
-
-
         </LinearLayout>
-
 
     </LinearLayout>
 
