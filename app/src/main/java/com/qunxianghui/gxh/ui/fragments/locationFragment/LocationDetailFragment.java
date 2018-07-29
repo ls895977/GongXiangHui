@@ -80,12 +80,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
                 int offset = 5;
                 int keyboardoffset = 80;
-
                 int tabHeight = SPUtils.getInt("tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
                 layoutParams.bottomMargin = height - tabHeight - offset;
                 commentView.setLayoutParams(layoutParams);
-                Logger.i("xxx-yyy scrollOffsetY " + scrollOffsetY);
                 if (item != null) {
                     int[] location = new int[2];
                     item.getLocationOnScreen(location);
@@ -131,9 +129,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 }
                             }, 10);
                         }
-                        break;
-                    case 2:
-                        //System.out.println("recyclerview正在依靠惯性滚动");
                         break;
                 }
             }
