@@ -126,6 +126,14 @@ public class MainActivity extends BaseActivity {
         );
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (!LoginMsgHelper.isLogin(MainActivity.this)) {
+            onViewClicked(mTvHome);
+        }
+    }
+
     @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})
     public void onViewClicked(View view) {
         if (mCurrentView == view) {
@@ -168,12 +176,14 @@ public class MainActivity extends BaseActivity {
                 fragment = mFragments[3];
                 break;
         }
-        if (fragment != null && fragment.isAdded()) {
-            fragmentTransaction.show(fragment).hide(mCurrentFragment);
-            mCurrentFragment = fragment;
-        } else if (fragment != null) {
-            fragmentTransaction.add(R.id.content, fragment).hide(mCurrentFragment);
-            mCurrentFragment = fragment;
+        if (fragment != mCurrentFragment) {
+            if (fragment != null && fragment.isAdded()) {
+                fragmentTransaction.show(fragment).hide(mCurrentFragment);
+                mCurrentFragment = fragment;
+            } else if (fragment != null) {
+                fragmentTransaction.add(R.id.content, fragment).hide(mCurrentFragment);
+                mCurrentFragment = fragment;
+            }
         }
         fragmentTransaction.commitAllowingStateLoss();
     }

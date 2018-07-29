@@ -87,6 +87,7 @@ public class OnekeyIssueDialog extends Dialog {
             public void onDismiss(DialogInterface dialog) {
                 if (mFinalBlurBg != null && !mFinalBlurBg.isRecycled()) {
                     mFinalBlurBg.recycle();
+                    mFinalBlurBg = null;
                 }
             }
         });

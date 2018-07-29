@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import com.qunxianghui.gxh.widget.TitleBuilder;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class ResetPasswordActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.et_resetpassword_newpassword)
@@ -54,13 +52,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     protected void initListeners() {
         super.initListeners();
         btResetpasswordConformPassword.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

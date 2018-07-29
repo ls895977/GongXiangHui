@@ -13,7 +13,6 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.MyViewPager;
 
@@ -21,11 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class GeneralizeFragment extends BaseFragment implements View.OnClickListener {
+public class GeneralizeFragment extends BaseFragment {
 
     @BindView(R.id.ll_genera)
     View mLlGenera;
@@ -41,7 +41,9 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     RadioButton rbGeneraCompany;
 
     @Override
-    public int getLayoutId() { return R.layout.fragment_generalizes; }
+    public int getLayoutId() {
+        return R.layout.fragment_generalizes;
+    }
 
     @Override
     public void initData() {
@@ -57,7 +59,7 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
                 vpGeneralizeMain.setAdapter(adapter);
                 /**增加缓存页面的数量*/
-                vpGeneralizeMain.setOffscreenPageLimit(fragments.size()-1);
+                vpGeneralizeMain.setOffscreenPageLimit(fragments.size() - 1);
                 /**默认显示第一个选项卡*/
                 rgGeneralizeMain.check(R.id.rb_genera_personal);
             } else {
@@ -67,19 +69,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 getChildFragmentManager().beginTransaction().add(R.id.rl_person, new GeneraPersonalFragment()).commit();
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!LoginMsgHelper.isLogin(getContext())) {
-            toActivity(LoginActivity.class);
-            mActivity.finish();
-        }
-    }
-
-    @Override
-    public void initViews(View view) {
     }
 
     @Override
@@ -99,12 +88,6 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
         });
         vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
     }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-        }
-    }
 
     PageChangeListener viewPagerListenter = new PageChangeListener() {
         @Override
@@ -113,15 +96,11 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
                 case 0:
                     rbGeneraPersonal.setChecked(true);
                     rbGeneraCompany.setChecked(false);
-
                     break;
                 case 1:
                     rbGeneraPersonal.setChecked(false);
                     rbGeneraCompany.setChecked(true);
-
-
                     break;
-
             }
         }
     };

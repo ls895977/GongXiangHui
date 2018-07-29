@@ -5,9 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -60,10 +58,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     TextView tvCancel;
     @BindView(R.id.top_bar)
     RelativeLayout topBar;
-    @BindView(R.id.rv_search_result)
-    RecyclerView rvSearchResult;
-    @BindView(R.id.ll_result)
-    LinearLayout llResult;
     @BindView(R.id.rv_search_history)
     RecyclerView rvSearchHistory;
     @BindView(R.id.rv_search_guess)
@@ -102,9 +96,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         //解决嵌套滑动的问题
         rvSearchGuess.setNestedScrollingEnabled(false);
         rvSearchHistory.setNestedScrollingEnabled(false);
-        rvSearchGuess.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvSearchGuess.addItemDecoration(new SpacesItemDecoration(new SpaceSize(20, 12, 20, 12)));
-        rvSearchHistory.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         rvSearchHistory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         StatusBarUtil.setViewTopPadding(this, R.id.top_bar);
     }

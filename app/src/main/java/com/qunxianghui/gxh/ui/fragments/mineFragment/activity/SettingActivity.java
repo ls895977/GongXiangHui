@@ -120,6 +120,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
     }
+
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
@@ -176,7 +177,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 toActivity(MainActivity.class);
                 finish();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,10 +186,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
-        LinearLayout layout = (LinearLayout) v.findViewById(R.id.dialog_view);//加载布局
+        LinearLayout layout = v.findViewById(R.id.dialog_view);//加载布局
         // main.xml中的ImageView
-        ImageView spaceshipImage = (ImageView) v.findViewById(R.id.dialog_img);
-        TextView tipTextView = (TextView) v.findViewById(R.id.tipTextView);// 提示文字
+        ImageView spaceshipImage = v.findViewById(R.id.dialog_img);
+        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
         //加载动画
         final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
         //使用imageView显示动画

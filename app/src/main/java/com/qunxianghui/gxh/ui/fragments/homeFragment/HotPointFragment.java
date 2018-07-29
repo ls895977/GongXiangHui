@@ -187,7 +187,7 @@ public class HotPointFragment extends BaseFragment {
             }
         }, mRv);
         mSw.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        mSw.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSw.setColorSchemeResources(R.color.tab_color, R.color.colorPrimary, R.color.colorPrimaryDark);
         mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

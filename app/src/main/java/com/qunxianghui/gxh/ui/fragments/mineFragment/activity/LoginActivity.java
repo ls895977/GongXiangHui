@@ -296,9 +296,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
     private void doLogin(String phone, String password) {
-
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
-
                 params("mobile", phone).
                 params("password", password).
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {

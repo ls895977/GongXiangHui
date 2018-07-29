@@ -21,7 +21,6 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.GeneralizeCompanyStaticsBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.PageChangeListener;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
@@ -157,8 +156,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
             spCompanymessageEditor.putString("selfcompayname", selfcompayname);
             spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
             spCompanymessageEditor.commit();
-        } else if (generalizeCompanyStaticsBean.getCode() == 1000) {
-            toActivity(LoginActivity.class);
         }
     }
 

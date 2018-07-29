@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -18,16 +19,15 @@
             android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
             <ImageView
                 android:id="@+id/iv_home_search_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
                 android:layout_marginLeft="5dp"
                 android:src="@mipmap/icon_back" />
-
 
             <EditText
                 android:id="@+id/et_search"
@@ -43,7 +43,7 @@
                 android:imeOptions="actionSearch"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tv_cancel"
@@ -75,39 +75,6 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/ll_result"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="搜索结果"
-                    android:textColor="#000000"
-                    android:textSize="20dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_search_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/ll_home_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -116,23 +83,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="搜素历史"
-                        android:textColor="#888696"
-                        android:textSize="15dp" />
+                        android:text="历史搜索"
+                        android:textColor="#7B7B7B"
+                        android:textSize="13sp" />
 
                     <ImageView
                         android:id="@+id/iv_clear_history"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="right"
                         android:layout_marginRight="10dp"
                         android:src="@mipmap/iv_delect" />
@@ -145,7 +114,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="22dp"
                     android:layout_marginRight="22dp"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="15dp"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -153,8 +123,8 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="20dp"
                     android:text="猜你想要的"
-                    android:textColor="#888696"
-                    android:textSize="15dp" />
+                    android:textColor="#7B7B7B"
+                    android:textSize="13dp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_search_guess"
@@ -162,7 +132,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="22dp"
                     android:layout_marginRight="22dp"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="15dp"
+                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                    app:spanCount="2" />
 
             </LinearLayout>
 
