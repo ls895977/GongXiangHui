@@ -1,10 +1,12 @@
 package com.qunxianghui.gxh.adapter;
+
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
+
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
@@ -13,17 +15,11 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments;
     private List<String> mTitles;
 
-    public void setmFragments(List<Fragment> mFragments) {
-        this.mFragments = mFragments;
-    }
-
-    public MainViewPagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
     public MainViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         mFragments = fragments;
     }
+
     public MainViewPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
         super(fm);
         mFragments = fragments;
@@ -32,17 +28,17 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position) ;
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return mFragments==null?0:mFragments.size();
+        return mFragments == null ? 0 : mFragments.size();
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitles==null?"null":mTitles.get(position);
+        return mTitles == null ? "null" : mTitles.get(position);
     }
 }

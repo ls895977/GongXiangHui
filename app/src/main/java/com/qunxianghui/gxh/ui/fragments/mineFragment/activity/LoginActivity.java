@@ -96,7 +96,6 @@ public class LoginActivity extends BaseActivity {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toActivity(MainActivity.class);
                 finish();
             }
         }).setTitleText("用户登录");

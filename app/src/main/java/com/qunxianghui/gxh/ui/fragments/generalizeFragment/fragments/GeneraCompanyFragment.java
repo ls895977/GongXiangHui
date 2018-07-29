@@ -2,12 +2,9 @@ package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -27,14 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/4/3 0003.
  */
 
-public class GeneraCompanyFragment extends BaseFragment implements View.OnClickListener {
+public class GeneraCompanyFragment extends BaseFragment {
+
+
     @BindView(R.id.view_company)
     View viewCompany;
     @BindView(R.id.rb_genera_company_yuebang)
@@ -61,14 +58,8 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
     TextView tvArticleTransmitRate;
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
-    Unbinder unbinder;
 
     private String selfcompayname;
-
-    @Override
-    protected void onLoadData() {
-
-    }
 
     @Override
     public int getLayoutId() {
@@ -95,7 +86,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void initViews(View view) {
-
         /*获取企业推广的数据*/
         HoldReneraCompanyData();
         final List<Fragment> fragments = new ArrayList<>();
@@ -125,7 +115,6 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
                 if (response.body().toString() != null) {
                     parseGeneraLizeStaticsData(response.body());
                 }
-
             }
         });
     }
@@ -177,30 +166,4 @@ public class GeneraCompanyFragment extends BaseFragment implements View.OnClickL
 
     };
 
-    @Override
-    protected void initListeners() {
-        super.initListeners();
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-        }
-    }
 }

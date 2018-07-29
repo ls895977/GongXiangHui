@@ -1,13 +1,14 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
 
 import java.util.List;
@@ -15,41 +16,30 @@ import java.util.List;
 /**
  * 我收藏贴子的适配器
  */
-public class MyGeneralizePersonAdapter extends BaseRecycleViewAdapter<GeneraPersonStaticBean.DataBean> {
-    public MyGeneralizePersonAdapter(Context context, List<GeneraPersonStaticBean.DataBean> datas) {
-        super(context, datas);
+public class MyGeneralizePersonAdapter extends BaseQuickAdapter<GeneraPersonStaticBean.DataBean, BaseViewHolder> {
+
+    private RequestOptions mOptions;
+
+    @SuppressLint("CheckResult")
+    public MyGeneralizePersonAdapter(List<GeneraPersonStaticBean.DataBean> list) {
+        super(R.layout.item_generalize_person, list);
+        mOptions = new RequestOptions();
+        mOptions.placeholder(R.mipmap.default_img)
+                .error(R.mipmap.default_img)
+                .centerCrop();
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, GeneraPersonStaticBean.DataBean dataBean) {
-        final ImageView collectHeadImag = holder.getView(R.id.iv_generalize_person_head);
-        final List<String> images = dataBean.getImages();
-        final int click_cnt = dataBean.getClick_cnt();
-        final String title = dataBean.getTitle();
-        final String ctime = dataBean.getCtime();
-        final int view_cnt = dataBean.getView_cnt();
-        final int share_cnt = dataBean.getShare_cnt();
-
-
-        holder.setText(R.id.tv_generalize_person_click, String.valueOf(click_cnt));
-        holder.setText(R.id.tv_generalize_person_time, ctime);
-        holder.setText(R.id.tv_generalize_person_title, title);
-        holder.setText(R.id.tv_generalize_person_seecount, String.valueOf(view_cnt));
-        holder.setText(R.id.tv_generalize_person_share, String.valueOf(share_cnt));
+    protected void convert(BaseViewHolder helper, GeneraPersonStaticBean.DataBean item) {
+        List<String> images = item.images;
+        helper.setText(R.id.tv_generalize_person_click, item.click_cnt)
+                .setText(R.id.tv_generalize_person_time, item.ctime)
+                .setText(R.id.tv_generalize_person_title, item.title)
+                .setText(R.id.tv_generalize_person_seecount, item.view_cnt)
+                .setText(R.id.tv_generalize_person_share, item.share_cnt);
         if (images.size() >= 1) {
-
-
-            RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.default_img);
-            options.placeholder(R.mipmap.default_img);
-            options.centerCrop();
-            Glide.with(mContext).load(images.get(0)).apply(options).into(collectHeadImag);
+            ImageView img = helper.getView(R.id.iv_generalize_person_head);
+            Glide.with(mContext).load(images.get(0)).apply(mOptions).into(img);
         }
-
-    }
-
-    @Override
-    protected int getItemView() {
-        return R.layout.item_generalize_person;
     }
 }

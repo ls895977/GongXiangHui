@@ -19,6 +19,7 @@ import java.util.List;
  */
 
 public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseViewHolder> {
+
     private List<String> images;
     private RequestOptions options;
 
