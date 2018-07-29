@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -41,15 +42,46 @@
     </RelativeLayout>
 
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/homevideo_tablayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="10dp"
-        app:tabIndicatorColor="@color/tab_color"
-        app:tabSelectedTextColor="@color/tab_color"
-        app:tabTextColor="#000" />
+        android:layout_height="38dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/slidingTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tl:tl_indicator_color="#D81717"
+            tl:tl_indicator_corner_radius="1.5dp"
+            tl:tl_indicator_height="3dp"
+            tl:tl_indicator_width="18dp"
+            tl:tl_indicator_width_equal_title="false"
+            tl:tl_tab_space_equal="false"
+            tl:tl_tab_padding="15dp"
+            tl:tl_textBold="SELECT"
+            tl:tl_textSelectColor="#202020"
+            tl:tl_textUnselectColor="#676767"
+            tl:tl_textsize="13sp" />
+
+        <ImageView
+            android:id="@+id/iv_more_columns"
+            android:layout_width="33dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="10dp"
+            android:src="@mipmap/channel_glide_day_bg" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#E3E3E3"
+        android:layout_height="0.5dp"/>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/home_video_viewpager"
