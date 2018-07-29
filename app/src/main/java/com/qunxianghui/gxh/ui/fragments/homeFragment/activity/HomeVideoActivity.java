@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -26,16 +25,17 @@ import cn.jzvd.JZVideoPlayer;
  * Created by Administrator on 2018/3/24 0024.
  */
 
-public class HomeVideoActivity extends BaseActivity implements View.OnClickListener{
-
+public class HomeVideoActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_home_video_back)
     ImageView ivHomeVideoBack;
     @BindView(R.id.tv_home_video_issue)
     TextView tvHomeVideoIssue;
-
     @BindView(R.id.slidingTabLayout)
     SlidingTabLayout mSlidingTabLayout;
-    ViewPager homeVideoViewpager;
+    @BindView(R.id.iv_more_columns)
+    ImageView mIvMoreColumns;
+    @BindView(R.id.home_video_viewpager)
+    ViewPager mHomeVideoViewpager;
     private String[] titles = new String[]{"实时", "搞笑", "体育", "娱乐"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
@@ -57,9 +57,9 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         fragments.add(new HomeVideoListFragment());
 
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
-        homeVideoViewpager.setAdapter(tabViewPagerAdapter);
-        mSlidingTabLayout.setViewPager(homeVideoViewpager);
-        homeVideoViewpager.setOffscreenPageLimit(fragments.size());
+        mHomeVideoViewpager.setAdapter(tabViewPagerAdapter);
+        mSlidingTabLayout.setViewPager(mHomeVideoViewpager);
+        mHomeVideoViewpager.setOffscreenPageLimit(fragments.size() - 1);
     }
 
     @Override
@@ -67,10 +67,11 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         super.initListeners();
         ivHomeVideoBack.setOnClickListener(this);
         tvHomeVideoIssue.setOnClickListener(this);
+        mIvMoreColumns.setOnClickListener(this);
         mSlidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                homeVideoViewpager.setCurrentItem(position,false);
+                mHomeVideoViewpager.setCurrentItem(position, false);
             }
 
             @Override
@@ -88,6 +89,9 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.tv_home_video_issue:
                 toActivity(LocationActivity.class);
+                break;
+            case R.id.iv_more_columns:
+                asyncShowToast("点击了分类条目");
                 break;
         }
 

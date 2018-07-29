@@ -41,26 +41,19 @@ import butterknife.Unbinder;
  */
 
 public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener, View.OnClickListener {
-
-
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
-    @BindView(R.id.bt_mycollectnews_all_select)
-    Button btMycollectnewsAllSelect;
-    @BindView(R.id.bt_mycollectnews_reverse_select)
-    Button btMycollectnewsReverseSelect;
+
     private List<CollectBean.ListBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
     private final HashMap<Integer, Boolean> map = new HashMap<>();
     private Handler handler = new Handler();
-
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
     private int mMemberId;
-
 
     @Override
     public int getLayoutId() {
@@ -86,7 +79,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                     }
                 });
     }
-
     /**
      * 解析我的收藏列表
      *
@@ -122,7 +114,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
     }
-
     /**
      * 跳转新闻详情页
      *
@@ -152,10 +143,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             intent.putExtra("url", url);
             startActivity(intent);
         }
-
-
     }
-
 
     @Override
     public void initViews(View view) {
@@ -165,9 +153,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     @Override
     protected void initListeners() {
         super.initListeners();
-
-        btMycollectnewsAllSelect.setOnClickListener(this);
-        btMycollectnewsReverseSelect.setOnClickListener(this);
         xrecycler_mine_collect_news.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -217,7 +202,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         builder.setNeutralButton("取消", null);
         builder.show();
     }
-
     /*checkbox选择框的选择*/
 
     /**
@@ -239,28 +223,16 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                             }
                         });
                     }
-
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-
                         Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
-
 
                     }
                 });
     }
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_mycollectnews_all_select:
-
-                break;
-            case R.id.bt_mycollectnews_reverse_select:
-
-                break;
-        }
     }
 }

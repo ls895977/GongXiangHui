@@ -41,7 +41,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private final int STATE_NOT_OVERFLOW = 1;//文本行数小于最大可显示行数
     private final int STATE_COLLAPSED = 2;//折叠状态
     private final int STATE_EXPANDED = 3;//展开状态
-
     private SparseArray<Integer> mTextStateList; //保存文本状态集合
     private RequestOptions options;
 
@@ -64,9 +63,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     @Override
     public void onBindViewHolder(final myViewHolder holder, final int position) {
-
         final int state = mTextStateList.get(position, STATE_UNKNOW);
-
         if (state == STATE_UNKNOW) {
             holder.tv_location_person_content.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
@@ -107,24 +104,19 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
-
         final List<String> imageList = dataBeanList.get(position).getImages();
-
         options = new RequestOptions();
         options.placeholder(R.mipmap.user_moren);
         options.error(R.mipmap.user_moren);
         options.centerCrop();
         Glide.with(mContext).load(dataBeanList.get(position).getMember_avatar()).apply(options).into(holder.iv_location_person_head);
-
         if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
-
             options.placeholder(R.mipmap.default_img);
             options.error(R.mipmap.default_img);
             options.centerCrop();
             Glide.with(mContext).load(imageList.get(0)).apply(options).into(holder.img);
-
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -136,7 +128,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.img.setVisibility(View.GONE);
             LocationGridAdapter adapter = new LocationGridAdapter(mContext, imageList);
             holder.gridLayout.setAdapter(adapter);
-
             adapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
                 @Override
                 public void onClick(View v, int p) {
@@ -196,7 +187,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     case 1:
                         listener.onCollectionClick(position);
                         break;
-
                     case 2://评论
                         if (listener != null) {
                             listener.onCommentClick(position, "");
@@ -238,7 +228,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         } else {
             holder.clickusertext.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -250,7 +239,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     @Override
     public void recommentcontentListener(int position) {
         listener.CommenRecall(position);
-
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder {
@@ -278,7 +266,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
             tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
             tvShoworHide = itemView.findViewById(R.id.tv_show_or_hide);
-
             snsBtn = itemView.findViewById(R.id.snsBtn);
             img = itemView.findViewById(R.id.img);
             snsPopupWindow = new SnsPopupWindow(itemView.getContext());
