@@ -1,10 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -29,14 +25,12 @@ import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
@@ -49,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -66,7 +59,6 @@ public class HotPointFragment extends BaseFragment {
     SwipeRefreshLayout mSw;
 
     private Banner viewpagerHome;
-    private ClipboardManager mClipboardManager;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
@@ -113,7 +105,6 @@ public class HotPointFragment extends BaseFragment {
             });
             homeItemListAdapter.addHeaderView(localLocationView);
         }
-        mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
 //        homeItemListAdapter.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRv, false));
 //        homeItemListAdapter.addFooterView(footer);
     }
@@ -309,24 +300,6 @@ public class HotPointFragment extends BaseFragment {
 
                 }
                 super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @OnClick(R.id.iv_home_paste_artical)
-    public void onViewClicked() {
-        if (!LoginMsgHelper.isLogin(getContext())) {
-            toActivity(LoginActivity.class);
-            return;
-        }
-        //粘贴板有数据并且是文本
-        if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-            final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
-            final CharSequence text = item.getText();
-            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-            intent.putExtra("url", text);
-            startActivity(intent);
-        } else {
-            asyncShowToast("没有找到粘贴的内容");
         }
     }
 }

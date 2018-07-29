@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.config;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.qunxianghui.gxh.base.MyApplication;
@@ -15,14 +14,14 @@ import com.qunxianghui.gxh.utils.SPUtils;
 public class LoginMsgHelper {
 
     //是否登录
-    public static boolean isLogin(Context mContext) {
-        String result = SPUtils.getString(mContext, SpConstant.ACCESS_TOKEN, "");
+    public static boolean isLogin() {
+        String result = SPUtils.getString(SpConstant.ACCESS_TOKEN, "");
         return !TextUtils.isEmpty(result);
     }
 
     //登录退出处理
-    public static void exitLogin(Context mContext) {
-        SPUtils.removePreference(mContext, SpConstant.ACCESS_TOKEN);
+    public static void exitLogin() {
+        SPUtils.removePreference(SpConstant.ACCESS_TOKEN);
         MyApplication.getApp().setAccessToken("");
     }
 

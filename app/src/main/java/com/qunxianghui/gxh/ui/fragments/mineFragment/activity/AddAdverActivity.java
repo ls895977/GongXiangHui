@@ -317,7 +317,7 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_mineFragment_addTopAdver:
-                if (!SPUtils.getBoolean(AddAdverActivity.this, SpConstant.IS_COMPANY, false)) {
+                if (!SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
                     Toast.makeText(AddAdverActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
                     return;
                 }

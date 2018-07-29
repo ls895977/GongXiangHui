@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,11 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.flyco.tablayout.SlidingTabLayout;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.PagerAdapter;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
@@ -66,9 +65,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ImageView ivClearHistory;
     @BindView(R.id.ll_home_search)
     LinearLayout llHomeSearch;
-
     @BindView(R.id.tabs)
-    TabLayout mTabs;
+    SlidingTabLayout mTabs;
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
     @BindView(R.id.ll_search)
@@ -78,12 +76,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @BindView(R.id.iv_home_search_back)
     ImageView ivHomeSearchBack;
 
-
     private String searchText = "";
     private List<String> historyDatas = new ArrayList<>();
     private SimpleTextAdapter historyAdapter;
     private String trim;
-
 
     @Override
     protected int getLayoutId() {
@@ -93,6 +89,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initViews() {
+        mViewpager.setOffscreenPageLimit(2);
         //解决嵌套滑动的问题
         rvSearchGuess.setNestedScrollingEnabled(false);
         rvSearchHistory.setNestedScrollingEnabled(false);
@@ -117,6 +114,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
         initHistories();
     }
+
     /**
      * ==================猜你想要的数据=====================
      */
@@ -132,9 +130,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
         rvSearchGuess.setAdapter(adapter);
     }
+
     /*加载历史记录*/
     private void initHistories() {
-        String histories = SPUtils.getString(mContext, SpConstant.HISTORIES, "");
+        String histories = SPUtils.getString(SpConstant.HISTORIES, "");
         List<String> datas = JsonUtil.fromJsonList(histories, String.class);
         if (datas != null) {
             historyDatas = datas;
@@ -217,8 +216,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         if (clear) {
             //清空历史数据
             historyDatas.clear();
-            SPUtils.removePreference(mContext, SpConstant.HISTORIES);
-
+            SPUtils.removePreference(SpConstant.HISTORIES);
         } else {
             saveHistory(item);
         }
@@ -231,13 +229,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void saveHistory(String item) {
         if (historyDatas.size() == 0) {
             historyDatas.add(item);
-            SPUtils.saveString(mContext, SpConstant.HISTORIES, item);
+            SPUtils.saveString(SpConstant.HISTORIES, item);
         } else {
-
             if (!historyDatas.contains(item)) {
                 historyDatas.add(item);
-                Logger.d("saveHistory-->:" + item);
-                SPUtils.saveString(mContext, SpConstant.HISTORIES, historyDatas.toString());
+                SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
             }
         }
     }
@@ -247,23 +243,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
         String trim = etSearch.getText().toString().trim();
-
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             if (TextUtils.isEmpty(trim)) {
                 ToastUtils.showShortToast(this, "搜索内容不能为空");
             } else {
-
-                if (mViewpager != null) {
-                    setupViewPager(trim);
-                }
+                setupViewPager(trim);
             }
             return true;
         }
         return false;
     }
-
 
     /**
      * ==================初始化fragment=====================
@@ -280,9 +270,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         adapter.addFragment(SearchFragment.newInstance(data, 1), "全网资讯");
         adapter.addFragment(SearchFragment.newInstance(data, 2), "本地圈");
 
-        mViewpager.setOffscreenPageLimit(2);
         mViewpager.setAdapter(adapter);
-        mTabs.setupWithViewPager(mViewpager);
+        mTabs.setViewPager(mViewpager);
     }
 
     /**
@@ -291,7 +280,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     TextWatcher getTextChanged = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
@@ -304,7 +292,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 

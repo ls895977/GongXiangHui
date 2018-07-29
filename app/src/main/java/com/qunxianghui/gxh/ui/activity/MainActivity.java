@@ -1,6 +1,9 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -62,6 +65,8 @@ public class MainActivity extends BaseActivity {
     TextView mTvMine;
     @BindView(R.id.ll_main)
     LinearLayout mLlMain;
+    @BindView(R.id.iv_home_paste_artical)
+    View mIvHomePaster;
 
     private long exitTime;
     private MainBroadCast receiver;
@@ -70,6 +75,7 @@ public class MainActivity extends BaseActivity {
     private Fragment[] mFragments = new Fragment[4];
     private FragmentManager mFragmentManager;
     private OnekeyIssueDialog dialog;
+    private ClipboardManager mClipboardManager;
 
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -91,6 +97,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         receiver = new MainBroadCast() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -130,7 +137,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (!LoginMsgHelper.isLogin(MainActivity.this)) {
+        if (!LoginMsgHelper.isLogin()) {
             onViewClicked(mTvHome);
         } else {
             ((BaseFragment) mFragments[2]).initData();
@@ -138,15 +145,31 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})
+    @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine, R.id.iv_home_paste_artical})
     public void onViewClicked(View view) {
+        if (view.getId() == R.id.iv_home_paste_artical) {
+            if (!LoginMsgHelper.isLogin()) {
+                toActivity(LoginActivity.class);
+                return;
+            }
+            //粘贴板有数据并且是文本
+            if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
+                final CharSequence text = item.getText();
+                Intent intent = new Intent(MainActivity.this, NewsDetailActivity.class);
+                intent.putExtra("url", text);
+                startActivity(intent);
+            } else {
+                asyncShowToast("没有找到粘贴的内容");
+            }
+        }
         if (mCurrentView == view) {
             if (view.getId() == R.id.ll_issue) {
                 showOneKeyIssuePop();
             }
             return;
         }
-        if ((view.getId() == R.id.tv_generation || view.getId() == R.id.tv_mine) && !LoginMsgHelper.isLogin(MainActivity.this)) {
+        if ((view.getId() == R.id.tv_generation || view.getId() == R.id.tv_mine) && !LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             return;
         }
@@ -160,10 +183,12 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = null;
         switch (view.getId()) {
             case R.id.tv_home:
+                mIvHomePaster.setVisibility(View.VISIBLE);
                 mTvHome.setSelected(true);
                 fragment = mFragments[0];
                 break;
             case R.id.tv_location:
+                mIvHomePaster.setVisibility(View.GONE);
                 mTvLocation.setSelected(true);
                 fragment = mFragments[1];
                 break;
@@ -172,10 +197,12 @@ public class MainActivity extends BaseActivity {
                 mTvIssue.setSelected(true);
                 break;
             case R.id.tv_generation:
+                mIvHomePaster.setVisibility(View.GONE);
                 mTvGeneration.setSelected(true);
                 fragment = mFragments[2];
                 break;
             case R.id.tv_mine:
+                mIvHomePaster.setVisibility(View.GONE);
                 mTvMine.setSelected(true);
                 fragment = mFragments[3];
                 break;

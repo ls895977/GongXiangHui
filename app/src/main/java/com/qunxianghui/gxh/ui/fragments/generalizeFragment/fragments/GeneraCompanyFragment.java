@@ -5,16 +5,18 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.TabEntity;
 import com.qunxianghui.gxh.bean.generalize.GeneralizeCompanyStaticsBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.PageChangeListener;
@@ -31,15 +33,8 @@ import butterknife.BindView;
 
 public class GeneraCompanyFragment extends BaseFragment {
 
-
-    @BindView(R.id.view_company)
-    View viewCompany;
-    @BindView(R.id.rb_genera_company_yuebang)
-    RadioButton rbGeneraCompanyYuebang;
-    @BindView(R.id.rb_genera_company_zongbang)
-    RadioButton rbGeneraCompanyZongbang;
-    @BindView(R.id.rg_genera_company_paihang)
-    RadioGroup rgGeneraCompanyPaihang;
+    @BindView(R.id.tabLayout)
+    CommonTabLayout mTabLayout;
     @BindView(R.id.vp_generalize_company_main)
     ViewPager vpGeneralizeCompanyMain;
     @BindView(R.id.tv_generalize_company_money_count)
@@ -59,38 +54,55 @@ public class GeneraCompanyFragment extends BaseFragment {
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
 
+    private String[] mTitles = {"文章", "曝光", "点击", "转发"};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private int[] mIconUnselectIds = {
+            R.mipmap.icon_company_article_selector, R.mipmap.icon_company_exposure_selector,
+            R.mipmap.icon_company_click_selector, R.mipmap.icon_company_transpond_selector};
+    private int[] mIconSelectIds = {
+            R.mipmap.icon_company_article_normal, R.mipmap.icon_company_exposure_normal,
+            R.mipmap.icon_company_click_normal, R.mipmap.icon_company_transpond_normal};
+
     private String selfcompayname;
 
     @Override
     public int getLayoutId() {
-        return R.layout.genera_company;
+        return R.layout.fragment_genera_company;
     }
 
     @Override
     public void initData() {
-        rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_genera_company_yuebang:
-                        vpGeneralizeCompanyMain.setCurrentItem(0, false);
-                        break;
-                    case R.id.rb_genera_company_zongbang:
-                        vpGeneralizeCompanyMain.setCurrentItem(1, false);
-                        break;
-                }
-            }
-        });
-        vpGeneralizeCompanyMain.addOnPageChangeListener(viewPagerListenter);
+//        rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                switch (checkedId) {
+//                    case R.id.rb_genera_company_yuebang:
+//                        vpGeneralizeCompanyMain.setCurrentItem(0, false);
+//                        break;
+//                    case R.id.rb_genera_company_zongbang:
+//                        vpGeneralizeCompanyMain.setCurrentItem(1, false);
+//                        break;
+//                }
+//            }
+//        });
+
     }
 
     @Override
     public void initViews(View view) {
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new TabEntity(mTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
+        }
+        mTabLayout.setTabData(mTabEntities);
         /*获取企业推广的数据*/
         HoldReneraCompanyData();
         final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new MonthFragment());
-        fragments.add(new MonthFragment());
+//        fragments.add(new MonthFragment());
+//        fragments.add(new MonthFragment());
+        fragments.add(new GeneraLizeMonthSortFragment("view_cnt"));
+        fragments.add(new GeneraLizeMonthSortFragment("click_cnt"));
+        fragments.add(new GeneraLizeMonthSortFragment("forward_cnt"));
+        fragments.add(new GeneraLizeMonthSortFragment("article_cnt"));
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
         vpGeneralizeCompanyMain.setAdapter(adapter);
         /** 禁止滑动*/
@@ -98,7 +110,29 @@ public class GeneraCompanyFragment extends BaseFragment {
         /**增加缓存页面的数量*/
         vpGeneralizeCompanyMain.setOffscreenPageLimit(fragments.size() - 1);
         /**默认显示第一个选项卡*/
-        rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
+//        rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
+    }
+
+    @Override
+    protected void initListeners() {
+        mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                vpGeneralizeCompanyMain.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+
+        vpGeneralizeCompanyMain.addOnPageChangeListener(new PageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mTabLayout.setCurrentTab(position);
+            }
+        });
     }
 
     @Override
@@ -144,26 +178,8 @@ public class GeneraCompanyFragment extends BaseFragment {
             SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
             spCompanymessageEditor.putString("selfcompayname", selfcompayname);
             spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
-            spCompanymessageEditor.commit();
+            spCompanymessageEditor.apply();
         }
     }
-
-    /**
-     * ==================viewpager滑动监听=====================
-     */
-    PageChangeListener viewPagerListenter = new PageChangeListener() {
-        @Override
-        public void onPageSelected(int position) {
-
-            if (position == 0) {
-                rbGeneraCompanyYuebang.setChecked(true);
-                rbGeneraCompanyZongbang.setChecked(false);
-            } else {
-                rbGeneraCompanyZongbang.setChecked(true);
-                rbGeneraCompanyYuebang.setChecked(false);
-            }
-        }
-
-    };
 
 }

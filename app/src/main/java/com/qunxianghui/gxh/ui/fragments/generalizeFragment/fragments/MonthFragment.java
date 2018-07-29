@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
+
     @BindView(R.id.genera_company_paihangTablayout_common)
     TabLayout generaCompanyPaihangTablayoutCommon;
     @BindView(R.id.genera_campany_paihang_viewpager)

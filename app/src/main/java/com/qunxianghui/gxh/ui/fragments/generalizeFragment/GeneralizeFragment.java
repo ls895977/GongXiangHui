@@ -26,6 +26,8 @@ import butterknife.BindView;
 
 public class GeneralizeFragment extends BaseFragment {
 
+    @BindView(R.id.view_person)
+    View mViewPerson;
     @BindView(R.id.rl_genera)
     View mLlGenera;
     @BindView(R.id.rl_person)
@@ -49,10 +51,11 @@ public class GeneralizeFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        if (LoginMsgHelper.isLogin(getContext())) {
-            if (SPUtils.getBoolean(getActivity(), SpConstant.IS_COMPANY, false)) {
+        if (LoginMsgHelper.isLogin()) {
+            if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
                 mLlGenera.setVisibility(View.VISIBLE);
                 mVp.setVisibility(View.VISIBLE);
+                mViewPerson.setVisibility(View.GONE);
                 mRlPerson.setVisibility(View.GONE);
                 final List<Fragment> fragments = new ArrayList<>();
                 fragments.add(new GeneraPersonalFragment());
@@ -66,6 +69,7 @@ public class GeneralizeFragment extends BaseFragment {
             } else {
                 mLlGenera.setVisibility(View.GONE);
                 mVp.setVisibility(View.GONE);
+                mViewPerson.setVisibility(View.VISIBLE);
                 mRlPerson.setVisibility(View.VISIBLE);
                 getChildFragmentManager().beginTransaction().add(R.id.rl_person, new GeneraPersonalFragment()).commit();
             }
