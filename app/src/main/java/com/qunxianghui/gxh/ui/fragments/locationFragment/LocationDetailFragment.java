@@ -85,7 +85,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 int offset = 5;
                 int keyboardoffset = 80;
 
-                int tabHeight = SPUtils.getInt(mActivity, "tabHeight", 0);
+                int tabHeight = SPUtils.getInt("tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
                 layoutParams.bottomMargin = height -tabHeight - offset;
                 commentView.setLayoutParams(layoutParams);
@@ -265,7 +265,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
      */
     @Override
     public void onCommentClick(final int position, String content) {
-        if (!LoginMsgHelper.isLogin(getContext())) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
             return;
@@ -343,7 +343,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
-        if (!LoginMsgHelper.isLogin(getContext())) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
             return;

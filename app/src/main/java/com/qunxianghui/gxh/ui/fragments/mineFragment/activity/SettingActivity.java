@@ -172,7 +172,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             final JSONObject jsonObject = new JSONObject(body);
             final int code = jsonObject.getInt("code");
             if (code == 0) {
-                LoginMsgHelper.exitLogin(SettingActivity.this);
+                LoginMsgHelper.exitLogin();
                 asyncShowToast("退出登录成功");
                 toActivity(MainActivity.class);
                 finish();

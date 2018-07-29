@@ -72,10 +72,6 @@ public class GeneraPersonalFragment extends BaseFragment {
             ((TextView) header.findViewById(R.id.tv_generalize_company_des)).setText(data.getAd_prize());
             myGeneralizePersonAdapter.addHeaderView(header);
         }
-    }
-
-    @Override
-    protected void onLoadData() {
         OkGo.<String>post(Constant.GENERALIZE_PERSON_LIST_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {

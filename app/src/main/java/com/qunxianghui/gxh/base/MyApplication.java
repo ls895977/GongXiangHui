@@ -38,10 +38,11 @@ import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
 public class MyApplication extends MultiDexApplication {
+
     private SQLHelper sqlHelper;
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
-    private static MyApplication SINSTANCE;
+    public static MyApplication SINSTANCE;
     private static IWXAPI SWXAPI;
     public static AppManager appManager;
     private String mAccessToken;
@@ -90,8 +91,8 @@ public class MyApplication extends MultiDexApplication {
     }
 
     private void initOkGo() {
-        if (LoginMsgHelper.isLogin(this)) {
-            mAccessToken = SPUtils.getString(this, SpConstant.ACCESS_TOKEN, "");
+        if (LoginMsgHelper.isLogin()) {
+            mAccessToken = SPUtils.getString(SpConstant.ACCESS_TOKEN, "");
         }
         Logger.d("initOkGo-->:" + mAccessToken);
         //全局参数

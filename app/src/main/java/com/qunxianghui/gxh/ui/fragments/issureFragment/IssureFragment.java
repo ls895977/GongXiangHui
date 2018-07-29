@@ -22,10 +22,9 @@ public class IssureFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!LoginMsgHelper.isLogin(getContext())) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
-            return;
         }
     }
 
