@@ -36,7 +36,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.bt_genera_push_company)
     Button btGeneraPushCompany;
     private String selfcompayname;
-    private int staff_cnt;
+    private String staff_cnt;
     private SharedPreferences spCompany;
 
     @Override
@@ -49,7 +49,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
         SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
         selfcompayname = spCompany.getString("selfcompayname", "");
         spCompany = mActivity.getSharedPreferences("companymessage", 0);
-        staff_cnt = spCompany.getInt("staff_cnt", 0);
+        staff_cnt = spCompany.getString("staff_cnt", "0");
         RequestCompanyPushData();
     }
 
@@ -57,8 +57,9 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
     public void onResume() {
         super.onResume();
         tvGenerapushCompanyname.setText(selfcompayname);
-        tvGeneralizeCompanyDes.setText(String.valueOf("规模:" + staff_cnt));
+        tvGeneralizeCompanyDes.setText("规模:" + staff_cnt);
     }
+
     private void RequestCompanyPushData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_PUSH_URL).execute(new StringCallback() {
             @Override
@@ -67,6 +68,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
             }
         });
     }
+
     private void ParseGeneraCompanyData(String body) {
         GeneraLizeCompanyPushBean generaLizeCompanyPushBean = GsonUtils.jsonFromJson(body, GeneraLizeCompanyPushBean.class);
         int code = generaLizeCompanyPushBean.getCode();
@@ -78,9 +80,11 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
             btGeneraPushCompany.setText(company_name);
         }
     }
+
     @Override
     protected void onLoadData() {
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -99,6 +103,7 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
 
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view

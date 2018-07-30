@@ -1,15 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -27,28 +27,30 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class LocationFragment extends BaseFragment implements View.OnClickListener, TabLayout.OnTabSelectedListener {
-    @BindView(R.id.loaction_top_nav)
-    RelativeLayout loactionTopNav;
-    @BindView(R.id.local_view_pager)
-    ViewPager LocalViewPager;
-    @BindView(R.id.location_line_layout)
-    LinearLayout locationLineLayout;
-    @BindView(R.id.loactionn_fragment_relative_layout)
-    LinearLayout loactionnFragmentRelativeLayout;
+public class LocationFragment extends BaseFragment {
 
     @BindView(R.id.tv_localcircle_location)
-    TextView tvLocalcircleLocation;
+    TextView mTvLocalcircleLocation;
+    @BindView(R.id.slidingTabLayout)
+    SlidingTabLayout mSlidingTabLayout;
+    @BindView(R.id.local_view_pager)
+    ViewPager mLocalViewPager;
+
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    @BindView(R.id.localcircle_tablayout)
-    TabLayout localcircleTablayout;
     private String[] titles = new String[]{"实时", "搞笑", "体育", "娱乐"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_location;
+    }
+
+    @Override
+    public void initViews(View view) {
+        super.initViews(view);
+        int height = mSlidingTabLayout.getHeight();
     }
 
     @Override
@@ -59,65 +61,48 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         fragments.add(new LocationDetailFragment());
 
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, titles);
-        LocalViewPager.setAdapter(mineTabViewPagerAdapter);
-        localcircleTablayout.setupWithViewPager(LocalViewPager);
-        LocalViewPager.setOffscreenPageLimit(fragments.size());
-
+        mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
+        mSlidingTabLayout.setViewPager(mLocalViewPager);
+        mLocalViewPager.setOffscreenPageLimit(fragments.size());
     }
 
-    @Override
-    public void initViews(View view) {
-        //设置tabLayout的一个显示方式
-        localcircleTablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //循环注入标签
-        for (String tab : titles) {
-            localcircleTablayout.addTab(localcircleTablayout.newTab().setText(tab));
-        }
-    }
     @Override
     protected void initListeners() {
-        localcircleTablayout.setOnTabSelectedListener(this);
-        tvLocalcircleLocation.setOnClickListener(this);
-    }
+        mSlidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                mLocalViewPager.setCurrentItem(position, false);
+            }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = null;
-        switch (v.getId()) {
-            case R.id.tv_localcircle_location:
-                intent = new Intent(mActivity, AbleNewSearchActivity.class);
-                startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
-                break;
-        }
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
                     String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
-                    tvLocalcircleLocation.setText(city);
+                    mTvLocalcircleLocation.setText(city);
                 }
                 break;
         }
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        LocalViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
+    @OnClick({R.id.tv_localcircle_location, R.id.iv_more_columns})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_localcircle_location:
+                startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
+                break;
+            case R.id.iv_more_columns:
+                break;
+        }
     }
 }
 

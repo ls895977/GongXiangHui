@@ -77,7 +77,7 @@
                 <View style="@style/dividerStyle" />
 
                 <RelativeLayout
-                    android:id="@+id/rl_preson_data"
+                    android:id="@+id/rl_company_card"
                     style="@style/RelativeStyle">
 
                     <TextView

@@ -40,9 +40,6 @@ import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.tencent.mm.opensdk.utils.Log;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,6 @@ import java.util.List;
 import butterknife.BindView;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
-
     NineGridTest2Adapter mAdapter;
     @BindView(R.id.recyclerView_location)
     XRecyclerView recyclerView;
@@ -60,6 +56,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     TextView send_btn;
     @BindView(R.id.location_send_comment_view)
     LinearLayout commentView;
+
     private List<TestMode.DataBean.ListBean> localDataList = new ArrayList<>();
     private boolean mIsFirst = true;
     private int commentPosition;
@@ -80,16 +77,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             @Override
             public void keyBoardShow(int height) {
                 Logger.i("xxx-yyy jump :" + commentPosition);
-                //View item = recyclerView.getChildAt(commentPosition + 1);
                 View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
                 int offset = 5;
                 int keyboardoffset = 80;
-
-                int tabHeight = SPUtils.getInt(mActivity, "tabHeight", 0);
+                int tabHeight = SPUtils.getInt("tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                layoutParams.bottomMargin = height -tabHeight - offset;
+                layoutParams.bottomMargin = height - tabHeight - offset;
                 commentView.setLayoutParams(layoutParams);
-                Logger.i("xxx-yyy scrollOffsetY " + scrollOffsetY);
                 if (item != null) {
                     int[] location = new int[2];
                     item.getLocationOnScreen(location);
@@ -98,16 +92,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     Logger.v("xxx-yyy item " + item);
                     Logger.v("xxx-yyy item height :", item.getMeasuredHeight());
                     Logger.v("xxx-yyy y :" + y);
-
-                    recyclerView.scrollBy(0, (y + item.getMeasuredHeight() - (recyclerView.getMeasuredHeight()  - height) + keyboardoffset));
+                    recyclerView.scrollBy(0, (y + item.getMeasuredHeight() - (recyclerView.getMeasuredHeight() - height) + keyboardoffset));
                 } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
-            }
-
-            public int px2dip(Context context, float pxValue) {
-                final float scale = context.getResources().getDisplayMetrics().density;
-                return (int) (pxValue / scale + 0.5f);
             }
 
             @Override
@@ -119,8 +107,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                //super.onScrolled(recyclerView, dx, dy);
-                //Logger.v("xxx-yyy" + "x :" + dx + "y :" + dy);
+                super.onScrolled(recyclerView, dx, dy);
                 scrollOffsetY = scrollOffsetY + dy;
             }
 
@@ -130,11 +117,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 switch (newState) {
                     case 0:
                         System.out.println("recyclerview已经停止滚动");
-
                         break;
                     case 1:
-                        //System.out.println("recyclerview正在被拖拽");
-                        //System.out.println("value " + getActivity().getWindow().getAttributes().softInputMode);
                         if (getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
                                 || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE) {
                             new Handler().postDelayed(new Runnable() {
@@ -146,9 +130,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             }, 10);
                         }
                         break;
-                    case 2:
-                        //System.out.println("recyclerview正在依靠惯性滚动");
-                        break;
                 }
             }
         });
@@ -158,8 +139,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void initViews(View view) {
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-
-
     }
 
     private void RequestLocationData() {
@@ -218,25 +197,27 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         return rootView;
     }
+
     @Override
     protected void onLoadData() {
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
     }
+
     @Override
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
-
             case R.id.tv_alertbottom_up_pic:
                 toActivity(PublishActivity.class);
                 break;
-
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -265,7 +246,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
      */
     @Override
     public void onCommentClick(final int position, String content) {
-        if (!LoginMsgHelper.isLogin(getContext())) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
             return;
@@ -275,11 +256,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         comment_edit.setFocusable(true);
         comment_edit.setFocusableInTouchMode(true);
         comment_edit.requestFocus();
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE|
-
-
-
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,10 +264,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 if (comment_edit.getText().toString().length() <= 0) {
                     Toast.makeText(getActivity(), "请输入评论内容", Toast.LENGTH_LONG).show();
                 } else {
-                    final int uuid = localDataList.get(position-1).getUuid();
+                    final int uuid = localDataList.get(position - 1).getUuid();
                     if (localDataList.get(position).getComment_res().size() <= 0) {
                         localDataList.get(position).setComment_res(new ArrayList<CommentBean>());
-                        //Toast.makeText(getActivity(),"username :" + dataList.get(position).getMember_name() + " position: " + position  + "origin :" + dataList.get(position).getContent() ,Toast.LENGTH_LONG).show();
                     }
                     List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
                     CommentBean comment = new CommentBean();
@@ -314,8 +290,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                     }
                                 }
                             });
-
-
                 }
             }
         });
@@ -329,21 +303,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         }
     }
 
-    void requestCommentList(int uuid) {
-        OkGo.<String>post(Constant.COMMENT_LIST)
-                .params("uuid", uuid)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        Log.e(TAG, "onSuccess: -----------------------" + response.body());
-                    }
-                });
-    }
-
     //接口回调之 点赞
     @Override
     public void onLaunClick(final int position) {
-        if (!LoginMsgHelper.isLogin(getContext())) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
             return;
@@ -364,9 +327,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-
-                    //Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
-                    //Handler haner = new Handler()
                 }
 
                 @Override
@@ -382,7 +342,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 public void onSuccess(Response<String> response) {
 
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
                     UserUtil user = UserUtil.getInstance();
                     like.setMember_name(user.mNick);
                     if (like.getMessage().equalsIgnoreCase("点赞成功")) {
@@ -413,7 +372,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 @Override
                 public void onError(Response<String> response) {
                     super.onError(response);
-                   asyncShowToast("登陆账号异常");
+                    asyncShowToast("登陆账号异常");
 
 
                 }
@@ -442,25 +401,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void CommenRecall(final int position) {
         asyncShowToast("用户回复评论" + position);
-
-
-    }
-
-
-    /*解析删除的内容*/
-    private void parseDeletePostAData(String body, int position) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            int code = jsonObject.getInt("code");
-            if (code == 0) {
-                localDataList.remove(position);
-                mAdapter.notifyDataSetChanged();
-                asyncShowToast("删除成功");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static LocationFragment getInstance() {

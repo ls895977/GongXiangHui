@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -91,9 +93,9 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
         int tag = intent.getIntExtra("tag", 0);
-        if (tag==1){
+        if (tag == 1) {
             tvNewsdetailIssue.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tvNewsdetailIssue.setVisibility(View.GONE);
         }
 
@@ -130,12 +132,14 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 }
             }
         });
+
+
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
-                return true;
+                return false;
             }
 
             @Override
@@ -161,6 +165,23 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                     }
                 }
                 return false;
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                super.onReceivedSslError(view, handler, error);
+                Log.d("onReceivedSslError: ",""+error.getPrimaryError());
+                if (error.getPrimaryError() == SslError.SSL_DATE_INVALID
+                        || error.getPrimaryError() == SslError.SSL_EXPIRED
+                        || error.getPrimaryError() == SslError.SSL_INVALID
+                        || error.getPrimaryError() == SslError.SSL_UNTRUSTED) {
+
+                    handler.proceed();
+
+                } else {
+                    handler.cancel();
+                }
+
             }
         });
         webView.loadUrl(url);
@@ -198,7 +219,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     protected void initListeners() {
         super.initListeners();
         ivWebback.setOnClickListener(this);
-            tvNewsdetailIssue.setOnClickListener(this);
+        tvNewsdetailIssue.setOnClickListener(this);
     }
 
     @Override
@@ -210,7 +231,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_webback:
                 finish();
                 break;

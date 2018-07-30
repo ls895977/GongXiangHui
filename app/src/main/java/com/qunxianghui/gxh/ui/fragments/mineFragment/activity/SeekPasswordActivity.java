@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -26,13 +25,13 @@ import com.qunxianghui.gxh.widget.TitleBuilder;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/15 0015.
  */
 
 public class SeekPasswordActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.bt_seek_password_next)
     Button btSeekPasswordNext;
     @BindView(R.id.et_seekPassword_phoneNumber)
@@ -64,13 +63,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
         btSeekPasswordNext.setOnClickListener(this);
         etSeekPasswordPhoneNumber.setOnClickListener(this);
         tvSeekPasswordCode.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

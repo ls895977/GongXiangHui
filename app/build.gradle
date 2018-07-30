@@ -6,8 +6,8 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.qunxianghui.gxh"
-        minSdkVersion 16
         targetSdkVersion 27
+        minSdkVersion 17
         versionCode 1
         versionName "1.0"
         multiDexEnabled=true
@@ -51,37 +51,24 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-
     //新添加的库
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.jakewharton:butterknife:8.8.1'
-
-    //butterknife
+    //okgo
     implementation 'com.lzy.net:okgo:3.0.4'
-
     //compile 'com.bigkoo:convenientbanner:2.0.5'
-    implementation 'com.youth.banner:banner:1.4.10'
-
     //轮播图三方库
     implementation 'pub.devrel:easypermissions:0.1.7'
-
-    //    compile 'com.google.zxing:core:3.2.1'//扫描二维码
-
-    //谷歌的zxing库
-    implementation 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
-    //bingoogolapple的库
-    implementation 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
+    implementation 'com.youth.banner:banner:1.4.10'
     implementation 'com.lovedise:permissiongen:0.0.6'
     implementation 'com.android.support:recyclerview-v7:27+'
     implementation 'com.android.support:design:27.1.1'
 
-    //图片处理
+    //图片处理 卡片图片
     implementation 'com.android.support:cardview-v7:27.1.1'
-    //卡片图片
     //Gson解析
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.8'

@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.adapter.homeAdapter;
 
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 
 import com.qunxianghui.gxh.db.ChannelItem;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.HotPointFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,20 +22,25 @@ import java.util.List;
 
 public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> mFragments;
+    private List<Fragment> mFragments = new ArrayList<>();
     private FragmentManager mFm;
     private List<ChannelItem> mTitleList;
 
-    public NewsFragmentPagerAdapter(FragmentManager mFm) {
+    public NewsFragmentPagerAdapter(FragmentManager mFm,List<ChannelItem> titleList) {
         super(mFm);
         this.mFm = mFm;
-    }
-
-    public NewsFragmentPagerAdapter(FragmentManager mFm, ArrayList<Fragment> fragments, List<ChannelItem> titleList) {
-        super(mFm);
-        this.mFm = mFm;
-        this.mFragments = fragments;
         this.mTitleList = titleList;
+        int count = mTitleList.size();
+        HotPointFragment newFragment;
+        Bundle bundle;
+        for (int i = 0; i < count; i++) {
+            newFragment = new HotPointFragment();
+            bundle = new Bundle();
+            bundle.putInt("channel_id", mTitleList.get(i).getId());
+            bundle.putString("channel_name", mTitleList.get(i).getName());
+            newFragment.setArguments(bundle);
+            mFragments.add(newFragment);
+        }
     }
 
     @Override
@@ -43,6 +50,7 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         return mFragments.get(position);
     }
 

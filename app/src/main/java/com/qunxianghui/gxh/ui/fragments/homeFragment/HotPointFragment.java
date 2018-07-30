@@ -1,24 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,22 +18,19 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
-import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter1;
+import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.bean.home.MoreTypeBean;
-import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
@@ -56,9 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import kr.co.namee.permissiongen.PermissionGen;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -67,40 +51,29 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class HotPointFragment extends BaseFragment implements View.OnClickListener {
+public class HotPointFragment extends BaseFragment {
 
-    @BindView(R.id.swip)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.recyclerview_list)
-    RecyclerView recyclerviewList;
-    @BindView(R.id.ll_home_paste_artical)
-    LinearLayout llHomePasteArtical;
-    private ArrayList<Integer> localImages = new ArrayList<Integer>();
-    private List<MoreTypeBean> mDatas;
-    Unbinder unbinder;
+    @BindView(R.id.rv)
+    RecyclerView mRv;
+    @BindView(R.id.sw)
+    SwipeRefreshLayout mSw;
+
     private Banner viewpagerHome;
-    private ClipboardManager mClipboardManager;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
     private int[] images = {R.mipmap.home_top_tianqi, R.mipmap.home_top_video, R.mipmap.home_top_life_circle
             , R.mipmap.home_top_saler, R.mipmap.home_top_bian_min,};
     private String[] iconName = {"天气", "视频汇", "本地服务", "精选", "便民"};
-    private HomeItemListAdapter1 homeItemListAdapter1;
-    private View headerNavigator;
-    private View footer;
-    private View headerVp;
+    private HomeItemListAdapter homeItemListAdapter;
     private List<HomeNewListBean> dataList = new ArrayList<>();
-    private int count = 0;
-    private int total = 0;
+    private int mCount = 0;
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
-    private View localLocationView;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_hot_point;
     }
 
     @SuppressLint("NewApi")
@@ -109,217 +82,131 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
         }
-        recyclerviewList.setLayoutManager(new LinearLayoutManager(mActivity));
-        footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, recyclerviewList, false);
+//        View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, mRv, false);
+        homeItemListAdapter = new HomeItemListAdapter();
+        homeItemListAdapter.setNewData(dataList);
         if (mChannelId == -1) {
-            headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, recyclerviewList, false);
+            View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, mRv, false);
             grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
-            headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, recyclerviewList, false);
+            View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, mRv, false);
             viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
-            //加載首頁那个导航图
-            initGridHomeNavigator();
-            //加载首页轮播图
-            initLunBoShow();
-        } else if (mChannelId == 0) {
-            localLocationView = LayoutInflater.from(mActivity).inflate(R.layout.home_local_location, null);
+            //加載首頁那个导航图//加载首页轮播图
+            initGuideAndBanner();
+            homeItemListAdapter.addHeaderView(headerNavigator);
+            homeItemListAdapter.addHeaderView(headerVp, 1);
+        } else if ("本地".equals(getArguments().getString("channel_name"))) {
+            View localLocationView = LayoutInflater.from(mActivity).inflate(R.layout.home_local_location, null);
             mhomeLocalLocation = localLocationView.findViewById(R.id.tv_home_local_location);
             mhomeLocalLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mActivity, AbleNewSearchActivity.class);
-                    startActivityForResult(intent, CITY_SELECT_RESULT_FRAG);
+                    startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
                 }
             });
+            homeItemListAdapter.addHeaderView(localLocationView);
         }
-        View empty = LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, recyclerviewList, false);
-        //这句是调取粘贴的系统服务
-        mClipboardManager = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-        PermissionGen.needPermission(HotPointFragment.this, 105,
-                new String[]{
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                }
-        );
+//        homeItemListAdapter.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRv, false));
+//        homeItemListAdapter.addFooterView(footer);
     }
 
     @Override
     public void initData() {
-        mDatas = new ArrayList<>();
-        //请求数据
-        parseData();
-        homeItemListAdapter1 = new HomeItemListAdapter1();
-        homeItemListAdapter1.setNewData(dataList);
-        if (mChannelId == -1) {
-            homeItemListAdapter1.addHeaderView(headerNavigator);
-            homeItemListAdapter1.addHeaderView(headerVp, 1);
-        } else if (mChannelId == 0) {
-            homeItemListAdapter1.addHeaderView(localLocationView);
-        }
-        homeItemListAdapter1.addFooterView(footer);
-        //上拉加载更多哦
-        homeItemListAdapter1.setLoadMoreView(new CustomLoadMoreView());
-        homeItemListAdapter1.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        parseData();
-                    }
-                }, 1000);
-
-            }
-        }, recyclerviewList);
-
-        //下来刷新
-        // 设置下拉进度的背景颜色，默认就是白色的
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        // 设置下拉进度的主题颜色
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-        // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 开始刷新，设置当前为刷新状态
-                        swipeRefreshLayout.setRefreshing(true);
-                        count = 0;
-//                        parseData();
-                        //首页下拉刷新
-                        HomePullRefresh();
-                    }
-
-                }, 1000);
-                Display display = mActivity.getWindowManager().getDefaultDisplay();
-                int height = display.getHeight();
-                Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, height / 8);
-                toast.show();
-            }
-        });
-//        //设置加载出来看的动画
-        homeItemListAdapter1.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-        recyclerviewList.setAdapter(homeItemListAdapter1);
-    }
-    /**
-     * 首页下拉刷新 新的接口
-     */
-    private void HomePullRefresh() {
-        OkGo.<LzyResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
-                .params("channel_id", mChannelId)
-                .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
-                    @Override
-                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code == 0) {
-                            if (swipeRefreshLayout != null) {
-                                swipeRefreshLayout.setRefreshing(false);
-                                List<HomeNewListBean> list = response.body().data;
-                                if (list == null || list.size() == 0) {
-                                    homeItemListAdapter1.loadMoreEnd();
-                                    return;
-                                } else {
-                                    dataList.clear();
-                                    dataList.addAll(list);
-                                    total = dataList.size();
-                                    if (count + 10 <= total) {
-                                        count += 10;
-                                        homeItemListAdapter1.loadMoreComplete();
-                                    } else {
-                                        homeItemListAdapter1.loadMoreEnd();
-                                    }
-                                }
-                                homeItemListAdapter1.notifyDataSetChanged();
-                            }
-
-                        }
-                    }
-                });
-    }
-    /**
-     * 加载轮播图
-     */
-    private void initLunBoShow() {
-        OkGo.<String>get(Constant.HOME_PAGE_LUNBO_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseHomeLunBoPager(response.body());
-            }
-        });
-    }
-
-    private void parseHomeLunBoPager(String body) {
-        final HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
-
-        if (homeLunBoBean.getCode() == 0) {
-            final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
-            //轮播图的标题
-            List<String> titles = new ArrayList<>();
-            //轮播图的图片
-            List<String> imags = new ArrayList<>();
-            String image_src;
-            String title;
-            for (int i = 0; i < lunboData.size(); i++) {
-                image_src = lunboData.get(i).getImage_src();  //图片
-                title = lunboData.get(i).getTitle();        //title
-//                //轮播图跳转的url
-//                image_url = lunboData.get(i).getImage_url();
-                imags.add(image_src);
-                titles.add(title);
-            }
-            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
-                    .setBannerTitles(titles)
-                    .setDelayTime(3000)
-                    .setBannerAnimation(Transformer.Tablet)
-                    .setImageLoader(new GlideImageLoader())
-                    .setOnBannerListener(new OnBannerListener() {
-                        @Override
-                        public void OnBannerClick(int position) {
-                            Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                            intent.putExtra("url", lunboData.get(position).getImage_url());
-                            startActivity(intent);
-                        }
-                    })
-                    .start();
-        }
-    }
-
-    private void parseData() {
         //首页新闻数据
         OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
                 .params("limit", 12)
-                .params("skip", count)
+                .params("skip", mCount)
                 .params("channel_id", mChannelId)
-                .execute(new DialogCallback<LzyResponse<List<HomeNewListBean>>>(getActivity()) {
+                .execute(new JsonCallback<LzyResponse<List<HomeNewListBean>>>() {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code == 0) {
-                            swipeRefreshLayout.setRefreshing(false);
-                            List<HomeNewListBean> list = response.body().data;
-                            if (list == null || list.size() == 0) {
-                                homeItemListAdapter1.loadMoreEnd();
-                                return;
-                            } else {
-                                if (count == 0) {
-                                    dataList.clear();
-                                }
-                                dataList.addAll(list);
-                                total = dataList.size();
-                                if (count + 10 <= total) {
-                                    count += 10;
-                                    homeItemListAdapter1.loadMoreComplete();
-                                } else {
-                                    homeItemListAdapter1.loadMoreEnd();
-                                }
-                            }
-                            homeItemListAdapter1.notifyDataSetChanged();
-                        }
+                        setData(response);
                     }
                 });
     }
 
-    private void initGridHomeNavigator() {
+    /**
+     * 首页下拉刷新 新的接口
+     */
+    private void homePullRefresh() {
+        OkGo.<LzyResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
+                .params("channel_id", mChannelId)
+                .execute(new JsonCallback<LzyResponse<List<HomeNewListBean>>>() {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                        mSw.setRefreshing(false);
+                        setData(response);
+                        Display display = mActivity.getWindowManager().getDefaultDisplay();
+                        int height = display.getHeight();
+                        Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.TOP, 0, height / 8);
+                        toast.show();
+                    }
+                });
+    }
+
+    private void setData(Response<LzyResponse<List<HomeNewListBean>>> response){
+        if (response.body().code == 0) {
+            List<HomeNewListBean> list = response.body().data;
+            if (list == null || list.size() == 0) {
+                homeItemListAdapter.loadMoreEnd();
+            } else {
+                if (mCount == 0) {
+                    dataList.clear();
+                }
+                dataList.addAll(list);
+                int total = dataList.size();
+                if (mCount + 10 <= total) {
+                    mCount += 10;
+                    homeItemListAdapter.loadMoreComplete();
+                } else {
+                    homeItemListAdapter.loadMoreEnd();
+                }
+            }
+        } else {
+            homeItemListAdapter.loadMoreEnd();
+        }
+        homeItemListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void initListeners() {
+        homeItemListAdapter.setLoadMoreView(new CustomLoadMoreView());
+        homeItemListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                initData();
+            }
+        }, mRv);
+        mSw.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        mSw.setColorSchemeResources(R.color.tab_color, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mCount = 0;
+                //首页下拉刷新
+                homePullRefresh();
+            }
+        });
+//        //设置加载出来看的动画
+        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        mRv.setAdapter(homeItemListAdapter);
+        //对列表设置点击事件
+        homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                HomeNewListBean homeNewListBean = dataList.get(position);
+                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", homeNewListBean.getUrl());
+                intent.putExtra("uuid", homeNewListBean.getUuid());
+                intent.putExtra("id", homeNewListBean.getId());
+                intent.putExtra("title", homeNewListBean.getTitle());
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    private void initGuideAndBanner() {
         BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
         homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
@@ -359,76 +246,47 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 }
             }
         });
-    }
 
-    @Override
-    protected void initListeners() {
-        llHomePasteArtical.setOnClickListener(this);
-        //对列表设置点击事件
-        homeItemListAdapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        OkGo.<String>get(Constant.HOME_PAGE_LUNBO_URL).execute(new StringCallback() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                final String url = dataList.get(position).getUrl();
-                final int uuid = dataList.get(position).getUuid();
-                final int id = dataList.get(position).getId();
-                final String title = dataList.get(position).getTitle();
-
-                final Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", url);
-                intent.putExtra("uuid", uuid);
-                intent.putExtra("id", id);
-                intent.putExtra("title", title);
-                startActivity(intent);
+            public void onSuccess(Response<String> response) {
+                parseHomeLunBoPager(response.body());
             }
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mActivity.finish();
-    }
-
-    /**
-     * 粘贴文章的处理
-     *
-     * @param v
-     */
-    @SuppressLint("NewApi")
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ll_home_paste_artical:
-                if (!LoginMsgHelper.isLogin(getContext())) {
-                    toActivity(LoginActivity.class);
-                    mActivity.finish();
-                    return;
-                }
-                //粘贴板有数据并且是文本
-                if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
-                    final CharSequence text = item.getText();
-                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                    intent.putExtra("url", text);
-                    startActivity(intent);
-                } else {
-                    asyncShowToast("没有找到粘贴的内容");
-                }
-                break;
+    private void parseHomeLunBoPager(String body) {
+        HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
+        if (homeLunBoBean.getCode() == 0) {
+            final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
+            //轮播图的标题
+            List<String> titles = new ArrayList<>();
+            //轮播图的图片
+            List<String> imags = new ArrayList<>();
+            String image_src;
+            String title;
+            for (int i = 0; i < lunboData.size(); i++) {
+                image_src = lunboData.get(i).getImage_src();  //图片
+                title = lunboData.get(i).getTitle();        //title
+//                //轮播图跳转的url
+//                image_url = lunboData.get(i).getImage_url();
+                imags.add(image_src);
+                titles.add(title);
+            }
+            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+                    .setBannerTitles(titles)
+                    .setDelayTime(3000)
+                    .setBannerAnimation(Transformer.Tablet)
+                    .setImageLoader(new GlideImageLoader())
+                    .setOnBannerListener(new OnBannerListener() {
+                        @Override
+                        public void OnBannerClick(int position) {
+                            Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                            intent.putExtra("url", lunboData.get(position).getImage_url());
+                            startActivity(intent);
+                        }
+                    })
+                    .start();
         }
     }
 
@@ -444,5 +302,4 @@ public class HotPointFragment extends BaseFragment implements View.OnClickListen
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 }

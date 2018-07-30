@@ -1,38 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#D81717" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/xrecycler_genera_personal_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
-            android:layout_marginTop="70dp" />
-
-    </LinearLayout>
+        android:layout_height="100dp"
+        android:background="#D81717" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_white_bg"
         android:orientation="vertical">
@@ -47,17 +28,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="节省广告费(元)" />
+                android:text="节省广告费(元)"
+                android:textColor="#2B2B2B" />
 
             <TextView
                 android:id="@+id/tv_generalize_company_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:text="8.00"
                 android:textColor="@color/app_style_color"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                tools:text="8.00" />
         </LinearLayout>
 
         <LinearLayout
@@ -79,20 +60,25 @@
                     android:id="@+id/tv_genera_person_exposure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="50"
-                    android:textColor="@color/app_style_color" />
+                    android:textColor="@color/app_style_color"
+                    android:textSize="14sp"
+                    tools:text="50" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="总曝光" />
+                    android:layout_marginTop="5dp"
+                    android:text="总曝光"
+                    android:textColor="#2B2B2B"
+                    android:textSize="12sp" />
 
             </LinearLayout>
+
             <View
-                android:background="@mipmap/ic_genera_splite"
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:background="@mipmap/ic_genera_splite" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -105,22 +91,26 @@
                     android:id="@+id/tv_genera_person_click_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20"
-                    android:textColor="@color/app_style_color" />
+                    android:textColor="@color/app_style_color"
+                    android:textSize="14sp"
+                    tools:text="20" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="总点击" />
+                    android:layout_marginTop="5dp"
+                    android:text="总点击"
+                    android:textColor="#2B2B2B"
+                    android:textSize="12sp" />
 
 
             </LinearLayout>
 
             <View
-                android:background="@mipmap/ic_genera_splite"
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:background="@mipmap/ic_genera_splite" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -133,20 +123,25 @@
                     android:id="@+id/tv_genera_person_transmit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20"
-                    android:textColor="@color/app_style_color" />
+                    android:textColor="@color/app_style_color"
+                    android:textSize="14sp"
+                    tools:text="20" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="总转发" />
+                    android:layout_marginTop="5dp"
+                    android:text="总转发"
+                    android:textColor="#2B2B2B"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <View
-                android:background="@mipmap/ic_genera_splite"
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:background="@mipmap/ic_genera_splite" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -155,22 +150,23 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20.00%"
-                    android:textColor="@color/app_style_color" />
-
-                <TextView
                     android:id="@+id/tv_genera_person_click_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="总点击率" />
+                    android:textColor="@color/app_style_color"
+                    android:textSize="14sp"
+                    tools:text="20.00%" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="总点击率"
+                    android:textColor="#2B2B2B"
+                    android:textSize="12sp" />
 
             </LinearLayout>
-
         </LinearLayout>
-
     </RelativeLayout>
 
-
-</FrameLayout>
+</RelativeLayout>

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +27,7 @@ import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertisConmmengtActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
@@ -40,6 +43,7 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -49,8 +53,6 @@ import butterknife.Unbinder;
 
 public class MineFragment extends BaseFragment {
 
-    @BindView(R.id.rl_preson_data)
-    RelativeLayout rlMessageGather;
     @BindView(R.id.rl_mine_message)
     RelativeLayout rlMineCollect;
     @BindView(R.id.mine_fabu)
@@ -72,7 +74,6 @@ public class MineFragment extends BaseFragment {
     TextView mineQuicklyLogin;
     @BindView(R.id.tv_mine_addlike_count)
     TextView tvMineAddlikeCount;
-    Unbinder unbinder;
     @BindView(R.id.tv_mine_post_count)
     TextView tvMinePostCount;
     @BindView(R.id.tv_mine_follow_post_count)
@@ -89,6 +90,9 @@ public class MineFragment extends BaseFragment {
     RelativeLayout rlMinePersonData;
     @BindView(R.id.ll_mine_mycollect)
     LinearLayout llMineMycollect;
+    @BindView(R.id.rl_company_card)
+    RelativeLayout mrlCompanyCard;
+    Unbinder unbinder1;
     private UserDao userDao;
     private int userSize;
     private String mAvatar;//头像
@@ -190,19 +194,20 @@ public class MineFragment extends BaseFragment {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        if (code==1000){
+                        if (code == 1000) {
                             asyncShowToast("您的账号在异地登录");
                         }
                     }
                 });
     }
 
-    @OnClick({R.id.rl_preson_data, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
+    @OnClick({R.id.rl_company_card, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
             R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
-            case R.id.rl_preson_data:
+            case R.id.rl_company_card:
+                toActivity(CompanyCardActivity.class);
 
                 break;
             case R.id.rl_mine_message:
@@ -277,4 +282,17 @@ public class MineFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder1 = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder1.unbind();
+    }
 }

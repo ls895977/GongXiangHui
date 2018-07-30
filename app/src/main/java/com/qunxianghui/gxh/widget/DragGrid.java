@@ -376,7 +376,7 @@ public class DragGrid extends GridView {
         int dPosition = pointToPosition(x, y);
         // 判断是从第几个索引开始可以拖拽移动
         if (dPosition > 0) {
-            if ((dPosition == -1) || (dPosition == dragPosition)) {
+            if (dPosition == dragPosition || dPosition == 1) {
                 return;
             }
             dropPosition = dPosition;

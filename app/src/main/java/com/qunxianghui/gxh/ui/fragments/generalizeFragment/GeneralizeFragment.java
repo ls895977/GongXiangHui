@@ -1,68 +1,75 @@
 package com.qunxianghui.gxh.ui.fragments.generalizeFragment;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
+import com.flyco.tablayout.SegmentTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
-import com.qunxianghui.gxh.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
 /**
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class GeneralizeFragment extends BaseFragment implements View.OnClickListener {
+public class GeneralizeFragment extends BaseFragment {
 
-    @BindView(R.id.ll_genera)
+    @BindView(R.id.view_person)
+    View mViewPerson;
+    @BindView(R.id.rl_genera)
     View mLlGenera;
     @BindView(R.id.rl_person)
     View mRlPerson;
-    @BindView(R.id.rg_generalize_main)
-    RadioGroup rgGeneralizeMain;
-    @BindView(R.id.vp_generalize_main)
-    MyViewPager vpGeneralizeMain;
-    @BindView(R.id.rb_genera_personal)
-    RadioButton rbGeneraPersonal;
-    @BindView(R.id.rb_genera_company)
-    RadioButton rbGeneraCompany;
+    @BindView(R.id.segment_tab)
+    SegmentTabLayout mSegmentTab;
+    @BindView(R.id.vp)
+    ViewPager mVp;
+
+    private String[] mTitles = {"个人", "企业"};
 
     @Override
-    public int getLayoutId() { return R.layout.fragment_generalizes; }
+    public int getLayoutId() {
+        return R.layout.fragment_generalizes;
+    }
+
+    @Override
+    public void initViews(View view) {
+        mSegmentTab.setTabData(mTitles);
+    }
 
     @Override
     public void initData() {
-        if (LoginMsgHelper.isLogin(getContext())) {
-            if (SPUtils.getBoolean(getActivity(), SpConstant.IS_COMPANY, false)) {
+        if (LoginMsgHelper.isLogin()) {
+            if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
                 mLlGenera.setVisibility(View.VISIBLE);
-                vpGeneralizeMain.setVisibility(View.VISIBLE);
+                mVp.setVisibility(View.VISIBLE);
+                mViewPerson.setVisibility(View.GONE);
                 mRlPerson.setVisibility(View.GONE);
                 final List<Fragment> fragments = new ArrayList<>();
                 fragments.add(new GeneraPersonalFragment());
                 fragments.add(new GeneraCompanyFragment());
 
                 MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
-                vpGeneralizeMain.setAdapter(adapter);
+                mVp.setAdapter(adapter);
                 /**增加缓存页面的数量*/
-                vpGeneralizeMain.setOffscreenPageLimit(fragments.size()-1);
+                mVp.setOffscreenPageLimit(fragments.size() - 1);
                 /**默认显示第一个选项卡*/
-                rgGeneralizeMain.check(R.id.rb_genera_personal);
             } else {
                 mLlGenera.setVisibility(View.GONE);
-                vpGeneralizeMain.setVisibility(View.GONE);
+                mVp.setVisibility(View.GONE);
+                mViewPerson.setVisibility(View.VISIBLE);
                 mRlPerson.setVisibility(View.VISIBLE);
                 getChildFragmentManager().beginTransaction().add(R.id.rl_person, new GeneraPersonalFragment()).commit();
             }
@@ -70,60 +77,34 @@ public class GeneralizeFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (!LoginMsgHelper.isLogin(getContext())) {
-            toActivity(LoginActivity.class);
-            mActivity.finish();
-        }
-    }
-
-    @Override
-    public void initViews(View view) {
-    }
-
-    @Override
     protected void initListeners() {
-        rgGeneralizeMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        mSegmentTab.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_genera_personal:
-                        vpGeneralizeMain.setCurrentItem(0, false);
-                        break;
-                    case R.id.rb_genera_company:
-                        vpGeneralizeMain.setCurrentItem(1, false);
-                        break;
-                }
+            public void onTabSelect(int position) {
+                mVp.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
             }
         });
-        vpGeneralizeMain.addOnPageChangeListener(viewPagerListenter);
-    }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
 
-        }
-    }
+        mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
-    PageChangeListener viewPagerListenter = new PageChangeListener() {
-        @Override
-        public void onPageSelected(int position) {
-            switch (position) {
-                case 0:
-                    rbGeneraPersonal.setChecked(true);
-                    rbGeneraCompany.setChecked(false);
+            @Override
+            public void onPageSelected(int position) {
+                mSegmentTab.setCurrentTab(position);
+            }
 
-                    break;
-                case 1:
-                    rbGeneraPersonal.setChecked(false);
-                    rbGeneraCompany.setChecked(true);
-
-
-                    break;
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
-        }
-    };
+        });
+    }
 
 }

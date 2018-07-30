@@ -192,7 +192,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
      */
     @Override
     public void onLaunLikeClick(final int position) {
-        if (!LoginMsgHelper.isLogin(getContext())) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
             return;

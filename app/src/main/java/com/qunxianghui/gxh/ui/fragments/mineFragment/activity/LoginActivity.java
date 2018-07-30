@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,7 +96,6 @@ public class LoginActivity extends BaseActivity {
         new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toActivity(MainActivity.class);
                 finish();
             }
         }).setTitleText("用户登录");
@@ -137,8 +135,8 @@ public class LoginActivity extends BaseActivity {
                                             int code = jsonObject.getInt("code");
                                             if (code == 0) {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-                                                SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                                 MyApplication.getApp().setAccessToken(access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
@@ -170,8 +168,8 @@ public class LoginActivity extends BaseActivity {
                                             int code = jsonObject.getInt("code");
                                             if (code == 0) {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-                                                SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                                 MyApplication.getApp().setAccessToken(access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
@@ -204,8 +202,8 @@ public class LoginActivity extends BaseActivity {
                                             int code = jsonObject.getInt("code");
                                             if (code == 0) {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                                SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-                                                SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                                 MyApplication.getApp().setAccessToken(access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
@@ -297,9 +295,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
     private void doLogin(String phone, String password) {
-
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
-
                 params("mobile", phone).
                 params("password", password).
                 execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
@@ -307,8 +303,8 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(Response<LzyResponse<LoginBean>> response) {
                         if (response.body().code == 0) {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
-                            SPUtils.saveString(mContext, SpConstant.ACCESS_TOKEN, access_token);
-                            SPUtils.saveBoolean(mContext, SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
+                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
                             MyApplication.getApp().setAccessToken(access_token);
                             Log.e(TAG, "onSuccess: " + access_token);
                             asyncShowToast("登录成功");
@@ -397,15 +393,6 @@ public class LoginActivity extends BaseActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            toActivity(MainActivity.class);
-            finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }
 
 

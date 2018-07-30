@@ -81,7 +81,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     @Override
     public void onResume() {
         super.onResume();
-        if (!LoginMsgHelper.isLogin(mContext)) {
+        if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             finish();
         }

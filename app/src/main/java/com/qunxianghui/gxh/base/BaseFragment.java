@@ -89,12 +89,14 @@ public abstract class BaseFragment extends Fragment {
 //        }, time);
 //    }
 
-    protected void onLoadData() { }
+    protected void onLoadData() {
+    }
 
     /**
      * 不可见
      */
-    protected void onInvisible() { }
+    protected void onInvisible() {
+    }
 
     /**
      * 需要登陆才能跳转的aty
@@ -109,7 +111,7 @@ public abstract class BaseFragment extends Fragment {
     protected void toActivity(Class<?> target, Bundle bundle, boolean needSignin) {
         MyApplication.nextBundle = bundle;
         if (needSignin) {
-            final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo(mActivity);
+            final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo();
             if (signInfo == null) {
                 Toast.makeText(mActivity, "请先登录", Toast.LENGTH_SHORT).show();
                 toActivity(LoginActivity.class, bundle);
@@ -180,12 +182,16 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 子类在此方法中实现数据的初始化
      */
-    public void initData(){};
+    public void initData() {
+    }
+
+    ;
 
     /**
      * 初始化控件
      */
-    public void initViews(View view) { }
+    public void initViews(View view) {
+    }
 
     /**
      * 子类可以复写此方法初始化事件
@@ -203,5 +209,6 @@ public abstract class BaseFragment extends Fragment {
         });
     }
 
-    public void commitData() { }
+    public void commitData() {
+    }
 }

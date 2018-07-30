@@ -1,54 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_genera"
+    <RelativeLayout
+        android:id="@+id/rl_genera"
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:background="#D81717">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal">
-            <RadioGroup
-                android:id="@+id/rg_generalize_main"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:id="@+id/rb_genera_personal"
-                    android:layout_width="70dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/selector_btn_generalize2"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="个人"
-                    android:textColor="@color/generalize_text_color2"
-                    android:textSize="14sp" />
+        <com.flyco.tablayout.SegmentTabLayout
+            android:id="@+id/segment_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            tl:tl_bar_color="#99ffffff"
+            tl:tl_bar_stroke_color="#99ffffff"
+            tl:tl_indicator_anim_enable="true"
+            tl:tl_indicator_bounce_enable="false"
+            tl:tl_indicator_color="#fff"
+            tl:tl_tab_padding="18dp"
+            tl:tl_textSelectColor="#D81717"
+            tl:tl_textUnselectColor="#fff" />
 
-                <RadioButton
-                    android:id="@+id/rb_genera_company"
-                    android:layout_width="70dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/selector_btn_generalize2"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="企业"
-                    android:textColor="@color/generalize_text_color2"
-                    android:textSize="14sp" />
+    </RelativeLayout>
 
-
-            </RadioGroup>
-
-        </LinearLayout>
-    </LinearLayout>
-
+    <View
+        android:id="@+id/view_person"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#D81717"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/rl_person"
@@ -56,17 +44,9 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-
-        <com.qunxianghui.gxh.widget.MyViewPager
-            android:id="@+id/vp_generalize_main"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
