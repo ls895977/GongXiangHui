@@ -256,8 +256,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         comment_edit.setFocusable(true);
         comment_edit.setFocusableInTouchMode(true);
         comment_edit.requestFocus();
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE |
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override

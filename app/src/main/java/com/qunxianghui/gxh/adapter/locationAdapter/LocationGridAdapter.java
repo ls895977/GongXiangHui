@@ -18,13 +18,9 @@ public class LocationGridAdapter extends BaseAdapter {
     private Context context;
     private List<String> imageList;
     private ImageOnClickListener listener;
-
-
     public LocationGridAdapter(Context context, List<String> imageList) {
-
         this.context = context;
         this.imageList = imageList;
-
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -58,24 +54,17 @@ public class LocationGridAdapter extends BaseAdapter {
         } else {
             holder = (myGridHolder) convertView.getTag();
         }
-        //holder.iv.setTag(position);
-
-
         holder.iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClick(v,position);
             }
         });
-
-
         RequestOptions options = new RequestOptions();
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
         options.centerCrop();
         Glide.with(context).load(imageList.get(position)).apply(options).into(holder.iv);
-
-
         return convertView;
     }
 
@@ -84,7 +73,6 @@ public class LocationGridAdapter extends BaseAdapter {
     }
 
     public interface ImageOnClickListener {
-
         void onClick(View v, int position);
 
     }
