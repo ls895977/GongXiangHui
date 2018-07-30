@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.okgo.OkGo;
@@ -33,6 +34,8 @@ import butterknife.BindView;
 
 public class GeneraCompanyFragment extends BaseFragment {
 
+    @BindView(R.id.segment_tab)
+    SegmentTabLayout mSegmentTab;
     @BindView(R.id.tabLayout)
     CommonTabLayout mTabLayout;
     @BindView(R.id.vp_generalize_company_main)
@@ -54,7 +57,8 @@ public class GeneraCompanyFragment extends BaseFragment {
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
 
-    private String[] mTitles = {"文章", "曝光", "点击", "转发"};
+    private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
+    private String[] mTitles = {"7月", "总榜"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private int[] mIconUnselectIds = {
             R.mipmap.icon_company_article_selector, R.mipmap.icon_company_exposure_selector,
@@ -90,8 +94,9 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
+        mSegmentTab.setTabData(mTitles);
+        for (int i = 0; i < mTabTitles.length; i++) {
+            mTabEntities.add(new TabEntity(mTabTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
         }
         mTabLayout.setTabData(mTabEntities);
         /*获取企业推广的数据*/
@@ -146,9 +151,7 @@ public class GeneraCompanyFragment extends BaseFragment {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                if (response.body().toString() != null) {
-                    parseGeneraLizeStaticsData(response.body());
-                }
+                parseGeneraLizeStaticsData(response.body());
             }
         });
     }
@@ -157,27 +160,19 @@ public class GeneraCompanyFragment extends BaseFragment {
     private void parseGeneraLizeStaticsData(String body) {
         final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
         if (generalizeCompanyStaticsBean.getCode() == 0) {
-            final GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
-            final int staff_cnt = dataBean.getStaff_cnt();  //规模
-            final String ad_prize = dataBean.getAd_prize();  //广告费
-            final String view_cnt = dataBean.getView_cnt(); //文章曝光
-            final int article_cnt = dataBean.getArticle_cnt(); //文章总数
-            final String forward_cnt = dataBean.getForward_cnt();  //文章转发
-            final String click_cnt = dataBean.getClick_cnt();   //广告点击
-            final String click_rate = dataBean.getClick_rate();   //广告点击率
-            final String forward_rate = dataBean.getForward_rate(); //文章转发率
-            tvGeneralizeCompanyMoneyCount.setText("节省广告费：" + ad_prize + " 元" + " 规模:" + String.valueOf(staff_cnt));
-            tvArticleExposureCount.setText(view_cnt);
-            tvArticleCount.setText(String.valueOf(article_cnt));
-            tvArticleTransmitCount.setText(forward_cnt);
-            tvAdverClickCount.setText(click_cnt);
-            tvAdverClickRate.setText(click_rate);
-            tvArticleTransmitRate.setText(forward_rate);
+            GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
+            tvGeneralizeCompanyMoneyCount.setText(String.format("节省广告费: %s 元 规模: %s人", dataBean.ad_prize, dataBean.staff_cnt));
+            tvArticleExposureCount.setText(String.format("%s次", dataBean.view_cnt));
+            tvArticleCount.setText(String.format("%s篇", dataBean.article_cnt));
+            tvArticleTransmitCount.setText(String.format("%s次", dataBean.forward_cnt));
+            tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
+            tvAdverClickRate.setText(dataBean.click_rate);
+            tvArticleTransmitRate.setText(dataBean.forward_rate);
             tvGeneracompanyName.setText(selfcompayname);
             SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
             spCompanymessageEditor.putString("selfcompayname", selfcompayname);
-            spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
+            spCompanymessageEditor.putString("staff_cnt", dataBean.staff_cnt);
             spCompanymessageEditor.apply();
         }
     }

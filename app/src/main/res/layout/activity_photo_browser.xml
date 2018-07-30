@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.qunxianghui.gxh.widget.PhotoViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qunxianghui.gxh.widget.PhotoViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/view_pager_photo"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingTop="100dp"
     android:paddingBottom="100dp"
-    >
-
-</com.qunxianghui.gxh.widget.PhotoViewPager>
+    android:paddingTop="100dp"/>
 
 
