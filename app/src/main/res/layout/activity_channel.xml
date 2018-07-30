@@ -21,12 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="14dip">
+            android:paddingBottom="14dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="14.0dip"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -42,7 +42,7 @@
                     android:id="@+id/my_category_tip_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
                     android:hint="单击增删频道，长按拖拽排序"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -85,8 +85,8 @@
                     android:id="@+id/more_category_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14.0dip"
-                    android:layout_marginLeft="10.0dip"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginLeft="10dp"
                     android:text="频道推荐"
                     android:textSize="14sp" />
 

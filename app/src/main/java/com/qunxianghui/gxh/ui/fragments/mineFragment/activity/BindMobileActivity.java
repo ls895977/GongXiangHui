@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,8 +94,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                                     String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                                     SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                     SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                                    MyApplication.getApp().setAccessToken(access_token);
-                                    Log.e(TAG, "onSuccess: " + access_token);
+                                    MyApplication.getInstance().setAccessToken(access_token);
                                     asyncShowToast("登录成功");
                                     toActivity(MainActivity.class);
                                     finish();

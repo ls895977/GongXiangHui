@@ -30,7 +30,7 @@ public class SearchFragmentAdapter extends BaseMultiItemQuickAdapter<SearchBean.
         super(data);
 
         addItemType(TYPE_0, R.layout.item_text_text);
-        addItemType(TYPE_1, R.layout.item_right_img);
+        addItemType(TYPE_1, R.layout.item_left_img);
         addItemType(TYPE_2, R.layout.item_three_img);
         addItemType(TYPE_3, R.layout.item_three_img);
 

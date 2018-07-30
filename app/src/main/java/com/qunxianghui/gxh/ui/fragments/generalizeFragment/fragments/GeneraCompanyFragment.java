@@ -143,8 +143,9 @@ public class GeneraCompanyFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
-        selfcompayname = spCompany.getString("selfcompayname", "");
+        SharedPreferences spCompany = mActivity.getSharedPreferences("companymessage", 0);
+        selfcompayname = spCompany.getString("selfcompanyname", "");
+        tvGeneracompanyName.setText(selfcompayname);
     }
 
     private void HoldReneraCompanyData() {
@@ -168,10 +169,8 @@ public class GeneraCompanyFragment extends BaseFragment {
             tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
             tvAdverClickRate.setText(dataBean.click_rate);
             tvArticleTransmitRate.setText(dataBean.forward_rate);
-            tvGeneracompanyName.setText(selfcompayname);
             SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-            spCompanymessageEditor.putString("selfcompayname", selfcompayname);
             spCompanymessageEditor.putString("staff_cnt", dataBean.staff_cnt);
             spCompanymessageEditor.apply();
         }

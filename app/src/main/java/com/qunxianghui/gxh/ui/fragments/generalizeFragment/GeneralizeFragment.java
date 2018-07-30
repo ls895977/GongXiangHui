@@ -51,8 +51,10 @@ public class GeneralizeFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        if (mLlGenera == null) return;
         if (LoginMsgHelper.isLogin()) {
             if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                mSegmentTab.setCurrentTab(0);
                 mLlGenera.setVisibility(View.VISIBLE);
                 mVp.setVisibility(View.VISIBLE);
                 mViewPerson.setVisibility(View.GONE);

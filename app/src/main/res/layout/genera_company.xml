@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="节省广告费:  181280元  规模：57人"
+                    tools:text="节省广告费:  181280元  规模：57人"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
             </LinearLayout>

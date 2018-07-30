@@ -186,7 +186,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
      * 获取Column栏目 数据
      */
     private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getApp().getSQLHelper()).getUserChannel());
+        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getInstance().getSQLHelper()).getUserChannel());
     }
 
     @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns})

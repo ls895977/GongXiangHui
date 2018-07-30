@@ -22,7 +22,7 @@ public class LoginMsgHelper {
     //登录退出处理
     public static void exitLogin() {
         SPUtils.removePreference(SpConstant.ACCESS_TOKEN);
-        MyApplication.getApp().setAccessToken("");
+        MyApplication.getInstance().setAccessToken("");
     }
 
 }

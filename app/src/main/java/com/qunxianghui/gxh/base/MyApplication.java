@@ -42,13 +42,11 @@ public class MyApplication extends MultiDexApplication {
     private SQLHelper sqlHelper;
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
-    public static MyApplication SINSTANCE;
+    private static MyApplication SINSTANCE;
     private static IWXAPI SWXAPI;
     public static AppManager appManager;
     private String mAccessToken;
-    public static MyApplication getMyApplicaiton() {
-        return SINSTANCE;
-    }
+
     public static IWXAPI getWxApi() {
         return SWXAPI;
     }
@@ -60,7 +58,7 @@ public class MyApplication extends MultiDexApplication {
     /**
      * 获取Application
      */
-    public static MyApplication getApp() {
+    public static MyApplication getInstance() {
         return SINSTANCE;
     }
 

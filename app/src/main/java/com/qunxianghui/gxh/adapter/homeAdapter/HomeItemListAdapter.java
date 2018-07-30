@@ -36,7 +36,7 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
         //Step.2
         getMultiTypeDelegate()
                 .registerItemType(0, R.layout.item_text_text)
-                .registerItemType(1, R.layout.item_right_img)
+                .registerItemType(1, R.layout.item_left_img)
                 .registerItemType(2, R.layout.item_three_img);
         options = new RequestOptions();
         options.placeholder(R.mipmap.default_img)

@@ -12,9 +12,7 @@
         <include layout="@layout/activity_title" />
     </LinearLayout>
 
-
     <ImageButton
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -54,7 +52,6 @@
         android:layout_marginTop="20dp">
 
         <ImageView
-
             android:id="@+id/iv_login_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +59,6 @@
             android:src="@mipmap/login_captcha" />
 
         <EditText
-
             android:id="@+id/et_regist_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +87,6 @@
     <View style="@style/dividerStyle" />
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -119,7 +114,6 @@
     <View style="@style/dividerStyle" />
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -204,10 +198,7 @@
             android:layout_centerHorizontal="true"
             android:text="立即登录 >"
             android:textColor="#f00"
-
             android:textSize="16sp" />
-
-
     </RelativeLayout>
 
 </LinearLayout>

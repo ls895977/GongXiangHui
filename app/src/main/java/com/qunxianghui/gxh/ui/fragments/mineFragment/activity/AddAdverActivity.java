@@ -49,6 +49,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/2 0002.
  */
 public class AddAdverActivity extends BaseActivity implements View.OnClickListener {
+
     final Activity activity = this;
     @BindView(R.id.iv_mineFragment_addTopAdver)
     ImageView ivMineFragmentAddTopAdver;

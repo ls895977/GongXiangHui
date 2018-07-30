@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
@@ -137,7 +136,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getApp().setAccessToken(access_token);
+                                                MyApplication.getInstance().setAccessToken(access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -170,7 +169,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getApp().setAccessToken(access_token);
+                                                MyApplication.getInstance().setAccessToken(access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -204,7 +203,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getApp().setAccessToken(access_token);
+                                                MyApplication.getInstance().setAccessToken(access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -220,10 +219,6 @@ public class LoginActivity extends BaseActivity {
                         break;
                 }
                 Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
-                Log.w("test", "openid: " + data.get("uid"));
-                Log.w("test", "昵称: " + data.get("name"));
-                Log.w("test", "头像: " + data.get("iconurl"));
-                Log.w("test", "性别: " + data.get("gender"));
             }
 
             @Override
@@ -294,6 +289,7 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     }
+
     private void doLogin(String phone, String password) {
         OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
                 params("mobile", phone).
@@ -305,17 +301,12 @@ public class LoginActivity extends BaseActivity {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                            MyApplication.getApp().setAccessToken(access_token);
-                            Log.e(TAG, "onSuccess: " + access_token);
-                            asyncShowToast("登录成功");
+                            MyApplication.getInstance().setAccessToken(access_token);
                             fillUserData();
-                            HoldReneraCompanyData();
-                            toActivity(MainActivity.class);
-                            finish();
-
+                            holdReneraCompanyData();
                         }
-
                     }
+
                     @Override
                     public void onError(Response<LzyResponse<LoginBean>> response) {
                         super.onError(response);
@@ -324,68 +315,61 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
-    private void HoldReneraCompanyData() {
+    private void holdReneraCompanyData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                if (response.body().toString() != null) {
-                    parseGeneraLizeStaticsData(response.body());
+                if (response.body() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        int staff_cnt = data.getInt("staff_cnt");
+                        SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
+                        spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
+                        spCompanymessageEditor.apply();
+                    } catch (JSONException ignored) {
+
+                    }
                 }
+                asyncShowToast("登录成功");
+                toActivity(MainActivity.class);
+                finish();
             }
         });
     }
-    private void parseGeneraLizeStaticsData(String body) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            JSONObject data = jsonObject.getJSONObject("data");
-            int staff_cnt = data.getInt("staff_cnt");
-            SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
-            SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-            spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
-            spCompanymessageEditor.commit();
-        } catch (JSONException e) {
 
-        }
-    }
     /*获取个人资料*/
     private void fillUserData() {
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (HttpStatusUtil.getStatus(response.body().toString())) {
-                            parseUserData(response.body());
-                            return;
+                        if (HttpStatusUtil.getStatus(response.body())) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body());
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                int code = jsonObject.getInt("code");
+                                if (code == 0) {
+                                    companyName = data.getJSONObject("company_info").getString("company_name");
+                                    String expire_time = data.getString("expire_time");
+                                    /**
+                                     * 保存自己的公司名称
+                                     */
+                                    SharedPreferences spConpanyname = getSharedPreferences("companymessage", 0);
+                                    SharedPreferences.Editor editor = spConpanyname.edit();
+                                    editor.putString("selfcompanyname", companyName);
+                                    editor.putString("expire_time", expire_time);
+                                    editor.apply();
+                                }
+
+                            } catch (Exception ignored) {
+
+                            }
                         }
-                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
                 });
     }
-/*解析个人资料数据*/
-    private void parseUserData(String body) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            JSONObject data = jsonObject.getJSONObject("data");
-            int code = jsonObject.getInt("code");
-            if (code==0){
-                companyName = data.getJSONObject("company_info").getString("company_name");
-                String expire_time = data.getString("expire_time");
-                /**
-                 * 保存自己的公司名称
-                 */
-                SharedPreferences spConpanyname = getSharedPreferences("conpanyname", 0);
-                SharedPreferences.Editor editor = spConpanyname.edit();
-                editor.putString("selfcompayname", companyName);
-                editor.putString("expire_time", expire_time);
-                editor.commit();
-            }
-
-        } catch (Exception e) {
-
-
-        }
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -98,11 +98,4 @@ public class GeneraPersonalFragment extends BaseFragment {
             });
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        onLoadData();
-    }
-
 }

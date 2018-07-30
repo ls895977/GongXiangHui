@@ -111,6 +111,7 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        if (mineQuicklyLogin == null) return;
         if (userSize > 0) {
             final ArrayList<User> userList = userDao.dbQueryAll();
             for (int i = 0; i < userSize; i++) {

@@ -4,9 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.SigninBean;
-
-import static com.qunxianghui.gxh.base.MyApplication.SINSTANCE;
 
 
 public final class SPUtils {
@@ -15,7 +14,7 @@ public final class SPUtils {
     private final static int mode = Context.MODE_PRIVATE;
 
     public static SharedPreferences getSp() {
-        return SINSTANCE.getSharedPreferences(name, mode);
+        return MyApplication.getInstance().getSharedPreferences(name, mode);
     }
 
     /**
@@ -54,14 +53,14 @@ public final class SPUtils {
 
     public static void putBoolean(String key, boolean value) {
         if (sp == null) {
-            sp = SINSTANCE.getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
+            sp = MyApplication.getInstance().getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
         }
         sp.edit().putBoolean(key, value).apply();
     }
 
     public static boolean getBoolean(String key) {
         if (sp == null) {
-            sp = SINSTANCE.getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
+            sp = MyApplication.getInstance().getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
         }
         boolean b = sp.getBoolean(key, false);
         return b;

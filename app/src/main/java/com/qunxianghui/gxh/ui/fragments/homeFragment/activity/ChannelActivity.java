@@ -88,8 +88,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             userAdapter = new DragAdapter(this, userChannelListData);
             userGridView.setAdapter(userAdapter);
         }
-        Logger.d("initData-->:" + userChannelListData.toString());
-
         //获取全部频道
         OkGo.<String>post(Constant.CHANNEL_GETALL).execute(new StringCallback() {
             @Override
@@ -103,7 +101,6 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     }
 
     private void getAllData(String body) {
-        Logger.d("getAllData-->: " + body);
         final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
             List<ChannelGetallBean.DataBean> datas = bean.getData();

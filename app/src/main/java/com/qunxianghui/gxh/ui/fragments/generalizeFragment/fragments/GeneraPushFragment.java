@@ -46,9 +46,8 @@ public class GeneraPushFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void initViews(View view) {
-        SharedPreferences spCompany = mActivity.getSharedPreferences("conpanyname", 0);
+        SharedPreferences spCompany = mActivity.getSharedPreferences("companymessage", 0);
         selfcompayname = spCompany.getString("selfcompayname", "");
-        spCompany = mActivity.getSharedPreferences("companymessage", 0);
         staff_cnt = spCompany.getString("staff_cnt", "0");
         RequestCompanyPushData();
     }
