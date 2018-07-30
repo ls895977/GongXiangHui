@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         receiver = new MainBroadCast() {
             @Override
             public void onReceive(Context context, Intent intent) {

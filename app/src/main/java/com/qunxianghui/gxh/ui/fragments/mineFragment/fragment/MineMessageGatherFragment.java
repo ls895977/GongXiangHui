@@ -41,7 +41,7 @@ public class MineMessageGatherFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         initMyPostTieZi();
 
     }

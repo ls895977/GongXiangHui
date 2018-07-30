@@ -47,7 +47,7 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         RequestMyCollectPost();
     }
 

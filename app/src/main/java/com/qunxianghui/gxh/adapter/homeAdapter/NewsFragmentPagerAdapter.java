@@ -1,13 +1,16 @@
 package com.qunxianghui.gxh.adapter.homeAdapter;
 
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.view.ViewGroup;
+
+import com.qunxianghui.gxh.db.ChannelItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description：ViewPager适配器
@@ -17,29 +20,30 @@ import java.util.ArrayList;
 
 public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<Fragment> fragments;
-    private FragmentManager fm;
+    private List<Fragment> mFragments;
+    private FragmentManager mFm;
+    private List<ChannelItem> mTitleList;
 
-    public NewsFragmentPagerAdapter(FragmentManager fm) {
-        super(fm);
-        this.fm = fm;
+    public NewsFragmentPagerAdapter(FragmentManager mFm) {
+        super(mFm);
+        this.mFm = mFm;
     }
 
-    public NewsFragmentPagerAdapter(FragmentManager fm,
-                                    ArrayList<Fragment> fragments) {
-        super(fm);
-        this.fm = fm;
-        this.fragments = fragments;
+    public NewsFragmentPagerAdapter(FragmentManager mFm, ArrayList<Fragment> fragments, List<ChannelItem> titleList) {
+        super(mFm);
+        this.mFm = mFm;
+        this.mFragments = fragments;
+        this.mTitleList = titleList;
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return mFragments.size();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position);
+        return mFragments.get(position);
     }
 
     @Override
@@ -48,25 +52,23 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void setFragments(ArrayList<Fragment> fragments) {
-        if (this.fragments != null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            for (Fragment f : this.fragments) {
+        if (this.mFragments != null) {
+            FragmentTransaction ft = mFm.beginTransaction();
+            for (Fragment f : this.mFragments) {
                 ft.remove(f);
             }
             ft.commit();
             ft = null;
-            fm.executePendingTransactions();
+            mFm.executePendingTransactions();
         }
-        this.fragments = fragments;
+        this.mFragments = fragments;
         notifyDataSetChanged();
     }
 
-
-
+    @Nullable
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-        Object obj = super.instantiateItem(container, position);
-        return obj;
+    public CharSequence getPageTitle(int position) {
+        return mTitleList.get(position).name;
     }
 
 }

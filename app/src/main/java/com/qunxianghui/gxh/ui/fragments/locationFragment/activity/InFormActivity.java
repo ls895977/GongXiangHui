@@ -46,7 +46,7 @@ public class InFormActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         final Intent intent = getIntent();
         model_id = intent.getIntExtra("model_id", 1);
 

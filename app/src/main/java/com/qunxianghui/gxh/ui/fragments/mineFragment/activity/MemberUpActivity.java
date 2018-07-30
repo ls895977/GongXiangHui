@@ -62,7 +62,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         new TitleBuilder(MemberUpActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

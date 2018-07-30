@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -13,7 +12,6 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 首页便民服务界面
@@ -59,7 +57,7 @@ public class BianMinServiceActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,19 +66,5 @@ public class BianMinServiceActivity extends BaseActivity {
             }
         });
     }
-
-    @Override
-    protected void initListeners() {
-
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
 
 }

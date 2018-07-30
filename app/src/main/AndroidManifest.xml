@@ -39,15 +39,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--app的入口-->
-        <activity
-            android:name=".ui.activity.WelcomeActivity"
-            android:theme="@style/StartTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <meta-data
+        <!--<activity-->
+            <!--android:name=".ui.activity.WelcomeActivity"-->
+            <!--android:theme="@style/StartTheme">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<meta-data-->
             android:name="UMENG_APPKEY"
             android:value="5b2c8e89b27b0a0ba6000034" />
         <meta-data
@@ -82,7 +82,12 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.activity.GuidActivity"
@@ -202,10 +207,7 @@
             android:name=".ui.fragments.homeFragment.activity.ChannelActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <!--此activity可以忽略-->
-        <activity
-            android:name=".ui.fragments.homeFragment.activity.GestureDetectorActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <!--首页点击条目跳转的详情界面-->
         <activity
             android:name=".ui.activity.NewsDetailActivity"

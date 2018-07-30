@@ -64,7 +64,7 @@ public class AdvertisConmmengtActivity extends BaseActivity implements View.OnCl
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         fragments.add(new AdverCommonBottomFragment());
         fragments.add(new AdverCommonTopFragment());
         MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);

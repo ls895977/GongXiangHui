@@ -56,11 +56,6 @@ public class PublishStateActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void initDatas() {
-
-    }
-
-    @Override
     protected void initListeners() {
         ivPublishBack.setOnClickListener(this);
         ivPublishAddImage.setOnClickListener(this);

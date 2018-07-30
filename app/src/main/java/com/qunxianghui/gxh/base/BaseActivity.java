@@ -38,7 +38,7 @@ public abstract class BaseActivity extends FragmentActivity {
         mResources = getResources();
         ButterKnife.bind(this);
         initViews();
-        initDatas();
+        initData();
         initListeners();
         //  MyApplication.appManager.addActivity(this);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -143,12 +143,12 @@ public abstract class BaseActivity extends FragmentActivity {
     /**
      * 初始化view
      **/
-    protected abstract void initViews();
+    protected void initViews(){}
 
     /**
      * 初始化数据
      */
-    protected abstract void initDatas();
+    protected void initData(){}
 
     protected void setStatusBar() {
         StatusBarUtil.setTransparentForImageView(this, null);

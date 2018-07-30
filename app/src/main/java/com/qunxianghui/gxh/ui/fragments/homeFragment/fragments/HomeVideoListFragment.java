@@ -58,7 +58,7 @@ public class HomeVideoListFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         xrecyclerHomevideoList.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         RequestHomeVideoList();
     }

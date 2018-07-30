@@ -57,12 +57,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    protected void initViews() { }
-
-    @Override
-    protected void initDatas() { }
-
-    @Override
     protected void initListeners() {
         super.initListeners();
         tvBindmobileGetcode.setOnClickListener(this);

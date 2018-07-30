@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="一键发布"
                 android:textColor="@color/main_bottom_selector_color"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
         </LinearLayout>
 
         <TextView

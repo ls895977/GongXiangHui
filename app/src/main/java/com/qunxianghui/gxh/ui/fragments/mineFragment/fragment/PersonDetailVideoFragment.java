@@ -80,7 +80,7 @@ public class PersonDetailVideoFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         personDetailActivity = (PersonDetailActivity) getActivity();
 
 

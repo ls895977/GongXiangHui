@@ -35,7 +35,7 @@ public class MonthFragment extends BaseFragment implements TabLayout.OnTabSelect
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
 
 //设置tablayout的点击事件
         generaCompanyPaihangTablayoutCommon.setOnTabSelectedListener(this);

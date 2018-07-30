@@ -94,10 +94,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void initDatas() {
-    }
-
-    @Override
     protected void initListeners() {
         tvHomeBaoliaoFabu.setOnClickListener(this);
         ivFabuBack.setOnClickListener(this);

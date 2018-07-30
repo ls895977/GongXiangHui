@@ -74,7 +74,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         RequestLocationData();
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override

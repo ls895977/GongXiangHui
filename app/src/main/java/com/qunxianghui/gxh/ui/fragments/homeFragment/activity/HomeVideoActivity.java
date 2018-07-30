@@ -54,7 +54,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         homevideoTablayout.setOnTabSelectedListener(this);
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());

@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         mShareAPI = UMShareAPI.get(this);
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {

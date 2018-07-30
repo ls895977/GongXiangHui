@@ -60,7 +60,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         btSeekPasswordNext.setOnClickListener(this);
         etSeekPasswordPhoneNumber.setOnClickListener(this);
         tvSeekPasswordCode.setOnClickListener(this);

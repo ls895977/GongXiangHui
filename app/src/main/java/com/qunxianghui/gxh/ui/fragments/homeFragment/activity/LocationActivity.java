@@ -39,7 +39,7 @@ public class LocationActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         new Thread() {
             @Override
             public void run() {

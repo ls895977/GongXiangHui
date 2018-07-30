@@ -33,10 +33,6 @@ public class CheckBoxActivity extends BaseActivity {
         recyclerviewCheckbox.setAdapter(myCheckboxAdapter);
     }
 
-    @Override
-    protected void initDatas() {
-
-    }
 
     public void btnAll(View view) {
         myCheckboxAdapter.All();

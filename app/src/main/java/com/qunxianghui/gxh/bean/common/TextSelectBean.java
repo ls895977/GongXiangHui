@@ -3,8 +3,8 @@ package com.qunxianghui.gxh.bean.common;
 import com.contrarywind.interfaces.IPickerViewData;
 
 public class TextSelectBean implements IPickerViewData{
-    private int id;
-    private String itemText;
+    int id;
+  String itemText;
 
     public TextSelectBean(int id, String itemText) {
         this.id = id;
@@ -29,6 +29,6 @@ public class TextSelectBean implements IPickerViewData{
 
     @Override
     public String getPickerViewText() {
-        return null;
+        return itemText;
     }
 }

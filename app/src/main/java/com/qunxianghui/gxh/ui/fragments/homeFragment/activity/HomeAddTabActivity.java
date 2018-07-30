@@ -67,13 +67,6 @@ public class HomeAddTabActivity extends BaseActivity implements AdapterView.OnIt
         mOtherGv.setOnItemClickListener(this);
     }
 
-    @Override
-    protected void initDatas() {
-
-    }
-
-
-
     /**
      *获取点击的Item的对应View，
      *因为点击的Item已经有了自己归属的父容器MyGridView，所有我们要是有一个ImageView来代替Item移动

@@ -68,9 +68,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     }
 
     @Override
-    public void initDatas() {
-
-
+    public void initData() {
         if (getArguments() != null) {
             mMemberId = getArguments().getInt("member_id");
         }

@@ -117,7 +117,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.nex3z:flow-layout:1.0.0'
     implementation project(':letterindexlibrary')
-
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 
     //noinspection GradleDependency 友盟
     implementation 'com.umeng.sdk:share-qq:6.9.1.1'

@@ -19,7 +19,7 @@ public class CooperationCallActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
 
     }
 }

@@ -55,7 +55,7 @@ public class VideoListActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         vList = new ArrayList<VideoInfo>();
         String[] mediaColumns = new String[]{MediaStore.MediaColumns.DATA,
                 BaseColumns._ID, MediaStore.MediaColumns.TITLE, MediaStore.MediaColumns.MIME_TYPE,

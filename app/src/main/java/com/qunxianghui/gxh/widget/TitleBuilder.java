@@ -26,10 +26,10 @@ public class TitleBuilder {
      * */
     public TitleBuilder(Activity context){
         titleView = context.findViewById(R.id.title_bar);
-        text = (TextView)titleView.findViewById(R.id.title_text);
-        titleBar = (RelativeLayout)titleView.findViewById(R.id.title_bar);
-        leftIco = (ImageView)titleView.findViewById(R.id.title_leftIco);
-        rightIco = (ImageView)titleView.findViewById(R.id.title_rightIco);
+        text = titleView.findViewById(R.id.title_text);
+        titleBar = titleView.findViewById(R.id.title_bar);
+        leftIco = titleView.findViewById(R.id.title_leftIco);
+        rightIco = titleView.findViewById(R.id.title_rightIco);
     }
 
     /**

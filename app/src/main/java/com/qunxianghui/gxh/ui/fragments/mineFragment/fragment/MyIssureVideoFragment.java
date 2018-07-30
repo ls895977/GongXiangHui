@@ -51,7 +51,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         RequestMyIssueVideo();
     }
 

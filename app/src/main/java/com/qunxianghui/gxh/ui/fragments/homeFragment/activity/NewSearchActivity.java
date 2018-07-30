@@ -171,7 +171,7 @@ public class NewSearchActivity extends BaseActivity implements AbsListView.OnScr
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         initTotalCityList();
         cityListAdapter = new CityListAdapter(this, totalCityList, hotCityList);
         totalCityLv.setAdapter(cityListAdapter);

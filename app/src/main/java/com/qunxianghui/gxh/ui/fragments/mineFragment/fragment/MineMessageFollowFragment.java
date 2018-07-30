@@ -75,9 +75,6 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
         return R.layout.fragment_mine_message_follow;
     }
 
-    @Override
-    public void initDatas() {
-    }
     private void parsePaiHangData(String body) {
         final MineMessageFollowBean mineMessageFollowBean = GsonUtils.jsonFromJson(body, MineMessageFollowBean.class);
         if (mIsRefresh) {

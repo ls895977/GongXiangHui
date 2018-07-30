@@ -96,11 +96,6 @@ public class GuidActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    protected void initDatas() {
-
-    }
-
-    @Override
     protected void initListeners() {
         super.initListeners();
         viewpagerGuid.setOnPageChangeListener(this);

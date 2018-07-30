@@ -85,7 +85,7 @@ public class PersonDataActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         String avatar = getIntent().getStringExtra(AVATAR);
         int sex = getIntent().getIntExtra(SEX, -1);
         if (!TextUtils.isEmpty(avatar)) {

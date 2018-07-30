@@ -102,7 +102,7 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

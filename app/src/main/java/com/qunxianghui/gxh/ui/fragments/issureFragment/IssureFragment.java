@@ -35,11 +35,6 @@ public class IssureFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
-
-    }
-
-    @Override
     public void initViews(View view) {
 
     }

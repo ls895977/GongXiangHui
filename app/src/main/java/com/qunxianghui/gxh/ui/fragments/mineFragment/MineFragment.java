@@ -110,7 +110,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @Override
-    public void initDatas() {
+    public void initData() {
         if (userSize > 0) {
             final ArrayList<User> userList = userDao.dbQueryAll();
             for (int i = 0; i < userSize; i++) {
@@ -185,7 +185,6 @@ public class MineFragment extends BaseFragment {
                             parseUserData(response.body());
                             return;
                         }
-                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
 
                     @Override

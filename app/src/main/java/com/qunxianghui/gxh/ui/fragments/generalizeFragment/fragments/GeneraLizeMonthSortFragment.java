@@ -69,10 +69,6 @@ public class GeneraLizeMonthSortFragment extends BaseFragment {
         return R.layout.fragment_generalize_month_sort;
     }
 
-    @Override
-    public void initDatas() {
-
-    }
 
     @Override
     public void initViews(View view) {

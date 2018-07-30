@@ -38,11 +38,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    protected void initViews() {
-    }
-
-    @Override
-    protected void initDatas() {
+    protected void initData() {
         new TitleBuilder(ResetPasswordActivity.this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

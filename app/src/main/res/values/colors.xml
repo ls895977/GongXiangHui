@@ -20,8 +20,8 @@
     <color name="mainGray">#F2F6F7</color>
     <color name="actionsheet_gray">#808080</color>
     <color name="tab_color">#ff4049</color>
-    <color name="home_text_color">#f00</color>
-    <color name="home_text_nomal_color">#000</color>
+    <color name="home_text_color">#D81717</color>
+    <color name="home_text_nomal_color">#666666</color>
     <color name="main_40">#40ACD6</color>
     <color name="gray_9">#e8e8e8</color>
     <color name="gray_6">#666666</color>

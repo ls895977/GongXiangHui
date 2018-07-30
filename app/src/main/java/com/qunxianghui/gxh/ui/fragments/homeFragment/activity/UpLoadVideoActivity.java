@@ -2,15 +2,17 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.common.TextSelectBean;
@@ -18,7 +20,6 @@ import com.qunxianghui.gxh.bean.common.TextSelectBean;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class UpLoadVideoActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_video_thumb)
@@ -29,6 +30,8 @@ public class UpLoadVideoActivity extends BaseActivity implements View.OnClickLis
     Button btUploadSelect;
 
     private ArrayList<TextSelectBean> cardItem = new ArrayList<>();
+    private OptionsPickerView pvCustomOptions;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload_video;
@@ -41,22 +44,10 @@ public class UpLoadVideoActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected void initDatas() {
-
-    }
-
-    @Override
     protected void initListeners() {
         super.initListeners();
         llUploadvideoBack.setOnClickListener(this);
         btUploadSelect.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -72,7 +63,7 @@ public class UpLoadVideoActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void videoSelect() {
-        new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
+        pvCustomOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
@@ -80,7 +71,48 @@ public class UpLoadVideoActivity extends BaseActivity implements View.OnClickLis
                 btUploadSelect.setText(tx);
 
             }
-        });
+        }).setLayoutRes(R.layout.pickerview_custom_options, new CustomListener() {
+            @Override
+            public void customLayout(View v) {
+                final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
+                final TextView tvAdd = (TextView) v.findViewById(R.id.tv_add);
+                ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
 
+                tvSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pvCustomOptions.returnData();
+                        pvCustomOptions.dismiss();
+                    }
+                });
+                tvAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getCardData();
+                        pvCustomOptions.setPicker(cardItem);
+                    }
+                });
+                ivCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pvCustomOptions.dismiss();
+                    }
+                });
+            }
+        }).isDialog(true)
+                .build();
+        pvCustomOptions.show();
+        pvCustomOptions.setPicker(cardItem);//添加数据
+    }
+    private void getCardData() {
+        for (int i = 0; i < 5; i++) {
+            cardItem.add(new TextSelectBean (i, "No.ABC12345 " + i));
+        }
+        for (int i = 0; i < cardItem.size(); i++) {
+            if (cardItem.get(i).getItemText().length() > 6) {
+                String str_item = cardItem.get(i).getItemText().substring(0, 6) + "...";
+                cardItem.get(i).setItemText(str_item);
+            }
+        }
     }
 }
