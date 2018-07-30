@@ -1,13 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -24,16 +25,17 @@ import cn.jzvd.JZVideoPlayer;
  * Created by Administrator on 2018/3/24 0024.
  */
 
-public class HomeVideoActivity extends BaseActivity implements View.OnClickListener, TabLayout.OnTabSelectedListener {
-
+public class HomeVideoActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_home_video_back)
     ImageView ivHomeVideoBack;
     @BindView(R.id.tv_home_video_issue)
     TextView tvHomeVideoIssue;
-    @BindView(R.id.homevideo_tablayout)
-    TabLayout homevideoTablayout;
+    @BindView(R.id.slidingTabLayout)
+    SlidingTabLayout mSlidingTabLayout;
+    @BindView(R.id.iv_more_columns)
+    ImageView mIvMoreColumns;
     @BindView(R.id.home_video_viewpager)
-    ViewPager homeVideoViewpager;
+    ViewPager mHomeVideoViewpager;
     private String[] titles = new String[]{"实时", "搞笑", "体育", "娱乐"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
@@ -45,26 +47,19 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initViews() {
-        //设置tabLayout的一个显示方式
-        homevideoTablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //循环注入标签
-        for (String tab : titles) {
-            homevideoTablayout.addTab(homevideoTablayout.newTab().setText(tab));
-        }
     }
 
     @Override
     protected void initData() {
-        homevideoTablayout.setOnTabSelectedListener(this);
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
 
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
-        homeVideoViewpager.setAdapter(tabViewPagerAdapter);
-        homeVideoViewpager.setOffscreenPageLimit(fragments.size());
-        homevideoTablayout.setupWithViewPager(homeVideoViewpager);
+        mHomeVideoViewpager.setAdapter(tabViewPagerAdapter);
+        mSlidingTabLayout.setViewPager(mHomeVideoViewpager);
+        mHomeVideoViewpager.setOffscreenPageLimit(fragments.size() - 1);
     }
 
     @Override
@@ -72,6 +67,18 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         super.initListeners();
         ivHomeVideoBack.setOnClickListener(this);
         tvHomeVideoIssue.setOnClickListener(this);
+        mIvMoreColumns.setOnClickListener(this);
+        mSlidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                mHomeVideoViewpager.setCurrentItem(position, false);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
     }
 
     @Override
@@ -83,6 +90,9 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_home_video_issue:
                 toActivity(LocationActivity.class);
                 break;
+            case R.id.iv_more_columns:
+                asyncShowToast("点击了分类条目");
+                break;
         }
 
     }
@@ -93,28 +103,12 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
             return;
         }
         super.onBackPressed();
-        super.onBackPressed();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        homeVideoViewpager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
 }

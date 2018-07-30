@@ -25,20 +25,14 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     public Map<Integer,Boolean> isCheck ;
     private int data_uuid;
     private CollectOnClickListener collectOnClickListener;
-
     public void setCollectOnClickListener(CollectOnClickListener collectOnClickListener) {
         this.collectOnClickListener = collectOnClickListener;
     }
-
     private android.os.Handler handler = new android.os.Handler();
-
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
 
     }
-
-
-
     @Override
     protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
         final ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
@@ -47,12 +41,9 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         final List<String> images = dataBean.getImages();
         final String source = dataBean.getInfo().getSource();
         final String title = dataBean.getInfo().getTitle();
-        final String ctime = dataBean.getCtime();
         data_uuid = dataBean.getData_uuid();
 
-
         holder.setText(R.id.tv_mine_mycollect_from, source);
-        holder.setText(R.id.tv_mine_mycollect_time, ctime);
         holder.setText(R.id.tv_mine_mycollect_title, title);
         if (images.size() >= 1) {
 
@@ -79,14 +70,9 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
             }
         });
-
-
     }
-
 
     public static boolean isInMainThread() {
         Looper myLooper = Looper.myLooper();
@@ -99,7 +85,6 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     protected int getItemView() {
         return R.layout.item_mine_mycollect_post;
     }
-
 
     public interface CollectOnClickListener {
         void cancelNewsCollect(int position);

@@ -67,17 +67,6 @@
                 android:layout_marginRight="3dp"
                 android:text="科技"
                 android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/tv_mine_mycollect_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/eye_test"
-                android:drawablePadding="3dp"
-                android:text="52万"
-                android:layout_marginRight="3dp"
-                android:textSize="13sp"/>
-
             <TextView
                 android:id="@+id/tv_mine_mycollect_cancle_collect"
                 android:textColor="#f00"

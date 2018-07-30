@@ -26,7 +26,6 @@ import butterknife.BindView;
  */
 
 public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
-
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
