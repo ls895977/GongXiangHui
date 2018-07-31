@@ -72,7 +72,6 @@ dependencies {
     implementation 'pub.devrel:easypermissions:0.1.7'
     implementation 'com.lovedise:permissiongen:0.0.6'
     //视频 图片库
-    implementation 'com.github.open-android:JieCaoVideoPlayer:0.1.0'
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.8'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
     //相册

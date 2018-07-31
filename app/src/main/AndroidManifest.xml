@@ -100,7 +100,9 @@
         <activity android:name=".ui.activity.GuidSlideActivity" />
         <activity android:name=".ui.fragments.mineFragment.activity.CheckBoxActivity" />
         <!-- 上传视频界面 -->
-        <activity android:name=".ui.fragments.homeFragment.activity.UpLoadVideoActivity" />
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.VideoUploadActivity"
+            android:screenOrientation="portrait" />
 
         <!-- 二维码扫描界面 -->
         <!-- 我的板块的个人资料界面 -->
