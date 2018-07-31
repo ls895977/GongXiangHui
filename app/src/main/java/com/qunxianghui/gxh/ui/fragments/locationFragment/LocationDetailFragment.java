@@ -82,7 +82,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 int keyboardoffset = 80;
                 int tabHeight = SPUtils.getInt("tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                layoutParams.bottomMargin = height - offset - 90;
+
+                layoutParams.bottomMargin = height  - offset-83;
+
                 commentView.setLayoutParams(layoutParams);
                 if (item != null) {
                     int[] location = new int[2];
@@ -263,7 +265,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 if (comment_edit.getText().toString().length() <= 0) {
                     Toast.makeText(getActivity(), "请输入评论内容", Toast.LENGTH_LONG).show();
                 } else {
-                    final int uuid = localDataList.get(position - 1).getUuid();
+                    final int uuid = localDataList.get(position-1).getUuid();
                     if (localDataList.get(position).getComment_res().size() <= 0) {
                         localDataList.get(position).setComment_res(new ArrayList<CommentBean>());
                     }

@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
@@ -32,13 +35,17 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
+    @BindView(R.id.tv_mycollect_edit)
+    TextView mTvMycollectEdit;
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity__mine_mycollect;
     }
+
     @Override
     protected void initViews() {
         //设置tabLayout的一个显示方式
@@ -51,9 +58,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initData() {
-        //设置tablayout的点击事件
-        mineTablayoutCommon.setOnTabSelectedListener(this);
-        ivMyCollectBack.setOnClickListener(this);
+
         fragments.add(new MineCommonFragment());
         fragments.add(new MineCollectVideoFragment());
 
@@ -64,17 +69,26 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         mineTablayoutCommon.post(new Runnable() {
             @Override
             public void run() {
-                setIndicator(mineTablayoutCommon,60,60);
+                setIndicator(mineTablayoutCommon, 60, 60);
             }
         });
 
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        //设置tablayout的点击事件
+        mineTablayoutCommon.setOnTabSelectedListener(this);
+        ivMyCollectBack.setOnClickListener(this);
+        mTvMycollectEdit.setOnClickListener(this);
     }
 
     private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
         Class<?> tabLayout = tabs.getClass();
         Field tabStrip = null;
         try {
-            tabStrip= tabLayout.getDeclaredField("mTabStrip");
+            tabStrip = tabLayout.getDeclaredField("mTabStrip");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -124,7 +138,17 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
             case R.id.iv_myCollect_back:
                 finish();
                 break;
+            case R.id.tv_mycollect_edit:
+                asyncShowToast("点击了编辑");
+                break;
 
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
