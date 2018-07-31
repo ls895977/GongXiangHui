@@ -15,16 +15,17 @@
 
         <ImageView
             android:id="@+id/iv_home_video_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:background="@mipmap/home_video_back" />
+            android:padding="5dp"
+            android:src="@mipmap/home_video_back" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="31dp"
+            android:layout_marginStart="45dp"
             android:background="@mipmap/home_video_collect_search"
             android:textSize="18sp" />
 
@@ -38,9 +39,7 @@
             android:drawablePadding="5dp"
             android:text="西湖" />
 
-
     </RelativeLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,8 +58,8 @@
             tl:tl_indicator_height="3dp"
             tl:tl_indicator_width="18dp"
             tl:tl_indicator_width_equal_title="false"
-            tl:tl_tab_space_equal="false"
             tl:tl_tab_padding="15dp"
+            tl:tl_tab_space_equal="false"
             tl:tl_textBold="SELECT"
             tl:tl_textSelectColor="#202020"
             tl:tl_textUnselectColor="#676767"
@@ -79,15 +78,13 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="#E3E3E3"
-        android:layout_height="0.5dp"/>
-
+        android:layout_height="0.5dp"
+        android:background="#E3E3E3" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/home_video_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
 
 </LinearLayout>

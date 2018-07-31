@@ -9,7 +9,6 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
@@ -52,29 +51,27 @@ public class GeneralizeFragment extends BaseFragment {
     @Override
     public void initData() {
         if (mLlGenera == null) return;
-        if (LoginMsgHelper.isLogin()) {
-            if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
-                mSegmentTab.setCurrentTab(0);
-                mLlGenera.setVisibility(View.VISIBLE);
-                mVp.setVisibility(View.VISIBLE);
-                mViewPerson.setVisibility(View.GONE);
-                mRlPerson.setVisibility(View.GONE);
-                final List<Fragment> fragments = new ArrayList<>();
-                fragments.add(new GeneraPersonalFragment());
-                fragments.add(new GeneraCompanyFragment());
+        if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+            mSegmentTab.setCurrentTab(0);
+            mLlGenera.setVisibility(View.VISIBLE);
+            mVp.setVisibility(View.VISIBLE);
+            mViewPerson.setVisibility(View.GONE);
+            mRlPerson.setVisibility(View.GONE);
+            final List<Fragment> fragments = new ArrayList<>();
+            fragments.add(new GeneraPersonalFragment());
+            fragments.add(new GeneraCompanyFragment());
 
-                MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
-                mVp.setAdapter(adapter);
-                /**增加缓存页面的数量*/
-                mVp.setOffscreenPageLimit(fragments.size() - 1);
-                /**默认显示第一个选项卡*/
-            } else {
-                mLlGenera.setVisibility(View.GONE);
-                mVp.setVisibility(View.GONE);
-                mViewPerson.setVisibility(View.VISIBLE);
-                mRlPerson.setVisibility(View.VISIBLE);
-                getChildFragmentManager().beginTransaction().add(R.id.rl_person, new GeneraPersonalFragment()).commit();
-            }
+            MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
+            mVp.setAdapter(adapter);
+            /**增加缓存页面的数量*/
+            mVp.setOffscreenPageLimit(fragments.size() - 1);
+            /**默认显示第一个选项卡*/
+        } else {
+            mLlGenera.setVisibility(View.GONE);
+            mVp.setVisibility(View.GONE);
+            mViewPerson.setVisibility(View.VISIBLE);
+            mRlPerson.setVisibility(View.VISIBLE);
+            getChildFragmentManager().beginTransaction().add(R.id.rl_person, new GeneraPersonalFragment()).commit();
         }
     }
 

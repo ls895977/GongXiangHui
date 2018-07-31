@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tv_fire_search_item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="35dp"
     android:ellipsize="end"
     android:gravity="center"
-    android:foreground="?android:attr/selectableItemBackground"
     android:lines="1"
-    android:textSize="14dp"
-    android:paddingBottom="5dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="5dp"
-    android:text="保时捷R911"
-    android:textColor="#000000"/>
+    android:textColor="#282828"
+    android:textSize="12sp"
+    tools:text="保时捷R911" />

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
+
     private List<DataCityInfo.DataBean.CityBean> header; // header titles
     private HashMap<DataCityInfo.DataBean.CityBean, List<DataCityInfo.DataBean.CityBean.AreasBean>> child;
     private final DataCityInfo.DataBean mDataBean;
@@ -104,25 +105,22 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
         // Getting header title
-        DataCityInfo.DataBean.CityBean cityBean = (DataCityInfo.DataBean.CityBean) getGroup(groupPosition);
+        DataCityInfo.DataBean.CityBean cityBean = getGroup(groupPosition);
         String headerTitle = cityBean.getCity();
-
         // Inflating header layout and setting text
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.header, parent, false);
         }
-
-        TextView header_text = (TextView) convertView.findViewById(R.id.header);
+        TextView header_text = convertView.findViewById(R.id.header);
         header_text.setText(headerTitle);
-        TextView index_tv = (TextView) convertView.findViewById(R.id.index_tv);
+        TextView index_tv = convertView.findViewById(R.id.index_tv);
         if (groupPosition == 0) {
             index_tv.setVisibility(View.VISIBLE);
             index_tv.setText(cityBean.getPinyin().substring(0, 1).toUpperCase());
         } else {
-            DataCityInfo.DataBean.CityBean lastCityBean = (DataCityInfo.DataBean.CityBean) getGroup(groupPosition - 1);
+            DataCityInfo.DataBean.CityBean lastCityBean = getGroup(groupPosition - 1);
             String currentTag = cityBean.getPinyin().substring(0, 1);
             String lastTag = lastCityBean.getPinyin().substring(0, 1);
             if (!currentTag.equals(lastTag)) {
@@ -132,8 +130,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
                 index_tv.setVisibility(View.GONE);
             }
         }
-
-
         // If group is expanded then change the text into bold and change the
         // icon
         if (isExpanded) {
@@ -143,43 +139,30 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         } else {
             // If group is not expanded then change the text back into normal
             // and change the icon
-
             header_text.setTypeface(null, Typeface.NORMAL);
             header_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_down, 0);
         }
-
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         // Getting child text
-
-
-        DataCityInfo.DataBean.CityBean.AreasBean areasBean
-                =
-                (DataCityInfo.DataBean.CityBean.AreasBean) getChild(groupPosition, childPosition);
-        final String childText = areasBean.getAreaname();
-
+        DataCityInfo.DataBean.CityBean.AreasBean areasBean = getChild(groupPosition, childPosition);
+        String childText = areasBean.getAreaname();
         // Inflating child layout and setting textview
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.childs, parent, false);
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.childs, parent, false);
         }
-
-        TextView child_text = (TextView) convertView.findViewById(R.id.child);
-
+        TextView child_text = convertView.findViewById(R.id.child);
         child_text.setText(childText);
-
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
-
-
     }
-
 
 }

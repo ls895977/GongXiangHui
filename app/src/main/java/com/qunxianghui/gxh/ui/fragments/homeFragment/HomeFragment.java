@@ -193,7 +193,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_home_location:
-                //                toActivity(LocationActivity.class);
                 startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
             case R.id.ll_home_search:

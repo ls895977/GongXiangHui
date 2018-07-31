@@ -2,8 +2,8 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,17 +27,13 @@ import butterknife.BindView;
  */
 public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener {
 
-
     private static final String TYPE = "type";
     public static final String DATA = "data";
 
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
-    private SearchBean mBean;
 
-    @Override
-    protected void onLoadData() {
-    }
+    private SearchBean mBean;
 
     /**
      * 子类实现此抽象方法返回View进行展示
@@ -52,10 +48,10 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     @Override
     public void initData() {
-        String string = getArguments().getString(DATA);
-        if (string != null) {
+        String keyWords = getArguments().getString(DATA);
+        if (!TextUtils.isEmpty(keyWords)) {
             int type = getArguments().getInt(TYPE, 0);
-            goNextWorks(string, type);
+            goNextWorks(keyWords, type);
         }
     }
 
@@ -106,18 +102,11 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
     //设置数据
     private void parseData(String body) {
         mBean = GsonUtil.parseJsonWithGson(body, SearchBean.class);
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         SearchFragmentAdapter adapter = new SearchFragmentAdapter(mBean.getData().getList());
         mRecyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
     }
-
-    /**
-     * 初始化控件
-     */
-    @Override
-    public void initViews(View view) { }
 
     /**
      * ==================初始化fragment=====================
