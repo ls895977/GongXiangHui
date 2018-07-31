@@ -211,6 +211,10 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
     </style>
+    <!--自定义checkbox的样式-->
+    <style name="CheckBoxStyle">
+        <item name="android:button">@drawable/checkbox_state</item>
+    </style>
 
     <style name="TagGroup">
         <item name="android:layout_width">match_parent</item>

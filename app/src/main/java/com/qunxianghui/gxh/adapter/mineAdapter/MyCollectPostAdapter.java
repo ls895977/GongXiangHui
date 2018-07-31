@@ -46,8 +46,8 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         holder.setText(R.id.tv_mine_mycollect_from, source);
         holder.setText(R.id.tv_mine_mycollect_title, title);
         if (images.size() >= 1) {
-
             RequestOptions options = new RequestOptions();
+            options.centerCrop();
             options.placeholder(R.mipmap.default_img);
             options.error(R.mipmap.default_img);
             Glide.with(mContext).load(images.get(0)).apply(options).into(collectHeadImag);
