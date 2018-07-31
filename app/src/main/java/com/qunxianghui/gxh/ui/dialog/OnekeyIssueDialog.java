@@ -57,7 +57,6 @@ public class OnekeyIssueDialog extends Dialog {
 ////                        toActivity(GuidActivity.class);
 //                        toActivity(GuidSlideActivity.class);
                         startActivity(CheckBoxActivity.class);
-                        return;
                 }
             }
         };

@@ -59,4 +59,10 @@
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
 
+    <color name="new_black3">#ff000000</color>
+    <color name="gray11">#ff36383b</color>
+    <color name="gray17">#ff7f8287</color>
+    <color name="gray22">#fff5f7fa</color>
+    <color name="textd8">#ffd8d8d8</color>
+
 </resources>

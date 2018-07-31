@@ -2,27 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qunxianghui.gxh"
     android:anyDensity="true">
-    <!--高德相应权限-->
-    <!--用于进行网络定位-->
+
+    <!-- 高德相应权限 -->
+    <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--用于访问GPS定位-->
+    <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!--用于访问网络，网络定位需要上网-->
+    <!-- 用于访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--用于读取手机当前的状态-->
+    <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据-->
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <!--用于申请获取蓝牙信息进行室内定位-->
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -31,32 +33,35 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.qunxianghui.gxh.base.MyApplication"
+        android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--app的入口-->
+
+        <!-- app的入口 -->
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!--主页面MainActivity-->
+        <!-- 主页面MainActivity -->
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <meta-data
@@ -66,193 +71,199 @@
             android:name="UMENG_CHANNEL"
             android:value="gw" />
 
-        <!--三方activity集合-->
-        <!--高德地图-->
-        <!--android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data>-->
+        <!-- 三方activity集合 -->
+        <!-- 高德地图 -->
+        <!-- android:value="9720a15c1ffd088110c1dd98ead4ce9b"></meta-data> -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="9720a15c1ffd088110c1dd98ead4ce9b" />
+
         <service android:name="com.amap.api.location.APSService" />
-        <!--微信-->
+        <!-- 微信 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--微博-->
+        <!-- 微博 -->
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.GuidActivity" />
         <activity android:name=".ui.activity.GuidSlideActivity" />
         <activity android:name=".ui.fragments.mineFragment.activity.CheckBoxActivity" />
-        <!--上传视频界面-->
+        <!-- 上传视频界面 -->
         <activity android:name=".ui.fragments.homeFragment.activity.UpLoadVideoActivity" />
 
-        <!--二维码扫描界面-->
-        <!--我的板块的个人资料界面-->
+        <!-- 二维码扫描界面 -->
+        <!-- 我的板块的个人资料界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.PersonDataActivity"
-
             android:screenOrientation="portrait" />
-        <!--我的板块的登录界面-->
+        <!-- 我的板块的登录界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--我的板块的注册界面-->
+        <!-- 我的板块的注册界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.RegistActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的设置界面-->
+        <!-- 我的板块的设置界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.SettingActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的找回密码页面-->
+        <!-- 我的板块的找回密码页面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.SeekPasswordActivity"
             android:screenOrientation="portrait" />
-        <!--首页搜索界面-->
+        <!-- 首页搜索界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.SearchActivity"
             android:screenOrientation="portrait" />
-        <!--首页左上角爆料界面-->
+        <!-- 首页左上角爆料界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.BaoLiaoActivity"
             android:screenOrientation="portrait" />
-        <!--首页生活圈界面-->
+        <!-- 首页生活圈界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.LiftStyleActivity"
             android:screenOrientation="portrait" />
-        <!--本地圈发布动态界面-->
+        <!-- 本地圈发布动态界面 -->
         <activity
             android:name=".ui.fragments.locationFragment.activity.PublishStateActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块消息汇总给界面-->
+        <!-- 我的板块消息汇总给界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MessageGatherActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块我的收藏界面-->
+        <!-- 我的板块我的收藏界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MyCollectActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的用户协议板块-->
+        <!-- 我的板块的用户协议板块 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.ProtocolActivity"
             android:screenOrientation="portrait" />
-        <!--首页视频汇界面-->
+        <!-- 首页视频汇界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
-        <!--剪裁image界面-->
+        <!-- 剪裁image界面 -->
         <activity
             android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
-        <!--我的板块的我的发布界面-->
+        <!-- 我的板块的我的发布界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MineIssueActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的我的消息界面-->
+        <!-- 我的板块的我的消息界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MineMessageActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的企业设置板块-->
+        <!-- 我的板块的企业设置板块 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.CompanySetActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的合作热线界面-->
+        <!-- 我的板块的合作热线界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.CooperationCallActivity"
             android:screenOrientation="portrait" />
-        <!--首页数据库添加栏目的界面-->
+        <!-- 首页数据库添加栏目的界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeAddTabActivity"
             android:screenOrientation="portrait" />
-        <!--自己测试玩的界面可以忽略-->
+        <!-- 自己测试玩的界面可以忽略 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeSeachLocationActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的植入广告头部 navigator界面-->
-        <!--首页频道activity-->
+        <!-- 我的板块的植入广告头部 navigator界面 -->
+        <!-- 首页频道activity -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.ChannelActivity"
             android:screenOrientation="portrait" />
-        <!--首页点击条目跳转的详情界面-->
+        <!-- 首页点击条目跳转的详情界面 -->
         <activity
             android:name=".ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="adjustResize|stateVisible|stateAlwaysHidden" />
 
-        <!--首页第一个定位的界面  其实真是的定位界面是NewSearchActivity-->
+        <!-- 首页第一个定位的界面  其实真是的定位界面是NewSearchActivity -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.LocationActivity"
             android:screenOrientation="portrait" />
-        <!--首页便民服务界面-->
+        <!-- 首页便民服务界面 -->
         <activity
             android:name=".ui.activity.BianMinServiceActivity"
             android:screenOrientation="portrait" />
-        <!--我的板块的会员升级板块-->
+        <!-- 我的板块的会员升级板块 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MemberUpActivity"
             android:screenOrientation="portrait" />
 
-        <!--本地圈板块的举报界面-->
+        <!-- 本地圈板块的举报界面 -->
         <activity
             android:name=".ui.fragments.locationFragment.activity.InFormActivity"
             android:screenOrientation="portrait" />
-        <!--首页真正的定位城市搜索界面-->
+        <!-- 首页真正的定位城市搜索界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.NewSearchActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fragments.homeFragment.activity.AbleNewSearchActivity"
             android:screenOrientation="portrait" />
-        <!--本地圈界面我要发布视频的界面-->
+        <!-- 本地圈界面我要发布视频的界面 -->
         <activity
             android:name=".ui.fragments.locationFragment.activity.VideoListActivity"
             android:screenOrientation="portrait" />
-        <!--重新设置密码界面-->
+        <!-- 重新设置密码界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.ResetPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeAirActivity"
             android:screenOrientation="portrait" />
-        <!--搜索结果页面-->
+        <!-- 搜索结果页面 -->
         <activity
             android:name=".ui.activity.PublishActivity"
             android:screenOrientation="portrait" />
-        <!--个人信息详情页-->
+        <!-- 个人信息详情页 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.PersonDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fragments.mineFragment.activity.AdvertisConmmengtActivity"
             android:screenOrientation="portrait" />
-        <!--大图image的界面-->
+        <!-- 大图image的界面 -->
         <activity
             android:name=".ui.activity.PhotoBrowserActivity"
             android:screenOrientation="portrait" />
-        <!--绑定手机号界面-->
+        <!-- 绑定手机号界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.BindMobileActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fragments.mineFragment.activity.AddAdverActivity"
             android:screenOrientation="portrait" />
-        <!--企业名片界面-->
-        <activity android:name=".ui.fragments.mineFragment.activity.CompanyCardActivity"
+        <!-- 企业名片界面 -->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.CompanyCardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".ui.activity.VideoPreviewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

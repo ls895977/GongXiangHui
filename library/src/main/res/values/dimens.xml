@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+
+    <dimen name="timetextsize">12sp</dimen>
+    <dimen name="title_backpadding">15dp</dimen>
+    <dimen name="title_height">45dp</dimen>
+    <dimen name="title_textsize">17sp</dimen>
+    <dimen name="titletextsize">16sp</dimen>
+    <dimen name="toolbar_height">50dp</dimen>
+
+</resources>

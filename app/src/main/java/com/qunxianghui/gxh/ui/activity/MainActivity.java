@@ -7,7 +7,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,13 +29,11 @@ import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.HomeFragment;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.UpLoadVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.UserUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -232,8 +229,11 @@ public class MainActivity extends BaseActivity {
                     // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
                     // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                    Intent intent = new Intent(mContext, UpLoadVideoActivity.class);
-                    intent.putParcelableArrayListExtra("videodata", (ArrayList<? extends Parcelable>) selectList);
+//                    Intent intent = new Intent(mContext, UpLoadVideoActivity.class);
+//                    intent.putParcelableArrayListExtra("videodata", (ArrayList<? extends Parcelable>) selectList);
+
+                    Intent intent = new Intent(mContext, VideoPreviewActivity.class);
+                    intent.putExtra("videoPath", selectList.get(0).getPath());
                     startActivity(intent);
                     break;
             }

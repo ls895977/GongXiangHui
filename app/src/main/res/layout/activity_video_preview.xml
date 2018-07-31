@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+        android:id="@+id/videoplayer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="40.0dip"
+        android:background="#80000000"
+        android:paddingLeft="15.0dip"
+        android:paddingRight="15.0dip"
+        android:paddingTop="15.0dip"
+        android:src="@mipmap/icon_back" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="48.0dip"
+        android:layout_alignParentBottom="true"
+        android:background="#80000000">
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="70.0dip"
+            android:layout_height="33.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15.0dip"
+            android:background="@drawable/background_round_3red"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="#ffffffff"
+            android:textSize="14.0dip" />
+    </RelativeLayout>
+</RelativeLayout>

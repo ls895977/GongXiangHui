@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,7 +18,7 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private static PermissionListener mlistener;
     protected String TAG = this.getClass().getSimpleName();
     protected Context mContext;
