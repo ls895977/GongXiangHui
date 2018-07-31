@@ -113,12 +113,11 @@ public class MainActivity extends BaseActivity {
                 try {
                     unregisterReceiver(receiver);
                 } catch (Exception e) {
-                    if (e.getMessage().contains("Receiver not registered")) {
-
-                    } else {
-                        throw e;
-                    }
-
+//                    if (e.getMessage().contains("Receiver not registered")) {
+//
+//                    } else {
+//                        throw e;
+//                    }
                 }
             }
         };

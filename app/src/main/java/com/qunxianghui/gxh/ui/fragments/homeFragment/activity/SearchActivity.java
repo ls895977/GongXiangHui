@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
@@ -56,7 +55,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @BindView(R.id.tv_cancel)
     TextView tvCancel;
     @BindView(R.id.top_bar)
-    RelativeLayout topBar;
+    LinearLayout topBar;
     @BindView(R.id.rv_search_history)
     RecyclerView rvSearchHistory;
     @BindView(R.id.rv_search_guess)
@@ -105,9 +104,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         OkGo.<String>get(Constant.SEARCH_GUESS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                final GuessBean guessBean = GsonUtil.parseJsonWithGson(response.body(), GuessBean.class);
+                GuessBean guessBean = GsonUtil.parseJsonWithGson(response.body(), GuessBean.class);
                 if (guessBean.getCode() == 0) {
-                    final List<GuessBean.DataBean> data = guessBean.getData();
+                    List<GuessBean.DataBean> data = guessBean.getData();
                     initFireRecycle(data);
                 }
             }
@@ -119,7 +118,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================猜你想要的数据=====================
      */
     private void initFireRecycle(final List<GuessBean.DataBean> guessBean) {
-        final FireSearchAdapter adapter = new FireSearchAdapter(mContext, guessBean);
+        FireSearchAdapter adapter = new FireSearchAdapter(mContext, guessBean);
         adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {

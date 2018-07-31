@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,13 +32,13 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
  */
 
 public class ProtocolActivity extends BaseActivity implements View.OnClickListener {
+
     final Activity activity = this;
     @BindView(R.id.ll_protocol_main)
     LinearLayout llProtocolMain;
@@ -52,7 +51,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     private WebView webView;
     private Dialog loadingDialog;
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_protocol;
@@ -60,19 +58,17 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
-
         loadingDialog = createLoadingDialog(ProtocolActivity.this, "加载中...");
         loadingDialog.show();
-
     }
 
     private Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
-        LinearLayout layout = (LinearLayout) v.findViewById(R.id.dialog_view);//加载布局
+        LinearLayout layout = v.findViewById(R.id.dialog_view);//加载布局
         // main.xml中的ImageView
-        ImageView spaceshipImage = (ImageView) v.findViewById(R.id.dialog_img);
-        TextView tipTextView = (TextView) v.findViewById(R.id.tipTextView);// 提示文字
+        ImageView spaceshipImage = v.findViewById(R.id.dialog_img);
+        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
         //加载动画
         final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
         //使用imageView显示动画
@@ -98,9 +94,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         } else {
             tvNewsdetailIssue.setVisibility(View.GONE);
         }
-
-        Logger.d("initDatas--->:" + url.toString());
-
         tvTitle.setText(title);
         webView = new WebView(this);
         ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -170,7 +163,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 super.onReceivedSslError(view, handler, error);
-                Log.d("onReceivedSslError: ",""+error.getPrimaryError());
+                Log.d("onReceivedSslError: ", "" + error.getPrimaryError());
                 if (error.getPrimaryError() == SslError.SSL_DATE_INVALID
                         || error.getPrimaryError() == SslError.SSL_EXPIRED
                         || error.getPrimaryError() == SslError.SSL_INVALID
@@ -212,7 +205,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         webView = null;
         llProtocolMain.removeAllViews();
         llProtocolMain = null;
-
     }
 
     @Override
@@ -220,13 +212,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         super.initListeners();
         ivWebback.setOnClickListener(this);
         tvNewsdetailIssue.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

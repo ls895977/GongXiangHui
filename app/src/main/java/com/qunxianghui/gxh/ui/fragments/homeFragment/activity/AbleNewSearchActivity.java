@@ -54,6 +54,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
     ImageView ivBlelocationBack;
     @BindView(R.id.tv_bletop_location)
     TextView tvBletopLocation;
+
     private AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
     private String mCurrentCity;
@@ -196,7 +197,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                 String areaname = areasBean.getAreaname();
                 tvHomeactivityCurrLocation.setText(areaname);
                 final Intent intent = new Intent();
-                mSp.edit().putString("currcity", areaname).putString("X-cityId", String.valueOf(areasBean.getCityid())).putString("X-areaId", String.valueOf(areasBean.getAreaid())).commit();
+                mSp.edit().putString("currcity", areaname).putString("X-cityId", String.valueOf(areasBean.getCityid())).putString("X-areaId", String.valueOf(areasBean.getAreaid())).apply();
                 setResult(RESULT_OK, intent);
                 finish();
                 return true;
@@ -267,7 +268,7 @@ public class AbleNewSearchActivity extends BaseActivity implements AbsListView.O
                 finish();
                 break;
             case R.id.tv_homeactivity_setcurr_location:
-                mSp.edit().putString("currcity", mCurrentCity).putString("X-cityId", mCityId).putString("X-areaId", mAreaId).commit();
+                mSp.edit().putString("currcity", mCurrentCity).putString("X-cityId", mCityId).putString("X-areaId", mAreaId).apply();
                 tvHomeactivityCurrLocation.setText(mCurrentCity);
                 finish();
                 break;

@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-import com.qunxianghui.gxh.bean.home.FireSearchBean;
 import com.qunxianghui.gxh.bean.home.GuessBean;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  */
 
 public class FireSearchAdapter extends BaseRecycleViewAdapter<GuessBean.DataBean> {
-
 
     public FireSearchAdapter(Context context, List<GuessBean.DataBean> datas) {
         super(context, datas);

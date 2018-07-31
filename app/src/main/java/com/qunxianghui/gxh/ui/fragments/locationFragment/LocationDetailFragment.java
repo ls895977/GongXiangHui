@@ -82,7 +82,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 int keyboardoffset = 80;
                 int tabHeight = SPUtils.getInt("tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                layoutParams.bottomMargin = height - tabHeight - offset;
+                layoutParams.bottomMargin = height - offset - 90;
                 commentView.setLayoutParams(layoutParams);
                 if (item != null) {
                     int[] location = new int[2];
@@ -248,7 +248,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public void onCommentClick(final int position, String content) {
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
-            mActivity.finish();
             return;
         }
         commentPosition = position;

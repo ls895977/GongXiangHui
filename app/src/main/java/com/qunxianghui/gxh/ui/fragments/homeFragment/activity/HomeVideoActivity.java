@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.jzvd.JZVideoPlayer;
 
 /**
@@ -26,6 +24,7 @@ import cn.jzvd.JZVideoPlayer;
  */
 
 public class HomeVideoActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.iv_home_video_back)
     ImageView ivHomeVideoBack;
     @BindView(R.id.tv_home_video_issue)
@@ -47,15 +46,10 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initViews() {
-    }
-
-    @Override
-    protected void initData() {
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
-
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mHomeVideoViewpager.setAdapter(tabViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mHomeVideoViewpager);
@@ -94,7 +88,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
                 asyncShowToast("点击了分类条目");
                 break;
         }
-
     }
 
     @Override
@@ -104,11 +97,4 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         }
         super.onBackPressed();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
-
 }
