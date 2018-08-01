@@ -7,7 +7,6 @@ import android.view.View;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineAttentionFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineFancesFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
@@ -51,7 +50,6 @@ public class MessageGatherActivity extends BaseActivity {
 
 
         fragments.add(new MyIssurePostFragment());
-        fragments.add(new MineAttentionFragment());
         fragments.add(new MineFancesFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMessageGatherViewpager.setAdapter(mineTabViewPagerAdapter);

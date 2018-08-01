@@ -30,6 +30,8 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyCollectActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFansActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
@@ -74,8 +76,8 @@ public class MineFragment extends BaseFragment {
     TextView tvMineFollowPostCount;
     @BindView(R.id.ll_mine_post)
     LinearLayout llMinePost;
-    @BindView(R.id.ll_mine_fllow_post)
-    LinearLayout llMineFllowPost;
+    @BindView(R.id.ll_mine_fans)
+    LinearLayout mLlMineFances;
     @BindView(R.id.ll_mine_set)
     RelativeLayout llMineSet;
     @BindView(R.id.tv_mine_company_name)
@@ -197,7 +199,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_company_card, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
-            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
+            R.id.ll_mine_fans, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -236,14 +238,10 @@ public class MineFragment extends BaseFragment {
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-                intent = new Intent(mActivity, MineIssueActivity.class);
-                intent.putExtra("index", 2);
-                startActivity(intent);
+                toActivity(MyFollowActivity.class);
                 break;
-            case R.id.ll_mine_fllow_post:
-                intent = new Intent(mActivity, MineMessageActivity.class);
-                intent.putExtra("index", 1);
-                startActivity(intent);
+            case R.id.ll_mine_fans:
+                toActivity(MyFansActivity.class);
                 break;
 
             case R.id.ll_mine_mycollect:
