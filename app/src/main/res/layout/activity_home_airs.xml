@@ -71,7 +71,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-
             android:drawableLeft="@mipmap/homeair_location"
             android:drawablePadding="10dp"
             android:text="杭州西湖"
@@ -79,13 +78,11 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:orientation="horizontal">
-
 
         <TextView
             android:id="@+id/tv_homeair_middle_airdetail"
@@ -165,7 +162,6 @@
         android:id="@+id/xrecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp" />
 
 </LinearLayout>
