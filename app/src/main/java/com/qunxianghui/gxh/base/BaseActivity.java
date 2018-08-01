@@ -9,21 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.qunxianghui.gxh.interfaces.PermissionListener;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
+import com.qunxianghui.gxh.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
+
     private static PermissionListener mlistener;
     protected String TAG = this.getClass().getSimpleName();
     protected Context mContext;
     protected Resources mResources;
-
     /**
      * 创建Activity时加到管理栈中
      *
@@ -69,8 +69,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = null;
         mResources = null;
 //        MyApplication.appManager.finishActivity(this);  现在用不到 应该用到地图的时候用到  现在加上的话 报空指针
-
-
     }
 
 //    /**
@@ -121,12 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void asyncShowToast(final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
-            }
-        });
+        ToastUtils.showShort(text);
     }
 
     /**

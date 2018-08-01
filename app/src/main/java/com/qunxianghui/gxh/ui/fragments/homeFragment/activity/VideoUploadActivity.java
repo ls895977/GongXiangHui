@@ -1,16 +1,23 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,7 +34,8 @@ public class VideoUploadActivity extends BaseActivity {
     EditText mEditUpdataVideoContent;
 
     private String mVideoPath;
-    private OptionsPickerView pvCustomOptions;
+    private List<String> mStrings;
+    private OptionsPickerView mChangeSex;
 
     @Override
     protected int getLayoutId() {
@@ -52,70 +60,46 @@ public class VideoUploadActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_UpdataVideo_UpLoad:
-
+                if ("请选择".equals(mTvVideoTypeChoice.getText().toString())) {
+                    asyncShowToast("请先选择视频分类");
+                    return;
+                }
+                if (TextUtils.isEmpty(mEditUpdataVideoTitle.getText().toString().trim())) {
+                    asyncShowToast("请填写视频标题");
+                    return;
+                }
+                asyncShowToast("上传");
                 break;
             case R.id.tv_UpdataVideo_Cancel:
                 finish();
                 break;
             case R.id.tv_video_type_choice:
-
+                chooseUserSex();
                 break;
         }
     }
 
+    private void chooseUserSex() {
+        if (mChangeSex == null) {
+            mStrings = new ArrayList<>();
+            mStrings.add("搞笑");
+            mStrings.add("体育");
+            mStrings.add("汽车");
+            mStrings.add("娱乐");
+            mStrings.add("财经");
+            mStrings.add("科技");
+            mChangeSex = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
 
-//    private void videoSelect() {
-//        pvCustomOptions = new OptionsPickerBuilder(mContext, new OnOptionsSelectListener() {
-//            @Override
-//            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-//                //返回的分别是三个级别的选中位置
-//                String tx = cardItem.get(options1).getPickerViewText();
-//                btUploadSelect.setText(tx);
-//
-//            }
-//        }).setLayoutRes(R.layout.pickerview_custom_options, new CustomListener() {
-//            @Override
-//            public void customLayout(View v) {
-//                TextView tvSubmit = v.findViewById(R.id.tv_finish);
-//                TextView tvAdd = v.findViewById(R.id.tv_add);
-//                ImageView ivCancel = v.findViewById(R.id.iv_cancel);
-//
-//                tvSubmit.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        pvCustomOptions.returnData();
-//                        pvCustomOptions.dismiss();
-//                    }
-//                });
-//                tvAdd.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        getCardData();
-//                        pvCustomOptions.setPicker(cardItem);
-//                    }
-//                });
-//                ivCancel.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        pvCustomOptions.dismiss();
-//                    }
-//                });
-//            }
-//        }).isDialog(true)
-//                .build();
-//        pvCustomOptions.show();
-//        pvCustomOptions.setPicker(cardItem);//添加数据
-//    }
-//
-//    private void getCardData() {
-//        for (int i = 0; i < 5; i++) {
-//            cardItem.add(new TextSelectBean(i, "No.ABC12345 " + i));
-//        }
-//        for (int i = 0; i < cardItem.size(); i++) {
-//            if (cardItem.get(i).getItemText().length() > 6) {
-//                String str_item = cardItem.get(i).getItemText().substring(0, 6) + "...";
-//                cardItem.get(i).setItemText(str_item);
-//            }
-//        }
-//    }
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    mTvVideoTypeChoice.setText(mStrings.get(options1));
+                }
+            }).setCancelColor(Color.parseColor("#676767"))
+                    .setSubmitColor(Color.parseColor("#D81717"))
+                    .build();
+            mChangeSex.setNPicker(mStrings, null, null);
+        }
+        mChangeSex.show();
+    }
+
 }
