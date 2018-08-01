@@ -32,6 +32,8 @@ public class GeneraPersonalFragment extends BaseFragment {
 
     @BindView(R.id.xrecycler_genera_personal_list)
     RecyclerView mXrecyclerGeneraPersonalList;
+    @BindView(R.id.ll_bg_load)
+    View mLoadView;
 
     private MyGeneralizePersonAdapter myGeneralizePersonAdapter;
 
@@ -55,6 +57,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
+                        mLoadView.setVisibility(View.GONE);
                         asyncShowToast("账号登陆异常");
                     }
                 });
@@ -75,6 +78,7 @@ public class GeneraPersonalFragment extends BaseFragment {
         OkGo.<String>post(Constant.GENERALIZE_PERSON_LIST_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
+                mLoadView.setVisibility(View.GONE);
                 parseGeneralizePersonData(response.body());
             }
         });

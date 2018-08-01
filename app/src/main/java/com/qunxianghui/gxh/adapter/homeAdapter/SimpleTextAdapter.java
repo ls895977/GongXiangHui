@@ -21,13 +21,11 @@ public class SimpleTextAdapter extends BaseRecycleViewAdapter<String> {
     @Override
     protected void convert(MyViewHolder holder, int position, String s) {
         holder.setText(R.id.tv_simple_1_line, s);
-
     }
 
     @Override
     protected int getItemView() {
         return  R.layout.search_history_item;
     }
-
 
 }

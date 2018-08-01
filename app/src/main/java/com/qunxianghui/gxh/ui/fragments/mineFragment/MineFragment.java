@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,7 +41,6 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -63,13 +60,10 @@ public class MineFragment extends BaseFragment {
     RelativeLayout writeAdvertise;
     @BindView(R.id.rl_up_step)
     RelativeLayout rlUpStep;
-    //头像
     @BindView(R.id.iv_head)
     ImageView mIvHead;
-    //会员类型
     @BindView(R.id.tv_member_type)
     TextView mTvMemberType;
-    //用户名
     @BindView(R.id.mine_quickly_login)
     TextView mineQuicklyLogin;
     @BindView(R.id.tv_mine_addlike_count)
@@ -214,7 +208,6 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_mine_message:
                 toActivity(MineMessageActivity.class);
                 break;
-
             case R.id.mine_fabu:
                 toActivity(MineIssueActivity.class);
                 break;
@@ -243,13 +236,11 @@ public class MineFragment extends BaseFragment {
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-
                 intent = new Intent(mActivity, MineIssueActivity.class);
                 intent.putExtra("index", 2);
                 startActivity(intent);
                 break;
             case R.id.ll_mine_fllow_post:
-
                 intent = new Intent(mActivity, MineMessageActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
@@ -281,19 +272,5 @@ public class MineFragment extends BaseFragment {
                 }
             }, new String[]{Manifest.permission.CALL_PHONE});
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder1 = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder1.unbind();
     }
 }
