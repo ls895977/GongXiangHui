@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
  */
 
 public class AdvertisConmmengtActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
+
     @BindView(R.id.rb_adver_bottom)
     RadioButton rbAdverBottom;
     @BindView(R.id.rb_adver_top)
