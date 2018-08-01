@@ -2,10 +2,14 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -20,6 +24,7 @@ import com.qunxianghui.gxh.utils.GsonUtil;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeAirActivity extends BaseActivity {
@@ -34,6 +39,10 @@ public class HomeAirActivity extends BaseActivity {
     TextView mHomeAirLocation;
     @BindView(R.id.xrecycler)
     XRecyclerView mXrecycler;
+    @BindView(R.id.tv_homeair_des)
+    TextView mTvHomeairDes;
+    @BindView(R.id.iv_homeair_airbg)
+    ImageView ivHomeairAirbg;
 
     private String cityId;
     private String areaId;
@@ -94,9 +103,18 @@ public class HomeAirActivity extends BaseActivity {
         String windPower = data.getForecast().get(0).getDay().getWindPower();
         String windDirection = data.getForecast().get(0).getDay().getWindDirection();
         String dateTime = data.getForecast().get(0).getDate();
-        mTvHomeairTopBigDegree.setText(String.format("%s°C", data.getWendu()));
+        String notice = data.getForecast().get(0).getNight().getNotice();
+        String bgImage = data.getForecast().get(0).getNight().getBgImage();
+        mTvHomeairTopBigDegree.setText(String.format(data.getWendu()));
         mTvHomeairMiddleAirdetail.setText(String.format("%s|%s%s", weather, windDirection, windPower));
         mTvHomeairBottomDayDetail.setText(dateTime);
+        mTvHomeairDes.setText(notice);
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.placeholder(R.mipmap.homeair_sun);
+        options.error(R.mipmap.homeair_rain);
+        Glide.with(mContext).load(bgImage).apply(options).into(ivHomeairAirbg);
+
     }
 
     @Override
@@ -111,15 +129,22 @@ public class HomeAirActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.iv_home_air_back, R.id.ll_homeair_location})
+    @OnClick({R.id.iv_home_air_back, R.id.home_air_location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_home_air_back:
                 finish();
                 break;
-            case R.id.ll_homeair_location:
+            case R.id.home_air_location:
                 startActivityForResult(new Intent(mContext, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
