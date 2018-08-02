@@ -1,7 +1,10 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,13 +26,21 @@ public class MyFocusAdapter extends BaseRecycleViewAdapter<MyFocusBean.DataBean>
     protected void convert(MyViewHolder holder, int position, MyFocusBean.DataBean dataBean) {
         final ImageView headImave = holder.getView(R.id.iv_mine_focus_head);
 
-        holder.setText(R.id.tv_mine_focus_title,dataBean.getMember_name());
+        TextView mMyFocusFollow = holder.getView(R.id.tv_myfocus_follow);
+        holder.setText(R.id.tv_mine_focus_title, dataBean.getMember_name());
 
         RequestOptions options = new RequestOptions();
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
         options.centerCrop();
         Glide.with(mContext).load(dataBean.getMember_avatar()).apply(options).into(headImave);
+
+        mMyFocusFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "点击了关注", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }

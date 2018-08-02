@@ -32,6 +32,7 @@ public class Constant {
     public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
     public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice";
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表

@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:drawableRight="@drawable/down_icon"
+                android:drawableRight="@mipmap/down_icon"
                 android:focusable="true"
                 android:hint="请选择所属行业"
                 android:singleLine="true" />
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:drawableRight="@drawable/down_icon"
+                android:drawableRight="@mipmap/down_icon"
                 android:focusable="true"
                 android:hint="请选择所属地区"
                 android:singleLine="true"

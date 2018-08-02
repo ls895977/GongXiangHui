@@ -1,92 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="17dp"
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:padding="13dp"
+        android:src="@mipmap/home_video_back" />
+
+    <com.flyco.tablayout.SegmentTabLayout
+        android:id="@+id/segment_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+        tl:tl_bar_color="#fff"
+        tl:tl_indicator_color="#D81717"
+        tl:tl_indicator_corner_radius="3dp"
+        tl:tl_tab_padding="15dp" />
 
-        <ImageView
-            android:id="@+id/iv_advercommon_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@mipmap/home_video_back" />
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="保存"
+        android:textColor="#D71B24"
+        android:textSize="15sp" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal">
-
-            <RadioGroup
-                android:id="@+id/rg_advercommon_main"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_adver_bottom"
-                    android:layout_width="70dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_btn_generalize"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="底部"
-                    android:textColor="@color/generalize_text_color"
-                    android:textSize="13sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_adver_top"
-                    android:layout_width="70dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/selector_btn_generalize"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="顶部"
-                    android:textColor="@color/generalize_text_color"
-                    android:textSize="13sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_adver_video_poster"
-                    android:layout_width="70dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/selector_btn_generalize"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="贴片"
-                    android:textColor="@color/generalize_text_color"
-                    android:textSize="13sp"
-                    android:visibility="gone" />
-            </RadioGroup>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_advercommon_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:text="保存"
-            android:textColor="#D71B24" />
-    </LinearLayout>
-
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/iv_back"
+        android:background="#E5E5E5" />
 
     <com.qunxianghui.gxh.widget.NoScrollViewPager
-        android:id="@+id/vp_addadver_common_main"
+        android:id="@+id/vp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/view" />
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -110,7 +110,7 @@
                     android:id="@+id/iv_mine_issue_post_collect"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/collect_normal" />
+                    android:src="@mipmap/collect_normal" />
 
                 <TextView
                     android:id="@+id/tv_mine_issue_post_collect"
@@ -143,7 +143,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view"
-        android:background="@drawable/im_distribute_comm_bg"
+        android:background="@mipmap/im_distribute_comm_bg"
         android:minHeight="10dip"
         android:orientation="vertical"
         android:paddingBottom="8dip"

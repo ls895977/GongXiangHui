@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/pic_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11.0dip"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginTop="13.5dip"
+        android:drawableLeft="@mipmap/admodle_image"
+        android:drawablePadding="6.0dip"
+        android:text="上传图片"
+        android:textColor="#ff666562"
+        android:textSize="14.0sp" />
+</LinearLayout>

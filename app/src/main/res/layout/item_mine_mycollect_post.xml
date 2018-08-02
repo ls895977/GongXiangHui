@@ -97,5 +97,5 @@
         android:checked="false"
         android:clickable="false"
         android:focusable="false"
-        />
+        android:visibility="gone" />
 </RelativeLayout>

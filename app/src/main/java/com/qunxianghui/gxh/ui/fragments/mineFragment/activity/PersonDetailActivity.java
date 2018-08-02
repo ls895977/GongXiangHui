@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,14 +43,15 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     RoundImageView ivPersonDetailHead;
     @BindView(R.id.tv_person_detail_name)
     TextView tvPersonDetailName;
-    @BindView(R.id.tv_person_detail_setep)
-    TextView tvPersonDetailSetep;
+
     @BindView(R.id.tv_person_detail_attention)
     TextView tvPersonDetailAttention;
     @BindView(R.id.mine_tablayout_person_detail)
     TabLayout mineTablayoutPersonDetail;
     @BindView(R.id.mine_person_detail_viewpager)
     ViewPager minePersonDetailViewpager;
+    @BindView(R.id.rl_persondetail_bg)
+    RelativeLayout rlPersondetailBg;
     private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
@@ -67,6 +71,13 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         for (String tab : titles) {
             mineTablayoutPersonDetail.addTab(mineTablayoutPersonDetail.newTab().setText(tab));
         }
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlPersondetailBg.getLayoutParams();
+        params.height = height * 1 / 3;
+        rlPersondetailBg.setLayoutParams(params);
+
     }
 
     @Override
@@ -108,15 +119,14 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         UserDetailInforBean userDetailInforBean = GsonUtils.jsonFromJson(body, UserDetailInforBean.class);
         dataList = userDetailInforBean.getData();
         follow = dataList.getFollow();
-       if (follow.toString().equals("")){
-           tvPersonDetailAttention.setText("关注");
-       }else {
-           tvPersonDetailAttention.setText("已关注");
-       }
+        if (follow.toString().equals("")) {
+            tvPersonDetailAttention.setText("关注");
+        } else {
+            tvPersonDetailAttention.setText("已关注");
+        }
 
         if (userDetailInforBean.getCode() == 0) {
             tvPersonDetailName.setText(dataList.getNick());
-            tvPersonDetailSetep.setText(dataList.getLevel_info().getName());
 
             RequestOptions options = new RequestOptions();
             options.placeholder(R.mipmap.ic_launcher);

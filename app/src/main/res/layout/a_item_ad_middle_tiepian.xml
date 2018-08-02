@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_ad_middle"
+    android:layout_width="fill_parent"
+    android:layout_height="260.0dip"
+    android:layout_centerInParent="true"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20.0dip"
+        android:layout_marginTop="80.0dip"
+        android:src="@mipmap/zr_tiepian" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pic"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8.0dip"
+        android:text="植入贴片广告"
+        android:textColor="@color/new_red"
+        android:textSize="15.0sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8.0dip"
+        android:text="点击此处编辑您的视频贴片广告"
+        android:textColor="#ff9b9b9b"
+        android:textSize="12.0sp" />
+</RelativeLayout>

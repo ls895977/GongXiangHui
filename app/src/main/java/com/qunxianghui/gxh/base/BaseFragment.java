@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.ToastUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -144,13 +145,8 @@ public abstract class BaseFragment extends Fragment {
         startActivityForResult(intent, requestCode);
     }
 
-    protected void asyncShowToast(final String text) {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
-            }
-        });
+    protected void asyncShowToast(String text) {
+        ToastUtils.showShort(text);
     }
 
     @Override

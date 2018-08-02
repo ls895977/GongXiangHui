@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:background="#D81717"
-        android:paddingTop="30dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingTop="30dp">
 
         <LinearLayout
             android:id="@+id/ll_home_location"
@@ -64,8 +65,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_tab"
         android:layout_width="match_parent"
         android:layout_height="38dp"
+        android:layout_below="@id/ll_top"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -74,14 +77,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tl:tl_indicator_width="18dp"
             tl:tl_indicator_color="#D81717"
-            tl:tl_indicator_width_equal_title="false"
             tl:tl_indicator_corner_radius="1.5dp"
             tl:tl_indicator_height="3dp"
+            tl:tl_indicator_width="18dp"
+            tl:tl_indicator_width_equal_title="false"
             tl:tl_tab_padding="15dp"
-            tl:tl_textSelectColor="#202020"
             tl:tl_textBold="SELECT"
+            tl:tl_textSelectColor="#202020"
             tl:tl_textUnselectColor="#676767"
             tl:tl_textsize="13sp" />
 
@@ -97,13 +100,26 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
-        android:background="#E3E3E3"
-        android:layout_height="0.5dp"/>
+        android:layout_height="0.5dp"
+        android:layout_below="@id/ll_tab"
+        android:background="#E3E3E3" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/home_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/view" />
+
+    <ImageView
+        android:id="@+id/iv_home_paste_artical"
+        android:layout_width="52dp"
+        android:layout_height="57dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@mipmap/iv_add_artical"
+        android:focusable="true"
+        tools:ignore="RtlHardcoded" />
+</RelativeLayout>

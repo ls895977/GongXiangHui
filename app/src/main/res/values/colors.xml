@@ -60,9 +60,24 @@
     <color name="navigationBarColor">#000000</color>
 
     <color name="new_black3">#ff000000</color>
+    <color name="new_red">#ffc10f1b</color>
+    <color name="gray">#ffededed</color>
+    <color name="gray_3">#ff31312f</color>
     <color name="gray11">#ff36383b</color>
     <color name="gray17">#ff7f8287</color>
     <color name="gray22">#fff5f7fa</color>
+    <color name="gray27">#ffe4e4e4</color>
+    <color name="black6">#ff0f0f0f</color>
+    <color name="whitefour">#ffebebeb</color>
+    <color name="textblack">#ff333333</color>
+    <color name="greydivide">#ffe6e6e6</color>
     <color name="textd8">#ffd8d8d8</color>
+    <color name="yellow9">#ffff8100</color>
+    <color name="textqiyehao">#ffd81b24</color>
+    <color name="new_gray">#ffcecece</color>
+    <color name="greybackground">#fff7f7f7</color>
+    <color name="greyborder">#ffa6a6a2</color>
+    <color name="bg_grag">#ffefeff4</color>
+    <color name="gray_5">#ff383946</color>
 
 </resources>

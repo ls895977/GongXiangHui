@@ -323,12 +323,12 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
                 mAddPosition = 0;
-                intent = new Intent(this, AdvertisConmmengtActivity.class);
+                intent = new Intent(this, AdvertTemplateActivity.class);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.rl_mineFragment_addBottomAdver:
                 mAddPosition = 2;
-                intent = new Intent(this, AdvertisConmmengtActivity.class);
+                intent = new Intent(this, AdvertTemplateActivity.class);
                 startActivityForResult(intent, 100);
                 break;
         }

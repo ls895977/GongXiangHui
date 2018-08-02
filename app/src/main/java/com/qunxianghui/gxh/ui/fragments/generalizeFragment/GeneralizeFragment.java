@@ -63,9 +63,7 @@ public class GeneralizeFragment extends BaseFragment {
 
             MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
             mVp.setAdapter(adapter);
-            /**增加缓存页面的数量*/
             mVp.setOffscreenPageLimit(fragments.size() - 1);
-            /**默认显示第一个选项卡*/
         } else {
             mLlGenera.setVisibility(View.GONE);
             mVp.setVisibility(View.GONE);

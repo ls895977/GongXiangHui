@@ -38,7 +38,6 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
-import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.util.ArrayList;
@@ -80,7 +79,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition + 1);
                 int offset = 5;
                 int keyboardoffset = 80;
-                int tabHeight = SPUtils.getInt("tabHeight", 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
 
                 layoutParams.bottomMargin = height  - offset-83;

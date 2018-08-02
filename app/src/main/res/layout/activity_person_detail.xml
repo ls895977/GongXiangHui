@@ -5,65 +5,95 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <RelativeLayout
+        android:id="@+id/rl_persondetail_bg"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@color/tab_color">
+        android:layout_height="170dp"
+        android:background="@mipmap/icon_person_detail_bg2">
 
 
         <ImageView
             android:id="@+id/iv_person_detail_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@mipmap/icon_back" />
-
-        <com.qunxianghui.gxh.widget.RoundImageView
-            android:id="@+id/iv_person_detail_head"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/iv_person_detail_back"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            android:id="@+id/tv_person_detail_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/iv_person_detail_head"
-            android:text="臭居居"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/tv_person_detail_setep"
-            android:layout_width="65dp"
-            android:layout_height="20dp"
-            android:gravity="center"
-            android:layout_centerVertical="true"
+            android:layout_width="6dp"
+            android:layout_height="13dp"
             android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/tv_person_detail_name"
-            android:background="@drawable/shape_blue_bg"
-            android:text="注册会员"
-            android:textColor="@color/white" />
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/icon_memberup_back" />
 
 
         <TextView
             android:id="@+id/tv_person_detail_attention"
             android:layout_width="60dp"
-            android:layout_height="22dp"
-            android:gravity="center"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_blue_bg"
+            android:gravity="center"
             android:text="关注"
-            android:background="@drawable/shape_button"
             android:textColor="@color/white" />
 
 
+        <com.qunxianghui.gxh.widget.RoundImageView
+            android:id="@+id/iv_person_detail_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/default_img" />
+
+        <TextView
+            android:id="@+id/tv_person_detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_person_detail_head"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:text="臭居居"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_person_detail_fanfollow"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@+id/tv_person_detail_name"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:text="关注 12 |"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="粉丝 45"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_person_detail_fanfollow"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:text="本宝宝好没有想到有个性的签名-"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
     </RelativeLayout>
 
 
@@ -71,13 +101,12 @@
         android:id="@+id/mine_tablayout_person_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:tabIndicatorColor="@color/tab_color"
-        app:tabSelectedTextColor="@color/tab_color"
+        android:scrollbars="none"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabSelectedTextColor="@color/white"
         app:tabTextColor="#000" />
 
     <android.support.v4.view.ViewPager
-
         android:id="@+id/mine_person_detail_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

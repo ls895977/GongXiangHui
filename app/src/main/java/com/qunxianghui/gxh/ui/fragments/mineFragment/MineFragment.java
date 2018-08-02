@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,12 +24,14 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertisConmmengtActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyCollectActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFansActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
@@ -43,7 +43,6 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -63,13 +62,10 @@ public class MineFragment extends BaseFragment {
     RelativeLayout writeAdvertise;
     @BindView(R.id.rl_up_step)
     RelativeLayout rlUpStep;
-    //头像
     @BindView(R.id.iv_head)
     ImageView mIvHead;
-    //会员类型
     @BindView(R.id.tv_member_type)
     TextView mTvMemberType;
-    //用户名
     @BindView(R.id.mine_quickly_login)
     TextView mineQuicklyLogin;
     @BindView(R.id.tv_mine_addlike_count)
@@ -80,8 +76,8 @@ public class MineFragment extends BaseFragment {
     TextView tvMineFollowPostCount;
     @BindView(R.id.ll_mine_post)
     LinearLayout llMinePost;
-    @BindView(R.id.ll_mine_fllow_post)
-    LinearLayout llMineFllowPost;
+    @BindView(R.id.ll_mine_fans)
+    LinearLayout mLlMineFances;
     @BindView(R.id.ll_mine_set)
     RelativeLayout llMineSet;
     @BindView(R.id.tv_mine_company_name)
@@ -203,23 +199,20 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_company_card, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
-            R.id.ll_mine_fllow_post, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
+            R.id.ll_mine_fans, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_company_card:
                 toActivity(CompanyCardActivity.class);
-
                 break;
             case R.id.rl_mine_message:
                 toActivity(MineMessageActivity.class);
                 break;
-
             case R.id.mine_fabu:
                 toActivity(MineIssueActivity.class);
                 break;
             case R.id.rl_up_step:
-
                 toActivity(MemberUpActivity.class);
                 break;
             case R.id.rl_mine_person_data:
@@ -235,7 +228,7 @@ public class MineFragment extends BaseFragment {
                 requestCall();
                 break;
             case R.id.write_advertise:
-                intent = new Intent(mActivity, AdvertisConmmengtActivity.class);
+                intent = new Intent(mActivity, AdvertTemplateActivity.class);
                 intent.putExtra("adverTag", 1);
                 startActivity(intent);
                 break;
@@ -243,18 +236,11 @@ public class MineFragment extends BaseFragment {
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-
-                intent = new Intent(mActivity, MineIssueActivity.class);
-                intent.putExtra("index", 2);
-                startActivity(intent);
+                toActivity(MyFollowActivity.class);
                 break;
-            case R.id.ll_mine_fllow_post:
-
-                intent = new Intent(mActivity, MineMessageActivity.class);
-                intent.putExtra("index", 1);
-                startActivity(intent);
+            case R.id.ll_mine_fans:
+                toActivity(MyFansActivity.class);
                 break;
-
             case R.id.ll_mine_mycollect:
                 toActivity(MyCollectActivity.class);
                 break;
@@ -281,19 +267,5 @@ public class MineFragment extends BaseFragment {
                 }
             }, new String[]{Manifest.permission.CALL_PHONE});
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder1 = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder1.unbind();
     }
 }
