@@ -17,7 +17,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:width="48dp"
-            android:background="@drawable/back_arrow" />
+            android:background="@mipmap/back_arrow" />
 
         <TextView
             android:layout_width="0dp"

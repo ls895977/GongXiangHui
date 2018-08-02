@@ -44,11 +44,11 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         final String collect = mList.get(position).getCollect();
         if (collect.length() == 0 || collect == null) {
             holder.mTvCollect.setText("已收藏");
-            holder.mIvCollect.setBackgroundResource(R.drawable.collect);
+            holder.mIvCollect.setBackgroundResource(R.mipmap.collect);
 
         } else {
             holder.mTvCollect.setText("收藏");
-            holder.mIvCollect.setBackgroundResource(R.drawable.collect_normal);
+            holder.mIvCollect.setBackgroundResource(R.mipmap.collect_normal);
         }
         List<TestMode.DataBean.ListBean.ClickLikeBean> click_like = mList.get(position).getClick_like();
         String like_info_res = mList.get(position).getLike_info_res();

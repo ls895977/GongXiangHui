@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/delimg"
             android:layout_width="wrap_content"
-            android:src="@drawable/refund_shibai"
+            android:src="@mipmap/refund_shibai"
             android:layout_height="wrap_content"/>
     </FrameLayout>
 

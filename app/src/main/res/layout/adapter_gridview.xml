@@ -5,7 +5,7 @@
     android:background="#ffb5c9"
     android:layout_height="wrap_content">
 
-    <TextView
+    <TextViewbackground_round_3red
         android:id="@+id/ItemText"
         android:layout_width="70dip"
         android:layout_height="32dip"

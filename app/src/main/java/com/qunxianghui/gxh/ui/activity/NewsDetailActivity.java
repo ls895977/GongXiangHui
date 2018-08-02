@@ -128,9 +128,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             has_collect = dataList.isHas_collect();
             if (has_collect) {
-                mIvNewsDetailCollect.setImageResource(R.drawable.collect);
+                mIvNewsDetailCollect.setImageResource(R.mipmap.collect);
             } else {
-                mIvNewsDetailCollect.setImageResource(R.drawable.collect_normal);
+                mIvNewsDetailCollect.setImageResource(R.mipmap.collect_normal);
             }
         }
     }
@@ -460,10 +460,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                 if (myCollectBean.getCode() == 0) {
                     asyncShowToast("收藏成功");
-                    mIvNewsDetailCollect.setImageResource(R.drawable.collect);
+                    mIvNewsDetailCollect.setImageResource(R.mipmap.collect);
                 } else if (myCollectBean.getCode() == 202) {
                     asyncShowToast("取消收藏");
-                    mIvNewsDetailCollect.setImageResource(R.drawable.collect_normal);
+                    mIvNewsDetailCollect.setImageResource(R.mipmap.collect_normal);
                 }
             }
         });

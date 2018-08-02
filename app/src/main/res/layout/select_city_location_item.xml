@@ -16,6 +16,7 @@
         android:drawableLeft="@drawable/ic_location"
         android:text="当前定位城市"
         android:textColor="@color/gray_9"
+
         android:textSize="14sp" />
 
     <TextView

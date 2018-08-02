@@ -92,7 +92,7 @@
                         android:id="@+id/iv_location_style_collect"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/collect_normal" />
+                        android:background="@mipmap/collect_normal" />
 
                     <TextView
                         android:id="@+id/tv_location_style_collect"
