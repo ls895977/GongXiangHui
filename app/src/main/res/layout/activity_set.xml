@@ -3,24 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f6f6f6"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/white">
         <include layout="@layout/activity_title" />
     </LinearLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rl_set_message"
-        style="@style/RelativeStyle">
+        style="@style/RelativeStyle"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MineListStyle"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
             android:text="消息通知" />
 
         <com.kyleduo.switchbutton.SwitchButton
@@ -28,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="10dp"
             android:checked="false"
             app:kswAnimationDuration="300"
             app:kswBackDrawable="@drawable/ios_back_drawable"
@@ -41,50 +46,59 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
 
+    <RelativeLayout
         android:id="@+id/rl_set_cache"
-        style="@style/RelativeStyle">
+        style="@style/RelativeStyle"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MineListStyle"
+            android:layout_marginLeft="12dp"
             android:text="清空缓存" />
 
         <TextView
             android:id="@+id/tv_mine_set_cache"
             style="@style/MineListStyle"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="10dp"
             android:text="1.5M" />
 
     </RelativeLayout>
 
+
     <RelativeLayout
         android:id="@+id/rl_set_banben_new"
-        style="@style/RelativeStyle">
+        style="@style/RelativeStyle"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MineListStyle"
+            android:layout_marginLeft="12dp"
             android:text="当前版本" />
 
         <TextView
             android:id="@+id/tv_mine_set_version"
             style="@style/MineListStyle"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="10dp"
             android:text="V5.0.0" />
 
     </RelativeLayout>
 
-    <Button
-        android:background="@drawable/shape_button_gray"
-        android:id="@+id/bt_setting_quit"
+    <TextView
+        android:id="@+id/tv_setting_quit"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="25dp"
-        android:textColor="@color/white"
+        android:background="@color/white"
+        android:gravity="center_horizontal|center_vertical"
         android:text="退出登录"
         android:textSize="16sp" />
 </LinearLayout>

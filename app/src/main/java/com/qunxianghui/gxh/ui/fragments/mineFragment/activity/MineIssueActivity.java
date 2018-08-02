@@ -1,15 +1,15 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -21,15 +21,14 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
+public class MineIssueActivity extends BaseActivity {
     @BindView(R.id.mine_MyIssureTablayout_common)
-    TabLayout mineMyIssureTablayoutCommon;
+    SlidingTabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)
     ViewPager mineMyIssureViewpager;
-    private String[] titles = new String[]{"爆料", "视频", "帖子"};
+    private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-    private int position;
 
     @Override
     protected int getLayoutId() {
@@ -38,13 +37,16 @@ public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initViews() {
+        fragments.add(new MyIssueDiscloseFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssureVideoFragment());
 
-        position = getIntent().getIntExtra("index", 0);
-        //设置tablayout的一个显示方式
-        mineMyIssureTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
-        for (String tab : titles) {
-            mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
-        }
+        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
+        mineMyIssureTablayoutCommon.setViewPager(mineMyIssureViewpager);
+        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
 
     }
 
@@ -56,35 +58,23 @@ public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSe
                 finish();
             }
         }).setTitleText("我的发布");
-        mineMyIssureTablayoutCommon.setOnTabSelectedListener(this);
-        fragments.add(new MyIssueDiscloseFragment());
-        fragments.add(new MyIssureVideoFragment());
-        fragments.add(new MyIssurePostFragment());
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
-        mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
-        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
-        mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
-
-//viewpager的切换
-        if (position != 0) {
-            mineMyIssureViewpager.setCurrentItem(position, false);
-        }
 
 
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        mineMyIssureViewpager.setCurrentItem(tab.getPosition());
-    }
+    protected void initListeners() {
+        super.initListeners();
+        mineMyIssureTablayoutCommon.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                mineMyIssureViewpager.setCurrentItem(position, false);
+            }
 
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
+            @Override
+            public void onTabReselect(int position) {
 
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
+            }
+        });
     }
 }

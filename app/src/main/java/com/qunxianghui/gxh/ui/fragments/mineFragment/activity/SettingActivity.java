@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,10 +22,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.DataCleanManager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.UMShareAPI;
@@ -43,8 +42,8 @@ import butterknife.BindView;
  */
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.bt_setting_quit)
-    Button btSettingQuit;
+    @BindView(R.id.tv_setting_quit)
+    TextView mTvSettingQuit;
     @BindView(R.id.tv_mine_set_cache)
     TextView tvMineSetCache;
     @BindView(R.id.rl_set_cache)
@@ -82,6 +81,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initViews() {
         //获得应用内部缓存(/data/data/com.example.androidclearcache/cache)
+
         final File file = new File(this.getCacheDir().getPath());
         try {
             tvMineSetCache.setText(DataCleanManager.getCacheSize(file));
@@ -103,7 +103,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initListeners() {
-        btSettingQuit.setOnClickListener(this);
+        mTvSettingQuit.setOnClickListener(this);
         rlSetCache.setOnClickListener(this);
         switchButtonMineSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,7 +124,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
-            case R.id.bt_setting_quit:
+            case R.id.tv_setting_quit:
                 //*此按钮可点击时已经是登录状态*/
                 new AlertDialog.Builder(mContext).setTitle("是否退出登录").setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
@@ -134,7 +134,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         deleteDatabase("SqliteTest.db");
                         ExitUserLogin();
                     }
-                }).setNegativeButton("否", null).show();
+                }).setNeutralButton("否", null).show();
                 break;
             case R.id.rl_set_cache:
                 final Message msg = new Message();
