@@ -2,16 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
     android:orientation="horizontal">
 
-
-
-
-
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="100dp"
         android:layout_height="70dp"
         android:foreground="?android:attr/selectableItemBackground"
@@ -21,10 +16,10 @@
 
         <ImageView
             android:id="@+id/iv_item_issue_video_head"
-            android:scaleType="fitXY"
             android:layout_width="100dp"
             android:layout_height="70dp"
-            android:src="@mipmap/ic_launcher" />
+            android:scaleType="fitXY"
+            android:src="@mipmap/default_img" />
     </android.support.v7.widget.CardView>
 
     <LinearLayout
@@ -41,14 +36,10 @@
             android:lines="2"
             android:text="视频title" />
 
-
         <RelativeLayout
-
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
 
             <TextView
                 android:id="@+id/tv_item_issue_vido_time"

@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -45,7 +44,6 @@
                 android:textSize="11sp" />
         </LinearLayout>
 
-
         <TextView
             android:id="@+id/tv_myfocus_follow"
             android:layout_width="53dp"
@@ -58,7 +56,6 @@
             android:textSize="13sp" />
 
     </RelativeLayout>
-
 
     <View
         android:layout_width="match_parent"

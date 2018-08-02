@@ -16,7 +16,7 @@
             android:id="@+id/iv_baoliao_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_back" />
+            android:src="@mipmap/common_black_back" />
 
         <TextView
             android:layout_width="wrap_content"

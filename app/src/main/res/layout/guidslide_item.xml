@@ -26,7 +26,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="32dp"
-            android:background="@mipmap/adver_delete" />
+            android:background="@mipmap/common_delete" />
 
     </RelativeLayout>
 
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@mipmap/adver_row_bottom" />
+            android:background="@mipmap/common_gray_row_bottom" />
 
     </RelativeLayout>
 

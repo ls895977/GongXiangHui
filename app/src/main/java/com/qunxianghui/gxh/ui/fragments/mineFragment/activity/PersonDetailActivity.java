@@ -129,8 +129,8 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             tvPersonDetailName.setText(dataList.getNick());
 
             RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.ic_launcher);
-            options.error(R.mipmap.ic_launcher);
+            options.placeholder(R.mipmap.default_img);
+            options.error(R.mipmap.default_img);
             Glide.with(mContext).load(dataList.getMember_avatar()).apply(options).into(ivPersonDetailHead);
 
         }

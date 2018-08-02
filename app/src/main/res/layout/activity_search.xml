@@ -21,7 +21,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="5dp"
             android:padding="5dp"
-            android:src="@mipmap/icon_back" />
+            android:src="@mipmap/common_black_back" />
 
         <EditText
             android:id="@+id/et_search"
@@ -95,7 +95,7 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="10dp"
                     android:padding="12dp"
-                    android:src="@mipmap/iv_delect" />
+                    android:src="@mipmap/common_delete" />
 
             </LinearLayout>
 

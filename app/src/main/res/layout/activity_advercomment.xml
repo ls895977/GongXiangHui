@@ -11,7 +11,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:padding="13dp"
-        android:src="@mipmap/home_video_back" />
+        android:src="@mipmap/common_black_back" />
 
     <com.flyco.tablayout.SegmentTabLayout
         android:id="@+id/segment_tab"

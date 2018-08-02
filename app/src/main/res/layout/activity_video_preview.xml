@@ -19,7 +19,7 @@
         android:paddingLeft="15.0dip"
         android:paddingRight="15.0dip"
         android:paddingTop="15.0dip"
-        android:src="@mipmap/icon_back" />
+        android:src="@mipmap/common_black_back" />
 
     <TextView
         android:id="@+id/tv_ok"

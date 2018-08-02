@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -17,7 +16,7 @@
             android:id="@+id/iv_fabu_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_back" />
+            android:src="@mipmap/common_black_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,15 +36,12 @@
 
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/ll_baoliao_remember"
         android:layout_width="match_parent"
-
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:background="#33ff454b"
-
         android:orientation="horizontal"
         android:paddingLeft="15dp">
 
@@ -66,7 +62,6 @@
             android:background="@mipmap/icon_close" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,30 +69,30 @@
         android:orientation="vertical">
 
         <EditText
-            android:visibility="gone"
             android:id="@+id/et_baoliao_fabu_title"
-            android:background="@null"
-            android:textSize="14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:hint="请输入标题"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
         <View
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="8dp"
             android:background="@color/divider"
-            android:visibility="gone"/>
-
+            android:visibility="gone" />
 
         <EditText
-            android:textSize="14sp"
-            android:lines="4"
             android:id="@+id/et_baoliao_fabu_content"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@null"
-            android:hint="发布内容..." />
+            android:hint="发布内容..."
+            android:lines="4"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -111,7 +106,6 @@
         android:listSelector="@android:color/transparent"
         android:scrollbarStyle="outsideOverlay"
         tools:listitem="@layout/list_item_image" />
-
 
     <LinearLayout
         android:id="@+id/ll_publich_load"

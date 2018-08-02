@@ -54,7 +54,7 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initData() {
-        new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+        new TitleBuilder(this).setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

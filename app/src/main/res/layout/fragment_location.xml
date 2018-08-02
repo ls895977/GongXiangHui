@@ -51,8 +51,8 @@
             tl:tl_indicator_height="3dp"
             tl:tl_indicator_width="18dp"
             tl:tl_indicator_width_equal_title="false"
-            tl:tl_tab_space_equal="false"
             tl:tl_tab_padding="15dp"
+            tl:tl_tab_space_equal="false"
             tl:tl_textBold="SELECT"
             tl:tl_textSelectColor="#202020"
             tl:tl_textUnselectColor="#676767"
@@ -71,8 +71,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="#E3E3E3"
-        android:layout_height="0.5dp"/>
+        android:layout_height="0.5dp"
+        android:background="#E3E3E3" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/local_view_pager"

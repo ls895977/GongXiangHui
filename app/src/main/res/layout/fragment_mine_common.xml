@@ -17,7 +17,9 @@
         android:layout_width="62dp"
         android:layout_height="24dp"
         android:layout_margin="10dp"
-        android:background="@mipmap/mycollect_delect"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_red_solid_corner"
         android:layout_gravity="right" />
 
 </LinearLayout>

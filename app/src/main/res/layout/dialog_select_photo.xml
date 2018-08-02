@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_gravity="bottom"
         android:layout_margin="10dp"
-        android:layout_gravity="bottom">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,37 +21,36 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:text="上传图片"
                 android:gravity="center"
-                />
+                android:text="上传图片" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/gray_9"
-                />
+                android:background="@color/gray_9" />
+
             <TextView
                 android:id="@+id/tv_take_photo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:text="拍照"
-                android:gravity="center"
-                android:textColor="@color/actionsheet_blue"
                 android:background="@drawable/white_layout_press_style"
-                />
+                android:gravity="center"
+                android:text="拍照"
+                android:textColor="@color/actionsheet_blue" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/gray_9"
-                />
+                android:background="@color/gray_9" />
+
             <TextView
                 android:id="@+id/tv_slect_photo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:text="从手机相册选择"
-                android:gravity="center"
-                android:textColor="@color/actionsheet_blue"
                 android:background="@drawable/white_layout_press_style"
-                />
+                android:gravity="center"
+                android:text="从手机相册选择"
+                android:textColor="@color/actionsheet_blue" />
 
         </LinearLayout>
 
@@ -60,12 +58,11 @@
             android:id="@+id/tv_cancel_select"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
-            android:text="取消"
-            android:gravity="center"
-            android:background="@drawable/white_layout_press_style"
             android:layout_marginTop="10dp"
-            android:textColor="@color/actionsheet_blue"
-            />
+            android:background="@drawable/white_layout_press_style"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/actionsheet_blue" />
 
 
     </LinearLayout>

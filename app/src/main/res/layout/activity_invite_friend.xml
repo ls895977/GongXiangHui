@@ -4,32 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/bt_invite_click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="点击出来选择器"
+        android:textSize="17sp" />
 
-<Button
-    android:layout_marginTop="20dp"
-    android:id="@+id/bt_invite_click"
-    android:textSize="17sp"
-    android:text="点击出来选择器"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-<Button
-    android:id="@+id/bt_invite_parsedata"
-    android:textSize="17sp"
-    android:text="解析数据"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/bt_invite_parsedata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="解析数据"
+        android:textSize="17sp" />
 
     <Button
         android:id="@+id/bt_skip"
-        android:text="跳转二级列表"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="跳转二级列表" />
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/xre_xrv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

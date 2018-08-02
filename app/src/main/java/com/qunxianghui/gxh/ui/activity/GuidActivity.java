@@ -1,6 +1,5 @@
 package com.qunxianghui.gxh.ui.activity;
 
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by user on 2018/7/22.
@@ -52,9 +50,9 @@ public class GuidActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void initGuidView() {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        list_view.add(inflater.inflate(R.layout.guid_one, null));
-        list_view.add(inflater.inflate(R.layout.guid_two, null));
-        list_view.add(inflater.inflate(R.layout.guid_three, null));
+        list_view.add(inflater.inflate(R.layout.guide_one, null));
+        list_view.add(inflater.inflate(R.layout.guide_two, null));
+        list_view.add(inflater.inflate(R.layout.guide_three, null));
         guidViewPagerAdapter = new GuidViewPagerAdapter(list_view);
         viewpagerGuid.setAdapter(guidViewPagerAdapter);
 
@@ -99,13 +97,6 @@ public class GuidActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void initListeners() {
         super.initListeners();
         viewpagerGuid.setOnPageChangeListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

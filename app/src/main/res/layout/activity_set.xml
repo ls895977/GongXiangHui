@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/white">
+
         <include layout="@layout/activity_title" />
     </LinearLayout>
-
 
     <RelativeLayout
         android:id="@+id/rl_set_message"
@@ -46,7 +46,6 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/rl_set_cache"
         style="@style/RelativeStyle"
@@ -67,7 +66,6 @@
             android:text="1.5M" />
 
     </RelativeLayout>
-
 
     <RelativeLayout
         android:id="@+id/rl_set_banben_new"

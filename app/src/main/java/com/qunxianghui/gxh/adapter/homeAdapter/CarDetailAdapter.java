@@ -41,8 +41,7 @@ public class CarDetailAdapter extends PagerAdapter {
         ImageView view = (ImageView) View.inflate(mContext, R.layout.vp_item, null);
 
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.ic_launcher);
-        options.placeholder(R.mipmap.ic_launcher);
+        options.placeholder(R.mipmap.default_img).error(R.mipmap.default_img);
         Glide.with(mContext).load(mImageViews[position % mImageViews.length]).apply(options).into(view);
 
         container.addView(view);

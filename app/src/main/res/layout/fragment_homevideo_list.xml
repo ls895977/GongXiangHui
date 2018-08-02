@@ -8,8 +8,6 @@
         android:id="@+id/xrecycler_homevideo_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
-
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

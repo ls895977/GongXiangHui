@@ -43,8 +43,8 @@ public class MineCollectVideoAdapter extends BaseRecycleViewAdapter<MineCollectV
  */
 
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.ic_test_1);
-        options.error(R.mipmap.ic_test_0);
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
         options.circleCrop();
         options.centerCrop();
         Glide.with(mContext).load(member_avatar).apply(options).into(personHeadImag);

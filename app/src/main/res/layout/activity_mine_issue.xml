@@ -9,7 +9,6 @@
 
     <include layout="@layout/activity_title" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
@@ -34,9 +33,7 @@
             tl:tl_textUnselectColor="#676767"
             tl:tl_textsize="13sp" />
 
-
     </LinearLayout>
-
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mine_MyIssure_viewpager"

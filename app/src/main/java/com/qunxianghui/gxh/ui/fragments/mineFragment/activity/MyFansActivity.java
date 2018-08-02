@@ -42,7 +42,7 @@ public class MyFansActivity extends BaseActivity {
     @Override
     protected void initViews() {
         super.initViews();
-        new TitleBuilder(this).setTitleText("我的粉丝").setLeftIco(R.mipmap.home_video_back).setLeftIcoListening(new View.OnClickListener() {
+        new TitleBuilder(this).setTitleText("我的粉丝").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@mipmap/ic_search" />
+                android:src="@mipmap/home_search" />
 
             <EditText
                 android:id="@+id/et_setaddress"

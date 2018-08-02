@@ -51,7 +51,7 @@ public class MyFollowActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         RequestAttentionData();
-        new TitleBuilder(this).setTitleText("我的关注").setLeftIco(R.mipmap.home_video_back).setLeftIcoListening(new View.OnClickListener() {
+        new TitleBuilder(this).setTitleText("我的关注").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
