@@ -24,7 +24,7 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertisConmmengtActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
@@ -205,7 +205,6 @@ public class MineFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.rl_company_card:
                 toActivity(CompanyCardActivity.class);
-
                 break;
             case R.id.rl_mine_message:
                 toActivity(MineMessageActivity.class);
@@ -214,7 +213,6 @@ public class MineFragment extends BaseFragment {
                 toActivity(MineIssueActivity.class);
                 break;
             case R.id.rl_up_step:
-
                 toActivity(MemberUpActivity.class);
                 break;
             case R.id.rl_mine_person_data:
@@ -230,7 +228,7 @@ public class MineFragment extends BaseFragment {
                 requestCall();
                 break;
             case R.id.write_advertise:
-                intent = new Intent(mActivity, AdvertisConmmengtActivity.class);
+                intent = new Intent(mActivity, AdvertTemplateActivity.class);
                 intent.putExtra("adverTag", 1);
                 startActivity(intent);
                 break;
@@ -243,7 +241,6 @@ public class MineFragment extends BaseFragment {
             case R.id.ll_mine_fans:
                 toActivity(MyFansActivity.class);
                 break;
-
             case R.id.ll_mine_mycollect:
                 toActivity(MyCollectActivity.class);
                 break;

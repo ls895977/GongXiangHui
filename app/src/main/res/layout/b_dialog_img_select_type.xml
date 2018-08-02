@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_7radius_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="16.0dip"
+            android:paddingTop="16.0dip"
+            android:text="选择图片"
+            android:textColor="@color/black6"
+            android:textSize="18.0sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view_line3"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:background="@color/whitefour" />
+
+        <TextView
+            android:id="@+id/tv_type_photograph"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="16.0dip"
+            android:paddingTop="16.0dip"
+            android:text="拍照"
+            android:textColor="@color/black6"
+            android:textSize="16.0sp" />
+
+        <View
+            android:id="@+id/view_line2"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:background="@color/whitefour" />
+
+        <TextView
+            android:id="@+id/tv_type_gallery_select"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="16.0dip"
+            android:paddingTop="16.0dip"
+            android:text="从相册选取照片"
+            android:textColor="@color/black6"
+            android:textSize="16.0sp" />
+
+        <View
+            android:id="@+id/view_line1"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:background="@color/whitefour"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_type_enterprise_material"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="16.0dip"
+            android:paddingTop="16.0dip"
+            android:text="使用企业素材"
+            android:textColor="@color/black6"
+            android:textSize="16.0sp"
+            android:visibility="gone" />
+
+        <View
+            android:id="@id/view_line"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:background="@color/whitefour" />
+
+        <TextView
+            android:id="@+id/tv_type_common"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="16.0dip"
+            android:paddingTop="16.0dip"
+            android:text="使用通用素材"
+            android:textColor="@color/black6"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@id/tv_cancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8.0dip"
+        android:layout_marginTop="10.0dip"
+        android:background="@drawable/bg_7radius_white"
+        android:gravity="center"
+        android:paddingBottom="16.0dip"
+        android:paddingTop="16.0dip"
+        android:text="取消"
+        android:textColor="@color/black6"
+        android:textSize="16.0sp" />
+</LinearLayout>

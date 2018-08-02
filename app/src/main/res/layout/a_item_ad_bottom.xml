@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/llFoot"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:id="@+id/ll_no_suspend"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#00f2f2f2"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rl_is_suspension"
+            android:layout_width="wrap_content"
+            android:layout_height="30.0dip"
+            android:layout_gravity="right"
+            android:background="@color/new_red">
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10.0dip"
+                android:checked="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30.0dip"
+                android:layout_toRightOf="@id/checkBox"
+                android:gravity="center"
+                android:padding="3.0dip"
+                android:text="是否悬浮"
+                android:textColor="@color/white"
+                android:textSize="14.0sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_marginTop="29.0dip"
+        android:background="@color/gray_3" />
+
+    <FrameLayout
+        android:id="@+id/flFoot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_no_suspend"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/Footfill"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="25.0dip"
+            android:paddingTop="25.0dip"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingRight="5.0dip"
+                android:src="@mipmap/gg_di" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/add"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/add"
+                android:text="增加底部广告"
+                android:textColor="@color/textblack"
+                android:textSize="16.0sp" />
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>

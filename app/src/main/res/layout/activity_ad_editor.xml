@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/white"
+        android:minHeight="?actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/toolbar.style">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_back" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp">
+
+            <RadioGroup
+                android:id="@+id/rgAd"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/style_switchbth_background"
+                android:orientation="horizontal"
+                android:padding="2.0px">
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rbBottomAd"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="底部"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#D71B24" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rbHeadAd"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/style_switchbth_center"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:text="顶部"
+                    android:textColor="#ffc10f1b"
+                    android:textSize="13sp" />
+
+                <View
+                    android:id="@+id/view_line4"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#D71B24" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rbTiePianAd"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:text="贴片"
+                    android:textColor="#ffc10f1b"
+                    android:textSize="13sp"
+                    android:visibility="visible" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="保存"
+            android:textColor="#ff0f0f0f"
+            android:visibility="visible" />
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="1.0px"
+        android:layout_below="@id/mToolbar"
+        android:background="#ffe6e6e6" />
+
+    <LinearLayout
+        android:id="@+id/llHead"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_line"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rl_page"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0">
+
+            <ScrollView
+                android:id="@+id/scr_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fillViewport="true">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPagerHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </ScrollView>
+
+            <!--<com.hq.fxh.CustomerView.CirclePageIndicator-->
+            <!--android:id="@+id/pageIndicatorHead"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/scr_head"-->
+            <!--android:layout_marginBottom="@dimen/dp_22"-->
+            <!--android:padding="5dp"-->
+            <!--android:visibility="visible" />-->
+
+            <View
+                android:id="@+id/view_shade_head"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/isForceTop"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_page"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="10dp"
+            android:text="当前广告模板已被管理员锁定，如需编辑请联系企业管理员"
+            android:textSize="12.0sp"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/isForceTop"
+            android:layout_marginTop="10dp"
+            android:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:id="@+id/ll_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addBusinessAd"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:text="从企业模板添加"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/addHeadAd"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:text="添加顶部广告"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/llFoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_line"
+        android:visibility="visible">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/isForseBottom"
+                    android:layout_width="340dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="70dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="当前广告模板已被管理员锁定，如需编辑请联系企业管理员"
+                    android:textSize="12.0sp"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0"
+                    android:minHeight="300dp">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <!--<com.hq.fxh.CustomerView.CirclePageIndicator-->
+                    <!--android:id="@+id/pageIndicator"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/viewPager"-->
+                    <!--android:padding="10dp" />-->
+
+                    <View
+                        android:id="@+id/view_shade_foot"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_AdEditor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/layout_AdEditor_ToFirst"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:paddingLeft="12dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/image_AdEditor_ToFirst"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/icon_back" />
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1.0"
+                        android:paddingBottom="20dp"
+                        android:scrollbars="none" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_AdEditor_ToLast"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:paddingRight="12dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/image_AdEditor_ToLast"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/hd_you" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/llTiePian"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_line"
+        android:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0">
+
+                    <com.qunxianghui.gxh.widget.NoScrollViewPager
+                        android:id="@+id/viewPagerTiePian"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:id="@+id/view_shade_tiepian"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/isTiePian"
+                    android:layout_width="340dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="当前广告模板已被管理员锁定，如需编辑请联系企业管理员"
+                    android:textSize="12.0sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_add_template"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:text="从企业模板添加"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</RelativeLayout>

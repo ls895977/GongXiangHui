@@ -247,7 +247,7 @@
             android:name=".ui.fragments.mineFragment.activity.PersonDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.fragments.mineFragment.activity.AdvertisConmmengtActivity"
+            android:name=".ui.fragments.mineFragment.activity.AdvertTemplateActivity"
             android:screenOrientation="portrait" />
         <!-- 大图image的界面 -->
         <activity

@@ -1,31 +1,29 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.GuidViewPagerAdapter;
-import com.qunxianghui.gxh.adapter.mineAdapter.CommonAdaverGridAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.AdvertAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class AdverCommonBottomFragment extends BaseFragment {
-    @BindView(R.id.recycler_commonadver_bottom)
-    RecyclerView recyclerCommonadverBottom;
+public class AdvertBottomFragment extends BaseFragment {
+
+    @BindView(R.id.rv)
+    RecyclerView mRv;
     Unbinder unbinder;
-    @BindView(R.id.vp_advercommon_bottom)
-    ViewPager vpAdvercommonBottom;
+    @BindView(R.id.vp)
+    ViewPager mVp;
+
     private int count = 0; //页面展示的数据，无实际作用
     private List<View> viewList = new ArrayList<>();//ViewPager数据源
     private GuidViewPagerAdapter guidViewPagerAdapter;
@@ -38,40 +36,33 @@ public class AdverCommonBottomFragment extends BaseFragment {
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_advercommon_bottom;
+        return R.layout.fragment_advert_bottom;
     }
 
     @Override
     public void initViews(View view) {
-        super.initViews(view);
-        recyclerCommonadverBottom.setLayoutManager(new GridLayoutManager(mActivity, 5));
-
         guidViewPagerAdapter = new GuidViewPagerAdapter(viewList);
-        vpAdvercommonBottom.setAdapter(guidViewPagerAdapter);
+        mVp.setAdapter(guidViewPagerAdapter);
     }
 
     @Override
     public void initData() {
-        CommonAdaverGridAdapter commonBottomAdverAdapter = new CommonAdaverGridAdapter(mActivity, images, iconName);
-
-        recyclerCommonadverBottom.setAdapter(commonBottomAdverAdapter);
-        commonBottomAdverAdapter.setmOnItemClickListener(new CommonAdaverGridAdapter.OnItemClickListener() {
+        AdvertAdapter commonBottomAdverAdapter = new AdvertAdapter(mActivity, images, iconName);
+        mRv.setAdapter(commonBottomAdverAdapter);
+        commonBottomAdverAdapter.setmOnItemClickListener(new AdvertAdapter.OnItemClickListener() {
             @Override
-            public void onpicItemClick(int position) {
+            public void onItemClick(int position) {
                 switch (position) {
                     case 0:
                         asyncShowToast("企业素材");
-
                         //添加页面
                         String text = "页面" + count;
                         count++;
                         addPage();
                         break;
-
                     case 1:
                         asyncShowToast("通用素材");
                         break;
-
                     case 2:
                         asyncShowToast("大图通栏");
                         break;
@@ -89,14 +80,12 @@ public class AdverCommonBottomFragment extends BaseFragment {
                         break;
                     case 7:
                         asyncShowToast("店铺广告");
-
                         break;
                     case 8:
                         asyncShowToast("图文广告");
                         break;
                     case 9:
                         asyncShowToast("教学视频");
-
                         break;
 
                 }
@@ -108,22 +97,7 @@ public class AdverCommonBottomFragment extends BaseFragment {
     private void addPage() {
         LayoutInflater inflater = LayoutInflater.from(mActivity);//获取LayoutInflater的实例
         View view = inflater.inflate(R.layout.guidslide_item, null);//调用LayoutInflater实例的inflate()方法来加载页面的布局
-
         viewList.add(view);
         guidViewPagerAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/Topfill"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="25.0dip"
+        android:paddingTop="25.0dip"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/addTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingRight="5.0dip"
+            android:src="@mipmap/gg_ding" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@id/addTop"
+            android:text="增加顶部广告"
+            android:textColor="@color/textblack"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+</LinearLayout>

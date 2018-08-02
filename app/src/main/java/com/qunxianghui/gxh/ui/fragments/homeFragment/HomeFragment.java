@@ -2,6 +2,10 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment;
 
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -33,11 +37,14 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.db.ChannelManage;
+import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 
@@ -73,6 +80,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
+    private ClipboardManager mClipboardManager;
 
     @Override
     public int getLayoutId() {
@@ -123,6 +131,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
 
     @Override
     public void initData() {
+        mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         //频道列表（用户订阅的频道）
         OkGo.<String>post(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
             @Override
@@ -189,7 +198,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getInstance().getSQLHelper()).getUserChannel());
     }
 
-    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns})
+    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns,R.id.iv_home_paste_artical})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_home_location:
@@ -204,6 +213,24 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 bundle.putSerializable(ChannelActivity.USER_CHANNEL, (userChannelList));
                 intent_channel.putExtras(bundle);
                 startActivityForResult(intent_channel, CHANNELREQUEST);
+                break;
+            case R.id.iv_home_paste_artical:
+                if (view.getId() == R.id.iv_home_paste_artical) {
+                    if (!LoginMsgHelper.isLogin()) {
+                        toActivity(LoginActivity.class);
+                        return;
+                    }
+                    //粘贴板有数据并且是文本
+                    if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                        final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
+                        final CharSequence text = item.getText();
+                        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                        intent.putExtra("url", text);
+                        startActivity(intent);
+                    } else {
+                        asyncShowToast("没有找到粘贴的内容");
+                    }
+                }
                 break;
         }
     }
