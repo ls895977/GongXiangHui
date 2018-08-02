@@ -145,10 +145,6 @@
         <activity
             android:name=".ui.fragments.locationFragment.activity.PublishStateActivity"
             android:screenOrientation="portrait" />
-        <!-- 我的板块消息汇总给界面 -->
-        <activity
-            android:name=".ui.fragments.mineFragment.activity.MessageGatherActivity"
-            android:screenOrientation="portrait" />
         <!-- 我的板块我的收藏界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MyCollectActivity"
@@ -180,9 +176,6 @@
             android:name=".ui.fragments.mineFragment.activity.CompanySetActivity"
             android:screenOrientation="portrait" />
         <!-- 我的板块的合作热线界面 -->
-        <activity
-            android:name=".ui.fragments.mineFragment.activity.CooperationCallActivity"
-            android:screenOrientation="portrait" />
         <!-- 首页数据库添加栏目的界面 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeAddTabActivity"

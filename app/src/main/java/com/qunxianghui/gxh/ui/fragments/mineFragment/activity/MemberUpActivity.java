@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -28,11 +29,12 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initViews() {
         super.initViews();
-//        DisplayMetrics dm = getResources().getDisplayMetrics();
-//        int width = dm.widthPixels;
-//        int height = dm.heightPixels;
-//        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mLlMemberupCompanyState.getLayoutParams();
-//        mLlMemberupCompanyState.setLayoutParams(layoutParams);
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mLlMemberupCompanyState.getLayoutParams();
+        layoutParams.width = width * 5/ 6;
+        mLlMemberupCompanyState.setLayoutParams(layoutParams);
 
     }
 

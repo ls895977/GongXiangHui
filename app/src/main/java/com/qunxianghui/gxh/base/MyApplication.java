@@ -88,6 +88,7 @@ public class MyApplication extends MultiDexApplication {
         initThirdLib();
     }
 
+
     private void initOkGo() {
         if (LoginMsgHelper.isLogin()) {
             mAccessToken = SPUtils.getString(SpConstant.ACCESS_TOKEN, "");
