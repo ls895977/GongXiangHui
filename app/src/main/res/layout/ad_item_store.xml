@@ -1,105 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="12.0dip"
-    android:layout_marginRight="12.0dip"
-    android:layout_marginTop="15.0dip"
-    android:background="@drawable/style_mymodle_bg_ad_item"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
+    <android.support.v7.widget.CardView
+        style="@style/AdCardViewStyle"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/ad_view_head" />
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/llgoods"
-                    android:layout_width="0.0dip"
+                <include layout="@layout/ad_view_head" />
+
+                <com.flyco.tablayout.SlidingTabLayout
+                    android:id="@+id/slidingTabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+
+                <include layout="@layout/ad_view_divider" />
+
+                <android.support.v4.view.ViewPager
+                    android:id="@id/viewPager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <include layout="@layout/ad_view_switch" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="12.0dip"
-                        android:layout_marginTop="13.0dip"
-                        android:text="商品信息"
-                        android:textColor="#ff666562"
-                        android:textSize="14.0sp" />
-
-                    <TextView
-                        android:id="@+id/goods_bto"
-                        android:layout_width="60.0dip"
-                        android:layout_height="1.5dip"
-                        android:layout_gravity="center"
-                        android:background="@color/new_red" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llshop"
-                    android:layout_width="0.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="12.0dip"
-                        android:layout_marginTop="13.0dip"
-                        android:text="店主信息"
-                        android:textColor="#ff666562"
-                        android:textSize="14.0sp" />
-
-                    <TextView
-                        android:id="@+id/shop_bto"
-                        android:layout_width="60.0dip"
-                        android:layout_height="1.5dip"
-                        android:layout_gravity="center"
-                        android:background="@color/new_red"
-                        android:visibility="invisible" />
-                </LinearLayout>
+                    android:layout_marginBottom="20.0dip"
+                    android:layout_marginLeft="15.0dip"
+                    android:layout_marginTop="7.0dip"
+                    android:lineSpacingExtra="5.0dip"
+                    android:text="商品信息、店主信息、链接至店铺地址或产品单页"
+                    android:textColor="@color/textqiyehao"
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="1.0dip"
-                android:layout_gravity="center"
-                android:background="#ffededed" />
-
-            <com.hq.fxh.No3_TuiGuang.MyMoBan.XViewPager
-                android:id="@id/viewPager"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <include layout="@layout/ad_view_switch" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20.0dip"
-                android:layout_marginLeft="15.0dip"
-                android:layout_marginTop="7.0dip"
-                android:lineSpacingExtra="5.0dip"
-                android:text="商品信息、店主信息、链接至店铺地址或产品单页"
-                android:textColor="@color/textqiyehao"
-                android:textSize="@dimen/text_size_small" />
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

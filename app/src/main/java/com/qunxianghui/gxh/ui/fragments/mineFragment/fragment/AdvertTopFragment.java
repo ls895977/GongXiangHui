@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
@@ -28,7 +29,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private AdvertPagerAdapter mPagerAdapter;
     private TongLanChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
-    private List<View> mViewList = new ArrayList<>();//ViewPager数据源
+    private List<View> mViewList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -130,6 +131,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private void addPage() {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_tonglan, mVp, false);
+        ((TextView) view.findViewById(R.id.tv_title)).setText("通栏广告");
+        view.findViewById(R.id.rl_add_img).setVisibility(View.GONE);
         view.findViewById(R.id.iv_delete).setOnClickListener(this);
         view.findViewById(R.id.iv_add_big_img).setOnClickListener(this);
         view.findViewById(R.id.tv_choose_type).setOnClickListener(this);

@@ -55,9 +55,6 @@ public class AdvertBottomFragment extends BaseFragment {
                 switch (position) {
                     case 0:
                         asyncShowToast("企业素材");
-                        //添加页面
-                        String text = "页面" + count;
-                        count++;
                         addPage();
                         break;
                     case 1:
