@@ -9,7 +9,6 @@
         android:duration="1500"
         android:startOffset="-1"
         android:repeatMode="restart"
-        android:repeatCount="-1"
-        />
+        android:repeatCount="-1" />
 
 </set>

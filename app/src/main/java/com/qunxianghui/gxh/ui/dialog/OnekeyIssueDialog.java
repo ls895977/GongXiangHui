@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,8 +72,6 @@ public class OnekeyIssueDialog extends Dialog {
         dialogWindow.setGravity(Gravity.BOTTOM);
         //获得窗体的属性
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        final WindowManager windowManager = ((Activity) context).getWindowManager();
-        final Display display = windowManager.getDefaultDisplay();
 //        lp.alpha = 0.9f;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;  //设置宽度
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;//设置dialog高度

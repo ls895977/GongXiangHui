@@ -1,14 +1,16 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.GuidViewPagerAdapter;
+import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
+import com.qunxianghui.gxh.ui.dialog.TongLanChooseTypeDialog;
+import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,46 +18,60 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AdvertTopFragment extends BaseFragment {
+public class AdvertTopFragment extends BaseFragment implements View.OnClickListener, AdvertChoosePicDialog.ImgPickListener {
 
     @BindView(R.id.vp)
     ViewPager mVp;
-    @BindView(R.id.layout_adver_guidpoint)
-    LinearLayout mLayoutAdverGuidpoint;
-    @BindView(R.id.framlayout_adver_guidpoint)
-    FrameLayout mFramlayoutAdverGuidpoint;
+    @BindView(R.id.circleIndicatorView)
+    CircleIndicatorView mCircleIndicatorView;
 
-
-    private int count = 0; //页面展示的数据，无实际作用
-    private List<View> viewList = new ArrayList<>();//ViewPager数据源
-    private GuidViewPagerAdapter guidTopViewPagerAdapter;
+    private AdvertPagerAdapter mPagerAdapter;
+    private TongLanChooseTypeDialog mChooseType;
+    private AdvertChoosePicDialog mChoosePic;
+    private List<View> mViewList = new ArrayList<>();//ViewPager数据源
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_advercommon_top;
+        return R.layout.fragment_advert_top;
     }
 
     @Override
     public void initData() {
-        guidTopViewPagerAdapter = new GuidViewPagerAdapter(viewList);
-        mVp.setAdapter(guidTopViewPagerAdapter);
+        mPagerAdapter = new AdvertPagerAdapter(mViewList);
+        mVp.setAdapter(mPagerAdapter);
+    }
+
+    @Override
+    protected void initListeners() {
+        mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                changeCircleView();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @OnClick({R.id.ll_company, R.id.ll_common, R.id.ll_common_advert, R.id.ll_video})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_company:
-                asyncShowToast("企业素材");
-                //添加页面
-                String text = "页面" + count;
-                count++;
-                addPage(text);
+                asyncShowToast("通用模版");
                 break;
             case R.id.ll_common:
                 asyncShowToast("通用素材");
                 break;
             case R.id.ll_common_advert:
-                asyncShowToast("通栏广告");
+                addPage();
                 break;
             case R.id.ll_video:
                 asyncShowToast("教学视频");
@@ -63,11 +79,74 @@ public class AdvertTopFragment extends BaseFragment {
         }
     }
 
-    private void addPage(String text) {
-        LayoutInflater inflater = LayoutInflater.from(mActivity);//获取LayoutInflater的实例
-        View view = inflater.inflate(R.layout.guidslide_item, null);//调用LayoutInflater实例的inflate()方法来加载页面的布局
-        viewList.add(view);
-        guidTopViewPagerAdapter.notifyDataSetChanged();
+    @Override
+    public void pickListener(View view) {
+        switch (view.getId()) {
+            case R.id.btnPhoto:
+                break;
+            case R.id.btnPick:
+                break;
+            case R.id.btnPicFromLocal:
+                break;
+            case R.id.btnCommon:
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_delete:
+                int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
+                mViewList.remove(index);
+                mPagerAdapter.notifyDataSetChanged();
+                changeCircleView();
+                break;
+            case R.id.iv_add_big_img:
+                if (mChoosePic == null && getContext() != null) {
+                    mChoosePic = new AdvertChoosePicDialog(getContext());
+                }
+                mChoosePic.showLocalView().show();
+                break;
+            case R.id.tv_choose_type:
+                if (mChooseType == null && getContext() != null) {
+                    mChooseType = new TongLanChooseTypeDialog(getContext(), mViewList, mVp);
+                }
+                mChooseType.show();
+                break;
+            case R.id.tv_choose_activity_link:
+                //todo 跳转选择链接
+                asyncShowToast("跳转选择链接");
+                break;
+            case R.id.ivAd:
+                if (mChoosePic == null && getContext() != null) {
+                    mChoosePic = new AdvertChoosePicDialog(getContext());
+                }
+                mChoosePic.hideLocalView().show();
+                break;
+        }
+    }
+
+    private void addPage() {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View view = inflater.inflate(R.layout.ad_item_tonglan, mVp, false);
+        view.findViewById(R.id.iv_delete).setOnClickListener(this);
+        view.findViewById(R.id.iv_add_big_img).setOnClickListener(this);
+        view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
+        view.findViewById(R.id.tv_choose_activity_link).setOnClickListener(this);
+        view.findViewById(R.id.ivAd).setOnClickListener(this);
+        mViewList.add(view);
+        mPagerAdapter.notifyDataSetChanged();
+        mVp.setCurrentItem(mPagerAdapter.getCount() - 1, false);
+        changeCircleView();
+    }
+
+    private void changeCircleView() {
+        mCircleIndicatorView.setCircleCount(mPagerAdapter.getCount());
+        mCircleIndicatorView.setCircleSelectedPosition(mVp.getCurrentItem());
+        mCircleIndicatorView.setSelectedCircleRadius(8);
+        mCircleIndicatorView.setCircleUnSelectedColor(Color.parseColor("#BDBDBD"));
+        mCircleIndicatorView.drawCircleView();
     }
 
 }
