@@ -5,110 +5,47 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/rl_home_videoimage"
+        android:id="@+id/rl_minecollect_video_img"
         android:layout_width="match_parent"
-        android:layout_height="203dp">
+        android:layout_height="wrap_content">
 
-        <cn.jzvd.JZVideoPlayerStandard
-            android:id="@+id/videoplayer"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/iv_item_cardview"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
-
-    </RelativeLayout>
-
-    <com.qunxianghui.gxh.widget.RoundImageView
-        android:id="@+id/round_item_collect_video_personhead"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="165dp"
-        android:src="@mipmap/default_img" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_home_videoimage">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_mycollect_video_attention"
-                android:layout_width="50dp"
-                android:layout_height="23dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/shape_button"
-                android:gravity="center"
-                android:text="+关注"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/tv_item_collect_video_personname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="3dp"
-                android:text="香馍馍" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal">
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            card_view:cardCornerRadius="2dp"
+            card_view:cardElevation="0dp">
 
             <ImageView
-                android:id="@+id/iv_item_collect_video_like"
+                android:id="@+id/iv_item_collect_video_head"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/home_video_collect_normal" />
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/default_img" />
+        </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_item_collect_video_likecountt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="20dp"
-                android:text="0" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/home_video_stop" />
 
-            <TextView
-                android:id="@+id/tv_item_collect_video_personmessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/line_homevideo"
-                android:drawableLeft="@mipmap/home_video_message"
-                android:drawablePadding="5dp"
-                android:text="0" />
-
-            <View
-                android:id="@+id/line_homevideo"
-                android:layout_width="1dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/tv_mycollect_video_paster"
-                android:background="@color/divider" />
-
-            <TextView
-                android:id="@+id/tv_mycollect_video_paster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:drawableLeft="@mipmap/home_video_paster"
-                android:drawablePadding="5dp"
-                android:text="贴片" />
-
-        </LinearLayout>
     </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_mycollect_video_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_minecollect_video_img"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="xxxxx" />
+
+
 </RelativeLayout>

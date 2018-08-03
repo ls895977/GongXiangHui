@@ -1,89 +1,54 @@
 package com.qunxianghui.gxh.utils;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.v4.graphics.ColorUtils;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 public class ActionBarUtils {
+    /**
+     * Android 6.0 以上设置状态栏颜色
+     */
+    public  static void setStatusBar(@ColorInt int color, Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-    private void changeStatusBarTextColor(boolean isBlack, Activity activity) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (isBlack) {
-                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//设置状态栏黑色字体
+            // 设置状态栏底色颜色
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            activity.getWindow().setStatusBarColor(color);
+
+            // 如果亮色，设置状态栏文字为黑色
+            if (isLightColor(color)) {
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             } else {
-                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);//恢复状态栏白色字体
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             }
         }
+
     }
 
     /**
-     * 设置状态栏字体图标为深色，需要MIUIV6以上
+     * 判断颜色是不是亮色
      *
-     * @param window 需要设置的窗口
-     * @param dark   是否把状态栏字体及图标颜色设置为深色
-     * @return boolean 成功执行返回true
+     * @param color
+     * @return
+     * @from https://stackoverflow.com/questions/24260853/check-if-color-is-dark-or-light-in-android
      */
-    public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
-        boolean result = false;
-        if (window != null) {
-            Class clazz = window.getClass();
-            try {
-                int darkModeFlag = 0;
-                Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-                darkModeFlag = field.getInt(layoutParams);
-                Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-                if (dark) {
-                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
-                } else {
-                    extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
-                }
-                result = true;
-            } catch (Exception e) {
-
-            }
-        }
-        return result;
+    private static boolean isLightColor(@ColorInt int color) {
+        return ColorUtils.calculateLuminance(color) >= 0.5;
     }
 
     /**
-     * 设置状态栏图标为深色和魅族特定的文字风格
-     * 可以用来判断是否为Flyme用户
+     * 获取StatusBar颜色，默认白色
      *
-     * @param window 需要设置的窗口
-     * @param dark   是否把状态栏字体及图标颜色设置为深色
-     * @return boolean 成功执行返回true
+     * @return
      */
-    public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
-        boolean result = false;
-        if (window != null) {
-            try {
-                WindowManager.LayoutParams lp = window.getAttributes();
-                Field darkFlag = WindowManager.LayoutParams.class
-                        .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
-                Field meizuFlags = WindowManager.LayoutParams.class
-                        .getDeclaredField("meizuFlags");
-                darkFlag.setAccessible(true);
-                meizuFlags.setAccessible(true);
-                int bit = darkFlag.getInt(null);
-                int value = meizuFlags.getInt(lp);
-                if (dark) {
-                    value |= bit;
-                } else {
-                    value &= ~bit;
-                }
-                meizuFlags.setInt(lp, value);
-                window.setAttributes(lp);
-                result = true;
-            } catch (Exception e) {
-
-            }
-        }
-        return result;
+    protected @ColorInt
+    int getStatusBarColor() {
+        return Color.WHITE;
     }
+
 }
