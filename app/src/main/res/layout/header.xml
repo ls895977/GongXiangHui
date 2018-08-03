@@ -15,9 +15,9 @@
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
         android:paddingStart="5dp"
-        tools:text="A"
         android:visibility="gone"
-        tools:ignore="RtlHardcoded,RtlSymmetry" />
+        tools:ignore="RtlHardcoded,RtlSymmetry"
+        tools:text="A" />
 
     <TextView
         android:id="@+id/header"

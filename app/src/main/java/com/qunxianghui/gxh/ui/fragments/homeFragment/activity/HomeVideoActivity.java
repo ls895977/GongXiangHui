@@ -11,7 +11,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.fragments.homeFragment.fragments.HomeVideoListFragment;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.HomeVideoListFragment;
 
 import java.util.ArrayList;
 import java.util.List;

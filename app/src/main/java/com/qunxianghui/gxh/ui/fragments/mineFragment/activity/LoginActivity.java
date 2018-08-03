@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+        new TitleBuilder(this).setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

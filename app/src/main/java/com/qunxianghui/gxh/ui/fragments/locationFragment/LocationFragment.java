@@ -50,6 +50,7 @@ public class LocationFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         super.initViews(view);
+
         int height = mSlidingTabLayout.getHeight();
     }
 

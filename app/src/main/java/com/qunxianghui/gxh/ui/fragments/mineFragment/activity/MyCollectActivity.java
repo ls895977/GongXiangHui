@@ -37,6 +37,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ImageView ivMyCollectBack;
     @BindView(R.id.tv_mycollect_edit)
     TextView mTvMycollectEdit;
+
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
@@ -48,6 +49,8 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initViews() {
+
+
         //设置tabLayout的一个显示方式
         mineTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         //循环注入标签

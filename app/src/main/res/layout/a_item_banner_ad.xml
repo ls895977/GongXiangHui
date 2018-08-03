@@ -9,7 +9,7 @@
     android:background="@drawable/style_mymodle_bg_ad_item"
     android:orientation="vertical">
 
-    <include layout="@layout/a_view_ad_head" />
+    <include layout="@layout/ad_view_head" />
 
     <include layout="@layout/view_uploadingpic" />
 
@@ -148,5 +148,5 @@
             android:src="@mipmap/zhiru_tupian" />
     </RelativeLayout>
 
-    <include layout="@layout/a_view_ad_switch" />
+    <include layout="@layout/ad_view_switch" />
 </LinearLayout>

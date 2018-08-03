@@ -18,11 +18,10 @@
             android:layout_height="34dp"
             android:src="@mipmap/user_moren" />
 
-
         <LinearLayout
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:orientation="vertical">
 
             <TextView

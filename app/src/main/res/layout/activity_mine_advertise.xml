@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/activity_title" />
+    <include layout="@layout/activity_title" />
+
     <View
-        android:background="@color/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:background="@color/divider" />
 
     <RelativeLayout
         android:id="@+id/rl_mineFragment_addTopAdver"

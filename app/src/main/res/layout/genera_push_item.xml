@@ -34,9 +34,9 @@
 
     <TextView
         android:id="@+id/tv_genera_education_organiza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:text="教育机构"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="教育机构" />
 </LinearLayout>

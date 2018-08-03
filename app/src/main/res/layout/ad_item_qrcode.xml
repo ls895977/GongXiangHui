@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="12.0dip"
+    android:layout_marginRight="12.0dip"
+    android:layout_marginTop="15.0dip"
+    android:background="@drawable/style_mymodle_bg_ad_item"
+    android:orientation="vertical">
+
+    <include layout="@layout/ad_view_head" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:orientation="vertical"
+        android:paddingBottom="15.0dip">
+
+        <com.hq.fxh.No3_TuiGuang.MyMoBan.ClearableEidtText
+            android:id="@+id/etWechatId"
+            android:layout_width="fill_parent"
+            android:layout_height="39.0dip"
+            android:layout_marginBottom="12.0dip"
+            android:background="@null"
+            android:hint="二维码名称"
+            android:maxLines="2"
+            android:padding="10.0dip"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="@color/greydivide" />
+
+        <com.hq.fxh.No3_TuiGuang.MyMoBan.ClearableEidtText
+            android:id="@+id/etDes"
+            android:layout_width="fill_parent"
+            android:layout_height="39.0dip"
+            android:background="@null"
+            android:hint="介绍..."
+            android:maxLines="2"
+            android:padding="10.0dip"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="@color/greydivide" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/flQRCodePicAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@id/ivAd"
+                android:layout_width="90.0dip"
+                android:layout_height="90.0dip"
+                android:layout_marginLeft="15.0dip"
+                android:src="@mipmap/zhiru_erweima" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <include layout="@layout/ad_view_switch" />
+
+    <TextView
+        android:id="@id/tvDes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10.0dip"
+        android:lineSpacingExtra="5.0dip"
+        android:text="二维码广告可上传二维码，设置微信号或二维码介绍，用户扫码可关注。"
+        android:textColor="@color/gray_3"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginTop="7.0dip"
+        android:text="支持App、小程序或微信公众号，支持扫码下载"
+        android:textColor="@color/textqiyehao"
+        android:textSize="@dimen/text_size_small" />
+</LinearLayout>

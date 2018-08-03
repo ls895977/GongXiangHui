@@ -100,6 +100,8 @@ dependencies {
     implementation 'com.nex3z:flow-layout:1.0.0'
     implementation project(':letterindexlibrary')
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    /*动态修改系统状态栏*/
+    implementation 'com.githang:status-bar-compat:0.7'
     //noinspection GradleDependency 友盟
     implementation 'com.umeng.sdk:share-qq:6.9.1.1'
     implementation 'com.umeng.sdk:common:1.5.1'
@@ -108,4 +110,5 @@ dependencies {
     implementation 'com.umeng.sdk:share-wechat:6.9.1'
     implementation 'com.umeng.sdk:share-sina:6.9.1'
     implementation project(':library')
+
 }

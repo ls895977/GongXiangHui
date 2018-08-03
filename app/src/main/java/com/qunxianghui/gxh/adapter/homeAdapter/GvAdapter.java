@@ -68,8 +68,7 @@ public class GvAdapter extends BaseAdapter {
         if (position==mMaxPosition-1){//说明要显示
 
             RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.ic_launcher);
-            options.placeholder(R.mipmap.ic_launcher);
+            options.placeholder(R.mipmap.default_img);
             Glide.with(context).load(R.mipmap.image_add).apply(options).into(vh.img);
 
 

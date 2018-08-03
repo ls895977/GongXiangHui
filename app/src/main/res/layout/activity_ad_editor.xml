@@ -20,7 +20,7 @@
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_back" />
+            android:src="@mipmap/common_black_back" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                     android:id="@+id/rbHeadAd"
                     android:layout_width="55dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/style_switchbth_center"
+                    android:background="@color/white"
                     android:button="@null"
                     android:checked="false"
                     android:gravity="center"
@@ -289,7 +289,7 @@
                             android:id="@+id/image_AdEditor_ToFirst"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/icon_back" />
+                            android:src="@mipmap/common_black_back" />
                     </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView

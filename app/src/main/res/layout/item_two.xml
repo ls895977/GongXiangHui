@@ -31,7 +31,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="15dp"
 
-            android:background="@mipmap/home_videolocation_down" />
+            android:background="@mipmap/common_gray_s_row_down" />
     </LinearLayout>
 
     <View

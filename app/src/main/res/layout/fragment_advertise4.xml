@@ -5,46 +5,45 @@
     android:orientation="vertical">
 
 
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/et_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-        android:layout_marginTop="10dp"
-        android:hint="二维码名称"
-        android:textSize="13sp" />
+            android:layout_marginTop="10dp"
+            android:hint="二维码名称"
+            android:textSize="13sp" />
 
 
-    <EditText
-        android:id="@+id/et_intro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="介绍"
-        android:textSize="13sp" />
+        <EditText
+            android:id="@+id/et_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="介绍"
+            android:textSize="13sp" />
 
-    <TextView
+        <TextView
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="添加图片"
-        android:textSize="14sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="添加图片"
+            android:textSize="14sp" />
 
-    <com.bm.library.PhotoView
-        android:id="@+id/pv_add_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/image_add" />
+        <com.bm.library.PhotoView
+            android:id="@+id/pv_add_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/image_add" />
 
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

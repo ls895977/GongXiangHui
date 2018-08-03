@@ -10,8 +10,6 @@
         android:layout_width="70dip"
         android:layout_height="32dip"
         android:background="@drawable/btn_txt_bg"
-        android:text=""
         android:gravity="center"  />
-
 
 </LinearLayout>

@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-  <com.jcodecraeer.xrecyclerview.XRecyclerView
-      android:id="@+id/recycler_mycollect_post"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-  </com.jcodecraeer.xrecyclerview.XRecyclerView>
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/recycler_mycollect_post"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

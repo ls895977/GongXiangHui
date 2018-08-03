@@ -101,7 +101,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
 
     @Override
     protected int getItemView() {
-        return R.layout.item_mine_collect_video;
+        return R.layout.item_home_video;
     }
 
 

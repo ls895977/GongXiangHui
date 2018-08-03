@@ -38,12 +38,11 @@ public class CarListAdapter extends BaseRecycleViewAdapter<MainPageBean.DataBean
 
 
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.ic_launcher);
-        options.placeholder(R.mipmap.ic_launcher);
+        options.placeholder(R.mipmap.default_img);
         Glide.with(mContext).load(pics).apply(options).into(imageView);
 
         ImageView iv_type = holder.getView(R.id.iv_car_type);
-        iv_type.setBackgroundResource(bean.getUseType()==1?R.mipmap.car_type1:R.mipmap.car_type_2);
+        iv_type.setBackgroundResource(bean.getUseType() == 1 ? R.mipmap.car_type1 : R.mipmap.car_type_2);
     }
 
     @Override

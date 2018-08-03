@@ -1,4 +1,4 @@
-package com.qunxianghui.gxh.fragments.homeFragment.fragments;
+package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

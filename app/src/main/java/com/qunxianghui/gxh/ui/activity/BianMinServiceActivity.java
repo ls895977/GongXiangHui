@@ -58,7 +58,7 @@ public class BianMinServiceActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+        new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

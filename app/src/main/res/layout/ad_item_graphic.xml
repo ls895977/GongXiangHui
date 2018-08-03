@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="12.0dip"
+    android:layout_marginRight="12.0dip"
+    android:layout_marginTop="15.0dip"
+    android:background="@drawable/style_mymodle_bg_ad_item"
+    android:orientation="vertical">
+
+    <include layout="@layout/ad_view_head" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:orientation="vertical">
+
+        <com.hq.fxh.No3_TuiGuang.MyMoBan.ClearableEidtText
+            android:id="@+id/etServiceName"
+            android:layout_width="fill_parent"
+            android:layout_height="39.0dip"
+            android:background="@null"
+            android:ellipsize="end"
+            android:hint="广告标语"
+            android:lines="1"
+            android:padding="10.0dip"
+            android:text=""
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="@color/greydivide" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.hq.fxh.No3_TuiGuang.MyMoBan.ClearableEidtText
+                android:id="@+id/etUrl"
+                android:layout_width="0.0dip"
+                android:layout_height="39.0dip"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="添加链接地址(URL)"
+                android:inputType="phone"
+                android:lines="1"
+                android:padding="10.0dip"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/tv_graphic_select_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15.0dip"
+                android:drawableLeft="@mipmap/icon_gray_vertical_bar"
+                android:drawablePadding="10.0dip"
+                android:text="选择链接"
+                android:textColor="@color/yellow9"
+                android:textSize="13.0sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="@color/greydivide" />
+
+        <com.hq.fxh.No3_TuiGuang.MyMoBan.ClearableEidtText
+            android:id="@id/etDes"
+            android:layout_width="fill_parent"
+            android:layout_height="39.0dip"
+            android:background="@null"
+            android:ellipsize="end"
+            android:hint="请填写广告介绍"
+            android:lines="1"
+            android:padding="10.0dip"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:layout_marginBottom="15.0dip"
+            android:background="@color/greydivide" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/flGraphicPicAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@id/ivAd"
+                android:layout_width="90.0dip"
+                android:layout_height="90.0dip"
+                android:layout_marginLeft="15.0dip"
+                android:layout_marginRight="11.0dip"
+                android:src="@mipmap/zhiru_tupian" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <include layout="@layout/ad_view_switch" />
+
+    <TextView
+        android:id="@+id/tvDes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:lineSpacingExtra="5.0dip"
+        android:text="图文广告可有效的展示品牌LOGO或产品图，设置标题和简短文字描述。"
+        android:textColor="@color/gray_3"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:text="产品图或logo,链接至店铺地址或产品单页"
+        android:textColor="@color/textqiyehao"
+        android:textSize="@dimen/text_size_small" />
+</LinearLayout>

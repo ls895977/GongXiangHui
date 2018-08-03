@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.GuidViewPagerAdapter;
+import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.AdvertAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 
@@ -26,11 +26,11 @@ public class AdvertBottomFragment extends BaseFragment {
 
     private int count = 0; //页面展示的数据，无实际作用
     private List<View> viewList = new ArrayList<>();//ViewPager数据源
-    private GuidViewPagerAdapter guidViewPagerAdapter;
+    private AdvertPagerAdapter guidViewPagerAdapter;
     //广告底部导航的坐标匹配
-    private int[] images = {R.mipmap.icon_adver_company_material, R.mipmap.icon_adver_common_material, R.mipmap.icon_adver_bigpic, R.mipmap.icon_adver_card,
-            R.mipmap.icon_adver_banner, R.mipmap.icon_adver_scan, R.mipmap.icon_adver_qq, R.mipmap.icon_adver_shop
-            , R.mipmap.icon_adver_image_text, R.mipmap.icon_adver_education};
+    private int[] images = {R.mipmap.icon_advert_company_material, R.mipmap.icon_advert_common_material, R.mipmap.icon_advert_bigpic, R.mipmap.icon_advert_card,
+            R.mipmap.icon_advert_banner, R.mipmap.icon_advert_scan, R.mipmap.icon_advert_qq, R.mipmap.icon_advert_shop
+            , R.mipmap.icon_advert_image_text, R.mipmap.icon_advert_education};
 
     private String[] iconName = {"企业素材", "通用素材", "大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "店铺广告", "图文广告", "教学视频"};
 
@@ -41,7 +41,7 @@ public class AdvertBottomFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        guidViewPagerAdapter = new GuidViewPagerAdapter(viewList);
+        guidViewPagerAdapter = new AdvertPagerAdapter(viewList);
         mVp.setAdapter(guidViewPagerAdapter);
     }
 

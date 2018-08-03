@@ -39,7 +39,7 @@ public class LiftStyleActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-         new TitleBuilder(this).setTitleText("生活圈").setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
+         new TitleBuilder(this).setTitleText("生活圈").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  finish();

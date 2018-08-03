@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:background="@mipmap/icon_back" />
+            android:background="@mipmap/common_black_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,9 +32,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:text="编辑"
-            android:textColor=" #000000"
-            android:textSize="13sp" />
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+
     </RelativeLayout>
 
 
@@ -43,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="10dp"
         app:tabIndicatorColor="@color/tab_color"
         app:tabSelectedTextColor="@color/tab_color"
         app:tabTextColor="#000" />

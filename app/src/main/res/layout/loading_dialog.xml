@@ -3,7 +3,6 @@
     android:id="@+id/dialog_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-
     android:gravity="center"
     android:minHeight="60dp"
     android:minWidth="180dp"
@@ -22,6 +21,5 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="清理中...."     />
-
 
 </LinearLayout>

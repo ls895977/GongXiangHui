@@ -1,17 +1,16 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.annotation.SuppressLint;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
-import com.flyco.tablayout.SlidingTabLayout;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,14 @@ import butterknife.BindView;
  */
 public class MineIssueActivity extends BaseActivity {
     @BindView(R.id.mine_MyIssureTablayout_common)
-    SlidingTabLayout mineMyIssureTablayoutCommon;
+    TabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)
     ViewPager mineMyIssureViewpager;
     private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
+    private int position;
+
 
     @Override
     protected int getLayoutId() {
@@ -37,44 +38,34 @@ public class MineIssueActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        fragments.add(new MyIssueDiscloseFragment());
-        fragments.add(new MyIssureVideoFragment());
-        fragments.add(new MyIssureVideoFragment());
-        fragments.add(new MyIssureVideoFragment());
-        fragments.add(new MyIssureVideoFragment());
+        //设置tablayout的一个显示方式
+        mineMyIssureTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
+        for (String tab : titles) {
+            mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
+        }
 
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
-        mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
-        mineMyIssureTablayoutCommon.setViewPager(mineMyIssureViewpager);
-        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
 
     }
 
+
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void initData() {
-        new TitleBuilder(this).setLeftIco(R.mipmap.icon_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }).setTitleText("我的发布");
+        super.initData();
+//
+//        StatusBarCompat.setStatusBarColor(this, R.color.white);
+        fragments.add(new MyIssueDiscloseFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssurePostFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssureVideoFragment());
+        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
 
+        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
+        mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
 
     }
 
-    @Override
-    protected void initListeners() {
-        super.initListeners();
-        mineMyIssureTablayoutCommon.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelect(int position) {
-                mineMyIssureViewpager.setCurrentItem(position, false);
-            }
 
-            @Override
-            public void onTabReselect(int position) {
-
-            }
-        });
-    }
 }

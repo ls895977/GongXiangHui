@@ -5,19 +5,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <com.qunxianghui.gxh.widget.RoundImageView
             android:id="@+id/iv_location_person_head"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:src="@mipmap/icon_headimage" />
-
 
         <LinearLayout
             android:layout_width="0dp"
@@ -41,14 +38,11 @@
                 android:text="翻着我们的照片，想念若隐若现，去年的冬天，我们笑得很甜......\n—— 哎哟，不错哦!" />
 
             <com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout
-
                 android:id="@+id/mine_postnews_nine_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:numColumns="3">
-
-            </com.qunxianghui.gxh.fragments.locationFragment.view.NineGridTestLayout>
+                android:numColumns="3" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,7 +104,6 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -122,12 +115,9 @@
         android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
-
             android:id="@+id/recycler_location_discuss"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -141,7 +131,6 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:visibility="gone">
-
 
         <EditText
             android:layout_width="match_parent"

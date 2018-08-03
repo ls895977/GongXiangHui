@@ -12,7 +12,6 @@
         <include layout="@layout/activity_title" />
     </LinearLayout>
 
-
     <ImageView
         android:layout_width="98dp"
         android:layout_height="30dp"
@@ -92,7 +91,6 @@
 
     <View style="@style/dividerStyle" />
 
-
     <Button
         android:id="@+id/bt_login_login"
         android:layout_width="match_parent"
@@ -104,7 +102,6 @@
         android:text="登录"
         android:textColor="#fff"
         android:textSize="16sp" />
-
 
     <TextView
         android:layout_width="match_parent"
@@ -144,7 +141,6 @@
             android:src="@mipmap/iv_sina" />
     </LinearLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -159,7 +155,6 @@
             android:text="立即注册 >"
             android:textColor="#f00"
             android:textSize="16sp" />
-
 
     </RelativeLayout>
 </LinearLayout>

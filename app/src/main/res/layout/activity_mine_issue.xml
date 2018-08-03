@@ -4,38 +4,48 @@
     xmlns:tl="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="12dp"
+    android:layout_marginTop="20dp"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_title" />
-
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
-        <com.flyco.tablayout.SlidingTabLayout
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/common_black_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的发布"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="编辑"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+
+        <android.support.design.widget.TabLayout
             android:id="@+id/mine_MyIssureTablayout_common"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tl:tl_indicator_color="#D81717"
-            tl:tl_indicator_corner_radius="1.5dp"
-            tl:tl_indicator_height="3dp"
-            tl:tl_indicator_width="18dp"
-            tl:tl_indicator_width_equal_title="false"
-            tl:tl_tab_padding="15dp"
-            tl:tl_tab_space_equal="false"
-            tl:tl_textBold="SELECT"
-            tl:tl_textSelectColor="#202020"
-            tl:tl_textUnselectColor="#676767"
-            tl:tl_textsize="13sp" />
-
-
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/tab_color"
+            app:tabSelectedTextColor="@color/tab_color"
+            app:tabTextAppearance="@style/TextAppearance.Design.Tab.Custom"
+            app:tabTextColor="#000" />
 
 
     <android.support.v4.view.ViewPager

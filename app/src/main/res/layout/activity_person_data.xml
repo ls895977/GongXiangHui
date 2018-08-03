@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:background="@mipmap/icon_back" />
+            android:background="@mipmap/common_black_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:text="个人资料"
             android:textColor="#000"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_person_data_save"
@@ -37,7 +37,7 @@
             android:layout_marginRight="15dp"
             android:text="保存"
             android:textColor="#000"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
@@ -49,21 +49,21 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="40dp">
 
         <TextView
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="头像" />
 
-        <ImageView
+        <com.qunxianghui.gxh.widget.RoundImageView
             android:id="@+id/iv_person_data_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:src="@mipmap/user_moren" />
 
@@ -72,14 +72,14 @@
     <View style="@style/dividerStyle" />
 
     <RelativeLayout
-        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="40dp"
+        android:focusableInTouchMode="true">
 
         <TextView
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="昵称" />
 
@@ -88,10 +88,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:background="@null"
             android:gravity="right"
-            android:hint="请设置昵称" />
+            android:hint="请设置昵称"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -100,20 +102,22 @@
     <RelativeLayout
         android:id="@+id/rl_mineData_sex"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="40dp">
 
         <TextView
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="性别" />
 
         <TextView
             android:id="@+id/tv_person_data_sex"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:clickable="false"
             android:gravity="right"
@@ -125,12 +129,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="40dp">
 
         <TextView
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="手机号码" />
 
@@ -139,9 +143,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:gravity="right"
-            android:text="请输入手机号" />
+            android:text="请输入手机号"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -149,12 +155,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="40dp">
 
         <TextView
             style="@style/ConmmenTextStyle"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="联系地址" />
 
@@ -163,10 +169,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:background="@null"
             android:gravity="right"
-            android:hint="请输入联系地址" />
+            android:hint="请输入联系地址"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

@@ -3,10 +3,13 @@
     android:id="@+id/ll_bg_load"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:background="@drawable/shape_load_bg"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp">
 
     <ProgressBar
         android:id="@+id/pb_load"
@@ -18,8 +21,8 @@
         android:id="@+id/tv_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
         android:text="加载中..."
         android:textColor="#eaebe8"
         android:textSize="12sp" />
