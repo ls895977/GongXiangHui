@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -11,13 +12,13 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
+import com.qunxianghui.gxh.utils.ActionBarUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
@@ -29,14 +30,15 @@ public class MineIssueActivity extends BaseActivity {
     private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mine_issue;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void initViews() {
+        ActionBarUtils.setStatusBar(R.color.black,this);
         fragments.add(new MyIssueDiscloseFragment());
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssureVideoFragment());
@@ -58,7 +60,6 @@ public class MineIssueActivity extends BaseActivity {
                 finish();
             }
         }).setTitleText("我的发布");
-
 
     }
 
