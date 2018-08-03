@@ -9,73 +9,63 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
-import com.qunxianghui.gxh.utils.ActionBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-public class MineIssueActivity extends BaseActivity implements TabLayout.OnTabSelectedListener{
+public class MineIssueActivity extends BaseActivity {
     @BindView(R.id.mine_MyIssureTablayout_common)
     TabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)
     ViewPager mineMyIssureViewpager;
-    private String[] titles = new String[]{"爆料", "视频", "本地圈"};
+    private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
+    private int position;
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mine_issue;
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected void initViews() {
-        ActionBarUtils.setStatusBar(R.color.black,this);
-        fragments.add(new MyIssueDiscloseFragment());
-        fragments.add(new MyIssureVideoFragment());
-        fragments.add(new MyIssureVideoFragment());
-
-
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
-        mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
-        mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
-        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
-
-    }
-
-    @Override
-    protected void initData() {
-//设置tabLayout的一个显示方式
-        mineMyIssureTablayoutCommon.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //循环注入标签
+        //设置tablayout的一个显示方式
+        mineMyIssureTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         for (String tab : titles) {
             mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
         }
+
+
     }
 
+
+    @SuppressLint("ResourceAsColor")
     @Override
-    protected void initListeners() {
-        super.initListeners();
-        mineMyIssureTablayoutCommon.setOnTabSelectedListener(this);
-    }
+    protected void initData() {
+        super.initData();
+//
+//        StatusBarCompat.setStatusBarColor(this, R.color.white);
+        fragments.add(new MyIssueDiscloseFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssurePostFragment());
+        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssureVideoFragment());
+        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        mineMyIssureViewpager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
+        mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
+        mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
 
     }
+
+
 }

@@ -120,7 +120,6 @@ public class MineFragment extends BaseFragment {
             }
         }
     }
-
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
