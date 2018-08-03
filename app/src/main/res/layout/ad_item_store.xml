@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/a_view_ad_head" />
+            <include layout="@layout/ad_view_head" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -88,7 +88,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 
-            <include layout="@layout/a_view_ad_switch" />
+            <include layout="@layout/ad_view_switch" />
 
             <TextView
                 android:layout_width="wrap_content"

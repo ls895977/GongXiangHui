@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.GuidViewPagerAdapter;
+import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.AdvertAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 
@@ -26,7 +26,7 @@ public class AdvertBottomFragment extends BaseFragment {
 
     private int count = 0; //页面展示的数据，无实际作用
     private List<View> viewList = new ArrayList<>();//ViewPager数据源
-    private GuidViewPagerAdapter guidViewPagerAdapter;
+    private AdvertPagerAdapter guidViewPagerAdapter;
     //广告底部导航的坐标匹配
     private int[] images = {R.mipmap.icon_advert_company_material, R.mipmap.icon_advert_common_material, R.mipmap.icon_advert_bigpic, R.mipmap.icon_advert_card,
             R.mipmap.icon_advert_banner, R.mipmap.icon_advert_scan, R.mipmap.icon_advert_qq, R.mipmap.icon_advert_shop
@@ -41,7 +41,7 @@ public class AdvertBottomFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        guidViewPagerAdapter = new GuidViewPagerAdapter(viewList);
+        guidViewPagerAdapter = new AdvertPagerAdapter(viewList);
         mVp.setAdapter(guidViewPagerAdapter);
     }
 

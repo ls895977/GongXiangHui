@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        android:layout_marginTop="5dp" />
+
+    <com.qunxianghui.gxh.widget.CircleIndicatorView
+        android:id="@+id/circleIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="400dp"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="13dp"
+        android:paddingStart="15dp"
+        android:paddingTop="80dp">
+
+        <TextView
+            android:id="@+id/ll_company"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_gray_corner"
+            android:drawablePadding="-5dp"
+            android:drawableTop="@mipmap/icon_advert_company_material"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:text="企业素材"
+            android:textColor="#D71B24"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/ll_common"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_gray_corner"
+            android:drawablePadding="-5dp"
+            android:drawableTop="@mipmap/icon_advert_common_material"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:text="通用素材"
+            android:textColor="#D71B24"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/ll_common_advert"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_gray_corner"
+            android:drawablePadding="-5dp"
+            android:drawableTop="@mipmap/icon_advert_banner"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:text="通栏广告"
+            android:textSize="11sp" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/ll_video"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_red_solid_corner"
+            android:drawablePadding="-5dp"
+            android:drawableTop="@mipmap/icon_advert_education"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:text="教学视频"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

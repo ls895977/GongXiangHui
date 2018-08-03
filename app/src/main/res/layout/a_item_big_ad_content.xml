@@ -10,6 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@mipmap/def_ad_big"
+        android:background="@mipmap/icon_add_big_img"
         android:scaleType="fitXY" />
 </RelativeLayout>

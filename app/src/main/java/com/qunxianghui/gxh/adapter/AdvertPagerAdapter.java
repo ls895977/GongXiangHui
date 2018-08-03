@@ -11,28 +11,26 @@ import java.util.List;
  * Created by user on 2018/7/22.
  */
 
-public class GuidViewPagerAdapter extends PagerAdapter {
-    private List<View> viewList;
+public class AdvertPagerAdapter extends PagerAdapter {
 
-    public GuidViewPagerAdapter(List<View> viewList) {
-        this.viewList = viewList;
+    private List<View> mViewList;
+
+    public AdvertPagerAdapter(List<View> viewList) {
+        this.mViewList = viewList;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        try {
-            container.addView(viewList.get(position));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return viewList.get(position);
+        View view = mViewList.get(position);
+        view.setTag(position);
+        container.addView(view);
+        return view;
     }
-
 
     @Override
     public int getCount() {
-        return viewList == null ? 0 : viewList.size();
+        return mViewList == null ? 0 : mViewList.size();
     }
 
     @Override
