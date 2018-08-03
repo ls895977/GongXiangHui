@@ -32,11 +32,9 @@ public class MyGeneralizePersonAdapter extends BaseQuickAdapter<GeneraPersonStat
     @Override
     protected void convert(BaseViewHolder helper, GeneraPersonStaticBean.DataBean item) {
         List<String> images = item.images;
-        helper.setText(R.id.tv_generalize_person_click, item.click_cnt)
-                .setText(R.id.tv_generalize_person_time, item.ctime)
-                .setText(R.id.tv_generalize_person_title, item.title)
-                .setText(R.id.tv_generalize_person_seecount, item.view_cnt)
-                .setText(R.id.tv_generalize_person_share, item.share_cnt);
+        helper.setText(R.id.tv_generalize_person_time, item.source)
+        .setText(R.id.tv_generalize_person_title,item.title);
+
         if (images.size() >= 1) {
             ImageView img = helper.getView(R.id.iv_generalize_person_head);
             Glide.with(mContext).load(images.get(0)).apply(mOptions).into(img);
