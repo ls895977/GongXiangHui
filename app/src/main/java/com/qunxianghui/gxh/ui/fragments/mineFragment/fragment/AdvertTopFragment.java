@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.qunxianghui.gxh.R;
@@ -39,6 +40,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private TongLanChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private List<View> mViewList = new ArrayList<>();
+    private List<ImageItem> mImages;
 
     @Override
     public int getLayoutId() {
@@ -198,74 +200,27 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         mCircleIndicatorView.drawCircleView();
     }
 
-    /**
-     * 上传发布的内容
-     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            //添加图片返回
+            if (data != null && requestCode == 0x0012) {
+                mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                if (mImages != null && mImages.size() > 0) {
+                    ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, getCurrentBigView(), 0, 0);
+                }
+            }
+        } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
+            //预览图片返回
+            if (data != null && requestCode == 0x0011) {
+                mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_IMAGE_ITEMS);
+                if (mImages != null && mImages.size() > 0) {
+                    ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, getCurrentBigView(), 0, 0);
+                }
+            }
+        }
 
-//    private void fetchPublishConentData() {
-//        String faBuContent = etBaoliaoFabuContent.getText().toString();
-//        StringBuilder stringBuilder = new StringBuilder();
-//        for (int i = 0, length = upLoadPics.size(); i < length; i++) {
-//            if (i != upLoadPics.size() - 1) {
-//                stringBuilder.append(upLoadPics.get(i) + ",");
-//            } else {
-//                stringBuilder.append(upLoadPics.get(i));
-//            }
-//        }
-//        OkGo.<String>post(Constant.PUBLISH_ARTICLE)
-//                .params("content", faBuContent)
-//                .params("images", stringBuilder.toString())
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(Response<String> response) {
-//                        parseBaoLiaoData(response.body());
-//                    }
-//                });
-//    }
-
-    //上传图片
-//    private void upLoadPic(String urls, final boolean isUpdate) {
-//        OkGo.<String>post(Constant.UP_LOAD_PIC)
-//                .params("base64", urls)
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(Response<String> response) {
-//                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
-//                        if (uploadImage.code.equals("0")) {
-//                            upLoadPics.add(uploadImage.data.file);
-//                            if (isUpdate) {
-//                                fetchPublishConentData();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Response<String> response) {
-//                        super.onError(response);
-//                        llPublichLoad.setVisibility(View.GONE);
-//                    }
-//                });
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-//            //添加图片返回
-//            if (data != null && requestCode == 0x0011) {
-//                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-//                if (images != null) {
-//                }
-//            }
-//        } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
-//            //预览图片返回
-//            if (data != null && requestCode == 0x0012) {
-//                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_IMAGE_ITEMS);
-//                if (images != null) {
-//                }
-//            }
-//        }
-//
-//    }
+    }
 
 }
