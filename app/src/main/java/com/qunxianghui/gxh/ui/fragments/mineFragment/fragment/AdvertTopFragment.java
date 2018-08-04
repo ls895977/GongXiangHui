@@ -1,7 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
@@ -10,17 +10,16 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.kyleduo.switchbutton.SwitchButton;
-import com.linchaolong.android.imagepicker.ImagePicker;
-import com.linchaolong.android.imagepicker.cropper.CropImage;
-import com.linchaolong.android.imagepicker.cropper.CropImageView;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.view.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.TongLanChooseTypeDialog;
-import com.qunxianghui.gxh.utils.DisplayUtil;
+import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private TongLanChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private List<View> mViewList = new ArrayList<>();
-    private ImagePicker mImagePicker;
 
     @Override
     public int getLayoutId() {
@@ -51,8 +49,17 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void initData() {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
-        mImagePicker = new ImagePicker();
-        mImagePicker.setCropImage(true);
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
+        imagePicker.setShowCamera(true);                      //显示拍照按钮
+        imagePicker.setCrop(false);                           //允许裁剪（单选才有效）
+        imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
+        imagePicker.setSelectLimit(1);              //选中数量限制
+        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
+        imagePicker.setFocusWidth(800);                       //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
+        imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
     }
 
     @Override
@@ -97,39 +104,14 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void pickListener(View view) {
         switch (view.getId()) {
             case R.id.btnPhoto:
-                break;
+                ImagePicker.getInstance().setSelectLimit(1);
+                Intent intent = new Intent(getContext(), ImageGridActivity.class);
+                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+                startActivityForResult(intent, 0x0011);
             case R.id.btnPick:
-                mImagePicker.startChooser(this, new ImagePicker.Callback() {
-                    @Override
-                    public void onPickImage(Uri imageUri) { }
-
-                    @Override
-                    public void onCropImage(Uri imageUri) {
-//                        String path = String.valueOf(imageUri).replace("file://", "");
-                        Glide.with(mActivity)
-                                .load(imageUri)
-                                .into(getCurrentBigView());
-                    }
-
-                    @Override
-                    public void cropConfig(CropImage.ActivityBuilder builder) {
-                        builder
-                                .setMultiTouchEnabled(false)
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .setCropShape(CropImageView.CropShape.RECTANGLE)
-                                .setAutoZoomEnabled(false)
-                                .setMinCropWindowSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
-                                .setRequestedSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
-                                .setAspectRatio(2, 1);
-                    }
-
-                    //用户拒绝授权回调
-
-                    @Override
-                    public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
-                        super.onPermissionDenied(requestCode, permissions, grantResults);
-                    }
-                });
+                ImagePicker.getInstance().setSelectLimit(1);
+                Intent intent1 = new Intent(getContext(), ImageGridActivity.class);
+                startActivityForResult(intent1, 0x0012);
                 break;
             case R.id.btnPicFromLocal:
                 break;
@@ -138,7 +120,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private ImageView getCurrentBigView(){
+    private ImageView getCurrentBigView() {
         View view = mViewList.get(mVp.getCurrentItem());
         return view.findViewById(R.id.iv_add_big_img);
     }
@@ -215,5 +197,75 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         mCircleIndicatorView.setCircleUnSelectedColor(Color.parseColor("#BDBDBD"));
         mCircleIndicatorView.drawCircleView();
     }
+
+    /**
+     * 上传发布的内容
+     */
+
+//    private void fetchPublishConentData() {
+//        String faBuContent = etBaoliaoFabuContent.getText().toString();
+//        StringBuilder stringBuilder = new StringBuilder();
+//        for (int i = 0, length = upLoadPics.size(); i < length; i++) {
+//            if (i != upLoadPics.size() - 1) {
+//                stringBuilder.append(upLoadPics.get(i) + ",");
+//            } else {
+//                stringBuilder.append(upLoadPics.get(i));
+//            }
+//        }
+//        OkGo.<String>post(Constant.PUBLISH_ARTICLE)
+//                .params("content", faBuContent)
+//                .params("images", stringBuilder.toString())
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//                        parseBaoLiaoData(response.body());
+//                    }
+//                });
+//    }
+
+    //上传图片
+//    private void upLoadPic(String urls, final boolean isUpdate) {
+//        OkGo.<String>post(Constant.UP_LOAD_PIC)
+//                .params("base64", urls)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+//                        if (uploadImage.code.equals("0")) {
+//                            upLoadPics.add(uploadImage.data.file);
+//                            if (isUpdate) {
+//                                fetchPublishConentData();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        super.onError(response);
+//                        llPublichLoad.setVisibility(View.GONE);
+//                    }
+//                });
+//    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+//            //添加图片返回
+//            if (data != null && requestCode == 0x0011) {
+//                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+//                if (images != null) {
+//                }
+//            }
+//        } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
+//            //预览图片返回
+//            if (data != null && requestCode == 0x0012) {
+//                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_IMAGE_ITEMS);
+//                if (images != null) {
+//                }
+//            }
+//        }
+//
+//    }
 
 }
