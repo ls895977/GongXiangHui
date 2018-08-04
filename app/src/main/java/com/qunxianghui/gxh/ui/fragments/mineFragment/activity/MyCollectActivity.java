@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
@@ -34,6 +35,8 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
+    @BindView(R.id.tv_mycollect_edit)
+    TextView mTvMycollectEdit;
 
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
@@ -81,6 +84,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         //设置tablayout的点击事件
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
+        mTvMycollectEdit.setOnClickListener(this);
     }
 
     private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
@@ -136,6 +140,9 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         switch (v.getId()) {
             case R.id.iv_myCollect_back:
                 finish();
+                break;
+            case R.id.tv_mycollect_edit:
+                asyncShowToast("点击了编辑");
                 break;
 
         }

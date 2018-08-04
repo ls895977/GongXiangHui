@@ -196,7 +196,12 @@
     <style name="CheckBoxStyle">
         <item name="android:button">@drawable/checkbox_state</item>
     </style>
-
+<!--tablayout 字体大小修改-->
+    <style name="TextAppearance.Design.Tab.Custom" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
     <style name="TagGroup">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
