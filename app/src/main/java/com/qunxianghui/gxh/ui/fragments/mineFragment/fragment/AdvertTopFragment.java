@@ -52,6 +52,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
         mImagePicker = new ImagePicker();
+        mImagePicker.setCropImage(true);
     }
 
     @Override
@@ -100,10 +101,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             case R.id.btnPick:
                 mImagePicker.startChooser(this, new ImagePicker.Callback() {
                     @Override
-                    public void onPickImage(Uri imageUri) {
-                    }
+                    public void onPickImage(Uri imageUri) { }
 
-                    //剪裁图片回调
                     @Override
                     public void onCropImage(Uri imageUri) {
 //                        String path = String.valueOf(imageUri).replace("file://", "");
@@ -111,8 +110,6 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                                 .load(imageUri)
                                 .into(getCurrentBigView());
                     }
-
-                    //自定义剪裁
 
                     @Override
                     public void cropConfig(CropImage.ActivityBuilder builder) {
