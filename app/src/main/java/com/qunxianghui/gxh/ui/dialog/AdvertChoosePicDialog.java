@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.qunxianghui.gxh.R;
 
@@ -44,6 +45,10 @@ public class AdvertChoosePicDialog extends Dialog implements View.OnClickListene
     public AdvertChoosePicDialog hideLocalView(){
         findViewById(R.id.btnPicFromLocal).setVisibility(View.GONE);
         return this;
+    }
+
+    public void setCommonText(String text){
+        ((Button) findViewById(R.id.btnCommon)).setText(text);
     }
 
     @Override

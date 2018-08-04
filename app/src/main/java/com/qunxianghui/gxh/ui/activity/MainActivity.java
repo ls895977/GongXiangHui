@@ -28,7 +28,6 @@ import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.HomeFragment;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.UserUtil;
 
@@ -237,10 +236,10 @@ public class MainActivity extends BaseActivity {
         if (dialog == null) {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
-//        dialog.blurBg().show();
-        Intent intent = new Intent(MainActivity.this, AdvertTemplateActivity.class);
-        intent.putExtra("adverTag", 1);
-        startActivity(intent);
+        dialog.blurBg().show();
+//        Intent intent = new Intent(MainActivity.this, AdvertTemplateActivity.class);
+//        intent.putExtra("adverTag", 1);
+//        startActivity(intent);
     }
 }
 

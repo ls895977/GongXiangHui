@@ -2,10 +2,13 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.kyleduo.switchbutton.SwitchButton;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -138,6 +141,19 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
         view.findViewById(R.id.tv_choose_activity_link).setOnClickListener(this);
         view.findViewById(R.id.ivAd).setOnClickListener(this);
+        ((AppCompatCheckBox) view.findViewById(R.id.cb)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+
+        ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
         mViewList.add(view);
         mPagerAdapter.notifyDataSetChanged();
         mVp.setCurrentItem(mPagerAdapter.getCount() - 1, false);

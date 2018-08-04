@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         style="@style/AdCardViewStyle"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
 
@@ -18,15 +20,16 @@
 
             <RelativeLayout
                 android:id="@+id/flTiePIanPicAdd"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="15.0dip"
-                android:paddingLeft="10.0dip"
-                android:paddingRight="10.0dip">
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="15dp">
 
                 <ImageView
                     android:id="@id/ivAd"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="200.0dip"
                     android:scaleType="fitXY"
                     android:src="@mipmap/admodle_guige" />
@@ -37,7 +40,8 @@
                 style="@style/AdEditTextStyle"
                 android:drawablePadding="6.0dip"
                 android:drawableRight="@mipmap/common_gray_row_bottom"
-                android:hint="选择广告显示时间" />
+                android:hint="选择广告显示时间"
+                android:textSize="13sp" />
 
             <include layout="@layout/ad_view_divider" />
 
@@ -46,68 +50,46 @@
                 style="@style/AdEditTextStyle"
                 android:drawablePadding="6.0dip"
                 android:drawableRight="@mipmap/common_gray_row_bottom"
-                android:hint="选择广告点击效果" />
+                android:hint="选择广告点击效果"
+                android:textSize="13sp" />
 
             <include layout="@layout/ad_view_divider" />
 
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="39.0dip"
+                android:id="@+id/ll_link"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@id/etName"
                     style="@style/AdEditTextStyle"
                     android:layout_width="0dp"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:ellipsize="end"
                     android:hint="请输入您的链接地址"
                     android:lines="1"
                     android:singleLine="true" />
 
-                <RelativeLayout
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@id/cbUseSpace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical">
+                    android:layout_marginEnd="18dp"
+                    android:button="@drawable/my_checkbox"
+                    android:checked="false"
+                    android:drawablePadding="10dp"
+                    android:text="链接至企业名片"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12sp" />
 
-                    <android.support.v7.widget.AppCompatCheckBox
-                        android:id="@id/cbUseSpace"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15.0dip"
-                        android:button="@drawable/my_checkbox"
-                        android:checked="false"
-                        android:drawablePadding="9.0dip"
-                        android:text="链接形象空间"
-                        android:textColor="@color/gray_9"
-                        android:textSize="13.0sp" />
-
-                    <TextView
-                        android:id="@+id/tv_tiepian_select_link"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15.0dip"
-                        android:drawableLeft="@mipmap/icon_gray_vertical_bar"
-                        android:drawablePadding="10.0dip"
-                        android:text="选择链接"
-                        android:textColor="@color/yellow9"
-                        android:textSize="13.0sp"
-                        android:visibility="gone" />
-                </RelativeLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_tiepian_link_hint"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15.0dip"
-                android:layout_marginLeft="15.0dip"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="请点击“选择链接”，并从企业链接库中选择链接地址。"
-                android:textColor="@color/textqiyehao"
-                android:textSize="@dimen/text_size_small"
+            <EditText
+                android:id="@+id/et_other"
+                style="@style/AdEditTextStyle"
+                android:inputType="number"
                 android:visibility="gone" />
 
             <include layout="@layout/ad_view_divider" />

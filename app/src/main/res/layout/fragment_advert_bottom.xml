@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp">
 
-            <android.support.v4.view.ViewPager
+            <com.qunxianghui.gxh.widget.ViewPagerForScrollView
                 android:id="@+id/vp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -25,9 +25,8 @@
                 android:id="@+id/circleIndicatorView"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="150dp" />
+                android:layout_marginTop="380dp"
+                android:layout_centerHorizontal="true"/>
         </RelativeLayout>
 
     </ScrollView>

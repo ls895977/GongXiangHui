@@ -22,6 +22,12 @@
 
             <include layout="@layout/ad_view_add_link" />
 
+            <EditText
+                android:id="@+id/et_other"
+                style="@style/AdEditTextStyle"
+                android:inputType="number"
+                android:visibility="gone" />
+
             <include layout="@layout/ad_view_divider" />
 
             <include layout="@layout/ad_view_switch" />
