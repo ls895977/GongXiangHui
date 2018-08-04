@@ -1,19 +1,26 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kyleduo.switchbutton.SwitchButton;
+import com.linchaolong.android.imagepicker.ImagePicker;
+import com.linchaolong.android.imagepicker.cropper.CropImage;
+import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.TongLanChooseTypeDialog;
+import com.qunxianghui.gxh.utils.DisplayUtil;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -33,6 +40,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private TongLanChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private List<View> mViewList = new ArrayList<>();
+    private ImagePicker mImagePicker;
 
     @Override
     public int getLayoutId() {
@@ -43,6 +51,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void initData() {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
+        mImagePicker = new ImagePicker();
     }
 
     @Override
@@ -89,12 +98,52 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             case R.id.btnPhoto:
                 break;
             case R.id.btnPick:
+                mImagePicker.startChooser(this, new ImagePicker.Callback() {
+                    @Override
+                    public void onPickImage(Uri imageUri) {
+                    }
+
+                    //剪裁图片回调
+                    @Override
+                    public void onCropImage(Uri imageUri) {
+//                        String path = String.valueOf(imageUri).replace("file://", "");
+                        Glide.with(mActivity)
+                                .load(imageUri)
+                                .into(getCurrentBigView());
+                    }
+
+                    //自定义剪裁
+
+                    @Override
+                    public void cropConfig(CropImage.ActivityBuilder builder) {
+                        builder
+                                .setMultiTouchEnabled(false)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                                .setAutoZoomEnabled(false)
+                                .setMinCropWindowSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
+                                .setRequestedSize(DisplayUtil.dip2px(mActivity, 375), DisplayUtil.dip2px(mActivity, 183))
+                                .setAspectRatio(2, 1);
+                    }
+
+                    //用户拒绝授权回调
+
+                    @Override
+                    public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
+                        super.onPermissionDenied(requestCode, permissions, grantResults);
+                    }
+                });
                 break;
             case R.id.btnPicFromLocal:
                 break;
             case R.id.btnCommon:
                 break;
         }
+    }
+
+    private ImageView getCurrentBigView(){
+        View view = mViewList.get(mVp.getCurrentItem());
+        return view.findViewById(R.id.iv_add_big_img);
     }
 
     @Override
@@ -109,6 +158,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             case R.id.iv_add_big_img:
                 if (mChoosePic == null && getContext() != null) {
                     mChoosePic = new AdvertChoosePicDialog(getContext());
+                    mChoosePic.setImgPickListener(this);
                 }
                 mChoosePic.showLocalView().show();
                 break;
@@ -125,6 +175,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             case R.id.ivAd:
                 if (mChoosePic == null && getContext() != null) {
                     mChoosePic = new AdvertChoosePicDialog(getContext());
+                    mChoosePic.setImgPickListener(this);
                 }
                 mChoosePic.hideLocalView().show();
                 break;
