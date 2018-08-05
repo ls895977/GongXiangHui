@@ -1,182 +1,339 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_person_data_back"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:background="@mipmap/common_black_back" />
+            android:layout_marginTop="35dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:text="个人资料"
-            android:textColor="#000"
-            android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/iv_person_data_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@mipmap/common_black_back" />
 
-        <TextView
-            android:id="@+id/tv_person_data_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:text="保存"
-            android:textColor="#000"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:text="个人资料"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_person_data_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="保存"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/divider" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/divider" />
 
-        <TextView
-            style="@style/ConmmenTextStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="头像" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
 
-        <com.qunxianghui.gxh.widget.RoundImageView
-            android:id="@+id/iv_person_data_img"
-            android:layout_width="30dp"
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="头像" />
+
+            <com.qunxianghui.gxh.widget.RoundImageView
+                android:id="@+id/iv_person_data_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/user_moren" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:focusableInTouchMode="true">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="昵称" />
+
+            <EditText
+                android:id="@+id/et_person_data_nickName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请设置昵称"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+        <RelativeLayout
+            android:id="@+id/rl_mineData_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="姓名" />
+
+            <EditText
+                android:id="@+id/et_person_data_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请设置姓名"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+        <RelativeLayout
+            android:id="@+id/rl_mineData_sex"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="性别" />
+
+            <TextView
+                android:id="@+id/tv_person_data_sex"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:clickable="false"
+                android:gravity="right"
+                android:text="请选择性别" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="手机号码" />
+
+            <TextView
+                android:id="@+id/tv_person_data_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:text="请输入手机号"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="邮箱" />
+
+            <TextView
+                android:id="@+id/tv_person_data_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:text="请填写邮箱"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="公司" />
+
+            <TextView
+                android:id="@+id/tv_person_data_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:text="请填写公司名"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="职位" />
+
+            <TextView
+                android:id="@+id/tv_person_data_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:text="请填写职位"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View style="@style/dividerStyle" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                style="@style/ConmmenTextStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="联系地址" />
+
+            <TextView
+                android:id="@+id/et_person_data_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:drawablePadding="5dp"
+                android:drawableRight="@mipmap/right_icon"
+                android:gravity="right"
+                android:hint="请输入联系地址"
+                android:textColor="#000"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/user_moren" />
-
-    </RelativeLayout>
-
-    <View style="@style/dividerStyle" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:focusableInTouchMode="true">
-
-        <TextView
-            style="@style/ConmmenTextStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="昵称" />
-
-        <EditText
-            android:id="@+id/et_person_data_nickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_below="@+id/et_person_data_address"
+            android:layout_marginTop="5dp"
             android:background="@null"
-            android:gravity="right"
-            android:hint="请设置昵称"
-            android:textSize="14sp" />
+            android:gravity="end|center_vertical"
 
-    </RelativeLayout>
+            android:hint="请输入具体的街道。楼盘号等"
+            android:textColor="#C1C1C1"
+            android:textSize="13sp" />
 
-    <View style="@style/dividerStyle" />
-
-    <RelativeLayout
-        android:id="@+id/rl_mineData_sex"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+        <View style="@style/dividerStyle" />
 
         <TextView
-            style="@style/ConmmenTextStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="性别" />
-
-        <TextView
-            android:id="@+id/tv_person_data_sex"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:clickable="false"
-            android:gravity="right"
-            android:text="请选择性别" />
+            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="个人介绍"
+            android:textColor=" #5B5B5B"
+            android:textSize="13sp" />
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:background="#f6f6f6">
 
-    <View style="@style/dividerStyle" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@null"
+                android:hint="请填写个人介绍(最多20字)"
+                android:lines="3"
+                android:textSize="13sp" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
 
-        <TextView
-            style="@style/ConmmenTextStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="手机号码" />
-
-        <TextView
-            android:id="@+id/tv_person_data_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:gravity="right"
-            android:text="请输入手机号"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
-
-    <View style="@style/dividerStyle" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <TextView
-            style="@style/ConmmenTextStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="联系地址" />
-
-        <EditText
-            android:id="@+id/et_person_data_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@null"
-            android:gravity="right"
-            android:hint="请输入联系地址"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
-
-    <View style="@style/dividerStyle" />
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

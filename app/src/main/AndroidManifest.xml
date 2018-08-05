@@ -99,8 +99,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.GuidActivity" />
-        <activity android:name=".ui.activity.GuidSlideActivity" />
         <activity android:name=".ui.fragments.mineFragment.activity.CheckBoxActivity" />
         <!-- 上传视频界面 -->
         <activity
@@ -271,6 +269,9 @@
         <activity
             android:name=".ui.fragments.mineFragment.activity.MyFansActivity"
             android:screenOrientation="portrait" />
+        <!--会员激活界面-->
+        <activity android:name=".ui.fragments.mineFragment.activity.MemberUpActiveActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

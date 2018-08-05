@@ -12,7 +12,7 @@
         android:id="@+id/mine_myMessaageTablayout_common"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:background="#f9f9f9"
         app:tabIndicatorColor="@color/tab_color"
         app:tabSelectedTextColor="@color/tab_color"
         app:tabTextColor="#000" />

@@ -39,10 +39,9 @@ import butterknife.BindView;
 
 
 public class MineMessageFragment extends BaseFragment implements MineMessageAdapter.CommontMeClickListener {
-
-
     @BindView(R.id.xrecycler_mineMessage)
     XRecyclerView xrecyclerMineMessage;
+
     private int count = 0;
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
@@ -51,32 +50,7 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
     private EditText inputResponseComment;
     private TextView btn_submit;
     private PopupWindow popupWindow;
-
-    @Override
-    protected void onLoadData() {
-        RequestCommonMineMessage();
-    }
-
-    /**
-     * 请求评论我消息
-     */
-    private void RequestCommonMineMessage() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_URL)
-                .params("limit", 10)
-                .params("skip", count)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        parsePaiHangData(response.body());
-
-                    }
-                });
-    }
-
     private void parsePaiHangData(String body) {
-
-
         final MineMessageCommentBean mineMessageCommentBean = GsonUtils.jsonFromJson(body, MineMessageCommentBean.class);
 
         if (mIsRefresh) {
@@ -109,6 +83,13 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
         linearLayoutManager.setSmoothScrollbarEnabled(false);
         xrecyclerMineMessage.setLayoutManager(linearLayoutManager);
     }
+
+    @Override
+    public void initData() {
+        super.initData();
+        RequestCommonMineMessage();
+    }
+
     @Override
     protected void initListeners() {
         xrecyclerMineMessage.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -118,6 +99,7 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
                 mIsRefresh = true;
                 RequestCommonMineMessage();
             }
+
             @Override
             public void onLoadMore() {
                 RequestCommonMineMessage();
@@ -126,12 +108,29 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
         });
     }
 
+    /**
+     * 请求评论我消息
+     */
+    private void RequestCommonMineMessage() {
+        OkGo.<String>post(Constant.DISCUSS_MINE_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        parsePaiHangData(response.body());
+
+                    }
+                });
+    }
 
     /*我的消息中的回复*/
     @Override
     public void ResponseCommentListener(int position) {
         showPopupCommnet(position);
     }
+
     @SuppressLint("WrongConstant")
     private void showPopupCommnet(final int position) {
         View view = LayoutInflater.from(mActivity).inflate(R.layout.comment_popupwindow, null);
@@ -183,7 +182,8 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
             }
         });
     }
-/*开始评论了*/
+
+    /*开始评论了*/
     private void RequestNewsCommon(String commonText, int position) {
         OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", dataList.get(position).getData_uuid())

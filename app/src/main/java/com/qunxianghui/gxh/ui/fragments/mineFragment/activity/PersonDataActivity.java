@@ -54,7 +54,7 @@ public class PersonDataActivity extends BaseActivity {
     @BindView(R.id.tv_person_data_phone)
     TextView etPersonDataPhone;
     @BindView(R.id.et_person_data_address)
-    EditText etPersonDataAddress;
+    TextView etPersonDataAddress;
     @BindView(R.id.iv_person_data_back)
     ImageView ivPersonDataBack;
     @BindView(R.id.tv_person_data_save)

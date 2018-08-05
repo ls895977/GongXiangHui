@@ -31,8 +31,10 @@ public class Constant {
     //首页链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
     public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice";
+    //开发环境
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-
+    //测试环境
+    public static final String BASE2_URL = "http://api.qunxianghui.com/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -83,6 +85,8 @@ public class Constant {
     public static final String SEARCH_GUESS_URL = BASE_URL + "search/getGuess";
     //获取个人资料
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
+    //自己接口获取个人资料
+    public static final String CATCH_USERDATA2_URL = BASE2_URL + "user/getProfile";
     //获取用户详情
     public static final String GET_USER_DETAIL_URL = BASE_URL + "user/getUserInfo";
     //添加收藏

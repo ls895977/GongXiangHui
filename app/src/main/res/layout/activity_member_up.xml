@@ -14,6 +14,7 @@
             android:background="@mipmap/icon_memberup_bg">
 
             <ImageView
+                android:id="@+id/iv_memberup_back"
                 android:layout_width="8dp"
                 android:layout_height="19dp"
                 android:layout_marginLeft="10dp"
@@ -89,6 +90,7 @@
                             android:drawableLeft="@mipmap/icon_memberup_diamond"
                             android:drawablePadding="5dp"
                             android:text="会员状态:未激活"
+                            android:textColor=" #161616"
                             android:textSize="12sp" />
 
                         <TextView
@@ -101,16 +103,21 @@
                             android:drawableLeft="@mipmap/icon_memberup_ready_active"
                             android:drawablePadding="5dp"
                             android:text="激活即可享受企业版会员特权"
+                            android:textColor=" #161616"
                             android:textSize="12sp" />
                     </RelativeLayout>
 
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/tv_memberup_quickly_active"
+                        android:layout_width="120dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:layout_marginTop="20dp"
-                        android:text="立即激活" />
+                        android:background="@drawable/bg_red_solid_corner"
+                        android:text="立即激活"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
 

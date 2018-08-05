@@ -50,26 +50,7 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
     private TextView btn_submit;
     private PopupWindow popupWindow;
 
-    @Override
-    protected void onLoadData() {
-        RequestMyMessageFollow();
 
-    }
-    /**
-     * 请求我的跟帖
-     */
-    private void RequestMyMessageFollow() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_FOLLOW_URL)
-                .params("limit", 10)
-                .params("skip", count)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        parsePaiHangData(response.body());
-                    }
-                });
-    }
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_message_follow;
@@ -106,6 +87,29 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
         linearLayoutManager.setSmoothScrollbarEnabled(false);
         xrecyclerMineFollowMessage.setLayoutManager(linearLayoutManager);
     }
+
+    @Override
+    public void initData() {
+        RequestMyMessageFollow();
+    }
+
+
+    /**
+     * 请求我的跟帖
+     */
+    private void RequestMyMessageFollow() {
+        OkGo.<String>post(Constant.DISCUSS_MINE_FOLLOW_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        parsePaiHangData(response.body());
+                    }
+                });
+    }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -116,12 +120,14 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
                 mIsRefresh = true;
                 RequestMyMessageFollow();
             }
+
             @Override
             public void onLoadMore() {
                 RequestMyMessageFollow();
             }
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -189,19 +195,20 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
 
                     asyncShowToast("请输入评论内容");
                 } else {
-                    RequestNewsCommon(CommonText,position);
+                    RequestNewsCommon(CommonText, position);
                 }
             }
         });
     }
-    private void RequestNewsCommon(String commonText,int position) {
+
+    private void RequestNewsCommon(String commonText, int position) {
         OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", dataList.get(position).getData_uuid())
                 .params("content", commonText)
                 .execute(new DialogCallback<LzyResponse<CommentBean>>(mActivity) {
                     @Override
                     public void onSuccess(Response<LzyResponse<CommentBean>> response) {
-                        if (response.body().code==0) {
+                        if (response.body().code == 0) {
                             asyncShowToast("评论成功");
                             inputResponseComment.setVisibility(View.VISIBLE);
                             popupWindow.dismiss();
