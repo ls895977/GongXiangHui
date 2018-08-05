@@ -10,10 +10,25 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="400dp">
+
+            <com.qunxianghui.gxh.widget.ViewPagerForScrollView
+                android:id="@+id/vp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp" />
+
+            <com.qunxianghui.gxh.widget.CircleIndicatorView
+                android:id="@+id/circleIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="380dp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
     </ScrollView>
 
     <android.support.v7.widget.RecyclerView

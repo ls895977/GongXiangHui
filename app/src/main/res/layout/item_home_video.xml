@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -21,7 +22,7 @@
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="165dp"
         android:src="@mipmap/default_img" />
 
@@ -33,24 +34,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_mycollect_video_attention"
                 android:layout_width="50dp"
                 android:layout_height="23dp"
-                android:layout_centerVertical="true"
                 android:background="@drawable/shape_button"
                 android:gravity="center"
                 android:text="+关注"
+                android:textSize="11sp"
                 android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tv_item_collect_video_personname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
+                android:layout_marginStart="3dp"
+                android:textSize="13sp"
+                android:textColor="#2D2D2D"
                 android:layout_marginTop="3dp"
                 android:text="香馍馍" />
 
@@ -59,7 +62,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
@@ -70,44 +73,43 @@
                 android:background="@mipmap/home_video_collect_normal" />
 
             <TextView
-                android:id="@+id/tv_item_collect_video_likecountt"
+                android:id="@+id/tv_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="20dp"
-                android:text="0" />
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="5dp"
+                android:textColor="#2D2D2D"
+                android:textSize="13sp"
+                tools:text="0" />
 
             <TextView
-                android:id="@+id/tv_item_collect_video_personmessage"
+                android:id="@+id/tv_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/line_homevideo"
-                android:drawableLeft="@mipmap/home_video_message"
+                android:layout_marginEnd="20dp"
                 android:drawablePadding="5dp"
-                android:text="0" />
+                android:drawableStart="@mipmap/home_video_message"
+                android:textColor="#2D2D2D"
+                android:textSize="13sp"
+                tools:text="0" />
 
             <View
-                android:id="@+id/line_homevideo"
                 android:layout_width="1dp"
                 android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/tv_mycollect_video_paster"
+                android:layout_marginEnd="10dp"
                 android:background="@color/divider" />
 
             <TextView
                 android:id="@+id/tv_mycollect_video_paster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:drawableLeft="@mipmap/home_video_paster"
+                android:layout_marginEnd="10dp"
                 android:drawablePadding="5dp"
-                android:text="贴片" />
+                android:drawableStart="@mipmap/home_video_paster"
+                android:text="贴片"
+                android:textColor="#2D2D2D"
+                android:textSize="13sp" />
 
         </LinearLayout>
     </RelativeLayout>

@@ -86,8 +86,8 @@ public class HomeVideoListBean implements Serializable {
             private String description;
             private String video_url;
             private String content;
-            private int like_cnt;
-            private int comment_cnt;
+            private String like_cnt;
+            private String comment_cnt;
             private int ctime;
             private String ip;
             private int status;
@@ -173,19 +173,19 @@ public class HomeVideoListBean implements Serializable {
                 this.content = content;
             }
 
-            public int getLike_cnt() {
+            public String getLike_cnt() {
                 return like_cnt;
             }
 
-            public void setLike_cnt(int like_cnt) {
+            public void setLike_cnt(String like_cnt) {
                 this.like_cnt = like_cnt;
             }
 
-            public int getComment_cnt() {
+            public String getComment_cnt() {
                 return comment_cnt;
             }
 
-            public void setComment_cnt(int comment_cnt) {
+            public void setComment_cnt(String comment_cnt) {
                 this.comment_cnt = comment_cnt;
             }
 

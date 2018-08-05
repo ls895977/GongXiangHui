@@ -1,15 +1,10 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -21,7 +16,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
+import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.config.Constant;
@@ -36,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 
@@ -45,32 +40,21 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
  * Created by Administrator on 2018/3/16 0016.
  */
 
-public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener, ImagePickerAdapter.OnRecyclerViewItemClickListener {
-    @BindView(R.id.iv_baoliao_close)
-    ImageView ivBaoliaoClose;
+public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener, BaoLiaoAdapter.OnRecyclerViewItemClickListener {
 
-
-    @BindView(R.id.ll_baoliao_remember)
-    LinearLayout llBaoliaoRemember;
-    @BindView(R.id.tv_home_baoliao_fabu)
-    TextView tvHomeBaoliaoFabu;
-    @BindView(R.id.et_baoliao_fabu_content)
-    EditText etBaoliaoFabuContent;
-    @BindView(R.id.et_baoliao_fabu_title)
-    EditText etBaoliaoFabuTitle;
-    @BindView(R.id.iv_baoliao_back)
-    ImageView ivBaoliaoBack;
-    @BindView(R.id.recyclerView_baoliao_image)
-    RecyclerView recyclerViewBaoliaoImage;
+    @BindView(R.id.et_title)
+    EditText mEtTitle;
+    @BindView(R.id.rv)
+    RecyclerView mRv;
     @BindView(R.id.ll_load)
-    LinearLayout mLoadView;
+    LinearLayout mLlLoad;
+
     private List<String> upLoadPics = new ArrayList<>();
-    private int maxImgCount = 8;               //允许选择图片最大数
-    private ImagePickerAdapter adapter;
+    private int maxImgCount = 3;               //允许选择图片最大数
+    private BaoLiaoAdapter adapter;
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
-    private ArrayList<ImageItem> images = new ArrayList<>();
     private SelectPhotoDialog selectPhotoDialog;
 
     @Override
@@ -93,18 +77,14 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
 
         selImageList = new ArrayList<>();
-        adapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
+        adapter = new BaoLiaoAdapter(this);
         adapter.setOnItemClickListener(this);
-        recyclerViewBaoliaoImage.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerViewBaoliaoImage.setHasFixedSize(true);
-        recyclerViewBaoliaoImage.setAdapter(adapter);
+        mRv.setHasFixedSize(true);
+        mRv.setAdapter(adapter);
     }
 
     @Override
     protected void initListeners() {
-        ivBaoliaoClose.setOnClickListener(this);
-        tvHomeBaoliaoFabu.setOnClickListener(this);
-        ivBaoliaoBack.setOnClickListener(this);
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
             public void onTakePhoto() {
@@ -114,6 +94,7 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 startActivityForResult(intent, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
+
             @Override
             public void onSelect() {
                 //打开选择,本次允许选择的数量
@@ -122,30 +103,39 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
                 selectPhotoDialog.dismiss();
             }
+
             @Override
             public void onDismiss() {
                 selectPhotoDialog.dismiss();
             }
         });
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+
+
+    @OnClick({R.id.tv_cancel, R.id.tv_upload})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_cancel:
+                finish();
+                break;
+            case R.id.tv_upload:
+                break;
+        }
     }
+
     @Override
     public void onClick(View v) {
-        final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
-        final String faBuTitle = etBaoliaoFabuTitle.getText().toString().trim();
+        final String faBuContent = mEtTitle.getText().toString().trim();
+        final String faBuTitle = mEtTitle.getText().toString().trim();
         switch (v.getId()) {
             case R.id.iv_baoliao_close:
-                llBaoliaoRemember.setVisibility(View.GONE);
+//                llBaoliaoRemember.setVisibility(View.GONE);
                 break;
             case R.id.tv_home_baoliao_fabu:
-                if (!isCanUpload()) {
-                    return;
-                }
-                mLoadView.setVisibility(View.VISIBLE);
+//                if (!isCanUpload()) {
+//                    return;
+//                }
+//                mLoadView.setVisibility(View.VISIBLE);
 //                requestBaoLiaoFaBu(faBuTitle, faBuContent);
 
                 if (selImageList.size() == 0) {
@@ -165,9 +155,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                     }
                 }
                 break;
-            case R.id.iv_baoliao_back:
-                finish();
-                break;
         }
     }
 
@@ -175,8 +162,8 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
      * 填充爆料
      */
     private void fetchBaoLiaoData() {
-        final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
-        final String faBuTitle = etBaoliaoFabuTitle.getText().toString().trim();
+        final String faBuContent = mEtTitle.getText().toString().trim();
+        final String faBuTitle = mEtTitle.getText().toString().trim();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0, length = upLoadPics.size(); i < length; i++) {
             if (i != upLoadPics.size() - 1) {
@@ -192,14 +179,14 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        mLoadView.setVisibility(View.GONE);
+//                        mLoadView.setVisibility(View.GONE);
                         parseBaoLiaoData(response.body());
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        mLoadView.setVisibility(View.GONE);
+//                        mLoadView.setVisibility(View.GONE);
                         asyncShowToast(response.message());
                     }
                 });
@@ -229,7 +216,7 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        mLoadView.setVisibility(View.GONE);
+//                        mLoadView.setVisibility(View.GONE);
                     }
                 });
     }
@@ -246,23 +233,31 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        switch (position) {
-            case IMAGE_ITEM_ADD:
-                selectPhotoDialog.show();
+    public void onItemClick(View view, int position, int type) {
+        switch (view.getId()) {
+            case R.id.iv_delete:
+                adapter.remove(position);
                 break;
-            default:
-                //打开预览
-                Intent intentPreview = new Intent(this, ImagePreviewDelActivity.class);
-                intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, (ArrayList<ImageItem>) adapter.getImages());
-                intentPreview.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
-                intentPreview.putExtra(ImagePicker.EXTRA_FROM_ITEMS, true);
-                startActivityForResult(intentPreview, REQUEST_CODE_PREVIEW);
+            case R.id.tv_add:
+                adapter.addItem(position);
+                break;
+            case R.id.rv:
+                selImageList = adapter.getImages();
+                switch (type) {
+                    case IMAGE_ITEM_ADD:
+                        selectPhotoDialog.show();
+                        break;
+                    default:
+                        //打开预览
+                        Intent intentPreview = new Intent(this, ImagePreviewDelActivity.class);
+                        intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, adapter.getImages());
+                        intentPreview.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, type);
+                        intentPreview.putExtra(ImagePicker.EXTRA_FROM_ITEMS, true);
+                        startActivityForResult(intentPreview, REQUEST_CODE_PREVIEW);
+                }
                 break;
         }
     }
@@ -270,6 +265,7 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ArrayList<ImageItem> images;
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
@@ -294,13 +290,13 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    private boolean isCanUpload() {
-        final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
-        final String faBuTitle = etBaoliaoFabuTitle.getText().toString().trim();
-        if (TextUtils.isEmpty(faBuTitle) || TextUtils.isEmpty(faBuContent)) {
-            asyncShowToast("还有一些信息没有填，仔细检查一下");
-            return false;
-        }
-        return true;
-    }
+//    private boolean isCanUpload() {
+//        final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
+//        final String faBuTitle = etBaoliaoFabuTitle.getText().toString().trim();
+//        if (TextUtils.isEmpty(faBuTitle) || TextUtils.isEmpty(faBuContent)) {
+//            asyncShowToast("还有一些信息没有填，仔细检查一下");
+//            return false;
+//        }
+//        return true;
+//    }
 }

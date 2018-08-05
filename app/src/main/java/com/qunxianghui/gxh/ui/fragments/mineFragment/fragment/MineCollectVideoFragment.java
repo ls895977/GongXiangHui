@@ -29,19 +29,14 @@ public class MineCollectVideoFragment extends BaseFragment {
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
     Unbinder unbinder;
-
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_collect_video;
     }
-
-
     @Override
     public void initData() {
         super.initData();
         OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
-
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -54,8 +49,6 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     private void ParseMineCollectVideo(String body) {
         final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
-
-
         if (mineCollectVideoBean.getCode() == 0) {
             final List<MineCollectVideoBean.DataBean> dataList = mineCollectVideoBean.getData();
 
@@ -90,7 +83,6 @@ public class MineCollectVideoFragment extends BaseFragment {
     public void initViews(View view) {
         xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity, 2));
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

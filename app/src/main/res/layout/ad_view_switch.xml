@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginLeft="18dp"
+    android:layout_marginRight="18dp"
+    android:layout_marginTop="15dp">
 
     <TextView
-        android:id="@+id/tvSwitchInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawableLeft="@mipmap/eye"
-        android:drawablePadding="6.0dip"
-        android:paddingLeft="15.0dip"
+        android:layout_centerVertical="true"
         android:text="是否展现"
-        android:textColor="#ff666562"
-        android:textSize="14.0sp" />
+        android:textColor=" #333333"
+        android:textSize="12sp" />
 
-    <View
-        android:layout_width="0.0dip"
-        android:layout_height="1.0dip"
-        android:layout_weight="1.0" />
+    <com.kyleduo.switchbutton.SwitchButton
+        android:id="@+id/sw"
+        app:kswTintColor="#30B63E"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        tools:ignore="RelativeOverlap" />
 
-    <!--<com.hq.fxh.CustomerView.switchbutton.SwitchButton xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@id/sbSwitch"-->
-        <!--style="@style/SwitchButtonStyle"-->
-        <!--android:layout_width="10.0dip"-->
-        <!--android:layout_height="10.0dip"-->
-        <!--app:kswAnimationDuration="300"-->
-        <!--app:kswBackDrawable="@drawable/ios_back_drawable"-->
-        <!--app:kswBackMeasureRatio="1.4"-->
-        <!--app:kswThumbDrawable="@mipmap/ios_thumb"-->
-        <!--app:kswThumbMarginBottom="-8.0dip"-->
-        <!--app:kswThumbMarginLeft="-5.0dip"-->
-        <!--app:kswThumbMarginRight="-5.0dip"-->
-        <!--app:kswThumbMarginTop="-2.5dip" />-->
-</LinearLayout>
+</RelativeLayout>

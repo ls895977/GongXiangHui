@@ -1,8 +1,5 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.mine.SelfTestBran;
 import com.qunxianghui.gxh.item.BaseRecyclerAdapter;
@@ -12,7 +9,7 @@ import com.qunxianghui.gxh.item.ViewHolder;
  * Created by user on 2018/6/10.
  */
 
-public class SelfTestRecyclerviewAdapter extends BaseRecyclerAdapter<SelfTestBran>{
+public class SelfTestRecyclerviewAdapter extends BaseRecyclerAdapter<SelfTestBran> {
 
 
     @Override
@@ -22,6 +19,6 @@ public class SelfTestRecyclerviewAdapter extends BaseRecyclerAdapter<SelfTestBra
 
     @Override
     public void onBindViewHolder(ViewHolder holder, SelfTestBran selfTestBran, int position) {
-   holder.setText(R.id.tv_simple_1_line,"自己写的");
+        holder.setText(R.id.tv_simple_1_line, "自己写的");
     }
 }

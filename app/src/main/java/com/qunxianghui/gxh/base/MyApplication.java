@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
+
 public class MyApplication extends MultiDexApplication {
 
     private SQLHelper sqlHelper;
@@ -74,9 +75,9 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        if("debug".equals(BuildConfig.BUILD_TYPE)) {
+        if ("debug".equals(BuildConfig.BUILD_TYPE)) {
             CrashHandler.getInstance().init(getApplicationContext());
-        }else{
+        } else {
             Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         }
         SINSTANCE = this;
@@ -95,12 +96,14 @@ public class MyApplication extends MultiDexApplication {
         }
         Logger.d("initOkGo-->:" + mAccessToken);
         //全局参数
-//        final HttpParams params = new HttpParams();
-//        params.put("app_key", 100);
-//        params.put("access_token", mAccessToken);
         HttpHeaders header = new HttpHeaders();
         header.put("X-appkey", "100");
         header.put("X-accesstoken", mAccessToken);
+//        header.put("X-cityId", "26");
+//        header.put("X-areaId", "266");
+//        header.put("X-systemType", "android");
+//        header.put("X-deviceModel", "MuMu");
+//        header.put("X-deviceId", "008796755566460");
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关

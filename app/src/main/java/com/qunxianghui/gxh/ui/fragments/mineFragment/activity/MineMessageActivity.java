@@ -1,19 +1,22 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineMessageFollowFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineMessageFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineMessageSystemFragment;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +32,9 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
     TabLayout mineMyMessaageTablayoutCommon;
     @BindView(R.id.mine_mymessage_viewpager)
     ViewPager mineMymessageViewpager;
-    private String[] titles = new String[]{"评论我的", "我的跟帖", "系统消息"};
+    private String[] titles = new String[]{"评论我的", "我的评论"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-    private int index;
 
     @Override
     protected int getLayoutId() {
@@ -47,8 +49,6 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
         for (String tab : titles) {
             mineMyMessaageTablayoutCommon.addTab(mineMyMessaageTablayoutCommon.newTab().setText(tab));
         }
-
-        index = getIntent().getIntExtra("index", 0);
 
     }
 
@@ -65,15 +65,47 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
         mineMyMessaageTablayoutCommon.setOnTabSelectedListener(this);
         fragments.add(new MineMessageFragment());
         fragments.add(new MineMessageFollowFragment());
-        fragments.add(new MineMessageSystemFragment());
-
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMymessageViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMymessageViewpager.setOffscreenPageLimit(fragments.size());
         mineMyMessaageTablayoutCommon.setupWithViewPager(mineMymessageViewpager);
 
-        if (index!=0){
-            mineMymessageViewpager.setCurrentItem(index,false);
+        mineMyMessaageTablayoutCommon.post(new Runnable() {
+            @Override
+            public void run() {
+                setIndicator(mineMyMessaageTablayoutCommon, 55, 55);
+            }
+        });
+    }
+
+    private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
+        Class<?> tabLayout = tabs.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayout.getDeclaredField("mTabStrip");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        tabStrip.setAccessible(true);
+        LinearLayout llTab = null;
+        try {
+            llTab = (LinearLayout) tabStrip.get(tabs);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
+        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
+
+        for (int i = 0; i < llTab.getChildCount(); i++) {
+            View child = llTab.getChildAt(i);
+            child.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            params.leftMargin = left;
+            params.rightMargin = right;
+            child.setLayoutParams(params);
+            child.invalidate();
         }
     }
 

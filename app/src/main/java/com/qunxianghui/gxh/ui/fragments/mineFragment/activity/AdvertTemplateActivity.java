@@ -10,6 +10,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTiePianFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTopFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertBottomFragment;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
@@ -42,11 +43,12 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        mSegmentTab.setTabData(mTitleTwo);
+        mSegmentTab.setTabData(mTitles);
         Intent intent = getIntent();
         int adverTag = intent.getIntExtra("adverTag", 0);
         mFragments.add(new AdvertBottomFragment());
         mFragments.add(new AdvertTopFragment());
+        mFragments.add(new AdvertTiePianFragment());
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
         mVp.setOffscreenPageLimit(mSegmentTab.getTabCount() - 1);
     }
