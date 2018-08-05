@@ -8,11 +8,14 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,7 +44,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.LzyResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
-import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
+import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdverActivity;
@@ -73,7 +76,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     WebView mWedNewsDetail;
     @BindView(R.id.iv_news_detail_collect)
     ImageView mIvNewsDetailCollect;
-
+    @BindView(R.id.tv_news_detail_message)
+    TextView mTvCommentCount;
 
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
@@ -107,10 +111,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initData() {
-        HoldeNewsDetail();
-    }
-
-    private void HoldeNewsDetail() {
         OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
                 .params("id", uuid)
                 .execute(new StringCallback() {
@@ -122,45 +122,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void ParseNewsDetailData(String body) {
-        MyColleNewsDetailBean newsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
+        MyCollectNewsDetailBean newsDetailBean = GsonUtils.jsonFromJson(body, MyCollectNewsDetailBean.class);
         if (newsDetailBean.getCode() == 0) {
-            MyColleNewsDetailBean.DataBean dataList = newsDetailBean.getData();
-
+            MyCollectNewsDetailBean.DataBean dataList = newsDetailBean.getData();
             has_collect = dataList.isHas_collect();
             if (has_collect) {
-                mIvNewsDetailCollect.setImageResource(R.mipmap.collect);
+                mIvNewsDetailCollect.setImageResource(R.mipmap.icon_collect);
             } else {
-                mIvNewsDetailCollect.setImageResource(R.mipmap.collect_normal);
+                mIvNewsDetailCollect.setImageResource(R.mipmap.icon_un_collect);
             }
         }
-    }
-
-    //底部弹出对话框
-    private void showBottomDialog() {
-        if (mShareDialog == null) {
-            mShareDialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
-            //填充对话框的布局
-            View alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
-            //初始化控件
-            alertView.findViewById(R.id.tv_addAdver_share).setOnClickListener(this);
-            alertView.findViewById(R.id.tv_article_share).setOnClickListener(this);
-            alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(this);
-            //将布局设置给dialog
-            mShareDialog.setContentView(alertView);
-            //获取当前activity所在的窗体
-            Window dialogWindow = mShareDialog.getWindow();
-            //设置dialog从窗体底部弹出
-            dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            WindowManager windowManager = getWindowManager();
-            Display display = windowManager.getDefaultDisplay();
-            lp.width = (int) display.getWidth();  //设置宽度
-            lp.y = 5;  //设置dialog距离底部的距离
-            //将属性设置给窗体
-            dialogWindow.setAttributes(lp);
-        }
-        mShareDialog.show();
     }
 
     @Override
@@ -245,9 +216,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mWedNewsDetail.loadUrl(url);
     }
 
-    @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver, R.id.et_input_discuss, R.id.iv_news_detail_message, R.id.iv_news_detail_collect, R.id.iv_news_detail_share})
+    @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver, R.id.et_input_discuss, R.id.iv_news_detail_collect})
     public void onViewClicked(View view) {
-        Intent intent = null;
         switch (view.getId()) {
             case R.id.iv_newsdetail_back:
                 finish();
@@ -256,21 +226,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 showBottomDialog();
                 break;
             case R.id.iv_news_detail_addAdver:
-                intent = new Intent(mContext, AddAdverActivity.class);
+                Intent intent = new Intent(mContext, AddAdverActivity.class);
                 intent.putExtra("url", url);
                 startActivity(intent);
                 break;
             case R.id.et_input_discuss:
                 showPopupCommnet();
                 break;
-            case R.id.iv_news_detail_message:
-                showPopupCommnet();
-                break;
             case R.id.iv_news_detail_collect:
                 collectDataList(uuid);
-                break;
-            case R.id.iv_news_detail_share:
-                showBottomDialog();
                 break;
         }
     }
@@ -290,6 +254,34 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 showShareDialog();
                 break;
         }
+    }
+
+    //底部弹出对话框
+    private void showBottomDialog() {
+        if (mShareDialog == null) {
+            mShareDialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
+            //初始化控件
+            alertView.findViewById(R.id.tv_addAdver_share).setOnClickListener(this);
+            alertView.findViewById(R.id.tv_article_share).setOnClickListener(this);
+            alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(this);
+            //将布局设置给dialog
+            mShareDialog.setContentView(alertView);
+            //获取当前activity所在的窗体
+            Window dialogWindow = mShareDialog.getWindow();
+            //设置dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            //获得窗体的属性
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            WindowManager windowManager = getWindowManager();
+            Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 5;  //设置dialog距离底部的距离
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
+        mShareDialog.show();
     }
 
     /*三方分享唤起*/
@@ -387,9 +379,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     /*弹出评论框*/
     @SuppressLint("WrongConstant")
     private void showPopupCommnet() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_popupwindow, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.news_detail_comment_popupwindow, null);
         inputComment = view.findViewById(R.id.et_discuss);
-        TextView btn_submit = view.findViewById(R.id.tv_confirm);
+        final TextView btn_submit = view.findViewById(R.id.tv_confirm);
         popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, false);
         popupWindow.setTouchable(true);
@@ -414,6 +406,28 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         popupWindow.setBackgroundDrawable(cd);
         popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
         popupWindow.update();
+        inputComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    btn_submit.setEnabled(false);
+                    btn_submit.setTextColor(Color.parseColor("#444444"));
+                }else {
+                    btn_submit.setEnabled(true);
+                    btn_submit.setTextColor(Color.parseColor("#D81818"));
+                }
+            }
+        });
         /**
          * 提交评论
          */
@@ -460,10 +474,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
                 if (myCollectBean.getCode() == 0) {
                     asyncShowToast("收藏成功");
-                    mIvNewsDetailCollect.setImageResource(R.mipmap.collect);
+                    mIvNewsDetailCollect.setImageResource(R.mipmap.icon_collect);
                 } else if (myCollectBean.getCode() == 202) {
                     asyncShowToast("取消收藏");
-                    mIvNewsDetailCollect.setImageResource(R.mipmap.collect_normal);
+                    mIvNewsDetailCollect.setImageResource(R.mipmap.icon_un_collect);
                 }
             }
         });

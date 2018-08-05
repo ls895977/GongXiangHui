@@ -17,27 +17,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
  */
 
-public class HomeVideoActivity extends BaseActivity implements View.OnClickListener {
+public class HomeVideoActivity extends BaseActivity {
 
-    @BindView(R.id.iv_home_video_back)
-    ImageView ivHomeVideoBack;
-    @BindView(R.id.tv_home_video_issue)
-    TextView tvHomeVideoIssue;
     @BindView(R.id.slidingTabLayout)
     SlidingTabLayout mSlidingTabLayout;
     @BindView(R.id.iv_more_columns)
     ImageView mIvMoreColumns;
     @BindView(R.id.home_video_viewpager)
     ViewPager mHomeVideoViewpager;
+    @BindView(R.id.tv_address)
+    TextView mTvAddress;
+
     private String[] titles = new String[]{"实时", "搞笑", "体育", "娱乐"};
     private List<Fragment> fragments = new ArrayList<>();
-    private MineTabViewPagerAdapter tabViewPagerAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +49,7 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
         fragments.add(new HomeVideoListFragment());
-        tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        MineTabViewPagerAdapter tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mHomeVideoViewpager.setAdapter(tabViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mHomeVideoViewpager);
         mHomeVideoViewpager.setOffscreenPageLimit(fragments.size() - 1);
@@ -58,10 +57,6 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initListeners() {
-        super.initListeners();
-        ivHomeVideoBack.setOnClickListener(this);
-        tvHomeVideoIssue.setOnClickListener(this);
-        mIvMoreColumns.setOnClickListener(this);
         mSlidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -75,13 +70,15 @@ public class HomeVideoActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_home_video_back:
+    @OnClick({R.id.iv_back, R.id.tv_search, R.id.tv_address, R.id.iv_more_columns})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_home_video_issue:
+            case R.id.tv_search:
+                break;
+            case R.id.tv_address:
                 toActivity(LocationActivity.class);
                 break;
             case R.id.iv_more_columns:

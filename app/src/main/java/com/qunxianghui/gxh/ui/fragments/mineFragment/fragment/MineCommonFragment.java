@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -23,7 +22,7 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.CollectBean;
-import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
+import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
@@ -135,10 +134,10 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
      * @param body
      */
     private void ParseMyCollectNewsDetail(String body) {
-        MyColleNewsDetailBean myColleNewsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
-        int code = myColleNewsDetailBean.getCode();
+        MyCollectNewsDetailBean myCollectNewsDetailBean = GsonUtils.jsonFromJson(body, MyCollectNewsDetailBean.class);
+        int code = myCollectNewsDetailBean.getCode();
         if (code == 0) {
-            String url = myColleNewsDetailBean.getData().getUrl();
+            String url = myCollectNewsDetailBean.getData().getUrl();
             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
             intent.putExtra("url", url);
             startActivity(intent);

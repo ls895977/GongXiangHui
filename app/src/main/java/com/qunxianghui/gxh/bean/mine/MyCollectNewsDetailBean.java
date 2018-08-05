@@ -2,7 +2,7 @@ package com.qunxianghui.gxh.bean.mine;
 
 import java.io.Serializable;
 
-public class MyColleNewsDetailBean implements Serializable {
+public class MyCollectNewsDetailBean implements Serializable {
 
 
     /**
