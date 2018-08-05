@@ -15,7 +15,7 @@ public class Constant {
     //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //测试环境
     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
-    
+
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
