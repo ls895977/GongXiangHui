@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -21,12 +20,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
 
 public class VideoUploadActivity extends BaseActivity {
 
-    @BindView(R.id.image_UpdataVideo_Icon)
-    ImageView mImageUpdataVideoIcon;
-    @BindView(R.id.tv_video_type_choice)
+    @BindView(R.id.video_player)
+    JZVideoPlayerStandard mVideoplayer;
+    @BindView(R.id.tv_type)
     TextView mTvVideoTypeChoice;
     @BindView(R.id.edit_UpdataVideo_title)
     EditText mEditUpdataVideoTitle;
@@ -45,6 +46,7 @@ public class VideoUploadActivity extends BaseActivity {
     @Override
     protected void initViews() {
         mVideoPath = getIntent().getStringExtra("videoPath");
+        mVideoplayer.setUp(mVideoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
         Glide.with(this.getApplicationContext())
                 .setDefaultRequestOptions(
                         new RequestOptions()
@@ -53,14 +55,28 @@ public class VideoUploadActivity extends BaseActivity {
                                 .error(R.mipmap.default_img)
                                 .placeholder(R.mipmap.default_img))
                 .load(mVideoPath)
-                .into(mImageUpdataVideoIcon);
+                .into(mVideoplayer.thumbImageView);
     }
 
-    @OnClick({R.id.tv_UpdataVideo_UpLoad, R.id.tv_UpdataVideo_Cancel, R.id.tv_video_type_choice})
+    @Override
+    public void onBackPressed() {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
+    }
+
+    @OnClick({R.id.tv_UpdataVideo_UpLoad, R.id.tv_UpdataVideo_Cancel, R.id.tv_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_UpdataVideo_UpLoad:
-                if ("请选择".equals(mTvVideoTypeChoice.getText().toString())) {
+                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
                     asyncShowToast("请先选择视频分类");
                     return;
                 }
@@ -73,7 +89,7 @@ public class VideoUploadActivity extends BaseActivity {
             case R.id.tv_UpdataVideo_Cancel:
                 finish();
                 break;
-            case R.id.tv_video_type_choice:
+            case R.id.tv_type:
                 chooseUserSex();
                 break;
         }
