@@ -6,35 +6,15 @@ package com.qunxianghui.gxh.config;
 
 public class Constant {
     public static final long TIME_OUT = 3000;//网络请求超时时间
-    //平台规则
-    public static final String PTGZ = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
-    //常用电话
-    public static final String COMMON_PHONE = "http://app.zzbcar.com/zzb/helpcenter/protocol.html";
-    //首页的黄历
-    public static final String CALENDAR_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttoutiao";
-    //寄快递
-    public static final String SEND_EXPRESS = "http://app.zzbcar.com/zzb/helpcenter/user1.html";
-    //充话费
-    public static final String RUSH_PHONE_MONEY = "http://app.zzbcar.com/zzb/helpcenter/user2.html";
-    //公交查询
-    public static final String BUSS_CHECK = "http://app.zzbcar.com/zzb/helpcenter/user3.html";
-    //汽车票
-    public static final String CAR_TCKET = "http://app.zzbcar.com/zzb/helpcenter/user4.html";
-    //火车票
-    public static final String TRAIN_TICKET = "http://app.zzbcar.com/zzb/helpcenter/user5.html";
-    //飞机票
-    public static final String AIR_TICKET = "http://app.zzbcar.com/zzb/helpcenter/user6.html";
-    //农历黄历
-    public static final String ALMANAC = "http://app.zzbcar.com/zzb/helpcenter/user7.html";
-    //酒店住宿
-    public static final String HPTEL_ZHUSU = "http://app.zzbcar.com/zzb/helpcenter/user8.html";
-    //首页链接的跳转
-    public static final String YouXuan = "http://www.qunxianghui.com.cn/optimization";
-    public static final String BenDiService = "http://www.qunxianghui.com.cn/localservice";
+
+    //首页精选链接的跳转
+    public static final String YouXuan = "http://www.qunxianghui.com/optimization";
+    //首页本地服务链接的跳转
+    public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //开发环境
-    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-    //测试环境
-    public static final String BASE2_URL = "http://api.qunxianghui.com/v2/";
+    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+    //    //测试环境
+//    public static final String BASE2_URL = "http://api.qunxianghui.com/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -85,8 +65,6 @@ public class Constant {
     public static final String SEARCH_GUESS_URL = BASE_URL + "search/getGuess";
     //获取个人资料
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
-    //自己接口获取个人资料
-    public static final String CATCH_USERDATA2_URL = BASE2_URL + "user/getProfile";
     //获取用户详情
     public static final String GET_USER_DETAIL_URL = BASE_URL + "user/getUserInfo";
     //添加收藏
@@ -167,6 +145,8 @@ public class Constant {
     public static final String DISCUSS_MINE_FOLLOW_URL = BASE_URL + "msg/getPosts";
     //我的消息的我的跟帖
     public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
+    //我的企业名片
+    public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
     //广告权限

@@ -151,7 +151,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 //                Toast.makeText(LoginActivity.this, "至尊宝豪车共享服务协议", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, ProtocolActivity.class);
                 intent.putExtra("title", "平台服务协议");
-                intent.putExtra("url", Constant.PTGZ);
+                intent.putExtra("url", Constant.BenDiService);
                 startActivity(intent);
 
             }

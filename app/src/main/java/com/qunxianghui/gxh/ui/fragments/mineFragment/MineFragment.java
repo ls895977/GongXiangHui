@@ -130,13 +130,13 @@ public class MineFragment extends BaseFragment {
                 mAvatar = data.getString("avatar");
                 mMobile = data.getString("mobile");
                 mAddress = data.getString("address");
+                companyName = data.getString("company_name");
                 mSex = data.getInt("sex");
                 like_cnt = data.getInt("like_cnt");
                 posts_cnt = data.getInt("posts_cnt");
                 comment_cnt = data.getInt("comment_cnt");
                 mLevelName = data.getJSONObject("level_info").getString("name");
                 companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
-                companyName = data.getJSONObject("company_info").getString("company_name");
                 mTvMemberType.setText(mLevelName);
                 mineQuicklyLogin.setText(mNick);
                 tvMineAddlikeCount.setText(String.valueOf(like_cnt));

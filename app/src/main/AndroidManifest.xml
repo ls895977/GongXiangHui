@@ -270,8 +270,14 @@
             android:name=".ui.fragments.mineFragment.activity.MyFansActivity"
             android:screenOrientation="portrait" />
         <!--会员激活界面-->
-        <activity android:name=".ui.fragments.mineFragment.activity.MemberUpActiveActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.MemberUpActiveActivity"
+            android:screenOrientation="portrait" />
+        <!--企业优势-->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.ComPanyAdvanceActivity"
+            android:screenOrientation="portrait" />
     </application>
+
 
 </manifest>

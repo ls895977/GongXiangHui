@@ -144,7 +144,7 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/tv_company_card_name"
+                android:id="@+id/tv_company_card_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="钟无艳"
@@ -152,9 +152,10 @@
                 android:textSize="17sp" />
 
             <TextView
+                android:id="@+id/tv_company_card_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_company_card_name"
+                android:layout_below="@+id/tv_company_card_username"
                 android:layout_marginTop="5dp"
                 android:text="杭州共享汇信息技术有限公司"
                 android:textColor="#444444"
@@ -171,6 +172,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_company_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
