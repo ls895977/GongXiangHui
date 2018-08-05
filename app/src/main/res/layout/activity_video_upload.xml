@@ -13,15 +13,16 @@
 
         <TextView
             android:id="@+id/tv_UpdataVideo_UpLoad"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="上传"
-            android:textColor="@color/gray11"
-            android:textSize="16sp" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_gray_corner"
+            android:gravity="center"
+            android:text="发布"
+            android:textColor="#7E7E7E"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,113 +30,67 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
-            android:text="上传视频"
-            android:textColor="@color/gray11"
+            android:text="视频"
+            android:textColor="#282828"
             android:textSize="19sp" />
 
-        <TextView
+        <ImageView
             android:id="@+id/tv_UpdataVideo_Cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawablePadding="8dp"
-            android:drawableStart="@mipmap/common_black_back"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="返回"
-            android:textColor="@color/gray11"
-            android:textSize="14sp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@mipmap/common_black_back" />
     </RelativeLayout>
+
+    <cn.jzvd.JZVideoPlayerStandard
+        android:id="@+id/video_player"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:drawableEnd="@mipmap/common_gray_row_bottom"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="视频分类"
+        android:textColor="@color/gray11"
+        android:textSize="15sp" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1.0px"
+        android:layout_height="10dp"
+        android:background="#F5F5F5" />
+
+
+    <EditText
+        android:id="@+id/edit_UpdataVideo_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:hint="填写视频标题(20个字以内)"
+        android:maxLength="20"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:background="@color/textd8" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/edit_UpdataVideo_Content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/image_UpdataVideo_Icon"
-            android:layout_width="120dp"
-            android:layout_height="160dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:scaleType="centerCrop" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/gray22" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="视频分类"
-                    android:textColor="@color/gray11"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_video_type_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:drawableEnd="@mipmap/icon_enter"
-                    android:drawablePadding="10dp"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="20dp"
-                    android:text="请选择"
-                    android:textColor="@color/gray17"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/textd8" />
-
-            <EditText
-                android:id="@+id/edit_UpdataVideo_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="填写视频标题, 20个字以内"
-                android:maxLength="20"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/textd8" />
-
-            <EditText
-                android:id="@+id/edit_UpdataVideo_Content"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="15dp"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="介绍一下精彩瞬间, 可不填"
-                android:maxLength="150"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="150dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="介绍一下视频精彩瞬间（最多150字）可不填"
+        android:maxLength="150"
+        android:padding="15dp"
+        android:textSize="15sp" />
 </LinearLayout>
