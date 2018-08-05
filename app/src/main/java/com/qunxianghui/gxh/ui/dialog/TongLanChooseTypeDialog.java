@@ -26,7 +26,7 @@ public class TongLanChooseTypeDialog extends Dialog implements View.OnClickListe
         this.mVp = vp;
         setCanceledOnTouchOutside(true);
         setCancelable(true);
-        setContentView(R.layout.ad_item_tonglan_choose_type);
+        setContentView(R.layout.ad_item_choose_type);
         Window window = getWindow();
         if (window != null) window.setGravity(Gravity.BOTTOM);
         android.view.WindowManager.LayoutParams lp = window.getAttributes();
