@@ -6,40 +6,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp">
+        android:layout_height="45dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center_vertical"
+        android:paddingRight="10dp">
 
         <ImageView
-            android:id="@+id/iv_home_video_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:padding="5dp"
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
             android:src="@mipmap/common_black_back" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="45dp"
-            android:background="@mipmap/home_video_collect_search"
-            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/video_search_background"
+            android:drawableStart="@mipmap/home_video_collect_search"
+            android:paddingLeft="15dp" />
 
         <TextView
-            android:id="@+id/tv_home_video_issue"
+            android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:drawableLeft="@mipmap/home_video_location"
             android:drawablePadding="5dp"
+            android:drawableStart="@mipmap/home_video_location"
             android:text="西湖" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

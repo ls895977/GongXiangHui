@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -224,7 +223,6 @@ public class HotPointFragment extends BaseFragment {
                         break;
                     case 2:
                         //跳转生活圈
-                        Log.e(TAG, "...................本地服务怎么找不到");
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.BenDiService);

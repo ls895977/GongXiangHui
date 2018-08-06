@@ -12,9 +12,9 @@ public class Constant {
     //首页本地服务链接的跳转
     public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //正式环境
-    //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //测试环境
-    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
 
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
