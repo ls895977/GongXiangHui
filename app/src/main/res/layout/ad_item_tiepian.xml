@@ -30,7 +30,7 @@
                 <ImageView
                     android:id="@id/ivAd"
                     android:layout_width="match_parent"
-                    android:layout_height="200.0dip"
+                    android:layout_height="210dip"
                     android:scaleType="fitXY"
                     android:src="@mipmap/admodle_guige" />
             </RelativeLayout>

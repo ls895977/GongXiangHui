@@ -14,13 +14,13 @@ import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
-import com.lzy.imagepicker.view.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.AdvertTypeBean;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.TongLanChooseTypeDialog;
-import com.qunxianghui.gxh.utils.NewGlideImageLoader;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private TongLanChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private List<View> mViewList = new ArrayList<>();
-    private List<ImageItem> mImages;
+    private List<AdvertTypeBean> mList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -51,21 +51,11 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void initData() {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
-        ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
-        imagePicker.setShowCamera(true);                      //显示拍照按钮
-        imagePicker.setCrop(false);                           //允许裁剪（单选才有效）
-        imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
-        imagePicker.setSelectLimit(1);              //选中数量限制
-        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
-        imagePicker.setFocusWidth(800);                       //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
-        imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
     }
 
     @Override
     protected void initListeners() {
+        addPage();
         mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -94,6 +84,10 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 asyncShowToast("通用素材");
                 break;
             case R.id.ll_common_advert:
+                if (mViewList.size() >= 10) {
+                    asyncShowToast("亲，最多只可添加10个模版哦!");
+                    return;
+                }
                 addPage();
                 break;
             case R.id.ll_video:
@@ -106,14 +100,10 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void pickListener(View view) {
         switch (view.getId()) {
             case R.id.btnPhoto:
-                ImagePicker.getInstance().setSelectLimit(1);
-                Intent intent = new Intent(getContext(), ImageGridActivity.class);
-                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-                startActivityForResult(intent, 0x0011);
+                takePhoto();
+                break;
             case R.id.btnPick:
-                ImagePicker.getInstance().setSelectLimit(1);
-                Intent intent1 = new Intent(getContext(), ImageGridActivity.class);
-                startActivityForResult(intent1, 0x0012);
+                pickImg();
                 break;
             case R.id.btnPicFromLocal:
                 break;
@@ -122,17 +112,43 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private ImageView getCurrentBigView() {
-        View view = mViewList.get(mVp.getCurrentItem());
-        return view.findViewById(R.id.iv_add_big_img);
+    private void takePhoto() {
+        setWidth();
+        Intent intent = new Intent(getContext(), ImageGridActivity.class);
+        intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+        startActivityForResult(intent, 0x0011);
+    }
+
+    private void pickImg() {
+        setWidth();
+        Intent intent1 = new Intent(getContext(), ImageGridActivity.class);
+        startActivityForResult(intent1, 0x0011);
+    }
+
+    private void setWidth() {
+        float density = getResources().getDisplayMetrics().density;
+        if (mChoosePic.mIsBigImg) {
+            AdvertTemplateActivity.sImagePicker.setFocusWidth((int) (density * 360));   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+            AdvertTemplateActivity.sImagePicker.setOutPutX((int) (density * 360));//保存文件的宽度。单位像素
+        } else {
+            AdvertTemplateActivity.sImagePicker.setFocusWidth((int) (density * 90));   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+            AdvertTemplateActivity.sImagePicker.setOutPutX((int) (density * 90));//保存文件的宽度。单位像素
+        }
+        AdvertTemplateActivity.sImagePicker.setFocusHeight((int) (density * 90));  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        AdvertTemplateActivity.sImagePicker.setOutPutY((int) (density * 90));//保存文件的高度。单位像素
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_delete:
+                if (mViewList.size() <= 1) {
+                    asyncShowToast("亲，至少有一个模版哦！");
+                    return;
+                }
                 int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
                 mViewList.remove(index);
+                mList.remove(index);
                 mPagerAdapter.notifyDataSetChanged();
                 changeCircleView();
                 break;
@@ -187,6 +203,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             }
         });
         mViewList.add(view);
+        mList.add(new AdvertTypeBean());
         mPagerAdapter.notifyDataSetChanged();
         mVp.setCurrentItem(mPagerAdapter.getCount() - 1, false);
         changeCircleView();
@@ -203,24 +220,22 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            //添加图片返回
-            if (data != null && requestCode == 0x0012) {
-                mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                if (mImages != null && mImages.size() > 0) {
-                    ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, getCurrentBigView(), 0, 0);
-                }
-            }
-        } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
-            //预览图片返回
-            if (data != null && requestCode == 0x0011) {
-                mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_IMAGE_ITEMS);
-                if (mImages != null && mImages.size() > 0) {
-                    ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, getCurrentBigView(), 0, 0);
-                }
+        List<ImageItem> mImages;
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 0x0011) {
+            mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            if (mImages != null && mImages.size() > 0) {
+                ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, getCurrentImageView(), 0, 0);
             }
         }
+    }
 
+    private ImageView getCurrentImageView() {
+        View view = mViewList.get(mVp.getCurrentItem());
+        if (mChoosePic.mIsBigImg) {
+            return view.findViewById(R.id.iv_add_big_img);
+        } else {
+            return view.findViewById(R.id.ivAd);
+        }
     }
 
 }

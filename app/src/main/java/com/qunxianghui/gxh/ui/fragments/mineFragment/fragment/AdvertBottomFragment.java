@@ -54,6 +54,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     public void initViews(View view) {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
+        addBigPage();
     }
 
     @Override

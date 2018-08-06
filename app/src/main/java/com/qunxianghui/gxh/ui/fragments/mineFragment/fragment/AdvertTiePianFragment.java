@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -8,10 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.TiePianChooseDialog;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -73,12 +81,35 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
     public void pickListener(View view) {
         switch (view.getId()) {
             case R.id.btnPhoto:
+                takePhoto();
                 break;
             case R.id.btnPick:
+                pickImg();
                 break;
             case R.id.btnCommon:
                 break;
         }
+    }
+
+    private void takePhoto() {
+        setWidth();
+        Intent intent = new Intent(getContext(), ImageGridActivity.class);
+        intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+        startActivityForResult(intent, 0x0011);
+    }
+
+    private void pickImg() {
+        setWidth();
+        Intent intent1 = new Intent(getContext(), ImageGridActivity.class);
+        startActivityForResult(intent1, 0x0011);
+    }
+
+    private void setWidth() {
+        float density = getResources().getDisplayMetrics().density;
+        AdvertTemplateActivity.sImagePicker.setFocusWidth((int) (density * 360));   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+        AdvertTemplateActivity.sImagePicker.setFocusHeight((int) (density * 210));  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        AdvertTemplateActivity.sImagePicker.setOutPutX((int) (density * 360));//保存文件的宽度。单位像素
+        AdvertTemplateActivity.sImagePicker.setOutPutY((int) (density * 210));//保存文件的高度。单位像素
     }
 
     @OnClick({R.id.iv_delete, R.id.ivAd, R.id.tv_TiePian_Time, R.id.tv_TiePian_ShowType, R.id.ll_company, R.id.ll_common_advert, R.id.ll_video})
@@ -165,6 +196,18 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     mEtOther.setVisibility(View.VISIBLE);
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<ImageItem> mImages;
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 0x0011) {
+            mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            if (mImages != null && mImages.size() > 0) {
+                ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, mIvAd, 0, 0);
+            }
         }
     }
 }

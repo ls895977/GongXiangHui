@@ -7,12 +7,15 @@ import android.view.View;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.view.CropImageView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertBottomFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTiePianFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTopFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertBottomFragment;
+import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class AdvertTemplateActivity extends BaseActivity {
     @BindView(R.id.vp)
     NoScrollViewPager mVp;
 
+    public static ImagePicker sImagePicker = ImagePicker.getInstance();
     private String[] mTitleTwo = {"底部", "顶部"};
     private String[] mTitles = {"底部", "顶部", "贴片"};
     private List<Fragment> mFragments = new ArrayList<>();
@@ -43,6 +47,14 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
+        imagePicker.setShowCamera(true);                      //显示拍照按钮
+        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
+        imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
+        imagePicker.setMultiMode(false);
+        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
+
         mSegmentTab.setTabData(mTitles);
         Intent intent = getIntent();
         int adverTag = intent.getIntExtra("adverTag", 0);
@@ -78,5 +90,11 @@ public class AdvertTemplateActivity extends BaseActivity {
                 asyncShowToast("保存");
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sImagePicker = null;
     }
 }

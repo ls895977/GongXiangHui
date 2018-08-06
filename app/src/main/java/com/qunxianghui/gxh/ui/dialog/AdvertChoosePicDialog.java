@@ -14,6 +14,7 @@ import com.qunxianghui.gxh.R;
 public class AdvertChoosePicDialog extends Dialog implements View.OnClickListener {
 
     private ImgPickListener mImgPickListener;
+    public boolean mIsBigImg;
 
     public void setImgPickListener(ImgPickListener imgPickListener) {
         this.mImgPickListener = imgPickListener;
@@ -38,11 +39,13 @@ public class AdvertChoosePicDialog extends Dialog implements View.OnClickListene
     }
 
     public AdvertChoosePicDialog showLocalView(){
+        mIsBigImg = true;
         findViewById(R.id.btnPicFromLocal).setVisibility(View.VISIBLE);
         return this;
     }
 
     public AdvertChoosePicDialog hideLocalView(){
+        mIsBigImg = false;
         findViewById(R.id.btnPicFromLocal).setVisibility(View.GONE);
         return this;
     }
