@@ -143,24 +143,43 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp">
 
-            <TextView
-                android:id="@+id/tv_company_card_username"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="钟无艳"
-                android:textColor="#000000"
-                android:textSize="17sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_company_card_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_company_card_username"
-                android:layout_marginTop="5dp"
-                android:text="杭州共享汇信息技术有限公司"
-                android:textColor="#444444"
-                android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/tv_company_card_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="钟无艳"
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
 
+                <TextView
+                    android:id="@+id/tv_company_card_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_company_card_username"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@mipmap/icon_companycard_vertical_line"
+                    android:drawablePadding="5dp"
+                    android:text="杭州共享汇信息技术有限公司"
+                    android:textColor="#444444"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_company_duty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@mipmap/icon_companycard_vertical_line"
+                    android:drawablePadding="5dp"
+                    android:text="UI设计师"
+                    android:textColor="#444444"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_head"
@@ -171,17 +190,20 @@
                 android:src="@mipmap/user_moren" />
         </RelativeLayout>
 
+
         <TextView
             android:id="@+id/tv_company_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
             android:drawableLeft="@mipmap/icon_companycard_call"
             android:drawablePadding="5dp"
             android:text="13295815771"
             android:textSize="10dp" />
 
         <TextView
+            android:id="@+id/tv_company_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -196,6 +218,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_company_adress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"

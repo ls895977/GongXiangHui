@@ -85,6 +85,10 @@ public class PersonDataActivity extends BaseActivity {
     public static final String ADDRESS = "address";
     public static final String SEX = "sex";
     public static final String USER_NAME = "username";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_DUTY = "duty";
+    public static final String USER_INTRODUCTION = "self_introduction";
+    public static final String USER_COMPANY = "company_name";
 
     @Override
     protected int getLayoutId() {
@@ -114,6 +118,13 @@ public class PersonDataActivity extends BaseActivity {
         etPersonDataAdress.setText(getIntent().getStringExtra(ADDRESS));
         etPersonDataNickName.setText(getIntent().getStringExtra(NICK));
         etPersonDataUserName.setText(getIntent().getStringExtra(USER_NAME));
+
+        etPersonDataIntroduce.setText(getIntent().getStringExtra(USER_INTRODUCTION));
+        etPersonDataCompany.setText(getIntent().getStringExtra(USER_COMPANY));
+        etPersonDataJob.setText(getIntent().getStringExtra(USER_DUTY));
+        etPersonDataEmail.setText(getIntent().getStringExtra(USER_EMAIL));
+
+
         mEtPersonDataSex.setText(getIntent().getIntExtra(SEX, -1) == 0 ? "女" : (sex == 1 ? "男" : ""));
     }
 
@@ -177,8 +188,6 @@ public class PersonDataActivity extends BaseActivity {
                             } else if (code == 200) {
                                 Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                                 finish();
-                            } else if (code == 401) {
-                                finish();
                             } else {
                                 asyncShowToast("保存失败");
 
@@ -209,7 +218,6 @@ public class PersonDataActivity extends BaseActivity {
                 upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
 
                 //                //头像
-
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_moren);
                 options.error(R.mipmap.user_moren);

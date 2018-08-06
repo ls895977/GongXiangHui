@@ -12,10 +12,10 @@ public class Constant {
     //首页本地服务链接的跳转
     public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //正式环境
-    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-    //测试环境
-//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+//    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
 
+    //测试环境
+    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -150,6 +150,10 @@ public class Constant {
     public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
+    //查看核心优势或公司产品
+    public static final String CHECK_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/selectCore";
+    //添加核心优势或公司产品
+    public static final String ADD_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/addCore";
     //广告权限
     public static final String CHECK_ADD = BASE_URL + "user/checkAddAd";
     //添加广告

@@ -104,6 +104,10 @@ public class MineFragment extends BaseFragment {
     private String companyName;
     private int code;
     private String mUsername;
+    private String mEmail;
+    private String mCompanyName;
+    private String mDuty;
+    private String mSelfIntroduction;
 
     @Override
     public int getLayoutId() {
@@ -134,6 +138,10 @@ public class MineFragment extends BaseFragment {
                 companyName = data.getString("company_name");
                 mSex = data.getInt("sex");
                 mUsername = data.getString("username");
+                mCompanyName = data.getString("company_name");
+                mDuty = data.getString("duty");
+                mEmail = data.getString("email");
+                mSelfIntroduction = data.getString("self_introduction");
                 like_cnt = data.getInt("like_cnt");
                 posts_cnt = data.getInt("posts_cnt");
                 comment_cnt = data.getInt("comment_cnt");
@@ -224,6 +232,10 @@ public class MineFragment extends BaseFragment {
                 bundle.putString(PersonDataActivity.ADDRESS, mAddress);
                 bundle.putInt(PersonDataActivity.SEX, mSex);
                 bundle.putString(PersonDataActivity.USER_NAME, mUsername);
+                bundle.putString(PersonDataActivity.USER_EMAIL, mEmail);
+                bundle.putString(PersonDataActivity.USER_INTRODUCTION, mSelfIntroduction);
+                bundle.putString(PersonDataActivity.USER_DUTY, mDuty);
+                bundle.putString(PersonDataActivity.USER_COMPANY, mCompanyName);
                 toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.hezuo_call:
