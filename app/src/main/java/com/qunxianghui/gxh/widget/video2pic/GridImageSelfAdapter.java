@@ -65,7 +65,6 @@ public class GridImageSelfAdapter extends
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView mImg;
         LinearLayout ll_del;
         TextView tv_duration;
@@ -119,7 +118,7 @@ public class GridImageSelfAdapter extends
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         //少于8张，显示继续添加的图标
         if (getItemViewType(position) == TYPE_CAMERA) {
-            viewHolder.mImg.setImageResource(R.mipmap.addimg_1x);
+            viewHolder.mImg.setImageResource(R.mipmap.icon_addadvance_pic);
             viewHolder.mImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

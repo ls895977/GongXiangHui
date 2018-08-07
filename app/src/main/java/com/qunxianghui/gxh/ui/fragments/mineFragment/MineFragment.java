@@ -68,8 +68,8 @@ public class MineFragment extends BaseFragment {
     TextView mTvMemberType;
     @BindView(R.id.mine_quickly_login)
     TextView mineQuicklyLogin;
-    @BindView(R.id.tv_mine_addlike_count)
-    TextView tvMineAddlikeCount;
+    @BindView(R.id.tv_mine_addlike_collect)
+    TextView tvMineAddlikeCollect;
     @BindView(R.id.tv_mine_post_count)
     TextView tvMinePostCount;
     @BindView(R.id.tv_mine_follow_post_count)
@@ -97,7 +97,6 @@ public class MineFragment extends BaseFragment {
     private String mMobile;//手机
     private String mAddress;//地址
     private int mSex;//性别
-    private int like_cnt;
     private int posts_cnt;
     private int comment_cnt;
     private Object companyInfo;
@@ -108,6 +107,7 @@ public class MineFragment extends BaseFragment {
     private String mCompanyName;
     private String mDuty;
     private String mSelfIntroduction;
+    private String mCollectCount;
 
     @Override
     public int getLayoutId() {
@@ -139,17 +139,17 @@ public class MineFragment extends BaseFragment {
                 mSex = data.getInt("sex");
                 mUsername = data.getString("username");
                 mCompanyName = data.getString("company_name");
+                mCollectCount = data.getString("collect_cnt");
 //                mDuty = data.getString("duty");
                 mEmail = data.getString("email");
 //                mSelfIntroduction = data.getString("self_introduction");
-                like_cnt = data.getInt("like_cnt");
-                posts_cnt = data.getInt("posts_cnt");
+//                posts_cnt = data.getInt("posts_cnt");
                 comment_cnt = data.getInt("comment_cnt");
                 mLevelName = data.getJSONObject("level_info").getString("name");
                 companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
                 mTvMemberType.setText(mLevelName);
                 mineQuicklyLogin.setText(mNick);
-                tvMineAddlikeCount.setText(String.valueOf(like_cnt));
+                tvMineAddlikeCollect.setText(mCollectCount);
                 tvMinePostCount.setText(String.valueOf(posts_cnt));
                 tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
                 tvMineCompanyName.setText(companyName);
@@ -178,6 +178,7 @@ public class MineFragment extends BaseFragment {
     public void initViews(View view) {
         userDao = new UserDao(mActivity);
         userSize = userDao.dbGetUserSize();
+
     }
 
     @Override

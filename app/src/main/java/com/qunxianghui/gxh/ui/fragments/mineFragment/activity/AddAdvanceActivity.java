@@ -56,6 +56,10 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
     RelativeLayout rlAddAdvanceEdit;
     private String mPath;
     private List<String> upLoadPics = new ArrayList<>();
+    private String mTitle;
+    private String mDescribe;
+    private String[] mImage_arrays;
+    private int mViewTag;
 
     @Override
     protected int getLayoutId() {
@@ -64,10 +68,32 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
+        Intent intent = getIntent();
+        mTitle = intent.getStringExtra("title");
+        mViewTag = intent.getIntExtra("viewTag", 0);
+        mDescribe = intent.getStringExtra("describe");
+        mImage_arrays = intent.getStringArrayExtra("image_array");
     }
 
     @Override
     protected void initData() {
+        mEtAddAdvanceTitle.setText(mTitle);
+        mEtAddAdvanceIntroduce.setText(mDescribe);
+
+        if (mViewTag == 1) {
+            mTvAddAdvanceSave.setVisibility(View.GONE);
+            rlAddAdvanceEdit.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FetchAddAdvanceData();
+    }
+
+    /*获取传进来的数据*/
+    private void FetchAddAdvanceData() {
 
 
     }
