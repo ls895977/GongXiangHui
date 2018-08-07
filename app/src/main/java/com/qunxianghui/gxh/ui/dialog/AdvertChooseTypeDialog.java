@@ -15,12 +15,13 @@ import com.qunxianghui.gxh.R;
 
 import java.util.List;
 
-public class TongLanChooseTypeDialog extends Dialog implements View.OnClickListener {
+public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListener {
 
     private List<View> mViewList;
     private ViewPager mVp;
+    public boolean mIsBigPageType;
 
-    public TongLanChooseTypeDialog(@NonNull Context context, List<View> viewList, ViewPager vp) {
+    public AdvertChooseTypeDialog(@NonNull Context context, List<View> viewList, ViewPager vp) {
         super(context, R.style.ActionSheetDialogStyle);
         this.mViewList = viewList;
         this.mVp = vp;
@@ -40,6 +41,25 @@ public class TongLanChooseTypeDialog extends Dialog implements View.OnClickListe
         findViewById(R.id.tv_code).setOnClickListener(this);
     }
 
+    public void setBigPageType() {
+        if (!mIsBigPageType) {
+            mIsBigPageType = true;
+            ((TextView) findViewById(R.id.tv_activity)).setText("联系QQ");
+            findViewById(R.id.tv_poster).setVisibility(View.GONE);
+            findViewById(R.id.tv_code).setVisibility(View.GONE);
+        }
+    }
+
+    public void setTongLangPageType() {
+        if (mIsBigPageType) {
+            mIsBigPageType = false;
+            ((TextView) findViewById(R.id.tv_activity)).setText("跳转活动");
+            findViewById(R.id.tv_poster).setVisibility(View.VISIBLE);
+            findViewById(R.id.tv_code).setVisibility(View.VISIBLE);
+        }
+    }
+
+
     @Override
     public void onClick(View view) {
         dismiss();
@@ -53,7 +73,11 @@ public class TongLanChooseTypeDialog extends Dialog implements View.OnClickListe
                 break;
             case R.id.tv_call:
                 mTvType.setText("拨打电话");
-                contentView.findViewById(R.id.et_phone).setVisibility(View.VISIBLE);
+                if (contentView.findViewById(R.id.et_phone) != null) {
+                    contentView.findViewById(R.id.et_phone).setVisibility(View.VISIBLE);
+                } else {
+
+                }
                 break;
             case R.id.tv_activity:
                 mTvType.setText("跳转活动");
@@ -72,9 +96,13 @@ public class TongLanChooseTypeDialog extends Dialog implements View.OnClickListe
 
     private void goneView(View view) {
         view.findViewById(R.id.rl_link).setVisibility(View.GONE);
-        view.findViewById(R.id.tv_choose_activity_link).setVisibility(View.GONE);
-        view.findViewById(R.id.rl_add_img).setVisibility(View.GONE);
-        view.findViewById(R.id.et_phone).setVisibility(View.GONE);
+        if (view.findViewById(R.id.tv_choose_activity_link) != null) {
+            view.findViewById(R.id.tv_choose_activity_link).setVisibility(View.GONE);
+            view.findViewById(R.id.rl_add_img).setVisibility(View.GONE);
+            view.findViewById(R.id.et_phone).setVisibility(View.GONE);
+        } else {
+            view.findViewById(R.id.et_other).setVisibility(View.GONE);
+        }
     }
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etNickName"
+        style="@style/AdEditTextStyle"
+        android:hint="QQ昵称"
+        android:inputType="text"
+        android:maxLines="2" />
+
+    <include layout="@layout/ad_view_divider" />
+
+    <EditText
+        android:id="@+id/etQQ"
+        style="@style/AdEditTextStyle"
+        android:hint="QQ号"
+        android:inputType="phone"
+        android:maxLines="2" />
+
+    <include layout="@layout/ad_view_divider" />
+
+    <EditText
+        android:id="@+id/etDes"
+        style="@style/AdEditTextStyle"
+        android:hint="填写联系方式介绍"
+        android:maxLines="2" />
+
+    <include layout="@layout/ad_view_divider" />
+
+    <include layout="@layout/ad_view_add_small_img" />
+
+</LinearLayout>

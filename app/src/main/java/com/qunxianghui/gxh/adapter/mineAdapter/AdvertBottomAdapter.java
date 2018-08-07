@@ -15,7 +15,7 @@ import com.qunxianghui.gxh.R;
  * Created by Administrator on 2018/4/16 0016.
  */
 
-public class AdvertAdapter extends RecyclerView.Adapter {
+public class AdvertBottomAdapter extends RecyclerView.Adapter {
     private LayoutInflater layoutInflater;
     private int[] images;
     private String[] text;
@@ -25,7 +25,7 @@ public class AdvertAdapter extends RecyclerView.Adapter {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-    public AdvertAdapter(Context context, int[] images, String[] text) {
+    public AdvertBottomAdapter(Context context, int[] images, String[] text) {
         this.images = images;
         this.text = text;
         layoutInflater = LayoutInflater.from(context);

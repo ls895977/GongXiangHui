@@ -139,9 +139,9 @@ public class MineFragment extends BaseFragment {
                 mSex = data.getInt("sex");
                 mUsername = data.getString("username");
                 mCompanyName = data.getString("company_name");
-                mDuty = data.getString("duty");
+//                mDuty = data.getString("duty");
                 mEmail = data.getString("email");
-                mSelfIntroduction = data.getString("self_introduction");
+//                mSelfIntroduction = data.getString("self_introduction");
                 like_cnt = data.getInt("like_cnt");
                 posts_cnt = data.getInt("posts_cnt");
                 comment_cnt = data.getInt("comment_cnt");
@@ -193,7 +193,6 @@ public class MineFragment extends BaseFragment {
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
                             parseUserData(response.body());
-                            return;
                         }
                     }
 

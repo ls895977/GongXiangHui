@@ -35,7 +35,7 @@ public class AdvertTemplateActivity extends BaseActivity {
     @BindView(R.id.vp)
     NoScrollViewPager mVp;
 
-    public static ImagePicker sImagePicker = ImagePicker.getInstance();
+    public static ImagePicker sImagePicker;
     private String[] mTitleTwo = {"底部", "顶部"};
     private String[] mTitles = {"底部", "顶部", "贴片"};
     private List<Fragment> mFragments = new ArrayList<>();
@@ -47,13 +47,13 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
-        imagePicker.setShowCamera(true);                      //显示拍照按钮
-        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
-        imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
-        imagePicker.setMultiMode(false);
-        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
+        sImagePicker = ImagePicker.getInstance();
+        sImagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
+        sImagePicker.setShowCamera(true);                      //显示拍照按钮
+        sImagePicker.setCrop(true);                           //允许裁剪（单选才有效）
+        sImagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
+        sImagePicker.setMultiMode(false);
+        sImagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
 
         mSegmentTab.setTabData(mTitles);
         Intent intent = getIntent();
