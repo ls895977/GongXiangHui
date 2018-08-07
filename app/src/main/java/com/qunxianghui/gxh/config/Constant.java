@@ -130,6 +130,7 @@ public class Constant {
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
     public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+    //上传视频
     public static final String UP_LOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
