@@ -9,14 +9,13 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
-import com.qunxianghui.gxh.adapter.mineAdapter.AdvertAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.AdvertBottomAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
-import com.qunxianghui.gxh.ui.dialog.TongLanChooseTypeDialog;
+import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener,CompoundButton.OnCheckedChangeListener{
+public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     @BindView(R.id.rv)
     RecyclerView mRv;
@@ -43,7 +42,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private List<View> mViewList = new ArrayList<>();
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChoosePicDialog mChoosePic;
-    private TongLanChooseTypeDialog mChooseType;
+    private AdvertChooseTypeDialog mChooseType;
+    private boolean mIsHasBigpage;
 
     @Override
     public int getLayoutId() {
@@ -58,10 +58,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    public void initData() {
-        AdvertAdapter commonBottomAdverAdapter = new AdvertAdapter(mActivity, images, iconName);
+    protected void initListeners() {
+        AdvertBottomAdapter commonBottomAdverAdapter = new AdvertBottomAdapter(mActivity, images, iconName);
         mRv.setAdapter(commonBottomAdverAdapter);
-        commonBottomAdverAdapter.setmOnItemClickListener(new AdvertAdapter.OnItemClickListener() {
+        commonBottomAdverAdapter.setmOnItemClickListener(new AdvertBottomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 switch (position) {
@@ -71,38 +71,41 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 1:
                         asyncShowToast("通用素材");
                         break;
-                    case 2:
-                        addBigPage();
-                        break;
-                    case 3:
-                        addCardPage();
-                        break;
-                    case 4:
-                        addTongLangPage();
-                        break;
-                    case 5:
-                        addQrCodePage();
-                        break;
-                    case 6:
-                        addQQPage();
-                        break;
-                    case 7:
-                        addStorePage();
-                        break;
-                    case 8:
-                        addGraphicPage();
-                        break;
                     case 9:
                         asyncShowToast("教学视频");
                         break;
-
+                    default:
+                        if (mViewList.size() >= 10) {
+                            asyncShowToast("亲，最多只可添加10个模版哦!");
+                            return;
+                        }
+                        switch (position) {
+                            case 2:
+                                addBigPage();
+                                break;
+                            case 3:
+                                addCardPage();
+                                break;
+                            case 4:
+                                addTongLangPage();
+                                break;
+                            case 5:
+                                addQrCodePage();
+                                break;
+                            case 6:
+                                addQQPage();
+                                break;
+                            case 7:
+                                addStorePage();
+                                break;
+                            case 8:
+                                addGraphicPage();
+                                break;
+                        }
+                        break;
                 }
             }
         });
-    }
-
-    @Override
-    protected void initListeners() {
         mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -131,7 +134,12 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
-                    mChooseType = new TongLanChooseTypeDialog(getContext(), mViewList, mVp);
+                    mChooseType = new AdvertChooseTypeDialog(getContext(), mViewList, mVp);
+                }
+                if (mViewList.get(mVp.getCurrentItem()).findViewById(R.id.tv_choose_activity_link) == null) {
+                    mChooseType.setBigPageType();
+                } else {
+                    mChooseType.setTongLangPageType();
                 }
                 mChooseType.show();
                 break;
@@ -154,9 +162,14 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void addBigPage() {
+        if (mIsHasBigpage) {
+            asyncShowToast("亲，大图通栏广告只可添加一个～～");
+            return;
+        }
+        mIsHasBigpage = true;
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_big, mVp, false);
-        ((TextView) view.findViewById(R.id.tv_title)).setText("大图广告");
+        ((TextView) view.findViewById(R.id.tv_title)).setText("大图通栏");
         view.findViewById(R.id.iv_delete).setOnClickListener(this);
         view.findViewById(R.id.iv_add_big_img).setOnClickListener(this);
         view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
@@ -222,8 +235,57 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_store, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("店铺广告");
+        view.findViewById(R.id.iv_delete).setOnClickListener(this);
         ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
-        SlidingTabLayout slidingTabLayout = view.findViewById(R.id.slidingTabLayout);
+        View item1 = inflater.inflate(R.layout.ad_item_store_child, mVp, false);
+        View item2 = inflater.inflate(R.layout.ad_item_store_child, mVp, false);
+        View llGoods = view.findViewById(R.id.llgoods);
+        final View llShops = view.findViewById(R.id.llshop);
+        final View goodsBottom = view.findViewById(R.id.goods_bto);
+        final View shopsBottom = view.findViewById(R.id.shop_bto);
+        final ViewPager vp = view.findViewById(R.id.viewPager);
+        llGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsBottom.setVisibility(View.VISIBLE);
+                shopsBottom.setVisibility(View.INVISIBLE);
+                vp.setCurrentItem(0);
+            }
+        });
+        llShops.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsBottom.setVisibility(View.INVISIBLE);
+                shopsBottom.setVisibility(View.VISIBLE);
+                vp.setCurrentItem(1);
+            }
+        });
+        ArrayList<View> list = new ArrayList<>();
+        list.add(item1);
+        list.add(item2);
+        vp.setAdapter(new AdvertPagerAdapter(list));
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    goodsBottom.setVisibility(View.VISIBLE);
+                    shopsBottom.setVisibility(View.INVISIBLE);
+                } else {
+                    goodsBottom.setVisibility(View.INVISIBLE);
+                    shopsBottom.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         addPage(view);
     }
 
@@ -231,6 +293,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_graphic, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("图文广告");
+        view.findViewById(R.id.iv_delete).setOnClickListener(this);
         ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
         addPage(view);
     }
@@ -242,8 +305,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         changeCircleView();
     }
 
-    private void remove(){
+    private void remove() {
         int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
+        if ("大图通栏".equals(((TextView) mViewList.get(index).findViewById(R.id.tv_title)).getText().toString())) {
+            mIsHasBigpage = false;
+        }
         mViewList.remove(index);
         mPagerAdapter.notifyDataSetChanged();
         changeCircleView();

@@ -194,7 +194,6 @@ public class MineFragment extends BaseFragment {
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
                             parseUserData(response.body());
-                            return;
                         }
                     }
 
