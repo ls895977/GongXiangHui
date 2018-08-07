@@ -178,6 +178,7 @@ public class MineFragment extends BaseFragment {
     public void initViews(View view) {
         userDao = new UserDao(mActivity);
         userSize = userDao.dbGetUserSize();
+
     }
 
     @Override
