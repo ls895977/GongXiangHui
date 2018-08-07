@@ -129,18 +129,17 @@
 
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_add_advance_edit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:visibility="gone">
 
 
         <TextView
             android:id="@+id/tv_add_advance_delete"
             android:layout_width="110dp"
-
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="70dp"
@@ -149,6 +148,7 @@
             android:text="删除该条" />
 
         <TextView
+            android:id="@+id/tv_add_advance_complete"
             android:layout_width="110dp"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
