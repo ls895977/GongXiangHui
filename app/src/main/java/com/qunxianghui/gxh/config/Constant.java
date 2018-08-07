@@ -13,9 +13,9 @@ public class Constant {
     public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //正式环境
     public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+
     //测试环境
 //    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
-
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -131,7 +131,13 @@ public class Constant {
     //上传图片
     public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
     //上传视频
+<<<<<<< HEAD
     public static final String UP_LOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+=======
+    public static final String UPLOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+    //上传视频的类别
+    public static final String UPLOAD_VIDEO_ADD_SORT_URL = BASE_URL + "Video/addVideo";
+>>>>>>> 1f4893c4bc3b03e0bbc39a8da246f10fd37b2286
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
@@ -151,6 +157,14 @@ public class Constant {
     public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
+    //查看核心优势或公司产品
+    public static final String CHECK_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/selectCore";
+    //添加核心优势或公司产品
+    public static final String ADD_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/addCore";
+    //删除企业优势和产品
+    public static final String DELETE_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/delCore";
+    //修改核心优势和产品
+    public static final String EDIT_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/editCore";
     //广告权限
     public static final String CHECK_ADD = BASE_URL + "user/checkAddAd";
     //添加广告

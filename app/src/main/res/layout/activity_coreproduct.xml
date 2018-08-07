@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/xrecycler_activity_adv"
+        android:id="@+id/xrecycler_activity_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -14,12 +14,13 @@
     </com.jcodecraeer.xrecyclerview.XRecyclerView>
 
     <Button
-        android:id="@+id/bt_add_advance"
-        android:background="@mipmap/icon_centeradvan_add"
+        android:id="@+id/bt_add_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@mipmap/icon_centeradvan_product"
         android:textColor="#fff" />
 
 </RelativeLayout>

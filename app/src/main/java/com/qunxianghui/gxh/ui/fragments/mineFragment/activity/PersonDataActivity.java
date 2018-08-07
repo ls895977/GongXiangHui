@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 ;
@@ -53,8 +55,6 @@ public class PersonDataActivity extends BaseActivity {
     TextView mEtPersonDataSex;
     @BindView(R.id.tv_person_data_phone)
     TextView etPersonDataPhone;
-    @BindView(R.id.et_person_data_address)
-    TextView etPersonDataAddress;
     @BindView(R.id.iv_person_data_back)
     ImageView ivPersonDataBack;
     @BindView(R.id.tv_person_data_save)
@@ -63,15 +63,32 @@ public class PersonDataActivity extends BaseActivity {
     ImageView ivPersonDataImg;
     @BindView(R.id.rl_mineData_sex)
     RelativeLayout rlMineDataSex;
+    @BindView(R.id.et_person_data_username)
+    EditText etPersonDataUserName;
+    @BindView(R.id.et_person_data_email)
+    EditText etPersonDataEmail;
+    @BindView(R.id.et_person_data_company)
+    EditText etPersonDataCompany;
+    @BindView(R.id.et_person_data_job)
+    EditText etPersonDataJob;
+    @BindView(R.id.et_person_data_adress)
+    EditText etPersonDataAdress;
+    @BindView(R.id.et_person_data_introduce)
+    EditText etPersonDataIntroduce;
 
+    private String[] sexArray = new String[]{"男", "女"};
+    private List<String> upLoadPics = new ArrayList<>();
+    private ImagePicker imagePicker;
     public static final String NICK = "nick";
     public static final String AVATAR = "avatar";
     public static final String MOBILE = "mobile";
     public static final String ADDRESS = "address";
     public static final String SEX = "sex";
-    private String[] sexArray = new String[]{"男", "女"};
-    private List<String> upLoadPics = new ArrayList<>();
-    private ImagePicker imagePicker;
+    public static final String USER_NAME = "username";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_DUTY = "duty";
+    public static final String USER_INTRODUCTION = "self_introduction";
+    public static final String USER_COMPANY = "company_name";
 
     @Override
     protected int getLayoutId() {
@@ -90,7 +107,6 @@ public class PersonDataActivity extends BaseActivity {
         int sex = getIntent().getIntExtra(SEX, -1);
         if (!TextUtils.isEmpty(avatar)) {
             //头像
-
             RequestOptions options = new RequestOptions();
             options.placeholder(R.mipmap.user_moren);
             options.error(R.mipmap.user_moren);
@@ -99,8 +115,16 @@ public class PersonDataActivity extends BaseActivity {
             Glide.with(mContext).load(avatar).apply(options).into(ivPersonDataImg);
         }
         etPersonDataPhone.setText(getIntent().getStringExtra(MOBILE));
-        etPersonDataAddress.setText(getIntent().getStringExtra(ADDRESS));
+        etPersonDataAdress.setText(getIntent().getStringExtra(ADDRESS));
         etPersonDataNickName.setText(getIntent().getStringExtra(NICK));
+        etPersonDataUserName.setText(getIntent().getStringExtra(USER_NAME));
+
+        etPersonDataIntroduce.setText(getIntent().getStringExtra(USER_INTRODUCTION));
+        etPersonDataCompany.setText(getIntent().getStringExtra(USER_COMPANY));
+        etPersonDataJob.setText(getIntent().getStringExtra(USER_DUTY));
+        etPersonDataEmail.setText(getIntent().getStringExtra(USER_EMAIL));
+
+
         mEtPersonDataSex.setText(getIntent().getIntExtra(SEX, -1) == 0 ? "女" : (sex == 1 ? "男" : ""));
     }
 
@@ -125,10 +149,18 @@ public class PersonDataActivity extends BaseActivity {
     public void saveInfo(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), 0);
         final String nickName = etPersonDataNickName.getText().toString().trim();
-        final String mAdress = etPersonDataAddress.getText().toString().trim();
+        final String mUserName = etPersonDataUserName.getText().toString().trim();
+        final String mUserEmail = etPersonDataEmail.getText().toString().trim();
+        final String mUserCompany = etPersonDataCompany.getText().toString().trim();
+        final String mUserDuty = etPersonDataJob.getText().toString().trim();
+        final String mUserAddress = etPersonDataAdress.getText().toString().trim();
+        final String mUserIntroduce = etPersonDataIntroduce.getText().toString().trim();
+        final String mMobile = etPersonDataPhone.getText().toString().trim();
+
+
         String mSex = mEtPersonDataSex.getText().toString().trim();
         final String sex = "女".equals(mSex) ? "0" : "1";
-        if (TextUtils.isEmpty(nickName) && TextUtils.isEmpty(mSex) && TextUtils.isEmpty(mAdress)) {
+        if (TextUtils.isEmpty(nickName) && TextUtils.isEmpty(mSex) && TextUtils.isEmpty(mUserAddress)) {
             Toast.makeText(mContext, "请在检查一下 是否还有没有写的", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -136,8 +168,14 @@ public class PersonDataActivity extends BaseActivity {
         OkGo.<String>post(Constant.EDIT_PERSON_DATA).
                 params("nick", nickName).
                 params("sex", sex).
-                params("address", mAdress).
+                params("address", mUserAddress).
                 params("avatar", imageUrl).
+                params("username", mUserName).
+                params("email", mUserEmail).
+                params("company_name", mUserCompany).
+                params("duty", mUserDuty).
+                params("mobile", mMobile).
+                params("self_introduction", mUserIntroduce).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -147,9 +185,12 @@ public class PersonDataActivity extends BaseActivity {
                             int code = jsonObject.getInt("code");
                             if (code == 100) {
                                 Toast.makeText(mContext, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            } else {
+                            } else if (code == 200) {
                                 Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                                 finish();
+                            } else {
+                                asyncShowToast("保存失败");
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -167,7 +208,8 @@ public class PersonDataActivity extends BaseActivity {
     private void openPhoto() {
         imagePicker.startChooser(this, new ImagePicker.Callback() {
             @Override
-            public void onPickImage(Uri imageUri) { }
+            public void onPickImage(Uri imageUri) {
+            }
 
             //剪裁图片回调
             @Override
@@ -176,7 +218,6 @@ public class PersonDataActivity extends BaseActivity {
                 upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
 
                 //                //头像
-
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_moren);
                 options.error(R.mipmap.user_moren);
@@ -216,7 +257,7 @@ public class PersonDataActivity extends BaseActivity {
                 .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<ImageBean>> response) {
-                        if (response.body().code==0) {
+                        if (response.body().code == 0) {
                             upLoadPics.add(response.body().data.getFile());
                             Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();
                         }
@@ -243,5 +284,11 @@ public class PersonDataActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
 

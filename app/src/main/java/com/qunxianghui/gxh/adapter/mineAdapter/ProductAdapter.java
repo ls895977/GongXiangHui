@@ -11,9 +11,9 @@ import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
 
 import java.util.List;
 
-public class AdvanceAdapter extends BaseRecycleViewAdapter<AddAdvanceBean.DataBean> {
+public class ProductAdapter extends BaseRecycleViewAdapter<AddAdvanceBean.DataBean> {
 
-    public AdvanceAdapter(Context context, List<AddAdvanceBean.DataBean> datas) {
+    public ProductAdapter(Context context, List<AddAdvanceBean.DataBean> datas) {
         super(context, datas);
     }
 
@@ -33,6 +33,6 @@ public class AdvanceAdapter extends BaseRecycleViewAdapter<AddAdvanceBean.DataBe
 
     @Override
     protected int getItemView() {
-        return R.layout.item_company_advance;
+        return R.layout.item_company_product;
     }
 }

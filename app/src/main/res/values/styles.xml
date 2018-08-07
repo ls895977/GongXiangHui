@@ -55,8 +55,8 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:drawablePadding">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@drawable/selector_tab_textcolor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#212121</item>
     </style>
 
 
@@ -66,6 +66,13 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/divider</item>
+    </style>
+
+    <style name="MinedividerStyle">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">55dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">#F7F7F7</item>
     </style>
 
     <!--新加的搜索框加的style-->
@@ -87,8 +94,16 @@
 
     <!--//我的界面 RelativeStyle-->
 
+    <style name="MineRelativeStyle">
+        <item name="android:layout_height">45dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">18dp</item>
+    </style>
+
     <style name="RelativeStyle">
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">45dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>
@@ -196,12 +211,13 @@
     <style name="CheckBoxStyle">
         <item name="android:button">@drawable/checkbox_state</item>
     </style>
-<!--tablayout 字体大小修改-->
+    <!--tablayout 字体大小修改-->
     <style name="TextAppearance.Design.Tab.Custom" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="textAllCaps">true</item>
     </style>
+
     <style name="TagGroup">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

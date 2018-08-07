@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -46,6 +48,12 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     TextView tvCompanyMobile;
     @BindView(R.id.tv_company_card_username)
     TextView mTvCompanyCardUsername;
+    @BindView(R.id.tv_company_email)
+    TextView tvCompanyEmail;
+    @BindView(R.id.tv_company_adress)
+    TextView tvCompanyAdress;
+    @BindView(R.id.tv_company_duty)
+    TextView tvCompanyDuty;
 
     @Override
     protected int getLayoutId() {
@@ -55,7 +63,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
+        // TODO: add setContentView(...) invocation-
         ButterKnife.bind(this);
     }
 
@@ -70,9 +78,9 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         OkGo.<String>post(Constant.MINE_COMPANY_CARD_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-
                 parseCompanyCardData(response.body());
             }
+
             @Override
             public void onError(Response<String> response) {
                 super.onError(response);
@@ -91,11 +99,22 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         String duty = dataList.getDuty();
         String email = dataList.getEmail();
         String mobile = dataList.getMobile();
+        String avatar = dataList.getAvatar();
         String username = dataList.getUsername();
         if (code == 200) {
             tvCompanyMobile.setText(mobile);
             mTvCompanyCardName.setText(company_name);
             mTvCompanyCardUsername.setText(username);
+            tvCompanyEmail.setText(email);
+            tvCompanyAdress.setText(address);
+            tvCompanyDuty.setText(duty);
+
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            options.circleCrop();
+            options.placeholder(R.mipmap.default_img);
+            options.error(R.mipmap.default_img);
+            Glide.with(mContext).load(avatar).apply(options).into(mIvHead);
         }
 
     }
@@ -117,6 +136,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.rl_companycard_company_product:
                 asyncShowToast("点击了公司产品");
+                toActivity(ComPanyProductActivity.class);
                 break;
             case R.id.iv_companycard_share:
                 asyncShowToast("点击了分享");

@@ -68,8 +68,8 @@ public class MineFragment extends BaseFragment {
     TextView mTvMemberType;
     @BindView(R.id.mine_quickly_login)
     TextView mineQuicklyLogin;
-    @BindView(R.id.tv_mine_addlike_count)
-    TextView tvMineAddlikeCount;
+    @BindView(R.id.tv_mine_addlike_collect)
+    TextView tvMineAddlikeCollect;
     @BindView(R.id.tv_mine_post_count)
     TextView tvMinePostCount;
     @BindView(R.id.tv_mine_follow_post_count)
@@ -97,12 +97,17 @@ public class MineFragment extends BaseFragment {
     private String mMobile;//手机
     private String mAddress;//地址
     private int mSex;//性别
-    private int like_cnt;
     private int posts_cnt;
     private int comment_cnt;
     private Object companyInfo;
     private String companyName;
     private int code;
+    private String mUsername;
+    private String mEmail;
+    private String mCompanyName;
+    private String mDuty;
+    private String mSelfIntroduction;
+    private String mCollectCount;
 
     @Override
     public int getLayoutId() {
@@ -132,14 +137,19 @@ public class MineFragment extends BaseFragment {
                 mAddress = data.getString("address");
                 companyName = data.getString("company_name");
                 mSex = data.getInt("sex");
-                like_cnt = data.getInt("like_cnt");
-                posts_cnt = data.getInt("posts_cnt");
+                mUsername = data.getString("username");
+                mCompanyName = data.getString("company_name");
+//                mCollectCount = data.getString("collect_cnt");
+//                mDuty = data.getString("duty");
+                mEmail = data.getString("email");
+//                mSelfIntroduction = data.getString("self_introduction");
+//                posts_cnt = data.getInt("posts_cnt");
                 comment_cnt = data.getInt("comment_cnt");
                 mLevelName = data.getJSONObject("level_info").getString("name");
                 companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
                 mTvMemberType.setText(mLevelName);
                 mineQuicklyLogin.setText(mNick);
-                tvMineAddlikeCount.setText(String.valueOf(like_cnt));
+                tvMineAddlikeCollect.setText(mCollectCount);
                 tvMinePostCount.setText(String.valueOf(posts_cnt));
                 tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
                 tvMineCompanyName.setText(companyName);
@@ -168,6 +178,7 @@ public class MineFragment extends BaseFragment {
     public void initViews(View view) {
         userDao = new UserDao(mActivity);
         userSize = userDao.dbGetUserSize();
+
     }
 
     @Override
@@ -183,7 +194,6 @@ public class MineFragment extends BaseFragment {
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body().toString())) {
                             parseUserData(response.body());
-                            return;
                         }
                     }
 
@@ -221,6 +231,11 @@ public class MineFragment extends BaseFragment {
                 bundle.putString(PersonDataActivity.MOBILE, mMobile);
                 bundle.putString(PersonDataActivity.ADDRESS, mAddress);
                 bundle.putInt(PersonDataActivity.SEX, mSex);
+                bundle.putString(PersonDataActivity.USER_NAME, mUsername);
+                bundle.putString(PersonDataActivity.USER_EMAIL, mEmail);
+                bundle.putString(PersonDataActivity.USER_INTRODUCTION, mSelfIntroduction);
+                bundle.putString(PersonDataActivity.USER_DUTY, mDuty);
+                bundle.putString(PersonDataActivity.USER_COMPANY, mCompanyName);
                 toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.hezuo_call:
