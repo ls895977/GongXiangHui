@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.ProductAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
@@ -29,6 +31,7 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     Button mBtAddProduct;
 
     private List<String> mTitle = new ArrayList<>();
+    private List<AddAdvanceBean.DataBean> mDataList;
 
     @Override
     protected int getLayoutId() {
@@ -70,10 +73,23 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     private void parseCompanyAdvanceData(String body) {
         AddAdvanceBean addAdvanceBean = GsonUtils.jsonFromJson(body, AddAdvanceBean.class);
         int code = addAdvanceBean.getCode();
-        List<AddAdvanceBean.DataBean> dataList = addAdvanceBean.getData();
+        mDataList = addAdvanceBean.getData();
+
         if (code == 200) {
-            ProductAdapter productAdapter = new ProductAdapter(mContext, dataList);
+            ProductAdapter productAdapter = new ProductAdapter(mContext, mDataList);
             mXrecyclerActivityProduct.setAdapter(productAdapter);
+            productAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    Intent intent = new Intent(mContext, AddProductActivity.class);
+                    intent.putExtra("viewTag", 1);
+                    intent.putExtra("aboutus_id", mDataList.get(position - 1).getAboutus_id());
+                    intent.putExtra("title", mDataList.get(position - 1).getTitle());
+                    intent.putExtra("describe", mDataList.get(position - 1).getDescribe());
+                    intent.putStringArrayListExtra("image_array", (ArrayList<String>) mDataList.get(position - 1).getImage_array());
+                    startActivity(intent);
+                }
+            });
         }
     }
 
@@ -105,7 +121,9 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_add_product:
-                toActivity(AddProductActivity.class);
+                Intent intent = new Intent(mContext, AddProductActivity.class);
+                intent.putExtra("viewTag", 2);
+                startActivity(intent);
                 break;
         }
     }

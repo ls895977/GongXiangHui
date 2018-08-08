@@ -12,8 +12,14 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +43,8 @@ public class VideoUploadActivity extends BaseActivity {
     private String mVideoPath;
     private List<String> mStrings;
     private OptionsPickerView mChangeSex;
+    private List<HomeVideoSortBean.DataBean> mVideoSortList;
+    private String mCate_name;
 
     @Override
     protected int getLayoutId() {
@@ -94,28 +102,42 @@ public class VideoUploadActivity extends BaseActivity {
                 break;
         }
     }
-
     private void chooseUserSex() {
-        if (mChangeSex == null) {
-            mStrings = new ArrayList<>();
-            mStrings.add("搞笑");
-            mStrings.add("体育");
-            mStrings.add("汽车");
-            mStrings.add("娱乐");
-            mStrings.add("财经");
-            mStrings.add("科技");
-            mChangeSex = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+        OkGo.<String>post(Constant.UPLOAD_VIDEO_ADD_SORT_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        ParseVideoSortData(response.body());
 
-                @Override
-                public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                    mTvVideoTypeChoice.setText(mStrings.get(options1));
+                    }
+                });
+    }
+
+    private void ParseVideoSortData(String body) {
+        HomeVideoSortBean homeVideoSortBean = GsonUtils.jsonFromJson(body, HomeVideoSortBean.class);
+        int code = homeVideoSortBean.getCode();
+        mVideoSortList = homeVideoSortBean.getData();
+        if (code == 200) {
+            if (mChangeSex == null) {
+                mStrings = new ArrayList<>();
+                for (int i=0;i<mVideoSortList.size();i++){
+                    mCate_name = mVideoSortList.get(i).getCate_name();
+                    mStrings.add(mCate_name);
+
                 }
-            }).setCancelColor(Color.parseColor("#676767"))
-                    .setSubmitColor(Color.parseColor("#D81717"))
-                    .build();
-            mChangeSex.setNPicker(mStrings, null, null);
+                mChangeSex = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+
+                    @Override
+                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                        mTvVideoTypeChoice.setText(mStrings.get(options1));
+                    }
+                }).setCancelColor(Color.parseColor("#676767"))
+                        .setSubmitColor(Color.parseColor("#D81717"))
+                        .build();
+                mChangeSex.setNPicker(mStrings, null, null);
+            }
+            mChangeSex.show();
         }
-        mChangeSex.show();
     }
 
 }

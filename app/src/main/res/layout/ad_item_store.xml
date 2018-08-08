@@ -16,10 +16,63 @@
 
             <include layout="@layout/ad_view_head" />
 
-            <com.flyco.tablayout.SlidingTabLayout
-                android:id="@+id/slidingTabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/llgoods"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="12.0dip"
+                        android:layout_marginTop="13.0dip"
+                        android:text="商品信息"
+                        android:textColor="#ff666562"
+                        android:textSize="14.0sp" />
+
+                    <TextView
+                        android:id="@+id/goods_bto"
+                        android:layout_width="60.0dip"
+                        android:layout_height="1.5dip"
+                        android:layout_gravity="center"
+                        android:background="@color/new_red" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llshop"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="12.0dip"
+                        android:layout_marginTop="13.0dip"
+                        android:text="店主信息"
+                        android:textColor="#ff666562"
+                        android:textSize="14.0sp" />
+
+                    <TextView
+                        android:id="@+id/shop_bto"
+                        android:layout_width="60.0dip"
+                        android:layout_height="1.5dip"
+                        android:layout_gravity="center"
+                        android:background="@color/new_red"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </LinearLayout>
 
             <include layout="@layout/ad_view_divider" />
 

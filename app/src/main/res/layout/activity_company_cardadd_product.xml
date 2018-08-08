@@ -28,7 +28,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tv_add_product__save"
+            android:id="@+id/tv_add_product_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -155,7 +155,7 @@
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/tv_add_advance_delete"
+            android:layout_toRightOf="@+id/tv_add_product_delete"
             android:background="@drawable/shape_button"
             android:gravity="center"
             android:text="完成"

@@ -22,6 +22,7 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.LzyResponse;
@@ -54,12 +55,21 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
     ImageView mIvAddAdvancePic;
     @BindView(R.id.rl_add_advance_edit)
     RelativeLayout rlAddAdvanceEdit;
+    @BindView(R.id.tv_add_advance_delete)
+    TextView tvAddAdvanceDelete;
+    @BindView(R.id.tv_add_advance_complete)
+    TextView tvAddAdvanceComplete;
+
     private String mPath;
     private List<String> upLoadPics = new ArrayList<>();
     private String mTitle;
     private String mDescribe;
     private String[] mImage_arrays;
     private int mViewTag;
+    private int mAboutusId;
+    private String mEditImageUrl;
+    private String mEditAddAdvanceTitle;
+    private String mEditAddAdvanceIntroduce;
 
     @Override
     protected int getLayoutId() {
@@ -71,6 +81,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         Intent intent = getIntent();
         mTitle = intent.getStringExtra("title");
         mViewTag = intent.getIntExtra("viewTag", 0);
+        mAboutusId = intent.getIntExtra("aboutus_id", 0);
         mDescribe = intent.getStringExtra("describe");
         mImage_arrays = intent.getStringArrayExtra("image_array");
     }
@@ -86,17 +97,6 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        FetchAddAdvanceData();
-    }
-
-    /*获取传进来的数据*/
-    private void FetchAddAdvanceData() {
-
-
-    }
 
     @Override
     protected void initListeners() {
@@ -104,6 +104,8 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         mIvAddAdvanceBack.setOnClickListener(this);
         mTvAddAdvanceSave.setOnClickListener(this);
         mIvAddAdvancePic.setOnClickListener(this);
+        tvAddAdvanceDelete.setOnClickListener(this);
+        tvAddAdvanceComplete.setOnClickListener(this);
     }
 
     @Override
@@ -126,8 +128,82 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_add_advance_pic:
                 openAdvancePhoto();
                 break;
+            case R.id.tv_add_advance_delete:
+                deleteCompanyCardAdavance();
+
+                break;
+            case R.id.tv_add_advance_complete:
+                mEditImageUrl = Utils.listToString(upLoadPics);
+                mEditAddAdvanceTitle = mEtAddAdvanceTitle.getText().toString().trim();
+                mEditAddAdvanceIntroduce = mEtAddAdvanceIntroduce.getText().toString().trim();
+                if (TextUtils.isEmpty(mEditImageUrl) || TextUtils.isEmpty(mEditAddAdvanceTitle) || TextUtils.isEmpty(mEditAddAdvanceIntroduce)) {
+                    asyncShowToast("请检查一下,还有哪里没有填写");
+                } else {
+                    editCompanyCardAdavance(mEditAddAdvanceTitle, mEditAddAdvanceIntroduce, mEditImageUrl);
+                }
+
+                break;
 
         }
+    }
+
+    /*修改企业核心优势*/
+    private void editCompanyCardAdavance(String mEditAddAdvanceTitle, String mEditAddAdvanceIntroduce, String mEditImageUrl) {
+        OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
+                params("title", mEditAddAdvanceTitle).
+                params("aboutus_id", mAboutusId).
+                params("describe", mEditAddAdvanceIntroduce).
+                params("image", mEditImageUrl).
+                params("datatype",1).
+                execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
+                                asyncShowToast("修改成功");
+                                finish();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Logger.e("添加企业优势失败了" + response.message());
+                    }
+                });
+
+    }
+
+    /*删除企业核心优势*/
+    private void deleteCompanyCardAdavance() {
+        OkGo.<String>post(Constant.DELETE_COMPANY_CENTER_ADVANCE).
+                params("aboutus_id", mAboutusId).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body());
+                    int code = jsonObject.getInt("code");
+                    if (code == 200) {
+                        asyncShowToast("删除成功");
+                        finish();
+                    } else {
+                        asyncShowToast("删除失败" + response.message());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
     private void saveAdvanceData() {
@@ -167,7 +243,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        com.orhanobut.logger.Logger.e("添加企业优势失败了" + response.message());
+                        Logger.e("添加企业优势失败了" + response.message());
                     }
                 });
     }

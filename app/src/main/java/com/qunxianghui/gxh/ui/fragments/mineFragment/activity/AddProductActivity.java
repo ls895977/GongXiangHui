@@ -32,6 +32,7 @@ import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.video2pic.FullyGridLayoutManager;
 import com.qunxianghui.gxh.widget.video2pic.GridImageSelfAdapter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -45,8 +46,12 @@ import io.reactivex.disposables.Disposable;
 public class AddProductActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_add_product_back)
     ImageView mIvAddProductBack;
-    @BindView(R.id.tv_add_product__save)
+    @BindView(R.id.tv_add_product_save)
     TextView mTvAddProductSave;
+    @BindView(R.id.tv_add_product_delete)
+    TextView mTvAddProductDelete;
+    @BindView(R.id.tv_add_product_complete)
+    TextView mTvAddProductComplete;
     @BindView(R.id.et_add_product_title)
     EditText mEtAddAProductTitle;
     @BindView(R.id.et_add_product__introduce)
@@ -61,6 +66,12 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
     private List<LocalMedia> selectList = new ArrayList<>();
     private int maxSelectNum = 3;
     private List<String> upLoadPics = new ArrayList<>();
+    private String mTitle;
+    private String mDescribe;
+    private String[] mImage_arrays;
+    private int mViewTag;
+    private int mAboutusId;
+
 
     @Override
     protected int getLayoutId() {
@@ -69,6 +80,15 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
+        //获取传过来的值
+        Intent intent = getIntent();
+        mTitle = intent.getStringExtra("title");
+        mViewTag = intent.getIntExtra("viewTag", 0);
+        mAboutusId = intent.getIntExtra("aboutus_id", 0);
+        mDescribe = intent.getStringExtra("describe");
+        mImage_arrays = intent.getStringArrayExtra("image_array");
+
+        //图片视频库的处理
         themeId = R.style.picture_default_style;
         FullyGridLayoutManager fullyGridLayoutManager = new FullyGridLayoutManager(AddProductActivity.this, 4, GridLayoutManager.VERTICAL, false);
         mRecyclerViewAddProductPic.setLayoutManager(fullyGridLayoutManager);
@@ -111,7 +131,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                             getString(R.string.picture_jurisdiction), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onError(Throwable e) {
             }
@@ -120,12 +139,16 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
             public void onComplete() {
             }
         });
-
     }
 
     @Override
     protected void initData() {
-
+        mEtAddAProductTitle.setText(mTitle);
+        mEtAddProductIntroduce.setText(mDescribe);
+        if (mViewTag == 1) {
+            mTvAddProductSave.setVisibility(View.GONE);
+            rlAddProductEdit.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -133,6 +156,8 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
         super.initListeners();
         mIvAddProductBack.setOnClickListener(this);
         mTvAddProductSave.setOnClickListener(this);
+        mTvAddProductDelete.setOnClickListener(this);
+        mTvAddProductComplete.setOnClickListener(this);
     }
 
     @Override
@@ -141,20 +166,89 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_add_product_back:
                 finish();
                 break;
-            case R.id.tv_add_product__save:
+            case R.id.tv_add_product_save:
                 asyncShowToast("保存");
                 SavaCompanyCardProductData();
+                break;
+            case R.id.tv_add_product_delete:
+                deleteCompanyCardAdavance();
+                break;
+            case R.id.tv_add_product_complete:
+                String mEditImageUrl = Utils.listToString(upLoadPics);
+                String mProductTitle = mEtAddAProductTitle.getText().toString().trim();
+                String mProductIntroduce = mEtAddProductIntroduce.getText().toString().trim();
+                if (TextUtils.isEmpty(mEditImageUrl) || TextUtils.isEmpty(mProductTitle) || TextUtils.isEmpty(mProductIntroduce)) {
+                    asyncShowToast("请检查一下,还有哪里没有填写");
+                } else {
+                    editCompanyCardAdavance(mProductTitle, mProductIntroduce, mEditImageUrl);
+                }
                 break;
         }
     }
 
+    /*修改公司产品*/
+    private void editCompanyCardAdavance(String mProductTitle, String mProductIntroduce, String mEditImageUrl) {
+
+        OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
+                params("title", mProductTitle).
+                params("aboutus_id", mAboutusId).
+                params("describe", mProductIntroduce).
+                params("image", mEditImageUrl).
+                params("datatype", 2).
+                execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
+                                asyncShowToast("修改成功");
+                                finish();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Logger.e("修改企业产品失败了" + response.message());
+                    }
+                });
+    }
+
+    /*删除公司产品*/
+    private void deleteCompanyCardAdavance() {
+        OkGo.<String>post(Constant.DELETE_COMPANY_CENTER_ADVANCE).
+                params("aboutus_id", mAboutusId).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body());
+                    int code = jsonObject.getInt("code");
+                    if (code == 200) {
+                        asyncShowToast("删除成功");
+                        finish();
+                    } else {
+                        asyncShowToast("删除失败" + response.message());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+//保存数据
     private void SavaCompanyCardProductData() {
         String maddProductTitle = mEtAddAProductTitle.getText().toString().trim();
         String mEtAddAProductIntroduce = mEtAddProductIntroduce.getText().toString().trim();
@@ -175,7 +269,7 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                     .params("title", maddProductTitle)
                     .params("describe", mEtAddAProductIntroduce)
                     .params("image", stringBuilder.toString())
-                    .params("datatype",2)
+                    .params("datatype", 2)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -214,8 +308,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                     .forResult(PictureConfig.CHOOSE_REQUEST);
 
 
-
-
         }
 
     };
@@ -246,7 +338,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-
     /*上传图片*/
     private void upLoadPic(String urls) {
         OkGo.<String>post(Constant.UP_LOAD_PIC)
@@ -257,7 +348,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                         UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
-
                         }
                     }
 

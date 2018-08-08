@@ -19,7 +19,7 @@ import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.AdvertTypeBean;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
-import com.qunxianghui.gxh.ui.dialog.TongLanChooseTypeDialog;
+import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
@@ -29,7 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AdvertTopFragment extends BaseFragment implements View.OnClickListener, AdvertChoosePicDialog.ImgPickListener {
+public class AdvertTopFragment extends BaseFragment implements View.OnClickListener, AdvertChoosePicDialog.ImgPickListener, CompoundButton.OnCheckedChangeListener {
 
     @BindView(R.id.vp)
     ViewPager mVp;
@@ -37,7 +37,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     CircleIndicatorView mCircleIndicatorView;
 
     private AdvertPagerAdapter mPagerAdapter;
-    private TongLanChooseTypeDialog mChooseType;
+    private AdvertChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private List<View> mViewList = new ArrayList<>();
     private List<AdvertTypeBean> mList = new ArrayList<>();
@@ -51,11 +51,11 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void initData() {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
+        addPage();
     }
 
     @Override
     protected void initListeners() {
-        addPage();
         mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -161,7 +161,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 break;
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
-                    mChooseType = new TongLanChooseTypeDialog(getContext(), mViewList, mVp);
+                    mChooseType = new AdvertChooseTypeDialog(getContext(), mViewList, mVp);
                 }
                 mChooseType.show();
                 break;
@@ -195,13 +195,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
 
             }
         });
-
-        ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            }
-        });
+        ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
         mViewList.add(view);
         mList.add(new AdvertTypeBean());
         mPagerAdapter.notifyDataSetChanged();
@@ -238,4 +232,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+    }
 }
