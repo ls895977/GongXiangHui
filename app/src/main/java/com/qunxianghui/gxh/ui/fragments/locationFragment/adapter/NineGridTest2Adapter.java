@@ -54,6 +54,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     public void setOnClickLitener(CircleOnClickListener listener) {
         this.listener = listener;
+
     }
 
     @Override
