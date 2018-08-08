@@ -28,15 +28,16 @@ public class HomeVideoActivity extends BaseActivity {
 
     @BindView(R.id.slidingTabLayout)
     SlidingTabLayout mSlidingTabLayout;
-    @BindView(R.id.iv_more_columns)
-    ImageView mIvMoreColumns;
+    @BindView(R.id.iv_video_more_columns)
+    ImageView mIvVideoMoreColumns;
     @BindView(R.id.home_video_viewpager)
     ViewPager mHomeVideoViewpager;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
-
     private String[] titles = new String[]{"实时", "搞笑", "体育", "娱乐"};
     private List<Fragment> fragments = new ArrayList<>();
+    public final static int VIDEO_CHANNELREQUEST = 1; // 请求码
+    public final static int VIDEO_CHANNELRESULT = 10; // 返回码
 
     @Override
     protected int getLayoutId() {
@@ -70,7 +71,7 @@ public class HomeVideoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_search, R.id.tv_address, R.id.iv_more_columns})
+    @OnClick({R.id.iv_back, R.id.tv_search, R.id.tv_address, R.id.iv_video_more_columns})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -81,8 +82,8 @@ public class HomeVideoActivity extends BaseActivity {
             case R.id.tv_address:
                 toActivity(LocationActivity.class);
                 break;
-            case R.id.iv_more_columns:
-                asyncShowToast("点击了分类条目");
+            case R.id.iv_video_more_columns:
+                toActivity(HomeVideoChannelActivity.class);
                 break;
         }
     }

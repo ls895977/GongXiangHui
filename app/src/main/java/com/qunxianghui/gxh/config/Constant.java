@@ -12,10 +12,10 @@ public class Constant {
     //首页本地服务链接的跳转
     public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //正式环境
-    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+//    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
 
     //测试环境
-//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -130,9 +130,27 @@ public class Constant {
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
     public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
-    //上传视频
-    public static final String UP_LOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+    //本地圈用户订阅的
+    public static final String LOCAL_POST_SUB_URL = BASE_URL + "Posts/getPostsCate";
+    //个人编辑本地圈接口
+    public static final String EDIT_LOCAL_POST_SUB_URL = BASE_URL + "Posts/editPostsCate";
+    //个人添加本地圈接口
+    public static final String ADD_LOCAL_POST_SUB_URL = BASE_URL + "Posts/addPostsCate";
+    //个人删除本地圈接口
+    public static final String DELETE_LOCAL_POST_SUB_URL = BASE_URL + "Posts/delPostsCate";
+    //上传本地圈的分类
+    public static final String UPLOAD_LOCAL_POST_SORT_SUB_URL = BASE_URL + "Posts/addPosts";
+    //上传视
+    public static final String UPLOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+    //编辑视频汇分类接口
+    public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";
+    //个人添加视频汇分类接口
+    public static final String ADD_VIDEO_TAB_URL = BASE_URL + "Video/addVideoCate";
+    //个人删除视频汇分类接口
+    public static final String DELETE_VIDEO_TAB_URL = BASE_URL + "Video/delVideoCate";
 
+    //用户订阅的视频的频道
+    public static final String VIDEO_SUB_URL = BASE_URL + "Video/getVideoCate";
     //上传视频的类别
     public static final String UPLOAD_VIDEO_ADD_SORT_URL = BASE_URL + "Video/addVideo";
     //发布帖子
@@ -152,6 +170,8 @@ public class Constant {
     public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
     //我的企业名片
     public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
+    //分享我的企业名片
+    public static final String SHARE_COMPANY_CARD_URL=BASE_URL+"Aboutus/showh5";
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
     //查看核心优势或公司产品

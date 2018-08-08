@@ -29,9 +29,13 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     XRecyclerView mXrecyclerActivityProduct;
     @BindView(R.id.bt_add_product)
     Button mBtAddProduct;
-
+    private int count;
+    private boolean mIsRefresh = false;
+    private boolean mIsFirst = true;
     private List<String> mTitle = new ArrayList<>();
     private List<AddAdvanceBean.DataBean> mDataList;
+    private AddAdvanceBean mAddAdvanceBean;
+    private ProductAdapter mProductAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -52,6 +56,8 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     private void RequestCompanyProductData() {
 
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
+                .params("datatype", 1)
+                .params("limit", 5)
                 .params("datatype", 2)
                 .execute(new StringCallback() {
                     @Override
@@ -71,25 +77,36 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     }
 
     private void parseCompanyAdvanceData(String body) {
-        AddAdvanceBean addAdvanceBean = GsonUtils.jsonFromJson(body, AddAdvanceBean.class);
-        int code = addAdvanceBean.getCode();
-        mDataList = addAdvanceBean.getData();
-
+        mAddAdvanceBean = GsonUtils.jsonFromJson(body, AddAdvanceBean.class);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mDataList.clear();
+        }
+        mDataList.addAll(mAddAdvanceBean.getData());
+        int code = mAddAdvanceBean.getCode();
         if (code == 200) {
-            ProductAdapter productAdapter = new ProductAdapter(mContext, mDataList);
-            mXrecyclerActivityProduct.setAdapter(productAdapter);
-            productAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    Intent intent = new Intent(mContext, AddProductActivity.class);
-                    intent.putExtra("viewTag", 1);
-                    intent.putExtra("aboutus_id", mDataList.get(position - 1).getAboutus_id());
-                    intent.putExtra("title", mDataList.get(position - 1).getTitle());
-                    intent.putExtra("describe", mDataList.get(position - 1).getDescribe());
-                    intent.putStringArrayListExtra("image_array", (ArrayList<String>) mDataList.get(position - 1).getImage_array());
-                    startActivity(intent);
-                }
-            });
+            if (mIsFirst) {
+                mIsFirst = false;
+                mProductAdapter = new ProductAdapter(mContext, mDataList);
+                mXrecyclerActivityProduct.setAdapter(mProductAdapter);
+                mProductAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Intent intent = new Intent(mContext, AddProductActivity.class);
+                        intent.putExtra("viewTag", 1);
+                        intent.putExtra("aboutus_id", mDataList.get(position - 1).getAboutus_id());
+                        intent.putExtra("title", mDataList.get(position - 1).getTitle());
+                        intent.putExtra("describe", mDataList.get(position - 1).getDescribe());
+                        intent.putStringArrayListExtra("image_array", (ArrayList<String>) mDataList.get(position - 1).getImage_array());
+                        startActivity(intent);
+                    }
+                });
+            }
+            mXrecyclerActivityProduct.refreshComplete();
+            mProductAdapter.notifyDataSetChanged();
+            mProductAdapter.notifyItemRangeChanged(count, mAddAdvanceBean.getData().size());
+
+
         }
     }
 
@@ -100,13 +117,16 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
         mXrecyclerActivityProduct.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mXrecyclerActivityProduct.refreshComplete();
+                mIsRefresh = true;
+                count = 0;
+                RequestCompanyProductData();
             }
 
             @Override
             public void onLoadMore() {
-                mXrecyclerActivityProduct.refreshComplete();
+                RequestCompanyProductData();
             }
+
         });
     }
 

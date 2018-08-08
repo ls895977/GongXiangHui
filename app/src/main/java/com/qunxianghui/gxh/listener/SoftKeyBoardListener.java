@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.listener;
 
 import android.app.Activity;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -71,4 +72,7 @@ public class SoftKeyBoardListener {
         SoftKeyBoardListener softKeyBoardListener = new SoftKeyBoardListener(activity);
         softKeyBoardListener.setOnSoftKeyBoardChangeListener(onSoftKeyBoardChangeListener);
     }
+
+
+
 }

@@ -53,6 +53,7 @@
             android:textSize="13sp" />
 
         <EditText
+            android:id="@+id/et_member_active_code"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
@@ -87,6 +88,7 @@
             android:background=" #DBB07C" />
 
         <TextView
+            android:id="@+id/tv_member_activite_quickly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
