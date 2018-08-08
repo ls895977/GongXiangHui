@@ -2,6 +2,13 @@ apply plugin: 'com.android.application'
 
 
 android {
+
+
+    aaptOptions {
+        cruncherEnabled = false//禁止检查png的合法性
+        useNewCruncher = false
+    }
+
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {

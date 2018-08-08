@@ -78,6 +78,8 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.ll_comment_view = convertView.findViewById(R.id.ll_comment_view);
             holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
             holder.ll_comment_selflist = convertView.findViewById(R.id.ll_comment_selflist);
+            holder.tv_item_reply_lb=convertView.findViewById(R.id.tv_item_reply_lb);
+            holder.tv_item_replyed=convertView.findViewById(R.id.tv_item_replyed);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -99,9 +101,9 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.name.setText(mList.get(position).getMember_name());
         holder.content.setText(mList.get(position).getContent());
 
-        /**
+        /***
          * 删除评论
-         */
+         ***/
         holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -120,7 +122,7 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentRecallListener.recommentcontentListener(position);
+                commentRecallListener.recommentcontentListener(position,mList.get(position));
             }
         });
 
@@ -128,7 +130,7 @@ public class CommentItemAdapter extends BaseAdapter {
 
 
     public static class ViewHolder {
-        TextView name, content, tv_item_discuss_delete;
+        TextView name, content, tv_item_discuss_delete,tv_item_reply_lb,tv_item_replyed;
         LinearLayout ll_comment_selflist;
         LinearLayout ll_comment_view;
 
@@ -137,7 +139,7 @@ public class CommentItemAdapter extends BaseAdapter {
 
 
     public interface CommentRecallListener {
-        public void recommentcontentListener(int position);
+        void recommentcontentListener(int position,CommentBean commentBean);
     }
 
 }

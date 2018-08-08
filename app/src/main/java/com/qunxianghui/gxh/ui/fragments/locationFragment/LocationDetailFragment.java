@@ -293,6 +293,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                     if (comment.getCode() == 0) {
                                         comment_edit.setText("");
                                         hideSoftKeyboard(comment_edit, getActivity());
+                                    }else{
+                                        asyncShowToast(response.message());
                                     }
                                 }
                             });
@@ -403,8 +405,45 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void CommenRecall(int position) {
-        asyncShowToast("用户回复评论" + position);
+    public void CommenRecall(final int position, final CommentBean commentBean) {
+
+        commentView.setVisibility(View.VISIBLE);
+        comment_edit.setFocusable(true);
+        comment_edit.setFocusableInTouchMode(true);
+        comment_edit.requestFocus();
+        onFocusChange(true);
+
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(comment_edit.getText().toString()!=null&&!"".equals(comment_edit.getText().toString())) {
+                    OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
+                            .params("content", comment_edit.getText().toString().trim())
+                            .params("uuid",commentBean.getUuid())
+                            .params("pid",commentBean.getPid())
+                            .execute(new StringCallback(){
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
+                                    if (comment.getCode() == 0) {
+                                        comment_edit.setText("");
+                                        hideSoftKeyboard(comment_edit, getActivity());
+                                    }else{
+                                        asyncShowToast(response.message());
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    asyncShowToast(response.message());
+                                }
+                            });
+                }else {
+                    asyncShowToast("请输入评论内容");
+                }
+            }
+        });
     }
 
 
