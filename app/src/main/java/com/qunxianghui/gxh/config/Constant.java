@@ -131,13 +131,10 @@ public class Constant {
     //上传图片
     public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
     //上传视频
-<<<<<<< HEAD
     public static final String UP_LOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
-=======
-    public static final String UPLOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+
     //上传视频的类别
     public static final String UPLOAD_VIDEO_ADD_SORT_URL = BASE_URL + "Video/addVideo";
->>>>>>> 1f4893c4bc3b03e0bbc39a8da246f10fd37b2286
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
