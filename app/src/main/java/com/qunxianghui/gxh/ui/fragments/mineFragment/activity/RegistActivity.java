@@ -61,8 +61,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     EditText etRegistPhone;
     @BindView(R.id.iv_login_password)
     ImageView ivLoginPassword;
-
-
     @BindView(R.id.tv_login_quickly)
     TextView tvLoginQuickly;
     @BindView(R.id.tv_regist_code)

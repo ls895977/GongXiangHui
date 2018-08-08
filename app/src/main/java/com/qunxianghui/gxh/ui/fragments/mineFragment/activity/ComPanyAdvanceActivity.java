@@ -30,6 +30,13 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.bt_add_advance)
     Button mBtAddAdvance;
 
+    private int count;
+    private boolean mIsRefresh = false;
+    private List<AddAdvanceBean.DataBean> mDataList = new ArrayList<>();
+    private boolean mIsFirst = true;
+    private AdvanceAdapter mAdvanceAdapter;
+    private AddAdvanceBean mAddAdvanceBean;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_coreadvance;
@@ -49,10 +56,11 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
 
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
                 .params("datatype", 1)
+                .params("limit", 5)
+                .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
                         parseCompanyAdvanceData(response.body());
 
                     }
@@ -67,25 +75,37 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
     }
 
     private void parseCompanyAdvanceData(String body) {
-        AddAdvanceBean addAdvanceBean = GsonUtils.jsonFromJson(body, AddAdvanceBean.class);
-        int code = addAdvanceBean.getCode();
-        final List<AddAdvanceBean.DataBean> dataList = addAdvanceBean.getData();
+        mAddAdvanceBean = GsonUtils.jsonFromJson(body, AddAdvanceBean.class);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mDataList.clear();
+        }
+        mDataList.addAll(mAddAdvanceBean.getData());
+        count = mDataList.size();
+        int code = mAddAdvanceBean.getCode();
         if (code == 200) {
-            AdvanceAdapter advanceAdapter = new AdvanceAdapter(mContext, dataList);
-            mXrecyclerActivityAdv.setAdapter(advanceAdapter);
-            advanceAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    Intent intent = new Intent(mContext, AddAdvanceActivity.class);
-                    intent.putExtra("viewTag", 1);
-                    intent.putExtra("aboutus_id", dataList.get(position - 1).getAboutus_id());
-                    intent.putExtra("title", dataList.get(position - 1).getTitle());
-                    intent.putExtra("describe", dataList.get(position - 1).getDescribe());
-                    intent.putStringArrayListExtra("image_array", (ArrayList<String>) dataList.get(position - 1).getImage_array());
-                    startActivity(intent);
+            if (mIsFirst) {
+                mIsFirst = false;
+                mAdvanceAdapter = new AdvanceAdapter(mContext, mDataList);
+                mXrecyclerActivityAdv.setAdapter(mAdvanceAdapter);
+                mAdvanceAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Intent intent = new Intent(mContext, AddAdvanceActivity.class);
+                        intent.putExtra("viewTag", 1);
+                        intent.putExtra("aboutus_id", mDataList.get(position - 1).getAboutus_id());
+                        intent.putExtra("title", mDataList.get(position - 1).getTitle());
+                        intent.putExtra("describe", mDataList.get(position - 1).getDescribe());
+                        intent.putStringArrayListExtra("image_array", (ArrayList<String>) mDataList.get(position - 1).getImage_array());
+                        startActivity(intent);
 
-                }
-            });
+                    }
+                });
+            }
+            mXrecyclerActivityAdv.refreshComplete();
+            mAdvanceAdapter.notifyDataSetChanged();
+            mAdvanceAdapter.notifyItemRangeChanged(count, mAddAdvanceBean.getData().size());
+
         }
 
     }
@@ -97,12 +117,15 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
         mXrecyclerActivityAdv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mXrecyclerActivityAdv.refreshComplete();
+                mIsRefresh = true;
+                count = 0;
+                RequestCompanyAdvanceData();
+
             }
 
             @Override
             public void onLoadMore() {
-                mXrecyclerActivityAdv.refreshComplete();
+                RequestCompanyAdvanceData();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 
@@ -26,6 +29,26 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     ImageView mIvMemberupBack;
     @BindView(R.id.tv_memberup_quickly_active)
     TextView mTvMemberupQuicklyActive;
+    @BindView(R.id.iv_company_head)
+    ImageView ivCompanyHead;
+    @BindView(R.id.tv_memberup_company_step)
+    TextView tvMemberupCompanyStep;
+    @BindView(R.id.tv_memberup_company_state)
+    TextView tvMemberupCompanyState;
+    @BindView(R.id.iv_regist_head)
+    ImageView ivRegistHead;
+    @BindView(R.id.tv_memberup_person_step)
+    TextView tvMemberupPersonStep;
+    @BindView(R.id.tv_memberup_person_state)
+    TextView tvMemberupPersonState;
+    @BindView(R.id.tv_memberup_activite_time)
+    TextView tvMemberupActiviteTime;
+    @BindView(R.id.ll_memberup_regist_state)
+    LinearLayout llMemberupRegistState;
+
+    private String selfcompayname;
+    private String expire_time;
+    private String avatar;
 
     @Override
     protected int getLayoutId() {
@@ -34,20 +57,38 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
-        super.initViews();
+
+        SharedPreferences companyData = getSharedPreferences("companymessage", 0);
+        selfcompayname = companyData.getString("selfcompayname", "");
+        expire_time = companyData.getString("expire_time", "");
+        avatar = companyData.getString("avatar", "");
+
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mLlMemberupCompanyState.getLayoutParams();
-        layoutParams.width = width * 5 / 6;
+        layoutParams.width = width * 3 / 4;
         mLlMemberupCompanyState.setLayoutParams(layoutParams);
+        llMemberupRegistState.setLayoutParams(layoutParams);
 
     }
 
     @Override
     protected void initData() {
-        super.initData();
 
+        RequestOptions options = new RequestOptions();
+        options.circleCrop();
+        options.centerCrop();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+        Glide.with(mContext).load(avatar).apply(options).into(ivCompanyHead);
+        Glide.with(mContext).load(avatar).apply(options).into(ivRegistHead);
+        if (selfcompayname != null) {
+            mTvMemberupQuicklyActive.setVisibility(View.GONE);
+            tvMemberupActiviteTime.setVisibility(View.VISIBLE);
+            tvMemberupCompanyState.setText("会员状态: 已激活");
+            tvMemberupActiviteTime.setText(expire_time);
+        }
     }
 
     @Override
@@ -59,7 +100,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_memberup_quickly_active:
                 toActivity(MemberUpActiveActivity.class);
                 break;
-
         }
     }
 

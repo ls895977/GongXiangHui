@@ -324,9 +324,11 @@ public class LoginActivity extends BaseActivity {
                         JSONObject jsonObject = new JSONObject(response.body());
                         JSONObject data = jsonObject.getJSONObject("data");
                         int staff_cnt = data.getInt("staff_cnt");
+                        String avatar = data.getString("avatar");
                         SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
                         SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
                         spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
+
                         spCompanymessageEditor.apply();
                     } catch (JSONException ignored) {
 
@@ -353,6 +355,7 @@ public class LoginActivity extends BaseActivity {
                                 if (code == 0) {
                                     companyName = data.getJSONObject("company_info").getString("company_name");
                                     String expire_time = data.getString("expire_time");
+                                    String avatar = data.getString("avatar");
                                     /**
                                      * 保存自己的公司名称
                                      */
@@ -360,6 +363,7 @@ public class LoginActivity extends BaseActivity {
                                     SharedPreferences.Editor editor = spConpanyname.edit();
                                     editor.putString("selfcompanyname", companyName);
                                     editor.putString("expire_time", expire_time);
+                                    editor.putString("avatar",avatar );
                                     editor.apply();
                                 }
 

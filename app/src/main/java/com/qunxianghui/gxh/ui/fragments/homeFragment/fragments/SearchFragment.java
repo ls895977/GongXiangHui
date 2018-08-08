@@ -26,10 +26,8 @@ import butterknife.BindView;
  * @desc 搜索的页面
  */
 public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener {
-
     private static final String TYPE = "type";
     public static final String DATA = "data";
-
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
 
@@ -60,18 +58,6 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     private void goNextWorks(String trim, int type) {
         switch (type) {
-            //本地咨询
-            case 0:
-                OkGo.<String>get(Constant.SEARCH_GET_LIST)
-                        .params("type", type)
-                        .params("keywords", trim)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                parseData(response.body());
-                            }
-                        });
-                break;
             //全网咨询
             case 1:
                 OkGo.<String>get(Constant.SEARCH_GET_LIST).
@@ -84,18 +70,7 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
                             }
                         });
                 break;
-            //本地圈
-            case 2:
-                OkGo.<String>get(Constant.SEARCH_GET_LIST).
-                        params("type", type).
-                        params("keywords", trim).
-                        execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                parseData(response.body());
-                            }
-                        });
-                break;
+
         }
     }
 

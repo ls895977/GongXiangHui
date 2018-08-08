@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -64,8 +63,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ImageView ivClearHistory;
     @BindView(R.id.ll_home_search)
     LinearLayout llHomeSearch;
-    @BindView(R.id.tabs)
-    SlidingTabLayout mTabs;
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
     @BindView(R.id.ll_search)
@@ -265,12 +262,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mNestedScrollView.setVisibility(View.GONE);
         mLlSearch.setVisibility(View.VISIBLE);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(SearchFragment.newInstance(data, 0), "本地资讯");
-        adapter.addFragment(SearchFragment.newInstance(data, 1), "全网资讯");
-        adapter.addFragment(SearchFragment.newInstance(data, 2), "本地圈");
-
+        adapter.addFragment(SearchFragment.newInstance(data, 1));
         mViewpager.setAdapter(adapter);
-        mTabs.setViewPager(mViewpager);
+
     }
 
     /**

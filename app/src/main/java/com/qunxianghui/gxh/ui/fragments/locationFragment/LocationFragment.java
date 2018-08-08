@@ -49,12 +49,6 @@ public class LocationFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        super.initViews(view);
-        int height = mSlidingTabLayout.getHeight();
-    }
-
-    @Override
-    public void initData() {
         fragments.add(new LocationDetailFragment());
         fragments.add(new LocationDetailFragment());
         fragments.add(new LocationDetailFragment());
@@ -64,6 +58,33 @@ public class LocationFragment extends BaseFragment {
         mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mLocalViewPager);
         mLocalViewPager.setOffscreenPageLimit(fragments.size());
+    }
+
+    @Override
+    public void initData() {
+        //频道列表（用户订阅的频道）
+//        OkGo.<String>post(Constant.VIDEO_SUB_URL).execute(new StringCallback() {
+//            @Override
+//            public void onSuccess(Response<String> response) {
+//                String json = response.body();
+//                if (HttpStatusUtil.getStatus(json)) {
+//                    setChannelData(json);
+//                    initFragment();
+//                } else {
+//                    ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
+//                }
+//            }
+//        });
+
+    }
+
+    private void initFragment() {
+
+    }
+
+
+    private void setChannelData(String json) {
+
     }
 
     @Override
