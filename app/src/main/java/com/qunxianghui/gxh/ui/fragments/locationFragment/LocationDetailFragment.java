@@ -169,6 +169,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             if (mIsFirst) {
                 mIsFirst = false;
                 mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
+
                 mAdapter.setOnClickLitener(this);
                 recyclerView.setAdapter(mAdapter);
             }
@@ -404,8 +405,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     /*用户的回复评论*/
     @Override
-    public void CommenRecall(final int position) {
+    public void CommenRecall(final int position,CommentBean commentBean) {
         asyncShowToast("用户回复评论" + position);
+        CommentBean commentBean1=commentBean;
+        asyncShowToast(commentBean.getAddress());
+
     }
 
     public static LocationFragment getInstance() {

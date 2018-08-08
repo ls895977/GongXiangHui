@@ -55,8 +55,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     ImageView titleRightIco;
     @BindView(R.id.title_bar)
     RelativeLayout titleBar;
-    @BindView(R.id.top_bar)
-    LinearLayout topBar;
+
     @BindView(R.id.et_regist_phone)
     EditText etRegistPhone;
     @BindView(R.id.iv_login_password)

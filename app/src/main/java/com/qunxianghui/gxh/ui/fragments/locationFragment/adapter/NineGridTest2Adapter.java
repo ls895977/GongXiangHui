@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.ActionItem;
+import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.widget.BigListView;
@@ -59,6 +60,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View convertView = inflater.inflate(R.layout.item_bbs_nine_grid, parent, false);
         return new myViewHolder(convertView);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -237,8 +243,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     /*回复评论的接口回调*/
     @Override
-    public void recommentcontentListener(int position) {
-        listener.CommenRecall(position);
+    public void recommentcontentListener(int position, CommentBean commentBean) {
+        listener.CommenRecall(position,commentBean);
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder {
@@ -293,7 +299,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void headImageClick(int position);
 
         /*回复评论*/
-        void CommenRecall(int position);
+        void CommenRecall(int position,CommentBean commentBean);
 
     }
 

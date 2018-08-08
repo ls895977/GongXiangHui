@@ -101,9 +101,9 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.name.setText(mList.get(position).getMember_name());
         holder.content.setText(mList.get(position).getContent());
 
-        /**
+        /***
          * 删除评论
-         */
+         ***/
         holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -122,7 +122,7 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentRecallListener.recommentcontentListener(position);
+                commentRecallListener.recommentcontentListener(position,mList.get(position));
             }
         });
 
@@ -139,7 +139,7 @@ public class CommentItemAdapter extends BaseAdapter {
 
 
     public interface CommentRecallListener {
-        public void recommentcontentListener(int position);
+        void recommentcontentListener(int position,CommentBean commentBean);
     }
 
 }
