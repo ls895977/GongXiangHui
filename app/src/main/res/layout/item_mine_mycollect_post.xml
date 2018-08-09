@@ -27,8 +27,8 @@
 
                 <ImageView
                     android:id="@+id/iv_mine_mycollect_head"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="96dp"
+                    android:layout_height="66dp"
                     android:scaleType="fitXY" />
             </android.support.v7.widget.CardView>
 
@@ -89,6 +89,7 @@
     </FrameLayout>
 
     <CheckBox
+        android:visibility="gone"
         android:id="@+id/cb_item_mycollectnews"
         style="@style/CheckBoxStyle"
         android:layout_width="wrap_content"

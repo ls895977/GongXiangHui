@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -17,7 +20,6 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -25,6 +27,7 @@ import com.qunxianghui.gxh.bean.mine.CollectBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
@@ -43,6 +46,14 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
+    @BindView(R.id.btmycollect_cancle)
+    Button btmycollectCancle;
+    @BindView(R.id.tv_mycollect_comment_count)
+    TextView tvMycollectCommentCount;
+    @BindView(R.id.bt_mycollect_delete)
+    Button btMycollectDelete;
+    @BindView(R.id.ll_mycollect_select_state)
+    LinearLayout llMycollectSelectState;
 
     private List<CollectBean.ListBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
@@ -78,6 +89,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                     }
                 });
     }
+
     /**
      * 解析我的收藏列表
      *
@@ -113,6 +125,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
     }
+
     /**
      * 跳转新闻详情页
      *
@@ -222,6 +235,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                             }
                         });
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);

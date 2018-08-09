@@ -15,24 +15,31 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 我收藏贴子的适配器
  */
 public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBean.DataBean> {
-    public Map<Integer,Boolean> isCheck ;
+    private HashMap<Integer, Integer> isCheckBoxVisible;// 用来记录是否显示checkBox
+    private HashMap<Integer, Boolean> isChecked;// 用来记录是否被选中
+    private boolean isMultiSelect = false;
+
     private int data_uuid;
     private CollectOnClickListener collectOnClickListener;
+
     public void setCollectOnClickListener(CollectOnClickListener collectOnClickListener) {
         this.collectOnClickListener = collectOnClickListener;
     }
+
     private android.os.Handler handler = new android.os.Handler();
+
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
 
     }
+
     @Override
     protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
         final ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
