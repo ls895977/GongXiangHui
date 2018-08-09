@@ -27,6 +27,8 @@ import com.qunxianghui.gxh.bean.mine.CollectBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.observer.EventObserver;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -36,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -64,6 +67,8 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private int count;
     private boolean mIsRefresh = false;
     private int mMemberId;
+    EditEvent ee = new EditEvent();
+    private View view;
 
     @Override
     public int getLayoutId() {
@@ -159,6 +164,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(ee);
         xrecycler_mine_collect_news.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
@@ -197,6 +203,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventManager.getInstance().deleteObserver(ee);
     }
 
     @Override
@@ -245,7 +252,40 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 });
     }
 
-    @Override
+    @OnClick(R.id.bt_mycollect_delete)
     public void onClick(View v) {
+        switch (v.getId()) {
+            default:
+                break;
+            case R.id.bt_mycollect_delete:
+
+                for(MyCollectPostBean.DataBean dataBean:dataList){
+                    if(dataBean.isChecked()){
+                        deleteCollected(dataBean);
+                    }
+                }
+
+                break;
+        }
     }
+
+    private void deleteCollected(final MyCollectPostBean.DataBean dataBean){
+        OkGo.<String>post(Constant.CANCEL_COLLECT_URL).params("data_uuid",dataBean.getData_uuid()).execute(new StringCallback(){
+            @Override
+            public void onSuccess(Response<String> response) {
+                dataList.remove(dataBean);
+                myCollectPostAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private class EditEvent extends EventObserver {
+        @Override
+        public void update(Object object) {
+            //true表示可编辑状态
+            myCollectPostAdapter.setIsCheckBoxVisible((boolean) object);
+            myCollectPostAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
