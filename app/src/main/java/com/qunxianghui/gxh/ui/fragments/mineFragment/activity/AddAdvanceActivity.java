@@ -59,7 +59,6 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
     TextView tvAddAdvanceDelete;
     @BindView(R.id.tv_add_advance_complete)
     TextView tvAddAdvanceComplete;
-
     private String mPath;
     private List<String> upLoadPics = new ArrayList<>();
     private String mTitle;
@@ -91,9 +90,15 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         mEtAddAdvanceTitle.setText(mTitle);
         mEtAddAdvanceIntroduce.setText(mDescribe);
 
+
         if (mViewTag == 1) {
             mTvAddAdvanceSave.setVisibility(View.GONE);
             rlAddAdvanceEdit.setVisibility(View.VISIBLE);
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            options.placeholder(R.mipmap.default_img);
+            options.error(R.mipmap.default_img);
+            Glide.with(mContext).load(mImage_arrays).apply(options).into(mIvAddAdvancePic);
         }
     }
 
@@ -154,7 +159,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 params("aboutus_id", mAboutusId).
                 params("describe", mEditAddAdvanceIntroduce).
                 params("image", mEditImageUrl).
-                params("datatype",1).
+                params("datatype", 1).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

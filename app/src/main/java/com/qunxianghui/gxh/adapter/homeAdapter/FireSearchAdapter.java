@@ -14,7 +14,7 @@ import java.util.List;
  * Created on 2017/11/16 18:25.
  */
 
-public class FireSearchAdapter extends BaseRecycleViewAdapter<GuessBean.DataBean> {
+    public class FireSearchAdapter extends BaseRecycleViewAdapter<GuessBean.DataBean> {
 
     public FireSearchAdapter(Context context, List<GuessBean.DataBean> datas) {
         super(context, datas);

@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.widget.RoundImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,13 +32,13 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.tv_memberup_quickly_active)
     TextView mTvMemberupQuicklyActive;
     @BindView(R.id.iv_company_head)
-    ImageView ivCompanyHead;
+    RoundImageView ivCompanyHead;
     @BindView(R.id.tv_memberup_company_step)
     TextView tvMemberupCompanyStep;
     @BindView(R.id.tv_memberup_company_state)
     TextView tvMemberupCompanyState;
     @BindView(R.id.iv_regist_head)
-    ImageView ivRegistHead;
+    RoundImageView ivRegistHead;
     @BindView(R.id.tv_memberup_person_step)
     TextView tvMemberupPersonStep;
     @BindView(R.id.tv_memberup_person_state)
@@ -45,6 +47,12 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     TextView tvMemberupActiviteTime;
     @BindView(R.id.ll_memberup_regist_state)
     LinearLayout llMemberupRegistState;
+    @BindView(R.id.tv_memberup_person_active)
+    TextView tvMemberupPersonActive;
+    @BindView(R.id.cv_company)
+    CardView cvCompany;
+    @BindView(R.id.cv_register)
+    CardView cvRegister;
 
     private String selfcompayname;
     private String expire_time;
@@ -66,10 +74,10 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mLlMemberupCompanyState.getLayoutParams();
-        layoutParams.width = width * 3 / 4;
-        mLlMemberupCompanyState.setLayoutParams(layoutParams);
-        llMemberupRegistState.setLayoutParams(layoutParams);
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) cvCompany.getLayoutParams();
+        layoutParams.width = width * 4 / 5;
+        cvCompany.setLayoutParams(layoutParams);
+        cvRegister.setLayoutParams(layoutParams);
 
     }
 
@@ -85,9 +93,15 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         Glide.with(mContext).load(avatar).apply(options).into(ivRegistHead);
         if (selfcompayname != null) {
             mTvMemberupQuicklyActive.setVisibility(View.GONE);
+            tvMemberupPersonActive.setVisibility(View.GONE);
             tvMemberupActiviteTime.setVisibility(View.VISIBLE);
             tvMemberupCompanyState.setText("会员状态: 已激活");
-            tvMemberupActiviteTime.setText(expire_time);
+            tvMemberupActiviteTime.setText("激活日期" + expire_time);
+            tvMemberupPersonState.setText("会员状态:正常");
+
+        } else {
+            mTvMemberupQuicklyActive.setVisibility(View.VISIBLE);
+            tvMemberupPersonActive.setVisibility(View.VISIBLE);
         }
     }
 
@@ -100,6 +114,9 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_memberup_quickly_active:
                 toActivity(MemberUpActiveActivity.class);
                 break;
+            case R.id.tv_memberup_person_active:
+                toActivity(MemberUpActiveActivity.class);
+                break;
         }
     }
 
@@ -108,6 +125,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         super.initListeners();
         mIvMemberupBack.setOnClickListener(this);
         mTvMemberupQuicklyActive.setOnClickListener(this);
+        tvMemberupPersonActive.setOnClickListener(this);
 
     }
 
