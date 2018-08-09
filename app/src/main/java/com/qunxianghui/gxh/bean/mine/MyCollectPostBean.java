@@ -78,6 +78,16 @@ public class MyCollectPostBean implements Serializable {
         private String newctime;
         private List<String> images;
 
+        private boolean isChecked;
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+
         public static DataBean objectFromData(String str) {
 
             return new Gson().fromJson(str, DataBean.class);

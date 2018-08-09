@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,12 +15,17 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+
+import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.observer.EventObserver;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCollectVideoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener,Observer {
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
@@ -41,6 +47,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
+    private Boolean isEdit=true;
 
     @Override
     protected int getLayoutId() {
@@ -49,7 +56,8 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initViews() {
-
+        //注册观察者
+        EventManager.getInstance().addObserver(this);
 
         //设置tabLayout的一个显示方式
         mineTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
@@ -142,7 +150,13 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
                 finish();
                 break;
             case R.id.tv_mycollect_edit:
-                asyncShowToast("点击了编辑");
+                if(isEdit) {
+                    EventManager.getInstance().publishMessage(true);
+                    isEdit=false;
+                }else{
+                    EventManager.getInstance().publishMessage(false);
+                    isEdit=true;
+                }
                 break;
 
         }
@@ -154,4 +168,18 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //删除注册的观察者
+        EventManager.getInstance().deleteObserver(this);
+    }
+
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
 }

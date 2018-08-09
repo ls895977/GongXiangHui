@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +39,16 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
 
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
+        isChecked=new HashMap<>();
+    }
 
+    public void setIsCheckBoxVisible(boolean isMultiSelect){
+        this.isMultiSelect=isMultiSelect;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -49,6 +60,21 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         final String source = dataBean.getInfo().getSource();
         final String title = dataBean.getInfo().getTitle();
         data_uuid = dataBean.getData_uuid();
+
+        if(isMultiSelect){
+            mCheckBox.setVisibility(View.VISIBLE);
+        }else{
+            mCheckBox.setVisibility(View.GONE);
+        }
+
+        mCheckBox.setSelected(dataBean.isChecked());
+
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dataBean.setChecked(isChecked);
+            }
+        });
 
         holder.setText(R.id.tv_mine_mycollect_from, source);
         holder.setText(R.id.tv_mine_mycollect_title, title);
@@ -92,6 +118,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     protected int getItemView() {
         return R.layout.item_mine_mycollect_post;
     }
+
 
     public interface CollectOnClickListener {
         void cancelNewsCollect(int position);
