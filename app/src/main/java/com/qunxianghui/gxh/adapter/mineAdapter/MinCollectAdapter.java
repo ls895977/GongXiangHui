@@ -22,15 +22,16 @@ import java.util.List;
  */
 
 public class MinCollectAdapter extends RecyclerView.Adapter<MinCollectAdapter.MyViewHolder> {
-    private List<CollectBean.ListBean> data;
+    private List<CollectBean.DataBean> data;
     private Context mContext;
     private View view;
     private OnRecycleItemListener listener;
 
-    public MinCollectAdapter(List<CollectBean.ListBean> data, Context mContext) {
+    public MinCollectAdapter(List<CollectBean.DataBean> data, Context mContext) {
         this.data = data;
         this.mContext = mContext;
     }
+
 
     @NonNull
     @Override
@@ -42,12 +43,12 @@ public class MinCollectAdapter extends RecyclerView.Adapter<MinCollectAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
-        myViewHolder.tv_myCollect_item.setText(data.get(i).getName());
+        myViewHolder.tv_myCollect_item.setText(data.get(i).getInfo().getTitle());
 
         RequestOptions options = new RequestOptions();
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
-        Glide.with(mContext).load(data.get(i).getImgUrl()).apply(options).into(myViewHolder.iv_myCollect);
+        Glide.with(mContext).load(data.get(i).getInfo().getImages()).apply(options).into(myViewHolder.iv_myCollect);
     }
 
 

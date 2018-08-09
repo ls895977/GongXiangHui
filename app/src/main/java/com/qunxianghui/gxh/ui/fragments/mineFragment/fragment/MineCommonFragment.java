@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -32,6 +31,9 @@ import com.qunxianghui.gxh.observer.EventObserver;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,17 +50,12 @@ import butterknife.Unbinder;
 public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener, View.OnClickListener {
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
-    Unbinder unbinder;
-    @BindView(R.id.btmycollect_cancle)
-    Button btmycollectCancle;
-    @BindView(R.id.tv_mycollect_comment_count)
-    TextView tvMycollectCommentCount;
     @BindView(R.id.bt_mycollect_delete)
     Button btMycollectDelete;
     @BindView(R.id.ll_mycollect_select_state)
     LinearLayout llMycollectSelectState;
-
-    private List<CollectBean.ListBean> data;
+    Unbinder unbinder;
+    private List<CollectBean.DataBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
     private final HashMap<Integer, Boolean> map = new HashMap<>();
@@ -228,7 +225,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
      */
     private void CancelNewsData(final int position) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", dataList.get(position).getData_uuid())
+                .params("uuid", dataList.get(position).getInfo().getUuid())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(final Response<String> response) {
@@ -258,9 +255,8 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             default:
                 break;
             case R.id.bt_mycollect_delete:
-
-                for(MyCollectPostBean.DataBean dataBean:dataList){
-                    if(dataBean.isChecked()){
+                for (MyCollectPostBean.DataBean dataBean : dataList) {
+                    if (dataBean.isChecked()) {
                         deleteCollected(dataBean);
                     }
                 }
@@ -269,12 +265,29 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         }
     }
 
-    private void deleteCollected(final MyCollectPostBean.DataBean dataBean){
-        OkGo.<String>post(Constant.CANCEL_COLLECT_URL).params("data_uuid",dataBean.getData_uuid()).execute(new StringCallback(){
+    private void deleteCollected(final MyCollectPostBean.DataBean dataBean) {
+        OkGo.<String>post(Constant.CANCEL_COLLECT_URL).params("uuid",
+                dataBean.getInfo().getUuid())
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                dataList.remove(dataBean);
-                myCollectPostAdapter.notifyDataSetChanged();
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body());
+                    int code = jsonObject.getInt("code");
+                    if (code == 200) {
+                        dataList.remove(dataBean);
+                        myCollectPostAdapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Response<String> response) {
+                super.onError(response);
+                asyncShowToast("删除失败");
             }
         });
     }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,9 +14,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-
 import com.qunxianghui.gxh.observer.EventManager;
-import com.qunxianghui.gxh.observer.EventObserver;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCollectVideoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
 
@@ -58,7 +55,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     protected void initViews() {
         //注册观察者
         EventManager.getInstance().addObserver(this);
-
         //设置tabLayout的一个显示方式
         mineTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         //循环注入标签
@@ -69,10 +65,8 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initData() {
-
         fragments.add(new MineCommonFragment());
         fragments.add(new MineCollectVideoFragment());
-
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);
         mineCommonViewpager.setOffscreenPageLimit(2);
@@ -175,7 +169,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         //删除注册的观察者
         EventManager.getInstance().deleteObserver(this);
     }
-
 
     @Override
     public void update(Observable o, Object arg) {

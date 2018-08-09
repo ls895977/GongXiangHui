@@ -57,8 +57,6 @@ public class SearchVideoFragment extends BaseFragment {
      * ==================请求网络=====================
      */
     private void goNextWorks(String trim) {
-
-
         OkGo.<String>get(Constant.SEARCH_GET_VIDEO_LIST).
                 params("keywords", trim).
                 execute(new StringCallback() {
