@@ -159,7 +159,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(CompanyCardActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompanyCardActivity.this, platform + " 分享失败啦"+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -212,12 +212,11 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                         }
                     }
                 });
-
     }
     /*调用三方接口分享出去*/
     private void shareCompanyCardInfo(String avatar, String title, String content, final String url) {
         //以下代码是分享示例代码
-        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        UMImage image = new UMImage(this, avatar);//分享图标
         //切记切记 这里分享的链接必须是http开头
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
@@ -302,7 +301,6 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         mDialog.show();
 
     }
-
     private void ClipContent(String url) {
         ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(url));

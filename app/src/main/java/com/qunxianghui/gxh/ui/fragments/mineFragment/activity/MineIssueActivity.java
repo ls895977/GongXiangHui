@@ -9,6 +9,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
 
@@ -44,7 +45,6 @@ public class MineIssueActivity extends BaseActivity {
             mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
         }
 
-
     }
 
 
@@ -58,7 +58,7 @@ public class MineIssueActivity extends BaseActivity {
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssurePostFragment());
         fragments.add(new MyIssureVideoFragment());
-        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssueGoodSelectFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
 

@@ -214,7 +214,7 @@
     </style>
     <!--tablayout 字体大小修改-->
     <style name="TextAppearance.Design.Tab.Custom" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="textAllCaps">true</item>
     </style>
