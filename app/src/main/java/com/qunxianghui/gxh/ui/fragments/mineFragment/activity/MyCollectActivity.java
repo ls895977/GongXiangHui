@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener,Observer {
+public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, Observer {
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
@@ -40,11 +40,13 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ImageView ivMyCollectBack;
     @BindView(R.id.tv_mycollect_edit)
     TextView mTvMycollectEdit;
+    @BindView(R.id.tv_mycollect_cancel)
+    TextView tvMycollectCancel;
 
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
-    private Boolean isEdit=true;
+    private Boolean isEdit = true;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +89,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
         mTvMycollectEdit.setOnClickListener(this);
+        tvMycollectCancel.setOnClickListener(this);
     }
 
     private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
@@ -144,13 +147,20 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
                 finish();
                 break;
             case R.id.tv_mycollect_edit:
-                if(isEdit) {
+                if (isEdit) {
                     EventManager.getInstance().publishMessage(true);
-                    isEdit=false;
-                }else{
+                    isEdit = false;
+                    ivMyCollectBack.setVisibility(View.GONE);
+                    tvMycollectCancel.setVisibility(View.VISIBLE);
+                } else {
                     EventManager.getInstance().publishMessage(false);
-                    isEdit=true;
+                    isEdit = true;
+                    tvMycollectCancel.setVisibility(View.GONE);
                 }
+                break;
+            case R.id.tv_mycollect_cancel:
+                EventManager.getInstance().publishMessage(false);
+                isEdit = true;
                 break;
 
         }

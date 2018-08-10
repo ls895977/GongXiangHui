@@ -1,7 +1,5 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,14 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
@@ -52,8 +47,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.bt_mycollect_delete)
     Button btMycollectDelete;
-    @BindView(R.id.ll_mycollect_select_state)
-    LinearLayout llMycollectSelectState;
     Unbinder unbinder;
     private List<CollectBean.DataBean> data;
     private MyCollectPostAdapter myCollectPostAdapter;
@@ -205,49 +198,49 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     @Override
     public void cancelNewsCollect(final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("删除提示");
-        builder.setMessage("您确定要删除该条消息吗?");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                CancelNewsData(position);
-
-            }
-        });
-        builder.setNeutralButton("取消", null);
-        builder.show();
-    }
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+//        builder.setTitle("删除提示");
+//        builder.setMessage("您确定要删除该条消息吗?");
+//        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                CancelNewsData(position);
+//
+//            }
+//        });
+//        builder.setNeutralButton("取消", null);
+//        builder.show();
+}
     /*checkbox选择框的选择*/
 
-    /**
-     * 取消收藏
-     */
-    private void CancelNewsData(final int position) {
-        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("uuid", dataList.get(position).getInfo().getUuid())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(final Response<String> response) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                                Logger.e("取消收藏+" + response.body().toString());
-                                dataList.remove(position);
-                                myCollectPostAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-    }
+//    /**
+//     * 取消收藏
+//     */
+//    private void CancelNewsData(final int position) {
+//        OkGo.<String>post(Constant.ADD_COLLECT_URL)
+//                .params("uuid", dataList.get(position).getInfo().getUuid())
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(final Response<String> response) {
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
+//                                Logger.e("取消收藏+" + response.body().toString());
+//                                dataList.remove(position);
+//                                myCollectPostAdapter.notifyDataSetChanged();
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        super.onError(response);
+//                        Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
+//    }
 
     @OnClick(R.id.bt_mycollect_delete)
     public void onClick(View v) {
@@ -257,8 +250,11 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             case R.id.bt_mycollect_delete:
                 for (MyCollectPostBean.DataBean dataBean : dataList) {
                     if (dataBean.isChecked()) {
+
                         deleteCollected(dataBean);
                     }
+
+
                 }
 
                 break;

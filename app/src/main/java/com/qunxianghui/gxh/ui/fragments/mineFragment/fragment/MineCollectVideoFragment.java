@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -17,7 +18,11 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.observer.EventObserver;
 import com.qunxianghui.gxh.utils.GsonUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -25,14 +30,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MineCollectVideoFragment extends BaseFragment {
+public class MineCollectVideoFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
     Unbinder unbinder;
+    @BindView(R.id.bt_mycollect_delete)
+    Button btMycollectDelete;
+    private List<MineCollectVideoBean.DataBean> mDataList;
+    private MineCollectVideoAdapter mMineCollectVideoAdapter;
+
     @Override
     public int getLayoutId() {
+
         return R.layout.fragment_mine_collect_video;
     }
+
     @Override
     public void initData() {
         super.initData();
@@ -50,11 +62,11 @@ public class MineCollectVideoFragment extends BaseFragment {
     private void ParseMineCollectVideo(String body) {
         final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
         if (mineCollectVideoBean.getCode() == 0) {
-            final List<MineCollectVideoBean.DataBean> dataList = mineCollectVideoBean.getData();
+            mDataList = mineCollectVideoBean.getData();
 
-            final MineCollectVideoAdapter mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
-            xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
-            mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            mMineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, mDataList);
+            xrecyclerMycollectVideo.setAdapter(mMineCollectVideoAdapter);
+            mMineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
                     asyncShowToast("点击了");
@@ -65,7 +77,7 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     protected void initListeners() {
-        super.initListeners();
+        btMycollectDelete.setOnClickListener(this);
         xrecyclerMycollectVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -96,5 +108,54 @@ public class MineCollectVideoFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.bt_mycollect_delete:
+                for (MineCollectVideoBean.DataBean dataBean : mDataList) {
+                    if (dataBean.isChecked()) {
+                        deleteCollected(dataBean);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void deleteCollected(final MineCollectVideoBean.DataBean dataBean) {
+        OkGo.<String>post(Constant.CANCEL_COLLECT_URL).params("uuid",
+                dataBean.getInfo().getUuid())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
+                                mDataList.remove(dataBean);
+                                mMineCollectVideoAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        asyncShowToast("删除失败");
+                    }
+                });
+    }
+    private class EditEvent extends EventObserver {
+        @Override
+        public void update(Object object) {
+            //true表示可编辑状态
+            mMineCollectVideoAdapter.setIsCheckBoxVisible((boolean) object);
+            mMineCollectVideoAdapter.notifyDataSetChanged();
+        }
     }
 }

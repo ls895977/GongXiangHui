@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +69,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                     }
                 });
     }
+
     private void ParseMineIssueVideo(String body) {
         final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
         if (mIsRefreshing) {
@@ -87,7 +88,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                     @Override
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                        int uuid = dataList.get(position-1).getUuid();
+                        int uuid = dataList.get(position - 1).getUuid();
                         SkipMyIssueVideoDetail(uuid);
                     }
                 });
@@ -97,8 +98,10 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
             mineIssueVideoAdapter.notifyItemChanged(count, dataList.size());
         }
     }
+
     /**
      * 跳转我的发布的视频详情页
+     *
      * @param uuid
      */
     private void SkipMyIssueVideoDetail(int uuid) {
@@ -113,6 +116,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     /**
      * 解析我的发布视频详情
+     *
      * @param body
      */
     private void ParseMyIssueVideoDetail(String body) {
@@ -128,7 +132,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     @Override
     public void initViews(View view) {
-        recyclerMineIssueVideo.setLayoutManager(new GridLayoutManager(mActivity, GridLayoutManager.VERTICAL, 2,false));
+        recyclerMineIssueVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
@@ -149,12 +153,14 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 mIsRefreshing = true;
                 RequestMyIssueVideo();
             }
+
             @Override
             public void onLoadMore() {
                 RequestMyIssueVideo();
             }
         });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -179,6 +185,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
         builder.setNegativeButton("取消", null);
         builder.show();
     }
+
     /*请求接口删除*/
     private void DeleteVideo(final int position) {
         OkGo.<String>post(Constant.DELETE_MYISSUE_URL)
