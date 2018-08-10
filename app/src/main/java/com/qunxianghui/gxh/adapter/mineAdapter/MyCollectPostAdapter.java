@@ -60,19 +60,18 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         final String source = dataBean.getInfo().getSource();
         final String title = dataBean.getInfo().getTitle();
         data_uuid = dataBean.getData_uuid();
-
         if(isMultiSelect){
             mCheckBox.setVisibility(View.VISIBLE);
         }else{
             mCheckBox.setVisibility(View.GONE);
         }
-
+        mCheckBox.setChecked(false);
         mCheckBox.setSelected(dataBean.isChecked());
-
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 dataBean.setChecked(isChecked);
+
             }
         });
 
