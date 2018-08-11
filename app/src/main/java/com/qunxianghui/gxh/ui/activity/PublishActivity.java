@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -38,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class PublishActivity extends BaseActivity implements View.OnClickListener, ImagePickerAdapter.OnRecyclerViewItemClickListener {
     @BindView(R.id.iv_fabu_back)
@@ -55,6 +53,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     EditText etBaoliaoFabuContent;
     @BindView(R.id.recyclerView_publish_images)
     RecyclerView recyclerViewPublishImages;
+
     @BindView(R.id.ll_publich_load)
     LinearLayout llPublichLoad;
     private int maxImgCount = 8;               //允许选择图片最大数
@@ -104,7 +103,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                 Intent intent = new Intent(PublishActivity.this, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                 startActivityForResult(intent, REQUEST_CODE_SELECT);
-                selectPhotoDialog.dismiss();
             }
 
             @Override
@@ -113,12 +111,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                 ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
                 Intent intent1 = new Intent(PublishActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
-                selectPhotoDialog.dismiss();
-            }
-
-            @Override
-            public void onDismiss() {
-                selectPhotoDialog.dismiss();
             }
         });
     }
@@ -203,13 +195,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             e.printStackTrace();
         }
         finish();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

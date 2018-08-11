@@ -34,9 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class PersonDetailActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.iv_person_detail_back)
     ImageView ivPersonDetailBack;
     @BindView(R.id.iv_person_detail_head)
@@ -141,13 +141,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         super.initListeners();
         ivPersonDetailBack.setOnClickListener(this);
         tvPersonDetailAttention.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override
