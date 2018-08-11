@@ -30,9 +30,9 @@ import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
-import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,7 +192,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     private void uploadImages(String path) {
         OkGo.<String>post(Constant.UP_LOAD_PIC)
-                .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(path))
+                .params("file", new File(path))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -223,12 +223,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         OkGo.<String>post(Constant.PUBLISH_ARTICLE)
                 .params("content", mEtTitle.getText().toString().trim())
                 .params("images", stringBuilder.toString())
-                .params("cate_id", mTypeId)
+                .params("posts_id", mTypeId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         CommonBean commonBean = GsonUtils.jsonFromJson(response.body(), CommonBean.class);
-                        if (commonBean.code == 100) {
+                        if (commonBean.code == 200) {
                             mIsUploadIng = false;
                             mLlLoad.setVisibility(View.GONE);
                             asyncShowToast("发布成功");
