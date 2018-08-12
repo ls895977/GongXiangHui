@@ -115,7 +115,6 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
-
     @Override
     public void onClick(View v) {
 
@@ -125,12 +124,10 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
     public void onTabSelected(TabLayout.Tab tab) {
 
     }
-
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
 
     }
-
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 

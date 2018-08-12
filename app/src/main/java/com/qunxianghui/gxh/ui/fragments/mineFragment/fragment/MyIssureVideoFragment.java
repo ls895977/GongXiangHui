@@ -15,13 +15,13 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -65,11 +65,11 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        com.orhanobut.logger.Logger.d("我爆料的视频+++" + response.body().toString());
                         ParseMineIssueVideo(response.body());
                     }
                 });
     }
+
     private void ParseMineIssueVideo(String body) {
         final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
         if (mIsRefreshing) {
@@ -88,7 +88,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                     @Override
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                        int uuid = dataList.get(position-1).getUuid();
+                        int uuid = dataList.get(position - 1).getUuid();
                         SkipMyIssueVideoDetail(uuid);
                     }
                 });
@@ -98,8 +98,10 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
             mineIssueVideoAdapter.notifyItemChanged(count, dataList.size());
         }
     }
+
     /**
      * 跳转我的发布的视频详情页
+     *
      * @param uuid
      */
     private void SkipMyIssueVideoDetail(int uuid) {
@@ -114,6 +116,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     /**
      * 解析我的发布视频详情
+     *
      * @param body
      */
     private void ParseMyIssueVideoDetail(String body) {
@@ -150,12 +153,14 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 mIsRefreshing = true;
                 RequestMyIssueVideo();
             }
+
             @Override
             public void onLoadMore() {
                 RequestMyIssueVideo();
             }
         });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -180,6 +185,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
         builder.setNegativeButton("取消", null);
         builder.show();
     }
+
     /*请求接口删除*/
     private void DeleteVideo(final int position) {
         OkGo.<String>post(Constant.DELETE_MYISSUE_URL)

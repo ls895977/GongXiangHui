@@ -62,8 +62,10 @@ public class Constant {
     public static final String CITY_LIST_URL = BASE_URL + "region/getList";
     //修改个人资料
     public static final String EDIT_PERSON_DATA = BASE_URL + "user/editProfile";
-    //搜索显示猜的数据
+    //搜索首页显示猜的数据
     public static final String SEARCH_GUESS_URL = BASE_URL + "search/getGuess";
+    //搜索视频汇显示猜的数据
+    public static final String SEARCH_VIDEO_GUESS_URL = BASE_URL + "Video/getGuess";
     //获取个人资料
     public static final String CATCH_USERDATA_URL = BASE_URL + "user/getProfile";
     //获取用户详情
@@ -114,6 +116,8 @@ public class Constant {
     public static final String ADD_REPORT_URL = BASE_URL + "report/reportAdd";
     //搜索结果
     public static final String SEARCH_GET_LIST = BASE_URL + "search/getList";
+    //搜索视频的结果
+    public static final String SEARCH_GET_VIDEO_LIST = BASE_URL + "Video/searchVideo";
     //获取搜索自动完成数据
     public static final String SEARCH_AUTO_COMPLETE = BASE_URL + "search/autoComplete";
     //获取我的爆料信息
@@ -168,10 +172,14 @@ public class Constant {
     public static final String DISCUSS_MINE_FOLLOW_URL = BASE_URL + "msg/getPosts";
     //我的消息的我的跟帖
     public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
+    //我的发布精选列表
+    public static final String MYISSURE_GOOD_SELECT_URL = BASE_URL + "User/getMySelection";
+    //我的发布的本地服务列表
+    public static final String MYISSURE_LOCAL_SERVICE_URL = BASE_URL + "User/getMySelection";
     //我的企业名片
     public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
     //分享我的企业名片
-    public static final String SHARE_COMPANY_CARD_URL=BASE_URL+"Aboutus/showh5";
+    public static final String SHARE_COMPANY_CARD_URL = BASE_URL + "Aboutus/showh5";
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
     //查看核心优势或公司产品

@@ -82,7 +82,10 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
             mIsRefresh = false;
             mDataList.clear();
         }
-        mDataList.addAll(mAddAdvanceBean.getData());
+        if (mDataList!=null){
+            mDataList.addAll(mAddAdvanceBean.getData());
+        }
+
         int code = mAddAdvanceBean.getCode();
         if (code == 200) {
             if (mIsFirst) {

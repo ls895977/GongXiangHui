@@ -59,7 +59,6 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
     TextView tvAddAdvanceDelete;
     @BindView(R.id.tv_add_advance_complete)
     TextView tvAddAdvanceComplete;
-
     private String mPath;
     private List<String> upLoadPics = new ArrayList<>();
     private String mTitle;
@@ -91,9 +90,15 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         mEtAddAdvanceTitle.setText(mTitle);
         mEtAddAdvanceIntroduce.setText(mDescribe);
 
+
         if (mViewTag == 1) {
             mTvAddAdvanceSave.setVisibility(View.GONE);
             rlAddAdvanceEdit.setVisibility(View.VISIBLE);
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            options.placeholder(R.mipmap.default_img);
+            options.error(R.mipmap.default_img);
+            Glide.with(mContext).load(mImage_arrays).apply(options).into(mIvAddAdvancePic);
         }
     }
 
@@ -154,7 +159,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 params("aboutus_id", mAboutusId).
                 params("describe", mEditAddAdvanceIntroduce).
                 params("image", mEditImageUrl).
-                params("datatype",1).
+                params("datatype", 1).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -255,7 +260,10 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 .isCamera(true)// 是否显示拍照按钮
                 .enableCrop(true)// 是否裁剪 true or false
                 .compress(true)// 是否压缩 true or false
+                .cropCompressQuality(50)// 裁剪压缩质量 默认90 int
                 .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
+                .isDragFrame(true)// 是否可拖动裁剪框(固定)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
 
         // 清空图片缓存，包括裁剪、压缩后的图片 注意:必须要在上传完成后调用 必须要获取权限
@@ -298,8 +306,11 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
                 // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
                 // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                mPath = selectList.get(0).getPath();
-                FetchAdvancePic(mPath);
+                for (int i=0;i<selectList.size();i++){
+                    mPath = selectList.get(i).getPath();
+                    FetchAdvancePic(mPath);
+                }
+
                 break;
         }
     }

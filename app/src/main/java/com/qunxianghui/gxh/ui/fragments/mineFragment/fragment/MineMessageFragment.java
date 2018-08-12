@@ -86,7 +86,6 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
 
     @Override
     public void initData() {
-        super.initData();
         RequestCommonMineMessage();
     }
 

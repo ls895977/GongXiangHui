@@ -71,8 +71,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
     private String[] mImage_arrays;
     private int mViewTag;
     private int mAboutusId;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_company_cardadd_product;
@@ -87,7 +85,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
         mAboutusId = intent.getIntExtra("aboutus_id", 0);
         mDescribe = intent.getStringExtra("describe");
         mImage_arrays = intent.getStringArrayExtra("image_array");
-
         //图片视频库的处理
         themeId = R.style.picture_default_style;
         FullyGridLayoutManager fullyGridLayoutManager = new FullyGridLayoutManager(AddProductActivity.this, 4, GridLayoutManager.VERTICAL, false);
@@ -194,7 +191,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
 
     /*修改公司产品*/
     private void editCompanyCardAdavance(String mProductTitle, String mProductIntroduce, String mEditImageUrl) {
-
         OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
                 params("title", mProductTitle).
                 params("aboutus_id", mAboutusId).

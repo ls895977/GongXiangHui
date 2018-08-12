@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,24 +16,38 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 我收藏贴子的适配器
  */
 public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBean.DataBean> {
-    public Map<Integer,Boolean> isCheck ;
-    private int data_uuid;
+    private HashMap<Integer, Integer> isCheckBoxVisible;// 用来记录是否显示checkBox
+    private HashMap<Integer, Boolean> isChecked;// 用来记录是否被选中
+    private boolean isMultiSelect = false;
     private CollectOnClickListener collectOnClickListener;
+
     public void setCollectOnClickListener(CollectOnClickListener collectOnClickListener) {
         this.collectOnClickListener = collectOnClickListener;
     }
+
     private android.os.Handler handler = new android.os.Handler();
+
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
-
+        isChecked=new HashMap<>();
     }
+
+    public void setIsCheckBoxVisible(boolean isMultiSelect){
+        this.isMultiSelect=isMultiSelect;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     @Override
     protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
         final ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
@@ -41,7 +56,20 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
         final List<String> images = dataBean.getImages();
         final String source = dataBean.getInfo().getSource();
         final String title = dataBean.getInfo().getTitle();
-        data_uuid = dataBean.getData_uuid();
+        if(isMultiSelect){
+            mCheckBox.setVisibility(View.VISIBLE);
+        }else{
+            mCheckBox.setVisibility(View.GONE);
+        }
+        mCheckBox.setChecked(false);
+        mCheckBox.setSelected(dataBean.isChecked());
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dataBean.setChecked(isChecked);
+
+            }
+        });
 
         holder.setText(R.id.tv_mine_mycollect_from, source);
         holder.setText(R.id.tv_mine_mycollect_title, title);
@@ -85,6 +113,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     protected int getItemView() {
         return R.layout.item_mine_mycollect_post;
     }
+
 
     public interface CollectOnClickListener {
         void cancelNewsCollect(int position);

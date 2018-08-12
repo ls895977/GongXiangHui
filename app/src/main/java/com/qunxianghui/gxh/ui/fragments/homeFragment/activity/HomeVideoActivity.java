@@ -78,6 +78,7 @@ public class HomeVideoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_search:
+                toActivity(SearchVideoActivity.class);
                 break;
             case R.id.tv_address:
                 toActivity(LocationActivity.class);

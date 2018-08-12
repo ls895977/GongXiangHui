@@ -20,6 +20,13 @@
             android:background="@mipmap/common_black_back" />
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_mycollect_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
