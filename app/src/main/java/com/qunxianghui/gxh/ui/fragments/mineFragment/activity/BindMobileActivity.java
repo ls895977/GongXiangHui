@@ -17,7 +17,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
@@ -82,14 +82,14 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
         if (TextUtils.isEmpty(mobileCode) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(bindPassword)) {
             asyncShowToast("检查一下手机号 验证码 密码那个没有填");
         } else {
-            OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
+            OkGo.<CommonResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
                     .params("mobile", phoneNumber)
                     .params("captcha", mobileCode)
                     .params("password", bindPassword)
                     .params("connect_id", getIntent().getIntExtra("connect_id", 0))
-                    .execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
+                    .execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
                         @Override
-                        public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                        public void onSuccess(Response<CommonResponse<LoginBean>> response) {
                                 if (response.body().code==0) {
                                     String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                                     SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);

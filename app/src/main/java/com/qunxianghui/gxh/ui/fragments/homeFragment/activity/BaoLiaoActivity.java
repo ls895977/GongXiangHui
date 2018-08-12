@@ -92,7 +92,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 Intent intent = new Intent(BaoLiaoActivity.this, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                 startActivityForResult(intent, REQUEST_CODE_SELECT);
-                selectPhotoDialog.dismiss();
             }
 
             @Override
@@ -101,13 +100,8 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
                 Intent intent1 = new Intent(BaoLiaoActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
-                selectPhotoDialog.dismiss();
             }
 
-            @Override
-            public void onDismiss() {
-                selectPhotoDialog.dismiss();
-            }
         });
     }
 

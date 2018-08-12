@@ -73,7 +73,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public int getLayoutId() {
         mActivity.getWindow()
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-                        |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return R.layout.fragment_detail_location;
     }
 
@@ -84,11 +84,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             @Override
             public void keyBoardShow(int height) {
                 Logger.i("xxx-yyy jump :" + commentPosition);
-                View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition );
+                View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition);
 
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                int bottomMargin=height-getBottomKeyboardHeight()-30;
-                layoutParams.bottomMargin =bottomMargin;
+                int bottomMargin = height - getBottomKeyboardHeight() - 30;
+                layoutParams.bottomMargin = bottomMargin;
 
                 commentView.setLayoutParams(layoutParams);
                 if (item != null) {
@@ -98,7 +98,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     int y = location[1];
                     Logger.v("xxx-yyy item height :", item.getMeasuredHeight());
                     Logger.v("xxx-yyy y :" + y);
-                    recyclerView.smoothScrollBy(0, (bottomMargin+commentView.getHeight()-item.getBottom()));//计算item滚动多少
+                    recyclerView.smoothScrollBy(0, (bottomMargin + commentView.getHeight() - item.getBottom()));//计算item滚动多少
                 } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
@@ -253,7 +253,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
      */
     @Override
     public void onCommentClick(final int position, String content) {
-        Log.v("xxx-yyy",position+"");
+        Log.v("xxx-yyy", position + "");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             return;
@@ -293,7 +293,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                     if (comment.getCode() == 0) {
                                         comment_edit.setText("");
                                         hideSoftKeyboard(comment_edit, getActivity());
-                                    }else{
+                                    } else {
                                         asyncShowToast(response.message());
                                     }
                                 }
@@ -416,19 +416,19 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(comment_edit.getText().toString()!=null&&!"".equals(comment_edit.getText().toString())) {
+                if (comment_edit.getText().toString() != null && !"".equals(comment_edit.getText().toString())) {
                     OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
                             .params("content", comment_edit.getText().toString().trim())
-                            .params("uuid",commentBean.getUuid())
-                            .params("pid",commentBean.getPid())
-                            .execute(new StringCallback(){
+                            .params("uuid", commentBean.getUuid())
+                            .params("pid", commentBean.getPid())
+                            .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
                                     if (comment.getCode() == 0) {
                                         comment_edit.setText("");
                                         hideSoftKeyboard(comment_edit, getActivity());
-                                    }else{
+                                    } else {
                                         asyncShowToast(response.message());
                                     }
                                 }
@@ -439,7 +439,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                     asyncShowToast(response.message());
                                 }
                             });
-                }else {
+                } else {
                     asyncShowToast("请输入评论内容");
                 }
             }
@@ -457,25 +457,25 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     /**
      * 显示或隐藏输入法
      */
-    private void onFocusChange(boolean hasFocus){
+    private void onFocusChange(boolean hasFocus) {
         final boolean isFocus = hasFocus;
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 InputMethodManager imm = (InputMethodManager)
                         comment_edit.getContext().getSystemService(INPUT_METHOD_SERVICE);
-                if(isFocus)  {
+                if (isFocus) {
                     //显示输入法
                     imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                }else{
+                } else {
                     //隐藏输入法
-                    imm.hideSoftInputFromWindow(comment_edit.getWindowToken(),0);
+                    imm.hideSoftInputFromWindow(comment_edit.getWindowToken(), 0);
                 }
             }
         }, 100);
     }
 
-    public int getBottomKeyboardHeight(){
-        int screenHeight =  getAccurateScreenDpi()[1];
+    public int getBottomKeyboardHeight() {
+        int screenHeight = getAccurateScreenDpi()[1];
         DisplayMetrics dm = new DisplayMetrics();
         mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         int heightDifference = screenHeight - dm.heightPixels;
@@ -485,18 +485,17 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     /**
      * 获取精确的屏幕大小
      */
-    public int[] getAccurateScreenDpi()
-    {
+    public int[] getAccurateScreenDpi() {
         int[] screenWH = new int[2];
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
         try {
             Class<?> c = Class.forName("android.view.Display");
-            Method method = c.getMethod("getRealMetrics",DisplayMetrics.class);
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
             method.invoke(display, dm);
             screenWH[0] = dm.widthPixels;
             screenWH[1] = dm.heightPixels;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return screenWH;

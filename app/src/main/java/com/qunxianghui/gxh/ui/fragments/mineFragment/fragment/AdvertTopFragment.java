@@ -17,7 +17,8 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.AdvertTypeBean;
+import com.qunxianghui.gxh.bean.EnterpriseMaterial;
+import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
@@ -40,7 +41,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private AdvertChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private List<View> mViewList = new ArrayList<>();
-    private List<AdvertTypeBean> mList = new ArrayList<>();
+    private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -78,7 +79,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_company:
-                asyncShowToast("通用模版");
+                toActivityWithResult(EnterpriseMaterialActivity.class, 0x0011);
                 break;
             case R.id.ll_common:
                 asyncShowToast("通用素材");
@@ -197,7 +198,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         });
         ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
         mViewList.add(view);
-        mList.add(new AdvertTypeBean());
+        mList.add(new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert());
         mPagerAdapter.notifyDataSetChanged();
         mVp.setCurrentItem(mPagerAdapter.getCount() - 1, false);
         changeCircleView();

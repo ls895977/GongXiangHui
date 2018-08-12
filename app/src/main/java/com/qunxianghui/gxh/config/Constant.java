@@ -12,10 +12,9 @@ public class Constant {
     //首页本地服务链接的跳转
     public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //正式环境
-    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-
-    //测试环境
+//    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
 //    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -144,15 +143,14 @@ public class Constant {
     public static final String DELETE_LOCAL_POST_SUB_URL = BASE_URL + "Posts/delPostsCate";
     //上传本地圈的分类
     public static final String UPLOAD_LOCAL_POST_SORT_SUB_URL = BASE_URL + "Posts/addPosts";
-    //上传视
-    public static final String UPLOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+    //上传视频
+    public static final String UPLOAD_VIDEO_URL = BASE_URL + "System/uploadVideo";
     //编辑视频汇分类接口
     public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";
     //个人添加视频汇分类接口
     public static final String ADD_VIDEO_TAB_URL = BASE_URL + "Video/addVideoCate";
     //个人删除视频汇分类接口
     public static final String DELETE_VIDEO_TAB_URL = BASE_URL + "Video/delVideoCate";
-
     //用户订阅的视频的频道
     public static final String VIDEO_SUB_URL = BASE_URL + "Video/getVideoCate";
     //上传视频的类别
@@ -202,6 +200,8 @@ public class Constant {
     public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
     //修改某条广告
     public static final String EDIT_AD = BASE_URL + "user/editAd";
+
+    public static final String ENTERPRISE_MATERIAL = BASE_URL + "user/getEnterpriseMaterial";
     //企业添加
     public static final String ADD_COMPANY_URL = BASE_URL + "service/addCompany";
     //企业设置   获取

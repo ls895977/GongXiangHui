@@ -18,7 +18,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.WelcomeAdverBean;
+import com.qunxianghui.gxh.bean.home.WelcomeAdvertBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -86,9 +86,9 @@ public class WelcomeActivity extends BaseActivity {
         OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                WelcomeAdverBean welcomeAdverBean = GsonUtils.jsonFromJson(response.body(), WelcomeAdverBean.class);
-                if (welcomeAdverBean.getCode() == 0) {
-                    WelcomeAdverBean.DataBean data = welcomeAdverBean.getData();
+                WelcomeAdvertBean welcomeAdvertBean = GsonUtils.jsonFromJson(response.body(), WelcomeAdvertBean.class);
+                if (welcomeAdvertBean.getCode() == 0) {
+                    WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
                     String image = data.getImage();
                     Glide.with(mContext)
                             .load(image)

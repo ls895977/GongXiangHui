@@ -14,6 +14,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.AdvertBottomAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
@@ -66,7 +67,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             public void onItemClick(int position) {
                 switch (position) {
                     case 0:
-                        asyncShowToast("企业素材");
+                        toActivityWithResult(EnterpriseMaterialActivity.class, 0x0011);
                         break;
                     case 1:
                         asyncShowToast("通用素材");

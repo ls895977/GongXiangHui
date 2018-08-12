@@ -19,11 +19,13 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.PublishActivity;
+import com.qunxianghui.gxh.ui.activity.LocationPublishActivity;
+import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CheckBoxActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.FastBlurUtility;
+import com.qunxianghui.gxh.utils.ToastUtils;
 
 public class OnekeyIssueDialog extends Dialog {
 
@@ -41,10 +43,10 @@ public class OnekeyIssueDialog extends Dialog {
                 dismiss();
                 switch (v.getId()) {
                     case R.id.tv_video:
-                        FitchVideo();
+                        fitchVideo();
                         break;
                     case R.id.tv_location:
-                        startActivity(PublishActivity.class);
+                        startActivity(LocationPublishActivity.class);
                         break;
                     case R.id.tv_baoliao:
                         startActivity(BaoLiaoActivity.class);
@@ -90,7 +92,11 @@ public class OnekeyIssueDialog extends Dialog {
     }
 
     /*获取系统的视频和录像*/
-    private void FitchVideo() {
+    private void fitchVideo() {
+        if (MainActivity.mIsUploadIng) {
+            ToastUtils.showShort("视频上传中...");
+            return;
+        }
         PictureSelector.create(mActicity)
                 .openGallery(PictureMimeType.ofVideo())
                 .selectionMode(PictureConfig.SINGLE)

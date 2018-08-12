@@ -140,10 +140,6 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.LiftStyleActivity"
             android:screenOrientation="portrait" />
-        <!-- 本地圈发布动态界面 -->
-        <activity
-            android:name=".ui.fragments.locationFragment.activity.PublishStateActivity"
-            android:screenOrientation="portrait" />
         <!-- 我的板块我的收藏界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MyCollectActivity"
@@ -297,6 +293,15 @@
         <!--首页视频汇的搜索界面-->
         <activity
             android:name=".ui.fragments.homeFragment.activity.SearchVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LocationPublishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EnterpriseMaterialTiePianActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EnterpriseMaterialActivity"
             android:screenOrientation="portrait" />
     </application>
 
