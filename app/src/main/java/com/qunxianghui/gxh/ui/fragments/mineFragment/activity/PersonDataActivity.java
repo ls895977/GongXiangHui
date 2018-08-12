@@ -25,7 +25,7 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -250,11 +250,11 @@ public class PersonDataActivity extends BaseActivity {
     }
 
     private void upLoadPic(String urls) {
-        OkGo.<LzyResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
+        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
                 .params("base64", urls)
-                .execute(new DialogCallback<LzyResponse<ImageBean>>(this) {
+                .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
                     @Override
-                    public void onSuccess(Response<LzyResponse<ImageBean>> response) {
+                    public void onSuccess(Response<CommonResponse<ImageBean>> response) {
                         if (response.body().code == 0) {
                             upLoadPics.add(response.body().data.getFile());
                             Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();

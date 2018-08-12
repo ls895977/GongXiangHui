@@ -18,7 +18,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.MyApplication;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -291,12 +291,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLogin(String phone, String password) {
-        OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
+        OkGo.<CommonResponse<LoginBean>>post(Constant.LOGIN_URL).
                 params("mobile", phone).
                 params("password", password).
-                execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
+                execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
                     @Override
-                    public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                    public void onSuccess(Response<CommonResponse<LoginBean>> response) {
                         if (response.body().code == 0) {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
@@ -308,7 +308,7 @@ public class LoginActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<LzyResponse<LoginBean>> response) {
+                    public void onError(Response<CommonResponse<LoginBean>> response) {
                         super.onError(response);
                         asyncShowToast("用户名或密码错误！");
                     }

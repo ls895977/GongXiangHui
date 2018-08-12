@@ -42,7 +42,7 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_advercomment;
+        return R.layout.activity_advert_template;
     }
 
     @Override

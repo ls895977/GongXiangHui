@@ -20,7 +20,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.mine.UserDetailInforBean;
+import com.qunxianghui.gxh.bean.mine.UserDetailInfoBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailPostFragment;
@@ -57,7 +57,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     public int member_id;
     private String follow;
-    private UserDetailInforBean.DataBean dataList;
+    private UserDetailInfoBean.DataBean dataList;
 
     @Override
     protected int getLayoutId() {
@@ -116,8 +116,8 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
 
     //解析用户的详情资料
     private void parseUserDetailInfo(String body) {
-        UserDetailInforBean userDetailInforBean = GsonUtils.jsonFromJson(body, UserDetailInforBean.class);
-        dataList = userDetailInforBean.getData();
+        UserDetailInfoBean userDetailInfoBean = GsonUtils.jsonFromJson(body, UserDetailInfoBean.class);
+        dataList = userDetailInfoBean.getData();
         follow = dataList.getFollow();
         if (follow.toString().equals("")) {
             tvPersonDetailAttention.setText("关注");
@@ -125,7 +125,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             tvPersonDetailAttention.setText("已关注");
         }
 
-        if (userDetailInforBean.getCode() == 0) {
+        if (userDetailInfoBean.getCode() == 0) {
             tvPersonDetailName.setText(dataList.getNick());
 
             RequestOptions options = new RequestOptions();

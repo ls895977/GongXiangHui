@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDetailInforBean implements Serializable {
+public class UserDetailInfoBean implements Serializable {
 
     /**
      * code : 0
@@ -21,14 +21,14 @@ public class UserDetailInforBean implements Serializable {
     private String message;
     private DataBean data;
 
-    public static UserDetailInforBean objectFromData(String str) {
+    public static UserDetailInfoBean objectFromData(String str) {
 
-        return new Gson().fromJson(str, UserDetailInforBean.class);
+        return new Gson().fromJson(str, UserDetailInfoBean.class);
     }
 
-    public static List<UserDetailInforBean> arrayUserDetailInforBeanFromData(String str) {
+    public static List<UserDetailInfoBean> arrayUserDetailInforBeanFromData(String str) {
 
-        Type listType = new TypeToken<ArrayList<UserDetailInforBean>>() {
+        Type listType = new TypeToken<ArrayList<UserDetailInfoBean>>() {
         }.getType();
 
         return new Gson().fromJson(str, listType);

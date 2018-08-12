@@ -41,7 +41,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
@@ -450,12 +450,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
      * @param commonText
      */
     private void requestNewsCommon(String commonText) {
-        OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
+        OkGo.<CommonResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", uuid)
                 .params("content", commonText)
-                .execute(new DialogCallback<LzyResponse<CommentBean>>(NewsDetailActivity.this) {
+                .execute(new DialogCallback<CommonResponse<CommentBean>>(NewsDetailActivity.this) {
                     @Override
-                    public void onSuccess(Response<LzyResponse<CommentBean>> response) {
+                    public void onSuccess(Response<CommonResponse<CommentBean>> response) {
                         if (response.body().code == 0) {
                             asyncShowToast("评论成功");
                             mWedNewsDetail.reload();

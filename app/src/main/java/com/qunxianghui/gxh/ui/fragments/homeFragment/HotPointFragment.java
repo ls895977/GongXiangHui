@@ -19,7 +19,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -111,13 +111,13 @@ public class HotPointFragment extends BaseFragment {
     @Override
     public void initData() {
         //首页新闻数据
-        OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
+        OkGo.<CommonResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
                 .params("limit", 12)
                 .params("skip", mCount)
                 .params("channel_id", mChannelId)
-                .execute(new JsonCallback<LzyResponse<List<HomeNewListBean>>>() {
+                .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
-                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                    public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
                         setData(response);
                     }
                 });
@@ -127,11 +127,11 @@ public class HotPointFragment extends BaseFragment {
      * 首页下拉刷新 新的接口
      */
     private void homePullRefresh() {
-        OkGo.<LzyResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
+        OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                 .params("channel_id", mChannelId)
-                .execute(new JsonCallback<LzyResponse<List<HomeNewListBean>>>() {
+                .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
-                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                    public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
                         mSw.setRefreshing(false);
                         setData(response);
                         Display display = mActivity.getWindowManager().getDefaultDisplay();
@@ -143,7 +143,7 @@ public class HotPointFragment extends BaseFragment {
                 });
     }
 
-    private void setData(Response<LzyResponse<List<HomeNewListBean>>> response){
+    private void setData(Response<CommonResponse<List<HomeNewListBean>>> response){
         if (response.body().code == 0) {
             List<HomeNewListBean> list = response.body().data;
             if (list == null || list.size() == 0) {

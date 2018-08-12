@@ -137,12 +137,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 初始化view
      **/
-    protected void initViews(){}
+    protected void initViews() {
+    }
 
     /**
      * 初始化数据
      */
-    protected void initData(){}
+    protected void initData() {
+    }
 
     protected void setStatusBar() {
         StatusBarUtil.setTransparentForImageView(this, null);

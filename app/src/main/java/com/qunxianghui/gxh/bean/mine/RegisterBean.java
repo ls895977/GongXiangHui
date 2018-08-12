@@ -3,7 +3,7 @@ package com.qunxianghui.gxh.bean.mine;
 import java.io.Serializable;
 import java.util.List;
 
-public class RegistBean implements Serializable {
+public class RegisterBean implements Serializable {
 
     /**
      * code : 101

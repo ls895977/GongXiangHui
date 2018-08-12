@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +29,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
-import com.qunxianghui.gxh.bean.mine.RegistBean;
+import com.qunxianghui.gxh.bean.mine.RegisterBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
@@ -215,8 +214,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        final RegistBean registBean = GsonUtil.parseJsonWithGson(response.body(), RegistBean.class);
-                        if (registBean.getCode()==0){
+                        final RegisterBean registerBean = GsonUtil.parseJsonWithGson(response.body(), RegisterBean.class);
+                        if (registerBean.getCode()==0){
                             asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
                         }

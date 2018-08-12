@@ -19,7 +19,7 @@ import android.util.Log;
 
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.convert.Converter;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.SimpleResponse;
 import com.qunxianghui.gxh.utils.Convert;
 
@@ -122,7 +122,7 @@ public class JsonConvert<T> implements Converter<T> {
 
         Type rawType = type.getRawType();                     // 泛型的实际类型
         Type typeArgument = type.getActualTypeArguments()[0]; // 泛型的参数
-        if (rawType != LzyResponse.class) {
+        if (rawType != CommonResponse.class) {
             // 泛型格式如下： new JsonCallback<外层BaseBean<内层JavaBean>>(this)
             T t = Convert.fromJson(jsonReader, type);
             response.close();
@@ -136,17 +136,17 @@ public class JsonConvert<T> implements Converter<T> {
                 return (T) simpleResponse.toLzyResponse();
             } else {
                 // 泛型格式如下： new JsonCallback<LzyResponse<内层JavaBean>>(this)
-                LzyResponse lzyResponse = Convert.fromJson(jsonReader, type);
+                CommonResponse commonResponse = Convert.fromJson(jsonReader, type);
                 response.close();
-                int code = lzyResponse.code;
+                int code = commonResponse.code;
                 //这里的0是以下意思
                 //一般来说服务器会和客户端约定一个数表示成功，其余的表示失败，这里根据实际情况修改
                 if (code==0){
-                    return  (T) lzyResponse;
+                    return  (T) commonResponse;
                 }else {
                     //直接将服务端的错误信息抛出，onError中可以获取
                     Log.e("okgo", "错误代码： "+code);
-                    return (T) lzyResponse;
+                    return (T) commonResponse;
 //                    throw new IllegalStateException("错误代码：" + code + "，错误信息：" + lzyResponse.msg);
                 }
             }

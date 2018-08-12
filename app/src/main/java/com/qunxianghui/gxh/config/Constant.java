@@ -202,6 +202,8 @@ public class Constant {
     public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
     //修改某条广告
     public static final String EDIT_AD = BASE_URL + "user/editAd";
+
+    public static final String ENTERPRISE_MATERIAL = BASE_URL + "user/getEnterpriseMaterial";
     //企业添加
     public static final String ADD_COMPANY_URL = BASE_URL + "service/addCompany";
     //企业设置   获取

@@ -23,7 +23,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineMessageFollewAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.mine.MineMessageFollowBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
@@ -202,12 +202,12 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
     }
 
     private void RequestNewsCommon(String commonText, int position) {
-        OkGo.<LzyResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
+        OkGo.<CommonResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
                 .params("uuid", dataList.get(position).getData_uuid())
                 .params("content", commonText)
-                .execute(new DialogCallback<LzyResponse<CommentBean>>(mActivity) {
+                .execute(new DialogCallback<CommonResponse<CommentBean>>(mActivity) {
                     @Override
-                    public void onSuccess(Response<LzyResponse<CommentBean>> response) {
+                    public void onSuccess(Response<CommonResponse<CommentBean>> response) {
                         if (response.body().code == 0) {
                             asyncShowToast("评论成功");
                             inputResponseComment.setVisibility(View.VISIBLE);
