@@ -33,9 +33,9 @@ import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
-import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -232,7 +232,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     for (int i = 0, length = selImageList.size(); i < length; i++) {
                         String path = selImageList.get(i).path;
                         if (!path.contains("http")) {
-                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path), i == length - 1);
+                            File file=new File(path);
+                            upLoadPic(file, i == length - 1);
                         } else {
                             upLoadPics.add(path);
                             if (i == length - 1) {
@@ -413,9 +414,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         //upLoadPic("");
     }
 
-    private void upLoadPic(String urls, final boolean isUpdate) {
-        OkGo.<String>post(Constant.UP_LOAD_PIC)
-                .params("base64", urls)
+    private void upLoadPic(File urls, final boolean isUpdate) {
+        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+                .params("file", urls)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

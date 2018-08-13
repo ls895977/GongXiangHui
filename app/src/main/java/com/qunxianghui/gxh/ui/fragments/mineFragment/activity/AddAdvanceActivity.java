@@ -34,6 +34,7 @@ import com.qunxianghui.gxh.utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -321,11 +322,13 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
         Glide.with(mContext).load(path).apply(options).into(mIvAddAdvancePic);
-        upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path));
+
+        File file=new File(path);
+        upLoadPic(file);
     }
 
-    private void upLoadPic(String urls) {
-        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
+    private void upLoadPic(File urls) {
+        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
                 .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
                     @Override
