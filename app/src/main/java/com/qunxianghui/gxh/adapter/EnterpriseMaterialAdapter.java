@@ -13,10 +13,12 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 public class EnterpriseMaterialAdapter extends BaseQuickAdapter<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert, BaseViewHolder> {
 
     private RequestOptions mOptions;
+    private int mType;
 
     @SuppressLint("CheckResult")
-    public EnterpriseMaterialAdapter(int layoutResId) {
+    public EnterpriseMaterialAdapter(int layoutResId, int type) {
         super(layoutResId);
+        this.mType = type;
         mOptions = new RequestOptions();
         mOptions.placeholder(R.mipmap.default_img)
                 .error(R.mipmap.default_img)

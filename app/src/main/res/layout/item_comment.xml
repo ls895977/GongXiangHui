@@ -7,9 +7,9 @@
 
     <LinearLayout
         android:id="@+id/ll_comment_view"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/name"
@@ -24,14 +24,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\u3000回复\u3000"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_item_replyed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="aaa"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/content"

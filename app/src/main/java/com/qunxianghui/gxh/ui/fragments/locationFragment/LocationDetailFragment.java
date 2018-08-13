@@ -2,16 +2,13 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -52,7 +49,7 @@ import butterknife.BindView;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
-    NineGridTest2Adapter mAdapter;
+
     @BindView(R.id.recyclerView_location)
     XRecyclerView recyclerView;
     @BindView(R.id.loaction_comment_edit)
@@ -67,7 +64,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int commentPosition;
     private int scrollOffsetY = 0;
     private int count = 0;
-    private static LocationFragment locationFragment;
+    NineGridTest2Adapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -78,8 +75,56 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
+    public void initViews(View view) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+    }
+
+    @Override
     public void initData() {
-        RequestLocationData();
+        OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseLocationData(response.body());
+                    }
+                });
+    }
+
+    private void parseLocationData(String body) {
+        final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
+        localDataList.addAll(locationListBean.getData().getList());
+        count = localDataList.size();
+        if (locationListBean.getCode() == 0) {
+            if (mIsFirst) {
+                mIsFirst = false;
+                mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
+
+                mAdapter.setOnClickLitener(this);
+                recyclerView.setAdapter(mAdapter);
+            }
+            recyclerView.refreshComplete();
+            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
+        }
+    }
+
+    @Override
+    protected void initListeners() {
+        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                // 把集合和适配器清空  重新请求数据
+                localDataList.clear();
+                count = 0;
+                initData();
+            }
+
+            @Override
+            public void onLoadMore() {
+                initData();
+            }
+        });
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
@@ -139,80 +184,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 }
             }
         });
-
-    }
-
-    @Override
-    public void initViews(View view) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-    }
-
-    private void RequestLocationData() {
-
-        OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
-                .params("limit", 10)
-                .params("skip", count)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        parseLocationData(response.body());
-                    }
-                });
-    }
-
-    private void parseLocationData(String body) {
-        Logger.i("Location：" + body.toString());
-        final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
-        localDataList.addAll(locationListBean.getData().getList());
-        count = localDataList.size();
-        if (locationListBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
-
-                mAdapter.setOnClickLitener(this);
-                recyclerView.setAdapter(mAdapter);
-            }
-            recyclerView.refreshComplete();
-            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
-        }
-    }
-
-    @Override
-    protected void initListeners() {
-
-        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                // 把集合和适配器清空  重新请求数据
-                localDataList.clear();
-                count = 0;
-                RequestLocationData();
-            }
-
-            @Override
-            public void onLoadMore() {
-                RequestLocationData();
-
-            }
-        });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
     }
 
     @Override
@@ -223,12 +194,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 toActivity(PublishActivity.class);
                 break;
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
@@ -313,7 +278,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     //接口回调之 点赞
     @Override
-    public void onLaunClick(final int position) {
+    public void onPraiseClick(final int position) {
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -405,14 +370,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void CommenRecall(final int position, final CommentBean commentBean) {
-
+    public void commentRecall(final int position, final CommentBean commentBean) {
         commentView.setVisibility(View.VISIBLE);
         comment_edit.setFocusable(true);
         comment_edit.setFocusableInTouchMode(true);
         comment_edit.requestFocus();
         onFocusChange(true);
-
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -444,14 +407,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 }
             }
         });
-    }
-
-
-    public static LocationFragment getInstance() {
-        if (locationFragment == null) {
-            locationFragment = new LocationFragment();
-        }
-        return locationFragment;
     }
 
     /**

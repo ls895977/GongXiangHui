@@ -38,7 +38,7 @@ public class EnterpriseMaterialTiePianActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material_tiepian);
+        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material_tiepian, 0);
         mAdapter.bindToRecyclerView(mRv);
     }
 

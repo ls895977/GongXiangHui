@@ -26,7 +26,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     private int mLastPosition = -1;
     private int mPage;
     private int mCount = 10;
-
+    private int mType;
 
     @Override
     public int getLayoutId() {
@@ -35,7 +35,8 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material_big);
+        mType = getArguments().getInt("type");
+        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material_big, mType);
         mRv.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter.bindToRecyclerView(mRv);
     }
@@ -44,7 +45,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     public void initData() {
         OkGo.<EnterpriseMaterial>get(Constant.ENTERPRISE_MATERIAL)
                 .params("position", 1)
-                .params("ad_type", getArguments().getInt("type"))
+                .params("ad_type", mType)
                 .params("page", mPage)
                 .params("num", mCount)
                 .execute(new JsonCallback<EnterpriseMaterial>() {

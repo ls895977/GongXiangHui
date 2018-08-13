@@ -92,15 +92,12 @@ public class CommentItemAdapter extends BaseAdapter {
         } else {
             holder.tv_item_discuss_delete.setVisibility(View.GONE);
         }
-
         return convertView;
     }
 
     private void showView(ViewHolder holder, final int position, ViewGroup parent) {
-
         holder.name.setText(mList.get(position).getMember_name());
         holder.content.setText(mList.get(position).getContent());
-
         /***
          * 删除评论
          ***/
@@ -112,34 +109,27 @@ public class CommentItemAdapter extends BaseAdapter {
                     @Override
                     public void onSuccess(Response<String> response) {
                         deleteItemView(position);
-
                     }
                 });
-
             }
         });
 
         holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentRecallListener.recommentcontentListener(position,mList.get(position));
+                commentRecallListener.recommentContentListener(position,mList.get(position));
             }
         });
-
     }
-
 
     public static class ViewHolder {
         TextView name, content, tv_item_discuss_delete,tv_item_reply_lb,tv_item_replyed;
         LinearLayout ll_comment_selflist;
         LinearLayout ll_comment_view;
-
-
     }
 
-
     public interface CommentRecallListener {
-        void recommentcontentListener(int position,CommentBean commentBean);
+        void recommentContentListener(int position, CommentBean commentBean);
     }
 
 }
