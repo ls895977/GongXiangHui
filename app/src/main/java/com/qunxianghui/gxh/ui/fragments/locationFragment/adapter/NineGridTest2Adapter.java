@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -43,8 +44,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private final int STATE_COLLAPSED = 2;//折叠状态
     private final int STATE_EXPANDED = 3;//展开状态
     private SparseArray<Integer> mTextStateList; //保存文本状态集合
-    private RequestOptions options;
 
+    @SuppressLint("UseSparseArrays")
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
         this.dataBeanList = dataBeanList;
@@ -52,7 +53,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         mTextStateList = new SparseArray<>();
     }
 
-    public void setOnClickLitener(CircleOnClickListener listener) {
+    public void setOnClickListener(CircleOnClickListener listener) {
         this.listener = listener;
     }
 
@@ -111,18 +112,17 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
         final List<String> imageList = dataBeanList.get(position).getImages();
-        options = new RequestOptions();
-        options.placeholder(R.mipmap.user_moren);
-        options.error(R.mipmap.user_moren);
-        options.centerCrop();
-        Glide.with(mContext).load(dataBeanList.get(position).getMember_avatar()).apply(options).into(holder.iv_location_person_head);
+        Glide.with(mContext)
+                .load(dataBeanList.get(position).getMember_avatar())
+                .apply(new RequestOptions().placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop())
+                .into(holder.iv_location_person_head);
         if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
-            options.placeholder(R.mipmap.default_img);
-            options.error(R.mipmap.default_img);
-            options.centerCrop();
-            Glide.with(mContext).load(imageList.get(0)).apply(options).into(holder.img);
+            Glide.with(mContext)
+                    .load(imageList.get(0))
+                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop())
+                    .into(holder.img);
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,7 +179,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
-        snsPopupWindow.setClick_like((String) dataBeanList.get(position).getLike_info_res());
+        snsPopupWindow.setClick_like(dataBeanList.get(position).getLike_info_res());
         snsPopupWindow.setCollect(dataBeanList.get(position).getCollect());
         snsPopupWindow.initItemData();
 
@@ -235,7 +235,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     /*回复评论的接口回调*/
     @Override
     public void recommentContentListener(int position, CommentBean commentBean) {
-        listener.commentRecall(position,commentBean);
+        listener.commentRecall(position, commentBean);
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder {

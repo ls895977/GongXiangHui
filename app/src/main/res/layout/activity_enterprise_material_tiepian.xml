@@ -49,7 +49,9 @@
         android:layout_height="match_parent"
         android:layout_below="@id/view"
         android:layout_marginTop="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_enterprise_material_tiepian" />
+        tools:listitem="@layout/item_enterprise_material" />
 
 </RelativeLayout>

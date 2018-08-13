@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,8 +37,12 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         mType = getArguments().getInt("type");
-        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material_big, mType);
-        mRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material, mType);
+        if (mType == 1 || mType == 3) {
+            mRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        } else {
+            mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
         mAdapter.bindToRecyclerView(mRv);
     }
 
@@ -73,13 +78,46 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (mLastPosition != -1 && mLastPosition != position) {
                     mAdapter.getData().get(mLastPosition).isSelect = false;
-                    if (mAdapter.getViewByPosition(mLastPosition, R.id.iv_select) != null)
-                        mAdapter.getViewByPosition(mLastPosition, R.id.iv_select).setVisibility(View.GONE);
+                    View select;
+                    switch (mType) {
+                        case 0:
+                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian);
+                            break;
+                        case 1:
+                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_big);
+                            break;
+                        case 3:
+                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tonglang);
+                            break;
+                        default:
+                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_other);
+                            break;
+                    }
+                    if (select != null) {
+                        select.setVisibility(View.GONE);
+                    }
                 }
                 mLastPosition = position;
                 EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
                 companyAdvert.isSelect = !companyAdvert.isSelect;
-                mAdapter.getViewByPosition(position, R.id.iv_select).setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+                View select;
+                switch (mType) {
+                    case 0:
+                        select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
+                        break;
+                    case 1:
+                        select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
+                        break;
+                    case 3:
+                        select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
+                        break;
+                    default:
+                        select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
+                        break;
+                }
+                if (select != null) {
+                    select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+                }
             }
         });
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
