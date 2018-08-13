@@ -101,6 +101,7 @@ public class InFormActivity extends BaseActivity implements View.OnClickListener
 
                             }
                         }, 500);
+                        finish();
 
                     }
                 });

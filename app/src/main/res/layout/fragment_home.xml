@@ -116,6 +116,7 @@
         android:id="@+id/iv_home_paste_artical"
         android:layout_width="52dp"
         android:layout_height="57dp"
+        android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

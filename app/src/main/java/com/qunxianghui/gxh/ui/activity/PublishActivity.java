@@ -201,7 +201,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_home_baoliao_fabu:
-
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
                     finish();

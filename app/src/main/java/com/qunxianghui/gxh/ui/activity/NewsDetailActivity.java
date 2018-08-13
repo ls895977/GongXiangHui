@@ -91,6 +91,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private PopupWindow popupWindow;
     private boolean has_collect = false;
     private ClipboardManager mClipboardManager;
+    private MyCollectNewsDetailBean.DataBean mDataList;
 
     @Override
     protected int getLayoutId() {
@@ -111,21 +112,25 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initData() {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
-                .params("id", uuid)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        ParseNewsDetailData(response.body());
-                    }
-                });
+        if (mDataList != null) {
+            OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                    .params("id", uuid)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            ParseNewsDetailData(response.body());
+                        }
+                    });
+
+        }
+
     }
 
     private void ParseNewsDetailData(String body) {
         MyCollectNewsDetailBean newsDetailBean = GsonUtils.jsonFromJson(body, MyCollectNewsDetailBean.class);
         if (newsDetailBean.getCode() == 0) {
-            MyCollectNewsDetailBean.DataBean dataList = newsDetailBean.getData();
-            has_collect = dataList.isHas_collect();
+            mDataList = newsDetailBean.getData();
+            has_collect = mDataList.isHas_collect();
             if (has_collect) {
                 mIvNewsDetailCollect.setImageResource(R.mipmap.icon_collect);
             } else {
@@ -422,7 +427,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 if (TextUtils.isEmpty(s.toString())) {
                     btn_submit.setEnabled(false);
                     btn_submit.setTextColor(Color.parseColor("#444444"));
-                }else {
+                } else {
                     btn_submit.setEnabled(true);
                     btn_submit.setTextColor(Color.parseColor("#D81818"));
                 }

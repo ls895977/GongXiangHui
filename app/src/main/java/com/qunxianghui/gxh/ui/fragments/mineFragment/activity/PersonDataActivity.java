@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -34,10 +35,12 @@ import com.qunxianghui.gxh.utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 ;
@@ -73,6 +76,8 @@ public class PersonDataActivity extends BaseActivity {
     EditText etPersonDataAdress;
     @BindView(R.id.et_person_data_introduce)
     EditText etPersonDataIntroduce;
+    @BindView(R.id.ll_person_data_img)
+    RelativeLayout llPersonDataImg;
 
     private String[] sexArray = new String[]{"男", "女"};
     private List<String> upLoadPics = new ArrayList<>();
@@ -126,20 +131,20 @@ public class PersonDataActivity extends BaseActivity {
         mEtPersonDataSex.setText(getIntent().getIntExtra(SEX, -1) == 0 ? "女" : (sex == 1 ? "男" : ""));
     }
 
-    @OnClick({R.id.iv_person_data_back, R.id.iv_person_data_img, R.id.rl_mineData_sex, R.id.tv_person_data_save})
+    @OnClick({R.id.iv_person_data_back, R.id.rl_mineData_sex, R.id.tv_person_data_save,R.id.ll_person_data_img})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_person_data_back:
                 finish();
-                break;
-            case R.id.iv_person_data_img:
-                openPhoto();
                 break;
             case R.id.rl_mineData_sex:
                 showSexDialog();
                 break;
             case R.id.tv_person_data_save:
                 saveInfo(view);
+                break;
+            case R.id.ll_person_data_img:
+                openPhoto();
                 break;
         }
     }
@@ -213,7 +218,8 @@ public class PersonDataActivity extends BaseActivity {
             @Override
             public void onCropImage(Uri imageUri) {
                 final String url = String.valueOf(imageUri).replace("file://", "");
-                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+                File file=new File(url);
+                upLoadPic(file);
 
                 //                //头像
                 RequestOptions options = new RequestOptions();
@@ -249,9 +255,9 @@ public class PersonDataActivity extends BaseActivity {
 
     }
 
-    private void upLoadPic(String urls) {
-        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_PIC)
-                .params("base64", urls)
+    private void upLoadPic(File urls) {
+        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
+                .params("file", urls)
                 .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
                     @Override
                     public void onSuccess(Response<CommonResponse<ImageBean>> response) {
@@ -281,5 +287,11 @@ public class PersonDataActivity extends BaseActivity {
         imagePicker.onActivityResult(PersonDataActivity.this, requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
 

@@ -6,10 +6,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.TreeRecyclerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.ProvinceBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.item.ItemHelperFactory;
 import com.qunxianghui.gxh.item.TreeRecyclerType;
 
@@ -44,9 +48,17 @@ public class LocationActivity extends BaseActivity {
             @Override
             public void run() {
                 super.run();
-            String string = getResources().getString(R.string.location);
-            List<ProvinceBean> cityBeen = JSON.parseArray(string, ProvinceBean.class);
-            refresh(cityBeen);
+
+                OkGo.<String>post(Constant.FETCH_COUNTRY_ADRESS).execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String message = response.message();
+                        String string = getResources().getString(R.string.location);
+                        List<ProvinceBean> cityBeen = JSON.parseArray(string, ProvinceBean.class);
+                        refresh(cityBeen);
+                    }
+                });
+
         }
     }.start();
 

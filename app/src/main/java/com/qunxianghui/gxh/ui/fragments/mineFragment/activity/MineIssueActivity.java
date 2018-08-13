@@ -10,6 +10,7 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServiceFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
 
@@ -30,8 +31,6 @@ public class MineIssueActivity extends BaseActivity {
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     private int position;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mine_issue;
@@ -46,8 +45,6 @@ public class MineIssueActivity extends BaseActivity {
         }
 
     }
-
-
     @SuppressLint("ResourceAsColor")
     @Override
     protected void initData() {
@@ -57,11 +54,10 @@ public class MineIssueActivity extends BaseActivity {
         fragments.add(new MyIssueDiscloseFragment());
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssurePostFragment());
-        fragments.add(new MyIssureVideoFragment());
+        fragments.add(new MyIssueLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
-
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
         mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
 
