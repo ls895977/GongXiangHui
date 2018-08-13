@@ -38,7 +38,7 @@ public class EnterpriseMaterialTiePianActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material_tiepian);
+        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material, 0);
         mAdapter.bindToRecyclerView(mRv);
     }
 
@@ -73,13 +73,13 @@ public class EnterpriseMaterialTiePianActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (mLastPosition != -1 && mLastPosition != position) {
                     mAdapter.getData().get(mLastPosition).isSelect = false;
-                    if (mAdapter.getViewByPosition(mLastPosition, R.id.iv_select) != null)
-                        mAdapter.getViewByPosition(mLastPosition, R.id.iv_select).setVisibility(View.GONE);
+                    if (mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian) != null)
+                        mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian).setVisibility(View.GONE);
                 }
                 mLastPosition = position;
                 EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
                 companyAdvert.isSelect = !companyAdvert.isSelect;
-                mAdapter.getViewByPosition(position, R.id.iv_select).setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+                mAdapter.getViewByPosition(position, R.id.iv_select_tiepian).setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
             }
         });
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
