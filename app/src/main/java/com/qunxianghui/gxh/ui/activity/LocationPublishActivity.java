@@ -191,7 +191,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     }
 
     private void uploadImages(String path) {
-        OkGo.<String>post(Constant.UP_LOAD_PIC)
+        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
                 .params("file", new File(path))
                 .execute(new StringCallback() {
                     @Override

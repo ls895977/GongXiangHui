@@ -134,7 +134,7 @@ public class Constant {
     //用户升级
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
-    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+//    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
     public static final String UP_LOAD_OSS_PIC = BASE_URL + "system/oss_uploadImage";
 
     //本地圈用户订阅的

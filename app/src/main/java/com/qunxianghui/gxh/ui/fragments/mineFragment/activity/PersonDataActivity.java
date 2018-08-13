@@ -220,7 +220,6 @@ public class PersonDataActivity extends BaseActivity {
                 final String url = String.valueOf(imageUri).replace("file://", "");
                 File file=new File(url);
                 upLoadPic(file);
-
                 //                //头像
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_moren);
