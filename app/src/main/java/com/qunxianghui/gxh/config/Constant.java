@@ -14,9 +14,9 @@ public class Constant {
     //正式环境
 //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
 //本地环境
-    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     //测试环境http://47.104.170.168:80/v2/user/login
-//    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
+    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -155,7 +155,6 @@ public class Constant {
     public static final String ADD_VIDEO_TAB_URL = BASE_URL + "Video/addVideoCate";
     //个人删除视频汇分类接口
     public static final String DELETE_VIDEO_TAB_URL = BASE_URL + "Video/delVideoCate";
-
     //用户订阅的视频的频道
     public static final String VIDEO_SUB_URL = BASE_URL + "Video/getVideoCate";
     //上传视频的类别

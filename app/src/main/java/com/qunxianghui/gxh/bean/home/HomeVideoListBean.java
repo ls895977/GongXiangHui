@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.bean.home;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -134,7 +136,8 @@ public class HomeVideoListBean implements Serializable {
             }
 
             public String getTitle() {
-                return title;
+                if (TextUtils.isEmpty(title)) return "";
+                else return title;
             }
 
             public void setTitle(String title) {

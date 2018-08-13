@@ -108,7 +108,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 mlocationClient.startLocation();
             } else {
                 ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
-
             }
         } else {
             //定位

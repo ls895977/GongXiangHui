@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.db;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +17,7 @@ public class ChannelItem implements Serializable {
     /**
      * 栏目对应name
      */
+    @SerializedName("cate_name")
     public String name;
     /**
      * 栏目在整体中的排序顺序  rank
@@ -24,6 +27,21 @@ public class ChannelItem implements Serializable {
      * 栏目是否选中
      */
     public Integer selected;
+
+    /**
+     * id : 1
+     * pid : 0
+     * cate_name : 搞笑
+     * listorder : 0
+     * status : 1
+     * ctime : 0
+     */
+//    public int id;
+    public int pid;
+//    public String cate_name;
+    public int listorder;
+    public int status;
+    public int ctime;
 
     public ChannelItem() {
     }
