@@ -42,7 +42,6 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
     EditText etFetchPassCode;
     private String phoneNumber;
     private String vertifiCode;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_seek_password;

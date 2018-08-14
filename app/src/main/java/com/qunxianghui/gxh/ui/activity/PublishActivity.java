@@ -28,11 +28,11 @@ import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,8 +122,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             for (int i = 0, length = selImageList.size(); i < length; i++) {
                 String path = selImageList.get(i).path;
                 if (!path.contains("http")) {
-                    File file=new File(path);
-                    upLoadPic(file, i == length - 1);
+                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path),i == length - 1);
                 } else {
                     upLoadPics.add(path);
                     if (i == length - 1) {
@@ -160,9 +159,8 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     }
 
     //上传图片
-    private void upLoadPic(File urls, final boolean isUpdate) {
+    private void upLoadPic(String urls, final boolean isUpdate) {
         OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
-                .params("file", urls)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

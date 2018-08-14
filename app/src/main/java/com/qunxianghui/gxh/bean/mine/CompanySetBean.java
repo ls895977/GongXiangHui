@@ -12,7 +12,6 @@ public class CompanySetBean implements Serializable {
     private int code;
     private String message;
     private DataBean data;
-
     public static CompanySetBean objectFromData(String str) {
 
         return new Gson().fromJson(str, CompanySetBean.class);

@@ -314,7 +314,6 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
     }
-
     private void holdReneraCompanyData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override

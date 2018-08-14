@@ -34,7 +34,6 @@ import com.qunxianghui.gxh.utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +127,6 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.tv_add_advance_save:
-                asyncShowToast("保存");
                 saveAdvanceData();
                 break;
             case R.id.iv_add_advance_pic:
@@ -220,6 +218,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
             asyncShowToast("标题或者简介为空,请检查一下");
         } else {
             RequestAddAdvanceData(mAddAdvanceTitle, mAddAdvanceIntroduce, imageUrl);
+            finish();
         }
     }
 
@@ -228,7 +227,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 params("title", mAddAdvanceTitle).
                 params("describe", mAddAdvanceIntroduce).
                 params("image", imageUrl).
-                params("datatype", "1").
+                params("datatype", 1).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -307,7 +306,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
                 // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
                 // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                for (int i=0;i<selectList.size();i++){
+                for (int i = 0; i < selectList.size(); i++) {
                     mPath = selectList.get(i).getPath();
                     FetchAdvancePic(mPath);
                 }
@@ -322,12 +321,10 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
         Glide.with(mContext).load(path).apply(options).into(mIvAddAdvancePic);
-
-        File file=new File(path);
-        upLoadPic(file);
+        upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path));
     }
 
-    private void upLoadPic(File urls) {
+    private void upLoadPic(String urls) {
         OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
                 .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {

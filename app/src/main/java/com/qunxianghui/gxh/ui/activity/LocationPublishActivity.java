@@ -30,9 +30,9 @@ import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,8 +170,9 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 }
                 mIsUploadIng = true;
                 stringBuilder = new StringBuilder();
-                mLlLoad.setVisibility(View.VISIBLE);
-                uploadImages(mImages.get(0).path);
+
+                String path = mImages.get(0).path;
+                uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
                 break;
             case R.id.tv_type:
                 if (mChooseType != null) {
@@ -192,7 +193,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     private void uploadImages(String path) {
         OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
-                .params("file", new File(path))
+                .params("base64", path)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -203,7 +204,8 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                             if (mImages.size() == mCount) {
                                 uploadInfo();
                             } else {
-                                uploadImages(mImages.get(mCount).path);
+                                String path = mImages.get(0).path;
+                                uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
                             }
                         } else {
                             onError(null);
@@ -275,7 +277,8 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                     .setSubmitColor(Color.parseColor("#D81717"))
                     .build();
             mChooseType.setNPicker(strings, null, null);
+            mChooseType.show();
         }
-        mChooseType.show();
+
     }
 }

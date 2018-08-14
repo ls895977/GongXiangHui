@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,7 +52,6 @@ import butterknife.Unbinder;
  */
 
 public class MineFragment extends BaseFragment {
-
     @BindView(R.id.rl_mine_message)
     RelativeLayout rlMineCollect;
     @BindView(R.id.mine_fabu)
@@ -159,6 +159,14 @@ public class MineFragment extends BaseFragment {
                 options.centerCrop();
                 options.circleCrop();
                 Glide.with(getActivity()).load(mAvatar).apply(options).into(mIvHead);
+
+                /**
+                 * 保存自己的公司名称
+                 */
+                SharedPreferences spConpanyname = mActivity.getSharedPreferences("companymessage", 0);
+                SharedPreferences.Editor editor = spConpanyname.edit();
+                editor.putString("avatar",mAvatar );
+                editor.apply();
             }
 
             if (companyInfo instanceof JSONArray) {
