@@ -32,18 +32,16 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     private int count;
     private boolean mIsRefresh = false;
     private boolean mIsFirst = true;
-    private List<String> mTitle = new ArrayList<>();
-    private List<AddAdvanceBean.DataBean> mDataList;
-    private AddAdvanceBean mAddAdvanceBean;
-    private ProductAdapter mProductAdapter;
+        private List<AddAdvanceBean.DataBean> mDataList=new ArrayList<>();
+        private AddAdvanceBean mAddAdvanceBean;
+        private ProductAdapter mProductAdapter;
+        @Override
+        protected int getLayoutId() {
+            return R.layout.activity_coreproduct;
+        }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_coreproduct;
-    }
-
-    @Override
-    protected void initViews() {
+        @Override
+        protected void initViews() {
         mXrecyclerActivityProduct.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false));
     }
 
@@ -56,9 +54,9 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
     private void RequestCompanyProductData() {
 
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
-                .params("datatype", 1)
-                .params("limit", 5)
                 .params("datatype", 2)
+                .params("limit", 5)
+                .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -82,10 +80,8 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
             mIsRefresh = false;
             mDataList.clear();
         }
-        if (mDataList!=null){
-            mDataList.addAll(mAddAdvanceBean.getData());
-        }
-
+        mDataList.addAll(mAddAdvanceBean.getData());
+        count = mDataList.size();
         int code = mAddAdvanceBean.getCode();
         if (code == 200) {
             if (mIsFirst) {
@@ -108,9 +104,8 @@ public class ComPanyProductActivity extends BaseActivity implements View.OnClick
             mXrecyclerActivityProduct.refreshComplete();
             mProductAdapter.notifyDataSetChanged();
             mProductAdapter.notifyItemRangeChanged(count, mAddAdvanceBean.getData().size());
-
-
         }
+
     }
 
     @Override

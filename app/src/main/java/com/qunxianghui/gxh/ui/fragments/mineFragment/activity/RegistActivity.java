@@ -75,11 +75,9 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     EditText etRegisterconfirmPassword;
     @BindView(R.id.et_regist_code)
     EditText etRegistCode;
-    //    private StudentDao studentDao;
+
     private String mPhone;
     private UserDao userDao;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_regist;
@@ -97,9 +95,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         initProtocol();
         initCall();
         userDao = new UserDao(mContext);
-
     }
-
     private void initCall() {
         tvCall.setText("如需帮助可拨打群享汇服务热线");
         SpannableString spCall = new SpannableString("13295815771");
@@ -108,7 +104,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         NoLineClickSpan clickSpan1 = new NoLineClickSpan("#ff4049") {
             @Override
             public void onClick(View widget) {
-
                 builder.setTitle("拨打给客服？");
                 builder.setMessage("13295815771");
                 builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -144,7 +139,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         NoLineClickSpan clickSpan2 = new NoLineClickSpan("#ff4049") {
             @Override
             public void onClick(View widget) {
-//                Toast.makeText(LoginActivity.this, "至尊宝豪车共享服务协议", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, ProtocolActivity.class);
                 intent.putExtra("title", "平台服务协议");
                 intent.putExtra("url", Constant.BenDiService);
@@ -155,7 +149,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         spStr.setSpan(clickSpan2, spStr.length() - s2.length(), spStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvProtocol.append(spStr);
         tvProtocol.setMovementMethod(LinkMovementMethod.getInstance());
-//        //设置文本不高亮，如果需要点击后高亮文本，删掉这句即可
+        //设置文本不高亮，如果需要点击后高亮文本，删掉这句即可
         tvProtocol.setHighlightColor(Color.parseColor("#ff4049"));
     }
 

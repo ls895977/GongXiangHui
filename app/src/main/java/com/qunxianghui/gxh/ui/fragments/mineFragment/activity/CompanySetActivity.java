@@ -33,9 +33,9 @@ import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,15 +120,15 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
 
     private void parseCompanyInfo(String body) {
         final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
-
+        CompanySetBean.DataBean companySetBeanData = companySetBean.getData();
         int code = companySetBean.getCode();
-        if (code == 0) {
+        if (code == 0&&companySetBeanData!=null) {
             mDataBean = companySetBean.getData();
             if (mDataBean != null) {
-                fillPersonCompanyData(mDataBean);
                 String images = mDataBean.getImages();
                 if (!TextUtils.isEmpty(images)) {
                     String[] split = images.split(",");
+                fillPersonCompanyData(mDataBean);
                     for (String aSplit : split) {
                         ImageItem imageItem = new ImageItem();
                         imageItem.path = aSplit;
@@ -172,11 +172,10 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     }
     @Override
     protected void initData() {
-
         OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-      Logger.d("企业设置的信息"+response.body().toString());
+       Logger.d("企业设置的信息"+response.body().toString());
           if(response.body().toString().length()>0){
               tvMmineCompanysetFabu.setText("修改");
               parseCompanyInfo(response.body());
@@ -232,8 +231,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     for (int i = 0, length = selImageList.size(); i < length; i++) {
                         String path = selImageList.get(i).path;
                         if (!path.contains("http")) {
-                            File file=new File(path);
-                            upLoadPic(file, i == length - 1);
+                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path),i == length - 1);
                         } else {
                             upLoadPics.add(path);
                             if (i == length - 1) {
@@ -414,9 +412,9 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         //upLoadPic("");
     }
 
-    private void upLoadPic(File urls, final boolean isUpdate) {
+    private void upLoadPic(String urls, final boolean isUpdate) {
         OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
-                .params("file", urls)
+                .params("base64", urls)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

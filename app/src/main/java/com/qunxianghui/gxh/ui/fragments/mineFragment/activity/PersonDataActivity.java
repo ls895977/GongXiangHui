@@ -35,7 +35,6 @@ import com.qunxianghui.gxh.utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,7 +130,7 @@ public class PersonDataActivity extends BaseActivity {
         mEtPersonDataSex.setText(getIntent().getIntExtra(SEX, -1) == 0 ? "女" : (sex == 1 ? "男" : ""));
     }
 
-    @OnClick({R.id.iv_person_data_back, R.id.rl_mineData_sex, R.id.tv_person_data_save,R.id.ll_person_data_img})
+    @OnClick({R.id.iv_person_data_back, R.id.rl_mineData_sex, R.id.tv_person_data_save, R.id.ll_person_data_img})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_person_data_back:
@@ -192,7 +191,7 @@ public class PersonDataActivity extends BaseActivity {
                                 Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {
-                                asyncShowToast("保存失败");
+                                asyncShowToast("保存失败" + response.body().toString());
 
                             }
                         } catch (JSONException e) {
@@ -203,7 +202,7 @@ public class PersonDataActivity extends BaseActivity {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Logger.e("保存失败->" + response.body());
+                        Logger.e("保存失败->" + response.body().toString());
                     }
                 });
     }
@@ -218,9 +217,8 @@ public class PersonDataActivity extends BaseActivity {
             @Override
             public void onCropImage(Uri imageUri) {
                 final String url = String.valueOf(imageUri).replace("file://", "");
-                File file=new File(url);
-                upLoadPic(file);
-                //                //头像
+                upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(url));
+                //头像
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_moren);
                 options.error(R.mipmap.user_moren);
@@ -254,9 +252,9 @@ public class PersonDataActivity extends BaseActivity {
 
     }
 
-    private void upLoadPic(File urls) {
+    private void upLoadPic(String urls) {
         OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
-                .params("file", urls)
+                .params("base64", urls)
                 .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
                     @Override
                     public void onSuccess(Response<CommonResponse<ImageBean>> response) {
