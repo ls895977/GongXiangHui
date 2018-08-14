@@ -27,6 +27,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     private int mLastPosition = -1;
     private int mPage;
     private int mCount = 10;
+    // 0为贴片 1为大图通栏 3为通栏 其他统一
     private int mType;
 
     @Override

@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.EnterpriseMateriaItemFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.EnterpriseMaterialFragment;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
@@ -38,7 +40,11 @@ public class EnterpriseMaterialActivity extends BaseActivity {
         mSegmentTab.setTabData(new String[]{"底部", "顶部"});
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new EnterpriseMaterialFragment());
-        fragments.add(new EnterpriseMaterialFragment());
+        Bundle bundle = new Bundle();
+        Fragment fragment = new EnterpriseMateriaItemFragment();
+        bundle.putInt("type", 3);
+        fragment.setArguments(bundle);
+        fragments.add(fragment);
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), fragments));
     }
 
