@@ -23,9 +23,7 @@ import java.util.List;
 public class CommentItemAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
-    private Context context;
     private List<CommentBean> mList;
-    private ListView listView;
     private CommentRecallListener commentRecallListener;
 
     public void setCommentRecallListener(CommentRecallListener commentRecallListener) {
@@ -33,9 +31,7 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
     public CommentItemAdapter(Context context, List<CommentBean> mList, ListView listView) {
-        this.context = context;
         this.mList = mList;
-        this.listView = listView;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -78,8 +74,8 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.ll_comment_view = convertView.findViewById(R.id.ll_comment_view);
             holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
             holder.ll_comment_selflist = convertView.findViewById(R.id.ll_comment_selflist);
-            holder.tv_item_reply_lb=convertView.findViewById(R.id.tv_item_reply_lb);
-            holder.tv_item_replyed=convertView.findViewById(R.id.tv_item_replyed);
+            holder.tv_item_reply_lb = convertView.findViewById(R.id.tv_item_reply_lb);
+            holder.tv_item_replyed = convertView.findViewById(R.id.tv_item_replyed);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -92,15 +88,12 @@ public class CommentItemAdapter extends BaseAdapter {
         } else {
             holder.tv_item_discuss_delete.setVisibility(View.GONE);
         }
-
         return convertView;
     }
 
     private void showView(ViewHolder holder, final int position, ViewGroup parent) {
-
         holder.name.setText(mList.get(position).getMember_name());
         holder.content.setText(mList.get(position).getContent());
-
         /***
          * 删除评论
          ***/
@@ -112,34 +105,27 @@ public class CommentItemAdapter extends BaseAdapter {
                     @Override
                     public void onSuccess(Response<String> response) {
                         deleteItemView(position);
-
                     }
                 });
-
             }
         });
 
         holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentRecallListener.recommentcontentListener(position,mList.get(position));
+                commentRecallListener.recommentContentListener(position, mList.get(position));
             }
         });
-
     }
-
 
     public static class ViewHolder {
-        TextView name, content, tv_item_discuss_delete,tv_item_reply_lb,tv_item_replyed;
+        TextView name, content, tv_item_discuss_delete, tv_item_reply_lb, tv_item_replyed;
         LinearLayout ll_comment_selflist;
         LinearLayout ll_comment_view;
-
-
     }
 
-
     public interface CommentRecallListener {
-        void recommentcontentListener(int position,CommentBean commentBean);
+        void recommentContentListener(int position, CommentBean commentBean);
     }
 
 }

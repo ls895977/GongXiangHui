@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -31,11 +32,11 @@ import java.util.List;
  * Created by HMY on 2016/8/6
  */
 public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.myViewHolder> implements CommentItemAdapter.CommentRecallListener {
+
     private Context mContext;
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
     private CircleOnClickListener listener;
-    public CommentItemAdapter commentItemAdapter;
     private LocationFragment context;
     private final int MAX_LINE_COUNT = 6;//最大显示行数
     private final int STATE_UNKNOW = -1;//未知状态
@@ -43,8 +44,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private final int STATE_COLLAPSED = 2;//折叠状态
     private final int STATE_EXPANDED = 3;//展开状态
     private SparseArray<Integer> mTextStateList; //保存文本状态集合
-    private RequestOptions options;
 
+    @SuppressLint("UseSparseArrays")
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
         this.dataBeanList = dataBeanList;
@@ -52,9 +53,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         mTextStateList = new SparseArray<>();
     }
 
-    public void setOnClickLitener(CircleOnClickListener listener) {
+    public void setOnClickListener(CircleOnClickListener listener) {
         this.listener = listener;
-
     }
 
     @Override
@@ -112,18 +112,17 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
         holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
         final List<String> imageList = dataBeanList.get(position).getImages();
-        options = new RequestOptions();
-        options.placeholder(R.mipmap.user_moren);
-        options.error(R.mipmap.user_moren);
-        options.centerCrop();
-        Glide.with(mContext).load(dataBeanList.get(position).getMember_avatar()).apply(options).into(holder.iv_location_person_head);
+        Glide.with(mContext)
+                .load(dataBeanList.get(position).getMember_avatar())
+                .apply(new RequestOptions().placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop())
+                .into(holder.iv_location_person_head);
         if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
-            options.placeholder(R.mipmap.default_img);
-            options.error(R.mipmap.default_img);
-            options.centerCrop();
-            Glide.with(mContext).load(imageList.get(0)).apply(options).into(holder.img);
+            Glide.with(mContext)
+                    .load(imageList.get(0))
+                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop())
+                    .into(holder.img);
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -146,7 +145,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         }
         if (dataBeanList.get(position).getComment_res().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
-            commentItemAdapter = new CommentItemAdapter(mContext, dataBeanList.get(position).getComment_res(), holder.comment_list);
+            CommentItemAdapter commentItemAdapter = new CommentItemAdapter(mContext, dataBeanList.get(position).getComment_res(), holder.comment_list);
             commentItemAdapter.setCommentRecallListener(this);
             holder.comment_list.setAdapter(commentItemAdapter);
         } else {
@@ -180,7 +179,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
-        snsPopupWindow.setClick_like((String) dataBeanList.get(position).getLike_info_res());
+        snsPopupWindow.setClick_like(dataBeanList.get(position).getLike_info_res());
         snsPopupWindow.setCollect(dataBeanList.get(position).getCollect());
         snsPopupWindow.initItemData();
 
@@ -189,7 +188,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             public void onItemClick(ActionItem item, int p) {
                 switch (p) {
                     case 0://点赞
-                        listener.onLaunClick(position);
+                        listener.onPraiseClick(position);
                         break;
                     case 1:
                         listener.onCollectionClick(position);
@@ -202,27 +201,18 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 }
             }
         });
-
-        /**
-         * 点击本地圈头像的跳转
-         */
         holder.iv_location_person_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.headImageClick(position);
             }
         });
-
-        //弹窗
         holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //弹出popupwindow
                 snsPopupWindow.showPopupWindow(v, dataBeanList.get(position), mContext);
             }
         });
-
-        //点赞用户
         if (dataBeanList.get(position).getTem().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
@@ -244,8 +234,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     /*回复评论的接口回调*/
     @Override
-    public void recommentcontentListener(int position, CommentBean commentBean) {
-        listener.CommenRecall(position,commentBean);
+    public void recommentContentListener(int position, CommentBean commentBean) {
+        listener.commentRecall(position, commentBean);
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder {
@@ -263,7 +253,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         BigListView comment_list;
         TextView clickusertext;
 
-        public myViewHolder(View itemView) {
+        myViewHolder(View itemView) {
             super(itemView);
             gridLayout = itemView.findViewById(R.id.layout_nine_grid);
             tv_location_person_name = itemView.findViewById(R.id.tv_location_person_name);
@@ -291,7 +281,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void onCommentClick(int position, String content);
 
         /* 点赞 */
-        void onLaunClick(int position);
+        void onPraiseClick(int position);
 
         /* 收藏*/
         void onCollectionClick(int position);
@@ -300,9 +290,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void headImageClick(int position);
 
         /*回复评论*/
-        void CommenRecall(int position,CommentBean commentBean);
+        void commentRecall(int position, CommentBean commentBean);
 
     }
-
 
 }

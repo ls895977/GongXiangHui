@@ -144,7 +144,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private void ParseMyCollectNewsDetail(String body) {
         MyCollectNewsDetailBean myCollectNewsDetailBean = GsonUtils.jsonFromJson(body, MyCollectNewsDetailBean.class);
         int code = myCollectNewsDetailBean.getCode();
-        if (code == 0) {
+        if (code == 200) {
             String url = myCollectNewsDetailBean.getData().getUrl();
             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
             intent.putExtra("url", url);

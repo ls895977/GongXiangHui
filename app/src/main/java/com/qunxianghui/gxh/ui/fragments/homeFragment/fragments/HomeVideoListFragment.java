@@ -38,6 +38,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     private int count = 0;
     private boolean mIsFirst = true;
+    private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
 
@@ -48,6 +49,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void initData() {
+        mCateId = getArguments().getInt("channel_id");
         mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         requestHomeVideoList();
     }
@@ -78,6 +80,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     private void requestHomeVideoList() {
         OkGo.<String>post(Constant.HOME_VIDEO_LIST_URL)
+                .params("cate_id", mCateId)
                 .params("limit", 10)
                 .params("skip", count)
                 .execute(new StringCallback() {

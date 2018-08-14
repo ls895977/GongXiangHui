@@ -13,7 +13,9 @@ public class Constant {
     public static final String BenDiService = "http://www.qunxianghui.com/localservice";
     //正式环境
 //    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+//本地环境
 //    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+
     public static final String BASE_URL = "http://47.104.170.168:80/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
@@ -132,7 +134,9 @@ public class Constant {
     //用户升级
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
-    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+//    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+    public static final String UP_LOAD_OSS_PIC = BASE_URL + "system/oss_uploadImage";
+
     //本地圈用户订阅的
     public static final String LOCAL_POST_SUB_URL = BASE_URL + "Posts/getPostsCate";
     //个人编辑本地圈接口

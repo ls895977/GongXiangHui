@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,13 +21,15 @@ import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
-import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,7 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
  * Created by Administrator on 2018/3/16 0016.
  */
 
-public class BaoLiaoActivity extends BaseActivity implements View.OnClickListener, BaoLiaoAdapter.OnRecyclerViewItemClickListener {
+public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRecyclerViewItemClickListener {
 
     @BindView(R.id.et_title)
     EditText mEtTitle;
@@ -56,6 +59,8 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
     private SelectPhotoDialog selectPhotoDialog;
+    private String mBaoLiaoContent;
+    private EditText mEtContent;
 
     @Override
     protected int getLayoutId() {
@@ -105,7 +110,6 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
-
     @OnClick({R.id.tv_cancel, R.id.tv_upload})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -113,50 +117,69 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.tv_upload:
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    finish();
+                    return;
+                }
+                if (!isCanUpload()) {
+                    return;
+                }
+                RequestBaoLiaoData();
                 break;
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        final String faBuContent = mEtTitle.getText().toString().trim();
-        final String faBuTitle = mEtTitle.getText().toString().trim();
-        switch (v.getId()) {
-            case R.id.iv_baoliao_close:
-//                llBaoliaoRemember.setVisibility(View.GONE);
-                break;
-            case R.id.tv_home_baoliao_fabu:
-//                if (!isCanUpload()) {
-//                    return;
-//                }
-//                mLoadView.setVisibility(View.VISIBLE);
-//                requestBaoLiaoFaBu(faBuTitle, faBuContent);
-
-                if (selImageList.size() == 0) {
-                    fetchBaoLiaoData();
-                } else {
-                    for (int i = 0, length = selImageList.size(); i < length; i++) {
-                        String path = selImageList.get(i).path;
-                        if (!path.contains("http")) {
-                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path), i == length - 1);
-                        } else {
-                            upLoadPics.add(path);
-                            if (i == length - 1) {
-                                fetchBaoLiaoData();
-                            }
-
-                        }
-                    }
-                }
-                break;
+    /**
+     * 上传图片前的判断
+     *
+     * @return
+     */
+    private boolean isCanUpload() {
+        for (int i = 0; i < mRv.getChildCount(); i++) {
+            LinearLayout layout = (LinearLayout) mRv.getChildAt(i);  //获得子item的layout
+            mEtContent = layout.findViewById(R.id.et_content);
+            mBaoLiaoContent = mEtContent.getText().toString().trim();
         }
+        String mBaoLiaoTitle = mEtTitle.getText().toString().trim();
+        if (TextUtils.isEmpty(mBaoLiaoContent) || TextUtils.isEmpty(mBaoLiaoTitle)) {
+            asyncShowToast("标题和内容不能为空");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 上传爆料的内容
+     */
+    private void RequestBaoLiaoData() {
+        mLlLoad.setVisibility(View.VISIBLE);
+
+        if (selImageList.size() == 0) {
+            fetchBaoLiaoData();
+        } else {
+            for (int i = 0, length = selImageList.size(); i < length; i++) {
+                String path = selImageList.get(i).path;
+                if (!path.contains("http")) {
+                    File file=new File(path);
+                    upLoadPic(file, i == length - 1);
+                } else {
+                    upLoadPics.add(path);
+                    if (i == length - 1) {
+                        fetchBaoLiaoData();
+                    }
+
+                }
+            }
+        }
+
     }
 
     /**
      * 填充爆料
      */
     private void fetchBaoLiaoData() {
-        final String faBuContent = mEtTitle.getText().toString().trim();
+        final String faBuContent = mEtContent.getText().toString().trim();
         final String faBuTitle = mEtTitle.getText().toString().trim();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0, length = upLoadPics.size(); i < length; i++) {
@@ -192,9 +215,9 @@ public class BaoLiaoActivity extends BaseActivity implements View.OnClickListene
      * @param
      * @param
      */
-    private void upLoadPic(String urls, final boolean isUpdate) {
-        OkGo.<String>post(Constant.UP_LOAD_PIC)
-                .params("base64", urls)
+    private void upLoadPic(File urls, final boolean isUpdate) {
+        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+                .params("file", urls)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

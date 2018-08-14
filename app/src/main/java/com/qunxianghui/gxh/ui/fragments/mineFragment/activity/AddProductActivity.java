@@ -35,6 +35,7 @@ import com.qunxianghui.gxh.widget.video2pic.GridImageSelfAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -326,7 +327,8 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                     for (int i = 0, length = selectList.size(); i < length; i++) {
                         String path = selectList.get(i).getPath();
                         if (!path.contains("http")) {
-                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path));
+                            File file=new File(path);
+                            upLoadPic(file);
                         }
                     }
                     break;
@@ -335,9 +337,9 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
     }
 
     /*上传图片*/
-    private void upLoadPic(String urls) {
-        OkGo.<String>post(Constant.UP_LOAD_PIC)
-                .params("base64", urls)
+    private void upLoadPic(File urls) {
+        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+                .params("file", urls)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

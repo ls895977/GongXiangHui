@@ -2,16 +2,14 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -27,9 +25,11 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
@@ -52,7 +52,7 @@ import butterknife.BindView;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
-    NineGridTest2Adapter mAdapter;
+
     @BindView(R.id.recyclerView_location)
     XRecyclerView recyclerView;
     @BindView(R.id.loaction_comment_edit)
@@ -63,11 +63,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     LinearLayout commentView;
 
     private List<TestMode.DataBean.ListBean> localDataList = new ArrayList<>();
-    private boolean mIsFirst = true;
     private int commentPosition;
     private int scrollOffsetY = 0;
     private int count = 0;
-    private static LocationFragment locationFragment;
+    NineGridTest2Adapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -78,8 +77,47 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
+    public void initViews(View view) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
     public void initData() {
-        RequestLocationData();
+        OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
+                .params("limit", 10)
+                .params("skip", count)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        TestMode locationListBean = GsonUtils.jsonFromJson(response.body(), TestMode.class);
+                        localDataList.addAll(locationListBean.getData().getList());
+                        count = localDataList.size();
+                        if (locationListBean.getCode() == 0) {
+                            recyclerView.refreshComplete();
+                            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    protected void initListeners() {
+        mAdapter.setOnClickListener(this);
+        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                localDataList.clear();
+                count = 0;
+                initData();
+            }
+
+            @Override
+            public void onLoadMore() {
+                initData();
+            }
+        });
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
@@ -130,7 +168,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-
                                     hideSoftKeyboard(comment_edit, getActivity());
                                 }
                             }, 10);
@@ -139,85 +176,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 }
             }
         });
-
-    }
-
-    @Override
-    public void initViews(View view) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-    }
-
-    private void RequestLocationData() {
-
-        OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
-                .params("limit", 10)
-                .params("skip", count)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        parseLocationData(response.body());
-                    }
-                });
-    }
-
-    private void parseLocationData(String body) {
-        Logger.i("Location：" + body.toString());
-        final TestMode locationListBean = GsonUtils.jsonFromJson(body, TestMode.class);
-        localDataList.addAll(locationListBean.getData().getList());
-        count = localDataList.size();
-        if (locationListBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
-
-                mAdapter.setOnClickLitener(this);
-                recyclerView.setAdapter(mAdapter);
-            }
-            recyclerView.refreshComplete();
-            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
-        }
-    }
-
-    @Override
-    protected void initListeners() {
-
-        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                // 把集合和适配器清空  重新请求数据
-                localDataList.clear();
-                count = 0;
-                RequestLocationData();
-            }
-
-            @Override
-            public void onLoadMore() {
-                RequestLocationData();
-
-            }
-        });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_alertbottom_up_pic:
                 toActivity(PublishActivity.class);
@@ -226,18 +188,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    @Override
     public void onPicClick(int position, int picpostion) {
         List<String> imageList = localDataList.get(position).getImages();
-        ArrayList<String> arrayList = new ArrayList<String>();
-        for (String data : imageList) {
-            arrayList.add(data);
-        }
+        ArrayList<String> arrayList = new ArrayList<>(imageList);
         Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
         intent.putStringArrayListExtra("url", arrayList);
         intent.putExtra("position", picpostion);
@@ -285,7 +238,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     mAdapter.notifyItemChanged(position);
                     OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
                             .params("uuid", uuid)
-                            .params("content", comment_edit.getText().toString())
+                            .params("content", comment.getContent())
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -313,7 +266,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     //接口回调之 点赞
     @Override
-    public void onLaunClick(final int position) {
+    public void onPraiseClick(final int position) {
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -344,46 +297,46 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 }
             });
         } else {
-            OkGo.<String>post(Constant.LIKE_URL)
-                    .params("data_uuid", localDataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
-                @Override
-                public void onSuccess(Response<String> response) {
-
-                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    UserUtil user = UserUtil.getInstance();
-                    like.setMember_name(user.mNick);
-                    if (like.getMessage().equalsIgnoreCase("点赞成功")) {
-                        localDataList.get(position).getTem().add(like);
-                        localDataList.get(position).setLike_info_res("true");
-                        mAdapter.notifyDataSetChanged();
-                        mAdapter.notifyItemChanged(position);
-                        asyncShowToast("点赞成功");
-                    } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
-                        List<TestMode.DataBean.ListBean.ClickLikeBean> list = localDataList.get(position).getTem();
-                        for (int i = 0; i < localDataList.get(position).getTem().size(); i++) {
-                            TestMode.DataBean.ListBean.ClickLikeBean tem = localDataList.get(position).getTem().get(i);
-                            if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
-                                if (localDataList.get(position).getClick_like().size() == 1 && localDataList.get(position).getTem().size() == 1) {
-                                    localDataList.get(position).setClick_like("");
+            OkGo.<CommonBean>post(Constant.LIKE_URL)
+                    .params("data_uuid", localDataList.get(position).getUuid())
+                    .execute(new JsonCallback<CommonBean>() {
+                        @Override
+                        public void onSuccess(Response<CommonBean> response) {
+                            UserUtil user = UserUtil.getInstance();
+                            TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
+                            clickLikeBean.setMember_name(user.mNick);
+//                            like.setMember_name(user.mNick);
+                            if ("点赞成功".equals(response.body().msg)) {
+                                localDataList.get(position).getTem().add(clickLikeBean);
+                                localDataList.get(position).setLike_info_res("true");
+                                mAdapter.notifyDataSetChanged();
+                                mAdapter.notifyItemChanged(position);
+                                asyncShowToast("点赞成功");
+                            } else if ("取消点赞成功".equals(response.body().msg)) {
+                                List<TestMode.DataBean.ListBean.ClickLikeBean> list = localDataList.get(position).getTem();
+                                for (int i = 0; i < localDataList.get(position).getTem().size(); i++) {
+                                    TestMode.DataBean.ListBean.ClickLikeBean tem = localDataList.get(position).getTem().get(i);
+                                    if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
+                                        if (localDataList.get(position).getClick_like().size() == 1 && localDataList.get(position).getTem().size() == 1) {
+                                            localDataList.get(position).setClick_like("");
+                                        }
+                                        localDataList.get(position).getTem().remove(tem);
+                                        break;
+                                    }
                                 }
-                                localDataList.get(position).getTem().remove(tem);
-                                break;
+                                localDataList.get(position).setLike_info_res("");
+                                mAdapter.notifyDataSetChanged();
+                                mAdapter.notifyItemChanged(position);
+                                asyncShowToast("取消点赞");
                             }
                         }
-                        localDataList.get(position).setLike_info_res("");
-                        mAdapter.notifyDataSetChanged();
-                        mAdapter.notifyItemChanged(position);
-                        asyncShowToast("取消点赞成功");
-                    }
-                }
 
-                @Override
-                public void onError(Response<String> response) {
-                    super.onError(response);
-                    asyncShowToast("登陆账号异常");
-
-                }
-            });
+                        @Override
+                        public void onError(Response<CommonBean> response) {
+                            super.onError(response);
+                            asyncShowToast("登陆账号异常");
+                        }
+                    });
         }
     }
 
@@ -405,18 +358,16 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void CommenRecall(final int position, final CommentBean commentBean) {
-
+    public void commentRecall(final int position, final CommentBean commentBean) {
         commentView.setVisibility(View.VISIBLE);
         comment_edit.setFocusable(true);
         comment_edit.setFocusableInTouchMode(true);
         comment_edit.requestFocus();
         onFocusChange(true);
-
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (comment_edit.getText().toString() != null && !"".equals(comment_edit.getText().toString())) {
+                if (!TextUtils.isEmpty(comment_edit.getText().toString())) {
                     OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
                             .params("content", comment_edit.getText().toString().trim())
                             .params("uuid", commentBean.getUuid())
@@ -446,14 +397,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         });
     }
 
-
-    public static LocationFragment getInstance() {
-        if (locationFragment == null) {
-            locationFragment = new LocationFragment();
-        }
-        return locationFragment;
-    }
-
     /**
      * 显示或隐藏输入法
      */
@@ -478,8 +421,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         int screenHeight = getAccurateScreenDpi()[1];
         DisplayMetrics dm = new DisplayMetrics();
         mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int heightDifference = screenHeight - dm.heightPixels;
-        return heightDifference;
+        return screenHeight - dm.heightPixels;
     }
 
     /**
