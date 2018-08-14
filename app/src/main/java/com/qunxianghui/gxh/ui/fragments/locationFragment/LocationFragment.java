@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -9,10 +10,19 @@ import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.home.HomeVideoChannel;
+import com.qunxianghui.gxh.callback.JsonCallback;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
+import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.LocalServiceChannelActivity;
+import com.qunxianghui.gxh.utils.HttpStatusUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +41,18 @@ public class LocationFragment extends BaseFragment {
 
     @BindView(R.id.tv_localcircle_location)
     TextView mTvLocalcircleLocation;
-    @BindView(R.id.slidingTabLayout)
+    @BindView(R.id.slidingLocationTabLayout)
     SlidingTabLayout mSlidingTabLayout;
     @BindView(R.id.local_view_pager)
     ViewPager mLocalViewPager;
 
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private String[] titles = new String[]{"实时", "搞笑", "体育", "娱乐"};
+    private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
+    private String[] mTitles;
+    public final static int POST_CHANNELREQUEST = 1; // 请求码
+    public final static int POST_CHANNELRESULT = 100; // 返回码
 
     @Override
     public int getLayoutId() {
@@ -49,42 +62,48 @@ public class LocationFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        fragments.add(new LocationDetailFragment());
-        fragments.add(new LocationDetailFragment());
-        fragments.add(new LocationDetailFragment());
-        fragments.add(new LocationDetailFragment());
 
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, titles);
-        mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
-        mSlidingTabLayout.setViewPager(mLocalViewPager);
-        mLocalViewPager.setOffscreenPageLimit(fragments.size());
     }
 
     @Override
     public void initData() {
         //频道列表（用户订阅的频道）
-//        OkGo.<String>post(Constant.VIDEO_SUB_URL).execute(new StringCallback() {
-//            @Override
-//            public void onSuccess(Response<String> response) {
-//                String json = response.body();
-//                if (HttpStatusUtil.getStatus(json)) {
-//                    setChannelData(json);
-//                    initFragment();
-//                } else {
-//                    ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
-//                }
-//            }
-//        });
+        OkGo.<HomeVideoChannel>post(Constant.LOCAL_POST_SUB_URL).execute(new JsonCallback<HomeVideoChannel>() {
+            @Override
+            public void onSuccess(Response<HomeVideoChannel> response) {
+                if (response.body().code == 200 && response.body().data != null) {
+                    List<ChannelItem> datas = response.body().data;
+                    setFragments(datas);
+                    userChannelList.addAll(datas);
+                    setViewpager();
+                } else {
+                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().msg));
+                }
+
+            }
+        });
 
     }
-
-    private void initFragment() {
-
+    private void setViewpager() {
+        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, mTitles);
+        mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
+        mSlidingTabLayout.setViewPager(mLocalViewPager);
+        mLocalViewPager.setOffscreenPageLimit(fragments.size() - 1);
     }
 
-
-    private void setChannelData(String json) {
-
+    private void setFragments(List<ChannelItem> datas) {
+        mTitles = new String[datas.size()];
+        LocationDetailFragment locationDetailFragment;
+        Bundle bundle;
+        for (int i = 0; i < datas.size(); i++) {
+            ChannelItem dataBean = datas.get(i);
+            locationDetailFragment = new LocationDetailFragment();
+            bundle = new Bundle();
+            bundle.putInt("channel_id", dataBean.id);
+            locationDetailFragment.setArguments(bundle);
+            mTitles[i] = dataBean.name;
+            fragments.add(locationDetailFragment);
+        }
     }
 
     @Override
@@ -112,6 +131,18 @@ public class LocationFragment extends BaseFragment {
                     mTvLocalcircleLocation.setText(city);
                 }
                 break;
+
+        }
+
+        if (resultCode == POST_CHANNELRESULT) {
+            userChannelList.clear();
+            userChannelList.addAll(DragAdapter.channelList);
+            DragAdapter.channelList.clear();
+            DragAdapter.channelList = null;
+            fragments.clear();
+            setFragments(userChannelList);
+            setViewpager();
+
         }
     }
 
@@ -122,6 +153,7 @@ public class LocationFragment extends BaseFragment {
                 startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
             case R.id.iv_more_columns:
+                toActivityWithResult(LocalServiceChannelActivity.class, 0x0011);
                 break;
         }
     }

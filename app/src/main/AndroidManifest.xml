@@ -303,6 +303,9 @@
         <activity
             android:name=".ui.activity.EnterpriseMaterialActivity"
             android:screenOrientation="portrait" />
+        <!--本地圈频分类的界面-->
+        <activity android:name=".ui.fragments.locationFragment.activity.LocalServiceChannelActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 
