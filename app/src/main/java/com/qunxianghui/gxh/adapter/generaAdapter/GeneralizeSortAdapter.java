@@ -14,12 +14,12 @@ import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
 
-public class GeneralizeSortAdapter extends BaseRecycleViewAdapter<EmployeePaiHangBean.DataBean> {
+public class GeneralizeSortAdapter extends BaseRecycleViewAdapter<EmployeePaiHangBean.EmployeePaiHang.DataBean> {
 
     private RequestOptions mOptions = new RequestOptions();
 
     @SuppressLint("CheckResult")
-    public GeneralizeSortAdapter(Context context, List<EmployeePaiHangBean.DataBean> datas) {
+    public GeneralizeSortAdapter(Context context, List<EmployeePaiHangBean.EmployeePaiHang.DataBean> datas) {
         super(context, datas);
         mOptions.placeholder(R.mipmap.default_img)
                 .error(R.mipmap.default_img)
@@ -27,15 +27,15 @@ public class GeneralizeSortAdapter extends BaseRecycleViewAdapter<EmployeePaiHan
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, EmployeePaiHangBean.DataBean dataBean) {
+    protected void convert(MyViewHolder holder, int position, EmployeePaiHangBean.EmployeePaiHang.DataBean dataBean) {
         RoundImageView generalizePersonHead = holder.getView(R.id.iv_generalize_person_head);
         TextView mTvCount = holder.getView(R.id.tv_generalize_person_count);
-        holder.setText(R.id.iv_generalize_person_name, dataBean.getMember_name());
+        holder.setText(R.id.iv_generalize_person_name, dataBean.member_name);
         String textSource = "<font color='#D81717'>%s</font><font color='#999999'>次</font>";
-        mTvCount.setText(Html.fromHtml(String.format(textSource, dataBean.getCnt())));
+        mTvCount.setText(Html.fromHtml(String.format(textSource, dataBean.cnt)));
 
         Glide.with(mContext)
-                .load(dataBean.getMember_avatar())
+                .load(dataBean.member_avatar)
                 .apply(mOptions)
                 .into(generalizePersonHead);
     }

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -60,6 +59,7 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
     private String[] mTitles = {"7月", "总榜"};
+    private String[] mType = {"view_cnt", "click_cnt", "forward_cnt", "article_cnt"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private int[] mIconUnselectIds = {
             R.mipmap.icon_company_article_selector, R.mipmap.icon_company_exposure_selector,
@@ -68,29 +68,9 @@ public class GeneraCompanyFragment extends BaseFragment {
             R.mipmap.icon_company_article_normal, R.mipmap.icon_company_exposure_normal,
             R.mipmap.icon_company_click_normal, R.mipmap.icon_company_transpond_normal};
 
-    private String selfcompayname;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_genera_company;
-    }
-
-    @Override
-    public void initData() {
-        rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_genera_company_yuebang:
-                        vpGeneralizeCompanyMain.setCurrentItem(0, false);
-                        break;
-                    case R.id.rb_genera_company_zongbang:
-                        vpGeneralizeCompanyMain.setCurrentItem(1, false);
-                        break;
-                }
-            }
-        });
-
     }
 
     @Override
@@ -101,24 +81,33 @@ public class GeneraCompanyFragment extends BaseFragment {
         }
         mTabLayout.setTabData(mTabEntities);
         /*获取企业推广的数据*/
-        HoldReneraCompanyData();
+        holdReneraCompanyData();
+        vpGeneralizeCompanyMain.setOffscreenPageLimit(mType.length - 1);
+        setViewpager(0, 5);
+    }
+
+    private void setViewpager(int total, int month) {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new GeneraRankMonthSortFragment("view_cnt"));
-        fragments.add(new GeneraRankMonthSortFragment("click_cnt"));
-        fragments.add(new GeneraRankMonthSortFragment("forward_cnt"));
-        fragments.add(new GeneraRankMonthSortFragment("article_cnt"));
-        final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
+        for (String aMType : mType) {
+            fragments.add(new GeneraRankMonthSortFragment(aMType, total, month));
+        }
+        MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
         vpGeneralizeCompanyMain.setAdapter(adapter);
-        /** 禁止滑动*/
-        //        vpGeneralizeCompanyMain.setScroll(false);
-        /**增加缓存页面的数量*/
-        vpGeneralizeCompanyMain.setOffscreenPageLimit(fragments.size() - 1);
-        /**默认显示第一个选项卡*/
-//        rgGeneraCompanyPaihang.check(R.id.rb_genera_company_yuebang);
     }
 
     @Override
     protected void initListeners() {
+        mSegmentTab.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                setViewpager(position, 6);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
         mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -143,36 +132,30 @@ public class GeneraCompanyFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         SharedPreferences spCompany = mActivity.getSharedPreferences("companymessage", 0);
-        selfcompayname = spCompany.getString("selfcompanyname", "");
+        String selfcompayname = spCompany.getString("selfcompanyname", "");
         tvGeneracompanyName.setText(selfcompayname);
     }
 
-    private void HoldReneraCompanyData() {
+    private void holdReneraCompanyData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
-                parseGeneraLizeStaticsData(response.body());
+                final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(response.body(), GeneralizeCompanyStaticsBean.class);
+                if (generalizeCompanyStaticsBean.getCode() == 0) {
+                    GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
+                    tvGeneralizeCompanyMoneyCount.setText(String.format("节省广告费: %s 元 规模: %s人", dataBean.ad_prize, dataBean.staff_cnt));
+                    tvArticleExposureCount.setText(String.format("%s次", dataBean.view_cnt));
+                    tvArticleCount.setText(String.format("%s篇", dataBean.article_cnt));
+                    tvArticleTransmitCount.setText(String.format("%s次", dataBean.forward_cnt));
+                    tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
+                    tvAdverClickRate.setText(dataBean.click_rate);
+                    tvArticleTransmitRate.setText(dataBean.forward_rate);
+                    SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
+                    spCompanymessageEditor.putString("staff_cnt", dataBean.staff_cnt);
+                    spCompanymessageEditor.apply();
+                }
             }
         });
     }
-
-    /*解析企业推广的数据*/
-    private void parseGeneraLizeStaticsData(String body) {
-        final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(body, GeneralizeCompanyStaticsBean.class);
-        if (generalizeCompanyStaticsBean.getCode() == 0) {
-            GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
-            tvGeneralizeCompanyMoneyCount.setText(String.format("节省广告费: %s 元 规模: %s人", dataBean.ad_prize, dataBean.staff_cnt));
-            tvArticleExposureCount.setText(String.format("%s次", dataBean.view_cnt));
-            tvArticleCount.setText(String.format("%s篇", dataBean.article_cnt));
-            tvArticleTransmitCount.setText(String.format("%s次", dataBean.forward_cnt));
-            tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
-            tvAdverClickRate.setText(dataBean.click_rate);
-            tvArticleTransmitRate.setText(dataBean.forward_rate);
-            SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
-            SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-            spCompanymessageEditor.putString("staff_cnt", dataBean.staff_cnt);
-            spCompanymessageEditor.apply();
-        }
-    }
-
 }
