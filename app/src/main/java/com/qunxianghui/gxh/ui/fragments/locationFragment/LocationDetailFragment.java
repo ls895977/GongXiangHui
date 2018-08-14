@@ -67,6 +67,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int scrollOffsetY = 0;
     private int count = 0;
     NineGridTest2Adapter mAdapter;
+    private int mCateId;
 
     @Override
     public int getLayoutId() {
@@ -85,7 +86,15 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void initData() {
+
+        mCateId = getArguments().getInt("channel_id");
+        RequestLocalServiceData();
+
+    }
+
+    private void RequestLocalServiceData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
+                .params("cate_id", mCateId)
                 .params("limit", 10)
                 .params("skip", count)
                 .execute(new StringCallback() {
@@ -100,6 +109,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         }
                     }
                 });
+
     }
 
     @Override
