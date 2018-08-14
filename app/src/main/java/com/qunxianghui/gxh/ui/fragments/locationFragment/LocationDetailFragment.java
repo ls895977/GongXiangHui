@@ -41,6 +41,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.TaskUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.lang.reflect.Method;
@@ -112,6 +113,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     }
 
+    private boolean keyShow = false;
+
     @Override
     protected void initListeners() {
         mAdapter.setOnClickListener(this);
@@ -145,6 +148,14 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
+                TaskUtil.getInstance().runOnMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        keyShow = true;
+                        scrollOffsetY = 0;
+                    }
+                },500);
+
             }
 
             @Override
@@ -153,11 +164,20 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             }
         });
 
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                scrollOffsetY = scrollOffsetY + dy;
+                if(keyShow){
+                    scrollOffsetY+=dy;
+                    if(scrollOffsetY>20||scrollOffsetY<-20){
+                        //TODO
+                        hideSoftKeyboard(comment_edit, getActivity());
+                        keyShow = false;
+                        scrollOffsetY = 0;
+                    }
+                }
             }
 
             @Override
