@@ -180,7 +180,7 @@ public class Constant {
     //分享我的企业名片
     public static final String SHARE_COMPANY_CARD_URL = BASE_URL + "Aboutus/showh5";
     //我的植入广告
-    public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
+    public static final String GET_AD_LIST = BASE_URL + "user/getAdTemplates";
     //查看核心优势或公司产品
     public static final String CHECK_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/selectCore";
     //添加核心优势或公司产品

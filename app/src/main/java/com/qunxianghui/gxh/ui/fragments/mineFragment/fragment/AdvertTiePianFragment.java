@@ -14,9 +14,14 @@ import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
+import com.qunxianghui.gxh.bean.PersonalAds;
+import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialTiePianActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.TiePianChooseDialog;
@@ -67,6 +72,22 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mAdvertBean.ad_type = 6;
         mAdvertBean.position = 3;
         mTvTitle.setText("贴片广告");
+    }
+
+    @Override
+    public void initData() {
+        OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
+                .params("position", 4)
+                .execute(new DialogCallback<PersonalAds>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response<PersonalAds> response) {
+                        PersonalAds body = response.body();
+                        if (body != null && body.code == 200 && !body.data.isEmpty()) {
+                            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert data = body.data.get(0);
+                            Glide.with(AdvertTiePianFragment.this).load(data.images).into(mIvAd);
+                        }
+                    }
+                });
     }
 
     @Override

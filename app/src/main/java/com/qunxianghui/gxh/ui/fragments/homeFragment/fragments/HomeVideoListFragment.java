@@ -37,7 +37,6 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     XRecyclerView mRv;
 
     private int mPage;
-    private boolean mIsFirst;
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
@@ -48,11 +47,16 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     }
 
     @Override
+    public void initViews(View view) {
+        mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoDataList);
+        mRv.setAdapter(personDetailVideoAdapter);
+    }
+
+    @Override
     public void initData() {
-        mIsFirst = true;
         mPage = 0;
         mCateId = getArguments().getInt("channel_id");
-        mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         requestHomeVideoList();
     }
 
@@ -78,6 +82,33 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 requestHomeVideoList();
             }
         });
+
+        personDetailVideoAdapter.setVideoListClickListener(this);
+        personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", videoDataList.get(position - 1).getUrl());
+                intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
+                startActivity(intent);
+            }
+        });
+        mRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+            @Override
+            public void onChildViewAttachedToWindow(View view) {
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(View view) {
+                JZVideoPlayer jzvd = view.findViewById(R.id.videoplayer);
+                if (jzvd != null && JZUtils.dataSourceObjectsContainsUri(jzvd.dataSourceObjects, JZMediaManager.getCurrentDataSource())) {
+                    JZVideoPlayer currentJzvd = JZVideoPlayerManager.getCurrentJzvd();
+                    if (currentJzvd != null && currentJzvd.currentScreen != JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
+                        JZVideoPlayer.releaseAllVideos();
+                    }
+                }
+            }
+        });
     }
 
     private void requestHomeVideoList() {
@@ -95,44 +126,13 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     private void parsePersonDetailVideoData(String body) {
         HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
-        int index = videoDataList.size();
-        videoDataList.addAll(homeVideoListBean.getData().getList());
         if (homeVideoListBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoDataList);
-                personDetailVideoAdapter.setVideoListClickListener(this);
-                mRv.setAdapter(personDetailVideoAdapter);
-
-                personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("url", videoDataList.get(position - 1).getUrl());
-                        intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
-                        startActivity(intent);
-                    }
-                });
-                mRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                    @Override
-                    public void onChildViewAttachedToWindow(View view) {
-                    }
-
-                    @Override
-                    public void onChildViewDetachedFromWindow(View view) {
-                        JZVideoPlayer jzvd = view.findViewById(R.id.videoplayer);
-                        if (jzvd != null && JZUtils.dataSourceObjectsContainsUri(jzvd.dataSourceObjects, JZMediaManager.getCurrentDataSource())) {
-                            JZVideoPlayer currentJzvd = JZVideoPlayerManager.getCurrentJzvd();
-                            if (currentJzvd != null && currentJzvd.currentScreen != JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
-                                JZVideoPlayer.releaseAllVideos();
-                            }
-                        }
-                    }
-                });
-            }
+            int index = videoDataList.size();
+            videoDataList.addAll(homeVideoListBean.getData().getList());
             mPage++;
             mRv.refreshComplete();
             personDetailVideoAdapter.notifyItemRangeChanged(index, homeVideoListBean.getData().getList().size());
+            personDetailVideoAdapter.notifyDataSetChanged();
         }
     }
 
