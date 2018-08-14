@@ -62,7 +62,6 @@ public class LocationFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-
     }
 
     @Override

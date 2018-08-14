@@ -6,17 +6,15 @@ package com.qunxianghui.gxh.config;
 
 public class Constant {
     public static final long TIME_OUT = 3000;//网络请求超时时间
-
     //首页精选链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com/optimization";
-    //首页本地服务链接的跳转
-    public static final String BenDiService = "http://www.qunxianghui.com/localservice";
+    //群享汇服务协议链接的跳转
+    public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //正式环境
-//  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-//本地环境
-//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
-    //测试环境http://47.104.170.168:80/v2/user/login
-    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
+    //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    //本地环境
+    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+    //    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -134,9 +132,8 @@ public class Constant {
     //用户升级
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
-//    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+    // public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
     public static final String UP_LOAD_OSS_PIC = BASE_URL + "system/oss_uploadImage";
-
     //本地圈用户订阅的
     public static final String LOCAL_POST_SUB_URL = BASE_URL + "Posts/getPostsCate";
     //个人编辑本地圈接口
@@ -205,7 +202,6 @@ public class Constant {
     public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
     //修改某条广告
     public static final String EDIT_AD = BASE_URL + "user/editAd";
-
     public static final String ENTERPRISE_MATERIAL = BASE_URL + "user/getEnterpriseMaterial";
     //企业添加
     public static final String ADD_COMPANY_URL = BASE_URL + "service/addCompany";
@@ -217,7 +213,8 @@ public class Constant {
     public static final String LOGIN_BINE_MOBILE_URL = BASE_URL + "user/bindMobile";
     //QQ登录回调
     public static final String QQ_RESPONSE_URL = BASE_URL + "user/callback/qq";
-
+    //微信回调
     public static final String WEIXIN_RESPONSE_URL = BASE_URL + "user/callback/weixin ";
+    //新浪回调
     public static final String SINA_RESPONSE_URL = BASE_URL + "user/callback/sina";
 }

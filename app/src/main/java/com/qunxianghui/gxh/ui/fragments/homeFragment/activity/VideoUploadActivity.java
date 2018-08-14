@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -170,8 +171,11 @@ public class VideoUploadActivity extends BaseActivity {
                     .setSubmitColor(Color.parseColor("#D81717"))
                     .build();
             mChooseType.setNPicker(strings, null, null);
+            mChooseType.show();
+        } else if (code == 300) {
+            toActivity(LoginActivity.class);
         }
-        mChooseType.show();
+
     }
 
 }

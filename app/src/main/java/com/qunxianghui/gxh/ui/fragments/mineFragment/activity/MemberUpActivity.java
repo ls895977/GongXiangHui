@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import butterknife.BindView;
@@ -83,7 +85,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initData() {
-
         RequestOptions options = new RequestOptions();
         options.circleCrop();
         options.centerCrop();
@@ -91,7 +92,8 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         options.error(R.mipmap.default_img);
         Glide.with(mContext).load(avatar).apply(options).into(ivCompanyHead);
         Glide.with(mContext).load(avatar).apply(options).into(ivRegistHead);
-        if (selfcompayname != null) {
+
+        if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
             mTvMemberupQuicklyActive.setVisibility(View.GONE);
             tvMemberupPersonActive.setVisibility(View.GONE);
             tvMemberupActiviteTime.setVisibility(View.VISIBLE);
@@ -103,6 +105,8 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             mTvMemberupQuicklyActive.setVisibility(View.VISIBLE);
             tvMemberupPersonActive.setVisibility(View.VISIBLE);
         }
+
+
     }
 
     @Override
