@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 
 @SuppressLint("ValidFragment")
-public class GeneraLizeMonthSortFragment extends BaseFragment {
+public class GeneraRankMonthSortFragment extends BaseFragment {
 
     @BindView(R.id.recycler_generalize_month_sort)
     RecyclerView recyclerGeneralizeMonthSort;
@@ -29,7 +29,7 @@ public class GeneraLizeMonthSortFragment extends BaseFragment {
     private int mMonth;
     private String mQueryType;
 
-    public GeneraLizeMonthSortFragment(String type) {
+    public GeneraRankMonthSortFragment(String type) {
         this.mQueryType = type;
     }
 

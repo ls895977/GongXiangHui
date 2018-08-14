@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -76,19 +77,19 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     @Override
     public void initData() {
-//        rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                switch (checkedId) {
-//                    case R.id.rb_genera_company_yuebang:
-//                        vpGeneralizeCompanyMain.setCurrentItem(0, false);
-//                        break;
-//                    case R.id.rb_genera_company_zongbang:
-//                        vpGeneralizeCompanyMain.setCurrentItem(1, false);
-//                        break;
-//                }
-//            }
-//        });
+        rgGeneraCompanyPaihang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_genera_company_yuebang:
+                        vpGeneralizeCompanyMain.setCurrentItem(0, false);
+                        break;
+                    case R.id.rb_genera_company_zongbang:
+                        vpGeneralizeCompanyMain.setCurrentItem(1, false);
+                        break;
+                }
+            }
+        });
 
     }
 
@@ -101,13 +102,11 @@ public class GeneraCompanyFragment extends BaseFragment {
         mTabLayout.setTabData(mTabEntities);
         /*获取企业推广的数据*/
         HoldReneraCompanyData();
-        final List<Fragment> fragments = new ArrayList<>();
-//        fragments.add(new MonthFragment());
-//        fragments.add(new MonthFragment());
-        fragments.add(new GeneraLizeMonthSortFragment("view_cnt"));
-        fragments.add(new GeneraLizeMonthSortFragment("click_cnt"));
-        fragments.add(new GeneraLizeMonthSortFragment("forward_cnt"));
-        fragments.add(new GeneraLizeMonthSortFragment("article_cnt"));
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new GeneraRankMonthSortFragment("view_cnt"));
+        fragments.add(new GeneraRankMonthSortFragment("click_cnt"));
+        fragments.add(new GeneraRankMonthSortFragment("forward_cnt"));
+        fragments.add(new GeneraRankMonthSortFragment("article_cnt"));
         final MainViewPagerAdapter adapter = new MainViewPagerAdapter(getChildFragmentManager(), fragments);
         vpGeneralizeCompanyMain.setAdapter(adapter);
         /** 禁止滑动*/
