@@ -36,8 +36,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     @BindView(R.id.xrv)
     XRecyclerView mRv;
 
-    private int count = 0;
-    private boolean mIsFirst = true;
+    private int mPage;
+    private boolean mIsFirst;
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
@@ -49,6 +49,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void initData() {
+        mIsFirst = true;
+        mPage = 0;
         mCateId = getArguments().getInt("channel_id");
         mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         requestHomeVideoList();
@@ -67,7 +69,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             @Override
             public void onRefresh() {
                 videoDataList.clear();
-                count = 0;
+                mPage = 0;
                 requestHomeVideoList();
             }
 
@@ -82,7 +84,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         OkGo.<String>post(Constant.HOME_VIDEO_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
-                .params("skip", count)
+                .params("skip", mPage)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -93,8 +95,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     private void parsePersonDetailVideoData(String body) {
         HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
+        int index = videoDataList.size();
         videoDataList.addAll(homeVideoListBean.getData().getList());
-        count = videoDataList.size();
         if (homeVideoListBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
@@ -128,8 +130,9 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                     }
                 });
             }
+            mPage++;
             mRv.refreshComplete();
-            personDetailVideoAdapter.notifyItemRangeChanged(count, homeVideoListBean.getData().getList().size());
+            personDetailVideoAdapter.notifyItemRangeChanged(index, homeVideoListBean.getData().getList().size());
         }
     }
 
