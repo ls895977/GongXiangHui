@@ -22,17 +22,16 @@ import butterknife.BindView;
 @SuppressLint("ValidFragment")
 public class GeneraLizeMonthSortFragment extends BaseFragment {
 
-    private String type = "";
-    private String queryType = "";
-
-    public GeneraLizeMonthSortFragment(String type) {
-        this.queryType = type;
-    }
-
     @BindView(R.id.recycler_generalize_month_sort)
     RecyclerView recyclerGeneralizeMonthSort;
 
-    private String url = Constant.GENERALIZE_PAIHANG_URL + "?type=";
+    private int mTotal;
+    private int mMonth;
+    private String mQueryType;
+
+    public GeneraLizeMonthSortFragment(String type) {
+        this.mQueryType = type;
+    }
 
     @Override
     public int getLayoutId() {
@@ -46,9 +45,10 @@ public class GeneraLizeMonthSortFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
-        Log.d("asdf", System.currentTimeMillis() + "");
-        OkGo.<String>post(url)
-                .params("type", queryType)
+        OkGo.<String>post(Constant.GENERALIZE_PAIHANG_URL)
+                .params("total", mTotal)
+                .params("month", )
+                .params("type", mQueryType)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
