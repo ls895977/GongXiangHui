@@ -277,7 +277,8 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                     .setSubmitColor(Color.parseColor("#D81717"))
                     .build();
             mChooseType.setNPicker(strings, null, null);
+            mChooseType.show();
         }
-        mChooseType.show();
+
     }
 }

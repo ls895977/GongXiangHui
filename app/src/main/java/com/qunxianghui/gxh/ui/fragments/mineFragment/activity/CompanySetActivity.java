@@ -122,7 +122,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
         CompanySetBean.DataBean companySetBeanData = companySetBean.getData();
         int code = companySetBean.getCode();
-        if (code == 0&&companySetBeanData!=null) {
+        if (code == 0) {
             mDataBean = companySetBean.getData();
             if (mDataBean != null) {
                 String images = mDataBean.getImages();
@@ -179,6 +179,8 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
           if(response.body().toString().length()>0){
               tvMmineCompanysetFabu.setText("修改");
               parseCompanyInfo(response.body());
+          }else {
+              return;
           }
 
             }
