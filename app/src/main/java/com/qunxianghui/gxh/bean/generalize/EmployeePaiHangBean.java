@@ -18,14 +18,14 @@ public class EmployeePaiHangBean implements Serializable {
             public String member_name;
             public String member_avatar;
             public String cnt;
-            public String ranking;
+            public int ranking;
         }
 
         public static class DataBean {
             public int id;
             public int member_id;
             public int company_id;
-            public int activecode;
+            public String activecode;
             public int staff_id;
             public int ctime;
             public int status;

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.okgo.OkGo;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2018/4/3 0003.
@@ -34,8 +34,6 @@ import butterknife.BindView;
 
 public class GeneraCompanyFragment extends BaseFragment {
 
-    @BindView(R.id.segment_tab)
-    SegmentTabLayout mSegmentTab;
     @BindView(R.id.tabLayout)
     CommonTabLayout mTabLayout;
     @BindView(R.id.vp_generalize_company_main)
@@ -56,6 +54,10 @@ public class GeneraCompanyFragment extends BaseFragment {
     TextView tvArticleTransmitRate;
     @BindView(R.id.tv_generacompany_name)
     TextView tvGeneracompanyName;
+    @BindView(R.id.tv_month)
+    TextView mTvMonth;
+    @BindView(R.id.tv_total)
+    TextView mTvTotal;
 
     private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
     private String[] mTitles = {"7月", "总榜"};
@@ -75,7 +77,6 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        mSegmentTab.setTabData(mTitles);
         for (int i = 0; i < mTabTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTabTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
         }
@@ -83,7 +84,8 @@ public class GeneraCompanyFragment extends BaseFragment {
         /*获取企业推广的数据*/
         holdReneraCompanyData();
         vpGeneralizeCompanyMain.setOffscreenPageLimit(mType.length - 1);
-        setViewpager(0, 5);
+        mTvTotal.setSelected(true);
+        setViewpager(1, 0);
     }
 
     private void setViewpager(int total, int month) {
@@ -97,17 +99,6 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     @Override
     protected void initListeners() {
-        mSegmentTab.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelect(int position) {
-                setViewpager(position, 6);
-            }
-
-            @Override
-            public void onTabReselect(int position) {
-
-            }
-        });
         mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -158,4 +149,22 @@ public class GeneraCompanyFragment extends BaseFragment {
             }
         });
     }
+
+    @OnClick({R.id.tv_month, R.id.tv_total})
+    public void onViewClicked(View view) {
+        view.setSelected(true);
+        switch (view.getId()) {
+            case R.id.tv_month:
+                mTvTotal.setSelected(false);
+                setViewpager(0, 6);
+                mTabLayout.setCurrentTab(0);
+                break;
+            case R.id.tv_total:
+                mTvMonth.setSelected(false);
+                setViewpager(1, 0);
+                break;
+        }
+        mTabLayout.setCurrentTab(0);
+    }
+
 }

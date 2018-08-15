@@ -119,7 +119,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     }
 
     private void parseCompanyInfo(String body) {
-        final CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
+        CompanySetBean companySetBean = GsonUtils.jsonFromJson(body, CompanySetBean.class);
         CompanySetBean.DataBean companySetBeanData = companySetBean.getData();
         int code = companySetBean.getCode();
         if (code == 0) {

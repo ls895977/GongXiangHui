@@ -49,7 +49,6 @@ public class LocationFragment extends BaseFragment {
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
-    private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     private String[] mTitles;
     public final static int POST_CHANNELREQUEST = 1; // 请求码
     public final static int POST_CHANNELRESULT = 100; // 返回码
@@ -84,7 +83,7 @@ public class LocationFragment extends BaseFragment {
 
     }
     private void setViewpager() {
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, mTitles);
+        MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, mTitles);
         mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mLocalViewPager);
         mLocalViewPager.setOffscreenPageLimit(fragments.size() - 1);
