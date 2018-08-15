@@ -41,6 +41,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.TaskUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.lang.reflect.Method;
@@ -61,7 +62,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     TextView send_btn;
     @BindView(R.id.location_send_comment_view)
     LinearLayout commentView;
-
     private List<TestMode.DataBean.ListBean> localDataList = new ArrayList<>();
     private int commentPosition;
     private int scrollOffsetY = 0;
@@ -83,15 +83,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
         recyclerView.setAdapter(mAdapter);
     }
-
     @Override
     public void initData() {
-
         mCateId = getArguments().getInt("channel_id");
         RequestLocalServiceData();
-
     }
-
     private void RequestLocalServiceData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
@@ -105,16 +101,17 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         count = localDataList.size();
                         if (locationListBean.getCode() == 0) {
                             recyclerView.refreshComplete();
-                            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
                 });
-
     }
+
+    private boolean keyShow = false;
 
     @Override
     protected void initListeners() {
-        mAdapter.setOnClickListener(this);
+        mAdapter.setListener(this);
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -131,25 +128,26 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
+                commentPosition+=1;//头部是下拉刷新，所以需要加1
                 Logger.i("xxx-yyy jump :" + commentPosition);
                 View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition);
-
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                int bottomMargin = height - getBottomKeyboardHeight() - 30;
+                int bottomMargin = height - getBottomKeyboardHeight()-140;
                 layoutParams.bottomMargin = bottomMargin;
-
                 commentView.setLayoutParams(layoutParams);
                 if (item != null) {
-                    int[] location = new int[2];
-                    item.getLocationOnScreen(location);
-                    int x = location[0];
-                    int y = location[1];
-                    Logger.v("xxx-yyy item height :", item.getMeasuredHeight());
-                    Logger.v("xxx-yyy y :" + y);
-                    recyclerView.smoothScrollBy(0, (bottomMargin + commentView.getHeight() - item.getBottom()));//计算item滚动多少
+                    recyclerView.smoothScrollBy(0, item.getBottom()-commentView.getTop());
                 } else {
                     Logger.i("xxx-yyy" + " item is null");
                 }
+                TaskUtil.getInstance().runOnMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        keyShow = true;
+                        scrollOffsetY = 0;
+                    }
+                },500);
+
             }
 
             @Override
@@ -158,11 +156,20 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             }
         });
 
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                scrollOffsetY = scrollOffsetY + dy;
+                if(keyShow){
+                    scrollOffsetY+=dy;
+                    if(scrollOffsetY>20||scrollOffsetY<-20){
+                        //TODO
+                        hideSoftKeyboard(comment_edit, getActivity());
+                        keyShow = false;
+                        scrollOffsetY = 0;
+                    }
+                }
             }
 
             @Override

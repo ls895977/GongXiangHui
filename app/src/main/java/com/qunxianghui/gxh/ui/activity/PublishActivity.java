@@ -161,6 +161,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     //上传图片
     private void upLoadPic(String urls, final boolean isUpdate) {
         OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+                .params("base64",urls)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

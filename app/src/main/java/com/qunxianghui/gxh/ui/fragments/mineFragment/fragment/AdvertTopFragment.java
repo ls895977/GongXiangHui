@@ -2,22 +2,33 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
+import com.qunxianghui.gxh.bean.PersonalAds;
+import com.qunxianghui.gxh.callback.JsonCallback;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
@@ -30,7 +41,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AdvertTopFragment extends BaseFragment implements View.OnClickListener, AdvertChoosePicDialog.ImgPickListener, CompoundButton.OnCheckedChangeListener {
+public class AdvertTopFragment extends BaseFragment implements View.OnClickListener,
+        AdvertChoosePicDialog.ImgPickListener, CompoundButton.OnCheckedChangeListener, AdvertChooseTypeDialog.Callback {
 
     @BindView(R.id.vp)
     ViewPager mVp;
@@ -52,7 +64,28 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void initData() {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
-        addPage();
+        OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
+                .params("position", 1)
+                .execute(new JsonCallback<PersonalAds>() {
+                    @Override
+                    public void onSuccess(Response<PersonalAds> response) {
+                        PersonalAds body = response.body();
+                        if (body != null && body.code == 200 && !body.data.isEmpty()) {
+                            mList = body.data;
+                            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
+                                addPage(datum);
+                            }
+                        } else {
+                            addPage(null);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<PersonalAds> response) {
+                        super.onError(response);
+                        addPage(null);
+                    }
+                });
     }
 
     @Override
@@ -79,7 +112,9 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_company:
-                toActivityWithResult(EnterpriseMaterialActivity.class, 0x0011);
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", 9);
+                toActivityWithResult(EnterpriseMaterialActivity.class, bundle, 0x0011);
                 break;
             case R.id.ll_common:
                 asyncShowToast("通用素材");
@@ -89,7 +124,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     asyncShowToast("亲，最多只可添加10个模版哦!");
                     return;
                 }
-                addPage();
+                addPage(null);
                 break;
             case R.id.ll_video:
                 asyncShowToast("教学视频");
@@ -163,6 +198,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
                     mChooseType = new AdvertChooseTypeDialog(getContext(), mViewList, mVp);
+                    mChooseType.SetCallback(this);
                 }
                 mChooseType.show();
                 break;
@@ -180,25 +216,112 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private void addPage() {
+    private void addPage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert data) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_tonglan, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("通栏广告");
-        view.findViewById(R.id.rl_add_img).setVisibility(View.GONE);
+        View rlAddImg = view.findViewById(R.id.rl_add_img);
+        rlAddImg.setVisibility(View.GONE);
         view.findViewById(R.id.iv_delete).setOnClickListener(this);
         view.findViewById(R.id.iv_add_big_img).setOnClickListener(this);
         view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
-        view.findViewById(R.id.tv_choose_activity_link).setOnClickListener(this);
-        view.findViewById(R.id.ivAd).setOnClickListener(this);
-        ((AppCompatCheckBox) view.findViewById(R.id.cb)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        TextView tvChooseActivityLink = view.findViewById(R.id.tv_choose_activity_link);
+        tvChooseActivityLink.setOnClickListener(this);
+        ImageView ivImg = view.findViewById(R.id.ivAd);
+        ivImg.setOnClickListener(this);
+        ImageView bigImg = view.findViewById(R.id.iv_add_big_img);
+        bigImg.setOnClickListener(this);
+        AppCompatCheckBox cB = view.findViewById(R.id.cb);
+        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                mList.get(mVp.getCurrentItem()).settings.is_link = isChecked ? 1 : 0;
             }
         });
-        ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
+        EditText etLink = view.findViewById(R.id.et_link);
+        etLink.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mList.get(mVp.getCurrentItem()).settings.link = s.toString();
+            }
+        });
+        EditText etPhone = view.findViewById(R.id.et_phone);
+        etPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mList.get(mVp.getCurrentItem()).settings.mobile = s.toString();
+            }
+        });
+        SwitchButton sw = view.findViewById(R.id.sw);
+        sw.setOnCheckedChangeListener(this);
+        if (data != null) {
+            tvChooseActivityLink.setVisibility(View.GONE);
+            rlAddImg.setVisibility(View.GONE);
+            etPhone.setVisibility(View.GONE);
+            TextView tvType = view.findViewById(R.id.tv_choose_type);
+            sw.setChecked(data.status == 1);
+            Glide.with(AdvertTopFragment.this).load(data.images)
+                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
+//            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
+            switch (data.settings.operate) {
+                case 1:
+                    tvType.setText("跳转链接");
+                    view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
+                    etLink.setText(data.settings.link);
+                    if (data.settings.is_link == 1) {
+                        cB.setChecked(true);
+                    }
+                    break;
+                case 2:
+                    tvType.setText("拨打电话");
+                    etPhone.setVisibility(View.VISIBLE);
+                    etPhone.setText(data.settings.mobile);
+                    break;
+                case 3:
+                    tvType.setText("跳转活动");
+                    tvChooseActivityLink.setVisibility(View.VISIBLE);
+                    tvChooseActivityLink.setText(data.settings.link);
+                    break;
+                case 4:
+                    tvType.setText("展示海报");
+                    rlAddImg.setVisibility(View.VISIBLE);
+                    Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
+                            .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
+                    break;
+                case 5:
+                    tvType.setText("展示二维码");
+                    rlAddImg.setVisibility(View.VISIBLE);
+                    Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
+                            .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
+                    break;
+            }
+        } else {
+            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+            companyAdvert.ad_type = 3;
+            companyAdvert.position = 1;
+            mList.add(companyAdvert);
+        }
         mViewList.add(view);
-        mList.add(new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert());
         mPagerAdapter.notifyDataSetChanged();
         mVp.setCurrentItem(mPagerAdapter.getCount() - 1, false);
         changeCircleView();
@@ -213,28 +336,39 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
+    public void callback(int type) {
+        mList.get(mVp.getCurrentItem()).settings.operate = type;
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         List<ImageItem> mImages;
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 0x0011) {
             mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
             if (mImages != null && mImages.size() > 0) {
-                ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, getCurrentImageView(), 0, 0);
+                String path = mImages.get(0).path;
+                ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), path, getCurrentImageView(path), 0, 0);
             }
+        } else if (resultCode == 0x0022) {
+            // TODO: 2018/8/15 获得选择模版 
         }
     }
 
-    private ImageView getCurrentImageView() {
+    private ImageView getCurrentImageView(String path) {
         View view = mViewList.get(mVp.getCurrentItem());
         if (mChoosePic.mIsBigImg) {
+            mList.get(mVp.getCurrentItem()).images = path;
             return view.findViewById(R.id.iv_add_big_img);
         } else {
+            mList.get(mVp.getCurrentItem()).settings.pgn_url = path;
             return view.findViewById(R.id.ivAd);
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+        mList.get(mVp.getCurrentItem()).status = isChecked ? 1 : 0;
     }
+
 }

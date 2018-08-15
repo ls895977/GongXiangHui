@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, Observer {
+public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, Observer{
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)

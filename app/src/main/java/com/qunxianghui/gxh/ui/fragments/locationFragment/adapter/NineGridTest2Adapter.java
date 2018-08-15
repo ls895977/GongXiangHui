@@ -53,7 +53,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         mTextStateList = new SparseArray<>();
     }
 
-    public void setOnClickListener(CircleOnClickListener listener) {
+    public CircleOnClickListener getListener() {
+        return listener;
+    }
+
+    public void setListener(CircleOnClickListener listener) {
         this.listener = listener;
     }
 
@@ -237,6 +241,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     public void recommentContentListener(int position, CommentBean commentBean) {
         listener.commentRecall(position, commentBean);
     }
+
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         SnsPopupWindow snsPopupWindow;

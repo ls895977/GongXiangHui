@@ -15,7 +15,6 @@ public class Constant {
 //本地环境
 //    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     public static final String BASE_URL = "http://47.104.170.168:80/v2/";
-    //本地环境
     //欢迎页广告
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
@@ -160,7 +159,7 @@ public class Constant {
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
-    public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRanking";
+    public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRankingV2";
     public static final String GENERALIZE_COMPANY_PUSH_URL = BASE_URL + "promote/getPushCompany";
     //推广公司统计
     public static final String GENERALIZE_COMPANY_STATICS_URL = BASE_URL + "promote/getCompanyStatistics";

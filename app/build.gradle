@@ -1,9 +1,6 @@
 apply plugin: 'com.android.application'
 
-
 android {
-
-
     aaptOptions {
         cruncherEnabled = false//禁止检查png的合法性
         useNewCruncher = false
@@ -51,7 +48,6 @@ android {
         }
     }
 }
-
 
 dependencies {
 
@@ -117,5 +113,7 @@ dependencies {
     implementation 'com.umeng.sdk:share-wechat:6.9.1'
     implementation 'com.umeng.sdk:share-sina:6.9.1'
     implementation project(':library')
+    //键盘适应
+    implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
 
 }

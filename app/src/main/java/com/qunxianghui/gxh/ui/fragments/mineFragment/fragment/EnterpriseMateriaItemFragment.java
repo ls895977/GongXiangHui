@@ -14,7 +14,11 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -29,6 +33,9 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     private int mCount = 10;
     // 0为贴片 1为大图通栏 3为通栏 其他统一
     private int mType;
+    private int mPosition;
+
+    public static List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
 
     @Override
     public int getLayoutId() {
@@ -37,6 +44,8 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
+        mList = new ArrayList<>();
+        mPosition = getArguments().getInt("position");
         mType = getArguments().getInt("type");
         mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material, mType);
         if (mType == 1 || mType == 3) {
@@ -77,47 +86,57 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (mLastPosition != -1 && mLastPosition != position) {
-                    mAdapter.getData().get(mLastPosition).isSelect = false;
+                if ((EnterpriseMaterialActivity.mType == 9 && mPosition == 1) || EnterpriseMaterialActivity.mType == mType) {
+                    if (mLastPosition != -1 && mLastPosition != position) {
+                        mAdapter.getData().get(mLastPosition).isSelect = false;
+                        View select;
+                        switch (mType) {
+                            case 0:
+                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian);
+                                break;
+                            case 1:
+                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_big);
+                                break;
+                            case 3:
+                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tonglang);
+                                break;
+                            default:
+                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_other);
+                                break;
+                        }
+                        if (select != null) {
+                            select.setVisibility(View.GONE);
+                        }
+                    }
+                    mList.clear();
+                    mList.add(mAdapter.getData().get(position));
+                    mLastPosition = position;
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
+                    companyAdvert.isSelect = !companyAdvert.isSelect;
                     View select;
                     switch (mType) {
                         case 0:
-                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian);
+                            select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
                             break;
                         case 1:
-                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_big);
+                            select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
                             break;
                         case 3:
-                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tonglang);
+                            select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
                             break;
                         default:
-                            select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_other);
+                            select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
                             break;
                     }
                     if (select != null) {
-                        select.setVisibility(View.GONE);
+                        select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
                     }
-                }
-                mLastPosition = position;
-                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
-                companyAdvert.isSelect = !companyAdvert.isSelect;
-                View select;
-                switch (mType) {
-                    case 0:
-                        select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
-                        break;
-                    case 1:
-                        select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
-                        break;
-                    case 3:
-                        select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
-                        break;
-                    default:
-                        select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
-                        break;
-                }
-                if (select != null) {
-                    select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+                    mList.clear();
+                    if (companyAdvert.isSelect) {
+                        mList.add(mAdapter.getData().get(position));
+                    }
+                } else {
+                    asyncShowToast("当前广告类型不可选择");
                 }
             }
         });
