@@ -20,7 +20,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
-import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialTiePianActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
@@ -77,13 +77,23 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
     public void initData() {
         OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
                 .params("position", 4)
-                .execute(new DialogCallback<PersonalAds>(getActivity()) {
+                .execute(new JsonCallback<PersonalAds>() {
                     @Override
                     public void onSuccess(Response<PersonalAds> response) {
                         PersonalAds body = response.body();
                         if (body != null && body.code == 200 && !body.data.isEmpty()) {
                             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert data = body.data.get(0);
-                            Glide.with(AdvertTiePianFragment.this).load(data.images).into(mIvAd);
+                            Glide.with(AdvertTiePianFragment.this).load(data.images)
+                                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(mIvAd);
+                            mTvTiePianTime.setText(String.format("%ss", data.settings.time));
+                            switch (data.settings.operate) {
+                                case 1:
+                                    break;
+                                case 2:
+                                    break;
+                                case 3:
+                                    break;
+                            }
                         }
                     }
                 });

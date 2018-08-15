@@ -10,14 +10,21 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
+import com.qunxianghui.gxh.bean.PersonalAds;
+import com.qunxianghui.gxh.callback.JsonCallback;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
@@ -52,7 +59,27 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void initData() {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
-        addPage();
+        OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
+                .params("position", 1)
+                .execute(new JsonCallback<PersonalAds>() {
+                    @Override
+                    public void onSuccess(Response<PersonalAds> response) {
+                        PersonalAds body = response.body();
+                        if (body != null && body.code == 200 && !body.data.isEmpty()) {
+                            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
+                                addPage(datum);
+                            }
+                        } else {
+                            addPage(null);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<PersonalAds> response) {
+                        super.onError(response);
+                        addPage(null);
+                    }
+                });
     }
 
     @Override
@@ -89,7 +116,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     asyncShowToast("亲，最多只可添加10个模版哦!");
                     return;
                 }
-                addPage();
+                addPage(null);
                 break;
             case R.id.ll_video:
                 asyncShowToast("教学视频");
@@ -180,7 +207,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private void addPage() {
+    private void addPage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert data) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_tonglan, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("通栏广告");
@@ -189,7 +216,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         view.findViewById(R.id.iv_add_big_img).setOnClickListener(this);
         view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
         view.findViewById(R.id.tv_choose_activity_link).setOnClickListener(this);
-        view.findViewById(R.id.ivAd).setOnClickListener(this);
+        ImageView bigImg = view.findViewById(R.id.ivAd);
+        bigImg.setOnClickListener(this);
         ((AppCompatCheckBox) view.findViewById(R.id.cb)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -197,6 +225,22 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             }
         });
         ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
+        if (data != null) {
+            Glide.with(AdvertTopFragment.this).load(data.images)
+                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
+            switch (data.settings.operate) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+            }
+        }
         mViewList.add(view);
         mList.add(new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert());
         mPagerAdapter.notifyDataSetChanged();

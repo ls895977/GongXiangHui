@@ -37,8 +37,37 @@ public class EnterpriseMaterial {
             public boolean isSelect;
 
             public static class Settings implements Serializable {
-                public String name;
+                //通栏操作（1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
+                public int operate;
+                //链接地址
+                public String link;
+                //手机号码
+                public String mobile;
+                //qq
+                public String qq;
+                //链接至企业（0-不链接 1-链接）
+                public String is_link;
+                //广告标语
+                public String slogan;
+                //广告介绍
                 public String intro;
+                //海报或二维码图片路径
+                public String pgn_url;
+                //产品名称
+                public String product_name;
+                //产品价格
+                public String product_price;
+                //商品链接
+                public String product_url;
+                //店铺名称
+                public String store_name;
+                //店铺图片路径
+                public String store_url;
+                //跳转时间(3,4,5)
+                public String time;
+                //是否轮播（0-不轮播 1-轮播)
+                public String is_slide;
+                public String name;
             }
         }
     }
