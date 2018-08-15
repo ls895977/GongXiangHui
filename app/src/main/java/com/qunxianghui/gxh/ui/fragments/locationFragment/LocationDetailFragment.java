@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     TextView send_btn;
     @BindView(R.id.location_send_comment_view)
     LinearLayout commentView;
-
     private List<TestMode.DataBean.ListBean> localDataList = new ArrayList<>();
     private int commentPosition;
     private int scrollOffsetY = 0;
@@ -105,7 +105,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         }
                     }
                 });
-
     }
 
     private boolean keyShow = false;
@@ -132,7 +131,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 commentPosition+=1;//头部是下拉刷新，所以需要加1
                 Logger.i("xxx-yyy jump :" + commentPosition);
                 View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition);
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) commentView.getLayoutParams();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
                 int bottomMargin = height - getBottomKeyboardHeight()-140;
                 layoutParams.bottomMargin = bottomMargin;
                 commentView.setLayoutParams(layoutParams);

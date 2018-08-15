@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -150,33 +151,33 @@
         android:id="@+id/ll_location_discuss_commit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
         android:visibility="gone">
 
         <EditText
             android:id="@+id/comment_edit"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_gravity="top"
+            android:layout_weight="4"
             android:background="@null"
             android:focusable="false"
             android:hint="请输入您的评论..."
             android:lines="5"
-            android:paddingStart="10dp"
-            android:textSize="14sp"
-            tools:ignore="RtlSymmetry" />
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_location_discuss_commit"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="center_vertical"
             android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:background="@drawable/butn_oval"
             android:gravity="center"
             android:text="提交" />

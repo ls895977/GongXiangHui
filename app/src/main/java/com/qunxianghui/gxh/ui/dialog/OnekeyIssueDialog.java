@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -22,8 +23,6 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.ui.activity.LocationPublishActivity;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CheckBoxActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.FastBlurUtility;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
@@ -52,12 +51,13 @@ public class OnekeyIssueDialog extends Dialog {
                         startActivity(BaoLiaoActivity.class);
                         break;
                     case R.id.tv_local_service:
-                        startActivity(CompanySetActivity.class);
+//                        startActivity(CompanySetActivity.class);
+                        Toast.makeText(mActicity, "接入本地服务", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.tv_choice:
-////                        toActivity(GuidActivity.class);
-//                        toActivity(GuidSlideActivity.class);
-                        startActivity(CheckBoxActivity.class);
+//
+//                        startActivity(CheckBoxActivity.class);
+                        Toast.makeText(mActicity, "接入精选", Toast.LENGTH_SHORT).show();
                 }
             }
         };

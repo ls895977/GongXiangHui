@@ -154,7 +154,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      */
     private void RequestBaoLiaoData() {
         mLlLoad.setVisibility(View.VISIBLE);
-
         if (selImageList.size() == 0) {
             fetchBaoLiaoData();
         } else {

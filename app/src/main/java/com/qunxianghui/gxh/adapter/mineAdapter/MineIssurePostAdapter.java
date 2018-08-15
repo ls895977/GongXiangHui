@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -152,7 +151,6 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         TextView mTvDelete;
         TextView mTvCollect;
         TextView click_like_user;
-        EditText comment_edit;
         BigListView comment_list;
         ImageView mIvCollect;
         ImageView mIvLike;
@@ -176,7 +174,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             click_like_user = itemView.findViewById(R.id.click_like_user);
             mIvLike = itemView.findViewById(R.id.iv_mine_issue_post_like);
             comment_list = itemView.findViewById(R.id.comment_list);
-            comment_edit = itemView.findViewById(R.id.comment_edit);
+
         }
     }
 
