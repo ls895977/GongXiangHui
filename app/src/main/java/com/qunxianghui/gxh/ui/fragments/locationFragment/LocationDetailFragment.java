@@ -85,10 +85,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
     @Override
     public void initData() {
-
         mCateId = getArguments().getInt("channel_id");
         RequestLocalServiceData();
-
     }
     private void RequestLocalServiceData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
@@ -103,7 +101,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         count = localDataList.size();
                         if (locationListBean.getCode() == 0) {
                             recyclerView.refreshComplete();
-                            mAdapter.notifyItemRangeChanged(count, locationListBean.getData().getList().size());
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
                 });

@@ -61,7 +61,6 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
     private boolean mIsChooseTime;
     private EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
 
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_advert_tiepian;
