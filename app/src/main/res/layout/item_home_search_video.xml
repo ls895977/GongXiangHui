@@ -20,7 +20,10 @@
             android:id="@+id/iv_homesearch_video_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xxxx" />
+            android:layout_margin="20dp"
+            android:text="你想看看么"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
     </RelativeLayout>
 

@@ -31,7 +31,6 @@ public class SearchVideoFragment extends BaseFragment {
     public static final String DATA = "data";
     @BindView(R.id.recyclerview_video)
     RecyclerView mRecyclerview;
-
     private HomeVideoSearchBean mBean;
 
     /**

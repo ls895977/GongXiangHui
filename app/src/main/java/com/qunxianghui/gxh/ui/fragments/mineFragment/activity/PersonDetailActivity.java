@@ -22,6 +22,7 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.UserDetailInfoBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailVideoFragment;
@@ -157,25 +158,32 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void acctionPerson() {
-        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", member_id).execute(new StringCallback() {
-            @Override
-            public void onSuccess(final Response<String> response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response.body());
-                    int code = jsonObject.getInt("code");
-                    if (code == 0) {
-                        asyncShowToast("关注成功");
-                        tvPersonDetailAttention.setText("已关注");
-                        dataList.setFollow("true");
-                    } else if (code == 202) {
-                        asyncShowToast("取消关注成功");
-                        tvPersonDetailAttention.setText("关注");
-                        dataList.setFollow("");
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            finish();
+            return;
+        } else {
+            OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", member_id).execute(new StringCallback() {
+                @Override
+                public void onSuccess(final Response<String> response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        int code = jsonObject.getInt("code");
+                        if (code == 0) {
+                            asyncShowToast("关注成功");
+                            tvPersonDetailAttention.setText("已关注");
+                            dataList.setFollow("true");
+                        } else if (code == 202) {
+                            asyncShowToast("取消关注成功");
+                            tvPersonDetailAttention.setText("关注");
+                            dataList.setFollow("");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        }
+
     }
 }
