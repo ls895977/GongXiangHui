@@ -121,7 +121,8 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initViews(View view) {
-        recyclerMineissuePost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+        recyclerMineissuePost.setLayoutManager(linearLayoutManager);
         IssuePostCommentEdit = view.findViewById(R.id.issuepost_comment_edit);         //底部输入框
         IssuePostCommentView = view.findViewById(R.id.issuepost_send_comment_view); //底部根布局
         IssuePostCommentSend = view.findViewById(R.id.issuepost_comment_to_send);  //底部提交
