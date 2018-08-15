@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/loaction_comment_edit"
