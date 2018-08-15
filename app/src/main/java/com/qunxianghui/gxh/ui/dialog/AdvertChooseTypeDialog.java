@@ -19,7 +19,13 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
 
     private List<View> mViewList;
     private ViewPager mVp;
-    public boolean mIsBigPageType;
+    private boolean mIsBigPageType;
+
+    public Callback mCallback;
+
+    public void SetCallback(Callback callback) {
+        this.mCallback = callback;
+    }
 
     public AdvertChooseTypeDialog(@NonNull Context context, List<View> viewList, ViewPager vp) {
         super(context, R.style.ActionSheetDialogStyle);
@@ -59,38 +65,46 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
         }
     }
 
-
     @Override
     public void onClick(View view) {
         dismiss();
         View contentView = mViewList.get(mVp.getCurrentItem());
         goneView(contentView);
         TextView mTvType = contentView.findViewById(R.id.tv_choose_type);
+        int type = 0;
         switch (view.getId()) {
             case R.id.tv_link:
+                type = 1;
                 mTvType.setText("跳转链接");
                 contentView.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_call:
                 mTvType.setText("拨打电话");
                 if (contentView.findViewById(R.id.et_phone) != null) {
+                    type = 2;
                     contentView.findViewById(R.id.et_phone).setVisibility(View.VISIBLE);
                 } else {
 
                 }
                 break;
             case R.id.tv_activity:
+                type = 3;
                 mTvType.setText("跳转活动");
                 contentView.findViewById(R.id.tv_choose_activity_link).setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_poster:
+                type = 4;
                 mTvType.setText("展示海报");
                 contentView.findViewById(R.id.rl_add_img).setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_code:
+                type = 5;
                 mTvType.setText("展示二维码");
                 contentView.findViewById(R.id.rl_add_img).setVisibility(View.VISIBLE);
                 break;
+        }
+        if (mCallback != null) {
+            mCallback.callback(type);
         }
     }
 
@@ -103,6 +117,10 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
         } else {
             view.findViewById(R.id.et_other).setVisibility(View.GONE);
         }
+    }
+
+    public interface Callback {
+        public void callback(int type);
     }
 
 }
