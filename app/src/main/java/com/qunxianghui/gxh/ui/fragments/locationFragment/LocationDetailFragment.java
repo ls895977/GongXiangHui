@@ -1,25 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -35,7 +19,6 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
-import com.qunxianghui.gxh.listener.SoftKeyboardStateWatcher;
 import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.ui.activity.PublishActivity;
 import com.qunxianghui.gxh.ui.dialog.CommentDialog;
@@ -43,21 +26,14 @@ import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.DensityUtil;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.qunxianghui.gxh.utils.VirtualkeyboardHeight;
-import com.qunxianghui.gxh.widget.KeyboardLayout;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
 
@@ -73,9 +49,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public int getLayoutId() {
-//        mActivity.getWindow()
-//                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-//                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return R.layout.fragment_detail_location;
     }
 
@@ -100,6 +73,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        if(count == 0){
+                            localDataList.clear();
+                        }
                         TestMode locationListBean = GsonUtils.jsonFromJson(response.body(), TestMode.class);
                         localDataList.addAll(locationListBean.getData().getList());
                         count = localDataList.size();
@@ -111,7 +87,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 });
     }
 
-    private boolean keyShow = false;
 
     @Override
     protected void initListeners() {
@@ -120,9 +95,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             @Override
             public void onRefresh() {
                 count = 0;
-                if (localDataList.size() > 0) {
-                    localDataList.clear();
-                }
                 initData();
             }
 
@@ -181,8 +153,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
     }
-
-
+    
     /**
      * 评论的点击
      *
@@ -197,7 +168,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             return;
         }
         commentPosition = position;
-        commentDialog = new CommentDialog("", new CommentDialog.SendListener() {
+        commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
                 final int uuid = localDataList.get(position).getUuid();
@@ -212,7 +183,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-                mAdapter.notifyItemChanged(position);
+              //  mAdapter.notifyItemChanged(position);
                 OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -236,6 +207,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     //接口回调之 点赞
     @Override
     public void onPraiseClick(final int position) {
+        Log.i("fanbo",position+"1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -257,6 +229,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    UserUtil user = UserUtil.getInstance();
+                    like.setMember_name(user.mNick);
+                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = localDataList.get(position).getClick_like();
+                    likeBeanList.add(like);
+                    mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyItemChanged(position);
                 }
 
                 @Override
@@ -274,14 +252,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             UserUtil user = UserUtil.getInstance();
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
-//                            like.setMember_name(user.mNick);
-                            if ("点赞成功".equals(response.body().msg)) {
+                            if ("点赞成功".equals(response.body().message)) {
                                 localDataList.get(position).getTem().add(clickLikeBean);
                                 localDataList.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
                                 asyncShowToast("点赞成功");
-                            } else if ("取消点赞成功".equals(response.body().msg)) {
+                            } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = localDataList.get(position).getTem();
                                 for (int i = 0; i < localDataList.get(position).getTem().size(); i++) {
                                     TestMode.DataBean.ListBean.ClickLikeBean tem = localDataList.get(position).getTem().get(i);
@@ -328,7 +305,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void commentRecall(final int position, final CommentBean commentBean) {
-        commentDialog = new CommentDialog("", new CommentDialog.SendListener() {
+        commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
                 OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
