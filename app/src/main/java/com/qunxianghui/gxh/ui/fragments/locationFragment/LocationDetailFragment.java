@@ -86,7 +86,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     }
                 });
     }
-    
+
+
     @Override
     protected void initListeners() {
         mAdapter.setListener(this);
@@ -206,6 +207,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     //接口回调之 点赞
     @Override
     public void onPraiseClick(final int position) {
+        Log.i("fanbo",position+"1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -250,13 +252,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             UserUtil user = UserUtil.getInstance();
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
-                            if ("点赞成功".equals(response.body().msg)) {
+                            if ("点赞成功".equals(response.body().message)) {
                                 localDataList.get(position).getTem().add(clickLikeBean);
                                 localDataList.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
                                 asyncShowToast("点赞成功");
-                            } else if ("取消点赞成功".equals(response.body().msg)) {
+                            } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = localDataList.get(position).getTem();
                                 for (int i = 0; i < localDataList.get(position).getTem().size(); i++) {
                                     TestMode.DataBean.ListBean.ClickLikeBean tem = localDataList.get(position).getTem().get(i);
