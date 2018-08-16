@@ -14,16 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.LocationPublishActivity;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.FastBlurUtility;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
 public class OnekeyIssueDialog extends Dialog {
@@ -36,6 +39,7 @@ public class OnekeyIssueDialog extends Dialog {
         mActicity = ((Activity) context);
         View view = LayoutInflater.from(context).inflate(R.layout.pop_onekey_issue, null);
         View.OnClickListener listener = new View.OnClickListener() {
+            Intent intent = null;
 
             @Override
             public void onClick(View v) {
@@ -51,13 +55,19 @@ public class OnekeyIssueDialog extends Dialog {
                         startActivity(BaoLiaoActivity.class);
                         break;
                     case R.id.tv_local_service:
-//                        startActivity(CompanySetActivity.class);
-                        Toast.makeText(mActicity, "接入本地服务", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(mActicity,ProtocolActivity.class);
+                        intent.putExtra("url", Constant.LOCAL_SERVICES_ISSUE_URL);
+                        intent.putExtra("tag",1);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                        mActicity.startActivity(intent);
                         break;
                     case R.id.tv_choice:
-//
-//                        startActivity(CheckBoxActivity.class);
-                        Toast.makeText(mActicity, "接入精选", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(mActicity,ProtocolActivity.class);
+                        intent.putExtra("url", Constant.GOOD_SELECT__DETAIL_URL);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                        intent.putExtra("tag",1);
+                        mActicity.startActivity(intent);
+
                 }
             }
         };

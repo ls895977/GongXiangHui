@@ -24,6 +24,7 @@ import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
@@ -32,6 +33,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -195,8 +197,9 @@ public class HotPointFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeNewListBean homeNewListBean = dataList.get(position);
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", homeNewListBean.getUrl());
+                intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
                 intent.putExtra("uuid", homeNewListBean.getUuid());
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
                 intent.putExtra("id", homeNewListBean.getId());
                 intent.putExtra("title", homeNewListBean.getTitle());
                 startActivity(intent);
@@ -223,19 +226,19 @@ public class HotPointFragment extends BaseFragment {
                         break;
                     case 2:
                         //跳转生活圈
-                        intent = new Intent(mActivity, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.BenDiService);
-                        intent.putExtra("tag", 1);
-                        startActivity(intent);
+                        intent = new Intent(mActivity,ProtocolActivity.class);
+                        intent.putExtra("url", Constant.HOME_LOCAL_SERVICE_URL);
+                        intent.putExtra("tag",1);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                        mActivity.startActivity(intent);
                         break;
                     case 3:
                         //跳转优惠
-                        intent = new Intent(mActivity, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.YouXuan);
-                        intent.putExtra("tag", 2);
-                        startActivity(intent);
+                        intent = new Intent(mActivity,ProtocolActivity.class);
+                        intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                        intent.putExtra("tag",1);
+                        mActivity.startActivity(intent);
                         break;
                     case 4:
                         //跳转便民

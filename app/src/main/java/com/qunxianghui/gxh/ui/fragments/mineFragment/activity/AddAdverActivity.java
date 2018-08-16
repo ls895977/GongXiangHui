@@ -96,7 +96,14 @@ public class AddAdverActivity extends BaseActivity implements View.OnClickListen
         }).setRightIco(R.mipmap.addadver_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getShareInfo();
+
+                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                    getShareInfo();
+
+                }else {
+                    asyncShowToast("请升级到企业会员再试!");
+                }
+
             }
         });
     }

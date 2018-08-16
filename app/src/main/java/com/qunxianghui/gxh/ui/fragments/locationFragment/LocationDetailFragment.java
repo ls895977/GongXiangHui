@@ -87,7 +87,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 });
     }
 
-
+    private boolean keyShow = false;
     @Override
     protected void initListeners() {
         mAdapter.setListener(this);
@@ -168,7 +168,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             return;
         }
         commentPosition = position;
+
+
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
+
             @Override
             public void sendComment(String inputText) {
                 final int uuid = localDataList.get(position).getUuid();

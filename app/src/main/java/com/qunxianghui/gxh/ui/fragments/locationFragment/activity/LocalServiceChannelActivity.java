@@ -75,6 +75,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                 }
             }
         }).setTitleText("频道管理");
+
         //获取全部频道
         OkGo.<String>post(Constant.EDIT_LOCAL_POST_SUB_URL)
                 .execute(new StringCallback() {

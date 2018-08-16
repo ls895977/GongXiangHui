@@ -3,23 +3,34 @@ package com.qunxianghui.gxh.config;
 /**
  * Created by Administrator on 2018/3/22 0022.
  */
-
 public class Constant {
-    public static final long TIME_OUT = 3000;//网络请求超时时间
+    public static final long TIME_OUT = 3000;//网络请求超时时//     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";间
     //首页精选链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com/optimization";
     //群享汇服务协议链接的跳转
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //正式环境
     //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     //本地环境
-    // public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     public static final String BASE_URL = "http://47.104.170.168:80/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
+    //新闻详情
+    public static final String HOME_NEWS_DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/xinwen_/index.html#/";
+    //本地发布详情
+    public static final String LOCAL_SERVICES_ISSUE_URL = "http://fx.qunxianghui.com/theme/new_details/bendi_fabu/index.html#/";
+    //精选详情
+    public static final String GOOD_SELECT__DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/jingxuan_fabu/index.html#/";
+    //视频详情
+    public static final String VIDEO_DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/shipin_/index.html#/";
+    //首页上面优选的页面
+    public static final String HOME_GOOD_SELECT_URL="http://fx.qunxianghui.com/theme/new_details/youxuan_h5/index.html#/";
+    //首页上面本地服务的页面
+    public static final String HOME_LOCAL_SERVICE_URL="http://fx.qunxianghui.com/theme/new_details/bendi_h5/index.html#/";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份

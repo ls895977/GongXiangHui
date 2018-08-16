@@ -50,6 +50,8 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     TextView tvNewsdetailIssue;
     private WebView webView;
     private Dialog loadingDialog;
+    private String mToken;
+    private StringBuffer mBuffer;
 
     @Override
     protected int getLayoutId() {
@@ -88,11 +90,15 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         Intent intent = getIntent();
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
+        mToken = intent.getStringExtra("token");
+
+
         int tag = intent.getIntExtra("tag", 0);
         if (tag == 1) {
-            tvNewsdetailIssue.setVisibility(View.VISIBLE);
-        } else {
             tvNewsdetailIssue.setVisibility(View.GONE);
+            tvTitle.setVisibility(View.GONE);
+            mBuffer = new StringBuffer(url);
+            mBuffer.append("?token=" + mToken);
         }
         tvTitle.setText(title);
         webView = new WebView(this);
@@ -176,7 +182,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
             }
         });
-        webView.loadUrl(url);
+        webView.loadUrl(String.valueOf(mBuffer));
 
         Logger.d("initDatas--->:");
     }

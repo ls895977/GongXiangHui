@@ -19,8 +19,10 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeVideoChannel;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.HomeVideoListFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 
 import java.util.ArrayList;
@@ -45,7 +47,6 @@ public class HomeVideoActivity extends BaseActivity {
     ViewPager mHomeVideoViewpager;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
-
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> mFragments = new ArrayList<>();
     private String[] mTitles;
@@ -124,7 +125,14 @@ public class HomeVideoActivity extends BaseActivity {
                 toActivity(LocationActivity.class);
                 break;
             case R.id.iv_video_more_columns:
-                toActivityWithResult(HomeVideoChannelActivity.class, 0x0011);
+
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    toActivityWithResult(HomeVideoChannelActivity.class, 0x0011);
+                }
+
                 break;
         }
     }

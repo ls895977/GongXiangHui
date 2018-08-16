@@ -1,25 +1,18 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,28 +22,18 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.CommonResponse;
-import com.qunxianghui.gxh.bean.location.CommentBean;
-import com.qunxianghui.gxh.bean.location.MyCollectBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
-import com.qunxianghui.gxh.callback.DialogCallback;
-import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdverActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
-import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -74,11 +57,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     TextView mTvNewsdetailIssue;
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
-    @BindView(R.id.iv_news_detail_collect)
-    ImageView mIvNewsDetailCollect;
-    @BindView(R.id.tv_news_detail_message)
-    TextView mTvCommentCount;
-
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
     private String url;
@@ -92,6 +70,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private boolean has_collect = false;
     private ClipboardManager mClipboardManager;
     private MyCollectNewsDetailBean.DataBean mDataList;
+    private String mToken;
+    private StringBuffer mBuffer;
 
     @Override
     protected int getLayoutId() {
@@ -108,35 +88,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         title = intent.getStringExtra("title");
         uuid = intent.getIntExtra("uuid", 0);
         id = intent.getIntExtra("id", 0);
+        mToken = intent.getStringExtra("token");
+            mBuffer = new StringBuffer(url);
+            mBuffer.append("?token=" + mToken);
+            mBuffer.append("&uuid=" + uuid);
+
     }
 
     @Override
     protected void initData() {
-        if (mDataList != null) {
-            OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
-                    .params("id", uuid)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            ParseNewsDetailData(response.body());
-                        }
-                    });
 
-        }
-
-    }
-
-    private void ParseNewsDetailData(String body) {
-        MyCollectNewsDetailBean newsDetailBean = GsonUtils.jsonFromJson(body, MyCollectNewsDetailBean.class);
-        if (newsDetailBean.getCode() == 0) {
-            mDataList = newsDetailBean.getData();
-            has_collect = mDataList.isHas_collect();
-            if (has_collect) {
-                mIvNewsDetailCollect.setImageResource(R.mipmap.icon_collect);
-            } else {
-                mIvNewsDetailCollect.setImageResource(R.mipmap.icon_un_collect);
-            }
-        }
     }
 
     @Override
@@ -218,28 +179,33 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 }
             }
         });
-        mWedNewsDetail.loadUrl(url);
+        mWedNewsDetail.loadUrl(String.valueOf(mBuffer));
     }
 
-    @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver, R.id.et_input_discuss, R.id.iv_news_detail_collect})
+    @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_newsdetail_back:
                 finish();
                 break;
             case R.id.iv_news_detail_topshare:
-                showBottomDialog();
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    showBottomDialog();
+                }
+
                 break;
             case R.id.iv_news_detail_addAdver:
-                Intent intent = new Intent(mContext, AddAdverActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
-                break;
-            case R.id.et_input_discuss:
-                showPopupCommnet();
-                break;
-            case R.id.iv_news_detail_collect:
-                collectDataList(uuid);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    Intent intent = new Intent(mContext, AddAdverActivity.class);
+                    intent.putExtra("url", mBuffer.toString());
+                    startActivity(intent);
+                }
                 break;
         }
     }
@@ -252,7 +218,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_addAdver_share:
                 Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
                 intent = new Intent(mContext, AddAdverActivity.class);
-                intent.putExtra("url", url);
+                intent.putExtra("url", mBuffer.toString());
                 startActivity(intent);
                 break;
             case R.id.tv_article_share:
@@ -381,110 +347,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         asyncShowToast("复制成功");
     }
 
-    /*弹出评论框*/
-    @SuppressLint("WrongConstant")
-    private void showPopupCommnet() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.news_detail_comment_popupwindow, null);
-        inputComment = view.findViewById(R.id.et_discuss);
-        final TextView btn_submit = view.findViewById(R.id.tv_confirm);
-        popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, false);
-        popupWindow.setTouchable(true);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    popupWindow.dismiss();
-                }
-                return false;
-            }
-        });
-        popupWindow.setFocusable(true);
-        //设置点击窗口外边窗口消失
-        popupWindow.setOutsideTouchable(true);
-        //设置弹出窗体需要软键盘
-        popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-        // 再设置模式，和Activity的一样，覆盖，调整大小。
-        popupWindow
-                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        ColorDrawable cd = new ColorDrawable(0x000000);
-        popupWindow.setBackgroundDrawable(cd);
-        popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-        popupWindow.update();
-        inputComment.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString())) {
-                    btn_submit.setEnabled(false);
-                    btn_submit.setTextColor(Color.parseColor("#444444"));
-                } else {
-                    btn_submit.setEnabled(true);
-                    btn_submit.setTextColor(Color.parseColor("#D81818"));
-                }
-            }
-        });
-        /**
-         * 提交评论
-         */
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String CommonText = inputComment.getText().toString().trim();
-                if (TextUtils.isEmpty(CommonText)) {
-                    asyncShowToast("请输入评论内容");
-                } else {
-                    requestNewsCommon(CommonText);
-                }
-            }
-        });
-    }
-
-    /**
-     * 请求评论
-     *
-     * @param commonText
-     */
-    private void requestNewsCommon(String commonText) {
-        OkGo.<CommonResponse<CommentBean>>post(Constant.ISSURE_DISUSS_URL)
-                .params("uuid", uuid)
-                .params("content", commonText)
-                .execute(new DialogCallback<CommonResponse<CommentBean>>(NewsDetailActivity.this) {
-                    @Override
-                    public void onSuccess(Response<CommonResponse<CommentBean>> response) {
-                        if (response.body().code == 0) {
-                            asyncShowToast("评论成功");
-                            mWedNewsDetail.reload();
-                            popupWindow.dismiss();
-                        }
-                    }
-                });
-    }
-
-    private void collectDataList(int uuid) {
-        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", uuid).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                if (response.body() == null) return;
-                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
-                if (myCollectBean.getCode() == 0) {
-                    asyncShowToast("收藏成功");
-                    mIvNewsDetailCollect.setImageResource(R.mipmap.icon_collect);
-                } else if (myCollectBean.getCode() == 202) {
-                    asyncShowToast("取消收藏");
-                    mIvNewsDetailCollect.setImageResource(R.mipmap.icon_un_collect);
-                }
-            }
-        });
-    }
 }

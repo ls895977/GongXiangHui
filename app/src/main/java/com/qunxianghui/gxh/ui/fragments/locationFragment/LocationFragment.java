@@ -19,9 +19,11 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoChannel;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.LocalServiceChannelActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 
 import java.util.ArrayList;
@@ -151,7 +153,13 @@ public class LocationFragment extends BaseFragment {
                 startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
             case R.id.iv_more_columns:
-                toActivityWithResult(LocalServiceChannelActivity.class, 0x0011);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                }else {
+                    toActivityWithResult(LocalServiceChannelActivity.class, 0x0011);
+                }
+
                 break;
         }
     }
