@@ -99,4 +99,8 @@ public class AdvertTemplateActivity extends BaseActivity {
         super.onDestroy();
         sImagePicker = null;
     }
+
+    private void uploadInfo(){
+
+    }
 }

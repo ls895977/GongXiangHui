@@ -86,10 +86,32 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if ((EnterpriseMaterialActivity.mType == 9 && mPosition == 1) || EnterpriseMaterialActivity.mType == mType) {
+                if ((EnterpriseMaterialActivity.sType == 9 && mPosition == 1) || EnterpriseMaterialActivity.sType == mType) {
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
+                    View select;
+                    if (EnterpriseMaterialActivity.sIsMultiSelect) {
+                        companyAdvert.isSelect = !companyAdvert.isSelect;
+                        switch (mType) {
+                            case 0:
+                                select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
+                                break;
+                            case 1:
+                                select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
+                                break;
+                            case 3:
+                                select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
+                                break;
+                            default:
+                                select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
+                                break;
+                        }
+                        if (select != null) {
+                            select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+                        }
+                        return;
+                    }
                     if (mLastPosition != -1 && mLastPosition != position) {
                         mAdapter.getData().get(mLastPosition).isSelect = false;
-                        View select;
                         switch (mType) {
                             case 0:
                                 select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian);
@@ -109,11 +131,9 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
                         }
                     }
                     mList.clear();
-                    mList.add(mAdapter.getData().get(position));
+                    mList.add(companyAdvert);
                     mLastPosition = position;
-                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
                     companyAdvert.isSelect = !companyAdvert.isSelect;
-                    View select;
                     switch (mType) {
                         case 0:
                             select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
@@ -133,7 +153,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
                     }
                     mList.clear();
                     if (companyAdvert.isSelect) {
-                        mList.add(mAdapter.getData().get(position));
+                        mList.add(companyAdvert);
                     }
                 } else {
                     asyncShowToast("当前广告类型不可选择");

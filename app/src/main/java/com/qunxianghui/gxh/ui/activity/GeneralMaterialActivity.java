@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class EnterpriseMaterialActivity extends BaseActivity {
+public class GeneralMaterialActivity extends BaseActivity {
 
     @BindView(R.id.segment_tab)
     SegmentTabLayout mSegmentTab;
