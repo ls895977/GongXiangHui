@@ -227,7 +227,7 @@ public class HotPointFragment extends BaseFragment {
                     case 2:
                         //跳转生活圈
                         intent = new Intent(mActivity,ProtocolActivity.class);
-                        intent.putExtra("url", Constant.LOCAL_SERVICES_ISSUE_URL);
+                        intent.putExtra("url", Constant.HOME_LOCAL_SERVICE_URL);
                         intent.putExtra("tag",1);
                         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
                         mActivity.startActivity(intent);
@@ -235,7 +235,7 @@ public class HotPointFragment extends BaseFragment {
                     case 3:
                         //跳转优惠
                         intent = new Intent(mActivity,ProtocolActivity.class);
-                        intent.putExtra("url", Constant.GOOD_SELECT__DETAIL_URL);
+                        intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
                         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
                         intent.putExtra("tag",1);
                         mActivity.startActivity(intent);
