@@ -34,7 +34,6 @@ public class CommentBean {
     private String member_name;
     private String member_avatar;
     private String address;
-
     private int code;
 
     public int getCode() {

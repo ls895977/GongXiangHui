@@ -16,9 +16,11 @@ import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import org.json.JSONObject;
 
@@ -88,7 +90,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", videoDataList.get(position - 1).getUrl());
+                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
                 intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
                 startActivity(intent);
             }
