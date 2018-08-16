@@ -49,9 +49,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public int getLayoutId() {
-//        mActivity.getWindow()
-//                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-//                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return R.layout.fragment_detail_location;
     }
 
@@ -76,6 +73,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        if(count == 0){
+                            localDataList.clear();
+                        }
                         TestMode locationListBean = GsonUtils.jsonFromJson(response.body(), TestMode.class);
                         localDataList.addAll(locationListBean.getData().getList());
                         count = localDataList.size();
@@ -86,9 +86,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     }
                 });
     }
-
-    private boolean keyShow = false;
-
+    
     @Override
     protected void initListeners() {
         mAdapter.setListener(this);
@@ -96,9 +94,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             @Override
             public void onRefresh() {
                 count = 0;
-                if (localDataList.size() > 0) {
-                    localDataList.clear();
-                }
                 initData();
             }
 
@@ -157,8 +152,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
     }
-
-
+    
     /**
      * 评论的点击
      *
@@ -173,7 +167,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             return;
         }
         commentPosition = position;
-        commentDialog = new CommentDialog("", new CommentDialog.SendListener() {
+        commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
                 final int uuid = localDataList.get(position).getUuid();
@@ -188,7 +182,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-                mAdapter.notifyItemChanged(position);
+              //  mAdapter.notifyItemChanged(position);
                 OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -309,7 +303,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void commentRecall(final int position, final CommentBean commentBean) {
-        commentDialog = new CommentDialog("", new CommentDialog.SendListener() {
+        commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
                 OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
