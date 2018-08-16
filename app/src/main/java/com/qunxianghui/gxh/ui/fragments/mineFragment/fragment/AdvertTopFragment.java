@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
@@ -25,6 +24,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -112,9 +112,11 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_company:
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", 9);
-                toActivityWithResult(EnterpriseMaterialActivity.class, bundle, 0x0011);
+                Intent intent = new Intent();
+                intent.putExtra("type", 9);
+                intent.putExtra("isMultiSelect", true);
+                intent.setClass(mActivity, EnterpriseMaterialActivity.class);
+                startActivityForResult(intent, 0x0011);
                 break;
             case R.id.ll_common:
                 asyncShowToast("通用素材");
@@ -134,31 +136,29 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void pickListener(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.btnPhoto:
-                takePhoto();
+                setWidth();
+                intent = new Intent(getContext(), ImageGridActivity.class);
+                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+                startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPick:
-                pickImg();
+                setWidth();
+                intent = new Intent(getContext(), ImageGridActivity.class);
+                startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPicFromLocal:
+                intent = new Intent();
+                intent.putExtra("type", 9);
+                intent.putExtra("isMultiSelect", false);
+                intent.setClass(mActivity, EnterpriseMaterialActivity.class);
+                startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnCommon:
                 break;
         }
-    }
-
-    private void takePhoto() {
-        setWidth();
-        Intent intent = new Intent(getContext(), ImageGridActivity.class);
-        intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-        startActivityForResult(intent, 0x0011);
-    }
-
-    private void pickImg() {
-        setWidth();
-        Intent intent1 = new Intent(getContext(), ImageGridActivity.class);
-        startActivityForResult(intent1, 0x0011);
     }
 
     private void setWidth() {
@@ -182,11 +182,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     asyncShowToast("亲，至少有一个模版哦！");
                     return;
                 }
-                int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
-                mViewList.remove(index);
-                mList.remove(index);
-                mPagerAdapter.notifyDataSetChanged();
-                changeCircleView();
+                delete();
                 break;
             case R.id.iv_add_big_img:
                 if (mChoosePic == null && getContext() != null) {
@@ -336,6 +332,11 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mList.get(mVp.getCurrentItem()).status = isChecked ? 1 : 0;
+    }
+
+    @Override
     public void callback(int type) {
         mList.get(mVp.getCurrentItem()).settings.operate = type;
     }
@@ -351,7 +352,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), path, getCurrentImageView(path), 0, 0);
             }
         } else if (resultCode == 0x0022) {
-            // TODO: 2018/8/15 获得选择模版 
+            // TODO: 2018/8/15 获得选择模版
         }
     }
 
@@ -366,9 +367,42 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mList.get(mVp.getCurrentItem()).status = isChecked ? 1 : 0;
+    private void delete() {
+        if (mList.get(mVp.getCurrentItem()).id == 0) {
+            removeView();
+            return;
+        }
+        OkGo.<CommonBean>get(Constant.DELETE_AD)
+                .params("id", mList.get(mVp.getCurrentItem()).id)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        if (response != null && response.body() != null && response.body().code == 200) {
+                            removeView();
+                        } else {
+                            asyncShowToast("删除失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<CommonBean> response) {
+                        super.onError(response);
+                        asyncShowToast("删除失败");
+                    }
+                });
+    }
+
+    private void removeView(){
+        int index = getCurrentIndex();
+        mViewList.remove(index);
+        mList.remove(index);
+        mPagerAdapter.notifyDataSetChanged();
+        changeCircleView();
+        asyncShowToast("删除成功");
+    }
+
+    private int getCurrentIndex(){
+        return (int) mViewList.get(mVp.getCurrentItem()).getTag();
     }
 
 }

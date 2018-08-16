@@ -192,7 +192,7 @@ public class Constant {
     //添加广告
     public static final String ADD_AD = BASE_URL + "user/addAd";
     //删除单条广告
-    public static final String DELETE_AD = BASE_URL + "user/delAd";
+    public static final String DELETE_AD = BASE_URL + "user/delAdTemplates";
     //使用广告
     public static final String USED_AD = BASE_URL + "user/getAdTemplateV2";
     //加入轮播

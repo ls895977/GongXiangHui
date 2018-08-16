@@ -80,17 +80,21 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
                 break;
             case R.id.tv_call:
                 mTvType.setText("拨打电话");
+                type = 2;
                 if (contentView.findViewById(R.id.et_phone) != null) {
-                    type = 2;
                     contentView.findViewById(R.id.et_phone).setVisibility(View.VISIBLE);
                 } else {
-
+                    contentView.findViewById(R.id.et_other).setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.tv_activity:
                 type = 3;
-                mTvType.setText("跳转活动");
-                contentView.findViewById(R.id.tv_choose_activity_link).setVisibility(View.VISIBLE);
+                mTvType.setText(((TextView) findViewById(R.id.tv_activity)).getText().toString().trim());
+                if (contentView.findViewById(R.id.tv_choose_activity_link) != null) {
+                    contentView.findViewById(R.id.tv_choose_activity_link).setVisibility(View.VISIBLE);
+                } else {
+                    contentView.findViewById(R.id.et_other).setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.tv_poster:
                 type = 4;
@@ -116,6 +120,7 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
             view.findViewById(R.id.et_phone).setVisibility(View.GONE);
         } else {
             view.findViewById(R.id.et_other).setVisibility(View.GONE);
+            view.findViewById(R.id.rl_link).setVisibility(View.GONE);
         }
     }
 

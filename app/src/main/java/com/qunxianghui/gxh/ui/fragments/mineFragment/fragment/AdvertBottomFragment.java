@@ -1,14 +1,20 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -20,6 +26,7 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
@@ -50,7 +57,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChoosePicDialog mChoosePic;
     private AdvertChooseTypeDialog mChooseType;
-    private boolean mIsHasBigpage;
+    private boolean mIsHasBigPage;
+    private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -70,17 +78,39 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         PersonalAds body = response.body();
                         if (body != null && body.code == 200 && !body.data.isEmpty()) {
                             for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
-//                                addPage(datum);
+                                switch (datum.ad_type) {
+                                    case 1:
+                                        addBigPage(datum);
+                                        break;
+                                    case 2:
+                                        addCardPage(datum);
+                                        break;
+                                    case 3:
+                                        addTongLangPage(datum);
+                                        break;
+                                    case 4:
+                                        addQrCodePage(datum);
+                                        break;
+                                    case 5:
+                                        addQQPage(datum);
+                                        break;
+                                    case 7:
+                                        addStorePage(datum);
+                                        break;
+                                    case 8:
+                                        addGraphicPage(datum);
+                                        break;
+                                }
                             }
                         } else {
-//                            addPage(null);
+                            addBigPage(null);
                         }
                     }
 
                     @Override
                     public void onError(Response<PersonalAds> response) {
                         super.onError(response);
-//                        addPage(null);
+                        addBigPage(null);
                     }
                 });
     }
@@ -94,7 +124,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             public void onItemClick(int position) {
                 switch (position) {
                     case 0:
-                        toActivityWithResult(EnterpriseMaterialActivity.class, 0x0011);
+                        Intent intent = new Intent();
+                        intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
+                        intent.putExtra("isMultiSelect", true);
+                        intent.setClass(mActivity, EnterpriseMaterialActivity.class);
+                        startActivityForResult(intent, 0x0011);
                         break;
                     case 1:
                         asyncShowToast("通用素材");
@@ -109,25 +143,25 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         }
                         switch (position) {
                             case 2:
-                                addBigPage();
+                                addBigPage(null);
                                 break;
                             case 3:
-                                addCardPage();
+                                addCardPage(null);
                                 break;
                             case 4:
-                                addTongLangPage();
+                                addTongLangPage(null);
                                 break;
                             case 5:
-                                addQrCodePage();
+                                addQrCodePage(null);
                                 break;
                             case 6:
-                                addQQPage();
+                                addQQPage(null);
                                 break;
                             case 7:
-                                addStorePage();
+                                addStorePage(null);
                                 break;
                             case 8:
-                                addGraphicPage();
+                                addGraphicPage(null);
                                 break;
                         }
                         break;
@@ -189,29 +223,75 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
 
     }
 
-    private void addBigPage() {
-        if (mIsHasBigpage) {
+    private void addBigPage(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
+        if (mIsHasBigPage) {
             asyncShowToast("亲，大图通栏广告只可添加一个～～");
             return;
         }
-        mIsHasBigpage = true;
+        mIsHasBigPage = true;
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_big, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("大图通栏");
         view.findViewById(R.id.iv_delete).setOnClickListener(this);
-        view.findViewById(R.id.iv_add_big_img).setOnClickListener(this);
-        view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
-        ((AppCompatCheckBox) view.findViewById(R.id.cb)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ImageView bigImg = view.findViewById(R.id.iv_add_big_img);
+        bigImg.setOnClickListener(this);
+        TextView tvType = view.findViewById(R.id.tv_choose_type);
+        tvType.setOnClickListener(this);
+        AppCompatCheckBox cB = view.findViewById(R.id.cb);
+        EditText etLink = view.findViewById(R.id.et_link);
+        etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            public void afterTextChanged(Editable s) {
+                mList.get(mVp.getCurrentItem()).settings.link = s.toString();
             }
         });
-        ((SwitchButton) view.findViewById(R.id.sw)).setOnCheckedChangeListener(this);
+        EditText etOther = view.findViewById(R.id.et_other);
+        etOther.addTextChangedListener(new NewTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (companyAdvert.settings.operate == 2) {
+                    mList.get(mVp.getCurrentItem()).settings.mobile = s.toString();
+                } else if (companyAdvert.settings.operate == 3) {
+                    mList.get(mVp.getCurrentItem()).settings.qq = s.toString();
+                }
+            }
+        });
+        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mList.get(mVp.getCurrentItem()).settings.is_link = isChecked ? 1 : 0;
+            }
+        });
+
+        SwitchButton sB = view.findViewById(R.id.sw);
+        sB.setOnCheckedChangeListener(this);
+        if (companyAdvert != null) {
+            Glide.with(mActivity).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
+            switch (companyAdvert.settings.operate) {
+                case 1:
+                    tvType.setText("跳转链接");
+                    etLink.setText(companyAdvert.settings.link);
+                    break;
+                case 2:
+                    tvType.setText("拨打电话");
+                    etOther.setText(companyAdvert.settings.mobile);
+                    break;
+                case 3:
+                    tvType.setText("联系QQ");
+                    etOther.setText(companyAdvert.settings.qq);
+                    break;
+            }
+            mList.add(companyAdvert);
+        } else {
+            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+            advert.ad_type = 1;
+            advert.position = 2;
+            mList.add(advert);
+        }
         addPage(view);
     }
 
-    private void addCardPage() {
+    private void addCardPage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_card, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("名片广告");
@@ -220,7 +300,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         addPage(view);
     }
 
-    private void addTongLangPage() {
+    private void addTongLangPage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_tonglan, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("通栏广告");
@@ -240,7 +320,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         addPage(view);
     }
 
-    private void addQrCodePage() {
+    private void addQrCodePage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_qrcode, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("二维码广告");
@@ -250,7 +330,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         addPage(view);
     }
 
-    private void addQQPage() {
+    private void addQQPage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_qq, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("QQ广告");
@@ -259,7 +339,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         addPage(view);
     }
 
-    private void addStorePage() {
+    private void addStorePage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_store, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("店铺广告");
@@ -317,7 +397,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         addPage(view);
     }
 
-    private void addGraphicPage() {
+    private void addGraphicPage(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.ad_item_graphic, mVp, false);
         ((TextView) view.findViewById(R.id.tv_title)).setText("图文广告");
@@ -336,9 +416,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private void remove() {
         int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
         if ("大图通栏".equals(((TextView) mViewList.get(index).findViewById(R.id.tv_title)).getText().toString())) {
-            mIsHasBigpage = false;
+            mIsHasBigPage = false;
         }
         mViewList.remove(index);
+        mList.remove(index);
         mPagerAdapter.notifyDataSetChanged();
         changeCircleView();
     }
