@@ -1,25 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -35,7 +19,6 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
-import com.qunxianghui.gxh.listener.SoftKeyboardStateWatcher;
 import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.ui.activity.PublishActivity;
 import com.qunxianghui.gxh.ui.dialog.CommentDialog;
@@ -43,21 +26,14 @@ import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.DensityUtil;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.qunxianghui.gxh.utils.VirtualkeyboardHeight;
-import com.qunxianghui.gxh.widget.KeyboardLayout;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
 
@@ -257,6 +233,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    UserUtil user = UserUtil.getInstance();
+                    like.setMember_name(user.mNick);
+                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = localDataList.get(position).getClick_like();
+                    likeBeanList.add(like);
+                    mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyItemChanged(position);
                 }
 
                 @Override
@@ -274,7 +256,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             UserUtil user = UserUtil.getInstance();
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
-//                            like.setMember_name(user.mNick);
                             if ("点赞成功".equals(response.body().msg)) {
                                 localDataList.get(position).getTem().add(clickLikeBean);
                                 localDataList.get(position).setLike_info_res("true");
