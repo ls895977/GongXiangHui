@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -29,7 +28,9 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
+import com.qunxianghui.gxh.ui.activity.GeneralMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
@@ -110,16 +111,20 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
 
     @OnClick({R.id.ll_company, R.id.ll_common, R.id.ll_common_advert, R.id.ll_video})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.ll_company:
-                Intent intent = new Intent();
+                intent = new Intent();
                 intent.putExtra("type", 9);
                 intent.putExtra("isMultiSelect", true);
                 intent.setClass(mActivity, EnterpriseMaterialActivity.class);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.ll_common:
-                asyncShowToast("通用素材");
+                intent = new Intent();
+                intent.putExtra("isMultiSelect", true);
+                intent.setClass(mActivity, GeneralMaterialActivity.class);
+                startActivityForResult(intent, 0x0011);
                 break;
             case R.id.ll_common_advert:
                 if (mViewList.size() >= 10) {
@@ -235,34 +240,14 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             }
         });
         EditText etLink = view.findViewById(R.id.et_link);
-        etLink.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+        etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 mList.get(mVp.getCurrentItem()).settings.link = s.toString();
             }
         });
         EditText etPhone = view.findViewById(R.id.et_phone);
-        etPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+        etPhone.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 mList.get(mVp.getCurrentItem()).settings.mobile = s.toString();

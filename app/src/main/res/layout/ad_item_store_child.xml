@@ -8,25 +8,25 @@
     <EditText
         android:id="@+id/etNickName"
         style="@style/AdEditTextStyle"
-        android:hint="QQ昵称"
+        android:hint="产品名称"
         android:inputType="text"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />
 
     <EditText
-        android:id="@+id/etQQ"
+        android:id="@+id/etPrice"
         style="@style/AdEditTextStyle"
-        android:hint="QQ号"
+        android:hint="价格"
         android:inputType="phone"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />
 
     <EditText
-        android:id="@+id/etDes"
+        android:id="@+id/etLink"
         style="@style/AdEditTextStyle"
-        android:hint="填写联系方式介绍"
+        android:hint="添加商品链接（URL）"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />

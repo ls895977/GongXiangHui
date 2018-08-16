@@ -198,6 +198,8 @@ public class Constant {
     public static final String USED_AD = BASE_URL + "user/getAdTemplateV2";
     //加入轮播
     public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
+    //通用广告
+    public static final String GENERAL_AD = BASE_URL + "user/getGeneralMaterial";
     //修改某条广告
     public static final String EDIT_AD = BASE_URL + "user/editAd";
     public static final String ENTERPRISE_MATERIAL = BASE_URL + "user/getEnterpriseMaterial";
