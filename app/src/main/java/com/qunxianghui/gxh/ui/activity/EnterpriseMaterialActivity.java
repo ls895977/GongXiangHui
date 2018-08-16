@@ -29,6 +29,8 @@ public class EnterpriseMaterialActivity extends BaseActivity {
     @BindView(R.id.vp)
     NoScrollViewPager mVp;
 
+    public static int mType;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_advert_template;
@@ -36,6 +38,7 @@ public class EnterpriseMaterialActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        mType = getIntent().getExtras().getInt("type");
         mTvSave.setText("确定");
         mSegmentTab.setTabData(new String[]{"底部", "顶部"});
         List<Fragment> fragments = new ArrayList<>();
@@ -43,6 +46,7 @@ public class EnterpriseMaterialActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         Fragment fragment = new EnterpriseMateriaItemFragment();
         bundle.putInt("type", 3);
+        bundle.putInt("position", 1);
         fragment.setArguments(bundle);
         fragments.add(fragment);
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), fragments));
@@ -67,10 +71,24 @@ public class EnterpriseMaterialActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_save:
+                if (EnterpriseMateriaItemFragment.mList.isEmpty()) {
+                    asyncShowToast("请至少选择一个对应素材!");
+                    return;
+                }
+                setResult(0x0022);
+                finish();
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        EnterpriseMateriaItemFragment.mList.clear();
+        EnterpriseMateriaItemFragment.mList = null;
+    }
+
 }

@@ -54,6 +54,8 @@ public class AdvertTemplateActivity extends BaseActivity {
         sImagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
         sImagePicker.setMultiMode(false);
         sImagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
+        sImagePicker.setShowCamera(false);
+
 
         mSegmentTab.setTabData(mTitles);
         Intent intent = getIntent();

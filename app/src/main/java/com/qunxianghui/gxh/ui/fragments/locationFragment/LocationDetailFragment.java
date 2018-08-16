@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -22,7 +25,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -33,17 +35,22 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
+import com.qunxianghui.gxh.listener.SoftKeyboardStateWatcher;
 import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.ui.activity.PublishActivity;
+import com.qunxianghui.gxh.ui.dialog.CommentDialog;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
+import com.qunxianghui.gxh.utils.DensityUtil;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
-import com.qunxianghui.gxh.utils.TaskUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
+import com.qunxianghui.gxh.utils.VirtualkeyboardHeight;
+import com.qunxianghui.gxh.widget.KeyboardLayout;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,24 +63,19 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @BindView(R.id.recyclerView_location)
     XRecyclerView recyclerView;
-    @BindView(R.id.loaction_comment_edit)
-    EditText comment_edit;
-    @BindView(R.id.location_comment_to_send)
-    TextView send_btn;
-    @BindView(R.id.location_send_comment_view)
-    LinearLayout commentView;
     private List<TestMode.DataBean.ListBean> localDataList = new ArrayList<>();
     private int commentPosition;
     private int scrollOffsetY = 0;
     private int count = 0;
     NineGridTest2Adapter mAdapter;
+    private CommentDialog commentDialog;
     private int mCateId;
 
     @Override
     public int getLayoutId() {
-        mActivity.getWindow()
-                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+//        mActivity.getWindow()
+//                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+//                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return R.layout.fragment_detail_location;
     }
 
@@ -83,11 +85,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
         recyclerView.setAdapter(mAdapter);
     }
+
     @Override
     public void initData() {
         mCateId = getArguments().getInt("channel_id");
         RequestLocalServiceData();
     }
+
     private void RequestLocalServiceData() {
         OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
@@ -115,8 +119,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                localDataList.clear();
                 count = 0;
+                if (localDataList.size() > 0) {
+                    localDataList.clear();
+                }
                 initData();
             }
 
@@ -125,71 +131,32 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 initData();
             }
         });
+
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-                commentPosition+=1;//头部是下拉刷新，所以需要加1
-                Logger.i("xxx-yyy jump :" + commentPosition);
-                View item = recyclerView.getLayoutManager().findViewByPosition(commentPosition);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) commentView.getLayoutParams();
-                int bottomMargin = height - getBottomKeyboardHeight()-140;
-                layoutParams.bottomMargin = bottomMargin;
-                commentView.setLayoutParams(layoutParams);
-                if (item != null) {
-                    recyclerView.smoothScrollBy(0, item.getBottom()-commentView.getTop());
-                } else {
-                    Logger.i("xxx-yyy" + " item is null");
-                }
-                TaskUtil.getInstance().runOnMainThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        keyShow = true;
-                        scrollOffsetY = 0;
-                    }
-                },500);
+                // Log.i("fanbo", height + "    " + 1);
+//                commentPosition+=1;//头部是下拉刷新，所以需要加1
+//                Logger.i("xxx-yyy jump :" + commentPosition);
 
+//                if (item != null) {
+//                    recyclerView.smoothScrollBy(0, item.getBottom()-commentView.getTop());
+//                } else {
+//                    Logger.i("xxx-yyy" + " item is null");
+//                }
+//                TaskUtil.getInstance().runOnMainThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        keyShow = true;
+//                        scrollOffsetY = 0;
+//                    }
+//                },500);
             }
 
             @Override
             public void keyBoardHide(int height) {
-                commentView.setVisibility(View.INVISIBLE);
-            }
-        });
-
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(keyShow){
-                    scrollOffsetY+=dy;
-                    if(scrollOffsetY>20||scrollOffsetY<-20){
-                        //TODO
-                        hideSoftKeyboard(comment_edit, getActivity());
-                        keyShow = false;
-                        scrollOffsetY = 0;
-                    }
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case 0:
-                        System.out.println("recyclerview已经停止滚动");
-                        break;
-                    case 1:
-                        if (getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
-                                || getActivity().getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE) {
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    hideSoftKeyboard(comment_edit, getActivity());
-                                }
-                            }, 10);
-                        }
-                        break;
+                if (commentDialog != null) {
+                    commentDialog.dismiss();
                 }
             }
         });
@@ -215,6 +182,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
     }
 
+
     /**
      * 评论的点击
      *
@@ -229,57 +197,41 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             return;
         }
         commentPosition = position;
-        commentView.setVisibility(View.VISIBLE);
-        comment_edit.setFocusable(true);
-        comment_edit.setFocusableInTouchMode(true);
-        comment_edit.requestFocus();
-        onFocusChange(true);
-        send_btn.setOnClickListener(new View.OnClickListener() {
+        commentDialog = new CommentDialog("", new CommentDialog.SendListener() {
             @Override
-            public void onClick(View v) {
-                if (comment_edit.getText().toString().length() <= 0) {
-                    Toast.makeText(getActivity(), "请输入评论内容", Toast.LENGTH_LONG).show();
-                } else {
-                    final int uuid = localDataList.get(position).getUuid();
-                    if (localDataList.get(position).getComment_res().size() <= 0) {
-                        localDataList.get(position).setComment_res(new ArrayList<CommentBean>());
-                    }
-                    List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
-                    CommentBean comment = new CommentBean();
-                    UserUtil user = UserUtil.getInstance();
-                    comment.setContent(comment_edit.getText().toString());
-                    comment.setUuid(user.id);
-                    comment.setMember_name(user.mNick);
-                    commentBeanList.add(comment);
-                    mAdapter.notifyDataSetChanged();
-                    mAdapter.notifyItemChanged(position);
-                    OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
-                            .params("uuid", uuid)
-                            .params("content", comment.getContent())
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                    if (comment.getCode() == 0) {
-                                        comment_edit.setText("");
-                                        hideSoftKeyboard(comment_edit, getActivity());
-                                    } else {
-                                        asyncShowToast(response.message());
-                                    }
-                                }
-                            });
+            public void sendComment(String inputText) {
+                final int uuid = localDataList.get(position).getUuid();
+                if (localDataList.get(position).getComment_res().size() <= 0) {
+                    localDataList.get(position).setComment_res(new ArrayList<CommentBean>());
                 }
+                List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
+                CommentBean comment = new CommentBean();
+                UserUtil user = UserUtil.getInstance();
+                comment.setContent(inputText);
+                comment.setUuid(user.id);
+                comment.setMember_name(user.mNick);
+                commentBeanList.add(comment);
+                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemChanged(position);
+                OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                        .params("uuid", uuid)
+                        .params("content", comment.getContent())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
+                                if (comment.getCode() == 0) {
+                                    commentDialog.dismiss();
+                                } else {
+                                    asyncShowToast(response.message());
+                                }
+                            }
+                        });
             }
         });
+        commentDialog.show(getChildFragmentManager(), "comment");
     }
 
-    public static void hideSoftKeyboard(EditText editText, Context context) {
-        if (editText != null && context != null) {
-            InputMethodManager imm = (InputMethodManager) context
-                    .getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        }
-    }
 
     //接口回调之 点赞
     @Override
@@ -376,88 +328,32 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void commentRecall(final int position, final CommentBean commentBean) {
-        commentView.setVisibility(View.VISIBLE);
-        comment_edit.setFocusable(true);
-        comment_edit.setFocusableInTouchMode(true);
-        comment_edit.requestFocus();
-        onFocusChange(true);
-        send_btn.setOnClickListener(new View.OnClickListener() {
+        commentDialog = new CommentDialog("", new CommentDialog.SendListener() {
             @Override
-            public void onClick(View v) {
-                if (!TextUtils.isEmpty(comment_edit.getText().toString())) {
-                    OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
-                            .params("content", comment_edit.getText().toString().trim())
-                            .params("uuid", commentBean.getUuid())
-                            .params("pid", commentBean.getPid())
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                    if (comment.getCode() == 0) {
-                                        comment_edit.setText("");
-                                        hideSoftKeyboard(comment_edit, getActivity());
-                                    } else {
-                                        asyncShowToast(response.message());
-                                    }
-                                }
-
-                                @Override
-                                public void onError(Response<String> response) {
-                                    super.onError(response);
+            public void sendComment(String inputText) {
+                OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
+                        .params("content", inputText)
+                        .params("uuid", commentBean.getUuid())
+                        .params("pid", commentBean.getPid())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
+                                if (comment.getCode() == 0) {
+                                    commentDialog.dismiss();
+                                } else {
                                     asyncShowToast(response.message());
                                 }
-                            });
-                } else {
-                    asyncShowToast("请输入评论内容");
-                }
+                            }
+
+                            @Override
+                            public void onError(Response<String> response) {
+                                super.onError(response);
+                                asyncShowToast(response.message());
+                            }
+                        });
             }
         });
+        commentDialog.show(getChildFragmentManager(), "comment");
     }
-
-    /**
-     * 显示或隐藏输入法
-     */
-    private void onFocusChange(boolean hasFocus) {
-        final boolean isFocus = hasFocus;
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                InputMethodManager imm = (InputMethodManager)
-                        comment_edit.getContext().getSystemService(INPUT_METHOD_SERVICE);
-                if (isFocus) {
-                    //显示输入法
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                } else {
-                    //隐藏输入法
-                    imm.hideSoftInputFromWindow(comment_edit.getWindowToken(), 0);
-                }
-            }
-        }, 100);
-    }
-
-    public int getBottomKeyboardHeight() {
-        int screenHeight = getAccurateScreenDpi()[1];
-        DisplayMetrics dm = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        return screenHeight - dm.heightPixels;
-    }
-
-    /**
-     * 获取精确的屏幕大小
-     */
-    public int[] getAccurateScreenDpi() {
-        int[] screenWH = new int[2];
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
-        DisplayMetrics dm = new DisplayMetrics();
-        try {
-            Class<?> c = Class.forName("android.view.Display");
-            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
-            method.invoke(display, dm);
-            screenWH[0] = dm.widthPixels;
-            screenWH[1] = dm.heightPixels;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return screenWH;
-    }
-
 }
