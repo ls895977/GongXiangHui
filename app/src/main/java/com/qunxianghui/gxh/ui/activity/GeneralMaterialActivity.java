@@ -16,6 +16,7 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.GeneralMateriaItemFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,7 +29,7 @@ public class GeneralMaterialActivity extends BaseActivity {
     @BindView(R.id.vp)
     ViewPager mVp;
 
-    public static int sType;
+    public int sType;
     public static boolean sIsMultiSelect;
 
     @Override
@@ -38,6 +39,7 @@ public class GeneralMaterialActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        GeneralMateriaItemFragment.mList = new ArrayList<>();
         sType = getIntent().getIntExtra("type", 1);
         sIsMultiSelect = getIntent().getBooleanExtra("isMultiSelect", false);
     }
@@ -63,7 +65,7 @@ public class GeneralMaterialActivity extends BaseActivity {
                                 titles[i] = cate.get(i).cate_name;
                                 adapter.addFragment(fragment);
                             }
-
+                            if (sIsMultiSelect) mVp.setOffscreenPageLimit(adapter.getCount() - 1);
                             mVp.setAdapter(adapter);
                             mTab.setViewPager(mVp);
                         }
@@ -82,7 +84,7 @@ public class GeneralMaterialActivity extends BaseActivity {
                     asyncShowToast("请至少选择一个对应素材!");
                     return;
                 }
-                setResult(0x0022);
+                setResult(0x0033);
                 finish();
                 break;
         }

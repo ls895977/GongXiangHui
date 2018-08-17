@@ -114,16 +114,15 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         Intent intent;
         switch (view.getId()) {
             case R.id.ll_company:
-                intent = new Intent();
+                intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
                 intent.putExtra("type", 9);
                 intent.putExtra("isMultiSelect", true);
-                intent.setClass(mActivity, EnterpriseMaterialActivity.class);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.ll_common:
-                intent = new Intent();
+                intent = new Intent(mActivity, GeneralMaterialActivity.class);
                 intent.putExtra("isMultiSelect", true);
-                intent.setClass(mActivity, GeneralMaterialActivity.class);
+                intent.putExtra("type", 3);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.ll_common_advert:
@@ -145,23 +144,26 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btnPhoto:
                 setWidth();
-                intent = new Intent(getContext(), ImageGridActivity.class);
+                intent = new Intent(mActivity, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPick:
                 setWidth();
-                intent = new Intent(getContext(), ImageGridActivity.class);
+                intent = new Intent(mActivity, ImageGridActivity.class);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPicFromLocal:
-                intent = new Intent();
+                intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
                 intent.putExtra("type", 9);
                 intent.putExtra("isMultiSelect", false);
-                intent.setClass(mActivity, EnterpriseMaterialActivity.class);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnCommon:
+                intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                intent.putExtra("isMultiSelect", false);
+                intent.putExtra("type", 3);
+                startActivityForResult(intent, 0x0011);
                 break;
         }
     }
@@ -194,7 +196,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     mChoosePic = new AdvertChoosePicDialog(getContext());
                     mChoosePic.setImgPickListener(this);
                 }
-                mChoosePic.showLocalView().show();
+                mChoosePic.showCommonView().show();
                 break;
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
@@ -212,7 +214,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     mChoosePic = new AdvertChoosePicDialog(getContext());
                     mChoosePic.setImgPickListener(this);
                 }
-                mChoosePic.hideLocalView().show();
+                mChoosePic.hideCommonView().show();
                 break;
         }
     }

@@ -39,6 +39,7 @@ public class EnterpriseMaterialActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        EnterpriseMateriaItemFragment.mList = new ArrayList<>();
         sType = getIntent().getIntExtra("type", 1);
         sIsMultiSelect = getIntent().getBooleanExtra("isMultiSelect", false);
         mTvSave.setText("确定");

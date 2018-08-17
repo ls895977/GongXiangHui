@@ -17,7 +17,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,7 +43,6 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        mList = new ArrayList<>();
         mPosition = getArguments().getInt("position");
         mType = getArguments().getInt("type");
         mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material, mType);
@@ -59,7 +57,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     @Override
     public void initData() {
         OkGo.<EnterpriseMaterial>get(Constant.ENTERPRISE_MATERIAL)
-                .params("position", 1)
+                .params("position", mPosition)
                 .params("ad_type", mType)
                 .params("page", mPage)
                 .params("num", mCount)
@@ -91,6 +89,10 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
                     View select;
                     if (EnterpriseMaterialActivity.sIsMultiSelect) {
                         companyAdvert.isSelect = !companyAdvert.isSelect;
+                        if (companyAdvert.isSelect)
+                            mList.add(companyAdvert);
+                        else
+                            mList.remove(companyAdvert);
                         switch (mType) {
                             case 0:
                                 select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);

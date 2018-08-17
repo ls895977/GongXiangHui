@@ -9,6 +9,7 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.PagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 
 import butterknife.BindView;
 
@@ -19,7 +20,7 @@ public class EnterpriseMaterialFragment extends BaseFragment {
     @BindView(R.id.vp)
     ViewPager mVp;
 
-    private String[] mTitles = new String[]{"大图通栏","名片","通栏","二维码","QQ","店铺","图文"};
+    private String[] mTitles = new String[]{"大图通栏", "名片", "通栏", "二维码", "QQ", "店铺", "图文"};
 
     @Override
     public int getLayoutId() {
@@ -35,8 +36,12 @@ public class EnterpriseMaterialFragment extends BaseFragment {
             bundle = new Bundle();
             fragment = new EnterpriseMateriaItemFragment();
             bundle.putInt("type", i);
+            bundle.putInt("position", 2);
             fragment.setArguments(bundle);
             adapter.addFragment(fragment);
+        }
+        if (EnterpriseMaterialActivity.sIsMultiSelect) {
+            mVp.setOffscreenPageLimit(adapter.getCount() - 1);
         }
         mVp.setAdapter(adapter);
         mTab.setViewPager(mVp);
