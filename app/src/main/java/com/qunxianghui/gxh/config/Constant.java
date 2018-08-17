@@ -10,7 +10,7 @@ public class Constant {
     //群享汇服务协议链接的跳转
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //正式环境
-    //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //本地环境
     public static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";

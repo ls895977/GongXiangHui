@@ -132,11 +132,11 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         });
 
 
-
-          webView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
                 return false;
             }
 
