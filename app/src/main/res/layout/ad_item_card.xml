@@ -37,7 +37,7 @@
             <include layout="@layout/ad_view_divider" />
 
             <EditText
-                android:id="@+id/etAddress"
+                android:id="@+id/etIntro"
                 style="@style/AdEditTextStyle"
                 android:ellipsize="end"
                 android:hint="请填写广告介绍"

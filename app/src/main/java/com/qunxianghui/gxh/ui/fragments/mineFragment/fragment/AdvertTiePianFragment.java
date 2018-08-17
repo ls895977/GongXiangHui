@@ -246,6 +246,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mEtOther.setVisibility(View.GONE);
         mCbUseSpace.setChecked(false);
         mSw.setChecked(true);
+        mIvAd.setImageResource(R.mipmap.admodle_guige);
         mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
         mAdvertBean.position = 3;
         mAdvertBean.ad_type = 6;
