@@ -69,12 +69,6 @@ public class WelcomeActivity extends BaseActivity {
 
     private int getCount() {
         count--;
-
-
-
-
-
-
         if (count == 0) {
             Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
             startActivity(intent);
