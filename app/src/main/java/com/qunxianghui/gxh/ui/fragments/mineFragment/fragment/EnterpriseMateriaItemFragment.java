@@ -45,8 +45,18 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
     public void initViews(View view) {
         mPosition = getArguments().getInt("position");
         mType = getArguments().getInt("type");
-        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material, mType);
-        if (mType == 1 || mType == 3) {
+        int adapterType;
+        if (mType == 6) {
+            adapterType = 0;
+        } else if (mType == 1) {
+            adapterType = 1;
+        } else if (mType == 3) {
+            adapterType = 3;
+        } else {
+            adapterType = 2;
+        }
+        mAdapter = new EnterpriseMaterialAdapter(R.layout.item_enterprise_material, adapterType);
+        if (adapterType == 0 || adapterType == 1 || adapterType == 3) {
             mRv.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));

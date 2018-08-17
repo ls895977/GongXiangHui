@@ -143,7 +143,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         //贴片广告
         if (companyAdvert.ad_type == 6) {
-            if (companyAdvert.settings.time != 0) {
+            if (!TextUtils.isEmpty(companyAdvert.settings.time)) {
                 post.params("ad[" + index + "][settings][time]", companyAdvert.settings.time);
             }
             if (companyAdvert.settings.operate != 0) {

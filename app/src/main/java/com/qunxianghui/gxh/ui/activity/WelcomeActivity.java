@@ -82,7 +82,7 @@ public class WelcomeActivity extends BaseActivity {
     /**
      * 请求网络广告
      */
-    private void RequestWelcomeAdver() {
+    private void requestWelcomeAdvert() {
         OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -106,7 +106,7 @@ public class WelcomeActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                RequestWelcomeAdver();
+                requestWelcomeAdvert();
             }
         }, 1000);
     }

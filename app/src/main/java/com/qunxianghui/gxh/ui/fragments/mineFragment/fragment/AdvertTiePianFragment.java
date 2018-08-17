@@ -268,7 +268,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         switch (view.getId()) {
             case R.id.tv_3:
                 if (mIsChooseTime) {
-                    mAdvertBean.settings.time = 3;
+                    mAdvertBean.settings.time = "3s";
                     mTvTiePianTime.setText("3s");
                 } else {
                     mAdvertBean.settings.operate = 1;
@@ -281,7 +281,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 break;
             case R.id.tv_4:
                 if (mIsChooseTime) {
-                    mAdvertBean.settings.time = 4;
+                    mAdvertBean.settings.time = "4s";
                     mTvTiePianTime.setText("4s");
                 } else {
                     mAdvertBean.settings.operate = 2;
@@ -294,7 +294,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 break;
             case R.id.tv_5:
                 if (mIsChooseTime) {
-                    mAdvertBean.settings.time = 5;
+                    mAdvertBean.settings.time = "5s";
                     mTvTiePianTime.setText("5s");
                 } else {
                     mAdvertBean.settings.operate = 3;

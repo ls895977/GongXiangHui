@@ -15,7 +15,7 @@ public class EnterpriseMaterialAdapter extends BaseQuickAdapter<EnterpriseMateri
 
     private RequestOptions mOptions;
     /**
-     * 0为贴片 1为大图通栏 3为通栏 其他统一
+     * 0为贴片 1为大图通栏 3为通栏 2其他统一
      */
     private int mType;
 

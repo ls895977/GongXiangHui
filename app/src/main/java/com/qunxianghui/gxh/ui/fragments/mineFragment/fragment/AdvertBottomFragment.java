@@ -360,6 +360,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
+            mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
             switch (companyAdvert.settings.operate) {
                 case 1:
@@ -376,7 +377,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     etOther.setText(companyAdvert.settings.qq);
                     break;
             }
-            mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 1;
@@ -421,11 +421,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
+            mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
             etTitle.setText(companyAdvert.settings.slogan);
             etMobile.setText(companyAdvert.settings.mobile);
             etIntro.setText(companyAdvert.settings.intro);
-            mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 2;
@@ -474,6 +474,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sw = view.findViewById(R.id.sw);
         sw.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
+            mList.add(companyAdvert);
             tvChooseActivityLink.setVisibility(View.GONE);
             etPhone.setVisibility(View.GONE);
             TextView tvType = view.findViewById(R.id.tv_choose_type);
@@ -546,9 +547,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
+            etDes.setText(companyAdvert.settings.intro);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
             etTitle.setText(companyAdvert.settings.slogan);
-            etDes.setText(companyAdvert.settings.intro);
             mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
@@ -590,11 +591,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
+            mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
             etName.setText(companyAdvert.settings.name);
             etQQ.setText(companyAdvert.settings.qq);
             etDes.setText(companyAdvert.settings.intro);
-            mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 5;
@@ -712,6 +713,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
         });
         if (companyAdvert != null) {
+            mList.add(companyAdvert);
             etGoodsName.setText(companyAdvert.settings.product_name);
             etGoodsPrice.setText(companyAdvert.settings.product_price);
             etGoodsLink.setText(companyAdvert.settings.product_url);
@@ -719,8 +721,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             etMobile.setText(companyAdvert.settings.mobile);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivGoods);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivShop);
-
-            mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 7;
@@ -761,11 +761,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
+            mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
             etSlogan.setText(companyAdvert.settings.slogan);
             etLink.setText(companyAdvert.settings.link);
             etDes.setText(companyAdvert.settings.intro);
-            mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 5;

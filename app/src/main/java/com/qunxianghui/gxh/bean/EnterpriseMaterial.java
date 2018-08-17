@@ -67,7 +67,7 @@ public class EnterpriseMaterial {
                 //店铺图片路径
                 public String store_url;
                 //跳转时间(3,4,5)
-                public int time;
+                public String time;
                 //是否轮播（0-不轮播 1-轮播)
                 public String is_slide;
                 public String name;
