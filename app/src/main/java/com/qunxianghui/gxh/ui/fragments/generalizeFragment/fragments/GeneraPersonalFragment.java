@@ -89,15 +89,25 @@ public class GeneraPersonalFragment extends BaseFragment {
         if (generaPersonStaticBean.getCode() == 0) {
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
             myGeneralizePersonAdapter.setNewData(dataList);
+
             myGeneralizePersonAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    String url = dataList.get(position).url;
                     int uuid = dataList.get(position).data_uuid;
-                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                    intent.putExtra("url", url);
-                    intent.putExtra("uuid", uuid);
-                    startActivity(intent);
+                    String video_url = dataList.get(position).video_url;
+                    if (video_url != null) {
+                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                        intent.putExtra("uuid", uuid);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
+                        intent.putExtra("uuid", uuid);
+                        startActivity(intent);
+                    }
+
+
                 }
             });
         }
