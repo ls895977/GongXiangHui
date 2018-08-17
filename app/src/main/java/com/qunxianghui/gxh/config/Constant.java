@@ -11,9 +11,9 @@ public class Constant {
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //正式环境
     //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-//    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
+    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     //本地环境
-    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
+//    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
