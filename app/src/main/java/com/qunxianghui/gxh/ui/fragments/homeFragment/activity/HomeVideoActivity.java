@@ -38,7 +38,6 @@ import cn.jzvd.JZVideoPlayer;
  */
 
 public class HomeVideoActivity extends BaseActivity {
-
     @BindView(R.id.slidingTabLayout)
     SlidingTabLayout mSlidingTabLayout;
     @BindView(R.id.iv_video_more_columns)
@@ -132,7 +131,6 @@ public class HomeVideoActivity extends BaseActivity {
                 } else {
                     toActivityWithResult(HomeVideoChannelActivity.class, 0x0011);
                 }
-
                 break;
         }
     }

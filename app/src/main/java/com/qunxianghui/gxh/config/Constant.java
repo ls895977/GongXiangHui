@@ -112,7 +112,7 @@ public class Constant {
     public static final String GENERALIZE_RERSON_STATIS_URL = BASE_URL + "promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
-    //
+    //点赞
     public static final String VIDEO_LIKE_URL = BASE_URL + "Like/clickLikes";
     //关注
     public static final String ATTENTION_URL = BASE_URL + "follow/addFollow";
