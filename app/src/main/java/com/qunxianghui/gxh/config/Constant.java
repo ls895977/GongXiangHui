@@ -11,9 +11,8 @@ public class Constant {
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //正式环境
     //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-    public static final String BASE_URL = "http://api.qunxianghui.com/v2/";
     //本地环境
-//    public static final String BASE_URL = "http://47.104.170.168:80/v2/";
+    public static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
@@ -28,9 +27,9 @@ public class Constant {
     //视频详情
     public static final String VIDEO_DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/shipin_/index.html#/";
     //首页上面优选的页面
-    public static final String HOME_GOOD_SELECT_URL="http://fx.qunxianghui.com/theme/new_details/youxuan_h5/index.html#/";
+    public static final String HOME_GOOD_SELECT_URL = "http://fx.qunxianghui.com/theme/new_details/youxuan_h5/index.html#/";
     //首页上面本地服务的页面
-    public static final String HOME_LOCAL_SERVICE_URL="http://fx.qunxianghui.com/theme/new_details/bendi_h5/index.html#/";
+    public static final String HOME_LOCAL_SERVICE_URL = "http://fx.qunxianghui.com/theme/new_details/bendi_h5/index.html#/";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份
