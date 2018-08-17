@@ -10,7 +10,7 @@ public class Constant {
     //群享汇服务协议链接的跳转
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //正式环境
-    //  public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //本地环境
     private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
@@ -19,17 +19,17 @@ public class Constant {
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
     //新闻详情
-    public static final String HOME_NEWS_DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/xinwen_/index.html#/";
+    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
     //本地发布详情
-    public static final String LOCAL_SERVICES_ISSUE_URL = "http://fx.qunxianghui.com/theme/new_details/bendi_fabu/index.html#/";
-    //精选详情
-    public static final String GOOD_SELECT__DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/jingxuan_fabu/index.html#/";
+    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
+    //精选发布详情
+    public static final String GOOD_SELECT__DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/jingxuan_fabu/index.html#/";
     //视频详情
-    public static final String VIDEO_DETAIL_URL = "http://fx.qunxianghui.com/theme/new_details/shipin_/index.html#/";
+    public static final String VIDEO_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/shipin_/index.html#/";
     //首页上面优选的页面
-    public static final String HOME_GOOD_SELECT_URL = "http://fx.qunxianghui.com/theme/new_details/youxuan_h5/index.html#/";
+    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";
     //首页上面本地服务的页面
-    public static final String HOME_LOCAL_SERVICE_URL = "http://fx.qunxianghui.com/theme/new_details/bendi_h5/index.html#/";
+    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份
@@ -112,6 +112,8 @@ public class Constant {
     public static final String GENERALIZE_RERSON_STATIS_URL = BASE_URL + "promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
+    //点赞
+    public static final String VIDEO_LIKE_URL = BASE_URL + "Like/clickLikes";
     //关注
     public static final String ATTENTION_URL = BASE_URL + "follow/addFollow";
     //不喜欢

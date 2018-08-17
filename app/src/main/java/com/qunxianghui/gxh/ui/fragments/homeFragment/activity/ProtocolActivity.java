@@ -132,11 +132,13 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         });
 
 
+        webView.setWebViewClient(new WebViewClient() {
 
-          webView.setWebViewClient(new WebViewClient() {
+            private Intent mMIntent;
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
                 return false;
             }
 
@@ -149,18 +151,24 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 if (url.contains(tag)) {
                     final String mobile = url.substring(url.lastIndexOf("/") + 1);
                     Log.e("mobile----------->", mobile);
-                    final Intent mIntent = new Intent(Intent.ACTION_CALL);
-                    final Uri data = Uri.parse(mobile);
-                    mIntent.setData(data);
-                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                        startActivity(mIntent);
-                        //这个超连接,java已经处理了，webview不要处理
-                        return true;
-                    } else {
-                        //申请权限
-                        ActivityCompat.requestPermissions(ProtocolActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                        return true;
+                    if (mobile.equals("tel:1516715042")){
+                        ProtocolActivity.this.finish();
+                    }else {
+                        mMIntent = new Intent(Intent.ACTION_CALL);
+                        final Uri data = Uri.parse(mobile);
+                        mMIntent.setData(data);
+                        if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                            startActivity(mMIntent);
+                            //这个超连接,java已经处理了，webview不要处理
+                            return true;
+                        } else {
+                            //申请权限
+                            ActivityCompat.requestPermissions(ProtocolActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                            return true;
+                        }
                     }
+
+
                 }
                 return false;
             }
@@ -218,7 +226,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         ivWebback.setOnClickListener(this);
         tvNewsdetailIssue.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -230,4 +237,16 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (webView.canGoBack()) {
+            webView.goBack();
+
+        } else {
+            finish();
+        }
+    }
+
 }
