@@ -163,7 +163,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 Intent intent1 = new Intent(getContext(), ImageGridActivity.class);
                 startActivityForResult(intent1, 0x0011);
                 break;
-            case R.id.btnCommon:
+            case R.id.btnPicFromLocal:
                 toActivityWithResult(EnterpriseMaterialTiePianActivity.class, 0x0011);
                 break;
         }
@@ -187,7 +187,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 if (mChoosePic == null && getContext() != null) {
                     mChoosePic = new AdvertChoosePicDialog(getContext());
                     mChoosePic.setImgPickListener(this);
-                    mChoosePic.setCommonText("使用企业素材");
+                    mChoosePic.hideCommonView();
                 }
                 mChoosePic.show();
                 break;
@@ -248,7 +248,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mSw.setChecked(true);
         mIvAd.setImageResource(R.mipmap.admodle_guige);
         mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
-        mAdvertBean.position = 3;
+        mAdvertBean.position = 0;
         mAdvertBean.ad_type = 6;
         mFlLayout.setVisibility(View.INVISIBLE);
         asyncShowToast("删除成功");

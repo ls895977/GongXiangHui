@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
@@ -28,8 +31,10 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
+import com.qunxianghui.gxh.ui.activity.GeneralMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -37,7 +42,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener
+        , CompoundButton.OnCheckedChangeListener,AdvertChoosePicDialog.ImgPickListener {
 
     @BindView(R.id.rv)
     RecyclerView mRv;
@@ -54,10 +60,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private String[] iconName = {"企业素材", "通用素材", "大图通栏", "名片广告", "通栏广告", "二维码广告", "QQ广告", "店铺广告", "图文广告", "教学视频"};
 
     private List<View> mViewList = new ArrayList<>();
+    private boolean mIsHasBigPage;
+    private boolean mIsBigImg;
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChoosePicDialog mChoosePic;
     private AdvertChooseTypeDialog mChooseType;
-    private boolean mIsHasBigPage;
     private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList = new ArrayList<>();
 
     @Override
@@ -193,7 +200,16 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 remove();
                 break;
             case R.id.iv_add_big_img:
-                asyncShowToast("大图");
+                if (mChoosePic == null && getContext() != null) {
+                    mChoosePic = new AdvertChoosePicDialog(getContext());
+                    mChoosePic.setImgPickListener(this);
+                }
+                mIsBigImg = true;
+                if (mList.get(mVp.getCurrentItem()).ad_type == 3) {
+                    mChoosePic.showCommonView().show();
+                }else {
+                    mChoosePic.hideCommonView().show();
+                }
                 break;
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
@@ -213,15 +229,92 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             case R.id.ivAd:
                 if (mChoosePic == null && getContext() != null) {
                     mChoosePic = new AdvertChoosePicDialog(getContext());
+                    mChoosePic.setImgPickListener(this);
                 }
-                mChoosePic.hideLocalView().show();
+                mIsBigImg = false;
+                mChoosePic.hideCommonView().show();
                 break;
         }
     }
 
     @Override
+    public void pickListener(View view) {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.btnPhoto:
+                setWidth();
+                intent = new Intent(mActivity, ImageGridActivity.class);
+                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+                startActivityForResult(intent, 0x0011);
+                break;
+            case R.id.btnPick:
+                setWidth();
+                intent = new Intent(mActivity, ImageGridActivity.class);
+                startActivityForResult(intent, 0x0011);
+                break;
+            case R.id.btnPicFromLocal:
+                intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
+                intent.putExtra("type", 9);
+                intent.putExtra("isMultiSelect", false);
+                startActivityForResult(intent, 0x0011);
+                break;
+            case R.id.btnCommon:
+                intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                intent.putExtra("isMultiSelect", false);
+                intent.putExtra("type", 3);
+                startActivityForResult(intent, 0x0011);
+                break;
+        }
+    }
+
+    private void setWidth() {
+        float density = getResources().getDisplayMetrics().density;
+        if (mChoosePic.mIsBigImg) {
+            AdvertTemplateActivity.sImagePicker.setFocusWidth((int) (density * 360));   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+            AdvertTemplateActivity.sImagePicker.setOutPutX((int) (density * 360));//保存文件的宽度。单位像素
+        } else {
+            AdvertTemplateActivity.sImagePicker.setFocusWidth((int) (density * 90));   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+            AdvertTemplateActivity.sImagePicker.setOutPutX((int) (density * 90));//保存文件的宽度。单位像素
+        }
+        AdvertTemplateActivity.sImagePicker.setFocusHeight((int) (density * 90));  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        AdvertTemplateActivity.sImagePicker.setOutPutY((int) (density * 90));//保存文件的高度。单位像素
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<ImageItem> mImages;
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 0x0011) {
+            mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            if (mImages != null && mImages.size() > 0) {
+                String path = mImages.get(0).path;
+                ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), path, getCurrentImageView(path), 0, 0);
+            }
+            //企业素材
+        } else if (resultCode == 0x0022) {
+            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : EnterpriseMateriaItemFragment.mList) {
+
+            }
+            //通用素材
+        }else if(requestCode == 0x0033){
+
+        }
+    }
+
+    private ImageView getCurrentImageView(String path) {
+        View view = mViewList.get(mVp.getCurrentItem());
+        if (mIsBigImg) {
+            mList.get(mVp.getCurrentItem()).images = path;
+            return view.findViewById(R.id.iv_add_big_img);
+        } else {
+            mList.get(mVp.getCurrentItem()).settings.pgn_url = path;
+            return view.findViewById(R.id.ivAd);
+        }
     }
 
     private void addBigPage(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
