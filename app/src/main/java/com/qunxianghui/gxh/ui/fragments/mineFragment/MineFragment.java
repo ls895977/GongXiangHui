@@ -24,6 +24,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
@@ -36,6 +37,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -220,7 +222,10 @@ public class MineFragment extends BaseFragment {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_company_card:
-                toActivity(CompanyCardActivity.class);
+                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                    toActivity(CompanyCardActivity.class);
+                }
+                asyncShowToast("请升级企业会员后再试！");
                 break;
             case R.id.rl_mine_message:
                 toActivity(MineMessageActivity.class);

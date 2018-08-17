@@ -177,6 +177,8 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                             asyncShowToast("取消关注成功");
                             tvPersonDetailAttention.setText("关注");
                             dataList.setFollow("");
+                        }else if (code==101){
+                            asyncShowToast("请不要自己关注自己");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

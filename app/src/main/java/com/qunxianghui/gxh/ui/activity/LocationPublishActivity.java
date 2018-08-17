@@ -160,19 +160,21 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                     asyncShowToast("填写下介绍吧!");
                     return;
                 }
-                if (mImages.isEmpty()) {
-                    asyncShowToast("请添加图片");
-                    return;
-                }
+//                if (mImages.isEmpty()) {
+//                    asyncShowToast("请添加图片");
+//                    return;
+//                }
                 if (mTypeId == 0) {
                     asyncShowToast("请选择分类");
                     return;
                 }
                 mIsUploadIng = true;
                 stringBuilder = new StringBuilder();
-
-                String path = mImages.get(0).path;
-                uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
+                if (!mImages.isEmpty()){
+                    String path = mImages.get(0).path;
+                    uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
+                }
+                uploadInfo();
                 break;
             case R.id.tv_type:
                 if (mChooseType != null) {

@@ -155,16 +155,17 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                                 videoDataList.get(position).setFollow("");
                                 asyncShowToast("取消关注成功");
                             }
-                            personDetailVideoAdapter.notifyItemChanged(position + 1);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        personDetailVideoAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Logger.e("视频关注" + response.body().toString());
+                        Logger.e("点赞失败" + response.body().toString());
                     }
 
                 });
@@ -180,16 +181,15 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void videoLikeItemClick(int position) {
-        OkGo.<String>post(Constant.LIKE_URL).params("data_uuid", videoDataList.get(position).getUuid()).execute(new StringCallback() {
+        OkGo.<String>post(Constant.VIDEO_LIKE_URL).params("data_uuid", videoDataList.get(position).getUuid()).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body());
-                    JSONObject data = jsonObject.getJSONObject("data");
-                    JSONObject like_one_res = data.getJSONObject("like_one_res");
-                    if (like_one_res.toString() != null) {
+                    int code = jsonObject.getInt("code");
+                    if (code==100) {
                         asyncShowToast("点赞成功");
-                    } else {
+                    } else if (code==101){
                         asyncShowToast("取消点赞");
 
                     }
