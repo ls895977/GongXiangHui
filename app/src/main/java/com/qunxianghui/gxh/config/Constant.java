@@ -12,7 +12,7 @@ public class Constant {
     //正式环境
     //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //本地环境
-    public static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
+    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
