@@ -38,7 +38,6 @@ public class EnterpriseMaterial {
             public int is_slide;
             public int is_float;
             public boolean isSelect;
-            public boolean isAdd;
 
             public static class Settings implements Serializable {
                 //通栏操作（1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
