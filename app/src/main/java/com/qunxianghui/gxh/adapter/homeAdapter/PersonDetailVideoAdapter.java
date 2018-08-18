@@ -34,6 +34,13 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
     protected void convert(MyViewHolder holder, final int position, HomeVideoListBean.DataBean.ListBean listBean) {
         RoundImageView personHeadImag = holder.getView(R.id.round_item_collect_video_personhead);
         ImageView ivCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
+        ImageView mIvItemCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
+        int is_like = listBean.getIs_like();
+        if (is_like == 0) {
+            mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
+        } else  {
+            mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_select);
+        }
 
         holder.setText(R.id.tv_mycollect_video_attention, TextUtils.isEmpty(listBean.getFollow()) ? "+关注" : "已关注");
         holder.setText(R.id.tv_item_collect_video_personname, listBean.getMember_name());
