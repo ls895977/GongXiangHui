@@ -31,7 +31,7 @@ public class CommentDialog extends DialogFragment implements TextWatcher, View.O
     private String hintText;
 
     private Dialog dialog;
-    private EditText et_content;
+    public EditText et_content;
 
     public CommentDialog() {
     }

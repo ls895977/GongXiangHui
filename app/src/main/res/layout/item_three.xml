@@ -12,11 +12,10 @@
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="30dp"
-            android:gravity="center_vertical"
-            android:text="三级"
-            android:textColor="#000"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:gravity="center"
+            android:textColor="#565656"
             android:textSize="13sp" />
 
     </RelativeLayout>

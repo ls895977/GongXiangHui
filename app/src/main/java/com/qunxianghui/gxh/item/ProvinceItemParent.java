@@ -11,7 +11,7 @@ public class ProvinceItemParent extends TreeItemGroup<ProvinceBean> {
 
     @Override
     public List<TreeItem> initChildList(ProvinceBean data) {
-        return ItemHelperFactory.createItems(data.getCitys(), this);
+        return ItemHelperFactory.createItems(data.citys, this);
     }
     @Override
     protected int initLayoutId() {
@@ -19,8 +19,7 @@ public class ProvinceItemParent extends TreeItemGroup<ProvinceBean> {
     }
     @Override
     public void onBindViewHolder(ViewHolder holder) {
-        holder.setText(R.id.tv_content, data.getProvinceName());
+        holder.setText(R.id.tv_content, data.provinceName);
     }
-
 
 }

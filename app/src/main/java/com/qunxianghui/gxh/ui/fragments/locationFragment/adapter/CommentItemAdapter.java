@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,7 @@ public class CommentItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void showView(ViewHolder holder, final int position, ViewGroup parent) {
+    private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
         holder.name.setText(mList.get(position).getMember_name());
         if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())){
             holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
@@ -121,7 +122,7 @@ public class CommentItemAdapter extends BaseAdapter {
         holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentRecallListener.recommentContentListener(position, mList.get(position));
+                commentRecallListener.recommentContentListener(position, mList.get(position),holder.content);
             }
         });
     }
@@ -133,7 +134,7 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
     public interface CommentRecallListener {
-        void recommentContentListener(int position, CommentBean commentBean);
+        void recommentContentListener(int position, CommentBean commentBean, TextView topLocation);
     }
 
 }

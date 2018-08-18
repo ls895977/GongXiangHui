@@ -44,7 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener
-        , CompoundButton.OnCheckedChangeListener, AdvertChoosePicDialog.ImgPickListener {
+        , CompoundButton.OnCheckedChangeListener, AdvertChoosePicDialog.ImgPickListener, AdvertChooseTypeDialog.Callback{
 
     @BindView(R.id.rv)
     RecyclerView mRv;
@@ -64,6 +64,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private boolean mIsHasBigPage;
     private boolean mIsBigImg;
     private boolean mIsShopImg;
+    private boolean mIsBottomClick;
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChoosePicDialog mChoosePic;
     private AdvertChooseTypeDialog mChooseType;
@@ -87,29 +88,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         PersonalAds body = response.body();
                         if (body != null && body.code == 200 && !body.data.isEmpty()) {
                             for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
-                                switch (datum.ad_type) {
-                                    case 1:
-                                        addBigPage(datum);
-                                        break;
-                                    case 2:
-                                        addCardPage(datum);
-                                        break;
-                                    case 3:
-                                        addTongLangPage(datum);
-                                        break;
-                                    case 4:
-                                        addQrCodePage(datum);
-                                        break;
-                                    case 5:
-                                        addQQPage(datum);
-                                        break;
-                                    case 7:
-                                        addStorePage(datum);
-                                        break;
-                                    case 8:
-                                        addGraphicPage(datum);
-                                        break;
-                                }
+                                addData(datum);
                             }
                         } else {
                             addBigPage(null);
@@ -124,6 +103,32 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 });
     }
 
+    private void addData(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum){
+        switch (datum.ad_type) {
+            case 1:
+                addBigPage(datum);
+                break;
+            case 2:
+                addCardPage(datum);
+                break;
+            case 3:
+                addTongLangPage(datum);
+                break;
+            case 4:
+                addQrCodePage(datum);
+                break;
+            case 5:
+                addQQPage(datum);
+                break;
+            case 7:
+                addStorePage(datum);
+                break;
+            case 8:
+                addGraphicPage(datum);
+                break;
+        }
+    }
+
     @Override
     protected void initListeners() {
         AdvertBottomAdapter commonBottomAdverAdapter = new AdvertBottomAdapter(mActivity, images, iconName);
@@ -133,6 +138,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             public void onItemClick(int position) {
                 switch (position) {
                     case 0:
+                        mIsBottomClick = true;
                         Intent intent = new Intent();
                         intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
                         intent.putExtra("isMultiSelect", true);
@@ -140,7 +146,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         startActivityForResult(intent, 0x0011);
                         break;
                     case 1:
-                        asyncShowToast("通用素材");
+                        mIsBottomClick = true;
+                        intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                        intent.putExtra("isMultiSelect", false);
+                        intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
+                        startActivityForResult(intent, 0x0011);
                         break;
                     case 9:
                         asyncShowToast("教学视频");
@@ -216,6 +226,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
                     mChooseType = new AdvertChooseTypeDialog(getContext(), mViewList, mVp);
+                    mChooseType.SetCallback(this);
                 }
                 if (mViewList.get(mVp.getCurrentItem()).findViewById(R.id.tv_choose_activity_link) == null) {
                     mChooseType.setBigPageType();
@@ -255,12 +266,14 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPicFromLocal:
+                mIsBottomClick = false;
                 intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
                 intent.putExtra("type", 9);
                 intent.putExtra("isMultiSelect", false);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnCommon:
+                mIsBottomClick = false;
                 intent = new Intent(mActivity, GeneralMaterialActivity.class);
                 intent.putExtra("isMultiSelect", false);
                 intent.putExtra("type", 3);
@@ -299,13 +312,54 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
             //企业素材
         } else if (resultCode == 0x0022) {
-            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : EnterpriseMateriaItemFragment.mList) {
-
+            if (mIsBottomClick) {
+                for (int i = 0; i < EnterpriseMateriaItemFragment.mList.size(); i++) {
+                    if (mList.size() >= 10) {
+                        asyncShowToast("亲，最多只可添加10个模版哦!");
+                        EnterpriseMateriaItemFragment.clearData();
+                        return;
+                    }
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
+                    if (mIsHasBigPage && companyAdvert.ad_type == 1) {
+                        asyncShowToast("亲，大图通栏广告只可添加一个～～");
+                        return;
+                    }
+                    companyAdvert.id = 0;
+                    mList.add(companyAdvert);
+                    addData(companyAdvert);
+                }
+            }else {
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
+                Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
+                        .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
+                        .into(getCurrentImageView(companyAdvert.images));
             }
+            EnterpriseMateriaItemFragment.clearData();
             //通用素材
-        } else if (requestCode == 0x0033) {
-
-        }
+        } else if (resultCode == 0x0033) {
+            if (mIsBottomClick) {
+                for (int i = 0; i < GeneralMateriaItemFragment.mList.size(); i++) {
+                    if (mList.size() >= 10) {
+                        asyncShowToast("亲，最多只可添加10个模版哦!");
+                        GeneralMateriaItemFragment.clearData();
+                        return;
+                    }
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(i);
+                    if (mIsHasBigPage && companyAdvert.ad_type == 1) {
+                        asyncShowToast("亲，大图通栏广告只可添加一个～～");
+                        return;
+                    }
+                    companyAdvert.id = 0;
+                    mList.add(companyAdvert);
+                    addData(companyAdvert);
+                }
+            } else {
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(0);
+                Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
+                        .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
+                        .into(getCurrentImageView(companyAdvert.images));
+            }
+            GeneralMateriaItemFragment.clearData();        }
     }
 
     private ImageView getCurrentImageView(String path) {
@@ -324,6 +378,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             } else if (mIsShopImg) {
                 mIsShopImg = false;
                 companyAdvert.settings.store_url = path;
+                return view.findViewById(R.id.ivShop);
             } else {
                 companyAdvert.images = path;
             }
@@ -332,6 +387,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     }
 
     private EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings getCurrentSettings() {
+        if (mList.get(mVp.getCurrentItem()).settings == null) {
+            mList.get(mVp.getCurrentItem()).settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
+        }
         return mList.get(mVp.getCurrentItem()).settings;
     }
 
@@ -350,6 +408,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         TextView tvType = view.findViewById(R.id.tv_choose_type);
         tvType.setOnClickListener(this);
         AppCompatCheckBox cB = view.findViewById(R.id.cb);
+        View rlLink = view.findViewById(R.id.rl_link);
         EditText etLink = view.findViewById(R.id.et_link);
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
@@ -380,20 +439,26 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         if (companyAdvert != null) {
             mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
-            switch (companyAdvert.settings.operate) {
-                case 1:
-                    tvType.setText("跳转链接");
-                    etLink.setText(companyAdvert.settings.link);
-                    cB.setChecked(companyAdvert.settings.is_link != 0);
-                    break;
-                case 2:
-                    tvType.setText("拨打电话");
-                    etOther.setText(companyAdvert.settings.mobile);
-                    break;
-                case 3:
-                    tvType.setText("联系QQ");
-                    etOther.setText(companyAdvert.settings.qq);
-                    break;
+            if (companyAdvert.settings != null) {
+                switch (companyAdvert.settings.operate) {
+                    case 1:
+                        tvType.setText("跳转链接");
+                        etLink.setText(companyAdvert.settings.link);
+                        cB.setChecked(companyAdvert.settings.is_link != 0);
+                        break;
+                    case 2:
+                        tvType.setText("拨打电话");
+                        rlLink.setVisibility(View.GONE);
+                        etOther.setVisibility(View.VISIBLE);
+                        etOther.setText(companyAdvert.settings.mobile);
+                        break;
+                    case 3:
+                        tvType.setText("联系QQ");
+                        rlLink.setVisibility(View.GONE);
+                        etOther.setVisibility(View.VISIBLE);
+                        etOther.setText(companyAdvert.settings.qq);
+                        break;
+                }
             }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
@@ -437,9 +502,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         if (companyAdvert != null) {
             mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
-            etTitle.setText(companyAdvert.settings.slogan);
-            etMobile.setText(companyAdvert.settings.mobile);
-            etIntro.setText(companyAdvert.settings.intro);
+            if (companyAdvert.settings != null) {
+                etTitle.setText(companyAdvert.settings.slogan);
+                etMobile.setText(companyAdvert.settings.mobile);
+                etIntro.setText(companyAdvert.settings.intro);
+            }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 2;
@@ -468,21 +535,21 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mList.get(mVp.getCurrentItem()).settings.is_link = isChecked ? 1 : 0;
+                getCurrentSettings().is_link = isChecked ? 1 : 0;
             }
         });
         EditText etLink = view.findViewById(R.id.et_link);
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mList.get(mVp.getCurrentItem()).settings.link = s.toString();
+                getCurrentSettings().link = s.toString();
             }
         });
         EditText etPhone = view.findViewById(R.id.et_phone);
         etPhone.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mList.get(mVp.getCurrentItem()).settings.mobile = s.toString();
+                getCurrentSettings().mobile = s.toString();
             }
         });
         SwitchButton sw = view.findViewById(R.id.sw);
@@ -496,37 +563,39 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
 //            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
-            switch (companyAdvert.settings.operate) {
-                case 1:
-                    tvType.setText("跳转链接");
-                    view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
-                    etLink.setText(companyAdvert.settings.link);
-                    if (companyAdvert.settings.is_link == 1) {
-                        cB.setChecked(true);
-                    }
-                    break;
-                case 2:
-                    tvType.setText("拨打电话");
-                    etPhone.setVisibility(View.VISIBLE);
-                    etPhone.setText(companyAdvert.settings.mobile);
-                    break;
-                case 3:
-                    tvType.setText("跳转活动");
-                    tvChooseActivityLink.setVisibility(View.VISIBLE);
-                    tvChooseActivityLink.setText(companyAdvert.settings.link);
-                    break;
-                case 4:
-                    tvType.setText("展示海报");
-                    rlAddImg.setVisibility(View.VISIBLE);
-                    Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.pgn_url)
-                            .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
-                    break;
-                case 5:
-                    tvType.setText("展示二维码");
-                    rlAddImg.setVisibility(View.VISIBLE);
-                    Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.pgn_url)
-                            .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
-                    break;
+            if (companyAdvert.settings != null) {
+                switch (companyAdvert.settings.operate) {
+                    case 1:
+                        tvType.setText("跳转链接");
+                        view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
+                        etLink.setText(companyAdvert.settings.link);
+                        if (companyAdvert.settings.is_link == 1) {
+                            cB.setChecked(true);
+                        }
+                        break;
+                    case 2:
+                        tvType.setText("拨打电话");
+                        etPhone.setVisibility(View.VISIBLE);
+                        etPhone.setText(companyAdvert.settings.mobile);
+                        break;
+                    case 3:
+                        tvType.setText("跳转活动");
+                        tvChooseActivityLink.setVisibility(View.VISIBLE);
+                        tvChooseActivityLink.setText(companyAdvert.settings.link);
+                        break;
+                    case 4:
+                        tvType.setText("展示海报");
+                        rlAddImg.setVisibility(View.VISIBLE);
+                        Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.pgn_url)
+                                .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
+                        break;
+                    case 5:
+                        tvType.setText("展示二维码");
+                        rlAddImg.setVisibility(View.VISIBLE);
+                        Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.pgn_url)
+                                .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
+                        break;
+                }
             }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert1 = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
@@ -561,9 +630,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
-            etDes.setText(companyAdvert.settings.intro);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
-            etTitle.setText(companyAdvert.settings.slogan);
+            if (companyAdvert.settings != null) {
+                etDes.setText(companyAdvert.settings.intro);
+                etTitle.setText(companyAdvert.settings.slogan);
+            }
             mList.add(companyAdvert);
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
@@ -607,9 +678,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         if (companyAdvert != null) {
             mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
-            etName.setText(companyAdvert.settings.name);
-            etQQ.setText(companyAdvert.settings.qq);
-            etDes.setText(companyAdvert.settings.intro);
+            if (companyAdvert.settings != null) {
+                etName.setText(companyAdvert.settings.name);
+                etQQ.setText(companyAdvert.settings.qq);
+                etDes.setText(companyAdvert.settings.intro);
+            }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 5;
@@ -672,7 +745,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         });
         View item2 = inflater.inflate(R.layout.ad_item_store_child, mVp, false);
         item2.findViewById(R.id.etLink).setVisibility(View.INVISIBLE);
-        ImageView ivShop = item2.findViewById(R.id.ivAd);
+        item2.findViewById(R.id.rl_add_img).setVisibility(View.GONE);
+        item2.findViewById(R.id.rl_add_shop_img).setVisibility(View.VISIBLE);
+        ImageView ivShop = item2.findViewById(R.id.ivShop);
         ivShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -729,13 +804,15 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         });
         if (companyAdvert != null) {
             mList.add(companyAdvert);
-            etGoodsName.setText(companyAdvert.settings.product_name);
-            etGoodsPrice.setText(companyAdvert.settings.product_price);
-            etGoodsLink.setText(companyAdvert.settings.product_url);
-            etQQ.setText(companyAdvert.settings.qq);
-            etMobile.setText(companyAdvert.settings.mobile);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivGoods);
-            Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.store_url).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivShop);
+            if (companyAdvert.settings != null) {
+                etGoodsName.setText(companyAdvert.settings.product_name);
+                etGoodsPrice.setText(companyAdvert.settings.product_price);
+                etGoodsLink.setText(companyAdvert.settings.product_url);
+                etQQ.setText(companyAdvert.settings.qq);
+                etMobile.setText(companyAdvert.settings.mobile);
+                Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.store_url).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivShop);
+            }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 7;
@@ -778,9 +855,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         if (companyAdvert != null) {
             mList.add(companyAdvert);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
-            etSlogan.setText(companyAdvert.settings.slogan);
-            etLink.setText(companyAdvert.settings.link);
-            etDes.setText(companyAdvert.settings.intro);
+            if (companyAdvert.settings != null) {
+                etSlogan.setText(companyAdvert.settings.slogan);
+                etLink.setText(companyAdvert.settings.link);
+                etDes.setText(companyAdvert.settings.intro);
+            }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             advert.ad_type = 5;
@@ -842,4 +921,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         mCircleIndicatorView.drawCircleView();
     }
 
+    @Override
+    public void callback(int type) {
+        getCurrentSettings().operate = type;
+    }
 }
