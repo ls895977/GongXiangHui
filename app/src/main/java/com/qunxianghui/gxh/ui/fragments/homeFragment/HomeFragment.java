@@ -34,12 +34,10 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
-import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ChannelActivity;
@@ -188,13 +186,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     private void initFragment() {
         mViewPager.setAdapter(new NewsFragmentPagerAdapter(getChildFragmentManager(), userChannelList));
         mTopSlidingLayout.setViewPager(mViewPager);
-    }
-
-    /**
-     * 获取Column栏目 数据
-     */
-    private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getInstance().getSQLHelper()).getUserChannel());
     }
 
     @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns,R.id.iv_home_paste_artical})

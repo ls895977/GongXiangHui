@@ -41,7 +41,7 @@ public class EnterpriseMaterial {
 
             public static class Settings implements Serializable {
                 //通栏操作（1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
-                public int operate;
+                public int operate = 1;
                 //链接地址
                 public String link;
                 //手机号码
