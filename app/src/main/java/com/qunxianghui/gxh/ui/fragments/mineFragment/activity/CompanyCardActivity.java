@@ -72,6 +72,8 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     TextView tvCompanyAdress;
     @BindView(R.id.tv_company_duty)
     TextView tvCompanyDuty;
+    @BindView(R.id.rl_company_card_adress_edit)
+    RelativeLayout rlCompanyCardAdressEdit;
     private Dialog mDialog;
     private UMWeb mWeb;
     private UMShareListener umShareListener;
@@ -80,6 +82,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     protected int getLayoutId() {
         return R.layout.activity_company_card;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     protected void initViews() {
         super.initViews();
     }
+
     @Override
     protected void initData() {
         super.initData();
@@ -145,6 +149,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         mIvCompanycardShare.setOnClickListener(this);
         mRlCompanycardCenterAdvance.setOnClickListener(this);
         mRlCompanycardCompanyProduct.setOnClickListener(this);
+        rlCompanyCardAdressEdit.setOnClickListener(this);
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -159,7 +164,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(CompanyCardActivity.this, platform + " 分享失败啦"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompanyCardActivity.this, platform + " 分享失败啦" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -188,8 +193,12 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
             case R.id.rl_companycard_center_advance:
                 toActivity(ComPanyAdvanceActivity.class);
                 break;
+            case R.id.rl_company_card_adress_edit:
+                toActivity(PersonDataActivity.class);
+                break;
         }
     }
+
     /*分享我的企业名片*/
     private void RequestCompanyCardInfo() {
         OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
@@ -204,7 +213,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                             String content = mCompanyCardData.getString("content");
                             String url = mCompanyCardData.getString("url");
                             int code = jsonObject.getInt("code");
-                            if (code == 200&&mCompanyCardData!=null) {
+                            if (code == 200 && mCompanyCardData != null) {
                                 shareCompanyCardInfo(avatar, title, content, url);
                             }
                         } catch (Exception e) {
@@ -213,6 +222,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+
     /*调用三方接口分享出去*/
     private void shareCompanyCardInfo(String avatar, String title, String content, final String url) {
         //以下代码是分享示例代码
@@ -301,6 +311,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         mDialog.show();
 
     }
+
     private void ClipContent(String url) {
         ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(url));
