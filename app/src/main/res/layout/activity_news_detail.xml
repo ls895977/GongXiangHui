@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +14,12 @@
         android:max="100" />
 
     <RelativeLayout
+        android:id="@+id/rl_newsdetail_title"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:paddingTop="20dp"
         android:background="@color/white"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingTop="20dp">
 
         <ImageView
             android:id="@+id/iv_newsdetail_back"
@@ -47,26 +48,21 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <FrameLayout
+
+    <WebView
+        android:id="@+id/wed_news_detail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_newsdetail_title" />
 
-        <WebView
-            android:id="@+id/wed_news_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/iv_news_detail_addAdver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="80dp"
-            android:src="@mipmap/iv_add_advert" />
-
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/iv_news_detail_addAdver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="70dp"
+        android:src="@mipmap/iv_add_advert" />
 
 
-</LinearLayout>
+</RelativeLayout>

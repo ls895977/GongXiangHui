@@ -214,7 +214,6 @@ public class Constant {
     public static final String GENERAL_AD = BASE_URL + "user/getGeneralMaterial";
     //修改广告
     public static final String EDIT_AD = BASE_URL + "user/editAdTemplates";
-
     public static final String ENTERPRISE_MATERIAL = BASE_URL + "user/getEnterpriseMaterial";
     //企业添加
     public static final String ADD_COMPANY_URL = BASE_URL + "service/addCompany";

@@ -4,20 +4,21 @@ public class CommentBean {
 
 
     /**
-     * id : 700
-     * comment_id : 0
+     * id : 1241
+     * comment_id : 1213
      * pid : 0
-     * uuid : 1521861352
-     * data_uuid : 1521861344
-     * member_id : 1000175
-     * content : 模棱两可
-     * ctime : 1528342182
-     * ip : 223.104.189.80
+     * uuid : 1521863845
+     * data_uuid : 1521863807
+     * member_id : 1000304
+     * content : 今天
+     * ctime : 1534579446
+     * ip : 118.114.82.194
      * status : 1
      * read : 0
-     * member_name : 臭居居的归来
-     * member_avatar : http://api.qunxianghui.com.cn/upload/images/20180524/f746158014f1c6361431e3347316d42a.png
-     * address : 山东
+     * member_name : 173****3627
+     * member_avatar :
+     * member_reply_name : 飙分狂人
+     * comment_delete : true
      */
 
     private int id;
@@ -33,19 +34,11 @@ public class CommentBean {
     private int read;
     private String member_name;
     private String member_avatar;
-    private String address;
-    private int code;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
+    private String member_reply_name;
+    private String comment_delete;
 
     public int getId() {
-        return id;
+        return id>1000?id:-1;
     }
 
     public void setId(int id) {
@@ -148,11 +141,19 @@ public class CommentBean {
         this.member_avatar = member_avatar;
     }
 
-    public String getAddress() {
-        return address;
+    public String getMember_reply_name() {
+        return member_reply_name;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setMember_reply_name(String member_reply_name) {
+        this.member_reply_name = member_reply_name;
+    }
+
+    public String getComment_delete() {
+        return comment_delete;
+    }
+
+    public void setComment_delete(String comment_delete) {
+        this.comment_delete = comment_delete;
     }
 }

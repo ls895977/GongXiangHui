@@ -38,8 +38,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
-    @BindView(R.id.tv_mycollect_edit)
-    TextView mTvMycollectEdit;
     @BindView(R.id.tv_mycollect_cancel)
     TextView tvMycollectCancel;
 
@@ -64,7 +62,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
             mineTablayoutCommon.addTab(mineTablayoutCommon.newTab().setText(tab));
         }
     }
-
     @Override
     protected void initData() {
         fragments.add(new MineCommonFragment());
@@ -88,7 +85,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         //设置tablayout的点击事件
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
-        mTvMycollectEdit.setOnClickListener(this);
         tvMycollectCancel.setOnClickListener(this);
     }
 
@@ -145,18 +141,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         switch (v.getId()) {
             case R.id.iv_myCollect_back:
                 finish();
-                break;
-            case R.id.tv_mycollect_edit:
-                if (isEdit) {
-                    EventManager.getInstance().publishMessage(true);
-                    isEdit = false;
-                    ivMyCollectBack.setVisibility(View.GONE);
-                    tvMycollectCancel.setVisibility(View.VISIBLE);
-                } else {
-                    EventManager.getInstance().publishMessage(false);
-                    isEdit = true;
-                    tvMycollectCancel.setVisibility(View.GONE);
-                }
                 break;
             case R.id.tv_mycollect_cancel:
                 EventManager.getInstance().publishMessage(false);

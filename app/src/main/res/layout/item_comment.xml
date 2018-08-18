@@ -24,7 +24,9 @@
             android:id="@+id/tv_item_reply_lb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="\u3000回复\u3000"
+            android:text="回复"
+            android:paddingLeft="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4"
             android:visibility="gone" />
 
         <TextView
@@ -32,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="aaa"
+            android:textColor="#1E6CA9"
             android:visibility="gone" />
 
         <TextView
@@ -49,7 +52,7 @@
         android:id="@+id/tv_item_discuss_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="20dp"
         android:text="删除"
         android:textColor="#f00" />
 

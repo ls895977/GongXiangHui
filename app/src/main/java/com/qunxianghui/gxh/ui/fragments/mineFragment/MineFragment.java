@@ -110,6 +110,7 @@ public class MineFragment extends BaseFragment {
     private String mDuty;
     private String mSelfIntroduction;
     private String mCollectCount;
+    private String mFollow_cnt;
 
     @Override
     public int getLayoutId() {
@@ -127,6 +128,7 @@ public class MineFragment extends BaseFragment {
             }
         }
     }
+
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
@@ -140,21 +142,27 @@ public class MineFragment extends BaseFragment {
                 companyName = data.getString("company_name");
                 mSex = data.getInt("sex");
                 mUsername = data.getString("username");
-                mCompanyName = data.getString("company_name");
                 mCollectCount = data.getString("collect_cnt");
-//                mDuty = data.getString("duty");
+                mFollow_cnt = data.getString("follow_cnt");
+                mDuty = data.getString("duty");
                 mEmail = data.getString("email");
-//                mSelfIntroduction = data.getString("self_introduction");
-//                posts_cnt = data.getInt("posts_cnt");
+                mSelfIntroduction = data.getString("self_introduction");
                 comment_cnt = data.getInt("comment_cnt");
+
                 mLevelName = data.getJSONObject("level_info").getString("name");
+                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                    mCompanyName = data.getJSONObject("company_info").getString("company_name");
+                    tvMineCompanyName.setText(mCompanyName);
+                } else {
+                    tvMineCompanyName.setText("");
+                }
                 companyInfo = new JSONTokener(data.getString("company_info")).nextValue();
                 mTvMemberType.setText(mLevelName);
                 mineQuicklyLogin.setText(mNick);
                 tvMineAddlikeCollect.setText(mCollectCount);
                 tvMinePostCount.setText(String.valueOf(posts_cnt));
                 tvMineFollowPostCount.setText(String.valueOf(comment_cnt));
-                tvMineCompanyName.setText(companyName);
+                tvMinePostCount.setText(mCollectCount);
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_moren);
                 options.error(R.mipmap.user_moren);
@@ -167,7 +175,7 @@ public class MineFragment extends BaseFragment {
                  */
                 SharedPreferences spConpanyname = mActivity.getSharedPreferences("companymessage", 0);
                 SharedPreferences.Editor editor = spConpanyname.edit();
-                editor.putString("avatar",mAvatar );
+                editor.putString("avatar", mAvatar);
                 editor.apply();
             }
 
@@ -247,7 +255,7 @@ public class MineFragment extends BaseFragment {
                 bundle.putString(PersonDataActivity.USER_EMAIL, mEmail);
                 bundle.putString(PersonDataActivity.USER_INTRODUCTION, mSelfIntroduction);
                 bundle.putString(PersonDataActivity.USER_DUTY, mDuty);
-                bundle.putString(PersonDataActivity.USER_COMPANY, mCompanyName);
+                bundle.putString(PersonDataActivity.USER_COMPANY, companyName);
                 toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.hezuo_call:
