@@ -169,17 +169,11 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                             //holder.llShowComment.setVisibility(View.GONE);
                             holder.tvShowText.setText("收起");
                             flag = true;
-                            if (size==25){
-                                holder.llShowComment.setClickable(false);
-                            }
                             holder.ivShow.setImageResource(R.mipmap.ic_up);
                         }else {
                             commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
                             holder.tvShowText.setText("展开");
                             flag = false;
-                            if (size==25){
-                                holder.llShowComment.setClickable(false);
-                            }
                             holder.ivShow.setImageResource(R.mipmap.ic_down);
                         }
                     }
