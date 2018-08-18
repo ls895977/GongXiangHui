@@ -366,7 +366,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                    if (comment.getCode() == 0) {
+                                    if (comment.getId()!= 0) {
                                         inputPostComment.setText("");
                                         myIssuepostPopWindow.dismiss();
                                     }

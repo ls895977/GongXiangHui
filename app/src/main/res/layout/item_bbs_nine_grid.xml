@@ -112,7 +112,12 @@
                 android:drawablePadding="3dp"
                 android:drawableStart="@mipmap/icon_local_good_select"
                 android:textColor="@color/liji_c_blue"
-                android:visibility="gone" />
+                android:visibility="visible"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginRight="@dimen/dp_40"
+                android:text=""
+                />
 
             <ImageView
                 android:id="@+id/snsBtn"
@@ -133,7 +138,7 @@
             android:paddingLeft="12dip"
             android:paddingRight="12dip"
             android:paddingTop="12dip"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <com.qunxianghui.gxh.widget.BigListView
                 android:id="@+id/comment_list"
@@ -144,6 +149,26 @@
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:scrollbars="none" />
+
+        <LinearLayout
+            android:id="@+id/ll_show_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/tv_showText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展开"
+                />
+            <ImageView
+                android:id="@+id/iv_show_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_down"
+                android:layout_gravity="center"
+                android:padding="@dimen/dp_4" />
+        </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
