@@ -13,6 +13,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
+import com.qunxianghui.gxh.bean.location.ReplyCommentResponseBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -100,6 +101,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
             @Override
             public void onLoadMore() {
+                count = count+10;
                 initData();
             }
         });
@@ -193,9 +195,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                if (comment.getCode() == 0) {
+                                ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
+                                    asyncShowToast(responseBean.getMsg());
+                                    recyclerView.refresh();
                                 } else {
                                     asyncShowToast(response.message());
                                 }
@@ -255,13 +259,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             UserUtil user = UserUtil.getInstance();
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
-                            if ("点赞成功".equals(response.body().message)) {
+                            if ("点赞成功".equals(response.body().msg)) {
                                 localDataList.get(position).getTem().add(clickLikeBean);
                                 localDataList.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
                                 asyncShowToast("点赞成功");
-                            } else if ("取消点赞成功".equals(response.body().message)) {
+                            } else if ("取消点赞成功".equals(response.body().msg)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = localDataList.get(position).getTem();
                                 for (int i = 0; i < localDataList.get(position).getTem().size(); i++) {
                                     TestMode.DataBean.ListBean.ClickLikeBean tem = localDataList.get(position).getTem().get(i);
@@ -311,16 +315,48 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
-                OkGo.<String>post(Constant.REPAY_COMMENT_URL).params("comment_id", commentBean.getComment_id())
+                OkGo.<String>post(Constant.REPAY_COMMENT_URL)
+                        .params("comment_id", commentBean.getId())
                         .params("content", inputText)
-                        .params("uuid", commentBean.getUuid())
+                        .params("uuid", commentBean.getData_uuid())
                         .params("pid", commentBean.getPid())
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                if (comment.getCode() == 0) {
+                                ReplyCommentResponseBean commentResponseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                if (commentResponseBean.getCode() == 0) {
                                     commentDialog.dismiss();
+                                    asyncShowToast(commentResponseBean.getMsg());
+                                    List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
+                                    CommentBean comment = new CommentBean();
+                                    ReplyCommentResponseBean.DataBean dataBean = commentResponseBean.getData();
+                                    if (dataBean!=null){
+                                        ReplyCommentResponseBean.DataBean.ComOneResBean comOneResBean = dataBean.getCom_one_res();
+                                        if (comOneResBean!=null){
+                                            comment.setContent(comOneResBean.getContent());
+                                            comment.setUuid(comOneResBean.getData_uuid());
+                                            comment.setMember_name(comOneResBean.getMember_name());
+                                            commentBeanList.add(comment);
+                                            mAdapter.notifyDataSetChanged();
+                                            OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                                                    .params("uuid", commentBean.getUuid())
+                                                    .params("content", comOneResBean.getContent())
+                                                    .execute(new StringCallback() {
+                                                        @Override
+                                                        public void onSuccess(Response<String> response) {
+                                                            ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                                            if (responseBean.getCode() == 0) {
+                                                                commentDialog.dismiss();
+                                                                asyncShowToast(responseBean.getMsg());
+                                                                recyclerView.refresh();
+                                                            } else {
+                                                                asyncShowToast(response.message());
+                                                            }
+                                                        }
+                                                    });
+
+                                        }
+                                    }
                                 } else {
                                     asyncShowToast(response.message());
                                 }

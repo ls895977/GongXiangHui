@@ -26,6 +26,7 @@ import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +45,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private final int STATE_COLLAPSED = 2;//折叠状态
     private final int STATE_EXPANDED = 3;//展开状态
     private SparseArray<Integer> mTextStateList; //保存文本状态集合
+    private boolean flag = false;
+    private StringBuilder stringBuilder;
 
     @SuppressLint("UseSparseArrays")
     public NineGridTest2Adapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
@@ -147,11 +150,39 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
             });
         }
-        if (dataBeanList.get(position).getComment_res().size() != 0) {
+        final int size = dataBeanList.get(position).getComment_res().size();
+        if (size != 0) {
+
+            List<CommentBean> commentBeans = new ArrayList<>();
             holder.digCommentBody.setVisibility(View.VISIBLE);
-            CommentItemAdapter commentItemAdapter = new CommentItemAdapter(mContext, dataBeanList.get(position).getComment_res(), holder.comment_list);
+            final CommentItemAdapter commentItemAdapter = new CommentItemAdapter(mContext, commentBeans, holder.comment_list);
             commentItemAdapter.setCommentRecallListener(this);
             holder.comment_list.setAdapter(commentItemAdapter);
+            if (size>7){
+                holder.llShowComment.setVisibility(View.VISIBLE);
+                holder.llShowComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!flag){
+
+                            commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
+                            //holder.llShowComment.setVisibility(View.GONE);
+                            holder.tvShowText.setText("收起");
+                            flag = true;
+                            holder.ivShow.setImageResource(R.mipmap.ic_up);
+                        }else {
+                            commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
+                            holder.tvShowText.setText("展开");
+                            flag = false;
+                            holder.ivShow.setImageResource(R.mipmap.ic_down);
+                        }
+                    }
+                });
+                commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
+            }else {
+                holder.llShowComment.setVisibility(View.GONE);
+                commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
+            }
         } else {
             holder.digCommentBody.setVisibility(View.GONE);
         }
@@ -221,11 +252,13 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
             String content = "";
+            stringBuilder = new StringBuilder();
             for (int i = 0; i < dataBeanList.get(position).getTem().size(); i++) {
                 TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(position).getTem().get(i);
-                content = content + like.getMember_name() + " ";
+                content = like.getMember_name() + " ";
+                stringBuilder.append(content);
             }
-            holder.clickusertext.setText(content);
+            holder.clickusertext.setText(stringBuilder);
         } else {
             holder.clickusertext.setVisibility(View.GONE);
         }
@@ -257,6 +290,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         EditText comment_edit;
         BigListView comment_list;
         TextView clickusertext;
+        LinearLayout llShowComment;
+        TextView tvShowText;
+        ImageView ivShow;
 
         myViewHolder(View itemView) {
             super(itemView);
@@ -275,6 +311,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             digCommentBody = itemView.findViewById(R.id.digCommentBody);
             clickusertext = itemView.findViewById(R.id.click_like_user);
             comment_list = itemView.findViewById(R.id.comment_list);
+            llShowComment = itemView.findViewById(R.id.ll_show_comment);
+            tvShowText = itemView.findViewById(R.id.tv_showText);
+            ivShow = itemView.findViewById(R.id.iv_show_icon);
         }
     }
 

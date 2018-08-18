@@ -93,6 +93,14 @@ public class CommentItemAdapter extends BaseAdapter {
 
     private void showView(ViewHolder holder, final int position, ViewGroup parent) {
         holder.name.setText(mList.get(position).getMember_name());
+        if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())){
+            holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
+            holder.tv_item_replyed.setVisibility(View.VISIBLE);
+            holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name());
+        }else {
+            holder.tv_item_reply_lb.setVisibility(View.GONE);
+            holder.tv_item_replyed.setVisibility(View.GONE);
+        }
         holder.content.setText(mList.get(position).getContent());
         /***
          * 删除评论
