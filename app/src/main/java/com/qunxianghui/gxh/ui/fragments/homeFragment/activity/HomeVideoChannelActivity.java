@@ -102,6 +102,7 @@ public class HomeVideoChannelActivity extends GestureDetectorActivity implements
         userGridView.setAdapter(userAdapter);
         otherGridView.setAdapter(otherAdapter);
     }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {

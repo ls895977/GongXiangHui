@@ -10,7 +10,7 @@ public class AreaItem extends TreeItem<ProvinceBean.CityBean.AreasBean> {
     }
     @Override
     public void onBindViewHolder(ViewHolder holder) {
-        holder.setText(R.id.tv_content, data.getAreaName());
+        holder.setText(R.id.tv_content, data.areaName);
     }
 
     @Override

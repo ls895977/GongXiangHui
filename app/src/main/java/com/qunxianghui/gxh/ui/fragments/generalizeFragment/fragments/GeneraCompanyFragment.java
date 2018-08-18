@@ -2,11 +2,15 @@ package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -23,6 +27,7 @@ import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +65,6 @@ public class GeneraCompanyFragment extends BaseFragment {
     TextView mTvTotal;
 
     private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
-    private String[] mTitles = {"7月", "总榜"};
     private String[] mType = {"view_cnt", "click_cnt", "forward_cnt", "article_cnt"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private int[] mIconUnselectIds = {
@@ -155,16 +159,41 @@ public class GeneraCompanyFragment extends BaseFragment {
         view.setSelected(true);
         switch (view.getId()) {
             case R.id.tv_month:
+                selectMonth();
                 mTvTotal.setSelected(false);
-                setViewpager(0, 6);
-                mTabLayout.setCurrentTab(0);
-                break;
+                return;
             case R.id.tv_total:
                 mTvMonth.setSelected(false);
                 setViewpager(1, 0);
                 break;
         }
         mTabLayout.setCurrentTab(0);
+    }
+
+    private void selectMonth() {
+        List<String> list = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            list.add(i + "月");
+        }
+        OptionsPickerView mChooseType = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                int month = options1 + 1;
+                if (month > Calendar.getInstance().get(Calendar.MONTH) + 1) {
+                    mTvMonth.setSelected(false);
+                    mTvTotal.setSelected(true);
+                    asyncShowToast("当前选择月份过大～～");
+                    return;
+                }
+                mTvMonth.setText(month + "月");
+                setViewpager(0, month);
+                mTabLayout.setCurrentTab(0);
+            }
+        }).setCancelColor(Color.parseColor("#676767"))
+                .setSubmitColor(Color.parseColor("#D81717"))
+                .build();
+        mChooseType.setNPicker(list, null, null);
+        mChooseType.show();
     }
 
 }

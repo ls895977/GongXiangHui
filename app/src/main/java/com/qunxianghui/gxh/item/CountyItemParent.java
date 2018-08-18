@@ -12,7 +12,7 @@ public class CountyItemParent extends TreeItemGroup<ProvinceBean.CityBean> {
 
     @Override
     public List<TreeItem> initChildList(ProvinceBean.CityBean data) {
-        return ItemHelperFactory.createItems(data.getAreas(),  this);
+        return ItemHelperFactory.createItems(data.areas,  this);
     }
 
     @Override
@@ -20,9 +20,8 @@ public class CountyItemParent extends TreeItemGroup<ProvinceBean.CityBean> {
         return R.layout.item_two;
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder holder) {
-        holder.setText(R.id.tv_content, getData().getCityName());
+        holder.setText(R.id.tv_content, getData().cityName);
     }
 }

@@ -108,10 +108,11 @@ public class HotPointFragment extends BaseFragment {
         }
 //        homeItemListAdapter.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRv, false));
 //        homeItemListAdapter.addFooterView(footer);
+        onVisible();
     }
 
     @Override
-    public void initData() {
+    public void onLoadData() {
         //首页新闻数据
         OkGo.<CommonResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
                 .params("limit", 12)
@@ -175,7 +176,7 @@ public class HotPointFragment extends BaseFragment {
         homeItemListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                initData();
+                onLoadData();
             }
         }, mRv);
         mSw.setProgressBackgroundColorSchemeResource(android.R.color.white);
