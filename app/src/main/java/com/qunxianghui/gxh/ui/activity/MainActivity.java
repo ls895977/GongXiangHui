@@ -242,6 +242,7 @@ public class MainActivity extends BaseActivity {
                         UploadVideo uploadVideo = GsonUtils.jsonFromJson(response.body(), UploadVideo.class);
                         if (uploadVideo != null && "0".equals(uploadVideo.code)) {
                             asyncShowToast("上传成功,请等待审核");
+
                         }
                     }
 

@@ -27,7 +27,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
@@ -83,7 +82,7 @@ public class HotPointFragment extends BaseFragment {
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
         }
-//        View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, mRv, false);
+
         homeItemListAdapter = new HomeItemListAdapter();
         homeItemListAdapter.setNewData(dataList);
         if (mChannelId == -1) {
@@ -95,19 +94,7 @@ public class HotPointFragment extends BaseFragment {
             initGuideAndBanner();
             homeItemListAdapter.addHeaderView(headerNavigator);
             homeItemListAdapter.addHeaderView(headerVp, 1);
-        } else if ("本地".equals(getArguments().getString("channel_name"))) {
-            View localLocationView = LayoutInflater.from(mActivity).inflate(R.layout.home_local_location, null);
-            mhomeLocalLocation = localLocationView.findViewById(R.id.tv_home_local_location);
-            mhomeLocalLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
-                }
-            });
-            homeItemListAdapter.addHeaderView(localLocationView);
         }
-//        homeItemListAdapter.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRv, false));
-//        homeItemListAdapter.addFooterView(footer);
     }
 
     @Override
