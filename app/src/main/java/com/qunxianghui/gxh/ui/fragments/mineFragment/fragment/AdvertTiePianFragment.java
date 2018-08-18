@@ -213,7 +213,6 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     asyncShowToast("贴片广告只可添加一个!");
                     return;
                 }
-                mAdvertBean.isAdd = true;
                 mFlLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_video:
