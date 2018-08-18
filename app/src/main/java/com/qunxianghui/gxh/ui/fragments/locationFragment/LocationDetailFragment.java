@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -106,9 +107,17 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             }
         });
 
+
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
+                if (tvContent!=null && commentDialog!=null){
+                    int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
+                    int tvContentTop = getLocationOnScreen(tvContent);// textview top值
+                    int scrollY = tvContentTop-etTop+tvContent.getHeight();
+                    recyclerView.smoothScrollBy(0,scrollY);
+                }
+
                 // Log.i("fanbo", height + "    " + 1);
 //                commentPosition+=1;//头部是下拉刷新，所以需要加1
 //                Logger.i("xxx-yyy jump :" + commentPosition);
@@ -134,6 +143,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 }
             }
         });
+    }
+
+    private int getLocationOnScreen(View view) {
+        int[] locations = new int[2];
+        view.getLocationOnScreen(locations);
+        return locations[1];
     }
 
     @Override
@@ -310,8 +325,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
     }
 
+    private  TextView tvContent;
     @Override
-    public void commentRecall(final int position, final CommentBean commentBean) {
+    public void commentRecall(final int position, final CommentBean commentBean, TextView tvContent) {
+        this.tvContent = tvContent;
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {

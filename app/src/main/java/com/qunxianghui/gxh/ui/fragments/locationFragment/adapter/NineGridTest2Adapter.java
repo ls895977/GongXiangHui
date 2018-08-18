@@ -271,8 +271,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
 
     /*回复评论的接口回调*/
     @Override
-    public void recommentContentListener(int position, CommentBean commentBean) {
-        listener.commentRecall(position, commentBean);
+    public void recommentContentListener(int position, CommentBean commentBean, TextView tvContent) {
+        listener.commentRecall(position, commentBean,tvContent);
     }
 
 
@@ -334,7 +334,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void headImageClick(int position);
 
         /*回复评论*/
-        void commentRecall(int position, CommentBean commentBean);
+        void commentRecall(int position, CommentBean commentBean, TextView topLocation);
 
     }
 
