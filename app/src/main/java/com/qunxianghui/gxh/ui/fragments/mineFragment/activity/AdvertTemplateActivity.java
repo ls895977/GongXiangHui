@@ -130,6 +130,7 @@ public class AdvertTemplateActivity extends BaseActivity {
             asyncShowToast("请完善贴片广告相关信息");
             return;
         }
+        mLoadView.setVisibility(View.VISIBLE);
         List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> list = new ArrayList<>();
         list.addAll(AdvertBottomFragment.mList);
         list.addAll(AdvertTopFragment.mList);
