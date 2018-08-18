@@ -41,6 +41,11 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
         return R.layout.fragment_enterprise_materia_item;
     }
 
+    public static void clearData(){
+        mList.clear();
+        mList = null;
+    }
+
     @Override
     public void initViews(View view) {
         mPosition = getArguments().getInt("position");

@@ -48,6 +48,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     TextView tvTitle;
     @BindView(R.id.tv_newsdetail_issue)
     TextView tvNewsdetailIssue;
+
     private WebView webView;
     private Dialog loadingDialog;
     private String mToken;
@@ -81,7 +82,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
         return loadingDialog;
-
     }
 
     @SuppressLint("NewApi")
@@ -105,7 +105,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView.setLayoutParams(params);
         llProtocolMain.addView(webView);
-
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -133,12 +132,10 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
 
         webView.setWebViewClient(new WebViewClient() {
-
             private Intent mMIntent;
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-
                 return false;
             }
 
@@ -152,10 +149,10 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                     final String mobile = url.substring(url.lastIndexOf("/") + 1);
                     Log.e("mobile----------->", mobile);
                     if (mobile.equals("tel:1516715042")){
-                        ProtocolActivity.this.finish();
+//                        ProtocolActivity.this.finish();
                     }else {
                         mMIntent = new Intent(Intent.ACTION_CALL);
-                        final Uri data = Uri.parse(mobile);
+                        Uri data = Uri.parse(mobile);
                         mMIntent.setData(data);
                         if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                             startActivity(mMIntent);
@@ -167,8 +164,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                             return true;
                         }
                     }
-
-
                 }
                 return false;
             }
@@ -191,8 +186,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             }
         });
         webView.loadUrl(String.valueOf(mBuffer));
-
-        Logger.d("initDatas--->:");
     }
 
     @Override
@@ -226,6 +219,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         ivWebback.setOnClickListener(this);
         tvNewsdetailIssue.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -243,7 +237,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         super.onBackPressed();
         if (webView.canGoBack()) {
             webView.goBack();
-
         } else {
             finish();
         }

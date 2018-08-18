@@ -53,8 +53,9 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChooseTypeDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
+    private boolean mIsBottomClick;
     private List<View> mViewList = new ArrayList<>();
-    private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList = new ArrayList<>();
+    public static List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
 
     @Override
     public int getLayoutId() {
@@ -63,6 +64,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void initData() {
+        mList = new ArrayList<>();
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
         OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
@@ -114,12 +116,14 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         Intent intent;
         switch (view.getId()) {
             case R.id.ll_company:
+                mIsBottomClick = true;
                 intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
                 intent.putExtra("type", 9);
                 intent.putExtra("isMultiSelect", true);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.ll_common:
+                mIsBottomClick = true;
                 intent = new Intent(mActivity, GeneralMaterialActivity.class);
                 intent.putExtra("isMultiSelect", true);
                 intent.putExtra("type", 3);
@@ -154,12 +158,14 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPicFromLocal:
+                mIsBottomClick = false;
                 intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
                 intent.putExtra("type", 9);
                 intent.putExtra("isMultiSelect", false);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnCommon:
+                mIsBottomClick = false;
                 intent = new Intent(mActivity, GeneralMaterialActivity.class);
                 intent.putExtra("isMultiSelect", false);
                 intent.putExtra("type", 3);
@@ -286,13 +292,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     tvChooseActivityLink.setText(data.settings.link);
                     break;
                 case 4:
-                    tvType.setText("展示海报");
-                    rlAddImg.setVisibility(View.VISIBLE);
-                    Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
-                            .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
-                    break;
                 case 5:
-                    tvType.setText("展示二维码");
+                    tvType.setText(data.settings.operate == 4 ? "展示海报" : "展示二维码");
                     rlAddImg.setVisibility(View.VISIBLE);
                     Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
                             .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
@@ -339,7 +340,45 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), path, getCurrentImageView(path), 0, 0);
             }
         } else if (resultCode == 0x0022) {
-            // TODO: 2018/8/15 获得选择模版
+            if (mIsBottomClick) {
+                for (int i = 0; i < EnterpriseMateriaItemFragment.mList.size(); i++) {
+                    if (mList.size() >= 10) {
+                        asyncShowToast("亲，最多只可添加10个模版哦!");
+                        EnterpriseMateriaItemFragment.clearData();
+                        return;
+                    }
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
+                    companyAdvert.id = 0;
+                    mList.add(companyAdvert);
+                    addPage(companyAdvert);
+                }
+            } else {
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
+                Glide.with(AdvertTopFragment.this).load(companyAdvert.images)
+                        .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
+                        .into(getCurrentImageView(companyAdvert.images));
+            }
+            EnterpriseMateriaItemFragment.clearData();
+        } else if (resultCode == 0x0033) {
+            if (mIsBottomClick) {
+                for (int i = 0; i < GeneralMateriaItemFragment.mList.size(); i++) {
+                    if (mList.size() >= 10) {
+                        asyncShowToast("亲，最多只可添加10个模版哦!");
+                        GeneralMateriaItemFragment.clearData();
+                        return;
+                    }
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
+                    companyAdvert.id = 0;
+                    mList.add(companyAdvert);
+                    addPage(companyAdvert);
+                }
+            } else {
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
+                Glide.with(AdvertTopFragment.this).load(companyAdvert.images)
+                        .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
+                        .into(getCurrentImageView(companyAdvert.images));
+            }
+            GeneralMateriaItemFragment.clearData();
         }
     }
 
@@ -349,7 +388,11 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             mList.get(mVp.getCurrentItem()).images = path;
             return view.findViewById(R.id.iv_add_big_img);
         } else {
-            mList.get(mVp.getCurrentItem()).settings.pgn_url = path;
+            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = mList.get(mVp.getCurrentItem()).settings;
+            if (settings == null) {
+                settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
+            }
+            settings.pgn_url = path;
             return view.findViewById(R.id.ivAd);
         }
     }
@@ -379,7 +422,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 });
     }
 
-    private void removeView(){
+    private void removeView() {
         int index = getCurrentIndex();
         mViewList.remove(index);
         mList.remove(index);
@@ -388,7 +431,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         asyncShowToast("删除成功");
     }
 
-    private int getCurrentIndex(){
+    private int getCurrentIndex() {
         return (int) mViewList.get(mVp.getCurrentItem()).getTag();
     }
 

@@ -62,7 +62,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
     private TiePianChooseDialog mChooseType;
     private AdvertChoosePicDialog mChoosePic;
     private boolean mIsChooseTime;
-    public static EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+    public static EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert mAdvertBean;
 
     @Override
     public int getLayoutId() {
@@ -71,7 +71,6 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
 
     @Override
     public void initViews(View view) {
-        mAdvertBean.ad_type = 6;
         mTvTitle.setText("贴片广告");
     }
 
@@ -87,7 +86,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                             mAdvertBean = body.data.get(0);
                             Glide.with(AdvertTiePianFragment.this).load(mAdvertBean.images)
                                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(mIvAd);
-                            mTvTiePianTime.setText(String.format("%ss", mAdvertBean.settings.time));
+                            mTvTiePianTime.setText(mAdvertBean.settings.time);
                             //1-跳转链接 2-拨打电话 3-联系QQ
                             switch (mAdvertBean.settings.operate) {
                                 case 1:
@@ -100,16 +99,25 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                                     mLlLink.setVisibility(View.GONE);
                                     mEtOther.setVisibility(View.VISIBLE);
                                     mTvTiePianShowType.setText("拨打电话");
-                                    mEtName.setText(mAdvertBean.settings.mobile);
+                                    mEtOther.setText(mAdvertBean.settings.mobile);
                                     break;
                                 case 3:
                                     mLlLink.setVisibility(View.GONE);
                                     mEtOther.setVisibility(View.VISIBLE);
                                     mTvTiePianShowType.setText("联系QQ");
-                                    mEtName.setText(mAdvertBean.settings.qq);
+                                    mEtOther.setText(mAdvertBean.settings.qq);
                                     break;
                             }
+                        } else {
+                            mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<PersonalAds> response) {
+                        super.onError(response);
+                        mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+                        mAdvertBean.ad_type = 6;
                     }
                 });
     }
@@ -205,6 +213,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     asyncShowToast("贴片广告只可添加一个!");
                     return;
                 }
+                mAdvertBean.isAdd = true;
                 mFlLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_video:

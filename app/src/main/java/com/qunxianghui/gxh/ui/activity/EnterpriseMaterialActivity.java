@@ -90,8 +90,7 @@ public class EnterpriseMaterialActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        EnterpriseMateriaItemFragment.mList.clear();
-        EnterpriseMateriaItemFragment.mList = null;
+        EnterpriseMateriaItemFragment.clearData();
     }
 
 }

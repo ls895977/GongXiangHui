@@ -79,7 +79,7 @@ public class GeneralMaterialActivity extends BaseActivity {
             case R.id.iv_back:
                 onBackPressed();
                 break;
-            case R.id.tv_save:
+            case R.id.tv_confirm:
                 if (GeneralMateriaItemFragment.mList.isEmpty()) {
                     asyncShowToast("请至少选择一个对应素材!");
                     return;
@@ -93,8 +93,7 @@ public class GeneralMaterialActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        GeneralMateriaItemFragment.mList.clear();
-        GeneralMateriaItemFragment.mList = null;
+        GeneralMateriaItemFragment.clearData();
     }
 
 }

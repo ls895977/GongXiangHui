@@ -25,6 +25,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.AdvertPagerAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.AdvertBottomAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -43,7 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener
-        , CompoundButton.OnCheckedChangeListener,AdvertChoosePicDialog.ImgPickListener {
+        , CompoundButton.OnCheckedChangeListener, AdvertChoosePicDialog.ImgPickListener {
 
     @BindView(R.id.rv)
     RecyclerView mRv;
@@ -65,7 +66,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChoosePicDialog mChoosePic;
     private AdvertChooseTypeDialog mChooseType;
-    private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList = new ArrayList<>();
+    public static List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
 
     @Override
     public int getLayoutId() {
@@ -76,7 +77,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     public void initViews(View view) {
         mPagerAdapter = new AdvertPagerAdapter(mViewList);
         mVp.setAdapter(mPagerAdapter);
-//        addBigPage();
+        mList = new ArrayList<>();
         OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
                 .params("position", 2)
                 .execute(new JsonCallback<PersonalAds>() {
@@ -197,7 +198,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_delete:
-                remove();
+                delete();
                 break;
             case R.id.iv_add_big_img:
                 if (mChoosePic == null && getContext() != null) {
@@ -207,7 +208,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 mIsBigImg = true;
                 if (mList.get(mVp.getCurrentItem()).ad_type == 3) {
                     mChoosePic.showCommonView().show();
-                }else {
+                } else {
                     mChoosePic.hideCommonView().show();
                 }
                 break;
@@ -282,7 +283,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+        mList.get(mVp.getCurrentItem()).status = isChecked ? 1 : 0;
     }
 
     @Override
@@ -301,7 +302,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
 
             }
             //通用素材
-        }else if(requestCode == 0x0033){
+        } else if (requestCode == 0x0033) {
 
         }
     }
@@ -312,7 +313,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             mList.get(mVp.getCurrentItem()).images = path;
             return view.findViewById(R.id.iv_add_big_img);
         } else {
-            mList.get(mVp.getCurrentItem()).settings.pgn_url = path;
+            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = mList.get(mVp.getCurrentItem()).settings;
+            if (settings == null) {
+                settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
+            }
+            settings.pgn_url = path;
             return view.findViewById(R.id.ivAd);
         }
     }
@@ -782,11 +787,37 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         changeCircleView();
     }
 
-    private void remove() {
+    private void delete() {
         int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
         if ("大图通栏".equals(((TextView) mViewList.get(index).findViewById(R.id.tv_title)).getText().toString())) {
             mIsHasBigPage = false;
         }
+        if (mList.get(mVp.getCurrentItem()).id == 0) {
+            removeView();
+            return;
+        }
+        OkGo.<CommonBean>get(Constant.DELETE_AD)
+                .params("id", mList.get(mVp.getCurrentItem()).id)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        if (response != null && response.body() != null && response.body().code == 200) {
+                            removeView();
+                        } else {
+                            asyncShowToast("删除失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<CommonBean> response) {
+                        super.onError(response);
+                        asyncShowToast("删除失败");
+                    }
+                });
+    }
+
+    private void removeView() {
+        int index = (int) mViewList.get(mVp.getCurrentItem()).getTag();
         mViewList.remove(index);
         mList.remove(index);
         mPagerAdapter.notifyDataSetChanged();

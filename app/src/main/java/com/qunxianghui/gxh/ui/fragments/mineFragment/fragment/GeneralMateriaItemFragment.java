@@ -42,6 +42,11 @@ public class GeneralMateriaItemFragment extends BaseFragment {
         return R.layout.fragment_enterprise_materia_item;
     }
 
+    public static void clearData(){
+        mList.clear();
+        mList = null;
+    }
+
     @Override
     public void initViews(View view) {
         mType = getArguments().getInt("type");
@@ -173,7 +178,11 @@ public class GeneralMateriaItemFragment extends BaseFragment {
         if (!isVisibleToUser && mAdapter != null && !GeneralMaterialActivity.sIsMultiSelect) {
             mList.remove(mCompanyAdvert);
             View viewByPosition = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tonglang);
-            if (viewByPosition != null) viewByPosition.setVisibility(View.GONE);
+            if (viewByPosition != null){
+                viewByPosition.setVisibility(View.GONE);
+                mCompanyAdvert.isSelect = false;
+            }
+            mLastPosition = -1;
         }
     }
 }
