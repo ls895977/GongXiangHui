@@ -36,8 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
-            android:drawableStart="@mipmap/home_video_location"
-            android:text="西湖" />
+            android:drawableStart="@mipmap/home_video_location" />
 
     </LinearLayout>
 

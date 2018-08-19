@@ -7,7 +7,6 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +44,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -177,7 +176,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void onResume() {
         super.onResume();
-        mTvHomeLocation.setText(mActivity.getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+        mTvHomeLocation.setText(SPUtils.getLocation("currcity"));
     }
 
     /**
@@ -188,7 +187,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         mTopSlidingLayout.setViewPager(mViewPager);
     }
 
-    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns,R.id.iv_home_paste_artical})
+    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns, R.id.iv_home_paste_artical})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_home_location:
@@ -236,8 +235,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 break;
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
-                    mTvHomeLocation.setText(city);
+                    mTvHomeLocation.setText(SPUtils.getLocation("currcity"));
                     break;
                 }
                 super.onActivityResult(requestCode, resultCode, data);
@@ -248,15 +246,15 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void onLocationChanged(final AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                String currCity = aMapLocation.getDistrict();
-                String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
+                String cityName = aMapLocation.getDistrict();
+                String city = SPUtils.getLocation("currcity");
                 if (!TextUtils.isEmpty(city)) {
                     mTvHomeLocation.setText(city);
                 } else {
-                    mTvHomeLocation.setText(currCity);
+                    mTvHomeLocation.setText(cityName);
                     String cityCode = aMapLocation.getCityCode();
                     String adCode = aMapLocation.getAdCode();
-                    SaveLocationData(cityCode, adCode);
+                    SaveLocationData(cityCode, adCode, cityName);
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -269,10 +267,10 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     }
 
     /*sp存储一些信息*/
-    private void SaveLocationData(String cityCode, String adCode) {
-        SharedPreferences location = getActivity().getSharedPreferences("location", 0);
-        SharedPreferences.Editor editor = location.edit();
-        editor.putString("X-cityId", cityCode).putString("X-areaId", adCode).apply();
+    private void SaveLocationData(String cityCode, String adCode, String cityName) {
+        SPUtils.saveLocation("X-cityId", cityCode);
+        SPUtils.saveLocation("X-areaId", adCode);
+        SPUtils.saveLocation("X-cityName", cityName);
     }
 
 }

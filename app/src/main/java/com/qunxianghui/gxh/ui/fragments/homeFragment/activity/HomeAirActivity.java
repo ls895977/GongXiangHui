@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeAirBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class HomeAirActivity extends BaseActivity {
     @Override
     protected void initViews() {
         mXrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mHomeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+        mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
     }
 
     @Override
@@ -121,7 +122,7 @@ public class HomeAirActivity extends BaseActivity {
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    mHomeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+                    mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
                 }
                 break;
         }

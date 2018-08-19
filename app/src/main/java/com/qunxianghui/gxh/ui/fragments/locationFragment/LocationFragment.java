@@ -25,6 +25,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActiv
 import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.LocalServiceChannelActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -127,8 +127,7 @@ public class LocationFragment extends BaseFragment {
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
-                    mTvLocalcircleLocation.setText(city);
+                    mTvLocalcircleLocation.setText(SPUtils.getLocation("currcity"));
                 }
                 break;
 
