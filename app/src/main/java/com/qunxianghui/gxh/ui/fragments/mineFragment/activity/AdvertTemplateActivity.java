@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
@@ -57,6 +56,7 @@ public class AdvertTemplateActivity extends BaseActivity {
     private int mCount;
     private int mSeondCount;
     private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
+    private int mPosition;
 
     @Override
     protected int getLayoutId() {
@@ -73,16 +73,27 @@ public class AdvertTemplateActivity extends BaseActivity {
         sImagePicker.setMultiMode(false);
         sImagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
         sImagePicker.setShowCamera(false);
+    }
 
-
-        mSegmentTab.setTabData(mTitles);
-        Intent intent = getIntent();
-        int adverTag = intent.getIntExtra("adverTag", 0);
+    @Override
+    protected void initData() {
+        mPosition = getIntent().getIntExtra("position", 0);
         mFragments.add(new AdvertBottomFragment());
         mFragments.add(new AdvertTopFragment());
-        mFragments.add(new AdvertTiePianFragment());
+        if (mPosition == 1 || mPosition == 2) {
+            mSegmentTab.setTabData(mTitleTwo);
+        } else {
+            mSegmentTab.setTabData(mTitles);
+            mFragments.add(new AdvertTiePianFragment());
+        }
+//        Intent intent = getIntent();
+//        int adverTag = intent.getIntExtra("adverTag", 0);
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
         mVp.setOffscreenPageLimit(mSegmentTab.getTabCount() - 1);
+        if (mPosition == 1) {
+            mSegmentTab.setCurrentTab(1);
+            mVp.setCurrentItem(1);
+        }
     }
 
     @Override
@@ -228,6 +239,7 @@ public class AdvertTemplateActivity extends BaseActivity {
             public void onSuccess(Response<CommonBean> response) {
                 if (response.body().code == 200) {
                     asyncShowToast("保存成功");
+                    setResult(0x0022);
                     finish();
                 } else {
                     asyncShowToast(response.body().msg);

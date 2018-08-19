@@ -133,7 +133,7 @@ public class Constant {
     //获取我的爆料信息
     public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";
     //获取分享信息
-    public static final String GET_SHARE_INFO = BASE_URL + "user/getShareInfo";
+    public static final String GET_SHARE_INFO = BASE_URL + "user/shareInfoV2";
     //删除我的发布
     public static final String DELETE_MYISSUE_URL = BASE_URL + "user/delRelease";
     //获取我发布的爆料
@@ -210,6 +210,8 @@ public class Constant {
     public static final String USED_AD = BASE_URL + "user/getAdTemplateV2";
     //加入轮播
     public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
+    //
+    public static final String GET_ADVERT = BASE_URL + "user/getAd";
     //通用广告
     public static final String GENERAL_AD = BASE_URL + "user/getGeneralMaterial";
     //修改广告
