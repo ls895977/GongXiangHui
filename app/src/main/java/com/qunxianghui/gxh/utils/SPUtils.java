@@ -17,6 +17,20 @@ public final class SPUtils {
         return MyApplication.getInstance().getSharedPreferences(name, mode);
     }
 
+    public static void saveLocation(String key, String value) {
+        MyApplication.getInstance()
+                .getSharedPreferences("location", Context.MODE_PRIVATE)
+                .edit()
+                .putString(key, value)
+                .apply();
+    }
+
+    public static String getLocation(String key){
+        return MyApplication.getInstance()
+                .getSharedPreferences("location", Context.MODE_PRIVATE)
+                .getString(key, "");
+    }
+
     /**
      * 保存首选项
      */

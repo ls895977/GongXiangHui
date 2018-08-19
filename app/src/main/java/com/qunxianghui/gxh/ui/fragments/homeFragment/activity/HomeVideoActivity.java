@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.HomeVideoListFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,8 @@ public class HomeVideoActivity extends BaseActivity {
                 }
             }
         });
+        String currcity = SPUtils.getLocation("currcity");
+        mTvAddress.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }
 
     private void setFragments(List<ChannelItem> datas) {

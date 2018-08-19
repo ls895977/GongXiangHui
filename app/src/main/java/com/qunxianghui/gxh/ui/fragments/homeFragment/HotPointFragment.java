@@ -45,7 +45,6 @@ import java.util.List;
 import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -283,7 +282,7 @@ public class HotPointFragment extends BaseFragment {
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    mhomeLocalLocation.setText(getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+                    mhomeLocalLocation.setText(SPUtils.getLocation("currcity"));
                     break;
 
                 }
