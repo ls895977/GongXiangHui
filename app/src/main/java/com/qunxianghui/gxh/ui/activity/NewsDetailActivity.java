@@ -89,10 +89,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         uuid = intent.getIntExtra("uuid", 0);
         id = intent.getIntExtra("id", 0);
         mToken = intent.getStringExtra("token");
-            mBuffer = new StringBuffer(url);
-            mBuffer.append("?token=" + mToken);
-            mBuffer.append("&uuid=" + uuid);
-
+        mBuffer = new StringBuffer(url);
+        mBuffer.append("?token=" + mToken);
+        mBuffer.append("&uuid=" + uuid);
     }
 
     @Override
@@ -348,7 +347,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
     }
-
 
 
 }
