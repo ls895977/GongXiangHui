@@ -19,9 +19,11 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import org.json.JSONObject;
 
@@ -41,15 +43,16 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     private boolean mIsRefresh = false;
     private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
     private MineCollectVideoAdapter mineCollectVideoAdapter;
-
     @Override
     protected void onLoadData() {
         RequestMineCollectVideo();
     }
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_collect_video;
     }
+
     @Override
     public void initData() {
     }
@@ -89,7 +92,7 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
                     @Override
                     public void onItemClick(View v, int position) {
                         int data_uuid = dataList.get(position - 1).getData_uuid();
-                        SkipMycollectVideoDetail(data_uuid);
+                        SkipMycollectVideoDetail(data_uuid, position);
                     }
                 });
             }
@@ -104,32 +107,25 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
      *
      * @param data_uuid
      */
-    private void SkipMycollectVideoDetail(int data_uuid) {
+    private void SkipMycollectVideoDetail(int data_uuid, final int position) {
         OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", data_uuid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        ParseMyCollectVideoDetail(response.body());
+                        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(response.body(), MyCollectVideoDetailBean.class);
+                        int code = myCollectVideoDetailBean.getCode();
+                        if (code == 200) {
+                            int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
+                            String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
+                            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                            intent.putExtra("url", url);
+                            intent.putExtra("uuid", uuid);
+                            intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                            startActivity(intent);
+                        }
                     }
                 });
     }
-
-    /**
-     * 解析我的收藏视频详情
-     *
-     * @param body
-     */
-    private void ParseMyCollectVideoDetail(String body) {
-        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(body, MyCollectVideoDetailBean.class);
-        int code = myCollectVideoDetailBean.getCode();
-        if (code == 0) {
-            String url = myCollectVideoDetailBean.getData().getUrl();
-            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-            intent.putExtra("url", url);
-            startActivity(intent);
-        }
-    }
-
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -152,6 +148,7 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     public void initViews(View view) {
         xrecyclerMycollectVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -159,11 +156,13 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     @Override
     public void attentionClick(final int position) {
         OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", dataList.get(position).getId())
@@ -180,7 +179,7 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
                             } else if (code == 202) {
                                 asyncShowToast("取消关注成功");
                                 dataList.get(position).getMember().setFollow("");
-                            }else if (code==101){
+                            } else if (code == 101) {
                                 asyncShowToast("请不要自己关注自己");
                             }
                             mineCollectVideoAdapter.notifyItemChanged(position);
@@ -189,6 +188,7 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
@@ -197,6 +197,7 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
                 });
         Logger.d("视频汇的关注position" + position);
     }
+
     @Override
     public void videoHeadImageClick(int position) {
         Intent intent = new Intent(mActivity, PersonDetailActivity.class);
