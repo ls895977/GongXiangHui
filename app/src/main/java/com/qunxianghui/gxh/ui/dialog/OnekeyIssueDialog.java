@@ -22,12 +22,10 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.LocationPublishActivity;
-import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.FastBlurUtility;
 import com.qunxianghui.gxh.utils.SPUtils;
-import com.qunxianghui.gxh.utils.ToastUtils;
 
 public class OnekeyIssueDialog extends Dialog {
 
@@ -103,10 +101,6 @@ public class OnekeyIssueDialog extends Dialog {
 
     /*获取系统的视频和录像*/
     private void fitchVideo() {
-        if (MainActivity.mIsUploadIng) {
-            ToastUtils.showShort("视频上传中...");
-            return;
-        }
         PictureSelector.create(mActicity)
                 .openGallery(PictureMimeType.ofVideo())
                 .selectionMode(PictureConfig.SINGLE)
