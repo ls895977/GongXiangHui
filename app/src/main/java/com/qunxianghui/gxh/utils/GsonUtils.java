@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * 作者：李标
@@ -68,4 +66,6 @@ public class GsonUtils {
     private static Gson getNewGsonBuilder() {
         return gsonBuilder == null ? gsonBuilder = new GsonBuilder().enableComplexMapKeySerialization().create() : gsonBuilder;
     }
+
+
 }
