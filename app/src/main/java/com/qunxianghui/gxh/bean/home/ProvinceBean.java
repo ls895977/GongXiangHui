@@ -42,9 +42,10 @@ public class ProvinceBean  {
              * areaName : 三环以内
              */
             @SerializedName("id")
-            public int areaId;
+            public String areaId;
             @SerializedName("name")
             public String areaName;
+            public String pid;
         }
     }
 }

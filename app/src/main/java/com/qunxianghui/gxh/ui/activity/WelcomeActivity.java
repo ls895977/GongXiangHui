@@ -117,6 +117,7 @@ public class WelcomeActivity extends BaseActivity {
         mLlWelcomeSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeCallbacksAndMessages(null);
                 toActivity(MainActivity.class);
                 finish();
             }
