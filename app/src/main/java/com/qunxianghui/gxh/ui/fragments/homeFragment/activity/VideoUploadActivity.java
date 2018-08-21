@@ -47,6 +47,10 @@ public class VideoUploadActivity extends BaseActivity {
     EditText mEditUpdateVideoTitle;
     @BindView(R.id.edit_UpdataVideo_Content)
     EditText mEditUpdateVideoContent;
+    @BindView(R.id.ll_bg_load)
+    View mLoadView;
+    @BindView(R.id.tv_load)
+    TextView mTvLoad;
 
     private String mVideoPath;
     private OptionsPickerView mChooseType;
@@ -60,6 +64,7 @@ public class VideoUploadActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        mTvLoad.setText("上传中...");
         mVideoPath = getIntent().getStringExtra("videoPath");
         mVideoplayer.setUp(mVideoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
         Glide.with(this.getApplicationContext())

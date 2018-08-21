@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeAirActivity extends BaseActivity {
+public class HomeAirActivity extends BaseActivity{
 
     @BindView(R.id.tv_homeair_top_big_degree)
     TextView mTvHomeairTopBigDegree;
