@@ -18,13 +18,15 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyFollowActivity extends BaseActivity {
+public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myFocusItemClickListener {
     @BindView(R.id.recycler_mine_attention)
     XRecyclerView mRecyclerMineAttention;
 
@@ -97,10 +99,11 @@ public class MyFollowActivity extends BaseActivity {
         }
         dataList.addAll(myFocusBean.getData());
         count = dataList.size();
-        if (myFocusBean.getCode() == 0) {
+        if (myFocusBean.getCode() == 200) {
             if (mIsFirst) {
                 mIsFirst = false;
                 myFocusAdapter = new MyFocusAdapter(mContext, dataList);
+                myFocusAdapter.setMyFocusItemClickListener(this);
                 mRecyclerMineAttention.setAdapter(myFocusAdapter);
             }
             mRecyclerMineAttention.refreshComplete();
@@ -128,4 +131,30 @@ public class MyFollowActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
-}
+
+    /*关注的点击*/
+    @Override
+    public void FocusClick(final int position) {
+        int be_member_id = dataList.get(position).getBe_member_id();
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", be_member_id)
+                    .execute(new StringCallback() {
+                @Override
+                public void onSuccess(final Response<String> response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        int code = jsonObject.getInt("code");
+                        if (code == 202) {
+                            asyncShowToast("取消关注成功");
+                            dataList.get(position).setFollow_type(0);
+                            dataList.remove(position);
+                            myFocusAdapter.notifyDataSetChanged();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+    }
+

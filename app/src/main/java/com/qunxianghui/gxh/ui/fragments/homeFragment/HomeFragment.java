@@ -38,8 +38,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ChannelActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
@@ -176,7 +176,8 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void onResume() {
         super.onResume();
-        mTvHomeLocation.setText(SPUtils.getLocation("currcity"));
+        String currcity = SPUtils.getLocation("currcity");
+        mTvHomeLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }
 
     /**
@@ -191,7 +192,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_home_location:
-                startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
+                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
             case R.id.ll_home_search:
                 toActivity(SearchActivity.class);

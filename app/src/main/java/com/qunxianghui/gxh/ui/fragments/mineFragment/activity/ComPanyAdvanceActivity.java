@@ -52,6 +52,7 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
         RequestCompanyAdvanceData();
     }
 
+
     private void RequestCompanyAdvanceData() {
 
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
@@ -62,7 +63,6 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onSuccess(Response<String> response) {
                         parseCompanyAdvanceData(response.body());
-
                     }
 
                     @Override
@@ -146,5 +146,11 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }
