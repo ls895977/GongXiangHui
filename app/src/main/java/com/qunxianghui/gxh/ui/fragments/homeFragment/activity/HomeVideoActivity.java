@@ -76,6 +76,11 @@ public class HomeVideoActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String currcity = SPUtils.getLocation("currcity");
         mTvAddress.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }

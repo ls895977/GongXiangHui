@@ -90,6 +90,8 @@ public class LocationActivity extends BaseActivity {
 
     public void callback(ProvinceBean.CityBean.AreasBean areasBean) {
         SPUtils.saveLocation("currcity", areasBean.areaName);
+        SPUtils.saveLocation("X-cityId", areasBean.pid);
+        SPUtils.saveLocation("X-areaId", areasBean.areaId);
         mTvCurrentCity.setText(areasBean.areaName);
         finish();
     }
