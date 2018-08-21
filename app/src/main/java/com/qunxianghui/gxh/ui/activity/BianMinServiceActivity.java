@@ -38,16 +38,16 @@ public class BianMinServiceActivity extends BaseActivity {
         bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
             public void onpicItemClick(int position) {
-
                 switch (position) {
                     case 0:
-                 toActivity(CommoentCallActivity.class);
+                        toActivity(CommoentCallActivity.class);
                         break;
 
                     case 1:
                         Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.BenDiService);
+                        intent.putExtra("tag", 2);
                         startActivity(intent);
                         break;
                 }
