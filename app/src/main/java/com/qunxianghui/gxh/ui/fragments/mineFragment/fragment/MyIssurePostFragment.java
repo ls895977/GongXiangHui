@@ -1,24 +1,15 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -26,21 +17,26 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssurePostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
-import com.qunxianghui.gxh.bean.location.MyCollectBean;
+import com.qunxianghui.gxh.bean.location.ReplyCommentResponseBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
+import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
+import com.qunxianghui.gxh.ui.dialog.CommentDialog;
+import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-
-import org.json.JSONObject;
+import com.tencent.mm.opensdk.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +48,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2018/4/14 0014.
  */
-public class MyIssurePostFragment extends BaseFragment implements MineIssurePostAdapter.MyPostOnClickListener, View.OnClickListener {
+public class MyIssurePostFragment extends BaseFragment implements MineIssurePostAdapter.CircleOnClickListener, View.OnClickListener {
     @BindView(R.id.recycler_mineissue_post)
     XRecyclerView recyclerMineissuePost;
     Unbinder unbinder;
@@ -64,16 +60,13 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     private EditText IssuePostCommentEdit;
     private LinearLayout IssuePostCommentView;
     private TextView IssuePostCommentSend;
-    private EditText inputPostComment;
-    private TextView tv_mypost_submit;
-    private PopupWindow myIssuepostPopWindow;
-
+    private int commentPosition;
+    private CommentDialog commentDialog;
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_mine_issure;
     }
-
     @Override
     public void initData() {
         RequestMyIssurePost();
@@ -108,7 +101,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 if (mIsFirst) {
                     mIsFirst = false;
                     mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
-                    mineIssurePostAdapter.setPostOnClickListener(this);
+                    mineIssurePostAdapter.setListener(this);
                     recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
                 }
                 recyclerMineissuePost.refreshComplete();
@@ -145,6 +138,31 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 RequestMyIssurePost();
             }
         });
+
+        SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                if (tvContent!=null && commentDialog!=null){
+                    int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
+                    int tvContentTop = getLocationOnScreen(tvContent);// textview top值
+                    int scrollY = tvContentTop-etTop+tvContent.getHeight();
+                    recyclerMineissuePost.smoothScrollBy(0,scrollY);
+                }
+
+            }
+            @Override
+            public void keyBoardHide(int height) {
+                if (commentDialog != null) {
+                    commentDialog.dismiss();
+                }
+            }
+        });
+    }
+
+    private int getLocationOnScreen(View view) {
+        int[] locations = new int[2];
+        view.getLocationOnScreen(locations);
+        return locations[1];
     }
 
     @Override
@@ -161,38 +179,81 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         unbinder.unbind();
     }
 
-    /**
-     * 收藏
-     *
-     * @param position
-     */
+
+    /* 图片点击*/
     @Override
-    public void onCollectionItemClick(final int position) {
-        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", dataList.get(position - 1).getUuid()).execute(new DialogCallback<String>((getActivity())) {
-            @Override
-            public void onSuccess(Response<String> response) {
-                MyCollectBean myCollectBean = GsonUtil.parseJsonWithGson(response.body(), MyCollectBean.class);
-                if (myCollectBean.getCode() == 0) {
-                    Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-                    dataList.get(position - 1).setCollect("true");
-                } else if (myCollectBean.getCode() == 202) {
-                    Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
-                    dataList.get(position - 1).setCollect("");
-                }
-                mineIssurePostAdapter.notifyDataSetChanged();
-                mineIssurePostAdapter.notifyItemChanged(position);
-            }
-        });
+    public void onPicClick(int position, int picpostion) {
+        final List<String> imageList = (List<String>) dataList.get(position).getImages();
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for (String data : imageList) {
+            arrayList.add(data);
+        }
+        Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
+        intent.putStringArrayListExtra("url", arrayList);
+        intent.putExtra("position", picpostion);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
+
     }
 
     /**
-     * 点赞
+     * 点击了评论
      *
      * @param position
+     * @param content
      */
     @Override
-    public void onLaunLikeClick(final int position) {
+    public void onCommentClick(final int position, String content) {
+        Log.v("xxx-yyy", position + "");
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
+        commentPosition = position;
+
+
+        commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
+
+            @Override
+            public void sendComment(String inputText) {
+                final int uuid = dataList.get(position).getUuid();
+                if (dataList.get(position).getComment_res().size() <= 0) {
+                    dataList.get(position).setComment_res(new ArrayList<CommentBean>());
+                }
+                List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
+                CommentBean comment = new CommentBean();
+                UserUtil user = UserUtil.getInstance();
+                comment.setContent(inputText);
+                comment.setUuid(user.id);
+                comment.setMember_name(user.mNick);
+                commentBeanList.add(comment);
+                mineIssurePostAdapter.notifyDataSetChanged();
+                //  mAdapter.notifyItemChanged(position);
+                OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                        .params("uuid", uuid)
+                        .params("content", comment.getContent())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                if (responseBean.getCode() == 0) {
+                                    commentDialog.dismiss();
+                                    asyncShowToast(responseBean.getMsg());
+                                    recyclerMineissuePost.refresh();
+                                } else {
+                                    asyncShowToast(response.message());
+                                }
+                            }
+                        });
+            }
+        });
+        commentDialog.show(getChildFragmentManager(), "comment");
+    }
+
+    //接口回调之 点赞
+    @Override
+    public void onPraiseClick(final int position) {
+        Log.i("fanbo",position+"1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -214,181 +275,140 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                    UserUtil user = UserUtil.getInstance();
+                    like.setMember_name(user.mNick);
+                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = dataList.get(position).getClick_like();
+                    likeBeanList.add(like);
+                    mineIssurePostAdapter.notifyDataSetChanged();
+                    mineIssurePostAdapter.notifyItemChanged(position);
+                }
 
-                    //Toast.makeText(getActivity(),response.body(),Toast.LENGTH_LONG).show();
-                    //Handler haner = new Handler()
+                @Override
+                public void onError(Response<String> response) {
+                    super.onError(response);
+                    asyncShowToast("登陆账号异常");
                 }
             });
         } else {
-            OkGo.<String>post(Constant.LIKE_URL)
-                    .params("data_uuid", dataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    //TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
-                    UserUtil user = UserUtil.getInstance();
-                    like.setMember_name(user.mNick);
-                    if (like.getMessage().equalsIgnoreCase("点赞成功")) {
-                        dataList.get(position).getTem().add(like);
-                        dataList.get(position).setLike_info_res("true");
-                        mineIssurePostAdapter.notifyDataSetChanged();
-                        mineIssurePostAdapter.notifyItemChanged(position);
-                        asyncShowToast("点赞成功");
-                    } else if (like.getMessage().equalsIgnoreCase("取消点赞成功")) {
-                        List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
-                        for (int i = 0; i < dataList.get(position).getTem().size(); i++) {
-                            TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);
-                            if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
-                                if (dataList.get(position).getClick_like().size() == 1 && dataList.get(position).getTem().size() == 1) {
-                                    dataList.get(position).setClick_like("");
-                                }
-                                dataList.get(position).getTem().remove(tem);
-                                break;
-                            }
-                        }
-                        dataList.get(position).setLike_info_res("");
-                        mineIssurePostAdapter.notifyDataSetChanged();
-                        mineIssurePostAdapter.notifyItemChanged(position);
-                        asyncShowToast("取消点赞成功");
-                    }
-                }
-            });
-        }
-    }
-
-    /* 图片点击*/
-    @Override
-    public void onPicClick(int position, int picpostion) {
-        final List<String> imageList = (List<String>) dataList.get(position).getImages();
-        ArrayList<String> arrayList = new ArrayList<String>();
-        for (String data : imageList) {
-            arrayList.add(data);
-        }
-        Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
-        intent.putStringArrayListExtra("url", arrayList);
-        intent.putExtra("position", picpostion);
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
-
-    }
-
-    /*删除帖子*/
-    @Override
-    public void deletePost(final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("删除提示");
-        builder.setMessage("您确定要删除该条消息吗?");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                OkGo.<String>post(Constant.DELETE_POST_URL)
-                        .params("uuid", dataList.get(position).getUuid())
-                        .execute(new DialogCallback<String>(getActivity()) {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                parseDeletePostAData(response.body(), position);
-
-                            }
-                        });
-
-            }
-        });
-        builder.setNeutralButton("取消", null);
-        builder.show();
-
-    }
-
-    /**
-     * 点击了评论
-     *
-     * @param position
-     * @param content
-     */
-    @Override
-    public void onCommentClick(final int position, String content) {
-        showMyIssuePopupWindow(position, content);
-
-    }
-
-    @SuppressLint("WrongConstant")
-    private void showMyIssuePopupWindow(final int position, String content) {
-        View view = LayoutInflater.from(mActivity).inflate(R.layout.comment_popupwindow, null);
-        inputPostComment = view.findViewById(R.id.et_discuss);
-        tv_mypost_submit = view.findViewById(R.id.tv_confirm);
-        myIssuepostPopWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, false);
-        myIssuepostPopWindow.setTouchable(true);
-        myIssuepostPopWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    myIssuepostPopWindow.dismiss();
-                }
-                return false;
-            }
-        });
-        myIssuepostPopWindow.setFocusable(true);
-        //设置点击窗口外边窗口消失
-        myIssuepostPopWindow.setOutsideTouchable(true);
-        //设置弹出窗体时需要软键盘
-        myIssuepostPopWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-        myIssuepostPopWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        ColorDrawable cd = new ColorDrawable(0x000000);
-        myIssuepostPopWindow.setBackgroundDrawable(cd);
-        myIssuepostPopWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-        myIssuepostPopWindow.update();
-
-        tv_mypost_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String MyissuePostComment = inputPostComment.getText().toString().trim();
-                if (TextUtils.isEmpty(MyissuePostComment)) {
-                    asyncShowToast("请输入评论内容");
-                } else {
-                    int uuid = dataList.get(position).getUuid();
-                    if (dataList.get(position).getComment_res().size() <= 0) {
-                        dataList.get(position).setComment_res(new ArrayList<CommentBean>());
-                    }
-                    List<CommentBean> commentBeanList = (List<CommentBean>) dataList.get(position).getComment_res();
-                    CommentBean comment = new CommentBean();
-                    UserUtil user = UserUtil.getInstance();
-                    comment.setContent(MyissuePostComment);
-                    comment.setUuid(user.id);
-                    comment.setMember_name(user.mNick);
-                    commentBeanList.add(comment);
-                    mineIssurePostAdapter.notifyDataSetChanged();
-                    mineIssurePostAdapter.notifyItemChanged(position);
-                    OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
-                            .params("uuid", uuid)
-                            .params("content", MyissuePostComment)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    CommentBean comment = GsonUtils.jsonFromJson(response.body(), CommentBean.class);
-                                    if (comment.getId()!= 0) {
-                                        inputPostComment.setText("");
-                                        myIssuepostPopWindow.dismiss();
+            OkGo.<CommonBean>post(Constant.LIKE_URL)
+                    .params("data_uuid", dataList.get(position).getUuid())
+                    .execute(new JsonCallback<CommonBean>() {
+                        @Override
+                        public void onSuccess(Response<CommonBean> response) {
+                            UserUtil user = UserUtil.getInstance();
+                            TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
+                            clickLikeBean.setMember_name(user.mNick);
+                            if ("点赞成功".equals(response.body().msg)) {
+                                dataList.get(position).getTem().add(clickLikeBean);
+                                dataList.get(position).setLike_info_res("true");
+                                mineIssurePostAdapter.notifyDataSetChanged();
+                                mineIssurePostAdapter.notifyItemChanged(position);
+                                asyncShowToast("点赞成功");
+                            } else if ("取消点赞成功".equals(response.body().msg)) {
+                                List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
+                                for (int i = 0; i < dataList.get(position).getTem().size(); i++) {
+                                    TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);
+                                    if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
+                                        if (dataList.get(position).getClick_like().size() == 1 && dataList.get(position).getTem().size() == 1) {
+                                            dataList.get(position).setClick_like("");
+                                        }
+                                        dataList.get(position).getTem().remove(tem);
+                                        break;
                                     }
                                 }
-                            });
-                }
-            }
-        });
+                                dataList.get(position).setLike_info_res("");
+                                mineIssurePostAdapter.notifyDataSetChanged();
+                                mineIssurePostAdapter.notifyItemChanged(position);
+                                asyncShowToast("取消点赞");
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<CommonBean> response) {
+                            super.onError(response);
+                            asyncShowToast("登陆账号异常");
+                        }
+                    });
+        }
     }
 
-    private void parseDeletePostAData(String body, int position) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            int code = jsonObject.getInt("code");
-            if (code == 0) {
-                dataList.remove(position);
-                mineIssurePostAdapter.notifyDataSetChanged();
-                asyncShowToast("删除成功");
+    @Override
+    public void onCollectionClick(int position) {
+        toActivity(InFormActivity.class);
+
+    }
+
+    @Override
+    public void headImageClick(int position) {
+        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+        intent.putExtra("member_id", dataList.get(position).getMember_id());
+        startActivity(intent);
+
+    }
+    private  TextView tvContent;
+    @Override
+    public void commentRecall(final int position, final CommentBean commentBean, TextView tvContent) {
+        this.tvContent = tvContent;
+        commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
+            @Override
+            public void sendComment(String inputText) {
+                OkGo.<String>post(Constant.REPAY_COMMENT_URL)
+                        .params("comment_id", commentBean.getId())
+                        .params("content", inputText)
+                        .params("uuid", commentBean.getData_uuid())
+                        .params("pid", commentBean.getPid())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                ReplyCommentResponseBean commentResponseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                if (commentResponseBean.getCode() == 0) {
+                                    commentDialog.dismiss();
+                                    asyncShowToast(commentResponseBean.getMsg());
+                                    List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
+                                    CommentBean comment = new CommentBean();
+                                    ReplyCommentResponseBean.DataBean dataBean = commentResponseBean.getData();
+                                    if (dataBean!=null){
+                                        ReplyCommentResponseBean.DataBean.ComOneResBean comOneResBean = dataBean.getCom_one_res();
+                                        if (comOneResBean!=null){
+                                            comment.setContent(comOneResBean.getContent());
+                                            comment.setUuid(comOneResBean.getData_uuid());
+                                            comment.setMember_name(comOneResBean.getMember_name());
+                                            commentBeanList.add(comment);
+                                            mineIssurePostAdapter.notifyDataSetChanged();
+                                            OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                                                    .params("uuid", commentBean.getUuid())
+                                                    .params("content", comOneResBean.getContent())
+                                                    .execute(new StringCallback() {
+                                                        @Override
+                                                        public void onSuccess(Response<String> response) {
+                                                            ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                                            if (responseBean.getCode() == 0) {
+                                                                commentDialog.dismiss();
+                                                                asyncShowToast(responseBean.getMsg());
+                                                                recyclerMineissuePost.refresh();
+                                                            } else {
+                                                                asyncShowToast(response.message());
+                                                            }
+                                                        }
+                                                    });
+
+                                        }
+                                    }
+                                } else {
+                                    asyncShowToast(response.message());
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<String> response) {
+                                super.onError(response);
+                                asyncShowToast(response.message());
+                            }
+                        });
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+        commentDialog.show(getChildFragmentManager(), "comment");
+
     }
 
     @Override

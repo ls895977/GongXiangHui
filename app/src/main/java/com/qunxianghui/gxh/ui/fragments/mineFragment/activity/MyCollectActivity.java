@@ -40,7 +40,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ImageView ivMyCollectBack;
     @BindView(R.id.tv_mycollect_cancel)
     TextView tvMycollectCancel;
-
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;

@@ -89,7 +89,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(mActivity, ProtocolActivity.class);
                         int uuid = dataList.get(position - 1).getUuid();
-                        SkipMyIssueVideoDetail(uuid);
+                        SkipMyIssueVideoDetail(uuid,position);
                     }
                 });
             }
@@ -104,31 +104,25 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
      *
      * @param uuid
      */
-    private void SkipMyIssueVideoDetail(int uuid) {
+    private void SkipMyIssueVideoDetail(int uuid, final int position) {
         OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", uuid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        ParseMyIssueVideoDetail(response.body());
+                        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(response.body(), MyCollectVideoDetailBean.class);
+                        int code = myCollectVideoDetailBean.getCode();
+                        if (code == 0) {
+                            String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
+                            int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
+                            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                            intent.putExtra("url", url);
+                            intent.putExtra("uuid", uuid);
+                            startActivity(intent);
+                        }
                     }
                 });
     }
 
-    /**
-     * 解析我的发布视频详情
-     *
-     * @param body
-     */
-    private void ParseMyIssueVideoDetail(String body) {
-        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(body, MyCollectVideoDetailBean.class);
-        int code = myCollectVideoDetailBean.getCode();
-        if (code == 0) {
-            String url = myCollectVideoDetailBean.getData().getUrl();
-            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-            intent.putExtra("url", url);
-            startActivity(intent);
-        }
-    }
 
     @Override
     public void initViews(View view) {

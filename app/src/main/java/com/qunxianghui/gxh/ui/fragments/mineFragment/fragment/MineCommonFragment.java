@@ -22,8 +22,10 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     private void LoadMycolectNews() {
         OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL)
-                .params("limit", 5)
+                .params("limit", 12)
                 .params("skip", count)
                 .execute(new StringCallback() {
                     @Override
@@ -99,13 +101,10 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
                 myCollectPostAdapter.setCollectOnClickListener(this);
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-
-                    private int data_uuid;
-
                     @Override
                     public void onItemClick(View v, int position) {
-                        data_uuid = dataList.get(position-1).getData_uuid();
-                        SkipMycollectNewsDetail(data_uuid);
+                        int id = dataList.get(position).getData_uuid();
+                        SkipMycollectNewsDetail(id,position);
                     }
                 });
             }
@@ -116,37 +115,29 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     }
     /**
      * 跳转新闻详情页
-     * @param data_uuid
+     * @param id
      */
-    private void SkipMycollectNewsDetail(int data_uuid) {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id",data_uuid)
+    private void SkipMycollectNewsDetail(final int id, final int position) {
+        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id",id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        ParseMyCollectNewsDetail(response.body());
+                        MyColleNewsDetailBean myColleNewsDetailBean = GsonUtils.jsonFromJson(response.body(), MyColleNewsDetailBean.class);
+                        int code = myColleNewsDetailBean.getCode();
+                        if (code==200){
+                            int uuid = myColleNewsDetailBean.getData().getDetail().getUuid();
+                            String url = myColleNewsDetailBean.getData().getRand_data().get(position).getUrl();
+                            Intent intent=new Intent(mActivity, NewsDetailActivity.class);
+                            intent.putExtra("url",url);
+                            intent.putExtra("uuid",uuid);
+                            intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                            startActivity(intent);
+                        }
+
                     }
                 });
     }
-
-    /**
-     * 解析我的收藏资讯新闻
-     * @param body
-     */
-    private void ParseMyCollectNewsDetail(String body) {
-        MyColleNewsDetailBean myColleNewsDetailBean = GsonUtils.jsonFromJson(body, MyColleNewsDetailBean.class);
-        int code = myColleNewsDetailBean.getCode();
-        if (code==0){
-            String url = myColleNewsDetailBean.getData().getUrl();
-            Intent intent=new Intent(mActivity, NewsDetailActivity.class);
-            intent.putExtra("url",url);
-            startActivity(intent);
-        }
-
-
-
-
-    }
-
 
     @Override
     public void initViews(View view) {

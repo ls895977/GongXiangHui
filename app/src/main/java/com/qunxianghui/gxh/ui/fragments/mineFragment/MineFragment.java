@@ -232,8 +232,10 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_company_card:
                 if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
                     toActivity(CompanyCardActivity.class);
+                } else {
+                    asyncShowToast("请升级企业会员后再试！");
                 }
-                asyncShowToast("请升级企业会员后再试！");
+
                 break;
             case R.id.rl_mine_message:
                 toActivity(MineMessageActivity.class);
