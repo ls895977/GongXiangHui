@@ -180,7 +180,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     }
 
     @Override
-    public void videoLikeItemClick(int position) {
+    public void videoLikeItemClick(final int position) {
         OkGo.<String>post(Constant.VIDEO_LIKE_URL).params("data_uuid", videoDataList.get(position).getUuid()).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -189,14 +189,17 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                     int code = jsonObject.getInt("code");
                     if (code==100) {
                         asyncShowToast("点赞成功");
+                        videoDataList.get(position).setIs_like(1);
                     } else if (code==101){
                         asyncShowToast("取消点赞");
+                        videoDataList.get(position).setIs_like(0);
 
                     }
+                    personDetailVideoAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                personDetailVideoAdapter.notifyDataSetChanged();
+
             }
         });
     }

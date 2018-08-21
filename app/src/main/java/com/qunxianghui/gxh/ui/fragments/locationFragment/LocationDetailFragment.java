@@ -1,9 +1,15 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -24,13 +30,15 @@ import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.ui.activity.PublishActivity;
 import com.qunxianghui.gxh.ui.dialog.CommentDialog;
-import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +56,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     NineGridTest2Adapter mAdapter;
     private CommentDialog commentDialog;
     private int mCateId;
+    private Dialog mShareDialog;
+    private TextView mTv_inform_harass;
+    private TextView mTv_inform_tort;
+    private TextView mTv_bottom_ainform_cancle;
+    private TextView mTv_inform_sex;
+    private int mUuid;
 
     @Override
     public int getLayoutId() {
@@ -75,7 +89,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if(count == 0){
+                        if (count == 0) {
                             localDataList.clear();
                         }
                         TestMode locationListBean = GsonUtils.jsonFromJson(response.body(), TestMode.class);
@@ -90,6 +104,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     private boolean keyShow = false;
+
     @Override
     protected void initListeners() {
         mAdapter.setListener(this);
@@ -102,7 +117,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
             @Override
             public void onLoadMore() {
-                count = count+10;
+                count = count + 10;
                 initData();
             }
         });
@@ -111,29 +126,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-                if (tvContent!=null && commentDialog!=null){
+                if (tvContent != null && commentDialog != null) {
                     int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
                     int tvContentTop = getLocationOnScreen(tvContent);// textview top值
-                    int scrollY = tvContentTop-etTop+tvContent.getHeight();
-                    recyclerView.smoothScrollBy(0,scrollY);
+                    int scrollY = tvContentTop - etTop + tvContent.getHeight();
+                    recyclerView.smoothScrollBy(0, scrollY);
                 }
 
-                // Log.i("fanbo", height + "    " + 1);
-//                commentPosition+=1;//头部是下拉刷新，所以需要加1
-//                Logger.i("xxx-yyy jump :" + commentPosition);
-
-//                if (item != null) {
-//                    recyclerView.smoothScrollBy(0, item.getBottom()-commentView.getTop());
-//                } else {
-//                    Logger.i("xxx-yyy" + " item is null");
-//                }
-//                TaskUtil.getInstance().runOnMainThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        keyShow = true;
-//                        scrollOffsetY = 0;
-//                    }
-//                },500);
             }
 
             @Override
@@ -151,13 +150,64 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         return locations[1];
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_alertbottom_up_pic:
                 toActivity(PublishActivity.class);
                 break;
+
+            case R.id.tv_inform_sex:
+                asyncShowToast("点击举报了色情");
+                String TvInformSex = mTv_inform_sex.getText().toString().trim();
+                RestInformData(TvInformSex);
+                break;
+
+            case R.id.tv_inform_harass:
+                asyncShowToast("点击举报了骚扰");
+                String TvInformHarass = mTv_inform_harass.getText().toString().trim();
+                RestInformData(TvInformHarass);
+
+
+                break;
+            case R.id.tv_inform_tort:
+                asyncShowToast("点击举报了侵权");
+                String TvInformTort = mTv_inform_tort.getText().toString().trim();
+                RestInformData(TvInformTort);
+                break;
+            case R.id.tv_bottom_ainform_cancle:
+                mShareDialog.dismiss();
+                break;
         }
+    }
+
+    /*举报信息*/
+    private void RestInformData(String informData) {
+        OkGo.<String>post(Constant.ADD_REPORT_URL)
+                .params("content", informData)
+                .params("model", "Posts")
+                .params("data_uuid", mUuid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(final Response<String> response) {
+                        try {
+                            JSONObject jsonObject=new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            String msg = jsonObject.getString("msg");
+                            if (code==200){
+                                asyncShowToast("举报成功");
+                                com.orhanobut.logger.Logger.d("举报信息+++++" + response.body().toString());
+                                mShareDialog.dismiss();
+                            }else {
+                                asyncShowToast(msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
     }
 
     @Override
@@ -170,7 +220,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
     }
-    
+
     /**
      * 评论的点击
      *
@@ -203,7 +253,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-              //  mAdapter.notifyItemChanged(position);
+                //  mAdapter.notifyItemChanged(position);
                 OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -229,7 +279,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     //接口回调之 点赞
     @Override
     public void onPraiseClick(final int position) {
-        Log.i("fanbo",position+"1");
+        Log.i("fanbo", position + "1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -310,7 +360,43 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void onCollectionClick(final int position) {
-        toActivity(InFormActivity.class);
+        showBottomDialog();
+        mUuid = localDataList.get(position).getUuid();
+
+    }
+
+    /*弹出底部弹出框*/
+    private void showBottomDialog() {
+        if (mShareDialog == null) {
+            mShareDialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View alertView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_alertdialog_inform, null);
+            //初始化控件
+            mTv_inform_sex = alertView.findViewById(R.id.tv_inform_sex);
+            mTv_inform_harass = alertView.findViewById(R.id.tv_inform_harass);
+            mTv_inform_tort = alertView.findViewById(R.id.tv_inform_tort);
+            mTv_bottom_ainform_cancle = alertView.findViewById(R.id.tv_bottom_ainform_cancle);
+
+            mTv_bottom_ainform_cancle.setOnClickListener(this);
+            mTv_inform_tort.setOnClickListener(this);
+            mTv_inform_harass.setOnClickListener(this);
+            mTv_inform_sex.setOnClickListener(this);
+            //将布局设置给dialog
+            mShareDialog.setContentView(alertView);
+            //获取当前activity所在的窗体
+            Window dialogWindow = mShareDialog.getWindow();
+            //设置dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            //获得窗体的属性
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            WindowManager windowManager = getActivity().getWindowManager();
+            Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 5;  //设置dialog距离底部的距离
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
+        mShareDialog.show();
     }
 
     /**
@@ -325,7 +411,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
     }
 
-    private  TextView tvContent;
+    private TextView tvContent;
+
     @Override
     public void commentRecall(final int position, final CommentBean commentBean, TextView tvContent) {
         this.tvContent = tvContent;
@@ -347,9 +434,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                     List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
                                     CommentBean comment = new CommentBean();
                                     ReplyCommentResponseBean.DataBean dataBean = commentResponseBean.getData();
-                                    if (dataBean!=null){
+                                    if (dataBean != null) {
                                         ReplyCommentResponseBean.DataBean.ComOneResBean comOneResBean = dataBean.getCom_one_res();
-                                        if (comOneResBean!=null){
+                                        if (comOneResBean != null) {
                                             comment.setContent(comOneResBean.getContent());
                                             comment.setUuid(comOneResBean.getData_uuid());
                                             comment.setMember_name(comOneResBean.getMember_name());

@@ -7,6 +7,8 @@ import android.view.View;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.CommoentCallActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -39,13 +41,13 @@ public class BianMinServiceActivity extends BaseActivity {
 
                 switch (position) {
                     case 0:
-                        asyncShowToast("点击了常用电话");
+                 toActivity(CommoentCallActivity.class);
                         break;
 
                     case 1:
                         Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-//                        intent.putExtra("url", Constant.BenDiService);
+                        intent.putExtra("url", Constant.BenDiService);
                         startActivity(intent);
                         break;
                 }
