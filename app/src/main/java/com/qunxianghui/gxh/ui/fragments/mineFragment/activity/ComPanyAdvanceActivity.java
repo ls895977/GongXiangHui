@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.AdvanceAdapter;
@@ -29,6 +31,8 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
     XRecyclerView mXrecyclerActivityAdv;
     @BindView(R.id.bt_add_advance)
     Button mBtAddAdvance;
+    @BindView(R.id.iv_company_advance_back)
+    ImageView ivCompanyAdvanceBack;
 
     private int count;
     private boolean mIsRefresh = false;
@@ -52,6 +56,7 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
         RequestCompanyAdvanceData();
     }
 
+
     private void RequestCompanyAdvanceData() {
 
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
@@ -62,13 +67,12 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onSuccess(Response<String> response) {
                         parseCompanyAdvanceData(response.body());
-
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        com.orhanobut.logger.Logger.e("上传失败了" + response.message());
+                        Logger.e("上传失败了" + response.message());
                     }
                 });
 
@@ -114,6 +118,7 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
     protected void initListeners() {
         super.initListeners();
         mBtAddAdvance.setOnClickListener(this);
+        ivCompanyAdvanceBack.setOnClickListener(this);
         mXrecyclerActivityAdv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -145,6 +150,15 @@ public class ComPanyAdvanceActivity extends BaseActivity implements View.OnClick
                 intent.putExtra("viewTag", 2);
                 startActivity(intent);
                 break;
+            case R.id.iv_company_advance_back:
+                finish();
+                break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

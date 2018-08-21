@@ -25,14 +25,30 @@
             android:layout_toRightOf="@+id/iv_mine_fans_head"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_mine_fans_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical"
-                android:text="臭居居的归来"
-                android:textSize="13sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_mine_fans_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:text="臭居居的归来"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_myfans_leveltype"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:textSize="10sp"
+                    android:layout_height="wrap_content"
+                    android:text="注册会员" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_myfocus_signature"

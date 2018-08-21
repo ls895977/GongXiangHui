@@ -64,6 +64,7 @@ public class MyApplication extends MultiDexApplication {
         return SINSTANCE;
     }
 
+
     /**
      * 获取数据库Helper
      */
@@ -72,6 +73,7 @@ public class MyApplication extends MultiDexApplication {
             sqlHelper = new SQLHelper(SINSTANCE);
         return sqlHelper;
     }
+
 
     @Override
     public void onCreate() {
@@ -104,11 +106,9 @@ public class MyApplication extends MultiDexApplication {
         HttpHeaders header = new HttpHeaders();
         header.put("X-appkey", "100");
         header.put("X-accesstoken", mAccessToken);
-//        header.put("X-cityId", "26");
-//        header.put("X-areaId", "266");
-//        header.put("X-systemType", "android");
-//        header.put("X-deviceModel", "MuMu");
-//        header.put("X-deviceId", "008796755566460");
+//        header.put("X-systemType","android" );
+//        header.put("X-deviceModel",SystemUtil.getSystemModel());
+//        header.put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关

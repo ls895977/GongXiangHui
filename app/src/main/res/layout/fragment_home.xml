@@ -120,7 +120,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:background="@mipmap/iv_add_artical"
+        android:src="@mipmap/iv_add_artical"
         android:focusable="true"
         tools:ignore="RtlHardcoded" />
 </RelativeLayout>

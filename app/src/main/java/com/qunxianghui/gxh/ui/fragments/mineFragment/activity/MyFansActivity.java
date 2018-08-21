@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -18,13 +19,15 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyFansActivity extends BaseActivity {
+public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFansItemClickListener {
     @BindView(R.id.recycler_mine_fances)
     XRecyclerView mRecyclerMineFances;
 
@@ -33,7 +36,7 @@ public class MyFansActivity extends BaseActivity {
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
     private MyFansAdapter myFansAdapter;
-
+    private Handler handler = new Handler();
     @Override
     protected int getLayoutId() {
         return R.layout.activity_myfans;
@@ -79,10 +82,11 @@ public class MyFansActivity extends BaseActivity {
         }
         dataList.addAll(mineFansBean.getData());
         count = dataList.size();
-        if (mineFansBean.getCode() == 0) {
+        if (mineFansBean.getCode() == 200) {
             if (mIsFirst) {
                 mIsFirst = false;
                 myFansAdapter = new MyFansAdapter(mContext, dataList);
+                myFansAdapter.setMyFansItemClickListener(this);
                 mRecyclerMineFances.setAdapter(myFansAdapter);
 
             }
@@ -124,5 +128,40 @@ public class MyFansActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    /*我的粉丝的关注*/
+    @Override
+    public void FansClick(final int position) {
+
+        int be_member_id = dataList.get(position).getMember_id();
+        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", be_member_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(final Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 0) {
+                                asyncShowToast("关注成功");
+                                dataList.get(position).setFollow_type(1);
+
+                            } else if (code == 202) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        asyncShowToast("取消关注成功");
+                                        dataList.get(position).setFollow_type(0);
+
+                                    }
+                                });
+                            }
+                            myFansAdapter.notifyDataSetChanged();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }

@@ -142,6 +142,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 Intent intent = new Intent(mContext, ProtocolActivity.class);
                 intent.putExtra("title", "平台服务协议");
                 intent.putExtra("url", Constant.BenDiService);
+                intent.putExtra("tag",2);
                 startActivity(intent);
 
             }

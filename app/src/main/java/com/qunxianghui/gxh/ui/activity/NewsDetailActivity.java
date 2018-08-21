@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.view.Display;
 import android.view.Gravity;
@@ -16,14 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,31 +46,22 @@ import butterknife.OnClick;
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.progress_newsdetail)
-    ProgressBar mProgressNewsdetail;
     @BindView(R.id.tv_newsdetail_issue)
     TextView mTvNewsdetailIssue;
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
+
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
     private String url;
-    private int uuid;
-    private int id;
     private UMShareListener umShareListener;
-    private Handler handler = new Handler();
     private String title;
-    private EditText inputComment;
-    private PopupWindow popupWindow;
-    private boolean has_collect = false;
     private ClipboardManager mClipboardManager;
     private MyCollectNewsDetailBean.DataBean mDataList;
-    private String mToken;
     private StringBuffer mBuffer;
 
     @Override
     protected int getLayoutId() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_news_detail;
     }
 
@@ -86,44 +72,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         title = intent.getStringExtra("title");
-        uuid = intent.getIntExtra("uuid", 0);
-        id = intent.getIntExtra("id", 0);
-        mToken = intent.getStringExtra("token");
+        int uuid = intent.getIntExtra("uuid", 0);
+//        int id = intent.getIntExtra("id", 0);
+        String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
-        mBuffer.append("?token=" + mToken);
-        mBuffer.append("&uuid=" + uuid);
-    }
-
-    @Override
-    protected void initData() {
-
+        mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
     }
 
     @Override
     protected void initListeners() {
-        //此回调用于分享
-        umShareListener = new UMShareListener() {
-            @Override
-            public void onStart(SHARE_MEDIA platform) {
-                //分享开始的回调
-            }
-
-            @Override
-            public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(NewsDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-            }
-        };
-
         WebSettings settings = mWedNewsDetail.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -161,26 +118,33 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         return true;
                     }
                 }
-                mProgressNewsdetail.setVisibility(View.VISIBLE);
                 return false;
             }
         });
-        mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
+        mWedNewsDetail.loadUrl(String.valueOf(mBuffer));
 
+        //此回调用于分享
+        umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+                //分享开始的回调
+            }
 
             @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
-                    // 网页加载完成
-                    mProgressNewsdetail.setVisibility(View.GONE);
-                } else {
-                    //加载中
-                    mProgressNewsdetail.setProgress(newProgress);
-                }
+            public void onResult(SHARE_MEDIA platform) {
+                Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
-        });
-        mWedNewsDetail.loadUrl(String.valueOf(mBuffer));
+
+            @Override
+            public void onError(SHARE_MEDIA platform, Throwable t) {
+                Toast.makeText(NewsDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+                Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver})
@@ -213,12 +177,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
         mShareDialog.dismiss();
         switch (v.getId()) {
             case R.id.tv_addAdver_share:
                 Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
-                intent = new Intent(mContext, AddAdverActivity.class);
+                Intent intent = new Intent(mContext, AddAdverActivity.class);
                 intent.putExtra("url", mBuffer.toString());
                 startActivity(intent);
                 break;
@@ -347,6 +310,5 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
     }
-
 
 }

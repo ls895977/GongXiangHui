@@ -5,14 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progress_newsdetail"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/white"
-        android:max="100" />
-
     <RelativeLayout
         android:id="@+id/rl_newsdetail_title"
         android:layout_width="match_parent"

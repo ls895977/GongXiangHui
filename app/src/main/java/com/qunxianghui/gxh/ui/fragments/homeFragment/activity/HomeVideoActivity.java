@@ -40,7 +40,6 @@ import cn.jzvd.JZVideoPlayer;
  */
 
 public class HomeVideoActivity extends BaseActivity {
-
     @BindView(R.id.slidingTabLayout)
     SlidingTabLayout mSlidingTabLayout;
     @BindView(R.id.iv_video_more_columns)
@@ -49,7 +48,6 @@ public class HomeVideoActivity extends BaseActivity {
     ViewPager mHomeVideoViewpager;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
-
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> mFragments = new ArrayList<>();
     private String[] mTitles;
@@ -76,6 +74,11 @@ public class HomeVideoActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String currcity = SPUtils.getLocation("currcity");
         mTvAddress.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
@@ -18,11 +19,13 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MemberUpActiveActivity extends BaseActivity {
+public class MemberUpActiveActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.et_member_active_code)
     EditText etMemberActiveCode;
     @BindView(R.id.tv_member_activite_quickly)
     TextView tvMemberActiviteQuickly;
+    @BindView(R.id.iv_memberup_activite_back)
+    ImageView ivMemberupActiviteBack;
 
     @Override
     protected int getLayoutId() {
@@ -34,25 +37,14 @@ public class MemberUpActiveActivity extends BaseActivity {
         super.initData();
 
 
-
-        }
+    }
 
     @Override
     protected void initListeners() {
-        super.initListeners();
-        tvMemberActiviteQuickly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String activeCode = etMemberActiveCode.getText().toString().trim();
-                if (TextUtils.isEmpty(activeCode)) {
-
-                    asyncShowToast("激活码为空");
-                } else {
-                    ActiviteData(activeCode);
-                }
-            }
-        });
+        ivMemberupActiviteBack.setOnClickListener(this);
+        tvMemberActiviteQuickly.setOnClickListener(this);
     }
+
     //激活码激活
     private void ActiviteData(String activeCode) {
         OkGo.<String>post(Constant.PERSON_UPGRADE_URL)
@@ -75,6 +67,7 @@ public class MemberUpActiveActivity extends BaseActivity {
                         }
 
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
@@ -88,5 +81,24 @@ public class MemberUpActiveActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.iv_memberup_activite_back:
+                finish();
+                break;
+            case R.id.tv_member_activite_quickly:
+                String activeCode = etMemberActiveCode.getText().toString().trim();
+                if (TextUtils.isEmpty(activeCode)) {
+
+                    asyncShowToast("激活码为空");
+                } else {
+                    ActiviteData(activeCode);
+                }
+                break;
+        }
     }
 }

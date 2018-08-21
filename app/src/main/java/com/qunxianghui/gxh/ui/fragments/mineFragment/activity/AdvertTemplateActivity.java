@@ -68,11 +68,10 @@ public class AdvertTemplateActivity extends BaseActivity {
         sImagePicker = ImagePicker.getInstance();
         sImagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
         sImagePicker.setShowCamera(true);                      //显示拍照按钮
-        sImagePicker.setCrop(true);                           //允许裁剪（单选才有效）
+        sImagePicker.setCrop(false);                           //允许裁剪（单选才有效）
         sImagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
         sImagePicker.setMultiMode(false);
         sImagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
-        sImagePicker.setShowCamera(false);
     }
 
     @Override

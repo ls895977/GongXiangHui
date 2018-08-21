@@ -102,7 +102,6 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -134,7 +133,6 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.tv_add_advance_delete:
                 deleteCompanyCardAdavance();
-
                 break;
             case R.id.tv_add_advance_complete:
                 mEditImageUrl = Utils.listToString(upLoadPics);
@@ -145,9 +143,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 } else {
                     editCompanyCardAdavance(mEditAddAdvanceTitle, mEditAddAdvanceIntroduce, mEditImageUrl);
                 }
-
                 break;
-
         }
     }
 
@@ -196,6 +192,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                     int code = jsonObject.getInt("code");
                     if (code == 200) {
                         asyncShowToast("删除成功");
+
                         finish();
                     } else {
                         asyncShowToast("删除失败" + response.message());
@@ -210,6 +207,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
 
     }
 
+    /*保存成功*/
     private void saveAdvanceData() {
         String imageUrl = Utils.listToString(upLoadPics);
         String mAddAdvanceTitle = mEtAddAdvanceTitle.getText().toString().trim();

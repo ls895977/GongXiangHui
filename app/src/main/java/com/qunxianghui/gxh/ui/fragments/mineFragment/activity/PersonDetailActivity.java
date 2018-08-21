@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class PersonDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -44,7 +45,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     RoundImageView ivPersonDetailHead;
     @BindView(R.id.tv_person_detail_name)
     TextView tvPersonDetailName;
-
     @BindView(R.id.tv_person_detail_attention)
     TextView tvPersonDetailAttention;
     @BindView(R.id.mine_tablayout_person_detail)
@@ -53,6 +53,12 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     ViewPager minePersonDetailViewpager;
     @BindView(R.id.rl_persondetail_bg)
     RelativeLayout rlPersondetailBg;
+    @BindView(R.id.tv_persondetail_introduce)
+    TextView tvPersondetailIntroduce;
+    @BindView(R.id.tv_persondetail_follow)
+    TextView tvPersondetailFollow;
+    @BindView(R.id.tv_persondetail_fans)
+    TextView tvPersondetailFans;
     private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
@@ -78,7 +84,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlPersondetailBg.getLayoutParams();
         params.height = height * 1 / 3;
         rlPersondetailBg.setLayoutParams(params);
-
     }
 
     @Override
@@ -93,7 +98,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         fragments.add(mineCommonFragment);
         fragments.add(new PersonDetailVideoFragment());
         fragments.add(new PersonDetailPostFragment());
-
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         minePersonDetailViewpager.setAdapter(mineTabViewPagerAdapter);
         minePersonDetailViewpager.setOffscreenPageLimit(2);
@@ -106,29 +110,32 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
      */
     private void FetchPersonData() {
         OkGo.<String>get(Constant.GET_USER_DETAIL_URL)
-                .params("member_id", member_id).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseUserDetailInfo(response.body());
-            }
-        });
+                .params("member_id", member_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        parseUserDetailInfo(response.body());
+                    }
+                });
 
     }
 
     //解析用户的详情资料
     private void parseUserDetailInfo(String body) {
         UserDetailInfoBean userDetailInfoBean = GsonUtils.jsonFromJson(body, UserDetailInfoBean.class);
-        dataList = userDetailInfoBean.getData();
-        follow = dataList.getFollow();
-        if (follow.toString().equals("")) {
-            tvPersonDetailAttention.setText("关注");
-        } else {
-            tvPersonDetailAttention.setText("已关注");
-        }
 
-        if (userDetailInfoBean.getCode() == 0) {
+        if (userDetailInfoBean.getCode() == 200) {
+            dataList = userDetailInfoBean.getData();
+            follow = dataList.getFollow();
+            if (follow.toString().equals("")) {
+                tvPersonDetailAttention.setText("关注");
+            } else {
+                tvPersonDetailAttention.setText("已关注");
+            }
             tvPersonDetailName.setText(dataList.getNick());
-
+            tvPersondetailIntroduce.setText(dataList.getSelf_introduction());
+            tvPersondetailFollow.setText(String.valueOf("关注 " + dataList.getFollow_num()));
+            tvPersondetailFans.setText(String.valueOf(" 粉丝 " + dataList.getFans_num()));
             RequestOptions options = new RequestOptions();
             options.placeholder(R.mipmap.default_img);
             options.error(R.mipmap.default_img);
@@ -177,7 +184,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                             asyncShowToast("取消关注成功");
                             tvPersonDetailAttention.setText("关注");
                             dataList.setFollow("");
-                        }else if (code==101){
+                        } else if (code == 101) {
                             asyncShowToast("请不要自己关注自己");
                         }
                     } catch (Exception e) {
@@ -187,5 +194,12 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             });
         }
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

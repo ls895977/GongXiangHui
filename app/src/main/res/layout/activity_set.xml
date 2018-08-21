@@ -84,7 +84,7 @@
             style="@style/MineListStyle"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="V5.0.0" />
+            android:text="V4.0.0" />
 
     </RelativeLayout>
 

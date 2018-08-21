@@ -38,7 +38,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         int is_like = listBean.getIs_like();
         if (is_like == 0) {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
-        } else  {
+        } else {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_select);
         }
 
@@ -82,7 +82,6 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         return R.layout.item_home_video;
     }
 
-
     public interface VideoListClickListener {
         /* 视频关注*/
         void attentionClick(int position);
@@ -90,6 +89,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         /* 头像点击*/
         void videoHeadImageClick(int position);
 
+        /*视频的喜欢*/
         void videoLikeItemClick(int position);
     }
 }

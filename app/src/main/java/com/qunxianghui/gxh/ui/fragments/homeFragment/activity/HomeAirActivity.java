@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,6 +65,13 @@ public class HomeAirActivity extends BaseActivity {
         cityId = spLocation.getString("X-cityId", "");
         areaId = spLocation.getString("X-areaId", "");
         requestAirList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String currcity = SPUtils.getLocation("currcity");
+        mHomeAirLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }
 
     @Override
@@ -135,7 +143,7 @@ public class HomeAirActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.home_air_location:
-                startActivityForResult(new Intent(mContext, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
+                startActivityForResult(new Intent(mContext, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
         }
     }
