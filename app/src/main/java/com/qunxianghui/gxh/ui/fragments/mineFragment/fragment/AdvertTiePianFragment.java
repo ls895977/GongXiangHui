@@ -128,7 +128,15 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mCbUseSpace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mAdvertBean.settings.is_link = isChecked ? 1 : 0;
+                if (isChecked) {
+                    mAdvertBean.settings.is_link = 1;
+                    mEtName.setText(AdvertTemplateActivity.mLinkUrl);
+                    mAdvertBean.settings.link = AdvertTemplateActivity.mLinkUrl;
+                } else {
+                    mAdvertBean.settings.is_link = 0;
+                    mEtName.setText("");
+                    mAdvertBean.settings.link = "";
+                }
             }
         });
 

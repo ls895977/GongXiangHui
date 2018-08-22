@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.base;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +48,8 @@ public class MyApplication extends MultiDexApplication {
     private static IWXAPI SWXAPI;
     public static AppManager appManager;
     private String mAccessToken;
+    @SuppressLint("StaticFieldLeak")
+    public static Activity mMainActivity;
 
     public static IWXAPI getWxApi() {
         return SWXAPI;
@@ -152,6 +156,7 @@ public class MyApplication extends MultiDexApplication {
     private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread thread, Throwable ex) {
             //发生崩溃异常时,重启应用
+            mMainActivity.finish();
             Intent intent = new Intent(SINSTANCE, WelcomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SINSTANCE.startActivity(intent);

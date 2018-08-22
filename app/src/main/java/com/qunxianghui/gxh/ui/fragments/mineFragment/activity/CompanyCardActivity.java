@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,7 +37,6 @@ import com.umeng.socialize.media.UMWeb;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class CompanyCardActivity extends BaseActivity implements View.OnClickListener {
 
@@ -84,18 +82,6 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation-
-        ButterKnife.bind(this);
-    }
-
-    @Override
-    protected void initViews() {
-        super.initViews();
-    }
-
-    @Override
     protected void initData() {
         super.initData();
         OkGo.<String>post(Constant.MINE_COMPANY_CARD_URL).execute(new StringCallback() {
@@ -103,7 +89,6 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(Response<String> response) {
                 parseCompanyCardData(response.body());
             }
-
 
             @Override
             public void onError(Response<String> response) {
@@ -117,15 +102,15 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     private void parseCompanyCardData(String body) {
         CompanyCardBean companyCardBean = GsonUtils.jsonFromJson(body, CompanyCardBean.class);
         int code = companyCardBean.getCode();
-        CompanyCardBean.DataBean dataList = companyCardBean.getData();
-        String address = dataList.getAddress();
-        String company_name = dataList.getCompany_name();
-        String duty = dataList.getDuty();
-        String email = dataList.getEmail();
-        String mobile = dataList.getMobile();
-        String avatar = dataList.getAvatar();
-        String username = dataList.getUsername();
         if (code == 200) {
+            CompanyCardBean.DataBean dataList = companyCardBean.getData();
+            String address = dataList.getAddress();
+            String company_name = dataList.getCompany_name();
+            String duty = dataList.getDuty();
+            String email = dataList.getEmail();
+            String mobile = dataList.getMobile();
+            String avatar = dataList.getAvatar();
+            String username = dataList.getUsername();
             tvCompanyMobile.setText(mobile);
             mTvCompanyCardName.setText(company_name);
             mTvCompanyCardUsername.setText(username);
@@ -140,7 +125,6 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
             options.error(R.mipmap.default_img);
             Glide.with(mContext).load(avatar).apply(options).into(mIvHead);
         }
-
     }
 
     @Override

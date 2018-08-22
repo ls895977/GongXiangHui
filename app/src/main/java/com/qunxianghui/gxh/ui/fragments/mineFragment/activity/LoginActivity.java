@@ -314,6 +314,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
     }
+
     private void holdReneraCompanyData() {
         OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
             @Override
@@ -362,13 +363,33 @@ public class LoginActivity extends BaseActivity {
                                     SharedPreferences.Editor editor = spConpanyname.edit();
                                     editor.putString("selfcompanyname", companyName);
                                     editor.putString("expire_time", expire_time);
-                                    editor.putString("avatar",avatar );
+                                    editor.putString("avatar", avatar);
                                     editor.apply();
                                 }
 
                             } catch (Exception ignored) {
 
                             }
+                        }
+                    }
+                });
+        OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
+                                JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
+//                                String avatar = mCompanyCardData.getString("avatar");
+//                                String title = mCompanyCardData.getString("title");
+//                                String content = mCompanyCardData.getString("content");
+                                String url = mCompanyCardData.getString("url");
+                                SPUtils.getSp("companymessage").edit().putString("aboutus_showh5", url).apply();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });

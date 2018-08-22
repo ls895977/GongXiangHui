@@ -21,6 +21,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
@@ -75,6 +76,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        MyApplication.mMainActivity = this;
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         mFragments[0] = new HomeFragment();

@@ -26,6 +26,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTiePianFragm
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTopFragment;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
@@ -56,7 +57,7 @@ public class AdvertTemplateActivity extends BaseActivity {
     private int mCount;
     private int mSeondCount;
     private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
-    private int mPosition;
+    public static String mLinkUrl;
 
     @Override
     protected int getLayoutId() {
@@ -76,10 +77,11 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        mPosition = getIntent().getIntExtra("position", 0);
+        mLinkUrl = SPUtils.getSp("companymessage").getString("aboutus_showh5", "");
+        int position = getIntent().getIntExtra("position", 3);
         mFragments.add(new AdvertBottomFragment());
         mFragments.add(new AdvertTopFragment());
-        if (mPosition == 1) {
+        if (position == 0 || position == 1) {
             mSegmentTab.setTabData(mTitleTwo);
         } else {
             mSegmentTab.setTabData(mTitles);
@@ -89,9 +91,9 @@ public class AdvertTemplateActivity extends BaseActivity {
 //        int adverTag = intent.getIntExtra("adverTag", 0);
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
         mVp.setOffscreenPageLimit(mSegmentTab.getTabCount() - 1);
-        if (mPosition == 1 || mPosition == 2) {
-            mSegmentTab.setCurrentTab(mPosition);
-            mVp.setCurrentItem(mPosition);
+        if (position == 1 || position == 2) {
+            mSegmentTab.setCurrentTab(position);
+            mVp.setCurrentItem(position);
         }
     }
 

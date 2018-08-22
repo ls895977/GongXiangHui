@@ -157,6 +157,7 @@ public class DragAdapter extends BaseAdapter {
      * 删除频道列表
      */
     public void remove() {
+        if (remove_position == -1) return;
         channelList.remove(remove_position);
         remove_position = -1;
         isListChanged = true;
