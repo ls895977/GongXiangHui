@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.SslErrorHandler;
@@ -103,6 +102,8 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             mBuffer = new StringBuffer(url);
             mBuffer.append("?token=" + mToken);
             mRlProtocolTitle.setVisibility(View.GONE);
+        }else if (tag==2){
+            mBuffer = new StringBuffer(url);
         }
         tvTitle.setText(title);
         webView = new WebView(this);
@@ -134,6 +135,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                     loadingDialog.dismiss();
                 }
             }
+
         });
 
 
@@ -194,6 +196,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 }
 
             }
+
         });
         webView.loadUrl(String.valueOf(mBuffer));
 

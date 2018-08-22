@@ -26,7 +26,11 @@ public class BianMinCallGridAdapter extends RecyclerView.Adapter {
     private int[] imagesCall;
     private String[] NameText;
     private String[] CallText;
-    private OnItemClickListener mOnItemClickListener;
+    private  OnItemClickListener onCallItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        onCallItemClickListener = onItemClickListener;
+    }
 
     public BianMinCallGridAdapter(Context context, int[] imagesHead, int[] imagesCall, String[] nameText, String[] callText) {
         mContext = context;
@@ -34,6 +38,7 @@ public class BianMinCallGridAdapter extends RecyclerView.Adapter {
         this.imagesCall = imagesCall;
         NameText = nameText;
         CallText = callText;
+        layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -47,22 +52,15 @@ public class BianMinCallGridAdapter extends RecyclerView.Adapter {
         holde.ivCallImage.setImageResource(imagesHead[position]);
         holde.ivPhoneCall.setImageResource(imagesCall[position]);
         holde.Iconname.setText(NameText[position]);
-        holde.NameCall.setText(NameText[position]);
+        holde.NameCall.setText(CallText[position]);
 
         holde.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onpicItemClick(holde.getAdapterPosition());
-                }
+                    onCallItemClickListener.onpicItemClick(holde.getAdapterPosition());
             }
         });
     }
-
-    public void setOnClickListener(OnItemClickListener onClickListener) {
-        this.mOnItemClickListener = onClickListener;
-    }
-
     @Override
     public int getItemCount() {
         return NameText.length;

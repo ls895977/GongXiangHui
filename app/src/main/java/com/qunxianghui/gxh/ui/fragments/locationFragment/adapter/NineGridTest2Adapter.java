@@ -152,7 +152,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         }
         final int size = dataBeanList.get(position).getComment_res().size();
         if (size != 0) {
-
             List<CommentBean> commentBeans = new ArrayList<>();
             holder.digCommentBody.setVisibility(View.VISIBLE);
             final CommentItemAdapter commentItemAdapter = new CommentItemAdapter(mContext, commentBeans, holder.comment_list);
@@ -164,7 +163,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     @Override
                     public void onClick(View v) {
                         if (!flag){
-
                             commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
                             //holder.llShowComment.setVisibility(View.GONE);
                             holder.tvShowText.setText("收起");

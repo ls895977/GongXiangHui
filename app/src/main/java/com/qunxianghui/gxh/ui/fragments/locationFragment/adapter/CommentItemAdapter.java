@@ -121,12 +121,10 @@ public class CommentItemAdapter extends BaseAdapter {
         }
         holder.content.setText(mList.get(position).getContent());
 
-
-
     }
 
     public static class ViewHolder {
-        TextView name, content, tv_item_discuss_delete, tv_item_reply_lb, tv_item_replyed;
+        TextView name, content, tv_item_reply_lb, tv_item_replyed;
         LinearLayout ll_comment_selflist;
         LinearLayout ll_comment_view;
     }
