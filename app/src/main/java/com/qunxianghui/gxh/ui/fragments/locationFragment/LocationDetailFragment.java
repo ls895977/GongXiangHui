@@ -126,10 +126,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-                if (tvContent != null && commentDialog != null) {
+                if (clickContent != null && commentDialog != null) {
                     int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
-                    int tvContentTop = getLocationOnScreen(tvContent);// textview top值
-                    int scrollY = tvContentTop - etTop + tvContent.getHeight();
+                    int tvContentTop = getLocationOnScreen(clickContent);// textview top值
+                    int scrollY = tvContentTop - etTop + clickContent.getHeight();
                     recyclerView.smoothScrollBy(0, scrollY);
                 }
 
@@ -221,6 +221,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
     }
 
+
     /**
      * 评论的点击
      *
@@ -228,7 +229,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
      * @param content
      */
     @Override
-    public void onCommentClick(final int position, String content) {
+    public void onCommentClick(final int position, String content, View itemView) {
+        this.clickContent = itemView;
         Log.v("xxx-yyy", position + "");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
@@ -411,11 +413,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
     }
 
-    private TextView tvContent;
+    private View clickContent;
 
     @Override
     public void commentRecall(final int position, final CommentBean commentBean, TextView tvContent) {
-        this.tvContent = tvContent;
+        this.clickContent = tvContent;
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
