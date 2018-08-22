@@ -1,7 +1,11 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
+import android.Manifest;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -14,12 +18,12 @@ import android.widget.RelativeLayout;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.youth.banner.transformer.DepthPageTransformer;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class GuidActivity extends BaseActivity implements View.OnClickListener {
 
@@ -42,6 +46,11 @@ public class GuidActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initViews() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(GuidActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(GuidActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
+            }
+        }
         mImageViewList = new ArrayList<>();
         for (int i = 0; i < mImageIds.length; i++) {
             //创建ImageView把mImgaeViewIds放进去
@@ -87,7 +96,6 @@ public class GuidActivity extends BaseActivity implements View.OnClickListener {
              */
             @Override
             public void onPageSelected(int position) {
-                System.out.println("position:" + position);
                 if (position == mImageViewList.size() - 1) {
                     startBtn.setVisibility(View.VISIBLE);
                 } else {
@@ -98,7 +106,6 @@ public class GuidActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                System.out.println("state:" + state);
             }
         });
     }
@@ -108,16 +115,15 @@ public class GuidActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.start_btn:
                 //点击进入的时候直接跳转到登录界面
+                SPUtils.putBoolean("isFirstUse", false);
                 Intent intent = new Intent(mContext, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
         }
-
     }
 
     class GuideAdapter extends PagerAdapter {
-
         //item的个数
         @Override
         public int getCount() {
@@ -146,8 +152,6 @@ public class GuidActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initData() {
-
-
         GuideAdapter adapter = new GuideAdapter();
         //添加动画效果
         vpGuide.setPageTransformer(true, new DepthPageTransformer());
@@ -161,15 +165,8 @@ public class GuidActivity extends BaseActivity implements View.OnClickListener {
                 ivRed.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 //布局完成了就获取第一个小灰点和第二个之间left的距离
                 mPaintDis = llContainer.getChildAt(1).getLeft() - llContainer.getChildAt(0).getLeft();
-                System.out.println("距离：" + mPaintDis);
             }
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

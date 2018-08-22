@@ -43,6 +43,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class AddAdvanceActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.iv_add_advance_back)
     ImageView mIvAddAdvanceBack;
     @BindView(R.id.tv_add_advance_save)

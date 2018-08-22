@@ -41,7 +41,7 @@
         <ImageView
             android:id="@+id/iv_big"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
             tools:src="@mipmap/icon_person_detail_bg1" />
 

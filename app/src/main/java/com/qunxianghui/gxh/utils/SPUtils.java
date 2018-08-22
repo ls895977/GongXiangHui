@@ -80,8 +80,7 @@ public final class SPUtils {
         if (sp == null) {
             sp = MyApplication.getInstance().getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
         }
-        boolean b = sp.getBoolean(key, false);
-        return b;
+        return sp.getBoolean(key, true);
     }
 
 

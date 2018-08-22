@@ -16,7 +16,7 @@
 
             <include layout="@layout/ad_view_head" />
 
-            <include layout="@layout/ad_view_add_big_img" />
+            <include layout="@layout/ad_view_add_common_img" />
 
             <include layout="@layout/ad_view_choose_type" />
 

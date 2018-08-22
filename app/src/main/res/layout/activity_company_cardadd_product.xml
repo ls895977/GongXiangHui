@@ -10,13 +10,12 @@
         android:layout_height="60dp"
         android:background="@color/white">
 
-
         <ImageView
             android:id="@+id/iv_add_product_back"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:padding="10dp"
             android:src="@mipmap/common_black_back" />
 
         <TextView
@@ -29,19 +28,18 @@
 
         <TextView
             android:id="@+id/tv_add_product_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
             android:text="保存"
             android:textColor="#D91717"
             android:textSize="13sp" />
-
     </RelativeLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="#f9f9f9"
@@ -70,7 +68,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="请填写产品名称(必填)"
-                android:paddingLeft="11dp"
+                android:paddingStart="11dp"
                 android:textColor="#B2B2B2"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -83,11 +81,10 @@
             android:layout_marginTop="10dp"
             android:background="@mipmap/icon_addadvance_border" />
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="简介"
             android:textColor="#000" />
@@ -109,11 +106,10 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="图片"
             android:textColor="#000"
@@ -123,11 +119,8 @@
             android:id="@+id/recler_addproduct_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_margin="10dp" />
     </LinearLayout>
-
 
     <RelativeLayout
         android:id="@+id/rl_add_product_edit"
@@ -137,14 +130,12 @@
         android:layout_marginBottom="20dp"
         android:visibility="gone">
 
-
         <TextView
             android:id="@+id/tv_add_product_delete"
             android:layout_width="110dp"
-
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="70dp"
+            android:layout_marginStart="70dp"
             android:background="@drawable/shape_button_white"
             android:gravity="center"
             android:text="删除该条" />
@@ -154,8 +145,8 @@
             android:layout_width="110dp"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/tv_add_product_delete"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/tv_add_product_delete"
             android:background="@drawable/shape_button"
             android:gravity="center"
             android:text="完成"

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,29 +37,14 @@ import com.umeng.socialize.media.UMWeb;
 import org.json.JSONObject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class CompanyCardActivity extends BaseActivity implements View.OnClickListener {
+public class CompanyCardActivity extends BaseActivity {
 
-    @BindView(R.id.iv_companycard_back)
-    ImageView mIvCompanycardBack;
-    @BindView(R.id.iv_companycard_share)
-    ImageView mIvCompanycardShare;
-    @BindView(R.id.ll_companycard_diamond)
-    LinearLayout mLlCompanycardDiamond;
-    @BindView(R.id.rl_companycard_center_advance)
-    RelativeLayout mRlCompanycardCenterAdvance;
-    @BindView(R.id.ll_companycard_goodselect)
-    LinearLayout mLlCompanycardGoodselect;
-    @BindView(R.id.rl_companycard_company_product)
-    RelativeLayout mRlCompanycardCompanyProduct;
     @BindView(R.id.tv_company_card_name)
     TextView mTvCompanyCardName;
     @BindView(R.id.iv_head)
     ImageView mIvHead;
-    @BindView(R.id.iv_companycard_editlocation)
-    ImageView ivCompanycardEditlocation;
-    @BindView(R.id.rl_mine_person_data)
-    LinearLayout mLlMinePersonData;
     @BindView(R.id.tv_company_mobile)
     TextView tvCompanyMobile;
     @BindView(R.id.tv_company_card_username)
@@ -71,8 +55,6 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     TextView tvCompanyAdress;
     @BindView(R.id.tv_company_duty)
     TextView tvCompanyDuty;
-    @BindView(R.id.rl_company_card_adress_edit)
-    RelativeLayout rlCompanyCardAdressEdit;
 
     private Dialog mDialog;
     private UMWeb mWeb;
@@ -119,11 +101,6 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initListeners() {
-        mIvCompanycardBack.setOnClickListener(this);
-        mIvCompanycardShare.setOnClickListener(this);
-        mRlCompanycardCenterAdvance.setOnClickListener(this);
-        mRlCompanycardCompanyProduct.setOnClickListener(this);
-        rlCompanyCardAdressEdit.setOnClickListener(this);
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -148,23 +125,20 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         };
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    @OnClick({R.id.iv_companycard_back, R.id.iv_companycard_share, R.id.rl_companycard_center_advance, R.id.rl_companycard_company_product, R.id.rl_company_card_adress_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
             case R.id.iv_companycard_back:
                 finish();
-                break;
-            case R.id.rl_companycard_company_product:
-                toActivity(ComPanyProductActivity.class);
                 break;
             case R.id.iv_companycard_share:
                 requestCompanyCardInfo();
                 break;
-            case R.id.iv_companycard_editlocation:
-                asyncShowToast("点击了编辑地址");
-                break;
             case R.id.rl_companycard_center_advance:
                 toActivity(ComPanyAdvanceActivity.class);
+                break;
+            case R.id.rl_companycard_company_product:
+                toActivity(ComPanyProductActivity.class);
                 break;
             case R.id.rl_company_card_adress_edit:
                 Intent intent = getIntent();
@@ -293,4 +267,5 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
     }
+
 }

@@ -2,13 +2,11 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,19 +37,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class AddProductActivity extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.iv_add_product_back)
-    ImageView mIvAddProductBack;
+public class AddProductActivity extends BaseActivity {
+
     @BindView(R.id.tv_add_product_save)
     TextView mTvAddProductSave;
-    @BindView(R.id.tv_add_product_delete)
-    TextView mTvAddProductDelete;
-    @BindView(R.id.tv_add_product_complete)
-    TextView mTvAddProductComplete;
     @BindView(R.id.et_add_product_title)
     EditText mEtAddAProductTitle;
     @BindView(R.id.et_add_product__introduce)
@@ -71,6 +64,7 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
     private String[] mImage_arrays;
     private int mViewTag;
     private int mAboutusId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_company_cardadd_product;
@@ -107,14 +101,12 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                             //PictureSelector.create(MainActivity.this).themeStyle(themeId).externalPicturePreview(position, "/custom_file", selectList);
                             PictureSelector.create(AddProductActivity.this).themeStyle(themeId).openExternalPreview(position, selectList);
                             break;
-
                     }
                 }
             }
         });
         // 清空图片缓存，包括裁剪、压缩后的图片 注意:必须要在上传完成后调用 必须要获取权限
-        RxPermissions permissions = new RxPermissions(this);
-        permissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Observer<Boolean>() {
+        new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Observer<Boolean>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
@@ -128,6 +120,7 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                             getString(R.string.picture_jurisdiction), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onError(Throwable e) {
             }
@@ -148,24 +141,9 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    @Override
-    protected void initListeners() {
-        super.initListeners();
-        mIvAddProductBack.setOnClickListener(this);
-        mTvAddProductSave.setOnClickListener(this);
-        mTvAddProductDelete.setOnClickListener(this);
-        mTvAddProductComplete.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    @OnClick({R.id.iv_add_product_back, R.id.tv_add_product_save, R.id.tv_add_product_delete, R.id.tv_add_product_complete})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
             case R.id.iv_add_product_back:
                 finish();
                 break;
@@ -206,7 +184,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                             if (code == 200) {
                                 asyncShowToast("修改成功");
                                 finish();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -244,7 +221,8 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-//保存数据
+
+    //保存数据
     private void SavaCompanyCardProductData() {
         String maddProductTitle = mEtAddAProductTitle.getText().toString().trim();
         String mEtAddAProductIntroduce = mEtAddProductIntroduce.getText().toString().trim();
@@ -302,8 +280,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                     .compress(true)// 是否压缩 true or false
                     .isDragFrame(true)// 是否可拖动裁剪框(固定)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
-
-
         }
 
     };
@@ -349,7 +325,6 @@ public class AddProductActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-
                     }
                 });
 

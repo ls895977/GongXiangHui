@@ -136,33 +136,31 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (request.getUrl().toString().contains("tel:1516715042")) {
-                    ProtocolActivity.this.finish();
-                }
-                return false;
+                String url = request.getUrl().toString();
+                return isCall(url);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Logger.d("shouldOverrideUrlLoading--->:" + url);
-                //判断用户单机的是那个超链接
-                String tag = "tel";
-                if (url.contains(tag)) {
-                    final String mobile = url.substring(url.lastIndexOf("/") + 1);
-                    if (mobile.equals("tel:1516715042")) {
-                        ProtocolActivity.this.finish();
+                return isCall(url);
+            }
+
+            private boolean isCall(String url) {
+                if (url.contains("tel:1516715042")) {
+                    ProtocolActivity.this.finish();
+                } else if (url.contains("tel")) {
+                    String mobile = url.substring(url.lastIndexOf("/") + 1);
+                    mMIntent = new Intent(Intent.ACTION_CALL);
+                    Uri data = Uri.parse(mobile);
+                    mMIntent.setData(data);
+                    if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        startActivity(mMIntent);
                     } else {
-                        mMIntent = new Intent(Intent.ACTION_CALL);
-                        Uri data = Uri.parse(mobile);
-                        mMIntent.setData(data);
-                        if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                            startActivity(mMIntent);
-                        } else {
-                            //申请权限
-                            ActivityCompat.requestPermissions(ProtocolActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                        }
-                        return true;
+                        //申请权限
+                        ActivityCompat.requestPermissions(ProtocolActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
                     }
+                    return true;
                 }
                 return false;
             }

@@ -1,16 +1,11 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
-import android.content.SharedPreferences;
-
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 public class SplashActivity extends BaseActivity {
-
-
-    //是否是第一次使用
-    private boolean isFirstUse;
 
     @Override
     protected int getLayoutId() {
@@ -19,17 +14,12 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        SharedPreferences preferences = getSharedPreferences("isFirstUse", MODE_PRIVATE);
-        isFirstUse = preferences.getBoolean("isFirstUse", true);
-        if (isFirstUse){
+        boolean isFirstUse = SPUtils.getBoolean("isFirstUse");
+        if (isFirstUse) {
             toActivity(GuidActivity.class);
-        }else {
+        } else {
             toActivity(WelcomeActivity.class);
         }
         finish();
-        SharedPreferences.Editor edit = preferences.edit();
-        edit.putBoolean("isFirstUse",false);
-        edit.commit();
-
     }
 }

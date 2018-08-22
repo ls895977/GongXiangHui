@@ -75,22 +75,22 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         imagePicker.setShowCamera(true);
         imagePicker.setCrop(false);
         imagePicker.setSaveRectangle(true);
-        imagePicker.setSelectLimit(3);
+        imagePicker.setSelectLimit(9);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
         imagePicker.setFocusWidth(800);
         imagePicker.setFocusHeight(800);
-        imagePicker.setOutPutX(1000);
-        imagePicker.setOutPutY(1000);
+        imagePicker.setOutPutX(500);
+        imagePicker.setOutPutY(500);
 
         mImages = new ArrayList<>();
-        mAdapter = new ImagePickerAdapter(this, mImages, 3);
+        mAdapter = new ImagePickerAdapter(this, mImages, 9);
         mAdapter.setOnItemClickListener(this);
         mRv.setAdapter(mAdapter);
 
         mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
             public void onTakePhoto() {
-                ImagePicker.getInstance().setSelectLimit(3 - mImages.size());
+                ImagePicker.getInstance().setSelectLimit(9 - mImages.size());
                 Intent intent = new Intent(LocationPublishActivity.this, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                 startActivityForResult(intent, REQUEST_CODE_SELECT);
@@ -99,7 +99,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
             @Override
             public void onSelect() {
                 //打开选择,本次允许选择的数量
-                ImagePicker.getInstance().setSelectLimit(3 - mImages.size());
+                ImagePicker.getInstance().setSelectLimit(9 - mImages.size());
                 Intent intent1 = new Intent(LocationPublishActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
             }
@@ -160,21 +160,19 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                     asyncShowToast("填写下介绍吧!");
                     return;
                 }
-//                if (mImages.isEmpty()) {
-//                    asyncShowToast("请添加图片");
-//                    return;
-//                }
                 if (mTypeId == 0) {
                     asyncShowToast("请选择分类");
                     return;
                 }
                 mIsUploadIng = true;
                 stringBuilder = new StringBuilder();
-                if (!mImages.isEmpty()){
+                mLlLoad.setVisibility(View.VISIBLE);
+                if (!mImages.isEmpty()) {
                     String path = mImages.get(0).path;
                     uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
+                } else {
+                    uploadInfo();
                 }
-                uploadInfo();
                 break;
             case R.id.tv_type:
                 if (mChooseType != null) {
@@ -185,7 +183,6 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     parseVideoSortData(response.body());
-
                                 }
                             });
                 }
@@ -206,19 +203,17 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                             if (mImages.size() == mCount) {
                                 uploadInfo();
                             } else {
-                                String path = mImages.get(0).path;
+                                String path = mImages.get(mCount).path;
                                 uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
                             }
                         } else {
-                            onError(null);
+                            uploadFail(response);
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
-                        mIsUploadIng = false;
-                        mLlLoad.setVisibility(View.GONE);
-                        asyncShowToast("上传失败...");
+                        uploadFail(response);
                     }
                 });
     }
@@ -238,17 +233,25 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                             asyncShowToast("发布成功");
                             finish();
                         } else {
-                            onError(null);
+                            uploadFail(response);
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
-                        mIsUploadIng = false;
-                        mLlLoad.setVisibility(View.GONE);
-                        asyncShowToast("上传失败...");
+                        uploadFail(response);
                     }
                 });
+    }
+
+    private void uploadFail(Response<String> response) {
+        mIsUploadIng = false;
+        mLlLoad.setVisibility(View.GONE);
+        if (TextUtils.isEmpty(response.message())) {
+            asyncShowToast("上传失败");
+        } else {
+            asyncShowToast(response.message());
+        }
     }
 
     @Override
@@ -280,6 +283,8 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                     .build();
             mChooseType.setNPicker(strings, null, null);
             mChooseType.show();
+        } else {
+            asyncShowToast(homeVideoSortBean.getMsg());
         }
 
     }
