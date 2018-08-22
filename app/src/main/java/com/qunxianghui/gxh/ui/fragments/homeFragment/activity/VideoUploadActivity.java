@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -19,9 +18,9 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.UploadVideo;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 
@@ -48,9 +47,14 @@ public class VideoUploadActivity extends BaseActivity {
     EditText mEditUpdateVideoTitle;
     @BindView(R.id.edit_UpdataVideo_Content)
     EditText mEditUpdateVideoContent;
+    @BindView(R.id.ll_bg_load)
+    View mLoadView;
+    @BindView(R.id.tv_load)
+    TextView mTvLoad;
 
     private String mVideoPath;
     private OptionsPickerView mChooseType;
+    public boolean mIsUploadIng;
     private int mTypeId;
 
     @Override
@@ -60,6 +64,7 @@ public class VideoUploadActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        mTvLoad.setText("上传中...");
         mVideoPath = getIntent().getStringExtra("videoPath");
         mVideoplayer.setUp(mVideoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
         Glide.with(this.getApplicationContext())
@@ -76,6 +81,10 @@ public class VideoUploadActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        if (mIsUploadIng) {
+            asyncShowToast("上传中，请稍等...");
             return;
         }
         super.onBackPressed();
@@ -102,7 +111,7 @@ public class VideoUploadActivity extends BaseActivity {
                 uploadVideo();
                 break;
             case R.id.tv_UpdataVideo_Cancel:
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_type:
                 chooseVideoType();
@@ -121,14 +130,8 @@ public class VideoUploadActivity extends BaseActivity {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(byteArray, 0, byteArray.length);
             fos.flush();
-            Intent intent = new Intent();
-            intent.putExtra("videoPath", mVideoPath);
-            intent.putExtra("title", mEditUpdateVideoTitle.getText().toString());
-            intent.putExtra("description", mEditUpdateVideoContent.getText().toString());
-            intent.putExtra("video_id", mTypeId);
-            MainActivity.mImageFile = file;
-            setResult(0x0012, intent);
-            finish();
+            uploadVideo(file, mVideoPath, mEditUpdateVideoTitle.getText().toString(),
+                    mEditUpdateVideoContent.getText().toString(), mTypeId);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -176,6 +179,34 @@ public class VideoUploadActivity extends BaseActivity {
             toActivity(LoginActivity.class);
         }
 
+    }
+
+    private void uploadVideo(File file, String videoPath, String title, String description, int videoId) {
+        mIsUploadIng = true;
+        asyncShowToast("上传中...");
+        OkGo.<String>post(Constant.UPLOAD_VIDEO_URL)
+                .params("file", new File(videoPath))
+                .params("thumb", file)
+                .params("title", title)
+                .params("description", description)
+                .params("video_id", videoId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        mIsUploadIng = false;
+                        UploadVideo uploadVideo = GsonUtils.jsonFromJson(response.body(), UploadVideo.class);
+                        if (uploadVideo != null && "0".equals(uploadVideo.code)) {
+                            asyncShowToast("上传成功,请等待审核");
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        mIsUploadIng = false;
+                        asyncShowToast("上传失败...");
+                    }
+                });
     }
 
 }

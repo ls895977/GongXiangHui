@@ -59,6 +59,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     TextView tvPersondetailFollow;
     @BindView(R.id.tv_persondetail_fans)
     TextView tvPersondetailFans;
+
     private String[] titles = new String[]{"资讯", "视频", "帖子"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;

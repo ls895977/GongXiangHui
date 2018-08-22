@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -62,12 +63,7 @@ public class LocationFragment extends BaseFragment {
     }
 
     @Override
-    public void initViews(View view) {
-    }
-
-    @Override
     public void initData() {
-        //频道列表（用户订阅的频道）
         OkGo.<HomeVideoChannel>post(Constant.LOCAL_POST_SUB_URL).execute(new JsonCallback<HomeVideoChannel>() {
             @Override
             public void onSuccess(Response<HomeVideoChannel> response) {
@@ -89,6 +85,13 @@ public class LocationFragment extends BaseFragment {
         mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mLocalViewPager);
         mLocalViewPager.setOffscreenPageLimit(fragments.size() - 1);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String currcity = SPUtils.getLocation("currcity");
+        mTvLocalcircleLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }
 
     private void setFragments(List<ChannelItem> datas) {

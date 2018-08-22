@@ -110,6 +110,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                             }
                         } else {
                             mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+                            mAdvertBean.ad_type = 6;
                         }
                     }
 
@@ -324,6 +325,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
             mImages = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
             if (mImages != null && mImages.size() > 0) {
                 ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), mImages.get(0).path, mIvAd, 0, 0);
+                mAdvertBean.images = mImages.get(0).path;
             }
         } else if (resultCode == 0x0022) {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert info = (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert) data.getSerializableExtra("info");

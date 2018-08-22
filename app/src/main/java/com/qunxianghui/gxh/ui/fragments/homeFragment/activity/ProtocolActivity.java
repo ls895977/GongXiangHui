@@ -135,6 +135,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                     loadingDialog.dismiss();
                 }
             }
+
         });
 
 
@@ -195,6 +196,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 }
 
             }
+
         });
         webView.loadUrl(String.valueOf(mBuffer));
 

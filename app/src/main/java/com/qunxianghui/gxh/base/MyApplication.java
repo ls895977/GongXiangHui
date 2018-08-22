@@ -21,7 +21,6 @@ import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.db.SQLHelper;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CityPickerutil;
@@ -41,7 +40,6 @@ import okhttp3.OkHttpClient;
 
 public class MyApplication extends MultiDexApplication {
 
-    private SQLHelper sqlHelper;
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
     private static MyApplication SINSTANCE;
@@ -65,16 +63,6 @@ public class MyApplication extends MultiDexApplication {
     }
 
 
-    /**
-     * 获取数据库Helper
-     */
-    public SQLHelper getSQLHelper() {
-        if (sqlHelper == null)
-            sqlHelper = new SQLHelper(SINSTANCE);
-        return sqlHelper;
-    }
-
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -89,9 +77,8 @@ public class MyApplication extends MultiDexApplication {
         if (BuildConfig.DEBUG) {
             LeakCanary.install(this);
             CrashHandler.getInstance().init(getApplicationContext());
-        } else {
-            Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         }
+        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();
     }
@@ -171,13 +158,5 @@ public class MyApplication extends MultiDexApplication {
             android.os.Process.killProcess(android.os.Process.myPid());  //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
         }
     };
-
-    @Override
-    public void onTerminate() {
-        if (sqlHelper != null)
-            sqlHelper.close();
-        super.onTerminate();
-        //整体摧毁的时候调用这个方法
-    }
 
 }

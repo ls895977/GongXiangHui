@@ -26,7 +26,8 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdverActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.umeng.socialize.ShareAction;
@@ -167,7 +168,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     toActivity(LoginActivity.class);
                     return;
                 } else {
-                    Intent intent = new Intent(mContext, AddAdverActivity.class);
+                    Intent intent;
+                    if (getIntent().getIntExtra("position", 0) == 4) {
+                        intent = new Intent(mContext, AddTiePianAdvertActivity.class);
+                    } else {
+                        intent = new Intent(mContext, AddAdvertActivity.class);
+                    }
                     intent.putExtra("url", mBuffer.toString());
                     startActivity(intent);
                 }
@@ -181,7 +187,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_addAdver_share:
                 Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, AddAdverActivity.class);
+                Intent intent = new Intent(mContext, AddAdvertActivity.class);
                 intent.putExtra("url", mBuffer.toString());
                 startActivity(intent);
                 break;

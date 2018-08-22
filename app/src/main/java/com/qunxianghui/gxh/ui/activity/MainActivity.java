@@ -18,15 +18,10 @@ import android.widget.Toast;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.UploadVideo;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
-import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
@@ -35,10 +30,8 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.VideoUploadActivit
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 
-import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -75,8 +68,6 @@ public class MainActivity extends BaseActivity {
     private Fragment[] mFragments = new Fragment[4];
     private FragmentManager mFragmentManager;
     private OnekeyIssueDialog dialog;
-    public static boolean mIsUploadIng;
-    public static File mImageFile;
 
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -212,42 +203,7 @@ public class MainActivity extends BaseActivity {
                     startActivityForResult(intent, 0x0011);
                     break;
             }
-        } else if (resultCode == 0x0012) {
-            uploadVideo(data.getStringExtra("videoPath"),
-                    data.getStringExtra("title"),
-                    data.getStringExtra("description"),
-                    data.getIntExtra("video_id", 1));
         }
-    }
-
-    private void uploadVideo(String videoPath, String title, String description, int videoId) {
-        mIsUploadIng = true;
-        asyncShowToast("上传中...");
-        OkGo.<String>post(Constant.UPLOAD_VIDEO_URL)
-                .params("file", new File(videoPath))
-                .params("thumb", mImageFile)
-                .params("title", title)
-                .params("description", description)
-                .params("video_id", videoId)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        mIsUploadIng = false;
-                        mImageFile = null;
-                        UploadVideo uploadVideo = GsonUtils.jsonFromJson(response.body(), UploadVideo.class);
-                        if (uploadVideo != null && "0".equals(uploadVideo.code)) {
-                            asyncShowToast("上传成功,请等待审核");
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        mIsUploadIng = false;
-                        mImageFile = null;
-                        asyncShowToast("上传失败...");
-                    }
-                });
     }
 
     /**
@@ -277,9 +233,6 @@ public class MainActivity extends BaseActivity {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
         dialog.blurBg().show();
-//        Intent intent = new Intent(MainActivity.this, AdvertTemplateActivity.class);
-//        intent.putExtra("adverTag", 1);
-//        startActivity(intent);
     }
 }
 
