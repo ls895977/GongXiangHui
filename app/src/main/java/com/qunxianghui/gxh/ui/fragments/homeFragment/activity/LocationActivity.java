@@ -50,7 +50,8 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     View mLoadView;
 
     TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter(TreeRecyclerType.SHOW_EXPAND);
-    private AMapLocationClient mlocationClient;
+    private AMapLocationClient mLocationClient;
+    AMapLocationClientOption mLocationOption = null;
     private String mCurrentCity;
     private String mCityId;
     private String mAreaId;
@@ -130,51 +131,39 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                         + aMapLocation.getErrorInfo());
             }
         }
-        mlocationClient.stopLocation();
+        mLocationClient.stopLocation();
 
     }
 
     private void requestAbleLocation() {
-        AMapLocationClientOption mLocationOption = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                //定位
-                mlocationClient = new AMapLocationClient(mContext);
-                //初始化定位参数
-                mLocationOption = new AMapLocationClientOption();
-                //设置返回地址信息，默认为true
-                mLocationOption.setNeedAddress(true);
-                //设置定位监听
-                mlocationClient.setLocationListener(this);
-                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-                //设置定位间隔,单位毫秒,默认为2000ms
-                mLocationOption.setInterval(2000);
-                //设置定位参数
-                mlocationClient.setLocationOption(mLocationOption);
-                mlocationClient.startLocation();
+                setLocation();
             } else {
-                int REQUEST_PERMISSION_CODE = 10010;
                 ActivityCompat.requestPermissions(LocationActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CODE);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100010);
             }
         } else {
-            //定位
-            mlocationClient = new AMapLocationClient(mContext);
-            //初始化定位参数
-            mLocationOption = new AMapLocationClientOption();
-            //设置返回地址信息，默认为true
-            mLocationOption.setNeedAddress(true);
-            //设置定位监听
-            mlocationClient.setLocationListener(this);
-            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-            //设置定位间隔,单位毫秒,默认为2000ms
-            mLocationOption.setInterval(2000);
-            //设置定位参数
-            mlocationClient.setLocationOption(mLocationOption);
-            mlocationClient.startLocation();
+            setLocation();
         }
+    }
+
+    private void setLocation() {
+        //定位
+        mLocationClient = new AMapLocationClient(mContext);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置返回地址信息，默认为true
+        mLocationOption.setNeedAddress(true);
+        //设置定位监听
+        mLocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.startLocation();
     }
 
     @OnClick(R.id.tv_current_address)

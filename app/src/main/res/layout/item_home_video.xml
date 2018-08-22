@@ -44,18 +44,18 @@
                 android:background="@drawable/shape_button"
                 android:gravity="center"
                 android:text="+关注"
-                android:textSize="11sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_item_collect_video_personname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:textSize="13sp"
-                android:textColor="#2D2D2D"
                 android:layout_marginTop="3dp"
-                android:text="香馍馍" />
+                android:text="香馍馍"
+                android:textColor="#2D2D2D"
+                android:textSize="13sp" />
 
         </LinearLayout>
 

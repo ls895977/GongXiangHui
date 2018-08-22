@@ -18,6 +18,7 @@ import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -91,7 +92,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                 intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
                 intent.putExtra("position", 4);
                 startActivity(intent);
@@ -184,13 +185,12 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 try {
                     JSONObject jsonObject = new JSONObject(response.body());
                     int code = jsonObject.getInt("code");
-                    if (code==100) {
+                    if (code == 100) {
                         asyncShowToast("点赞成功");
                         videoDataList.get(position).setIs_like(1);
-                    } else if (code==101){
+                    } else if (code == 101) {
                         asyncShowToast("取消点赞");
                         videoDataList.get(position).setIs_like(0);
-
                     }
                     personDetailVideoAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
@@ -199,6 +199,15 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
             }
         });
+    }
+
+    @Override
+    public void videoAddAdvert(int position) {
+        Intent intent = new Intent(mActivity, AddTiePianAdvertActivity.class);
+        StringBuilder sb = new StringBuilder(Constant.VIDEO_DETAIL_URL);
+        sb.append("?token=").append(SPUtils.getString(SpConstant.ACCESS_TOKEN, "")).append("&uuid=").append(videoDataList.get(position).getUuid());
+        intent.putExtra("url", sb.toString());
+        startActivity(intent);
     }
 
 }

@@ -55,7 +55,7 @@ public class PersonDetailVideoFragment extends BaseFragment {
         final HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
         if (homeVideoListBean.getCode()==0){
             final List<HomeVideoListBean.DataBean.ListBean> videoList = homeVideoListBean.getData().getList();
-            final PersonDetailVideoAdapter personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoList);
+            PersonDetailVideoAdapter personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoList);
 
             xrecyclerPersondetailVideo.setAdapter(personDetailVideoAdapter);
 

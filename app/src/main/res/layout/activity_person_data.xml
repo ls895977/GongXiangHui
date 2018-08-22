@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp">
+            android:layout_marginTop="25dp">
 
             <ImageView
                 android:id="@+id/iv_person_data_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:background="@mipmap/common_black_back" />
+                android:padding="10dp"
+                android:src="@mipmap/common_black_back" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,14 +33,15 @@
 
             <TextView
                 android:id="@+id/tv_person_data_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
                 android:text="保存"
                 android:textColor="#D81717"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
 
         </RelativeLayout>
 
@@ -61,18 +58,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="头像" />
 
             <com.qunxianghui.gxh.widget.RoundImageView
                 android:id="@+id/iv_person_data_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:src="@mipmap/user_moren" />
 
         </RelativeLayout>
@@ -86,18 +83,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="昵称" />
 
             <EditText
                 android:id="@+id/et_person_data_nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请设置昵称"
@@ -114,18 +111,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="姓名" />
 
             <EditText
                 android:id="@+id/et_person_data_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请设置姓名"
@@ -142,18 +139,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="性别" />
 
             <TextView
                 android:id="@+id/tv_person_data_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:clickable="false"
                 android:gravity="right"
@@ -171,18 +168,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="手机号码" />
 
             <TextView
                 android:id="@+id/tv_person_data_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请输入手机号"
@@ -200,18 +197,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="邮箱" />
 
             <EditText
                 android:id="@+id/et_person_data_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请填写邮箱"
@@ -229,18 +226,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="公司" />
 
             <EditText
                 android:id="@+id/et_person_data_company"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请填写公司名"
@@ -257,18 +254,18 @@
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="职位" />
 
             <EditText
                 android:id="@+id/et_person_data_job"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请填写职位"
@@ -286,7 +283,7 @@
             <TextView
                 style="@style/ConmmenTextStyle"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
                 android:text="联系地址" />
 
@@ -301,7 +298,7 @@
                 android:gravity="end|center_vertical"
                 android:hint="请输入具体的街道,楼盘号等"
                 android:lines="3"
-                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
@@ -314,7 +311,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="个人介绍"
             android:textColor=" #5B5B5B"
             android:textSize="13sp" />
@@ -335,8 +332,9 @@
                 android:hint="请填写个人介绍(最多20字)"
                 android:lines="3"
                 android:paddingBottom="25dp"
-                android:paddingLeft="15dp"
-                android:textSize="13sp" />
+                android:paddingStart="15dp"
+                android:textSize="13sp"
+                tools:ignore="RtlSymmetry" />
         </RelativeLayout>
 
 

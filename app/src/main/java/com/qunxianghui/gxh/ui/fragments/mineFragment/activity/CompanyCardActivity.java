@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.Display;
 import android.view.Gravity;
@@ -72,6 +73,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     TextView tvCompanyDuty;
     @BindView(R.id.rl_company_card_adress_edit)
     RelativeLayout rlCompanyCardAdressEdit;
+
     private Dialog mDialog;
     private UMWeb mWeb;
     private UMShareListener umShareListener;
@@ -103,27 +105,15 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         CompanyCardBean companyCardBean = GsonUtils.jsonFromJson(body, CompanyCardBean.class);
         int code = companyCardBean.getCode();
         if (code == 200) {
-            CompanyCardBean.DataBean dataList = companyCardBean.getData();
-            String address = dataList.getAddress();
-            String company_name = dataList.getCompany_name();
-            String duty = dataList.getDuty();
-            String email = dataList.getEmail();
-            String mobile = dataList.getMobile();
-            String avatar = dataList.getAvatar();
-            String username = dataList.getUsername();
-            tvCompanyMobile.setText(mobile);
-            mTvCompanyCardName.setText(company_name);
-            mTvCompanyCardUsername.setText(username);
-            tvCompanyEmail.setText(email);
-            tvCompanyAdress.setText(address);
-            tvCompanyDuty.setText(duty);
-
-            RequestOptions options = new RequestOptions();
-            options.centerCrop();
-            options.circleCrop();
-            options.placeholder(R.mipmap.default_img);
-            options.error(R.mipmap.default_img);
-            Glide.with(mContext).load(avatar).apply(options).into(mIvHead);
+            CompanyCardBean.DataBean data = companyCardBean.getData();
+            tvCompanyMobile.setText(data.getMobile());
+            mTvCompanyCardName.setText(data.getCompany_name());
+            mTvCompanyCardUsername.setText(data.getUsername());
+            tvCompanyEmail.setText(data.getEmail());
+            tvCompanyAdress.setText(data.getAddress());
+            tvCompanyDuty.setText(data.getDuty());
+            Glide.with(mContext).load(data.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.default_img)
+                    .error(R.mipmap.default_img).centerCrop().circleCrop()).into(mIvHead);
         }
     }
 
@@ -165,11 +155,10 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.rl_companycard_company_product:
-                asyncShowToast("点击了公司产品");
                 toActivity(ComPanyProductActivity.class);
                 break;
             case R.id.iv_companycard_share:
-                RequestCompanyCardInfo();
+                requestCompanyCardInfo();
                 break;
             case R.id.iv_companycard_editlocation:
                 asyncShowToast("点击了编辑地址");
@@ -178,26 +167,28 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                 toActivity(ComPanyAdvanceActivity.class);
                 break;
             case R.id.rl_company_card_adress_edit:
-                toActivity(PersonDataActivity.class);
+                Intent intent = getIntent();
+                intent.setClass(CompanyCardActivity.this, PersonDataActivity.class);
+                startActivity(intent);
                 break;
         }
     }
 
     /*分享我的企业名片*/
-    private void RequestCompanyCardInfo() {
+    private void requestCompanyCardInfo() {
         OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
-                            JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
-                            String avatar = mCompanyCardData.getString("avatar");
-                            String title = mCompanyCardData.getString("title");
-                            String content = mCompanyCardData.getString("content");
-                            String url = mCompanyCardData.getString("url");
                             int code = jsonObject.getInt("code");
-                            if (code == 200 && mCompanyCardData != null) {
+                            if (code == 200) {
+                                JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
+                                String avatar = mCompanyCardData.getString("avatar");
+                                String title = mCompanyCardData.getString("title");
+                                String content = mCompanyCardData.getString("content");
+                                String url = mCompanyCardData.getString("url");
                                 shareCompanyCardInfo(avatar, title, content, url);
                             }
                         } catch (Exception e) {
