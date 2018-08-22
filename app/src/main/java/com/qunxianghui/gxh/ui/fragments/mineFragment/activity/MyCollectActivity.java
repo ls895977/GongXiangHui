@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -25,13 +24,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, Observer{
+public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, Observer {
+
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
@@ -40,6 +39,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ImageView ivMyCollectBack;
     @BindView(R.id.tv_mycollect_cancel)
     TextView tvMycollectCancel;
+
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
@@ -61,6 +61,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
             mineTablayoutCommon.addTab(mineTablayoutCommon.newTab().setText(tab));
         }
     }
+
     @Override
     protected void initData() {
         fragments.add(new MineCommonFragment());
@@ -147,13 +148,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
                 break;
 
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

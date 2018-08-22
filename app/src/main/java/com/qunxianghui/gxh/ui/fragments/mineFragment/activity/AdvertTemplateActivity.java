@@ -79,7 +79,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPosition = getIntent().getIntExtra("position", 0);
         mFragments.add(new AdvertBottomFragment());
         mFragments.add(new AdvertTopFragment());
-        if (mPosition == 1 || mPosition == 2) {
+        if (mPosition == 1) {
             mSegmentTab.setTabData(mTitleTwo);
         } else {
             mSegmentTab.setTabData(mTitles);
@@ -89,9 +89,9 @@ public class AdvertTemplateActivity extends BaseActivity {
 //        int adverTag = intent.getIntExtra("adverTag", 0);
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
         mVp.setOffscreenPageLimit(mSegmentTab.getTabCount() - 1);
-        if (mPosition == 1) {
-            mSegmentTab.setCurrentTab(1);
-            mVp.setCurrentItem(1);
+        if (mPosition == 1 || mPosition == 2) {
+            mSegmentTab.setCurrentTab(mPosition);
+            mVp.setCurrentItem(mPosition);
         }
     }
 
@@ -117,6 +117,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_save:
+                mCount = 0;
+                mSeondCount = 0;
                 upLoadData();
                 break;
         }
@@ -241,6 +243,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                     setResult(0x0022);
                     finish();
                 } else {
+                    mLoadView.setVisibility(View.GONE);
                     asyncShowToast(response.body().msg);
                 }
             }

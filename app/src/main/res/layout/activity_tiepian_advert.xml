@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F4F4F4">
+
+        <RelativeLayout
+            android:id="@+id/rl_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_add_tiepian" />
+
+            <TextView
+                android:id="@+id/tv_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="15dp"
+                android:background="@drawable/shape_blue_bg"
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                tools:text="跳过广告"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/iv"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:textColor="#161616"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:ignore="RtlSymmetry"
+                tools:text="图片点击效果：联系QQ" />
+
+            <TextView
+                android:id="@+id/tv_seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/iv"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:paddingEnd="10dp"
+                android:textColor="#161616"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="广告显示时间：3秒" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

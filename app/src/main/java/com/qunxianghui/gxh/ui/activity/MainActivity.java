@@ -233,9 +233,6 @@ public class MainActivity extends BaseActivity {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
         dialog.blurBg().show();
-//        Intent intent = new Intent(MainActivity.this, AdvertTemplateActivity.class);
-//        intent.putExtra("adverTag", 1);
-//        startActivity(intent);
     }
 }
 

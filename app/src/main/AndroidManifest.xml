@@ -243,7 +243,7 @@
             android:name=".ui.fragments.mineFragment.activity.BindMobileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.fragments.mineFragment.activity.AddAdverActivity"
+            android:name=".ui.fragments.mineFragment.activity.AddAdvertActivity"
             android:screenOrientation="portrait" />
         <!-- 企业名片界面 -->
         <activity
@@ -309,6 +309,8 @@
             android:screenOrientation="portrait" />
         <!--首页常用电话-->
         <activity android:name=".ui.fragments.homeFragment.activity.CommoentCallActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.fragments.mineFragment.activity.AddTiePianAdvertActivity"
             android:screenOrientation="portrait"/>
     </application>
 

@@ -53,7 +53,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2018/4/2 0002.
  */
-public class AddAdverActivity extends BaseActivity {
+public class AddAdvertActivity extends BaseActivity {
 
     final Activity activity = this;
     @BindView(R.id.webView_mineFragment_Adver)
@@ -72,7 +72,7 @@ public class AddAdverActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_mine_advertise;
+        return R.layout.activity_add_advert;
     }
 
     @Override
@@ -97,7 +97,6 @@ public class AddAdverActivity extends BaseActivity {
 
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
-        String title = intent.getStringExtra("title");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
         settings.setJavaScriptEnabled(true);
@@ -160,17 +159,17 @@ public class AddAdverActivity extends BaseActivity {
 
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(AddAdverActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(AddAdverActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(AddAdverActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -224,31 +223,31 @@ public class AddAdverActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.rl_share_wx:
-                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                        new ShareAction(AddAdvertActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
                                 .withMedia(web)
                                 .setCallback(umShareListener)
                                 .share();
                         break;
                     case R.id.rl_share_wxfriend:
-                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        new ShareAction(AddAdvertActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                                 .withMedia(web)
                                 .setCallback(umShareListener)
                                 .share();
                         break;
                     case R.id.rl_share_qq:
-                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                        new ShareAction(AddAdvertActivity.this).setPlatform(SHARE_MEDIA.QQ)
                                 .withMedia(web)
                                 .setCallback(umShareListener)
                                 .share();
                         break;
                     case R.id.rl_share_qqzone:
-                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.QZONE)
+                        new ShareAction(AddAdvertActivity.this).setPlatform(SHARE_MEDIA.QZONE)
                                 .withMedia(web)
                                 .setCallback(umShareListener)
                                 .share();
                         break;
                     case R.id.rl_share_sina:
-                        new ShareAction(AddAdverActivity.this).setPlatform(SHARE_MEDIA.SINA)
+                        new ShareAction(AddAdvertActivity.this).setPlatform(SHARE_MEDIA.SINA)
                                 .withMedia(web)
                                 .setCallback(umShareListener)
                                 .share();
@@ -342,7 +341,7 @@ public class AddAdverActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.rl_top:
                 if (!SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
-                    Toast.makeText(AddAdverActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddAdvertActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mAddPosition = 1;

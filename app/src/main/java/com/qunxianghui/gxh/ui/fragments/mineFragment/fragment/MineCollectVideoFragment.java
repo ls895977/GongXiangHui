@@ -1,11 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -31,18 +28,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class MineCollectVideoFragment extends BaseFragment implements MineCollectVideoAdapter.MyCollectVideoClickListener {
+
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
-    Unbinder unbinder;
+
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
     private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
     private MineCollectVideoAdapter mineCollectVideoAdapter;
+
     @Override
     protected void onLoadData() {
         RequestMineCollectVideo();
@@ -121,11 +118,13 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
                             intent.putExtra("url", url);
                             intent.putExtra("uuid", uuid);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                            intent.putExtra("position", 4);
                             startActivity(intent);
                         }
                     }
                 });
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -147,20 +146,6 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     @Override
     public void initViews(View view) {
         xrecyclerMycollectVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override

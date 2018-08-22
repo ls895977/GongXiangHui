@@ -93,6 +93,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                 intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
                 intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
+                intent.putExtra("position", 4);
                 startActivity(intent);
             }
         });
@@ -122,21 +123,17 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        parsePersonDetailVideoData(response.body());
+                        HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(response.body(), HomeVideoListBean.class);
+                        if (homeVideoListBean.getCode() == 0) {
+                            int index = videoDataList.size();
+                            videoDataList.addAll(homeVideoListBean.getData().getList());
+                            mPage++;
+                            mRv.refreshComplete();
+                            personDetailVideoAdapter.notifyItemRangeChanged(index, homeVideoListBean.getData().getList().size());
+                            personDetailVideoAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
-    }
-
-    private void parsePersonDetailVideoData(String body) {
-        HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
-        if (homeVideoListBean.getCode() == 0) {
-            int index = videoDataList.size();
-            videoDataList.addAll(homeVideoListBean.getData().getList());
-            mPage++;
-            mRv.refreshComplete();
-            personDetailVideoAdapter.notifyItemRangeChanged(index, homeVideoListBean.getData().getList().size());
-            personDetailVideoAdapter.notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -203,6 +200,5 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             }
         });
     }
-
 
 }
