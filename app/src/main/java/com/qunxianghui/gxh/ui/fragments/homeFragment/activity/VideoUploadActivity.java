@@ -26,7 +26,6 @@ import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -120,6 +119,7 @@ public class VideoUploadActivity extends BaseActivity {
     }
 
     private void uploadVideo() {
+        mLoadView.setVisibility(View.VISIBLE);
         mVideoplayer.thumbImageView.buildDrawingCache();
         Bitmap bitmap = mVideoplayer.thumbImageView.getDrawingCache();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -132,11 +132,9 @@ public class VideoUploadActivity extends BaseActivity {
             fos.flush();
             uploadVideo(file, mVideoPath, mEditUpdateVideoTitle.getText().toString(),
                     mEditUpdateVideoContent.getText().toString(), mTypeId);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
+            mLoadView.setVisibility(View.GONE);
             e.printStackTrace();
-
         }
     }
 
@@ -149,7 +147,6 @@ public class VideoUploadActivity extends BaseActivity {
                         @Override
                         public void onSuccess(Response<String> response) {
                             parseVideoSortData(response.body());
-
                         }
                     });
         }
@@ -178,7 +175,6 @@ public class VideoUploadActivity extends BaseActivity {
         } else if (code == 300) {
             toActivity(LoginActivity.class);
         }
-
     }
 
     private void uploadVideo(File file, String videoPath, String title, String description, int videoId) {
@@ -194,6 +190,7 @@ public class VideoUploadActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<String> response) {
                         mIsUploadIng = false;
+                        mLoadView.setVisibility(View.GONE);
                         UploadVideo uploadVideo = GsonUtils.jsonFromJson(response.body(), UploadVideo.class);
                         if (uploadVideo != null && "0".equals(uploadVideo.code)) {
                             asyncShowToast("上传成功,请等待审核");
@@ -204,6 +201,7 @@ public class VideoUploadActivity extends BaseActivity {
                     @Override
                     public void onError(Response<String> response) {
                         mIsUploadIng = false;
+                        mLoadView.setVisibility(View.GONE);
                         asyncShowToast("上传失败...");
                     }
                 });

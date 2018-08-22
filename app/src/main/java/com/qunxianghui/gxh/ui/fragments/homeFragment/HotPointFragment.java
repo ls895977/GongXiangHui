@@ -126,7 +126,7 @@ public class HotPointFragment extends BaseFragment {
                 });
     }
 
-    private void setData(Response<CommonResponse<List<HomeNewListBean>>> response){
+    private void setData(Response<CommonResponse<List<HomeNewListBean>>> response) {
         if (response.body().code == 0) {
             List<HomeNewListBean> list = response.body().data;
             if (list == null || list.size() == 0) {
@@ -180,7 +180,7 @@ public class HotPointFragment extends BaseFragment {
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
                 intent.putExtra("uuid", homeNewListBean.getUuid());
-                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                 intent.putExtra("id", homeNewListBean.getId());
                 intent.putExtra("title", homeNewListBean.getTitle());
                 startActivity(intent);
@@ -206,18 +206,18 @@ public class HotPointFragment extends BaseFragment {
                         break;
                     case 2:
                         //跳转生活圈
-                        intent = new Intent(mActivity,ProtocolActivity.class);
+                        intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("url", Constant.HOME_LOCAL_SERVICE_URL);
-                        intent.putExtra("tag",1);
-                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                        intent.putExtra("tag", 1);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                         mActivity.startActivity(intent);
                         break;
                     case 3:
                         //跳转优惠
-                        intent = new Intent(mActivity,ProtocolActivity.class);
+                        intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
-                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
-                        intent.putExtra("tag",1);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        intent.putExtra("tag", 1);
                         mActivity.startActivity(intent);
                         break;
                     case 4:
@@ -240,7 +240,6 @@ public class HotPointFragment extends BaseFragment {
         HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
-            //轮播图的标题
             //轮播图的图片
             List<String> imags = new ArrayList<>();
             String image_src;

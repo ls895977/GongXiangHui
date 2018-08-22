@@ -18,9 +18,9 @@ import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
 public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoListBean.DataBean.ListBean> {
+
     private VideoListClickListener videoListClickListener;
     private RequestOptions options;
-
 
     public void setVideoListClickListener(VideoListClickListener videoListClickListener) {
         this.videoListClickListener = videoListClickListener;
@@ -46,15 +46,11 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         holder.setText(R.id.tv_item_collect_video_personname, listBean.getMember_name());
         holder.setText(R.id.tv_like, listBean.getLike_cnt());
         holder.setText(R.id.tv_comment, listBean.getComment_cnt());
-        JZVideoPlayerStandard videoPlayer = holder.getView(R.id.videoplayer);
+        final JZVideoPlayerStandard videoPlayer = holder.getView(R.id.videoplayer);
         videoPlayer.setUp(listBean.getVideo_url(), JZVideoPlayer.SCREEN_WINDOW_LIST, listBean.getTitle());
         options = new RequestOptions();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
-        Glide.with(mContext).load(listBean.getPicurl()).apply(options).into(videoPlayer.thumbImageView);
-        options.centerCrop();
-        options.circleCrop();
-        Glide.with(mContext).load(listBean.getMember_avatar()).apply(options).into(personHeadImag);
+        Glide.with(mContext).load(listBean.getPicurl()).apply(options.placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(videoPlayer.thumbImageView);
+        Glide.with(mContext).load(listBean.getMember_avatar()).apply(options.centerCrop().circleCrop()).into(personHeadImag);
 
         personHeadImag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +70,12 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
                 videoListClickListener.videoLikeItemClick(position);
             }
         });
+        holder.getView(R.id.tv_mycollect_video_paster).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoListClickListener.videoAddAdvert(position);
+            }
+        });
     }
 
 
@@ -91,5 +93,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
 
         /*视频的喜欢*/
         void videoLikeItemClick(int position);
+
+        void videoAddAdvert(int position);
     }
 }

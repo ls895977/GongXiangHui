@@ -1,10 +1,15 @@
 package com.qunxianghui.gxh.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -79,6 +84,11 @@ public class WelcomeActivity extends BaseActivity {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_text);
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
+            }
+        }
     }
 
     private int getCount() {
