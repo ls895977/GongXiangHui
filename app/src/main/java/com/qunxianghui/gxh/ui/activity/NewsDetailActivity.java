@@ -60,6 +60,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private ClipboardManager mClipboardManager;
     private MyCollectNewsDetailBean.DataBean mDataList;
     private StringBuffer mBuffer;
+    private String mDescrip;
 
     @Override
     protected int getLayoutId() {
@@ -73,6 +74,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         title = intent.getStringExtra("title");
+        mDescrip = intent.getStringExtra("descrip");
         int uuid = intent.getIntExtra("uuid", 0);
 //        int id = intent.getIntExtra("id", 0);
         String mToken = intent.getStringExtra("token");
@@ -175,6 +177,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         intent = new Intent(mContext, AddAdvertActivity.class);
                     }
                     intent.putExtra("url", mBuffer.toString());
+                    intent.putExtra("descrip",mDescrip);
                     startActivity(intent);
                 }
                 break;
@@ -234,7 +237,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
             web.setTitle(title);//标题
             web.setThumb(image);  //缩略图
-//        web.setDescription("你要分享内容的描述");//描述
+            web.setDescription(mDescrip);//描述
             View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
             mUmShareDialog.setContentView(view);
             View.OnClickListener listener = new View.OnClickListener() {

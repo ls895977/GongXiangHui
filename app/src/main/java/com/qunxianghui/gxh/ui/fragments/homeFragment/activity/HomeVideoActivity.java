@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
 
@@ -48,6 +50,9 @@ public class HomeVideoActivity extends BaseActivity {
     ViewPager mHomeVideoViewpager;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
+    @BindView(R.id.ll_home_video_search)
+    LinearLayout llHomeVideoSearch;
+
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> mFragments = new ArrayList<>();
     private String[] mTitles;
@@ -107,6 +112,7 @@ public class HomeVideoActivity extends BaseActivity {
 
     @Override
     protected void initListeners() {
+
         mSlidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -120,13 +126,13 @@ public class HomeVideoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_search, R.id.tv_address, R.id.iv_video_more_columns})
+    @OnClick({R.id.iv_back, R.id.tv_address, R.id.iv_video_more_columns,R.id.ll_home_video_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_search:
+            case R.id.ll_home_video_search:
                 toActivity(SearchVideoActivity.class);
                 break;
             case R.id.tv_address:
@@ -163,4 +169,13 @@ public class HomeVideoActivity extends BaseActivity {
         }
         super.onBackPressed();
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+
 }

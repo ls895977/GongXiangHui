@@ -7,6 +7,11 @@
 
     <include layout="@layout/activity_title" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/grid_bianmin"
         android:layout_width="match_parent"

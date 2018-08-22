@@ -69,6 +69,7 @@ public class AddAdvertActivity extends BaseActivity {
     private int mAddPosition = -1;
     private Dialog dialog;
     private UMWeb web;
+    private String mDescrip;
 
     @Override
     protected int getLayoutId() {
@@ -97,6 +98,7 @@ public class AddAdvertActivity extends BaseActivity {
 
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        mDescrip = intent.getStringExtra("descrip");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
         settings.setJavaScriptEnabled(true);
@@ -187,9 +189,9 @@ public class AddAdvertActivity extends BaseActivity {
                             if (data != null) {
                                 startThirdShare(data.url, data.title, data.imgUrl);
                             }
-//                            else if (r == 105) {
-//                                Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
-//                            }
+                            else if (response.body().code == 105) {
+                                Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -205,7 +207,7 @@ public class AddAdvertActivity extends BaseActivity {
         web = new UMWeb(url);
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
-//        web.setDescription("你要分享内容的描述");//描述
+        web.setDescription(mDescrip);//描述
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
         RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);

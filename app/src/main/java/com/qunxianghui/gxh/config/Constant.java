@@ -10,6 +10,8 @@ public class Constant {
     public static final String YouXuan = "http://www.qunxianghui.com/optimization";
     //群享汇服务协议链接的跳转
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
+    //便民服务中的黄历
+    public static final String BIANMIN_HUANGLI_URL= "http://yun.rili.cn/wnl/m/huangli.html?channel=bttoutiao";
     //正式环境
     //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
     //本地环境

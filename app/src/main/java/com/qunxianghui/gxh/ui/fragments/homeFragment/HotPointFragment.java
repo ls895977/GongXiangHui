@@ -183,6 +183,7 @@ public class HotPointFragment extends BaseFragment {
                 intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                 intent.putExtra("id", homeNewListBean.getId());
                 intent.putExtra("title", homeNewListBean.getTitle());
+                intent.putExtra("descrip", homeNewListBean.getContent());
                 startActivity(intent);
             }
         });

@@ -35,7 +35,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -49,7 +50,7 @@
 
         <!-- app的入口 -->
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name=".ui.fragments.homeFragment.activity.SplashActivity"
             android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -310,10 +311,20 @@
             android:name=".ui.activity.GeneralMaterialActivity"
             android:screenOrientation="portrait" />
         <!--首页常用电话-->
-        <activity android:name=".ui.fragments.homeFragment.activity.CommoentCallActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.fragments.mineFragment.activity.AddTiePianAdvertActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.CommoentCallActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.AddTiePianAdvertActivity"
+            android:screenOrientation="portrait" />
+        <!--启动广告页-->
+        <activity
+            android:name=".ui.activity.WelcomeActivity"
+            android:screenOrientation="portrait" />
+        <!--引导页-->
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.GuidActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 

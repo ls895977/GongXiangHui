@@ -46,7 +46,7 @@ public class BianMinServiceActivity extends BaseActivity {
                     case 1:
                         Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.BenDiService);
+                        intent.putExtra("url", Constant.BIANMIN_HUANGLI_URL);
                         intent.putExtra("tag", 2);
                         startActivity(intent);
                         break;
