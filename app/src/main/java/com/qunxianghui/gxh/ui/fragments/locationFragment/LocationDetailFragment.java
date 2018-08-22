@@ -410,7 +410,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         intent.putExtra("member_id", localDataList.get(position).getMember_id());
         startActivity(intent);
     }
-
     private TextView tvContent;
 
     @Override
