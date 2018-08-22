@@ -17,11 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.AddAdvert;
+import com.qunxianghui.gxh.bean.EnterpriseMaterial;
+import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.bean.ShareInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -110,17 +113,50 @@ public class AddTiePianAdvertActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        OkGo.<AddAdvert>get(Constant.GET_ADVERT)
+        OkGo.<PersonalAds>get(Constant.GET_AD_LIST)
                 .params("position", 4)
-                .execute(new JsonCallback<AddAdvert>() {
+                .execute(new JsonCallback<PersonalAds>() {
                     @Override
-                    public void onSuccess(Response<AddAdvert> response) {
-                        AddAdvert body = response.body();
-                        if (body != null && body.code == 200) {
-
+                    public void onSuccess(Response<PersonalAds> response) {
+                        PersonalAds body = response.body();
+                        if (body != null && body.code == 200 && !body.data.isEmpty()) {
+                            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = body.data.get(0);
+                            Glide.with(AddTiePianAdvertActivity.this).load(companyAdvert.images)
+                                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(mIv);
+                            mTvType.setVisibility(View.VISIBLE);
+                            mTvSeconds.setVisibility(View.VISIBLE);
+                            mTvTop.setVisibility(View.VISIBLE);
+                            switch (companyAdvert.settings.operate) {
+                                case 1:
+                                    mTvType.setText("图片点击效果：跳转链接");
+                                    break;
+                                case 2:
+                                    mTvType.setText("图片点击效果：拨打电话");
+                                    break;
+                                case 3:
+                                    mTvType.setText("图片点击效果：联系QQ");
+                                    break;
+                            }
+                            mTvTop.setText(String.format("%s广告", companyAdvert.settings.time));
+                            mTvSeconds.setText(String.format("广告显示时间：%s", companyAdvert.settings.time));
+                        } else {
+                            resetView();
                         }
                     }
+
+                    @Override
+                    public void onError(Response<PersonalAds> response) {
+                        super.onError(response);
+                        resetView();
+                    }
                 });
+    }
+
+    private void resetView() {
+        mIv.setImageResource(R.mipmap.icon_add_tiepian);
+        mTvType.setVisibility(View.GONE);
+        mTvSeconds.setVisibility(View.GONE);
+        mTvTop.setVisibility(View.GONE);
     }
 
     private void getShareInfo() {
@@ -247,7 +283,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 0x0022) {
-
+            initData();
         }
     }
 
