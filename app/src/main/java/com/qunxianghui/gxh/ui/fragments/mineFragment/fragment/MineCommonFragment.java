@@ -39,21 +39,16 @@ import butterknife.Unbinder;
  */
 
 public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener {
-
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
-
     private Handler handler = new Handler();
-
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
     private int mMemberId;
-
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
@@ -68,7 +63,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         }
         LoadMycolectNews();
     }
-
     private void LoadMycolectNews() {
         OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 12)
@@ -97,22 +91,24 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         if (myCollectPostBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
-                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                myCollectPostAdapter.setCollectOnClickListener(this);
-                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-                myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        int id = dataList.get(position).getData_uuid();
-                        SkipMycollectNewsDetail(id,position);
-                    }
-                });
+                    myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                    myCollectPostAdapter.setCollectOnClickListener(this);
+                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                    myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View v, int position) {
+                            int id = dataList.get(position).getData_uuid();
+                            SkipMycollectNewsDetail(id,position);
+                        }
+                    });
+                }
+
             }
             xrecycler_mine_collect_news.refreshComplete();
             myCollectPostAdapter.notifyDataSetChanged();
             myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
-    }
+
     /**
      * 跳转新闻详情页
      * @param id

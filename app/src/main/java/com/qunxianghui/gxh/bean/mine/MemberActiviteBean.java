@@ -61,10 +61,10 @@ public class MemberActiviteBean {
         private long mobile;
         private String email;
         private String avatar;
+        private String code_endtime;
         private int company_id;
         private CompanyInfoBean company_info;
         private AccessTokenInfoBean accessTokenInfo;
-        private String code_endtime;
 
         public String getCode_endtime() {
             return code_endtime;

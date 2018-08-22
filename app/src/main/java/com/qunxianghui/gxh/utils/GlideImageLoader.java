@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.qunxianghui.gxh.R;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -20,8 +22,14 @@ public class GlideImageLoader extends ImageLoader {
          传输的到的是什么格式，那么这种就使用Object接收和返回，你只需要强转成你传输的类型就行，
          切记不要胡乱强转！
          */
+
+        RequestOptions options=new RequestOptions();
+        options.error(R.mipmap.default_img);
+        options.placeholder(R.mipmap.default_img);
+        options.centerCrop();
         Glide.with(context.getApplicationContext())
                 .load(path)
+                .apply(options)
                 .into(imageView);
     }
 

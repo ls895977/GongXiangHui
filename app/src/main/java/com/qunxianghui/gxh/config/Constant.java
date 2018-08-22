@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.config;
  * Created by Administrator on 2018/3/22 0022.
  */
 public class Constant {
+    public static final String KEY_HAS_GUIDE = "key_has_guide";
     public static final long TIME_OUT = 3000;//网络请求超时时//     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";间
     //首页精选链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com/optimization";

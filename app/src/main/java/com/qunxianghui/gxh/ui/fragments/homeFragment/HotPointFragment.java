@@ -56,7 +56,6 @@ public class HotPointFragment extends BaseFragment {
     RecyclerView mRv;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-
     private Banner viewpagerHome;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
@@ -69,7 +68,6 @@ public class HotPointFragment extends BaseFragment {
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_hot_point;
@@ -81,7 +79,6 @@ public class HotPointFragment extends BaseFragment {
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
         }
-
         homeItemListAdapter = new HomeItemListAdapter();
         homeItemListAdapter.setNewData(dataList);
         if (mChannelId == -1) {
@@ -95,7 +92,6 @@ public class HotPointFragment extends BaseFragment {
             homeItemListAdapter.addHeaderView(headerVp, 1);
         }
     }
-
     @Override
     public void initData() {
         //首页新闻数据
@@ -110,7 +106,6 @@ public class HotPointFragment extends BaseFragment {
                     }
                 });
     }
-
     /**
      * 首页下拉刷新 新的接口
      */
@@ -193,7 +188,6 @@ public class HotPointFragment extends BaseFragment {
         });
     }
 
-
     private void initGuideAndBanner() {
         BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
@@ -247,21 +241,15 @@ public class HotPointFragment extends BaseFragment {
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
             //轮播图的标题
-            List<String> titles = new ArrayList<>();
             //轮播图的图片
             List<String> imags = new ArrayList<>();
             String image_src;
-            String title;
             for (int i = 0; i < lunboData.size(); i++) {
                 image_src = lunboData.get(i).getImage_src();  //图片
-                title = lunboData.get(i).getTitle();        //title
 //                //轮播图跳转的url
-//                image_url = lunboData.get(i).getImage_url();
                 imags.add(image_src);
-                titles.add(title);
             }
-            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
-                    .setBannerTitles(titles)
+            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.NOT_INDICATOR)
                     .setDelayTime(3000)
                     .setBannerAnimation(Transformer.Tablet)
                     .setImageLoader(new GlideImageLoader())
