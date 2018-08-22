@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -207,7 +208,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             public void onClick(View v) {
                 String content = holder.comment_edit.getText().toString();
                 if (listener != null) {
-                    listener.onCommentClick(position, content);
+                    listener.onCommentClick(position, content,holder.itemView);
                 }
             }
         });
@@ -228,7 +229,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                         break;
                     case 2://评论
                         if (listener != null) {
-                            listener.onCommentClick(position, "");
+                            listener.onCommentClick(position, "",holder.itemView);
                         }
                         break;
                 }
@@ -320,7 +321,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void onPicClick(int position, int picpostion);
 
         /* 评论点击 */
-        void onCommentClick(int position, String content);
+        void onCommentClick(int position, String content,View itemView);
 
         /* 点赞 */
         void onPraiseClick(int position);
