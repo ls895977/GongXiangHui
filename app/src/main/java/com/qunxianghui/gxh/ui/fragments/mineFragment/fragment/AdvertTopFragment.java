@@ -244,7 +244,17 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mList.get(mVp.getCurrentItem()).settings.is_link = isChecked ? 1 : 0;
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = mList.get(mVp.getCurrentItem()).settings;
+                EditText etLink = mViewList.get(mVp.getCurrentItem()).findViewById(R.id.et_link);
+                if (isChecked) {
+                    settings.is_link = 1;
+                    etLink.setText(AdvertTemplateActivity.mLinkUrl);
+                    settings.link = AdvertTemplateActivity.mLinkUrl;
+                } else {
+                    settings.is_link = 0;
+                    etLink.setText("");
+                    settings.link = "";
+                }
             }
         });
         EditText etLink = view.findViewById(R.id.et_link);

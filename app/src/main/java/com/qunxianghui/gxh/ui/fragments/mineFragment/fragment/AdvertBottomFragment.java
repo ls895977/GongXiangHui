@@ -44,7 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener
-        , CompoundButton.OnCheckedChangeListener, AdvertChoosePicDialog.ImgPickListener, AdvertChooseTypeDialog.Callback{
+        , CompoundButton.OnCheckedChangeListener, AdvertChoosePicDialog.ImgPickListener, AdvertChooseTypeDialog.Callback {
 
     @BindView(R.id.rv)
     RecyclerView mRv;
@@ -103,7 +103,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 });
     }
 
-    private void addData(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum){
+    private void addData(EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum) {
         switch (datum.ad_type) {
             case 1:
                 addBigPage(datum);
@@ -328,7 +328,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     mList.add(companyAdvert);
                     addData(companyAdvert);
                 }
-            }else {
+            } else {
                 EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
                 Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
                         .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
@@ -359,7 +359,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
                         .into(getCurrentImageView(companyAdvert.images));
             }
-            GeneralMateriaItemFragment.clearData();        }
+            GeneralMateriaItemFragment.clearData();
+        }
     }
 
     private ImageView getCurrentImageView(String path) {
@@ -391,6 +392,20 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             mList.get(mVp.getCurrentItem()).settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
         }
         return mList.get(mVp.getCurrentItem()).settings;
+    }
+
+    private void setLink(boolean isChecked) {
+        EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = getCurrentSettings();
+        EditText etLink = mViewList.get(mVp.getCurrentItem()).findViewById(R.id.et_link);
+        if (isChecked) {
+            settings.is_link = 1;
+            settings.link = AdvertTemplateActivity.mLinkUrl;
+            etLink.setText(AdvertTemplateActivity.mLinkUrl);
+        } else {
+            settings.is_link = 0;
+            settings.link = "";
+            etLink.setText("");
+        }
     }
 
     private void addBigPage(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert) {
@@ -430,7 +445,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                getCurrentSettings().is_link = isChecked ? 1 : 0;
+                setLink(isChecked);
             }
         });
 
@@ -535,7 +550,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                getCurrentSettings().is_link = isChecked ? 1 : 0;
+                setLink(isChecked);
             }
         });
         EditText etLink = view.findViewById(R.id.et_link);

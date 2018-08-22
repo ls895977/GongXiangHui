@@ -65,7 +65,7 @@ public class AddAdvertActivity extends BaseActivity {
 
     private UMShareListener umShareListener;
     private String url;
-    //添加位置0顶部，1中间，2底部
+    //添加位置0底部，1顶部，2贴片
     private int mAddPosition = -1;
     private Dialog dialog;
     private UMWeb web;
@@ -347,7 +347,7 @@ public class AddAdvertActivity extends BaseActivity {
                 mAddPosition = 1;
                 break;
             case R.id.rl_bottom:
-                mAddPosition = 2;
+                mAddPosition = 0;
                 break;
         }
         goToAdvertTemplateActivity();
@@ -375,7 +375,7 @@ public class AddAdvertActivity extends BaseActivity {
             banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-                    mAddPosition = 2;
+                    mAddPosition = 0;
                     goToAdvertTemplateActivity();
                 }
             });
