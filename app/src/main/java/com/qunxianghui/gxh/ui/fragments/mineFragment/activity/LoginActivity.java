@@ -77,14 +77,11 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
-
     private IWXAPI mWxApi;
     private String openId;
     /*1为QQ,2为微信*/
     private String thirdType;
     private String companyName;
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;

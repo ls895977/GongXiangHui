@@ -64,6 +64,15 @@ public class MemberActiviteBean {
         private int company_id;
         private CompanyInfoBean company_info;
         private AccessTokenInfoBean accessTokenInfo;
+        private String code_endtime;
+
+        public String getCode_endtime() {
+            return code_endtime;
+        }
+
+        public void setCode_endtime(String code_endtime) {
+            this.code_endtime = code_endtime;
+        }
 
         public int getId() {
             return id;

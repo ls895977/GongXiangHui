@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,7 +28,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
     TextView tvMemberActiviteQuickly;
     @BindView(R.id.iv_memberup_activite_back)
     ImageView ivMemberupActiviteBack;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_active;
@@ -35,7 +36,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
     @Override
     protected void initData() {
         super.initData();
-
 
     }
 
@@ -52,23 +52,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(response.body());
-//                            int code = jsonObject.getInt("code");
-//                            String msg = jsonObject.getString("msg");
-//                            if (code == 0) {
-//                                asyncShowToast(msg);
-//
-//                                finish();
-//                            } else if (code == 101) {
-//                                asyncShowToast("序列号不存在");
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-
-
                         ParseActivieData(response.body());
                     }
 
@@ -81,7 +64,24 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
 
     private void ParseActivieData(String body) {
         MemberActiviteBean memberActiviteBean = GsonUtils.jsonFromJson(body, MemberActiviteBean.class);
-        
+        int code = memberActiviteBean.getCode();
+        String msg = memberActiviteBean.getMsg();
+        MemberActiviteBean.DataBean memberData = memberActiviteBean.getData();
+        if (code == 0) {
+            asyncShowToast(msg);
+            String avatar = memberData.getAvatar();
+            int company_id = memberData.getCompany_id();
+            String code_endtime = memberData.getCode_endtime();
+            SharedPreferences companyData = getSharedPreferences("companymessage",  Context.MODE_PRIVATE);
+            SharedPreferences.Editor spCompanymessageEditor = companyData.edit();
+            spCompanymessageEditor.putString("expire_time", code_endtime);
+            spCompanymessageEditor.putString("avatar",avatar );
+            spCompanymessageEditor.apply();
+            finish();
+        } else if (code == 101) {
+            asyncShowToast(msg);
+        }
+
     }
 
     @Override
@@ -95,7 +95,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.iv_memberup_activite_back:
                 finish();
                 break;

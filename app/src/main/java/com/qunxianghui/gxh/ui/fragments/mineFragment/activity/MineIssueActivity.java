@@ -50,7 +50,6 @@ public class MineIssueActivity extends BaseActivity {
         for (String tab : titles) {
             mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
         }
-
     }
 
     @SuppressLint("ResourceAsColor")
