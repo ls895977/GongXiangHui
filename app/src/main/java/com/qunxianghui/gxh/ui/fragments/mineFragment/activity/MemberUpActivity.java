@@ -92,7 +92,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         options.error(R.mipmap.default_img);
         Glide.with(mContext).load(avatar).apply(options).into(ivCompanyHead);
         Glide.with(mContext).load(avatar).apply(options).into(ivRegistHead);
-
         if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
             mTvMemberupQuicklyActive.setVisibility(View.GONE);
             tvMemberupPersonActive.setVisibility(View.GONE);

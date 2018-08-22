@@ -12,9 +12,9 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.mine.MemberActiviteBean;
 import com.qunxianghui.gxh.config.Constant;
-
-import org.json.JSONObject;
+import com.qunxianghui.gxh.utils.GsonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,19 +53,23 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onSuccess(Response<String> response) {
 
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                asyncShowToast("该账号已激活");
-                                finish();
-                            } else if (code == 101) {
-                                asyncShowToast("序列号不存在");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(response.body());
+//                            int code = jsonObject.getInt("code");
+//                            String msg = jsonObject.getString("msg");
+//                            if (code == 0) {
+//                                asyncShowToast(msg);
+//
+//                                finish();
+//                            } else if (code == 101) {
+//                                asyncShowToast("序列号不存在");
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
 
+
+                        ParseActivieData(response.body());
                     }
 
                     @Override
@@ -73,6 +77,11 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
                         super.onError(response);
                     }
                 });
+    }
+
+    private void ParseActivieData(String body) {
+        MemberActiviteBean memberActiviteBean = GsonUtils.jsonFromJson(body, MemberActiviteBean.class);
+        
     }
 
     @Override
