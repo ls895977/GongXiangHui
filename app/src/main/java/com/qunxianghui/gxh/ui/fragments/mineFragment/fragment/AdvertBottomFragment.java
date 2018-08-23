@@ -268,15 +268,15 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             case R.id.btnPicFromLocal:
                 mIsBottomClick = false;
                 intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
-                intent.putExtra("type", 9);
+                intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
                 intent.putExtra("isMultiSelect", false);
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnCommon:
                 mIsBottomClick = false;
                 intent = new Intent(mActivity, GeneralMaterialActivity.class);
-                intent.putExtra("isMultiSelect", false);
                 intent.putExtra("type", 3);
+                intent.putExtra("isMultiSelect", false);
                 startActivityForResult(intent, 0x0011);
                 break;
         }
