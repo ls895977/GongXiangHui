@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertBottomFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTiePianFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTopFragment;
@@ -102,6 +103,11 @@ public class AdvertTemplateActivity extends BaseActivity {
         mSegmentTab.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
+                if (!SPUtils.getBoolean(SpConstant.IS_COMPANY)) {
+                    mSegmentTab.setCurrentTab(0);
+                    asyncShowToast("注册会员只可操作底部广告");
+                    return;
+                }
                 mVp.setCurrentItem(position, false);
             }
 

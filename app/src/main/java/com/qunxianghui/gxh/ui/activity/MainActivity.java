@@ -24,7 +24,6 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.ui.dialog.LoginDialog;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.HomeFragment;
@@ -136,10 +135,14 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})
     public void onViewClicked(View view) {
-        if (mCurrentView == view) {
-            if (view.getId() == R.id.ll_issue) {
-                showOneKeyIssuePop();
+        if (view.getId() == R.id.ll_issue) {
+            if (!LoginMsgHelper.isLogin()) {
+                toActivity(LoginActivity.class);
+                return;
             }
+            showOneKeyIssuePop();
+        }
+        if (mCurrentView == view) {
             return;
         }
         if ((view.getId() == R.id.tv_generation || view.getId() == R.id.tv_mine) && !LoginMsgHelper.isLogin()) {
@@ -164,7 +167,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mFragments[1];
                 break;
             case R.id.ll_issue:
-                showOneKeyIssuePop();
+//                showOneKeyIssuePop();
                 mTvIssue.setSelected(true);
                 break;
             case R.id.tv_generation:
@@ -232,11 +235,10 @@ public class MainActivity extends BaseActivity {
 
     /*弹出一键发布的pop*/
     private void showOneKeyIssuePop() {
-//        if (dialog == null) {
-//            dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
-//        }
-//        dialog.blurBg().show();
-        new LoginDialog(this).show();
+        if (dialog == null) {
+            dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
+        }
+        dialog.blurBg().show();
     }
 }
 

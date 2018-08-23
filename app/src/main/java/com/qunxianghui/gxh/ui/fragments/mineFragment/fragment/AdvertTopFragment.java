@@ -377,13 +377,13 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                         GeneralMateriaItemFragment.clearData();
                         return;
                     }
-                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
+                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(i);
                     companyAdvert.id = 0;
                     mList.add(companyAdvert);
                     addPage(companyAdvert);
                 }
             } else {
-                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(0);
                 Glide.with(AdvertTopFragment.this).load(companyAdvert.images)
                         .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
                         .into(getCurrentImageView(companyAdvert.images));

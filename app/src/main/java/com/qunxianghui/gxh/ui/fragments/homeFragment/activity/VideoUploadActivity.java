@@ -1,10 +1,12 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -113,6 +115,7 @@ public class VideoUploadActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.tv_type:
+                hideKeyboard(view);
                 chooseVideoType();
                 break;
         }
@@ -205,6 +208,14 @@ public class VideoUploadActivity extends BaseActivity {
                         asyncShowToast("上传失败...");
                     }
                 });
+    }
+
+    public static void hideKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
     }
 
 }

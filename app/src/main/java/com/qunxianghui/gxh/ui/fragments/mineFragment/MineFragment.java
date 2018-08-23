@@ -180,7 +180,6 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.write_advertise:
                 intent = new Intent(mActivity, AdvertTemplateActivity.class);
-                intent.putExtra("adverTag", 1);
                 startActivity(intent);
                 break;
             case R.id.ll_mine_set:
