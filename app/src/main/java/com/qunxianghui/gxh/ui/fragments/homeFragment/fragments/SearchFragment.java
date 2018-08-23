@@ -15,8 +15,10 @@ import com.qunxianghui.gxh.adapter.homeAdapter.SearchFragmentAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.SearchBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
 
@@ -103,8 +105,9 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
         String url = mBean.getData().getList().get(position).getUrl();
         int uuid = mBean.getData().getList().get(position).getUuid();
         Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-        intent.putExtra("url", url);
+        intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
         intent.putExtra("uuid",uuid);
+        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
         startActivity(intent);
     }
 }

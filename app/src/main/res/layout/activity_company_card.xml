@@ -43,97 +43,117 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_companycard_center_advance"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="140dp">
+            android:layout_marginTop="140dp"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="1dp">
 
-            <LinearLayout
-                android:id="@+id/ll_companycard_diamond"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@mipmap/icon_companycard_rectangle"
-                android:gravity="center">
+            <RelativeLayout
+                android:id="@+id/rl_companycard_center_advance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp">
 
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/ll_companycard_diamond"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@mipmap/icon_companycard_rectangle"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/icon_companycard_diamond" />
+                </LinearLayout>
+
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@mipmap/icon_companycard_diamond" />
-            </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/ll_companycard_diamond"
+                    android:text="核心优势"
+                    android:textColor="#444444"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+
+                    android:background="@mipmap/common_black_row_right" />
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/ll_companycard_diamond"
-                android:text="核心优势"
-                android:textColor="#444444"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="7dp"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-
-                android:background="@mipmap/common_black_row_right" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_companycard_company_product"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="1dp">
 
-            <LinearLayout
-                android:id="@+id/ll_companycard_goodselect"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@mipmap/icon_companycard_rectangle"
-                android:gravity="center">
+            <RelativeLayout
+                android:id="@+id/rl_companycard_company_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp">
 
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/ll_companycard_goodselect"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@mipmap/icon_companycard_rectangle"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/icon_companycard_goodselect" />
+                </LinearLayout>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@mipmap/icon_companycard_goodselect" />
-            </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/ll_companycard_goodselect"
+                    android:text="公司产品"
+                    android:textColor="#444444"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/ll_companycard_goodselect"
-                android:text="公司产品"
-                android:textColor="#444444"
-                android:textSize="14sp" />
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
 
-            <ImageView
-                android:layout_width="7dp"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-
-                android:background="@mipmap/common_black_row_right" />
-        </RelativeLayout>
+                    android:background="@mipmap/common_black_row_right" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="163dp"
-        android:layout_marginTop="70dp"
-        app:cardCornerRadius="5dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:cardElevation="5dp">
+        android:layout_marginTop="70dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="1dp">
 
         <LinearLayout
             android:id="@+id/rl_mine_person_data"

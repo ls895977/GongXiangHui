@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,16 +36,22 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         RoundImageView personHeadImag = holder.getView(R.id.round_item_collect_video_personhead);
         ImageView ivCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
         ImageView mIvItemCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
+        TextView mTvCommentCount = holder.getView(R.id.tv_comment);
         int is_like = listBean.getIs_like();
         if (is_like == 0) {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
+
+
         } else {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_select);
-        }
+
+
+
+        }  holder.setText(R.id.tv_like, listBean.getLike_cnt());
 
         holder.setText(R.id.tv_mycollect_video_attention, TextUtils.isEmpty(listBean.getFollow()) ? "+关注" : "已关注");
         holder.setText(R.id.tv_item_collect_video_personname, listBean.getMember_name());
-        holder.setText(R.id.tv_like, listBean.getLike_cnt());
+
         holder.setText(R.id.tv_comment, listBean.getComment_cnt());
         final JZVideoPlayerStandard videoPlayer = holder.getView(R.id.videoplayer);
         videoPlayer.setUp(listBean.getVideo_url(), JZVideoPlayer.SCREEN_WINDOW_LIST, listBean.getTitle());

@@ -51,7 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
-        android:src="@mipmap/bianmin_call" />
+        android:src="@mipmap/icon_comment_call" />
 
     <View
         android:layout_width="match_parent"

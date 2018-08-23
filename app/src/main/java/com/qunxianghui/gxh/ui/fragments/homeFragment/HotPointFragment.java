@@ -249,7 +249,7 @@ public class HotPointFragment extends BaseFragment {
 //                //轮播图跳转的url
                 imags.add(image_src);
             }
-            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.NOT_INDICATOR)
+            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                     .setDelayTime(3000)
                     .setBannerAnimation(Transformer.Tablet)
                     .setImageLoader(new GlideImageLoader())

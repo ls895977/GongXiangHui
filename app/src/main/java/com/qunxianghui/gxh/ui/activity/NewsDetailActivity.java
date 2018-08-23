@@ -15,10 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +66,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private MyCollectNewsDetailBean.DataBean mDataList;
     private StringBuffer mBuffer;
     private String mDescrip;
+    private Dialog mLoadingDialog;
 
     @Override
     protected int getLayoutId() {
@@ -69,6 +75,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
+
+        mLoadingDialog = createLoadingDialog(NewsDetailActivity.this, "加载中...");
+        mLoadingDialog.show();
+
         //这句是调取粘贴的系统服务
         mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         Intent intent = getIntent();
@@ -80,6 +90,26 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
         mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
+    }
+
+    private Dialog createLoadingDialog(Context context, String msg) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
+        LinearLayout layout = v.findViewById(R.id.dialog_view);//加载布局
+        // main.xml中的ImageView
+        ImageView spaceshipImage = v.findViewById(R.id.dialog_img);
+        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
+        //加载动画
+        final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
+        //使用imageView显示动画
+        spaceshipImage.startAnimation(animation);
+        tipTextView.setText(msg);  //设置加载信息
+        final Dialog loadingDialog = new Dialog(context);
+        loadingDialog.setCancelable(true);  //不可以用返回键 取消
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
+        return loadingDialog;
+
     }
 
     @Override
@@ -96,6 +126,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         settings.setDisplayZoomControls(false);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setAppCacheEnabled(true);
+        mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    mLoadingDialog.dismiss();
+                }
+            }
+        });
         mWedNewsDetail.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -177,7 +215,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         intent = new Intent(mContext, AddAdvertActivity.class);
                     }
                     intent.putExtra("url", mBuffer.toString());
-                    intent.putExtra("descrip",mDescrip);
+                    intent.putExtra("descrip", mDescrip);
                     startActivity(intent);
                 }
                 break;
