@@ -48,7 +48,7 @@ public class ComPanyProductActivity extends BaseActivity {
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(mContext, AddProductActivity.class);
                 intent.putExtra("info", mDataList.get(position - 1));
-                startActivity(intent);
+                ComPanyProductActivity.this.startActivityForResult(intent, 0x0011);
             }
         });
     }
@@ -57,7 +57,7 @@ public class ComPanyProductActivity extends BaseActivity {
     protected void initData() {
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
                 .params("datatype", 2)
-                .params("limit", 5)
+                .params("limit", 10)
                 .params("skip", mPage)
                 .execute(new StringCallback() {
                     @Override
@@ -68,6 +68,7 @@ public class ComPanyProductActivity extends BaseActivity {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
+                        mXrecyclerActivityProduct.setLoadingMoreEnabled(false);
                         Logger.e("上传失败了" + response.message());
                     }
                 });
@@ -78,13 +79,17 @@ public class ComPanyProductActivity extends BaseActivity {
         if (mIsRefresh) {
             mIsRefresh = false;
             mDataList.clear();
+            mXrecyclerActivityProduct.setLoadingMoreEnabled(true);
         }
         mDataList.addAll(mAddAdvanceBean.getData());
         mPage++;
         int code = mAddAdvanceBean.getCode();
         if (code == 200) {
+            mXrecyclerActivityProduct.setLoadingMoreEnabled(mAddAdvanceBean.getData().size() >= 10);
             mXrecyclerActivityProduct.refreshComplete();
             mProductAdapter.notifyDataSetChanged();
+        } else {
+            mXrecyclerActivityProduct.setLoadingMoreEnabled(false);
         }
     }
 
@@ -115,6 +120,16 @@ public class ComPanyProductActivity extends BaseActivity {
             case R.id.bt_add_product:
                 toActivityWithResult(AddProductActivity.class, 0x0011);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 0x0022) {
+            mIsRefresh = true;
+            mPage = 0;
+            initData();
         }
     }
 }

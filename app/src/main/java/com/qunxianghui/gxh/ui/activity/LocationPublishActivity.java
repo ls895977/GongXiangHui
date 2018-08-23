@@ -110,7 +110,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<ImageItem> images = new ArrayList<>();
+        ArrayList<ImageItem> images;
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
@@ -286,6 +286,5 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         } else {
             asyncShowToast(homeVideoSortBean.getMsg());
         }
-
     }
 }
