@@ -125,11 +125,10 @@ public class ComPanyAdvanceActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0x22) {
+        if (resultCode == 0x0022) {
             mIsRefresh = true;
             mPage = 0;
             initData();
         }
     }
-
 }

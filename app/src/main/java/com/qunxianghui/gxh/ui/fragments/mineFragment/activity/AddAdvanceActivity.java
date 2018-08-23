@@ -197,7 +197,7 @@ public class AddAdvanceActivity extends BaseActivity {
 
     /*修改企业核心优势*/
     private void editCompanyCardAdvance() {
-        OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
+        OkGo.<String>post(Constant.EDIT_COMPANY_CENTER_ADVANCE).
                 params("title", mEtAddAdvanceTitle.getText().toString().trim()).
                 params("aboutus_id", mId).
                 params("describe", mEtAddAdvanceIntroduce.getText().toString().trim()).

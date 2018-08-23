@@ -2,28 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f4f4f4"
-    android:orientation="vertical">
+    android:background="#e4e4e4">
 
     <RelativeLayout
         android:id="@+id/rl_company_prpduct_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="25dp">
-
+        android:layout_height="65dp"
+        android:background="#fff"
+        android:paddingTop="25dp">
 
         <ImageView
             android:id="@+id/iv_company_prpduct_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_centerVertical="true"
             android:padding="10dp"
             android:src="@mipmap/common_black_back" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:text="公司产品"
             android:textSize="15sp" />
 
@@ -33,8 +32,7 @@
         android:id="@+id/xrecycler_activity_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl_company_prpduct_title"
-        android:layout_marginTop="10dp" />
+        android:layout_below="@+id/rl_company_prpduct_title" />
 
     <Button
         android:id="@+id/bt_add_product"
