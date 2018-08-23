@@ -145,7 +145,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                 return;
             }
         }
-        if (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)) {
+        if (AdvertTiePianFragment.mAdvertBean != null && AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)) {
             asyncShowToast("请完善贴片广告相关信息");
             return;
         }
@@ -154,7 +154,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         mList = new ArrayList<>();
         mList.addAll(AdvertBottomFragment.mList);
         mList.addAll(AdvertTopFragment.mList);
-        if (!TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
+        if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
             mList.add(AdvertTiePianFragment.mAdvertBean);
         upLoadPic(mList.get(0), 0);
     }
