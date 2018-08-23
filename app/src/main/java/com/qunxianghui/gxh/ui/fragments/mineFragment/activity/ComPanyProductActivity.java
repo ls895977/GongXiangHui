@@ -47,11 +47,7 @@ public class ComPanyProductActivity extends BaseActivity {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(mContext, AddProductActivity.class);
-                intent.putExtra("viewTag", 3);
-                intent.putExtra("aboutus_id", mDataList.get(position - 1).getAboutus_id());
-                intent.putExtra("title", mDataList.get(position - 1).getTitle());
-                intent.putExtra("describe", mDataList.get(position - 1).getDescribe());
-                intent.putStringArrayListExtra("image_array", (ArrayList<String>) mDataList.get(position - 1).getImage_array());
+                intent.putExtra("info", mDataList.get(position - 1));
                 startActivity(intent);
             }
         });
@@ -117,9 +113,7 @@ public class ComPanyProductActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_add_product:
-                Intent intent = new Intent(mContext, AddProductActivity.class);
-                intent.putExtra("viewTag", 4);
-                startActivity(intent);
+                toActivityWithResult(AddProductActivity.class, 0x0011);
                 break;
         }
     }

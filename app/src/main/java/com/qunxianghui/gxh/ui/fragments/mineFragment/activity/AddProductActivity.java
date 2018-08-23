@@ -49,7 +49,7 @@ public class AddProductActivity extends BaseActivity {
     EditText mEtAddAProductTitle;
     @BindView(R.id.et_add_product__introduce)
     EditText mEtAddProductIntroduce;
-    @BindView(R.id.recler_addproduct_pic)
+    @BindView(R.id.rv)
     RecyclerView mRecyclerViewAddProductPic;
     @BindView(R.id.rl_add_product_edit)
     RelativeLayout rlAddProductEdit;
@@ -76,6 +76,7 @@ public class AddProductActivity extends BaseActivity {
         Intent intent = getIntent();
         mTitle = intent.getStringExtra("title");
         mViewTag = intent.getIntExtra("viewTag", 0);
+
         mAboutusId = intent.getIntExtra("aboutus_id", 0);
         mDescribe = intent.getStringExtra("describe");
         mImage_arrays = intent.getStringArrayExtra("image_array");
@@ -227,7 +228,6 @@ public class AddProductActivity extends BaseActivity {
         String maddProductTitle = mEtAddAProductTitle.getText().toString().trim();
         String mEtAddAProductIntroduce = mEtAddProductIntroduce.getText().toString().trim();
         StringBuilder stringBuilder = new StringBuilder();
-
         for (int i = 0, length = upLoadPics.size(); i < length; i++) {
             if (i != upLoadPics.size() - 1) {
                 stringBuilder.append(upLoadPics.get(i) + ",");
