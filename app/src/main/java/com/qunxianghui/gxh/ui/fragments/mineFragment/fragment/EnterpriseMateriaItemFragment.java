@@ -41,7 +41,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
         return R.layout.fragment_enterprise_materia_item;
     }
 
-    public static void clearData(){
+    public static void clearData() {
         mList.clear();
         mList = null;
     }
@@ -99,7 +99,7 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if ((EnterpriseMaterialActivity.sType == 9 && mPosition == 1) || EnterpriseMaterialActivity.sType == mType) {
+                if ((EnterpriseMaterialActivity.sType == mType) || (EnterpriseMaterialActivity.sType == 9 && mType == 3)) {
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
                     View select;
                     if (EnterpriseMaterialActivity.sIsMultiSelect) {
