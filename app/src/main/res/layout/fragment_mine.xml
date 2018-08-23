@@ -18,7 +18,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="45dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="5dp">
+        app:cardElevation="1dp">
 
         <RelativeLayout
             android:id="@+id/rl_mine_person_data"
