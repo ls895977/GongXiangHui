@@ -38,13 +38,15 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         int is_like = listBean.getIs_like();
         if (is_like == 0) {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
+
         } else {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_select);
-        }
 
+        }
+        holder.setText(R.id.tv_like, listBean.getLike_cnt());
         holder.setText(R.id.tv_mycollect_video_attention, TextUtils.isEmpty(listBean.getFollow()) ? "+关注" : "已关注");
         holder.setText(R.id.tv_item_collect_video_personname, listBean.getMember_name());
-        holder.setText(R.id.tv_like, listBean.getLike_cnt());
+
         holder.setText(R.id.tv_comment, listBean.getComment_cnt());
         final JZVideoPlayerStandard videoPlayer = holder.getView(R.id.videoplayer);
         videoPlayer.setUp(listBean.getVideo_url(), JZVideoPlayer.SCREEN_WINDOW_LIST, listBean.getTitle());

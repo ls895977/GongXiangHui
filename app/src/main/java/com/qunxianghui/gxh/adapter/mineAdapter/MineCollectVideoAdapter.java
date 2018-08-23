@@ -57,7 +57,6 @@ public class MineCollectVideoAdapter extends BaseRecycleViewAdapter<MineCollectV
 /**
  * 加载人的头像
  */
-
         Glide.with(mContext).load(member_avatar).apply(options).into(personHeadImag);
         /**
          * 收藏视频关注点击
