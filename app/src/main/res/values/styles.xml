@@ -133,14 +133,6 @@
         <item name="android:padding">8dp</item>
     </style>
 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_marginLeft="15dp"
-    android:text="头像"
-    android:textColor="#000"
-    android:textSize="16sp"
-
     <style name="ConmmenTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -173,7 +165,7 @@
         <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
     </style>
 
-    <style name="PICK_DIALOG_THEME" parent="@android:style/Theme.Dialog">
+    <style name="LOGIN_DIALOG_THEME" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <!-- 背景透明 -->

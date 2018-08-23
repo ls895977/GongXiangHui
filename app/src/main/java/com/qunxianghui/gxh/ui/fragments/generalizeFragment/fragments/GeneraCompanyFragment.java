@@ -15,16 +15,15 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.TabEntity;
 import com.qunxianghui.gxh.bean.generalize.GeneralizeCompanyStaticsBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.PageChangeListener;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -132,26 +131,26 @@ public class GeneraCompanyFragment extends BaseFragment {
     }
 
     private void holdReneraCompanyData() {
-        OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                final GeneralizeCompanyStaticsBean generalizeCompanyStaticsBean = GsonUtils.jsonFromJson(response.body(), GeneralizeCompanyStaticsBean.class);
-                if (generalizeCompanyStaticsBean.getCode() == 0) {
-                    GeneralizeCompanyStaticsBean.DataBean dataBean = generalizeCompanyStaticsBean.getData();
-                    tvGeneralizeCompanyMoneyCount.setText(String.format("节省广告费: %s 元 规模: %s人", dataBean.ad_prize, dataBean.staff_cnt));
-                    tvArticleExposureCount.setText(String.format("%s次", dataBean.view_cnt));
-                    tvArticleCount.setText(String.format("%s篇", dataBean.article_cnt));
-                    tvArticleTransmitCount.setText(String.format("%s次", dataBean.forward_cnt));
-                    tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
-                    tvAdverClickRate.setText(dataBean.click_rate);
-                    tvArticleTransmitRate.setText(dataBean.forward_rate);
-                    SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-                    spCompanymessageEditor.putString("staff_cnt", dataBean.staff_cnt);
-                    spCompanymessageEditor.apply();
-                }
-            }
-        });
+        OkGo.<GeneralizeCompanyStaticsBean>post(Constant.GENERALIZE_COMPANY_STATICS_URL)
+                .execute(new JsonCallback<GeneralizeCompanyStaticsBean>() {
+                    @Override
+                    public void onSuccess(Response<GeneralizeCompanyStaticsBean> response) {
+                        if (response.body().getCode() == 0) {
+                            GeneralizeCompanyStaticsBean.DataBean dataBean = response.body().getData();
+                            tvGeneralizeCompanyMoneyCount.setText(String.format("节省广告费: %s 元 规模: %s人", dataBean.ad_prize, dataBean.staff_cnt));
+                            tvArticleExposureCount.setText(String.format("%s次", dataBean.view_cnt));
+                            tvArticleCount.setText(String.format("%s篇", dataBean.article_cnt));
+                            tvArticleTransmitCount.setText(String.format("%s次", dataBean.forward_cnt));
+                            tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
+                            tvAdverClickRate.setText(dataBean.click_rate);
+                            tvArticleTransmitRate.setText(dataBean.forward_rate);
+                            SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
+                            spCompanymessageEditor.putString("staff_cnt", dataBean.staff_cnt);
+                            spCompanymessageEditor.apply();
+                        }
+                    }
+                });
     }
 
     @OnClick({R.id.tv_month, R.id.tv_total})

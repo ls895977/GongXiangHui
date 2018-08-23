@@ -16,13 +16,13 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadImage;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
@@ -150,7 +150,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         OkGo.<String>post(Constant.PUBLISH_ARTICLE)
                 .params("content", faBuContent)
                 .params("images", stringBuilder.toString())
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         parseBaoLiaoData(response.body());
@@ -162,7 +162,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private void upLoadPic(String urls, final boolean isUpdate) {
         OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64",urls)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);

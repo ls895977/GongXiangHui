@@ -23,6 +23,7 @@ import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
@@ -192,7 +193,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
         }
         OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(urls))
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
@@ -241,7 +242,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
                 params("describe", mEtAddProductIntroduce.getText().toString().trim()).
                 params("image", mSb.toString()).
                 params("datatype", 2).
-                execute(new StringCallback() {
+                execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
@@ -297,7 +298,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
     private void deleteCompanyCardAdavance() {
         OkGo.<String>post(Constant.DELETE_COMPANY_CENTER_ADVANCE)
                 .params("aboutus_id", mId)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
@@ -313,7 +314,6 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
     }

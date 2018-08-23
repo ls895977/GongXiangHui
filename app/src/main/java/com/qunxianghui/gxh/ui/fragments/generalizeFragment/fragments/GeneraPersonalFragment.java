@@ -15,6 +15,7 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MyGeneralizePersonAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.GeneraLizePersonTopBean;
 import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
@@ -46,16 +47,15 @@ public class GeneraPersonalFragment extends BaseFragment {
     public void initData() {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());
         mXrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
-        OkGo.<String>get(Constant.GENERALIZE_RERSON_STATIS_URL)
-                .execute(new StringCallback() {
+        OkGo.<GeneraLizePersonTopBean>get(Constant.GENERALIZE_RERSON_STATIS_URL)
+                .execute(new JsonCallback<GeneraLizePersonTopBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<GeneraLizePersonTopBean> response) {
                         parseGeneraPersonTopData(response.body());
-
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<GeneraLizePersonTopBean> response) {
                         super.onError(response);
                         mLoadView.setVisibility(View.GONE);
                         asyncShowToast("账号登陆异常");
@@ -63,8 +63,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                 });
     }
 
-    private void parseGeneraPersonTopData(String body) {
-        final GeneraLizePersonTopBean generaLizePersonTopBean = GsonUtils.jsonFromJson(body, GeneraLizePersonTopBean.class);
+    private void parseGeneraPersonTopData(GeneraLizePersonTopBean generaLizePersonTopBean) {
         if (generaLizePersonTopBean.getCode() == 0) {
             GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
             View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);

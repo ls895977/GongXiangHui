@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
@@ -15,6 +14,7 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
@@ -121,7 +121,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 .params("cate_id", mCateId)
                 .params("limit", 10)
                 .params("skip", mPage)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(response.body(), HomeVideoListBean.class);
@@ -139,8 +139,9 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void attentionClick(final int position) {
-        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
-                .execute(new StringCallback() {
+        OkGo.<String>post(Constant.ATTENTION_URL)
+                .params("be_member_id", videoDataList.get(position).getMember_id())
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
@@ -179,26 +180,28 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void videoLikeItemClick(final int position) {
-        OkGo.<String>post(Constant.VIDEO_LIKE_URL).params("data_uuid", videoDataList.get(position).getUuid()).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response.body());
-                    int code = jsonObject.getInt("code");
-                    if (code == 100) {
-                        asyncShowToast("点赞成功");
-                        videoDataList.get(position).setIs_like(1);
-                    } else if (code == 101) {
-                        asyncShowToast("取消点赞");
-                        videoDataList.get(position).setIs_like(0);
-                    }
-                    personDetailVideoAdapter.notifyDataSetChanged();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        OkGo.<String>post(Constant.VIDEO_LIKE_URL)
+                .params("data_uuid", videoDataList.get(position).getUuid())
+                .execute(new JsonCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 100) {
+                                asyncShowToast("点赞成功");
+                                videoDataList.get(position).setIs_like(1);
+                            } else if (code == 101) {
+                                asyncShowToast("取消点赞");
+                                videoDataList.get(position).setIs_like(0);
+                            }
+                            personDetailVideoAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-            }
-        });
+                    }
+                });
     }
 
     @Override

@@ -14,12 +14,12 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadVideo;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtils;
@@ -143,7 +143,7 @@ public class VideoUploadActivity extends BaseActivity {
             mChooseType.show();
         } else {
             OkGo.<String>post(Constant.UPLOAD_VIDEO_ADD_SORT_URL)
-                    .execute(new StringCallback() {
+                    .execute(new JsonCallback<String>() {
                         @Override
                         public void onSuccess(Response<String> response) {
                             parseVideoSortData(response.body());
@@ -186,7 +186,7 @@ public class VideoUploadActivity extends BaseActivity {
                 .params("title", title)
                 .params("description", description)
                 .params("video_id", videoId)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         mIsUploadIng = false;

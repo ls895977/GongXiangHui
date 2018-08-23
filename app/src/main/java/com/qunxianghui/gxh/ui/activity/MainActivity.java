@@ -24,6 +24,7 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.ui.dialog.LoginDialog;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.HomeFragment;
@@ -231,10 +232,11 @@ public class MainActivity extends BaseActivity {
 
     /*弹出一键发布的pop*/
     private void showOneKeyIssuePop() {
-        if (dialog == null) {
-            dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
-        }
-        dialog.blurBg().show();
+//        if (dialog == null) {
+//            dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
+//        }
+//        dialog.blurBg().show();
+        new LoginDialog(this).show();
     }
 }
 

@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.PagerAdapter;
@@ -28,6 +27,7 @@ import com.qunxianghui.gxh.adapter.homeAdapter.FireSearchAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.SimpleTextAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.GuessBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchFragment;
@@ -98,16 +98,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData() {
         //猜你想要的数据
-        OkGo.<String>get(Constant.SEARCH_GUESS_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                GuessBean guessBean = GsonUtil.parseJsonWithGson(response.body(), GuessBean.class);
-                if (guessBean.getCode() == 0) {
-                    List<GuessBean.DataBean> data = guessBean.getData();
-                    initFireRecycle(data);
-                }
-            }
-        });
+        OkGo.<String>get(Constant.SEARCH_GUESS_URL)
+                .execute(new JsonCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        GuessBean guessBean = GsonUtil.parseJsonWithGson(response.body(), GuessBean.class);
+                        if (guessBean.getCode() == 0) {
+                            List<GuessBean.DataBean> data = guessBean.getData();
+                            initFireRecycle(data);
+                        }
+                    }
+                });
         initHistories();
     }
 

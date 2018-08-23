@@ -66,7 +66,6 @@ public class MyApplication extends MultiDexApplication {
         return SINSTANCE;
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -87,7 +86,6 @@ public class MyApplication extends MultiDexApplication {
         initThirdLib();
     }
 
-
     private void initOkGo() {
         if (LoginMsgHelper.isLogin()) {
             mAccessToken = SPUtils.getString(SpConstant.ACCESS_TOKEN, "");
@@ -97,8 +95,8 @@ public class MyApplication extends MultiDexApplication {
         HttpHeaders header = new HttpHeaders();
         header.put("X-appkey", "100");
         header.put("X-accesstoken", mAccessToken);
-//        header.put("X-systemType","android" );
-//        header.put("X-deviceModel",SystemUtil.getSystemModel());
+        header.put("X-systemType","android" );
+//        header.put("X-deviceModel", SystemUtil.getSystemModel());
 //        header.put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -106,13 +104,15 @@ public class MyApplication extends MultiDexApplication {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
         loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);        //log打印级别，决定了log显示的详细程度
         loggingInterceptor.setColorLevel(Level.INFO);                               //log颜色级别，决定了log在控制台显示的颜色
-        builder.addInterceptor(loggingInterceptor);                                 //添加OkGo默认debug日志
+        builder.addInterceptor(loggingInterceptor);
 
         builder.readTimeout(Constant.TIME_OUT, TimeUnit.SECONDS);
-        OkGo.getInstance().init(this).setOkHttpClient(builder.build()).
-                setCacheMode(CacheMode.NO_CACHE).
-                setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE).
-                setRetryCount(3)
+        OkGo.getInstance()
+                .init(this)
+                .setOkHttpClient(builder.build())
+                .setCacheMode(CacheMode.NO_CACHE)
+                .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)
+                .setRetryCount(3)
                 .addCommonHeaders(header);
     }
 

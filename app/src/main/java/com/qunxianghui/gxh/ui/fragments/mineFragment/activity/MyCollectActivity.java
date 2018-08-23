@@ -20,8 +20,6 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import butterknife.BindView;
 
@@ -29,7 +27,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, Observer {
+public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
@@ -52,8 +50,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initViews() {
-        //注册观察者
-        EventManager.getInstance().addObserver(this);
         //设置tabLayout的一个显示方式
         mineTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         //循环注入标签
@@ -146,20 +142,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
                 EventManager.getInstance().publishMessage(false);
                 isEdit = true;
                 break;
-
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //删除注册的观察者
-        EventManager.getInstance().deleteObserver(this);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
     }
 
 }
