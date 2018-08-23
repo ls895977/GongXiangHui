@@ -40,7 +40,7 @@ public class AddAdvanceBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * aboutus_id : 48
          * title : 第

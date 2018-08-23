@@ -1,24 +1,21 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
-import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.permissions.RxPermissions;
-import com.luck.picture.lib.tools.PictureFileUtils;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -27,25 +24,25 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
+import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
+import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import butterknife.OnClick;
 
-public class AddAdvanceActivity extends BaseActivity implements View.OnClickListener {
+import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_SELECT;
 
-    @BindView(R.id.iv_add_advance_back)
-    ImageView mIvAddAdvanceBack;
+public class AddAdvanceActivity extends BaseActivity {
+
     @BindView(R.id.tv_add_advance_save)
     TextView mTvAddAdvanceSave;
     @BindView(R.id.et_add_advance_title)
@@ -56,20 +53,13 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
     ImageView mIvAddAdvancePic;
     @BindView(R.id.rl_add_advance_edit)
     RelativeLayout rlAddAdvanceEdit;
-    @BindView(R.id.tv_add_advance_delete)
-    TextView tvAddAdvanceDelete;
-    @BindView(R.id.tv_add_advance_complete)
-    TextView tvAddAdvanceComplete;
+    @BindView(R.id.ll_load)
+    LinearLayout mLlLoad;
+
+    private int mId;
     private String mPath;
-    private List<String> upLoadPics = new ArrayList<>();
-    private String mTitle;
-    private String mDescribe;
-    private String[] mImage_arrays;
-    private int mViewTag;
-    private int mAboutusId;
-    private String mEditImageUrl;
-    private String mEditAddAdvanceTitle;
-    private String mEditAddAdvanceIntroduce;
+    private Dialog mSelectPhoto;
+    private ArrayList<ImageItem> mImages;
 
     @Override
     protected int getLayoutId() {
@@ -78,51 +68,56 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-        Intent intent = getIntent();
-        mTitle = intent.getStringExtra("title");
-        mViewTag = intent.getIntExtra("viewTag", 0);
-        mAboutusId = intent.getIntExtra("aboutus_id", 0);
-        mDescribe = intent.getStringExtra("describe");
-        mImage_arrays = intent.getStringArrayExtra("image_array");
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new NewGlideImageLoader());
+        imagePicker.setShowCamera(true);
+        imagePicker.setCrop(false);
+        imagePicker.setSaveRectangle(true);
+        imagePicker.setSelectLimit(1);
+        imagePicker.setStyle(CropImageView.Style.RECTANGLE);
+        imagePicker.setFocusWidth(800);
+        imagePicker.setFocusHeight(800);
+        imagePicker.setOutPutX(500);
+        imagePicker.setOutPutY(500);
+
+        mImages = new ArrayList<>();
+        mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
+            @Override
+            public void onTakePhoto() {
+                ImagePicker.getInstance().setSelectLimit(1);
+                Intent intent = new Intent(AddAdvanceActivity.this, ImageGridActivity.class);
+                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+                startActivityForResult(intent, REQUEST_CODE_SELECT);
+            }
+
+            @Override
+            public void onSelect() {
+                ImagePicker.getInstance().setSelectLimit(1);
+                Intent intent1 = new Intent(AddAdvanceActivity.this, ImageGridActivity.class);
+                startActivityForResult(intent1, REQUEST_CODE_SELECT);
+            }
+        });
     }
 
     @Override
     protected void initData() {
-        mEtAddAdvanceTitle.setText(mTitle);
-        mEtAddAdvanceIntroduce.setText(mDescribe);
-
-
-        if (mViewTag == 1) {
+        Intent intent = getIntent();
+        AddAdvanceBean.DataBean info = (AddAdvanceBean.DataBean) intent.getSerializableExtra("info");
+        if (info != null) {
             mTvAddAdvanceSave.setVisibility(View.GONE);
             rlAddAdvanceEdit.setVisibility(View.VISIBLE);
-            RequestOptions options = new RequestOptions();
-            options.centerCrop();
-            options.placeholder(R.mipmap.default_img);
-            options.error(R.mipmap.default_img);
-            Glide.with(mContext).load(mImage_arrays).apply(options).into(mIvAddAdvancePic);
+            mId = info.getAboutus_id();
+            mEtAddAdvanceTitle.setText(info.getTitle());
+            mEtAddAdvanceIntroduce.setText(info.getDescribe());
+            mPath = info.getImage_array().get(0);
+            Glide.with(mContext).load(mPath).apply(new RequestOptions()
+                    .placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop()).into(mIvAddAdvancePic);
         }
     }
 
-    @Override
-    protected void initListeners() {
-        super.initListeners();
-        mIvAddAdvanceBack.setOnClickListener(this);
-        mTvAddAdvanceSave.setOnClickListener(this);
-        mIvAddAdvancePic.setOnClickListener(this);
-        tvAddAdvanceDelete.setOnClickListener(this);
-        tvAddAdvanceComplete.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    @OnClick({R.id.iv_add_advance_back, R.id.tv_add_advance_save, R.id.iv_add_advance_pic, R.id.tv_add_advance_delete, R.id.tv_add_advance_complete})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
             case R.id.iv_add_advance_back:
                 finish();
                 break;
@@ -130,62 +125,114 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 saveAdvanceData();
                 break;
             case R.id.iv_add_advance_pic:
-                openAdvancePhoto();
+                mSelectPhoto.show();
                 break;
             case R.id.tv_add_advance_delete:
                 deleteCompanyCardAdavance();
                 break;
             case R.id.tv_add_advance_complete:
-                mEditImageUrl = Utils.listToString(upLoadPics);
-                mEditAddAdvanceTitle = mEtAddAdvanceTitle.getText().toString().trim();
-                mEditAddAdvanceIntroduce = mEtAddAdvanceIntroduce.getText().toString().trim();
-                if (TextUtils.isEmpty(mEditImageUrl) || TextUtils.isEmpty(mEditAddAdvanceTitle) || TextUtils.isEmpty(mEditAddAdvanceIntroduce)) {
+                String title = mEtAddAdvanceTitle.getText().toString().trim();
+                String des = mEtAddAdvanceIntroduce.getText().toString().trim();
+                if (TextUtils.isEmpty(mPath) || TextUtils.isEmpty(title) || TextUtils.isEmpty(des)) {
                     asyncShowToast("请检查一下,还有哪里没有填写");
                 } else {
-                    editCompanyCardAdavance(mEditAddAdvanceTitle, mEditAddAdvanceIntroduce, mEditImageUrl);
+                    if (!mPath.startsWith("http")) {
+                        upLoadPic();
+                        return;
+                    }
+                    editCompanyCardAdvance();
                 }
                 break;
         }
     }
 
+    /*保存成功*/
+    private void saveAdvanceData() {
+        String title = mEtAddAdvanceTitle.getText().toString().trim();
+        String des = mEtAddAdvanceIntroduce.getText().toString().trim();
+        if (TextUtils.isEmpty(mPath) || TextUtils.isEmpty(title) || TextUtils.isEmpty(des)) {
+            asyncShowToast("标题或者简介为空,请检查一下");
+        } else {
+            upLoadPic();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ArrayList<ImageItem> images;
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            ImagePicker.getInstance().clear();
+            if (data != null && requestCode == REQUEST_CODE_SELECT) {
+                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                if (images != null && !images.isEmpty()) {
+                    mImages.clear();
+                    mImages.addAll(images);
+                    mPath = mImages.get(0).path;
+                    Glide.with(mContext).load(mPath).apply(new RequestOptions().placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img).centerCrop()).into(mIvAddAdvancePic);
+                }
+            }
+        }
+    }
+
+    private void upLoadPic() {
+        mLlLoad.setVisibility(View.VISIBLE);
+        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
+                .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(mPath))
+                .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
+                    @Override
+                    public void onSuccess(Response<CommonResponse<ImageBean>> response) {
+                        if (response.body().code == 0) {
+                            mPath = response.body().data.getFile();
+                            if (mId == 0) {
+                                saveAdvance();
+                            } else {
+                                editCompanyCardAdvance();
+                            }
+                        }
+                    }
+                });
+    }
+
     /*修改企业核心优势*/
-    private void editCompanyCardAdavance(String mEditAddAdvanceTitle, String mEditAddAdvanceIntroduce, String mEditImageUrl) {
+    private void editCompanyCardAdvance() {
         OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
-                params("title", mEditAddAdvanceTitle).
-                params("aboutus_id", mAboutusId).
-                params("describe", mEditAddAdvanceIntroduce).
-                params("image", mEditImageUrl).
+                params("title", mEtAddAdvanceTitle.getText().toString().trim()).
+                params("aboutus_id", mId).
+                params("describe", mEtAddAdvanceIntroduce.getText().toString().trim()).
+                params("image", mPath).
                 params("datatype", 1).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        mLlLoad.setVisibility(View.GONE);
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
                             if (code == 200) {
                                 asyncShowToast("修改成功");
+                                setResult(0x0022);
                                 finish();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
+                        mLlLoad.setVisibility(View.GONE);
                         Logger.e("添加企业优势失败了" + response.message());
                     }
                 });
-
     }
 
     /*删除企业核心优势*/
     private void deleteCompanyCardAdavance() {
         OkGo.<String>post(Constant.DELETE_COMPANY_CENTER_ADVANCE).
-                params("aboutus_id", mAboutusId).execute(new StringCallback() {
+                params("aboutus_id", mId).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 try {
@@ -193,7 +240,7 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                     int code = jsonObject.getInt("code");
                     if (code == 200) {
                         asyncShowToast("删除成功");
-
+                        setResult(0x0022);
                         finish();
                     } else {
                         asyncShowToast("删除失败" + response.message());
@@ -202,137 +249,38 @@ public class AddAdvanceActivity extends BaseActivity implements View.OnClickList
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
-
     }
 
-    /*保存成功*/
-    private void saveAdvanceData() {
-        String imageUrl = Utils.listToString(upLoadPics);
-        String mAddAdvanceTitle = mEtAddAdvanceTitle.getText().toString().trim();
-        String mAddAdvanceIntroduce = mEtAddAdvanceIntroduce.getText().toString().trim();
-        if (TextUtils.isEmpty(mAddAdvanceTitle) || TextUtils.isEmpty(mAddAdvanceIntroduce)) {
-            asyncShowToast("标题或者简介为空,请检查一下");
-        } else {
-            RequestAddAdvanceData(mAddAdvanceTitle, mAddAdvanceIntroduce, imageUrl);
-            finish();
-        }
-    }
-
-    private void RequestAddAdvanceData(String mAddAdvanceTitle, String mAddAdvanceIntroduce, String imageUrl) {
+    private void saveAdvance() {
         OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
-                params("title", mAddAdvanceTitle).
-                params("describe", mAddAdvanceIntroduce).
-                params("image", imageUrl).
+                params("title", mEtAddAdvanceTitle.getText().toString().trim()).
+                params("describe", mEtAddAdvanceIntroduce.getText().toString().trim()).
+                params("image", mPath).
                 params("datatype", 1).
                 execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        mLlLoad.setVisibility(View.GONE);
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
                             if (code == 200) {
                                 asyncShowToast("保存成功");
+                                setResult(0x0022);
                                 finish();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
+                        mLlLoad.setVisibility(View.GONE);
                         Logger.e("添加企业优势失败了" + response.message());
-                    }
-                });
-    }
-
-    private void openAdvancePhoto() {
-        PictureSelector.create(AddAdvanceActivity.this)
-                .openGallery(PictureMimeType.ofImage())
-                .previewImage(true)
-                .isCamera(true)// 是否显示拍照按钮
-                .enableCrop(true)// 是否裁剪 true or false
-                .compress(true)// 是否压缩 true or false
-                .cropCompressQuality(50)// 裁剪压缩质量 默认90 int
-                .minimumCompressSize(100)// 小于100kb的图片不压缩
-                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
-                .isDragFrame(true)// 是否可拖动裁剪框(固定)
-                .forResult(PictureConfig.CHOOSE_REQUEST);
-
-        // 清空图片缓存，包括裁剪、压缩后的图片 注意:必须要在上传完成后调用 必须要获取权限
-        RxPermissions permissions = new RxPermissions(this);
-        permissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Observer<Boolean>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
-            @Override
-            public void onNext(Boolean aBoolean) {
-                if (aBoolean) {
-                    PictureFileUtils.deleteCacheDirFile(AddAdvanceActivity.this);
-                } else {
-                    Toast.makeText(AddAdvanceActivity.this,
-                            getString(R.string.picture_jurisdiction), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
-            }
-        });
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case PictureConfig.CHOOSE_REQUEST:
-                // 图片、视频、音频选择结果回调
-                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                // 例如 LocalMedia 里面返回三种path
-                // 1.media.getPath(); 为原图path
-                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
-                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
-                // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                for (int i = 0; i < selectList.size(); i++) {
-                    mPath = selectList.get(i).getPath();
-                    FetchAdvancePic(mPath);
-                }
-
-                break;
-        }
-    }
-
-    private void FetchAdvancePic(String path) {
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
-        Glide.with(mContext).load(path).apply(options).into(mIvAddAdvancePic);
-        upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path));
-    }
-
-    private void upLoadPic(String urls) {
-        OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
-                .params("base64", urls)
-                .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
-                    @Override
-                    public void onSuccess(Response<CommonResponse<ImageBean>> response) {
-                        if (response.body().code == 0) {
-                            upLoadPics.add(response.body().data.getFile());
-                            Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_SHORT).show();
-                        }
                     }
                 });
     }

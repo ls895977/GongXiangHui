@@ -47,12 +47,8 @@ public class ComPanyAdvanceActivity extends BaseActivity {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(mContext, AddAdvanceActivity.class);
-                intent.putExtra("viewTag", 1);
-                intent.putExtra("aboutus_id", mDataList.get(position - 1).getAboutus_id());
-                intent.putExtra("title", mDataList.get(position - 1).getTitle());
-                intent.putExtra("describe", mDataList.get(position - 1).getDescribe());
-                intent.putStringArrayListExtra("image_array", (ArrayList<String>) mDataList.get(position - 1).getImage_array());
-                startActivity(intent);
+                intent.putExtra("info", mDataList.get(position - 1));
+                startActivityForResult(intent, 0x0011);
             }
         });
     }
@@ -61,7 +57,7 @@ public class ComPanyAdvanceActivity extends BaseActivity {
     protected void initData() {
         OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
                 .params("datatype", 1)
-                .params("limit", 5)
+                .params("limit", 10)
                 .params("skip", mPage)
                 .execute(new StringCallback() {
                     @Override
@@ -72,6 +68,7 @@ public class ComPanyAdvanceActivity extends BaseActivity {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
+                        mXrecyclerActivityAdv.setLoadingMoreEnabled(false);
                         Logger.e("上传失败了" + response.message());
                     }
                 });
@@ -82,19 +79,22 @@ public class ComPanyAdvanceActivity extends BaseActivity {
         if (mIsRefresh) {
             mIsRefresh = false;
             mDataList.clear();
+            mXrecyclerActivityAdv.setLoadingMoreEnabled(true);
         }
         mPage++;
         mDataList.addAll(mAddAdvanceBean.getData());
         int code = mAddAdvanceBean.getCode();
         if (code == 200) {
+            mXrecyclerActivityAdv.setLoadingMoreEnabled(mAddAdvanceBean.getData().size() >= 10);
             mXrecyclerActivityAdv.refreshComplete();
             mAdvanceAdapter.notifyDataSetChanged();
+        } else {
+            mXrecyclerActivityAdv.setLoadingMoreEnabled(false);
         }
     }
 
     @Override
     protected void initListeners() {
-        super.initListeners();
         mXrecyclerActivityAdv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -117,9 +117,7 @@ public class ComPanyAdvanceActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_add_advance:
-                Intent intent = new Intent(mContext, AddAdvanceActivity.class);
-                intent.putExtra("viewTag", 2);
-                startActivity(intent);
+                toActivityWithResult(AddAdvanceActivity.class, 0x0011);
                 break;
         }
     }
@@ -127,7 +125,11 @@ public class ComPanyAdvanceActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode == 0x22) {
+            mIsRefresh = true;
+            mPage = 0;
+            initData();
+        }
     }
 
 }
