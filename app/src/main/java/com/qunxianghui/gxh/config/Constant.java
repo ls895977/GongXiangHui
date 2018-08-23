@@ -47,6 +47,8 @@ public class Constant {
     public static final String HOME_PAGE_LUNBO_URL = BASE_URL + "ad/getList?place=首页图片轮播";
     //首页爆料
     public static final String HOME_DISCLOSE_URL = BASE_URL + "iv_person_data_pic";
+    //首页粘贴文章
+    public static final String  PAST_ARTICAL_URL=BASE_URL+"user/paste";
     //获取全部频道
     public static final String CHANNEL_GETALL = BASE_URL + "channel/getAll";
     //频道列表（用户订阅的频道）

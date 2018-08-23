@@ -85,8 +85,7 @@ public class GeneraCompanyFragment extends BaseFragment {
             mTabEntities.add(new TabEntity(mTabTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
         }
         mTabLayout.setTabData(mTabEntities);
-        /*获取企业推广的数据*/
-        holdReneraCompanyData();
+
         vpGeneralizeCompanyMain.setOffscreenPageLimit(mType.length - 1);
         mTvTotal.setSelected(true);
         setViewpager(1, 0);
@@ -126,6 +125,8 @@ public class GeneraCompanyFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        /*获取企业推广的数据*/
+        holdReneraCompanyData();
         SharedPreferences spCompany = mActivity.getSharedPreferences("companymessage", 0);
         String selfcompayname = spCompany.getString("selfcompanyname", "");
         tvGeneracompanyName.setText(selfcompayname);

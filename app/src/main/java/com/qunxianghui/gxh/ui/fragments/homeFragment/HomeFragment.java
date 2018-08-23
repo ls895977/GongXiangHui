@@ -46,6 +46,9 @@ import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -197,24 +200,53 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 startActivityForResult(intent_channel, CHANNELREQUEST);
                 break;
             case R.id.iv_home_paste_artical:
-                if (view.getId() == R.id.iv_home_paste_artical) {
-                    if (!LoginMsgHelper.isLogin()) {
-                        toActivity(LoginActivity.class);
-                        return;
-                    }
-                    //粘贴板有数据并且是文本
-                    if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                        final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
-                        final CharSequence text = item.getText();
-                        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                        intent.putExtra("url", text);
-                        startActivity(intent);
-                    } else {
-                        asyncShowToast("没有找到粘贴的内容");
-                    }
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    ClipArticalData();
                 }
                 break;
         }
+    }
+
+    /*粘贴文章*/
+    private void ClipArticalData() {
+        //粘贴板有数据并且是文本
+        if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+            final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
+            final String text = (String) item.getText();
+            OkGo.<String>post(Constant.PAST_ARTICAL_URL).params("url",  text).execute(new StringCallback() {
+                @Override
+                public void onSuccess(Response<String> response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        int code = jsonObject.getInt("code");
+                        String msg = jsonObject.getString("msg");
+                        if (code == 0) {
+                            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                            intent.putExtra("url", text);
+                            startActivity(intent);
+                        } else if (code == 101) {
+                            asyncShowToast(msg);
+                        }else {
+                            asyncShowToast(msg);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(Response<String> response) {
+                    super.onError(response);
+                    asyncShowToast(response.message().toString());
+                }
+            });
+
+        }
+
     }
 
     @Override

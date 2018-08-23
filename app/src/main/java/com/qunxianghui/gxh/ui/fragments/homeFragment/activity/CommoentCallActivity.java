@@ -26,11 +26,11 @@ public class CommoentCallActivity extends BaseActivity implements BianMinCallGri
             , R.mipmap.icon_commen_call_jinji, R.mipmap.icon_commen_call_jiaotong,
             R.mipmap.icon_commen_call_police, R.mipmap.icon_commen_call_jinjicenter, R.mipmap.icon_commen_call_firepolice
     };
-    private int[] imagesCall = {R.mipmap.bianmin_call, R.mipmap.bianmin_call, R.mipmap.bianmin_call
-            , R.mipmap.bianmin_call, R.mipmap.bianmin_call,
-            R.mipmap.bianmin_call, R.mipmap.bianmin_call, R.mipmap.bianmin_call
-            , R.mipmap.bianmin_call, R.mipmap.bianmin_call,
-            R.mipmap.bianmin_call, R.mipmap.bianmin_call, R.mipmap.bianmin_call
+    private int[] imagesCall = {R.mipmap.icon_comment_call, R.mipmap.icon_comment_call, R.mipmap.icon_comment_call
+            , R.mipmap.icon_comment_call, R.mipmap.icon_comment_call,
+            R.mipmap.icon_comment_call, R.mipmap.icon_comment_call, R.mipmap.icon_comment_call
+            , R.mipmap.icon_comment_call, R.mipmap.icon_comment_call,
+            R.mipmap.icon_comment_call, R.mipmap.icon_comment_call, R.mipmap.icon_comment_call
 
     };
     private String[] iconName = {"警匪", "急救中心", "火警", "紧急或报警电话", "交通事故报警", "高速公路报警救援", "市民专线",

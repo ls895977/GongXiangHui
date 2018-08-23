@@ -15,8 +15,11 @@ import com.qunxianghui.gxh.adapter.homeAdapter.HomeVideoSearchAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoSearchBean;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.List;
 
@@ -27,11 +30,12 @@ import butterknife.BindView;
  * @time 2018/5/28  18:07
  * @desc 搜索的页面
  */
-public class SearchVideoFragment extends BaseFragment {
+public class SearchVideoFragment extends BaseFragment implements HomeVideoSearchAdapter.VideoSearchListClickListener{
     public static final String DATA = "data";
     @BindView(R.id.recyclerview_video)
     RecyclerView mRecyclerview;
     private HomeVideoSearchBean mBean;
+    private List<HomeVideoSearchBean.DataBean> mSearchVideodata;
 
     /**
      * 子类实现此抽象方法返回View进行展示
@@ -69,8 +73,9 @@ public class SearchVideoFragment extends BaseFragment {
     //设置数据
     private void parseData(String body) {
         mBean = GsonUtil.parseJsonWithGson(body, HomeVideoSearchBean.class);
-        List<HomeVideoSearchBean.DataBean> data = mBean.getData();
-        HomeVideoSearchAdapter adapter = new HomeVideoSearchAdapter(mActivity, data);
+        mSearchVideodata = mBean.getData();
+        HomeVideoSearchAdapter adapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
+        adapter.setVideoSearchListClickListener(this);
         mRecyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
@@ -78,8 +83,9 @@ public class SearchVideoFragment extends BaseFragment {
                 String url = mBean.getData().get(position).getVideo_url();
                 int uuid = mBean.getData().get(position).getUuid();
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", url);
+                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                 intent.putExtra("uuid", uuid);
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                 startActivity(intent);
             }
         });
@@ -98,4 +104,13 @@ public class SearchVideoFragment extends BaseFragment {
     }
 
 
+    /*搜索的贴片的点击事件 */
+    @Override
+    public void PasterClick(int position) {
+        Intent intent = new Intent(mActivity, AddTiePianAdvertActivity.class);
+        StringBuilder sb = new StringBuilder(Constant.VIDEO_DETAIL_URL);
+        sb.append("?token=").append(SPUtils.getString(SpConstant.ACCESS_TOKEN, "")).append("&uuid=").append(mSearchVideodata.get(position).getUuid());
+        intent.putExtra("url", sb.toString());
+        startActivity(intent);
+    }
 }

@@ -148,6 +148,7 @@ public class CompanyCardActivity extends BaseActivity {
         }
     }
 
+
     /*分享我的企业名片*/
     private void requestCompanyCardInfo() {
         OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)

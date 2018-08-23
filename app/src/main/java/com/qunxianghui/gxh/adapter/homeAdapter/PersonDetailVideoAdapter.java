@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,12 +36,16 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         RoundImageView personHeadImag = holder.getView(R.id.round_item_collect_video_personhead);
         ImageView ivCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
         ImageView mIvItemCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
+        TextView mTvCommentCount = holder.getView(R.id.tv_comment);
         int is_like = listBean.getIs_like();
         if (is_like == 0) {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
 
+
         } else {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_select);
+
+
 
         }  holder.setText(R.id.tv_like, listBean.getLike_cnt());
 

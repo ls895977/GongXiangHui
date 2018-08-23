@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -38,11 +39,11 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @BindView(R.id.xrv)
     XRecyclerView mRv;
-
     private int mPage;
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
+    private TextView mMTvComment;
 
     @Override
     public int getLayoutId() {
@@ -141,17 +142,21 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     public void attentionClick(final int position) {
         OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", videoDataList.get(position).getMember_id())
                 .execute(new StringCallback() {
+
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             final int code = jsonObject.getInt("code");
+
                             if (code == 0) {
                                 asyncShowToast("关注成功");
                                 videoDataList.get(position).setFollow("true");
+
                             } else if (code == 202) {
                                 videoDataList.get(position).setFollow("");
                                 asyncShowToast("取消关注成功");
+
                             }
 
                         } catch (Exception e) {
