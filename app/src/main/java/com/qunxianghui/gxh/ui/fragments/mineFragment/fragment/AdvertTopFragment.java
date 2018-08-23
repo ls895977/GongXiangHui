@@ -241,22 +241,6 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         ImageView bigImg = view.findViewById(R.id.iv_add_big_img);
         bigImg.setOnClickListener(this);
         AppCompatCheckBox cB = view.findViewById(R.id.cb);
-        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = mList.get(mVp.getCurrentItem()).settings;
-                EditText etLink = mViewList.get(mVp.getCurrentItem()).findViewById(R.id.et_link);
-                if (isChecked) {
-                    settings.is_link = 1;
-                    etLink.setText(AdvertTemplateActivity.mLinkUrl);
-                    settings.link = AdvertTemplateActivity.mLinkUrl;
-                } else {
-                    settings.is_link = 0;
-                    etLink.setText("");
-                    settings.link = "";
-                }
-            }
-        });
         EditText etLink = view.findViewById(R.id.et_link);
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
@@ -315,6 +299,22 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             companyAdvert.position = 1;
             mList.add(companyAdvert);
         }
+        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = mList.get(mVp.getCurrentItem()).settings;
+                EditText etLink = mViewList.get(mVp.getCurrentItem()).findViewById(R.id.et_link);
+                if (isChecked) {
+                    settings.is_link = 1;
+                    etLink.setText(AdvertTemplateActivity.mLinkUrl);
+                    settings.link = AdvertTemplateActivity.mLinkUrl;
+                } else {
+                    settings.is_link = 0;
+                    etLink.setText("");
+                    settings.link = "";
+                }
+            }
+        });
         mViewList.add(view);
         mPagerAdapter.notifyDataSetChanged();
         mVp.setCurrentItem(mPagerAdapter.getCount() - 1, false);

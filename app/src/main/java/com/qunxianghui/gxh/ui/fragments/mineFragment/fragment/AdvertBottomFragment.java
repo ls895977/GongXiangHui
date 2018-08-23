@@ -449,13 +449,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 }
             }
         });
-        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setLink(isChecked);
-            }
-        });
-
         SwitchButton sB = view.findViewById(R.id.sw);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
@@ -488,6 +481,12 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             advert.position = 2;
             mList.add(advert);
         }
+        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setLink(isChecked);
+            }
+        });
         addPage(view);
     }
 
@@ -554,12 +553,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         ImageView bigImg = view.findViewById(R.id.iv_add_big_img);
         bigImg.setOnClickListener(this);
         AppCompatCheckBox cB = view.findViewById(R.id.cb);
-        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setLink(isChecked);
-            }
-        });
         EditText etLink = view.findViewById(R.id.et_link);
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
@@ -625,6 +618,12 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             companyAdvert1.position = 1;
             mList.add(companyAdvert1);
         }
+        cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setLink(isChecked);
+            }
+        });
         addPage(view);
     }
 
