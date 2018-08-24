@@ -10,13 +10,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.GetRequest;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.generaAdapter.GeneralizeSortAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.EmployeePaiHangBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
@@ -59,10 +59,10 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
         if (mTotal == 0) post.params("month", mMonth);
         else post.params("total", mTotal);
         post.params("type", mQueryType);
-        post.execute(new StringCallback() {
+        post.execute(new JsonCallback<String>() {
             @Override
             public void onSuccess(Response<String> response) {
-                if (mLoadView == null) {
+                if (response.body().contains("\"code\":1000")) {
                     return;
                 }
                 mLoadView.setVisibility(View.GONE);

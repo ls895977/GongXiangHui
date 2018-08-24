@@ -163,7 +163,7 @@ public class JsonConvert<T> implements Converter<T> {
     }
 
     private void isFialure(String str){
-        if (!TextUtils.isEmpty(str) && str.contains("code:1000")) {
+        if (!TextUtils.isEmpty(str) && str.contains("\"code\":1000")) {
             EventManager.getInstance().publishMessage("signout");
         }
     }

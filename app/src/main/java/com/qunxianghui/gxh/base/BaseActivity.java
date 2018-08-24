@@ -74,7 +74,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
 
     @Override
     public void update(Observable o, Object arg) {
-        new LoginDialog(this).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new LoginDialog(BaseActivity.this).show();
+            }
+        });
     }
 
     protected void toActivity(Class<?> target) {
