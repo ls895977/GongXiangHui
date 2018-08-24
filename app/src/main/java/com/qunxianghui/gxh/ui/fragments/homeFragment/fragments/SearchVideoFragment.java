@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * @author 小强
+ *
  * @time 2018/5/28  18:07
  * @desc 搜索的页面
  */
@@ -37,8 +37,12 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     @BindView(R.id.recyclerview_video)
     XRecyclerView mRecyclerview;
     private HomeVideoSearchBean mBean;
-    private List<HomeVideoSearchBean.DataBean> mSearchVideodata=new ArrayList<>();
+    private List<HomeVideoSearchBean.DataBean> mSearchVideodata = new ArrayList<>();
     private HomeVideoSearchAdapter mAdapter;
+    private int mPage;
+    private boolean mIsRefresh = false;
+    private boolean mIsFirst = true;
+    private String mKeyWords;
 
     /**
      * 子类实现此抽象方法返回View进行展示
@@ -51,6 +55,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     @Override
     public void initViews(View view) {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+
     }
 
     /**
@@ -58,10 +63,11 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
      */
     @Override
     public void initData() {
-        String keyWords = getArguments().getString(DATA);
-        if (!TextUtils.isEmpty(keyWords)) {
-            goNextWorks(keyWords);
+        mKeyWords = getArguments().getString(DATA);
+        if (!TextUtils.isEmpty(mKeyWords)) {
+            goNextWorks(mKeyWords);
         }
+
     }
 
     @Override
@@ -70,12 +76,15 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         mRecyclerview.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mRecyclerview.refreshComplete();
+                mIsRefresh = true;
+                mPage = 0;
+                goNextWorks(mKeyWords);
+
             }
 
             @Override
             public void onLoadMore() {
-                mRecyclerview.refreshComplete();
+                goNextWorks(mKeyWords);
             }
         });
     }
@@ -86,33 +95,56 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     private void goNextWorks(String trim) {
         OkGo.<HomeVideoSearchBean>get(Constant.SEARCH_GET_VIDEO_LIST).
                 params("keywords", trim).
+                params("limit", 10)
+                .params("skip", mPage).
                 execute(new JsonCallback<HomeVideoSearchBean>() {
                     @Override
                     public void onSuccess(Response<HomeVideoSearchBean> response) {
                         parseData(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<HomeVideoSearchBean> response) {
+                        super.onError(response);
+                        mRecyclerview.setLoadingMoreEnabled(false);
                     }
                 });
     }
 
     //设置数据
     private void parseData(HomeVideoSearchBean body) {
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mSearchVideodata.clear();
+        }
+
+        mSearchVideodata.addAll(mBean.getData());
+        mPage=mSearchVideodata.size();
         mBean = body;
-        mSearchVideodata = mBean.getData();
-        mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
-        mAdapter.setVideoSearchListClickListener(this);
-        mRecyclerview.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                String url = mBean.getData().get(position).getVideo_url();
-                int uuid = mBean.getData().get(position).getUuid();
-                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                intent.putExtra("uuid", uuid);
-                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                startActivity(intent);
+        int code = mBean.getCode();
+        if (code == 200) {
+            if (mIsFirst){
+                mIsFirst=false;
+                mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
+                mAdapter.setVideoSearchListClickListener(this);
+                mRecyclerview.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        int uuid = mBean.getData().get(position).getUuid();
+                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                        intent.putExtra("uuid", uuid);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        startActivity(intent);
+                    }
+                });
             }
-        });
+
+            mRecyclerview.refreshComplete();
+            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemRangeChanged(mPage, mBean.getData().size());
+        }
 
     }
 

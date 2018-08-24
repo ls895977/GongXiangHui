@@ -108,7 +108,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
         return loadingDialog;
-
     }
 
     @Override
