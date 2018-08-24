@@ -280,7 +280,6 @@ public class AdvertTemplateActivity extends BaseActivity {
             if (!TextUtils.isEmpty(companyAdvert.settings.time)) {
                 mPost.params("ad[" + index + "][settings][time]", companyAdvert.settings.time);
             }
-
             if (companyAdvert.settings.operate != 0) {
                 mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                 switch (companyAdvert.settings.operate) {
@@ -291,13 +290,9 @@ public class AdvertTemplateActivity extends BaseActivity {
                         mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                         break;
                     case 2:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.mobile)) {
-                            mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
-                        }
-                        break;
                     case 3:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.qq)) {
-                            mPost.params("ad[" + index + "][settings][qq]", companyAdvert.settings.qq);
+                        if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
+                                mPost.params("ad[" + index + "][settings][link]", companyAdvert.settings.link);
                         }
                         break;
                 }

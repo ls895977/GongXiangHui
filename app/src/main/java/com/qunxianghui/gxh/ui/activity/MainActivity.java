@@ -125,7 +125,9 @@ public class MainActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         ((BaseFragment) mFragments[0]).initData();
-        ((BaseFragment) mFragments[1]).initData();
+        if (mFragments[1].isAdded()) {
+            ((BaseFragment) mFragments[1]).initData();
+        }
         if (!LoginMsgHelper.isLogin()) {
             onViewClicked(mTvHome);
         } else {

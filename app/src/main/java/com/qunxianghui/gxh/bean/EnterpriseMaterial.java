@@ -50,7 +50,7 @@ public class EnterpriseMaterial {
                 //手机号码
                 public String mobile;
                 //qq
-//                public String qq;
+                public String qq;
                 //链接至企业（0-不链接 1-链接）
                 public int is_link;
                 //广告标语
