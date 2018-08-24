@@ -10,13 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.MemberActiviteBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +27,7 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
     TextView tvMemberActiviteQuickly;
     @BindView(R.id.iv_memberup_activite_back)
     ImageView ivMemberupActiviteBack;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_active;
@@ -47,23 +47,17 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
 
     //激活码激活
     private void ActiviteData(String activeCode) {
-        OkGo.<String>post(Constant.PERSON_UPGRADE_URL)
+        OkGo.<MemberActiviteBean>post(Constant.PERSON_UPGRADE_URL)
                 .params("activecode", activeCode)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MemberActiviteBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<MemberActiviteBean> response) {
                         ParseActivieData(response.body());
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
                     }
                 });
     }
 
-    private void ParseActivieData(String body) {
-        MemberActiviteBean memberActiviteBean = GsonUtils.jsonFromJson(body, MemberActiviteBean.class);
+    private void ParseActivieData(MemberActiviteBean memberActiviteBean) {
         int code = memberActiviteBean.getCode();
         String msg = memberActiviteBean.getMsg();
         MemberActiviteBean.DataBean memberData = memberActiviteBean.getData();
@@ -72,10 +66,10 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
             String avatar = memberData.getAvatar();
             int company_id = memberData.getCompany_id();
             String code_endtime = memberData.getCode_endtime();
-            SharedPreferences companyData = getSharedPreferences("companymessage",  Context.MODE_PRIVATE);
+            SharedPreferences companyData = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = companyData.edit();
             spCompanymessageEditor.putString("expire_time", code_endtime);
-            spCompanymessageEditor.putString("avatar",avatar );
+            spCompanymessageEditor.putString("avatar", avatar);
             spCompanymessageEditor.apply();
             finish();
         } else if (code == 101) {

@@ -27,13 +27,14 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
@@ -45,9 +46,6 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,18 +122,19 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void initData() {
         mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         //频道列表（用户订阅的频道）
-        OkGo.<String>post(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                String json = response.body();
-                if (HttpStatusUtil.getStatus(json)) {
-                    setChannelData(json);
-                    initFragment();
-                } else {
-                    ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
-                }
-            }
-        });
+        OkGo.<String>post(Constant.CHANNEL_GETLIST)
+                .execute(new JsonCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String json = response.body();
+                        if (HttpStatusUtil.getStatus(json)) {
+                            setChannelData(json);
+                            initFragment();
+                        } else {
+                            ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
+                        }
+                    }
+                });
     }
 
     @Override
@@ -216,34 +215,30 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = (String) item.getText();
-            OkGo.<String>post(Constant.PAST_ARTICAL_URL).params("url",  text).execute(new StringCallback() {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body());
-                        int code = jsonObject.getInt("code");
-                        String msg = jsonObject.getString("msg");
-                        if (code == 0) {
-                            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                            intent.putExtra("url", text);
-                            startActivity(intent);
-                        } else if (code == 101) {
-                            asyncShowToast(msg);
-                        }else {
-                            asyncShowToast(msg);
+            OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
+                    .params("url", text)
+                    .execute(new JsonCallback<CommonBean>() {
+                        @Override
+                        public void onSuccess(Response<CommonBean> response) {
+                            int code = response.body().code;
+                            String msg = response.body().msg;
+                            if (code == 0) {
+                                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                                intent.putExtra("url", text);
+                                startActivity(intent);
+                            } else if (code == 101) {
+                                asyncShowToast(msg);
+                            } else {
+                                asyncShowToast(msg);
+                            }
                         }
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onError(Response<String> response) {
-                    super.onError(response);
-                    asyncShowToast(response.message().toString());
-                }
-            });
+                        @Override
+                        public void onError(Response<CommonBean> response) {
+                            super.onError(response);
+                            asyncShowToast(response.message().toString());
+                        }
+                    });
 
         }
 

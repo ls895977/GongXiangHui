@@ -2,14 +2,12 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineMessageFollewAdapter;
@@ -27,14 +24,13 @@ import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.mine.MineMessageFollowBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MineMessageFollowFragment extends BaseFragment implements MineMessageFollewAdapter.MineMessageResponseListener {
@@ -56,12 +52,10 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
         return R.layout.fragment_mine_message_follow;
     }
 
-    private void parsePaiHangData(String body) {
-        final MineMessageFollowBean mineMessageFollowBean = GsonUtils.jsonFromJson(body, MineMessageFollowBean.class);
+    private void parsePaiHangData(MineMessageFollowBean mineMessageFollowBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
-
         }
 
         dataList.addAll(mineMessageFollowBean.getData());
@@ -98,13 +92,12 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
      * 请求我的跟帖
      */
     private void RequestMyMessageFollow() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_FOLLOW_URL)
+        OkGo.<MineMessageFollowBean>post(Constant.DISCUSS_MINE_FOLLOW_URL)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MineMessageFollowBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-
+                    public void onSuccess(Response<MineMessageFollowBean> response) {
                         parsePaiHangData(response.body());
                     }
                 });
@@ -126,20 +119,6 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
                 RequestMyMessageFollow();
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     /*接口回调之点击了回复*/

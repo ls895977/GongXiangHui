@@ -7,14 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-
-import org.json.JSONObject;
 
 import butterknife.BindView;
 
@@ -68,31 +67,26 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
         confirmPassword = etResetpasswordConformNewPassworm.getText().toString().trim();
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             asyncShowToast("密码和确认密码不能为空");
-        } else if (!password.equals(confirmPassword) ) {
+        } else if (!password.equals(confirmPassword)) {
             asyncShowToast("两次输入的密码不一致");
         } else {
             CommitSeekPassword(password);
         }
     }
+
     private void CommitSeekPassword(String password) {
-        OkGo.<String>post(Constant.SEEK_PASSWORD_URL)
+        OkGo.<CommonBean>post(Constant.SEEK_PASSWORD_URL)
                 .params("password", password)
                 .params("mobile", mobile)
                 .params("captcha", vertifiCode)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject=new JSONObject(response.body());
-                            final int code = jsonObject.getInt("code");
-                            if (code==0){
-                                com.orhanobut.logger.Logger.e("----------修改成功" + response.toString());
-                                toActivity(LoginActivity.class);
-                            }else {
-                                asyncShowToast("修改失败");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 0) {
+                            toActivity(LoginActivity.class);
+                        } else {
+                            asyncShowToast("修改失败");
                         }
                     }
                 });

@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyIssueGoodSelectAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MyIssueGoodSelectBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
 
@@ -61,18 +60,16 @@ public class MyIssueGoodSelectFragment extends BaseFragment {
 
     /*请求我发布的精选的数据*/
     private void RequestMyIssueGoodSelectData() {
-        OkGo.<String>post(Constant.MYISSURE_GOOD_SELECT_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseMyIssueGoodSelectData(response.body());
-
-            }
-        });
-
+        OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
+                .execute(new JsonCallback<MyIssueGoodSelectBean>() {
+                    @Override
+                    public void onSuccess(Response<MyIssueGoodSelectBean> response) {
+                        parseMyIssueGoodSelectData(response.body());
+                    }
+                });
     }
 
-    private void parseMyIssueGoodSelectData(String body) {
-        MyIssueGoodSelectBean myIssueGoodSelectBean = GsonUtils.jsonFromJson(body, MyIssueGoodSelectBean.class);
+    private void parseMyIssueGoodSelectData(MyIssueGoodSelectBean myIssueGoodSelectBean) {
         int code = myIssueGoodSelectBean.getCode();
         List<MyIssueGoodSelectBean.DataBean> goodSelectData = myIssueGoodSelectBean.getData();
         if (code == 200) {

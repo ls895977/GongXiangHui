@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.PagerAdapter;
@@ -29,10 +28,10 @@ import com.qunxianghui.gxh.adapter.homeAdapter.FireSearchVideoAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.SimpleTextAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeVideoSearchBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchVideoFragment;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.JsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
@@ -99,16 +98,17 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initData() {
         //猜你想要的数据
-        OkGo.<String>get(Constant.SEARCH_VIDEO_GUESS_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                HomeVideoSearchBean guessVideoBean = GsonUtil.parseJsonWithGson(response.body(), HomeVideoSearchBean.class);
-                if (guessVideoBean.getCode() ==200) {
-                    List<HomeVideoSearchBean.DataBean> videoData = guessVideoBean.getData();
-                    initFireRecycle(videoData);
-                }
-            }
-        });
+        OkGo.<HomeVideoSearchBean>get(Constant.SEARCH_VIDEO_GUESS_URL)
+                .execute(new JsonCallback<HomeVideoSearchBean>() {
+                    @Override
+                    public void onSuccess(Response<HomeVideoSearchBean> response) {
+                        HomeVideoSearchBean guessVideoBean = response.body();
+                        if (guessVideoBean.getCode() == 200) {
+                            List<HomeVideoSearchBean.DataBean> videoData = guessVideoBean.getData();
+                            initFireRecycle(videoData);
+                        }
+                    }
+                });
         initHistories();
     }
 
@@ -116,7 +116,7 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
      * ==================猜你想要的数据=====================
      */
     private void initFireRecycle(final List<HomeVideoSearchBean.DataBean> guessVideoBean) {
-        FireSearchVideoAdapter adapter = new FireSearchVideoAdapter(mContext,guessVideoBean);
+        FireSearchVideoAdapter adapter = new FireSearchVideoAdapter(mContext, guessVideoBean);
         rvVideoSearchGuess.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override

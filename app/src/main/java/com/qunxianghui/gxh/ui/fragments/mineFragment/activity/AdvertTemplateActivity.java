@@ -10,7 +10,6 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.PostRequest;
 import com.qunxianghui.gxh.R;
@@ -25,7 +24,6 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertBottomFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTiePianFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.AdvertTopFragment;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.Utils;
@@ -175,12 +173,12 @@ public class AdvertTemplateActivity extends BaseActivity {
             }
             return;
         }
-        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(companyAdvert.images))
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if ("0".equals(uploadImage.code)) {
                             companyAdvert.images = uploadImage.data.file;
                             if (index == mList.size() - 1) {
@@ -195,7 +193,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UploadImage> response) {
                         super.onError(response);
                         mLoadView.setVisibility(View.GONE);
                     }
@@ -212,12 +210,12 @@ public class AdvertTemplateActivity extends BaseActivity {
             }
             return;
         }
-        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(companyAdvert.settings.pgn_url))
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if ("0".equals(uploadImage.code)) {
                             companyAdvert.settings.pgn_url = uploadImage.data.file;
                             if (index == mList.size() - 1) {
@@ -232,7 +230,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UploadImage> response) {
                         super.onError(response);
                         mLoadView.setVisibility(View.GONE);
                     }

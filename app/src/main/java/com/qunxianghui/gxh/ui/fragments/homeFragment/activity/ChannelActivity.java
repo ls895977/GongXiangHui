@@ -15,17 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.OtherAdapter;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.HomeFragment;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.DragGrid;
 import com.qunxianghui.gxh.widget.OtherGridView;
 import com.qunxianghui.gxh.widget.TitleBuilder;
@@ -89,19 +87,19 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             userGridView.setAdapter(userAdapter);
         }
         //获取全部频道
-        OkGo.<String>post(Constant.CHANNEL_GETALL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                getAllData(response.body());
-            }
+        OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
+                .execute(new JsonCallback<ChannelGetallBean>() {
+                    @Override
+                    public void onSuccess(Response<ChannelGetallBean> response) {
+                        getAllData(response.body());
+                    }
 
-        });
+                });
         otherGridView.setOnItemClickListener(this);
         userGridView.setOnItemClickListener(this);
     }
 
-    private void getAllData(String body) {
-        final ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
+    private void getAllData(ChannelGetallBean bean) {
         if (null != bean) {
             List<ChannelGetallBean.DataBean> datas = bean.getData();
             for (int i = 0; i < datas.size(); i++) {
@@ -153,23 +151,18 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.CHANNEL_DELETE_CHANNEL)
                             .params("channel_id", channel.getId())
-                            .execute(new StringCallback() {
+                            .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
-                                    Logger.d("onSuccess-->:" + response.body().toString());
-
                                     //添加到最后一个
                                     otherAdapter.addItem(channel);
                                     new Handler().postDelayed(new Runnable() {
                                         public void run() {
-                                            try {
-                                                int[] endLocation = new int[2];
-                                                //获取终点的坐标
-                                                otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                                                MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
-                                                userAdapter.setRemove(position);
-                                            } catch (Exception localException) {
-                                            }
+                                            int[] endLocation = new int[2];
+                                            //获取终点的坐标
+                                            otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                                            MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
+                                            userAdapter.setRemove(position);
                                         }
                                     }, 50L);
 
@@ -189,7 +182,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL)
                             .params("channel_id", channel.getId())
-                            .execute(new StringCallback() {
+                            .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     //添加到最后一个

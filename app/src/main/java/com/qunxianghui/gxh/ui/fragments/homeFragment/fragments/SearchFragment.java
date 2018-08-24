@@ -8,16 +8,15 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.SearchFragmentAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.SearchBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
@@ -62,12 +61,12 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
         switch (type) {
             //全网咨询
             case 1:
-                OkGo.<String>get(Constant.SEARCH_GET_LIST).
+                OkGo.<SearchBean>get(Constant.SEARCH_GET_LIST).
                         params("type", type).
                         params("keywords", trim).
-                        execute(new StringCallback() {
+                        execute(new JsonCallback<SearchBean>() {
                             @Override
-                            public void onSuccess(Response<String> response) {
+                            public void onSuccess(Response<SearchBean> response) {
                                 parseData(response.body());
                             }
                         });
@@ -77,8 +76,8 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
     }
 
     //设置数据
-    private void parseData(String body) {
-        mBean = GsonUtil.parseJsonWithGson(body, SearchBean.class);
+    private void parseData(SearchBean body) {
+        mBean = body;
         SearchFragmentAdapter adapter = new SearchFragmentAdapter(mBean.getData().getList());
         mRecyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(this);

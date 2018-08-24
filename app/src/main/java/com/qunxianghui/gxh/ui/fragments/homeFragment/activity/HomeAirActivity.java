@@ -12,14 +12,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeAirListAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeAirBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeAirActivity extends BaseActivity{
+public class HomeAirActivity extends BaseActivity {
 
     @BindView(R.id.tv_homeair_top_big_degree)
     TextView mTvHomeairTopBigDegree;
@@ -90,13 +89,13 @@ public class HomeAirActivity extends BaseActivity{
     }
 
     private void requestAirList() {
-        OkGo.<String>post(Constant.HOME_AIRLIST_URL)
+        OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
                 .headers("X-cityId", cityId)
                 .headers("X-areaId", areaId)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<HomeAirBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        HomeAirBean homeAirBean = GsonUtil.parseJsonWithGson(response.body(), HomeAirBean.class);
+                    public void onSuccess(Response<HomeAirBean> response) {
+                        HomeAirBean homeAirBean = response.body();
                         HomeAirBean.DataBean data = homeAirBean.getData();
                         setTopAirDetail(data);
                         final List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();

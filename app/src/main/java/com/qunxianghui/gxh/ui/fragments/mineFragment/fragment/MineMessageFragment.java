@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineMessageAdapter;
@@ -25,8 +24,8 @@ import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.mine.MineMessageCommentBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +49,8 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
     private EditText inputResponseComment;
     private TextView btn_submit;
     private PopupWindow popupWindow;
-    private void parsePaiHangData(String body) {
-        final MineMessageCommentBean mineMessageCommentBean = GsonUtils.jsonFromJson(body, MineMessageCommentBean.class);
 
+    private void parsePaiHangData(MineMessageCommentBean mineMessageCommentBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -111,15 +109,13 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
      * 请求评论我消息
      */
     private void RequestCommonMineMessage() {
-        OkGo.<String>post(Constant.DISCUSS_MINE_URL)
+        OkGo.<MineMessageCommentBean>post(Constant.DISCUSS_MINE_URL)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MineMessageCommentBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-
+                    public void onSuccess(Response<MineMessageCommentBean> response) {
                         parsePaiHangData(response.body());
-
                     }
                 });
     }

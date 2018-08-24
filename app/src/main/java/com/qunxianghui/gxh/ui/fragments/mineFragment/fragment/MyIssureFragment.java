@@ -3,10 +3,10 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 import android.view.View;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 
 /**
@@ -27,7 +27,7 @@ public class MyIssureFragment extends BaseFragment {
     @Override
     public void initData() {
         OkGo.<String>get(Constant.GET_DISCLOSS_INFO_URL)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         com.orhanobut.logger.Logger.e("我的爆料+++++"+response.body().toString());

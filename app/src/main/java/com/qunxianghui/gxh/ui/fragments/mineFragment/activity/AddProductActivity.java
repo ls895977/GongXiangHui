@@ -16,22 +16,18 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -191,22 +187,22 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
             next(urls);
             return;
         }
-        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(urls))
-                .execute(new JsonCallback<String>() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if ("0".equals(uploadImage.code)) {
                             next(uploadImage.data.file);
                         } else {
-                            uploadFail(response);
+                            uploadFail(uploadImage);
                         }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
-                        uploadFail(response);
+                    public void onError(Response<UploadImage> response) {
+                        uploadFail(response.body());
                     }
                 });
     }
@@ -224,45 +220,39 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
         }
     }
 
-    private void uploadFail(Response<String> response) {
+    private void uploadFail(UploadImage response) {
         mIsUploadIng = false;
         mLlLoad.setVisibility(View.GONE);
-        if (TextUtils.isEmpty(response.message())) {
+        if (TextUtils.isEmpty(response.message)) {
             asyncShowToast("上传失败");
         } else {
-            asyncShowToast(response.message());
+            asyncShowToast(response.message);
         }
     }
 
     /*修改公司产品*/
     private void editCompanyCardAdvance() {
-        OkGo.<String>post(Constant.EDIT_COMPANY_CENTER_ADVANCE).
+        OkGo.<CommonBean>post(Constant.EDIT_COMPANY_CENTER_ADVANCE).
                 params("title", mEtAddAProductTitle.getText().toString().trim()).
                 params("aboutus_id", mId).
                 params("describe", mEtAddProductIntroduce.getText().toString().trim()).
                 params("image", mSb.toString()).
                 params("datatype", 2).
-                execute(new JsonCallback<String>() {
+                execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 200) {
-                                asyncShowToast("修改成功");
-                                setResult(0x0022);
-                                finish();
-                            } else {
-                                mLlLoad.setVisibility(View.GONE);
-                            }
-                        } catch (JSONException e) {
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 200) {
+                            asyncShowToast("修改成功");
+                            setResult(0x0022);
+                            finish();
+                        } else {
                             mLlLoad.setVisibility(View.GONE);
-                            e.printStackTrace();
                         }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<CommonBean> response) {
                         super.onError(response);
                         mLlLoad.setVisibility(View.GONE);
                     }
@@ -270,23 +260,17 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
     }
 
     private void saveProduct() {
-        OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE)
+        OkGo.<CommonBean>post(Constant.ADD_COMPANY_CENTER_ADVANCE)
                 .params("title", mEtAddAProductTitle.getText().toString().trim())
                 .params("describe", mEtAddProductIntroduce.getText().toString().trim())
                 .params("image", mSb.toString())
                 .params("datatype", 2)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                asyncShowToast("上传成功");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 0) {
+                            asyncShowToast("上传成功");
                             setResult(0x0022);
                             finish();
                         }
@@ -296,23 +280,18 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
 
     /*删除公司产品*/
     private void deleteCompanyCardAdavance() {
-        OkGo.<String>post(Constant.DELETE_COMPANY_CENTER_ADVANCE)
+        OkGo.<CommonBean>post(Constant.DELETE_COMPANY_CENTER_ADVANCE)
                 .params("aboutus_id", mId)
-                .execute(new JsonCallback<String>() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 200) {
-                                asyncShowToast("删除成功");
-                                setResult(0x0022);
-                                finish();
-                            } else {
-                                asyncShowToast("删除失败" + response.message());
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 200) {
+                            asyncShowToast("删除成功");
+                            setResult(0x0022);
+                            finish();
+                        } else {
+                            asyncShowToast("删除失败" + response.message());
                         }
                     }
                 });

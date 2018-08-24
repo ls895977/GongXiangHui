@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -21,10 +20,10 @@ import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
@@ -115,15 +114,15 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
             return;
         }
 
-        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
+        OkGo.<GeneralResponseBean>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
                 .params("mobile", phoneNumber)
                 .params("type", 3)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<GeneralResponseBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
+                    public void onSuccess(Response<GeneralResponseBean> response) {
+                        GeneralResponseBean responseBean = response.body();
                         if (responseBean.getCode() == 0) {
                             timerHandler.sendEmptyMessage(MSG_SEND_SUCCESS);
 
@@ -133,7 +132,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<GeneralResponseBean> response) {
                         timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                     }
                 });

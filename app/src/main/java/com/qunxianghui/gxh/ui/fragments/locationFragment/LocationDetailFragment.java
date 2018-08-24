@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -34,11 +33,7 @@ import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Ad
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,17 +77,17 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     private void RequestLocalServiceData() {
-        OkGo.<String>get(Constant.LOCATION_NEWS_LIST_URL)
+        OkGo.<TestMode>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<TestMode>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<TestMode> response) {
                         if (count == 0) {
                             localDataList.clear();
                         }
-                        TestMode locationListBean = GsonUtils.jsonFromJson(response.body(), TestMode.class);
+                        TestMode locationListBean = response.body();
                         localDataList.addAll(locationListBean.getData().getList());
                         count = localDataList.size();
                         if (locationListBean.getCode() == 0) {
@@ -102,8 +97,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     }
                 });
     }
-
-    private boolean keyShow = false;
 
     @Override
     protected void initListeners() {
@@ -184,28 +177,21 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     /*举报信息*/
     private void RestInformData(String informData) {
-        OkGo.<String>post(Constant.ADD_REPORT_URL)
+        OkGo.<CommonBean>post(Constant.ADD_REPORT_URL)
                 .params("content", informData)
                 .params("model", "Posts")
                 .params("data_uuid", mUuid)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(final Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            String msg = jsonObject.getString("msg");
-                            if (code == 200) {
-                                asyncShowToast("举报成功");
-                                com.orhanobut.logger.Logger.d("举报信息+++++" + response.body().toString());
-                                mShareDialog.dismiss();
-                            } else {
-                                asyncShowToast(msg);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        String msg = response.body().msg;
+                        if (code == 200) {
+                            asyncShowToast("举报成功");
+                            mShareDialog.dismiss();
+                        } else {
+                            asyncShowToast(msg);
                         }
-
                     }
                 });
     }
@@ -254,13 +240,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
                 //  mAdapter.notifyItemChanged(position);
-                OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
-                        .execute(new StringCallback() {
+                        .execute(new JsonCallback<ReplyCommentResponseBean>() {
                             @Override
-                            public void onSuccess(Response<String> response) {
-                                ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                            public void onSuccess(Response<ReplyCommentResponseBean> response) {
+                                ReplyCommentResponseBean responseBean = response.body();
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
@@ -425,15 +411,15 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
-                OkGo.<String>post(Constant.REPAY_COMMENT_URL)
+                OkGo.<ReplyCommentResponseBean>post(Constant.REPAY_COMMENT_URL)
                         .params("comment_id", commentBean.getId())
                         .params("content", inputText)
                         .params("uuid", commentBean.getData_uuid())
                         .params("pid", commentBean.getPid())
-                        .execute(new StringCallback() {
+                        .execute(new JsonCallback<ReplyCommentResponseBean>() {
                             @Override
-                            public void onSuccess(Response<String> response) {
-                                ReplyCommentResponseBean commentResponseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                            public void onSuccess(Response<ReplyCommentResponseBean> response) {
+                                ReplyCommentResponseBean commentResponseBean = response.body();
                                 if (commentResponseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(commentResponseBean.getMsg());
@@ -448,13 +434,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                             comment.setMember_name(comOneResBean.getMember_name());
                                             commentBeanList.add(comment);
                                             mAdapter.notifyDataSetChanged();
-                                            OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                                            OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                                                     .params("uuid", commentBean.getUuid())
                                                     .params("content", comOneResBean.getContent())
-                                                    .execute(new StringCallback() {
+                                                    .execute(new JsonCallback<ReplyCommentResponseBean>() {
                                                         @Override
-                                                        public void onSuccess(Response<String> response) {
-                                                            ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                                        public void onSuccess(Response<ReplyCommentResponseBean> response) {
+                                                            ReplyCommentResponseBean responseBean = response.body();
                                                             if (responseBean.getCode() == 0) {
                                                                 commentDialog.dismiss();
                                                                 asyncShowToast(responseBean.getMsg());
@@ -473,7 +459,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             }
 
                             @Override
-                            public void onError(Response<String> response) {
+                            public void onError(Response<ReplyCommentResponseBean> response) {
                                 super.onError(response);
                                 asyncShowToast(response.message());
                             }

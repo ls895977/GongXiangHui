@@ -15,19 +15,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.OtherAdapter;
 import com.qunxianghui.gxh.bean.home.HomeVideoChannelBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.GestureDetectorActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.DragGrid;
 import com.qunxianghui.gxh.widget.OtherGridView;
 import com.qunxianghui.gxh.widget.TitleBuilder;
@@ -77,19 +75,18 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
         }).setTitleText("频道管理");
 
         //获取全部频道
-        OkGo.<String>post(Constant.EDIT_LOCAL_POST_SUB_URL)
-                .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                getAllVideoData(response.body());
-            }
-        });
+        OkGo.<HomeVideoChannelBean>post(Constant.EDIT_LOCAL_POST_SUB_URL)
+                .execute(new JsonCallback<HomeVideoChannelBean>() {
+                    @Override
+                    public void onSuccess(Response<HomeVideoChannelBean> response) {
+                        getAllVideoData(response.body());
+                    }
+                });
         otherGridView.setOnItemClickListener(this);
         userGridView.setOnItemClickListener(this);
     }
 
-    private void getAllVideoData(String body) {
-        HomeVideoChannelBean channelBean = GsonUtils.jsonFromJson(body, HomeVideoChannelBean.class);
+    private void getAllVideoData(HomeVideoChannelBean channelBean) {
         if (channelBean.data != null) {
             if (channelBean.data.added != null) {
                 userChannelList = channelBean.data.added;
@@ -103,6 +100,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
         userGridView.setAdapter(userAdapter);
         otherGridView.setAdapter(otherAdapter);
     }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
@@ -124,11 +122,9 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.DELETE_LOCAL_POST_SUB_URL)
                             .params("posts_id", channel.getId())
-                            .execute(new StringCallback() {
+                            .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
-                                    Logger.d("onSuccess-->:" + response.body().toString());
-
                                     //添加到最后一个
                                     otherAdapter.addItem(channel);
                                     new Handler().postDelayed(new Runnable() {
@@ -160,7 +156,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.ADD_LOCAL_POST_SUB_URL)
                             .params("posts_id", channel.getId())
-                            .execute(new StringCallback() {
+                            .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     //添加到最后一个

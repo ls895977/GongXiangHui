@@ -19,7 +19,6 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
@@ -27,8 +26,8 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
@@ -178,10 +177,10 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 if (mChooseType != null) {
                     mChooseType.show();
                 } else {
-                    OkGo.<String>post(Constant.UPLOAD_LOCAL_POST_SORT_SUB_URL)
-                            .execute(new StringCallback() {
+                    OkGo.<HomeVideoSortBean>post(Constant.UPLOAD_LOCAL_POST_SORT_SUB_URL)
+                            .execute(new JsonCallback<HomeVideoSortBean>() {
                                 @Override
-                                public void onSuccess(Response<String> response) {
+                                public void onSuccess(Response<HomeVideoSortBean> response) {
                                     parseVideoSortData(response.body());
                                 }
                             });
@@ -191,12 +190,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     }
 
     private void uploadImages(String path) {
-        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", path)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if ("0".equals(uploadImage.code)) {
                             mCount++;
                             stringBuilder.append(uploadImage.data.file).append(",");
@@ -207,50 +206,52 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                                 uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
                             }
                         } else {
-                            uploadFail(response);
+                            uploadFail(uploadImage.message);
                         }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
-                        uploadFail(response);
+                    public void onError(Response<UploadImage> response) {
+                        uploadFail(response.body().message);
                     }
                 });
     }
 
     private void uploadInfo() {
-        OkGo.<String>post(Constant.PUBLISH_ARTICLE)
+        OkGo.<CommonBean>post(Constant.PUBLISH_ARTICLE)
                 .params("content", mEtTitle.getText().toString().trim())
                 .params("images", stringBuilder.toString())
                 .params("posts_id", mTypeId)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<CommonBean>() {
+
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        CommonBean commonBean = GsonUtils.jsonFromJson(response.body(), CommonBean.class);
+                    public void onSuccess(Response<CommonBean> response) {
+                        CommonBean commonBean = response.body();
                         if (commonBean.code == 200) {
                             mIsUploadIng = false;
                             mLlLoad.setVisibility(View.GONE);
                             asyncShowToast("发布成功");
                             finish();
                         } else {
-                            uploadFail(response);
+                            uploadFail(commonBean.message);
                         }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
-                        uploadFail(response);
+                    public void onError(Response<CommonBean> response) {
+                        super.onError(response);
+                        uploadFail(response.body().message);
                     }
                 });
     }
 
-    private void uploadFail(Response<String> response) {
+    private void uploadFail(String response) {
         mIsUploadIng = false;
         mLlLoad.setVisibility(View.GONE);
-        if (TextUtils.isEmpty(response.message())) {
+        if (TextUtils.isEmpty(response)) {
             asyncShowToast("上传失败");
         } else {
-            asyncShowToast(response.message());
+            asyncShowToast(response);
         }
     }
 
@@ -263,8 +264,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         super.onBackPressed();
     }
 
-    private void parseVideoSortData(String body) {
-        HomeVideoSortBean homeVideoSortBean = GsonUtils.jsonFromJson(body, HomeVideoSortBean.class);
+    private void parseVideoSortData(HomeVideoSortBean homeVideoSortBean) {
         int code = homeVideoSortBean.getCode();
         final List<HomeVideoSortBean.DataBean> videoSortBeanData = homeVideoSortBean.getData();
         if (code == 200) {

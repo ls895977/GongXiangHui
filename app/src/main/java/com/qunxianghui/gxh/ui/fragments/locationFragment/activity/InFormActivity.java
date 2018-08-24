@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -9,14 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class InFormActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_inform_back)
@@ -60,13 +58,6 @@ public class InFormActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void onClick(View v) {
 
 
@@ -90,7 +81,7 @@ public class InFormActivity extends BaseActivity implements View.OnClickListener
                 .params("content", content)
                 .params("model", "Posts")
                 .params("model_id", model_id)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(final Response<String> response) {
                         handler.postDelayed(new Runnable() {

@@ -20,14 +20,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.CompanyCardBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -68,23 +67,23 @@ public class CompanyCardActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        OkGo.<String>post(Constant.MINE_COMPANY_CARD_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseCompanyCardData(response.body());
-            }
+        OkGo.<CompanyCardBean>post(Constant.MINE_COMPANY_CARD_URL)
+                .execute(new JsonCallback<CompanyCardBean>() {
+                    @Override
+                    public void onSuccess(Response<CompanyCardBean> response) {
+                        parseCompanyCardData(response.body());
+                    }
 
-            @Override
-            public void onError(Response<String> response) {
-                super.onError(response);
-                Logger.e("获取失败了" + response.body().toString());
-            }
-        });
+                    @Override
+                    public void onError(Response<CompanyCardBean> response) {
+                        super.onError(response);
+                        Logger.e("获取失败了" + response.body().toString());
+                    }
+                });
 
     }
 
-    private void parseCompanyCardData(String body) {
-        CompanyCardBean companyCardBean = GsonUtils.jsonFromJson(body, CompanyCardBean.class);
+    private void parseCompanyCardData( CompanyCardBean companyCardBean) {
         int code = companyCardBean.getCode();
         if (code == 200) {
             CompanyCardBean.DataBean data = companyCardBean.getData();
@@ -152,7 +151,7 @@ public class CompanyCardActivity extends BaseActivity {
     /*分享我的企业名片*/
     private void requestCompanyCardInfo() {
         OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {

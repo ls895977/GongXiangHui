@@ -31,7 +31,6 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchFragment;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.JsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
@@ -98,11 +97,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData() {
         //猜你想要的数据
-        OkGo.<String>get(Constant.SEARCH_GUESS_URL)
-                .execute(new JsonCallback<String>() {
+        OkGo.<GuessBean>get(Constant.SEARCH_GUESS_URL)
+                .execute(new JsonCallback<GuessBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        GuessBean guessBean = GsonUtil.parseJsonWithGson(response.body(), GuessBean.class);
+                    public void onSuccess(Response<GuessBean> response) {
+                        GuessBean guessBean = response.body();
                         if (guessBean.getCode() == 0) {
                             List<GuessBean.DataBean> data = guessBean.getData();
                             initFireRecycle(data);

@@ -6,23 +6,21 @@ import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,21 +56,19 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
      * 请求我收藏的视频
      */
     private void RequestMineCollectVideo() {
-        OkGo.<String>post(Constant.GET_COLLECT_VIDEO_URL)
+        OkGo.<MineCollectVideoBean>post(Constant.GET_COLLECT_VIDEO_URL)
                 .params("limit", 12)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MineCollectVideoBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<MineCollectVideoBean> response) {
                         Logger.d("我爆料的视频+++" + response.body().toString());
                         ParseMineCollectVideo(response.body());
                     }
                 });
     }
 
-    private void ParseMineCollectVideo(String body) {
-        final MineCollectVideoBean mineCollectVideoBean = GsonUtils.jsonFromJson(body, MineCollectVideoBean.class);
-
+    private void ParseMineCollectVideo(MineCollectVideoBean mineCollectVideoBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -105,11 +101,12 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
      * @param data_uuid
      */
     private void SkipMycollectVideoDetail(int data_uuid, final int position) {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", data_uuid)
-                .execute(new StringCallback() {
+        OkGo.<MyCollectVideoDetailBean>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id", data_uuid)
+                .execute(new JsonCallback<MyCollectVideoDetailBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(response.body(), MyCollectVideoDetailBean.class);
+                    public void onSuccess(Response<MyCollectVideoDetailBean> response) {
+                        MyCollectVideoDetailBean myCollectVideoDetailBean = response.body();
                         int code = myCollectVideoDetailBean.getCode();
                         if (code == 200) {
                             int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
@@ -150,37 +147,31 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
 
     @Override
     public void attentionClick(final int position) {
-        OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", dataList.get(position).getId())
-                .execute(new StringCallback() {
+        OkGo.<CommonBean>post(Constant.ATTENTION_URL)
+                .params("be_member_id", dataList.get(position).getId())
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-
-                            final int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                asyncShowToast("关注成功");
-                                dataList.get(position).getMember().setFollow("true");
-                            } else if (code == 202) {
-                                asyncShowToast("取消关注成功");
-                                dataList.get(position).getMember().setFollow("");
-                            } else if (code == 101) {
-                                asyncShowToast("请不要自己关注自己");
-                            }
-                            mineCollectVideoAdapter.notifyItemChanged(position);
-                            mineCollectVideoAdapter.notifyDataSetChanged();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    public void onSuccess(Response<CommonBean> response) {
+                        final int code = response.body().code;
+                        if (code == 0) {
+                            asyncShowToast("关注成功");
+                            dataList.get(position).getMember().setFollow("true");
+                        } else if (code == 202) {
+                            asyncShowToast("取消关注");
+                            dataList.get(position).getMember().setFollow("");
+                        } else if (code == 101) {
+                            asyncShowToast("请不要自己关注自己");
                         }
+                        mineCollectVideoAdapter.notifyItemChanged(position);
+                        mineCollectVideoAdapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<CommonBean> response) {
                         super.onError(response);
                         Logger.e("视频关注" + response.body().toString());
                     }
                 });
-        Logger.d("视频汇的关注position" + position);
     }
 
     @Override

@@ -20,20 +20,17 @@ import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.bean.mine.UserInfo;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.Utils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,7 +142,7 @@ public class PersonDataActivity extends BaseActivity {
             return;
         }
         String imageUrl = Utils.listToString(upLoadPics);
-        OkGo.<String>post(Constant.EDIT_PERSON_DATA).
+        OkGo.<CommonBean>post(Constant.EDIT_PERSON_DATA).
                 params("nick", nickName).
                 params("sex", sex).
                 params("address", mUserAddress).
@@ -156,31 +153,18 @@ public class PersonDataActivity extends BaseActivity {
                 params("duty", mUserDuty).
                 params("mobile", mMobile).
                 params("self_introduction", mUserIntroduce).
-                execute(new StringCallback() {
+                execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        JSONObject jsonObject;
-                        try {
-                            jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 100) {
-                                Toast.makeText(mContext, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            } else if (code == 200) {
-                                Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                asyncShowToast("保存失败" + response.body().toString());
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 100) {
+                            Toast.makeText(mContext, response.body().message, Toast.LENGTH_SHORT).show();
+                        } else if (code == 200) {
+                            Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            asyncShowToast("保存失败" + response.body().toString());
                         }
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        Logger.e("保存失败->" + response.body().toString());
                     }
                 });
     }

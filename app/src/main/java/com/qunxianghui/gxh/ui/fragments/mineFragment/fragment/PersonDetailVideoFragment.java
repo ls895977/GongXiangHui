@@ -9,17 +9,16 @@ import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
 
@@ -35,43 +34,35 @@ public class PersonDetailVideoFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
-        OkGo.<String>post(Constant.HOME_VIDEO_LIST_URL)
-                .params("user_id",personDetailActivity.member_id)
-                .execute(new StringCallback() {
+        OkGo.<HomeVideoListBean>post(Constant.HOME_VIDEO_LIST_URL)
+                .params("user_id", personDetailActivity.member_id)
+                .execute(new JsonCallback<HomeVideoListBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<HomeVideoListBean> response) {
                         parsePersonDetailVideoData(response.body());
-
                     }
                 });
-
     }
 
     /**
      * 解析视频列表
-     * @param body
+     *
+     * @param
      */
-    private void parsePersonDetailVideoData(String body) {
-        final HomeVideoListBean homeVideoListBean = GsonUtils.jsonFromJson(body, HomeVideoListBean.class);
-        if (homeVideoListBean.getCode()==0){
+    private void parsePersonDetailVideoData(HomeVideoListBean homeVideoListBean) {
+        if (homeVideoListBean.getCode() == 0) {
             final List<HomeVideoListBean.DataBean.ListBean> videoList = homeVideoListBean.getData().getList();
             PersonDetailVideoAdapter personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoList);
-
             xrecyclerPersondetailVideo.setAdapter(personDetailVideoAdapter);
-
             personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
-                    Intent intent=new Intent(mActivity, NewsDetailActivity.class);
-
-                    intent.putExtra("url",videoList.get(position-1).getUrl());
+                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                    intent.putExtra("url", videoList.get(position - 1).getUrl());
                     startActivity(intent);
                 }
             });
-
         }
-
-
     }
 
     @Override
@@ -88,7 +79,7 @@ public class PersonDetailVideoFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        xrecyclerPersondetailVideo.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+        xrecyclerPersondetailVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

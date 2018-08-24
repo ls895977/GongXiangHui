@@ -15,12 +15,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.bean.mine.UserInfo;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
@@ -34,8 +34,6 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFansActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
-import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -99,17 +97,15 @@ public class MineFragment extends BaseFragment {
     }
 
     private void fillUserData() {
-        OkGo.<String>post(Constant.CATCH_USERDATA_URL).
-                execute(new StringCallback() {
+        OkGo.<UserInfo>post(Constant.CATCH_USERDATA_URL).
+                execute(new JsonCallback<UserInfo>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        if (HttpStatusUtil.getStatus(response.body())) {
-                            parseUserData(response.body());
-                        }
+                    public void onSuccess(Response<UserInfo> response) {
+                        parseUserData(response.body());
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UserInfo> response) {
                         super.onError(response);
                         if (code == 1000) {
                             asyncShowToast("您的账号在异地登录");
@@ -118,32 +114,27 @@ public class MineFragment extends BaseFragment {
                 });
     }
 
-    private void parseUserData(String body) {
-        try {
-            UserInfo userInfo = GsonUtils.jsonFromJson(body, UserInfo.class);
-            code = userInfo.code;
-            if (userInfo.code == 0) {
-                mUserInfo = userInfo.data;
-                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
-                    mTvMineCompanyName.setText(mUserInfo.company_info.company_name);
-                } else {
-                    mTvMineCompanyName.setText("");
-                }
-                Glide.with(getContext()).load(mUserInfo.avatar).apply(new RequestOptions()
-                        .placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop().circleCrop()).into(mIvUserAvatar);
-                mMineUserName.setText(mUserInfo.nick);
-                mTvMemberType.setText(mUserInfo.level_info.name);
-                mTvMineCollect.setText(mUserInfo.collect_cnt);
-                mTvMineFollow.setText(mUserInfo.follow_cnt);
-                mTvMineFans.setText(mUserInfo.be_follow_cnt);
-
-                SharedPreferences spConpanyname = mActivity.getSharedPreferences("companymessage", 0);
-                SharedPreferences.Editor editor = spConpanyname.edit();
-                editor.putString("avatar", mUserInfo.avatar);
-                editor.apply();
+    private void parseUserData(UserInfo userInfo) {
+        code = userInfo.code;
+        if (userInfo.code == 0) {
+            mUserInfo = userInfo.data;
+            if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                mTvMineCompanyName.setText(mUserInfo.company_info.company_name);
+            } else {
+                mTvMineCompanyName.setText("");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            Glide.with(getContext()).load(mUserInfo.avatar).apply(new RequestOptions()
+                    .placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop().circleCrop()).into(mIvUserAvatar);
+            mMineUserName.setText(mUserInfo.nick);
+            mTvMemberType.setText(mUserInfo.level_info.name);
+            mTvMineCollect.setText(mUserInfo.collect_cnt);
+            mTvMineFollow.setText(mUserInfo.follow_cnt);
+            mTvMineFans.setText(mUserInfo.be_follow_cnt);
+
+            SharedPreferences spConpanyname = mActivity.getSharedPreferences("companymessage", 0);
+            SharedPreferences.Editor editor = spConpanyname.edit();
+            editor.putString("avatar", mUserInfo.avatar);
+            editor.apply();
         }
     }
 

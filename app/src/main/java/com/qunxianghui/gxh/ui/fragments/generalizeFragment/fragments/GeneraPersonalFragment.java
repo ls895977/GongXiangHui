@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyGeneralizePersonAdapter;
@@ -18,7 +17,6 @@ import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,17 +72,17 @@ public class GeneraPersonalFragment extends BaseFragment {
             ((TextView) header.findViewById(R.id.tv_generalize_company_des)).setText(data.getAd_prize());
             myGeneralizePersonAdapter.addHeaderView(header);
         }
-        OkGo.<String>post(Constant.GENERALIZE_PERSON_LIST_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                mLoadView.setVisibility(View.GONE);
-                parseGeneralizePersonData(response.body());
-            }
-        });
+        OkGo.<GeneraPersonStaticBean>post(Constant.GENERALIZE_PERSON_LIST_URL)
+                .execute(new JsonCallback<GeneraPersonStaticBean>() {
+                    @Override
+                    public void onSuccess(Response<GeneraPersonStaticBean> response) {
+                        mLoadView.setVisibility(View.GONE);
+                        parseGeneralizePersonData(response.body());
+                    }
+                });
     }
 
-    private void parseGeneralizePersonData(String body) {
-        final GeneraPersonStaticBean generaPersonStaticBean = GsonUtils.jsonFromJson(body, GeneraPersonStaticBean.class);
+    private void parseGeneralizePersonData(GeneraPersonStaticBean generaPersonStaticBean) {
         if (generaPersonStaticBean.getCode() == 0) {
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
             myGeneralizePersonAdapter.setNewData(dataList);

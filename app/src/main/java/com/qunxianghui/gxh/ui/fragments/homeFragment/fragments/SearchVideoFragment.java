@@ -7,18 +7,17 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeVideoSearchAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoSearchBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.List;
@@ -30,7 +29,7 @@ import butterknife.BindView;
  * @time 2018/5/28  18:07
  * @desc 搜索的页面
  */
-public class SearchVideoFragment extends BaseFragment implements HomeVideoSearchAdapter.VideoSearchListClickListener{
+public class SearchVideoFragment extends BaseFragment implements HomeVideoSearchAdapter.VideoSearchListClickListener {
     public static final String DATA = "data";
     @BindView(R.id.recyclerview_video)
     RecyclerView mRecyclerview;
@@ -60,19 +59,19 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
      * ==================请求网络=====================
      */
     private void goNextWorks(String trim) {
-        OkGo.<String>get(Constant.SEARCH_GET_VIDEO_LIST).
+        OkGo.<HomeVideoSearchBean>get(Constant.SEARCH_GET_VIDEO_LIST).
                 params("keywords", trim).
-                execute(new StringCallback() {
+                execute(new JsonCallback<HomeVideoSearchBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<HomeVideoSearchBean> response) {
                         parseData(response.body());
                     }
                 });
     }
 
     //设置数据
-    private void parseData(String body) {
-        mBean = GsonUtil.parseJsonWithGson(body, HomeVideoSearchBean.class);
+    private void parseData(HomeVideoSearchBean body) {
+        mBean = body;
         mSearchVideodata = mBean.getData();
         HomeVideoSearchAdapter adapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
         adapter.setVideoSearchListClickListener(this);

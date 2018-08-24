@@ -24,7 +24,6 @@ import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -145,18 +144,17 @@ public class VideoUploadActivity extends BaseActivity {
         if (mChooseType != null) {
             mChooseType.show();
         } else {
-            OkGo.<String>post(Constant.UPLOAD_VIDEO_ADD_SORT_URL)
-                    .execute(new JsonCallback<String>() {
+            OkGo.<HomeVideoSortBean>post(Constant.UPLOAD_VIDEO_ADD_SORT_URL)
+                    .execute(new JsonCallback<HomeVideoSortBean>() {
                         @Override
-                        public void onSuccess(Response<String> response) {
+                        public void onSuccess(Response<HomeVideoSortBean> response) {
                             parseVideoSortData(response.body());
                         }
                     });
         }
     }
 
-    private void parseVideoSortData(String body) {
-        HomeVideoSortBean homeVideoSortBean = GsonUtils.jsonFromJson(body, HomeVideoSortBean.class);
+    private void parseVideoSortData(HomeVideoSortBean homeVideoSortBean ) {
         int code = homeVideoSortBean.getCode();
         final List<HomeVideoSortBean.DataBean> videoSortBeanData = homeVideoSortBean.getData();
         if (code == 200) {
@@ -183,18 +181,18 @@ public class VideoUploadActivity extends BaseActivity {
     private void uploadVideo(File file, String videoPath, String title, String description, int videoId) {
         mIsUploadIng = true;
         asyncShowToast("上传中...");
-        OkGo.<String>post(Constant.UPLOAD_VIDEO_URL)
+        OkGo.<UploadVideo>post(Constant.UPLOAD_VIDEO_URL)
                 .params("file", new File(videoPath))
                 .params("thumb", file)
                 .params("title", title)
                 .params("description", description)
                 .params("video_id", videoId)
-                .execute(new JsonCallback<String>() {
+                .execute(new JsonCallback<UploadVideo>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<UploadVideo> response) {
                         mIsUploadIng = false;
                         mLoadView.setVisibility(View.GONE);
-                        UploadVideo uploadVideo = GsonUtils.jsonFromJson(response.body(), UploadVideo.class);
+                        UploadVideo uploadVideo = response.body();
                         if (uploadVideo != null && "0".equals(uploadVideo.code)) {
                             asyncShowToast("上传成功,请等待审核");
                             finish();
@@ -202,7 +200,7 @@ public class VideoUploadActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UploadVideo> response) {
                         mIsUploadIng = false;
                         mLoadView.setVisibility(View.GONE);
                         asyncShowToast("上传失败...");

@@ -12,16 +12,14 @@ import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineCollectPostBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,20 +50,18 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
     private void RequestMyCollectPost() {
-        OkGo.<String>post(Constant.GET_COLLECT_POST_URL)
+        OkGo.<MineCollectPostBean>post(Constant.GET_COLLECT_POST_URL)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MineCollectPostBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<MineCollectPostBean> response) {
                         parseCollectPostDaTA(response.body());
                     }
                 });
     }
 
-    private void parseCollectPostDaTA(String body) {
-        Logger.d("我收藏帖子的内容+++" + body.toString());
-        final MineCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MineCollectPostBean.class);
+    private void parseCollectPostDaTA(MineCollectPostBean myCollectPostBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -158,23 +154,18 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
         Toast.makeText(mActivity, "取消成功", Toast.LENGTH_SHORT).show();
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", dataList.get(position).getData_uuid())
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
-                    public void onSuccess(final Response<String> response) {
-                        Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                        com.orhanobut.logger.Logger.e("取消收藏+" + response.body().toString());
+                    public void onSuccess(Response<String> response) {
+                        Toast.makeText(mActivity, "取消收藏", Toast.LENGTH_SHORT).show();
                         dataList.remove(position);
                         mineCollectPostAdapter.notifyDataSetChanged();
-
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-
                         Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
-
-
                     }
                 });
     }

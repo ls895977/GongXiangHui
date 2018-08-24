@@ -17,22 +17,20 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.location.ImageBean;
 import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -197,87 +195,71 @@ public class AddAdvanceActivity extends BaseActivity {
 
     /*修改企业核心优势*/
     private void editCompanyCardAdvance() {
-        OkGo.<String>post(Constant.EDIT_COMPANY_CENTER_ADVANCE).
+        OkGo.<CommonBean>post(Constant.EDIT_COMPANY_CENTER_ADVANCE).
                 params("title", mEtAddAdvanceTitle.getText().toString().trim()).
                 params("aboutus_id", mId).
                 params("describe", mEtAddAdvanceIntroduce.getText().toString().trim()).
                 params("image", mPath).
                 params("datatype", 1).
-                execute(new StringCallback() {
+                execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<CommonBean> response) {
                         mLlLoad.setVisibility(View.GONE);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 200) {
-                                asyncShowToast("修改成功");
-                                setResult(0x0022);
-                                finish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        int code = response.body().code;
+                        if (code == 200) {
+                            asyncShowToast("修改成功");
+                            setResult(0x0022);
+                            finish();
                         }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<CommonBean> response) {
                         super.onError(response);
                         mLlLoad.setVisibility(View.GONE);
-                        Logger.e("添加企业优势失败了" + response.message());
                     }
                 });
     }
 
     /*删除企业核心优势*/
     private void deleteCompanyCardAdavance() {
-        OkGo.<String>post(Constant.DELETE_COMPANY_CENTER_ADVANCE).
-                params("aboutus_id", mId).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response.body());
-                    int code = jsonObject.getInt("code");
-                    if (code == 200) {
-                        asyncShowToast("删除成功");
-                        setResult(0x0022);
-                        finish();
-                    } else {
-                        asyncShowToast("删除失败" + response.message());
+        OkGo.<CommonBean>post(Constant.DELETE_COMPANY_CENTER_ADVANCE).
+                params("aboutus_id", mId)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 200) {
+                            asyncShowToast("删除成功");
+                            setResult(0x0022);
+                            finish();
+                        } else {
+                            asyncShowToast("删除失败" + response.message());
+                        }
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+                });
     }
 
     private void saveAdvance() {
-        OkGo.<String>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
+        OkGo.<CommonBean>post(Constant.ADD_COMPANY_CENTER_ADVANCE).
                 params("title", mEtAddAdvanceTitle.getText().toString().trim()).
                 params("describe", mEtAddAdvanceIntroduce.getText().toString().trim()).
                 params("image", mPath).
                 params("datatype", 1).
-                execute(new StringCallback() {
+                execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<CommonBean> response) {
                         mLlLoad.setVisibility(View.GONE);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 200) {
-                                asyncShowToast("保存成功");
-                                setResult(0x0022);
-                                finish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        int code = response.body().code;
+                        if (code == 200) {
+                            asyncShowToast("保存成功");
+                            setResult(0x0022);
+                            finish();
                         }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<CommonBean> response) {
                         super.onError(response);
                         mLlLoad.setVisibility(View.GONE);
                         Logger.e("添加企业优势失败了" + response.message());

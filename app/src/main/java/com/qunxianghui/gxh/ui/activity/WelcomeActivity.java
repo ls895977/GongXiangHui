@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
@@ -20,16 +19,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.WelcomeAdvertBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -38,14 +35,17 @@ import butterknife.ButterKnife;
  */
 
 public class WelcomeActivity extends BaseActivity {
+
     @BindView(R.id.iv_welcomeadver)
     ImageView mIvWelcomeadver;
     @BindView(R.id.textView)
     TextView mTextView;
     @BindView(R.id.ll_welcome_skip)
     LinearLayout mLlWelcomeSkip;
+
     private Animation animation;
     private int count = 5;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -75,6 +75,7 @@ public class WelcomeActivity extends BaseActivity {
             }
         }
     }
+
     private int getCount() {
         count--;
         if (count == 0) {
@@ -91,36 +92,35 @@ public class WelcomeActivity extends BaseActivity {
      * 请求网络广告
      */
     private void requestWelcomeAdvert() {
-        OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                WelcomeAdvertBean welcomeAdvertBean = GsonUtils.jsonFromJson(response.body(), WelcomeAdvertBean.class);
-                if (welcomeAdvertBean.getCode() == 0) {
-                    WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
-                    String image = data.getImage();
-                    Glide.with(mContext)
-                            .load(image)
-                            .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
-                                    .error(R.mipmap.icon_starpage)
-                                    .centerCrop())
-                            .into(mIvWelcomeadver);
-                }
-            }
-        });
+        OkGo.<WelcomeAdvertBean>get(Constant.WELCOM_ADVER_URL)
+                .execute(new JsonCallback<WelcomeAdvertBean>() {
+                    @Override
+                    public void onSuccess(Response<WelcomeAdvertBean> response) {
+                        WelcomeAdvertBean welcomeAdvertBean = response.body();
+                        if (welcomeAdvertBean.getCode() == 0) {
+                            WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
+                            String image = data.getImage();
+                            Glide.with(mContext)
+                                    .load(image)
+                                    .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
+                                            .error(R.mipmap.icon_starpage)
+                                            .centerCrop())
+                                    .into(mIvWelcomeadver);
+                        }
+                    }
+                });
     }
 
     @Override
     protected void initData() {
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 requestWelcomeAdvert();
             }
         }, 1000);
-
-
     }
+
     @Override
     protected void initListeners() {
         super.initListeners();
@@ -143,10 +143,4 @@ public class WelcomeActivity extends BaseActivity {
         finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

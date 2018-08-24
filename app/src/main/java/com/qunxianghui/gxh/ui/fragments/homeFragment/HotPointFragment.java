@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
@@ -31,7 +30,6 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 import com.youth.banner.Banner;
@@ -68,6 +66,7 @@ public class HotPointFragment extends BaseFragment {
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_hot_point;
@@ -92,6 +91,7 @@ public class HotPointFragment extends BaseFragment {
             homeItemListAdapter.addHeaderView(headerVp, 1);
         }
     }
+
     @Override
     public void initData() {
         //首页新闻数据
@@ -106,6 +106,7 @@ public class HotPointFragment extends BaseFragment {
                     }
                 });
     }
+
     /**
      * 首页下拉刷新 新的接口
      */
@@ -229,16 +230,16 @@ public class HotPointFragment extends BaseFragment {
             }
         });
 
-        OkGo.<String>get(Constant.HOME_PAGE_LUNBO_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseHomeLunBoPager(response.body());
-            }
-        });
+        OkGo.<HomeLunBoBean>get(Constant.HOME_PAGE_LUNBO_URL)
+                .execute(new JsonCallback<HomeLunBoBean>() {
+                    @Override
+                    public void onSuccess(Response<HomeLunBoBean> response) {
+                        parseHomeLunBoPager(response.body());
+                    }
+                });
     }
 
-    private void parseHomeLunBoPager(String body) {
-        HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
+    private void parseHomeLunBoPager(HomeLunBoBean homeLunBoBean) {
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
             //轮播图的图片

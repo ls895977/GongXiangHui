@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyIssueLocalServiceAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
 
@@ -60,20 +59,18 @@ public class MyIssueLocalServiceFragment extends BaseFragment {
 
     /*请求本地服务的数据*/
     private void RequestMyIssueLocalServicesData() {
-        OkGo.<String>post(Constant.MYISSURE_LOCAL_SERVICE_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseLocalServiceData(response.body());
-
-            }
-        });
+        OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                .execute(new JsonCallback<MineIssueLocalServiceBean>() {
+                    @Override
+                    public void onSuccess(Response<MineIssueLocalServiceBean> response) {
+                        parseLocalServiceData(response.body());
+                    }
+                });
 
     }
 
     /*解析本地服务的数据*/
-    private void parseLocalServiceData(String body) {
-
-        MineIssueLocalServiceBean myIssueGoodSelectBean = GsonUtils.jsonFromJson(body, MineIssueLocalServiceBean.class);
+    private void parseLocalServiceData(MineIssueLocalServiceBean myIssueGoodSelectBean) {
         int code = myIssueGoodSelectBean.getCode();
         List<MineIssueLocalServiceBean.DataBean> localServiceData = myIssueGoodSelectBean.getData();
         if (code == 200) {

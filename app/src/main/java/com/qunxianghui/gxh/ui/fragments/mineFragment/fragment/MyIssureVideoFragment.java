@@ -12,20 +12,18 @@ import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,19 +57,18 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
      * 请求我的发布中的视频
      */
     private void RequestMyIssueVideo() {
-        OkGo.<String>post(Constant.GET_ISSURE_VIDEO_URL)
+        OkGo.<MineIssueVideoBean>post(Constant.GET_ISSURE_VIDEO_URL)
                 .params("limit", 5)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MineIssueVideoBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<MineIssueVideoBean> response) {
                         ParseMineIssueVideo(response.body());
                     }
                 });
     }
 
-    private void ParseMineIssueVideo(String body) {
-        final MineIssueVideoBean mineIssueVideoBean = GsonUtils.jsonFromJson(body, MineIssueVideoBean.class);
+    private void ParseMineIssueVideo(MineIssueVideoBean mineIssueVideoBean) {
         if (mIsRefreshing) {
             mIsRefreshing = false;
             dataList.clear();
@@ -89,7 +86,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(mActivity, ProtocolActivity.class);
                         int uuid = dataList.get(position - 1).getUuid();
-                        SkipMyIssueVideoDetail(uuid,position);
+                        SkipMyIssueVideoDetail(uuid, position);
                     }
                 });
             }
@@ -105,11 +102,12 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
      * @param uuid
      */
     private void SkipMyIssueVideoDetail(int uuid, final int position) {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL).params("id", uuid)
-                .execute(new StringCallback() {
+        OkGo.<MyCollectVideoDetailBean>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id", uuid)
+                .execute(new JsonCallback<MyCollectVideoDetailBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        MyCollectVideoDetailBean myCollectVideoDetailBean = GsonUtils.jsonFromJson(response.body(), MyCollectVideoDetailBean.class);
+                    public void onSuccess(Response<MyCollectVideoDetailBean> response) {
+                        MyCollectVideoDetailBean myCollectVideoDetailBean = response.body();
                         int code = myCollectVideoDetailBean.getCode();
                         if (code == 0) {
                             String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
@@ -182,23 +180,18 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     /*请求接口删除*/
     private void DeleteVideo(final int position) {
-        OkGo.<String>post(Constant.DELETE_MYISSUE_URL)
+        OkGo.<CommonBean>post(Constant.DELETE_MYISSUE_URL)
                 .params("uuid", dataList.get(position).getUuid())
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(final Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                asyncShowToast("删除成功");
-                                dataList.remove(position);
-                                mineIssueVideoAdapter.notifyDataSetChanged();
-                            } else {
-                                asyncShowToast("删除失败");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 0) {
+                            asyncShowToast("删除成功");
+                            dataList.remove(position);
+                            mineIssueVideoAdapter.notifyDataSetChanged();
+                        } else {
+                            asyncShowToast("删除失败");
                         }
                     }
                 });

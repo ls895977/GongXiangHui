@@ -1,9 +1,9 @@
 package com.qunxianghui.gxh.utils;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 
 import org.json.JSONArray;
@@ -34,10 +34,10 @@ public class UserUtil {
 
     private void getUserData() {
         OkGo.<String>post(Constant.CATCH_USERDATA_URL).
-                execute(new StringCallback() {
+                execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+                        if (HttpStatusUtil.getStatus(response.body())) {
 //                            Logger.d("onSuccess-->:" + response.body().toString());
                             parseUserData(response.body());
                             return;

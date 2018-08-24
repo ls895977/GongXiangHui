@@ -13,9 +13,7 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssurePostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -34,7 +32,6 @@ import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 import com.tencent.mm.opensdk.utils.Log;
 
@@ -62,11 +59,13 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     private TextView IssuePostCommentSend;
     private int commentPosition;
     private CommentDialog commentDialog;
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_mine_issure;
     }
+
     @Override
     public void initData() {
         RequestMyIssurePost();
@@ -76,20 +75,18 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
      * 网络请求我发布的帖子
      */
     private void RequestMyIssurePost() {
-        OkGo.<String>post(Constant.GET_ISSURE_POST_URL)
+        OkGo.<TestMode>post(Constant.GET_ISSURE_POST_URL)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<TestMode>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        Logger.d("我发布的帖子+++++" + response.body().toString());
+                    public void onSuccess(Response<TestMode> response) {
                         parseIssuePostData(response.body());
                     }
                 });
     }
 
-    private void parseIssuePostData(String body) {
-        final TestMode mineIssurePostBean = GsonUtils.jsonFromJson(body, TestMode.class);
+    private void parseIssuePostData(TestMode mineIssurePostBean) {
         if (mineIssurePostBean.getCode() == 0) {
             if (mIsRefresh) {
                 mIsRefresh = false;
@@ -142,14 +139,15 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-                if (tvContent!=null && commentDialog!=null){
+                if (tvContent != null && commentDialog != null) {
                     int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
                     int tvContentTop = getLocationOnScreen(tvContent);// textview top值
-                    int scrollY = tvContentTop-etTop+tvContent.getHeight();
-                    recyclerMineissuePost.smoothScrollBy(0,scrollY);
+                    int scrollY = tvContentTop - etTop + tvContent.getHeight();
+                    recyclerMineissuePost.smoothScrollBy(0, scrollY);
                 }
 
             }
+
             @Override
             public void keyBoardHide(int height) {
                 if (commentDialog != null) {
@@ -229,13 +227,13 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 commentBeanList.add(comment);
                 mineIssurePostAdapter.notifyDataSetChanged();
                 //  mAdapter.notifyItemChanged(position);
-                OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
-                        .execute(new StringCallback() {
+                        .execute(new JsonCallback<ReplyCommentResponseBean>() {
                             @Override
-                            public void onSuccess(Response<String> response) {
-                                ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                            public void onSuccess(Response<ReplyCommentResponseBean> response) {
+                                ReplyCommentResponseBean responseBean = response.body();
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
@@ -253,7 +251,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     //接口回调之 点赞
     @Override
     public void onPraiseClick(final int position) {
-        Log.i("fanbo",position+"1");
+        Log.i("fanbo", position + "1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -345,43 +343,45 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         startActivity(intent);
 
     }
-    private  TextView tvContent;
+
+    private TextView tvContent;
+
     @Override
     public void commentRecall(final int position, final CommentBean commentBean, TextView tvContent) {
         this.tvContent = tvContent;
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
-                OkGo.<String>post(Constant.REPAY_COMMENT_URL)
+                OkGo.<ReplyCommentResponseBean>post(Constant.REPAY_COMMENT_URL)
                         .params("comment_id", commentBean.getId())
                         .params("content", inputText)
                         .params("uuid", commentBean.getData_uuid())
                         .params("pid", commentBean.getPid())
-                        .execute(new StringCallback() {
+                        .execute(new JsonCallback<ReplyCommentResponseBean>() {
                             @Override
-                            public void onSuccess(Response<String> response) {
-                                ReplyCommentResponseBean commentResponseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                            public void onSuccess(Response<ReplyCommentResponseBean> response) {
+                                ReplyCommentResponseBean commentResponseBean = response.body();
                                 if (commentResponseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(commentResponseBean.getMsg());
                                     List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
                                     CommentBean comment = new CommentBean();
                                     ReplyCommentResponseBean.DataBean dataBean = commentResponseBean.getData();
-                                    if (dataBean!=null){
+                                    if (dataBean != null) {
                                         ReplyCommentResponseBean.DataBean.ComOneResBean comOneResBean = dataBean.getCom_one_res();
-                                        if (comOneResBean!=null){
+                                        if (comOneResBean != null) {
                                             comment.setContent(comOneResBean.getContent());
                                             comment.setUuid(comOneResBean.getData_uuid());
                                             comment.setMember_name(comOneResBean.getMember_name());
                                             commentBeanList.add(comment);
                                             mineIssurePostAdapter.notifyDataSetChanged();
-                                            OkGo.<String>post(Constant.ISSURE_DISUSS_URL)
+                                            OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                                                     .params("uuid", commentBean.getUuid())
                                                     .params("content", comOneResBean.getContent())
-                                                    .execute(new StringCallback() {
+                                                    .execute(new JsonCallback<ReplyCommentResponseBean>() {
                                                         @Override
-                                                        public void onSuccess(Response<String> response) {
-                                                            ReplyCommentResponseBean responseBean = GsonUtils.jsonFromJson(response.body(), ReplyCommentResponseBean.class);
+                                                        public void onSuccess(Response<ReplyCommentResponseBean> response) {
+                                                            ReplyCommentResponseBean responseBean = response.body();
                                                             if (responseBean.getCode() == 0) {
                                                                 commentDialog.dismiss();
                                                                 asyncShowToast(responseBean.getMsg());
@@ -400,7 +400,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                             }
 
                             @Override
-                            public void onError(Response<String> response) {
+                            public void onError(Response<ReplyCommentResponseBean> response) {
                                 super.onError(response);
                                 asyncShowToast(response.message());
                             }

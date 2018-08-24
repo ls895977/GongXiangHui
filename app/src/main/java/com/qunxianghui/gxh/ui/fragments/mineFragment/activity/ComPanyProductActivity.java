@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
@@ -14,8 +13,8 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.ProductAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,18 +54,18 @@ public class ComPanyProductActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        OkGo.<String>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
+        OkGo.<AddAdvanceBean>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
                 .params("datatype", 2)
                 .params("limit", 10)
                 .params("skip", mPage)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<AddAdvanceBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<AddAdvanceBean> response) {
                         parseCompanyAdvanceData(response.body());
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<AddAdvanceBean> response) {
                         super.onError(response);
                         mXrecyclerActivityProduct.setLoadingMoreEnabled(false);
                         Logger.e("上传失败了" + response.message());
@@ -74,8 +73,7 @@ public class ComPanyProductActivity extends BaseActivity {
                 });
     }
 
-    private void parseCompanyAdvanceData(String body) {
-        AddAdvanceBean mAddAdvanceBean = GsonUtils.jsonFromJson(body, AddAdvanceBean.class);
+    private void parseCompanyAdvanceData(AddAdvanceBean mAddAdvanceBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             mDataList.clear();

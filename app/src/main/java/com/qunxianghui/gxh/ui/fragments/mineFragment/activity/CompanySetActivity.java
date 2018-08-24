@@ -21,7 +21,6 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
@@ -30,6 +29,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.mine.CompanySetBean;
 import com.qunxianghui.gxh.bean.mine.ThirdStepCityBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
@@ -92,11 +92,13 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private CompanySetBean.DataBean mDataBean;
+
     @Override
     protected int getLayoutId() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_company_set;
     }
+
     @Override
     protected void initViews() {
         ImagePicker imagePicker = ImagePicker.getInstance();
@@ -128,7 +130,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 String images = mDataBean.getImages();
                 if (!TextUtils.isEmpty(images)) {
                     String[] split = images.split(",");
-                fillPersonCompanyData(mDataBean);
+                    fillPersonCompanyData(mDataBean);
                     for (String aSplit : split) {
                         ImageItem imageItem = new ImageItem();
                         imageItem.path = aSplit;
@@ -170,21 +172,19 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         etMineCompanysetWritContactName.setText(linkname);
         etMineCaompanysetToIndustry.setText(company_trade_name);
     }
+
     @Override
     protected void initData() {
-        OkGo.<String>post(Constant.GET_COMPANY_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-       Logger.d("企业设置的信息"+response.body().toString());
-          if(response.body().toString().length()>0){
-              tvMmineCompanysetFabu.setText("修改");
-              parseCompanyInfo(response.body());
-          }else {
-              return;
-          }
-
-            }
-        });
+        OkGo.<String>post(Constant.GET_COMPANY_URL)
+                .execute(new JsonCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (response.body().length() > 0) {
+                            tvMmineCompanysetFabu.setText("修改");
+                            parseCompanyInfo(response.body());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -233,7 +233,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     for (int i = 0, length = selImageList.size(); i < length; i++) {
                         String path = selImageList.get(i).path;
                         if (!path.contains("http")) {
-                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path),i == length - 1);
+                            upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path), i == length - 1);
                         } else {
                             upLoadPics.add(path);
                             if (i == length - 1) {
@@ -253,45 +253,46 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
      * 企业设置
      */
     private void setCompantSetArea() {
-        OkGo.<String>get(Constant.HOST_THIRD_STEPAREA_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                final ThirdStepCityBean thirdStepCityBean = GsonUtils.jsonFromJson(response.body(), ThirdStepCityBean.class);
-                ArrayList<ThirdStepCityBean.DataBean> dataList = thirdStepCityBean.getData();
-                options1Items = dataList;
-                for (int i = 0; i < dataList.size(); i++) {  //遍历省份
-                    ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
-                    ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
-                    if (dataList.get(i).sub.size() != 0) {
-                        for (int c = 0; c < dataList.get(i).sub.size(); c++) {//遍历该省份的所有城市
-                            String CityName = dataList.get(i).sub.get(c).name;
-                            CityList.add(CityName);//添加城市
-                            ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
-                            //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
-                            if (dataList.get(i).sub.get(c).sub == null
-                                    || dataList.get(i).sub.get(c).sub.size() == 0) {
-                                City_AreaList.add("");
-                            } else {
-                                for (int i1 = 0; i1 < dataList.get(i).sub.get(c).sub.size(); i1++) {
-                                    City_AreaList.add(dataList.get(i).sub.get(c).sub.get(i1).name);
+        OkGo.<ThirdStepCityBean>get(Constant.HOST_THIRD_STEPAREA_URL)
+                .execute(new JsonCallback<ThirdStepCityBean>() {
+                    @Override
+                    public void onSuccess(Response<ThirdStepCityBean> response) {
+                        ThirdStepCityBean thirdStepCityBean = response.body();
+                        ArrayList<ThirdStepCityBean.DataBean> dataList = thirdStepCityBean.getData();
+                        options1Items = dataList;
+                        for (int i = 0; i < dataList.size(); i++) {  //遍历省份
+                            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
+                            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
+                            if (dataList.get(i).sub.size() != 0) {
+                                for (int c = 0; c < dataList.get(i).sub.size(); c++) {//遍历该省份的所有城市
+                                    String CityName = dataList.get(i).sub.get(c).name;
+                                    CityList.add(CityName);//添加城市
+                                    ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
+                                    //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
+                                    if (dataList.get(i).sub.get(c).sub == null
+                                            || dataList.get(i).sub.get(c).sub.size() == 0) {
+                                        City_AreaList.add("");
+                                    } else {
+                                        for (int i1 = 0; i1 < dataList.get(i).sub.get(c).sub.size(); i1++) {
+                                            City_AreaList.add(dataList.get(i).sub.get(c).sub.get(i1).name);
+                                        }
+                                    }
+                                    Province_AreaList.add(City_AreaList);//添加该省所有地区数据
                                 }
+                            } else {
+                                CityList.add("");
+                                ArrayList<String> City_AreaList = new ArrayList<>();
+                                City_AreaList.add("");
+                                Province_AreaList.add(City_AreaList);
                             }
-                            Province_AreaList.add(City_AreaList);//添加该省所有地区数据
+                            options2Items.add(CityList);
+                            options3Items.add(Province_AreaList);
                         }
-                    } else {
-                        CityList.add("");
-                        ArrayList<String> City_AreaList = new ArrayList<>();
-                        City_AreaList.add("");
-                        Province_AreaList.add(City_AreaList);
+                        if (thirdStepCityBean.getCode() == 0) {
+                            showPickerView();
+                        }
                     }
-                    options2Items.add(CityList);
-                    options3Items.add(Province_AreaList);
-                }
-                if (thirdStepCityBean.getCode() == 0) {
-                    showPickerView();
-                }
-            }
-        });
+                });
 
     }
 
@@ -362,7 +363,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                 .params("city_id", options1Items.isEmpty() ? mDataBean.getCity_id() : options1Items.get(mPosition[0]).sub.get(mPosition[1]).id)
                 .params("area_id", options1Items.isEmpty() ? mDataBean.getArea_id() : options1Items.get(mPosition[0]).sub.get(mPosition[1]).sub.get(mPosition[2]).id)
                 .params("company_trade", "保洁清洗qqq")
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         mLoadView.setVisibility(View.GONE);
@@ -415,12 +416,12 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
     }
 
     private void upLoadPic(String urls, final boolean isUpdate) {
-        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
                             if (isUpdate) {
@@ -430,7 +431,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UploadImage> response) {
                         super.onError(response);
                         mLoadView.setVisibility(View.GONE);
                     }

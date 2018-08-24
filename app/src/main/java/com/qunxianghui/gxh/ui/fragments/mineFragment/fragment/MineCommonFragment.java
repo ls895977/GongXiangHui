@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
@@ -21,10 +20,10 @@ import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private int count;
     private boolean mIsRefresh = false;
     private int mMemberId;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
@@ -63,13 +63,14 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         }
         LoadMycolectNews();
     }
+
     private void LoadMycolectNews() {
-        OkGo.<String>post(Constant.GET_COLLECT_NEWS_URL)
+        OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 12)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MyCollectPostBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<MyCollectPostBean> response) {
                         parseCollectPostData(response.body());
                     }
                 });
@@ -78,10 +79,9 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     /**
      * 解析我的收藏列表
      *
-     * @param body
+     * @param
      */
-    private void parseCollectPostData(String body) {
-        MyCollectPostBean myCollectPostBean = GsonUtils.jsonFromJson(body, MyCollectPostBean.class);
+    private void parseCollectPostData(MyCollectPostBean myCollectPostBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -91,42 +91,43 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
         if (myCollectPostBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
-                    myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                    myCollectPostAdapter.setCollectOnClickListener(this);
-                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-                    myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View v, int position) {
-                            int id = dataList.get(position).getData_uuid();
-                            SkipMycollectNewsDetail(id,position);
-                        }
-                    });
-                }
-
+                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                myCollectPostAdapter.setCollectOnClickListener(this);
+                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        int id = dataList.get(position).getData_uuid();
+                        SkipMycollectNewsDetail(id, position);
+                    }
+                });
             }
-            xrecycler_mine_collect_news.refreshComplete();
-            myCollectPostAdapter.notifyDataSetChanged();
-            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+
         }
+        xrecycler_mine_collect_news.refreshComplete();
+        myCollectPostAdapter.notifyDataSetChanged();
+        myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+    }
 
     /**
      * 跳转新闻详情页
+     *
      * @param id
      */
     private void SkipMycollectNewsDetail(final int id, final int position) {
-        OkGo.<String>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
-                .params("id",id)
-                .execute(new StringCallback() {
+        OkGo.<MyColleNewsDetailBean>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
+                .params("id", id)
+                .execute(new JsonCallback<MyColleNewsDetailBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        MyColleNewsDetailBean myColleNewsDetailBean = GsonUtils.jsonFromJson(response.body(), MyColleNewsDetailBean.class);
+                    public void onSuccess(Response<MyColleNewsDetailBean> response) {
+                        MyColleNewsDetailBean myColleNewsDetailBean = response.body();
                         int code = myColleNewsDetailBean.getCode();
-                        if (code==200){
+                        if (code == 200) {
                             int uuid = myColleNewsDetailBean.getData().getDetail().getUuid();
                             String url = myColleNewsDetailBean.getData().getRand_data().get(position).getUrl();
-                            Intent intent=new Intent(mActivity, NewsDetailActivity.class);
-                            intent.putExtra("url",url);
-                            intent.putExtra("uuid",uuid);
+                            Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                            intent.putExtra("url", url);
+                            intent.putExtra("uuid", uuid);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             startActivity(intent);
                         }
@@ -199,14 +200,13 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     private void CancelNewsData(final int position) {
         OkGo.<String>post(Constant.ADD_COLLECT_URL)
                 .params("data_uuid", dataList.get(position).getData_uuid())
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
-                    public void onSuccess(final Response<String> response) {
+                    public void onSuccess(Response<String> response) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(mActivity, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                                com.orhanobut.logger.Logger.e("取消收藏+" + response.body().toString());
+                                Toast.makeText(mActivity, "取消收藏", Toast.LENGTH_SHORT).show();
                                 dataList.remove(position);
                                 myCollectPostAdapter.notifyDataSetChanged();
                             }

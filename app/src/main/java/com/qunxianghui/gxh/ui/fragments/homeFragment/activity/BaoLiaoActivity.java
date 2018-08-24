@@ -14,21 +14,18 @@ import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,19 +185,23 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 stringBuilder.append(upLoadPics.get(i));
             }
         }
-        OkGo.<String>post(Constant.HOME_DISCLOSS_URL)
+        OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)
                 .params("title", faBuTitle)
                 .params("content", faBuContent)
                 .params("images", stringBuilder.toString())
-                .execute(new JsonCallback<String>() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<CommonBean> response) {
 //                        mLoadView.setVisibility(View.GONE);
-                        parseBaoLiaoData(response.body());
+                            int code = response.body().code;
+                            if (code == 0) {
+                                asyncShowToast("爆料成功");
+                                finish();
+                            }
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<CommonBean> response) {
                         super.onError(response);
 //                        mLoadView.setVisibility(View.GONE);
                         asyncShowToast(response.message());
@@ -215,12 +216,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      * @param
      */
     private void upLoadPic(String urls, final boolean isUpdate) {
-        OkGo.<String>post(Constant.UP_LOAD_OSS_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
-                .execute(new JsonCallback<String>() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
                             if (isUpdate) {
@@ -230,25 +231,11 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UploadImage> response) {
                         super.onError(response);
 //                        mLoadView.setVisibility(View.GONE);
                     }
                 });
-    }
-
-    private void parseBaoLiaoData(String body) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            int code = jsonObject.getInt("code");
-            if (code == 0) {
-                asyncShowToast("爆料成功");
-                Logger.i("爆料的数据------" + body.toString());
-                finish();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

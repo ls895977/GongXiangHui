@@ -11,10 +11,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.CommentBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.UserUtil;
 
@@ -86,15 +86,15 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     /*删除评论*/
                     OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
-                            params("id", mList.get(position).getId()).execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            deleteItemView(position);
-                        }
-                    });
+                            params("id", mList.get(position).getId())
+                            .execute(new JsonCallback<String>() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    deleteItemView(position);
+                                }
+                            });
                 }
             });
 
@@ -102,7 +102,7 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    commentRecallListener.recommentContentListener(position, mList.get(position),holder.content);
+                    commentRecallListener.recommentContentListener(position, mList.get(position), holder.content);
                 }
             });
         }
@@ -111,11 +111,11 @@ public class CommentItemAdapter extends BaseAdapter {
 
     private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
         holder.name.setText(mList.get(position).getMember_name());
-        if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())){
+        if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())) {
             holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
             holder.tv_item_replyed.setVisibility(View.VISIBLE);
             holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name());
-        }else {
+        } else {
             holder.tv_item_reply_lb.setVisibility(View.GONE);
             holder.tv_item_replyed.setVisibility(View.GONE);
         }

@@ -18,7 +18,6 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.EmployeePaiHangBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
@@ -55,18 +54,15 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
 
     @Override
     protected void onLoadData() {
-        GetRequest<String> post = OkGo.get(Constant.GENERALIZE_PAIHANG_URL);
+        GetRequest<EmployeePaiHangBean> post = OkGo.get(Constant.GENERALIZE_PAIHANG_URL);
         if (mTotal == 0) post.params("month", mMonth);
         else post.params("total", mTotal);
         post.params("type", mQueryType);
-        post.execute(new JsonCallback<String>() {
+        post.execute(new JsonCallback<EmployeePaiHangBean>() {
             @Override
-            public void onSuccess(Response<String> response) {
-                if (response.body().contains("\"code\":1000")) {
-                    return;
-                }
+            public void onSuccess(Response<EmployeePaiHangBean> response) {
                 mLoadView.setVisibility(View.GONE);
-                EmployeePaiHangBean employeePaiHangBean = GsonUtils.jsonFromJson(response.body(), EmployeePaiHangBean.class);
+                EmployeePaiHangBean employeePaiHangBean = response.body();
                 if (employeePaiHangBean.code == 200) {
                     List<EmployeePaiHangBean.EmployeePaiHang.DataBean> dataList = employeePaiHangBean.data.staff_list;
                     View header = LayoutInflater.from(getContext()).inflate(R.layout.item_generalize_sort_header, null);
@@ -89,7 +85,7 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Response<String> response) {
+            public void onError(Response<EmployeePaiHangBean> response) {
                 super.onError(response);
                 mLoadView.setVisibility(View.GONE);
             }

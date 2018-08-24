@@ -16,21 +16,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.UserDetailInfoBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailVideoFragment;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,20 +106,18 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
      * 获取用户详情资料
      */
     private void FetchPersonData() {
-        OkGo.<String>get(Constant.GET_USER_DETAIL_URL)
+        OkGo.<UserDetailInfoBean>get(Constant.GET_USER_DETAIL_URL)
                 .params("member_id", member_id)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<UserDetailInfoBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<UserDetailInfoBean> response) {
                         parseUserDetailInfo(response.body());
                     }
                 });
     }
 
     //解析用户的详情资料
-    private void parseUserDetailInfo(String body) {
-        UserDetailInfoBean userDetailInfoBean = GsonUtils.jsonFromJson(body, UserDetailInfoBean.class);
-
+    private void parseUserDetailInfo(UserDetailInfoBean userDetailInfoBean) {
         if (userDetailInfoBean.getCode() == 200) {
             dataList = userDetailInfoBean.getData();
             follow = dataList.getFollow();
@@ -164,28 +160,25 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             toActivity(LoginActivity.class);
             finish();
         } else {
-            OkGo.<String>post(Constant.ATTENTION_URL).params("be_member_id", member_id).execute(new StringCallback() {
-                @Override
-                public void onSuccess(final Response<String> response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body());
-                        int code = jsonObject.getInt("code");
-                        if (code == 0) {
-                            asyncShowToast("关注成功");
-                            tvPersonDetailAttention.setText("已关注");
-                            dataList.setFollow("true");
-                        } else if (code == 202) {
-                            asyncShowToast("取消关注成功");
-                            tvPersonDetailAttention.setText("关注");
-                            dataList.setFollow("");
-                        } else if (code == 101) {
-                            asyncShowToast("请不要自己关注自己");
+            OkGo.<CommonBean>post(Constant.ATTENTION_URL)
+                    .params("be_member_id", member_id)
+                    .execute(new JsonCallback<CommonBean>() {
+                        @Override
+                        public void onSuccess(final Response<CommonBean> response) {
+                            int code = response.body().code;
+                            if (code == 0) {
+                                asyncShowToast("关注成功");
+                                tvPersonDetailAttention.setText("已关注");
+                                dataList.setFollow("true");
+                            } else if (code == 202) {
+                                asyncShowToast("取消关注成功");
+                                tvPersonDetailAttention.setText("关注");
+                                dataList.setFollow("");
+                            } else if (code == 101) {
+                                asyncShowToast("请不要自己关注自己");
+                            }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+                    });
         }
 
     }
