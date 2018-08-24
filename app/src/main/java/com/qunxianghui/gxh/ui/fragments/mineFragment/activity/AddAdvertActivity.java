@@ -188,8 +188,7 @@ public class AddAdvertActivity extends BaseActivity {
                             ShareInfo.ShareInfoBean data = response.body().data;
                             if (data != null) {
                                 startThirdShare(data.url, data.title, data.imgUrl);
-                            }
-                            else if (response.body().code == 105) {
+                            } else if (response.body().code == 105) {
                                 Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -207,7 +206,7 @@ public class AddAdvertActivity extends BaseActivity {
         web = new UMWeb(url);
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
-        web.setDescription(mDescrip);//描述
+        web.setDescription(mDescrip.substring(0, 70));//描述
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
         RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);
