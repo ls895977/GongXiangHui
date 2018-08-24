@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,7 +125,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
 
     @Override
     public void initViews(View view) {
-        recyclerMineIssueVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        recyclerMineIssueVideo.setLayoutManager(new GridLayoutManager(mActivity, 2,LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

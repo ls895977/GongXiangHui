@@ -19,11 +19,11 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
     @Override
     protected void convert(MyViewHolder holder, int position, MyIssueGoodSelectBean.DataBean dataBean) {
         holder.setText(R.id.tv_myissue_title, dataBean.getTitle());
-        holder.setText(R.id.tv_myissue_doller,dataBean.getPrice());
+        holder.setText(R.id.tv_myissue_doller,"￥"+dataBean.getPrice());
         ImageView mMyIssueGoodSelect = holder.getView(R.id.iv_myissue_goodselect_pic);
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
+        options.placeholder(R.mipmap.icon_guid_three);
+        options.error(R.mipmap.icon_guid_three);
         options.centerCrop();
         Glide.with(mContext).load(dataBean.getImages()).apply(options).into(mMyIssueGoodSelect);
     };
