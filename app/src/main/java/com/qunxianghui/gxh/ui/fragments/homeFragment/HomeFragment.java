@@ -158,6 +158,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     private void setChannelData(String body) {
         ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
+            userChannelList.clear();
             List<ChannelGetallBean.DataBean> datas = bean.getData();
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);

@@ -79,7 +79,6 @@ public class GeneraPersonalFragment extends BaseFragment {
                     public void onError(Response<GeneraLizePersonTopBean> response) {
                         super.onError(response);
                         mLoadView.setVisibility(View.GONE);
-                        asyncShowToast("账号登陆异常");
                     }
                 });
     }

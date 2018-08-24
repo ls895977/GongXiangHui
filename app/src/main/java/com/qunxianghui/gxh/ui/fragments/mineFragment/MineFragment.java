@@ -103,14 +103,6 @@ public class MineFragment extends BaseFragment {
                     public void onSuccess(Response<UserInfo> response) {
                         parseUserData(response.body());
                     }
-
-                    @Override
-                    public void onError(Response<UserInfo> response) {
-                        super.onError(response);
-                        if (code == 1000) {
-                            asyncShowToast("您的账号在异地登录");
-                        }
-                    }
                 });
     }
 
@@ -118,7 +110,7 @@ public class MineFragment extends BaseFragment {
         code = userInfo.code;
         if (userInfo.code == 0) {
             mUserInfo = userInfo.data;
-            if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+            if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                 mTvMineCompanyName.setText(mUserInfo.company_info.company_name);
             } else {
                 mTvMineCompanyName.setText("");
@@ -144,7 +136,7 @@ public class MineFragment extends BaseFragment {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.rl_company_card:
-                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("userinfo", mUserInfo);
                     toActivity(CompanyCardActivity.class, bundle);

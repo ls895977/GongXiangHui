@@ -17,7 +17,7 @@ public final class SPUtils {
         return MyApplication.getInstance().getSharedPreferences(name, mode);
     }
 
-    public static SharedPreferences getSp(String spName){
+    public static SharedPreferences getSp(String spName) {
         return MyApplication.getInstance().getSharedPreferences(spName, Context.MODE_PRIVATE);
     }
 
@@ -29,7 +29,7 @@ public final class SPUtils {
                 .apply();
     }
 
-    public static String getLocation(String key){
+    public static String getLocation(String key) {
         return MyApplication.getInstance()
                 .getSharedPreferences("location", Context.MODE_PRIVATE)
                 .getString(key, "");

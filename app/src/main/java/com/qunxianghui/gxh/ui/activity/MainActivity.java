@@ -121,10 +121,11 @@ public class MainActivity extends BaseActivity {
         );
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        ((BaseFragment) mFragments[0]).initData();
+        ((BaseFragment) mFragments[1]).initData();
         if (!LoginMsgHelper.isLogin()) {
             onViewClicked(mTvHome);
         } else {

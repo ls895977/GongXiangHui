@@ -87,7 +87,7 @@ public class AddAdvertActivity extends BaseActivity {
         }).setRightIco(R.mipmap.addadver_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                     getShareInfo();
                 } else {
                     asyncShowToast("请升级到企业会员再试!");
@@ -342,7 +342,7 @@ public class AddAdvertActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_top:
-                if (!SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                     Toast.makeText(AddAdvertActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -369,6 +369,10 @@ public class AddAdvertActivity extends BaseActivity {
             banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
+                    if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                        Toast.makeText(AddAdvertActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     mAddPosition = 1;
                     goToAdvertTemplateActivity();
                 }

@@ -77,7 +77,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
         }).setRightIco(R.mipmap.addadver_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+                if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                     getShareInfo();
                 } else {
                     asyncShowToast("请升级到企业会员再试!");
