@@ -285,8 +285,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                 mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                 switch (companyAdvert.settings.operate) {
                     case 1:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                            mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                        if (!TextUtils.isEmpty(companyAdvert.link)) {
+                            mPost.params("ad[" + index + "][link]", companyAdvert.link);
                         }
                         mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                         break;
@@ -310,8 +310,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                 case 1:
                     switch (companyAdvert.settings.operate) {
                         case 1:
-                            if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                                mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                            if (!TextUtils.isEmpty(companyAdvert.link)) {
+                                mPost.params("ad[" + index + "][link]", companyAdvert.link);
                             }
                             mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                             break;
@@ -343,8 +343,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                         mPost.params("ad[" + index + "][settings][operate]", companyAdvert.settings.operate);
                         switch (companyAdvert.settings.operate) {
                             case 1:
-                                if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                                    mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                                if (!TextUtils.isEmpty(companyAdvert.link)) {
+                                    mPost.params("ad[" + index + "][link]", companyAdvert.link);
                                 }
                                 mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                                 break;
@@ -354,8 +354,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                                 }
                                 break;
                             case 3:
-                                if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                                    mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                                if (!TextUtils.isEmpty(companyAdvert.link)) {
+                                    mPost.params("ad[" + index + "][link]", companyAdvert.link);
                                 }
                                 break;
                             case 4:
@@ -410,8 +410,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(companyAdvert.settings.slogan)) {
                         mPost.params("ad[" + index + "][settings][slogan]", companyAdvert.settings.slogan);
                     }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                        mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                    if (!TextUtils.isEmpty(companyAdvert.link)) {
+                        mPost.params("ad[" + index + "][link]", companyAdvert.link);
                     }
                     if (!TextUtils.isEmpty(companyAdvert.settings.intro)) {
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
@@ -424,8 +424,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                 mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                 switch (companyAdvert.settings.operate) {
                     case 1:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                            mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                        if (!TextUtils.isEmpty(companyAdvert.link)) {
+                            mPost.params("ad[" + index + "][link]", companyAdvert.link);
                         }
                         mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                         break;
@@ -435,8 +435,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                         }
                         break;
                     case 3:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                            mPost.params("ad[" + index + "][link]", companyAdvert.settings.link);
+                        if (!TextUtils.isEmpty(companyAdvert.link)) {
+                            mPost.params("ad[" + index + "][link]", companyAdvert.link);
                         }
                         break;
                     case 4:

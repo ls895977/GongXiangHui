@@ -406,11 +406,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         EditText etLink = mViewList.get(mVp.getCurrentItem()).findViewById(R.id.et_link);
         if (isChecked) {
             settings.is_link = 1;
-            settings.link = AdvertTemplateActivity.mLinkUrl;
+            mList.get(mVp.getCurrentItem()).link = AdvertTemplateActivity.mLinkUrl;
             etLink.setText(AdvertTemplateActivity.mLinkUrl);
         } else {
             settings.is_link = 0;
-            settings.link = "";
+            mList.get(mVp.getCurrentItem()).link = "";
             etLink.setText("");
         }
     }
@@ -435,7 +435,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentSettings().link = s.toString();
+                mList.get(mVp.getCurrentItem()).link = s.toString();
             }
         });
         EditText etOther = view.findViewById(R.id.et_other);
@@ -458,7 +458,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 switch (companyAdvert.settings.operate) {
                     case 1:
                         tvType.setText("跳转链接");
-                        etLink.setText(companyAdvert.settings.link);
+                        if (companyAdvert.settings.is_link == 1)
+                            etLink.setText(companyAdvert.link);
                         cB.setChecked(companyAdvert.settings.is_link != 0);
                         break;
                     case 2:
@@ -557,7 +558,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentSettings().link = s.toString();
+                mList.get(mVp.getCurrentItem()).link = s.toString();
             }
         });
         EditText etPhone = view.findViewById(R.id.et_phone);
@@ -583,9 +584,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 1:
                         tvType.setText("跳转链接");
                         view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
-                        etLink.setText(companyAdvert.settings.link);
                         if (companyAdvert.settings.is_link == 1) {
                             cB.setChecked(true);
+                            etLink.setText(companyAdvert.link);
                         }
                         break;
                     case 2:
@@ -596,7 +597,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 3:
                         tvType.setText("跳转活动");
                         tvChooseActivityLink.setVisibility(View.VISIBLE);
-                        tvChooseActivityLink.setText(companyAdvert.settings.link);
+                        tvChooseActivityLink.setText(companyAdvert.link);
                         break;
                     case 4:
                         tvType.setText("展示海报");
@@ -615,7 +616,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert1 = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
             companyAdvert1.ad_type = 3;
-            companyAdvert1.position = 1;
+            companyAdvert1.position = 2;
             mList.add(companyAdvert1);
         }
         cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -860,7 +861,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentSettings().link = s.toString();
+                mList.get(mVp.getCurrentItem()).link = s.toString();
             }
         });
         etDes.addTextChangedListener(new NewTextWatcher() {
@@ -878,7 +879,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
             if (companyAdvert.settings != null) {
                 etSlogan.setText(companyAdvert.settings.slogan);
-                etLink.setText(companyAdvert.settings.link);
+                etLink.setText(companyAdvert.link);
                 etDes.setText(companyAdvert.settings.intro);
             }
         } else {

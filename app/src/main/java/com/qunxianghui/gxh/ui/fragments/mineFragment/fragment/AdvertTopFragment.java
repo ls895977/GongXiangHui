@@ -245,7 +245,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         etLink.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mList.get(mVp.getCurrentItem()).settings.link = s.toString();
+                mList.get(mVp.getCurrentItem()).link = s.toString();
             }
         });
         EditText etPhone = view.findViewById(R.id.et_phone);
@@ -270,9 +270,9 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 case 1:
                     tvType.setText("跳转链接");
                     view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
-                    etLink.setText(data.settings.link);
                     if (data.settings.is_link == 1) {
                         cB.setChecked(true);
+                        etLink.setText(data.link);
                     }
                     break;
                 case 2:
@@ -283,7 +283,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 case 3:
                     tvType.setText("跳转活动");
                     tvChooseActivityLink.setVisibility(View.VISIBLE);
-                    tvChooseActivityLink.setText(data.settings.link);
+                    tvChooseActivityLink.setText(data.link);
                     break;
                 case 4:
                 case 5:
@@ -302,16 +302,16 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings settings = mList.get(mVp.getCurrentItem()).settings;
+                EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mList.get(mVp.getCurrentItem());
                 EditText etLink = mViewList.get(mVp.getCurrentItem()).findViewById(R.id.et_link);
                 if (isChecked) {
-                    settings.is_link = 1;
+                    companyAdvert.settings.is_link = 1;
                     etLink.setText(AdvertTemplateActivity.mLinkUrl);
-                    settings.link = AdvertTemplateActivity.mLinkUrl;
+                    companyAdvert.link = AdvertTemplateActivity.mLinkUrl;
                 } else {
-                    settings.is_link = 0;
+                    companyAdvert.settings.is_link = 0;
                     etLink.setText("");
-                    settings.link = "";
+                    companyAdvert.link = "";
                 }
             }
         });

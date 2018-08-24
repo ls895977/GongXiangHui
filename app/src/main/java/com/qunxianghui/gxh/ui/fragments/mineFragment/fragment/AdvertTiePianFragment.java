@@ -93,7 +93,9 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                                     mLlLink.setVisibility(View.VISIBLE);
                                     mEtOther.setVisibility(View.GONE);
                                     mTvTiePianShowType.setText("跳转链接");
-                                    mEtName.setText(mAdvertBean.settings.link);
+                                    if (mAdvertBean.settings.is_link == 1) {
+                                        mEtName.setText(mAdvertBean.link);
+                                    }
                                     break;
                                 case 2:
                                     mLlLink.setVisibility(View.GONE);
@@ -131,11 +133,11 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 if (isChecked) {
                     mAdvertBean.settings.is_link = 1;
                     mEtName.setText(AdvertTemplateActivity.mLinkUrl);
-                    mAdvertBean.settings.link = AdvertTemplateActivity.mLinkUrl;
+                    mAdvertBean.link = AdvertTemplateActivity.mLinkUrl;
                 } else {
                     mAdvertBean.settings.is_link = 0;
                     mEtName.setText("");
-                    mAdvertBean.settings.link = "";
+                    mAdvertBean.link = "";
                 }
             }
         });
@@ -150,7 +152,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mEtName.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mAdvertBean.settings.link = s.toString();
+                mAdvertBean.link = s.toString();
             }
         });
 

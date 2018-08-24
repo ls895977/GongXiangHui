@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class EnterpriseMaterial {
 
             public static class Settings implements Serializable {
                 //通栏操作（1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
+                @SerializedName("linktype")
                 public int operate = 1;
                 //链接地址
                 public String link;
