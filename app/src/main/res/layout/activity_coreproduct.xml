@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="公司产品"
-            android:textSize="15sp" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -32,6 +32,7 @@
         android:id="@+id/xrecycler_activity_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/bt_add_product"
         android:layout_below="@+id/rl_company_prpduct_title" />
 
     <Button

@@ -33,7 +33,13 @@ public class BianMinServiceActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        final BianMinGridAdapter bianMinGridAdapter = new BianMinGridAdapter(mContext, images, iconName);
+        new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        BianMinGridAdapter bianMinGridAdapter = new BianMinGridAdapter(mContext, images, iconName);
         gridBianmin.setAdapter(bianMinGridAdapter);
         bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
@@ -42,7 +48,6 @@ public class BianMinServiceActivity extends BaseActivity {
                     case 0:
                         toActivity(CommoentCallActivity.class);
                         break;
-
                     case 1:
                         Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
@@ -51,19 +56,6 @@ public class BianMinServiceActivity extends BaseActivity {
                         startActivity(intent);
                         break;
                 }
-
-
-            }
-        });
-    }
-
-    @Override
-    protected void initData() {
-        new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-
             }
         });
     }

@@ -269,7 +269,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
-                        if (code == 0) {
+                        if (code == 200) {
                             asyncShowToast("上传成功");
                             setResult(0x0022);
                             finish();

@@ -53,19 +53,13 @@ public class OnekeyIssueDialog extends Dialog {
                         startActivity(BaoLiaoActivity.class);
                         break;
                     case R.id.tv_local_service:
-                        intent = new Intent(mActicity,ProtocolActivity.class);
-                        intent.putExtra("url", Constant.LOCAL_SERVICES_ISSUE_URL);
-                        intent.putExtra("tag",1);
-                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+                    case R.id.tv_choice:
+                        intent = new Intent(mActicity, ProtocolActivity.class);
+                        intent.putExtra("url", v.getId() == R.id.tv_local_service ? Constant.LOCAL_SERVICES_ISSUE_URL : Constant.GOOD_SELECT__DETAIL_URL);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        intent.putExtra("tag", 1);
                         mActicity.startActivity(intent);
                         break;
-                    case R.id.tv_choice:
-                        intent = new Intent(mActicity,ProtocolActivity.class);
-                        intent.putExtra("url", Constant.GOOD_SELECT__DETAIL_URL);
-                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
-                        intent.putExtra("tag",1);
-                        mActicity.startActivity(intent);
-
                 }
             }
         };

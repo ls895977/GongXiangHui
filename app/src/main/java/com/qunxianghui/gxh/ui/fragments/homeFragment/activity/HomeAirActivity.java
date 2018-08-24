@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -56,14 +55,6 @@ public class HomeAirActivity extends BaseActivity {
     protected void initViews() {
         mXrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
-    }
-
-    @Override
-    protected void initData() {
-        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
-        cityId = spLocation.getString("X-cityId", "");
-        areaId = spLocation.getString("X-areaId", "");
-        requestAirList();
     }
 
     @Override

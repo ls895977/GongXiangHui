@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -35,6 +36,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     View mLoadView;
 
     private MyGeneralizePersonAdapter myGeneralizePersonAdapter;
+    private boolean mIsFirst = true;
 
     @Override
     public int getLayoutId() {
@@ -45,11 +47,32 @@ public class GeneraPersonalFragment extends BaseFragment {
     public void initData() {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());
         mXrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
+//        GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
+        View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
+//        ((TextView) header.findViewById(R.id.tv_genera_person_exposure)).setText(data.getView_cnt());
+//        ((TextView) header.findViewById(R.id.tv_genera_person_click_count)).setText(data.getClick_cnt());
+//        ((TextView) header.findViewById(R.id.tv_genera_person_transmit)).setText(data.getShare_cnt());
+//        ((TextView) header.findViewById(R.id.tv_genera_person_click_rate)).setText(data.getClick_rate());
+//        ((TextView) header.findViewById(R.id.tv_generalize_company_des)).setText(data.getAd_prize());
+        myGeneralizePersonAdapter.addHeaderView(header);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        requestTop();
+    }
+
+    private void requestTop() {
         OkGo.<GeneraLizePersonTopBean>get(Constant.GENERALIZE_RERSON_STATIS_URL)
                 .execute(new JsonCallback<GeneraLizePersonTopBean>() {
                     @Override
                     public void onSuccess(Response<GeneraLizePersonTopBean> response) {
                         parseGeneraPersonTopData(response.body());
+                        if (mIsFirst){
+                            mIsFirst = false;
+                            requestListInfo();
+                        }
                     }
 
                     @Override
@@ -63,15 +86,20 @@ public class GeneraPersonalFragment extends BaseFragment {
 
     private void parseGeneraPersonTopData(GeneraLizePersonTopBean generaLizePersonTopBean) {
         if (generaLizePersonTopBean.getCode() == 0) {
+            LinearLayout header = myGeneralizePersonAdapter.getHeaderLayout();
             GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
-            View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
+//            View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
             ((TextView) header.findViewById(R.id.tv_genera_person_exposure)).setText(data.getView_cnt());
             ((TextView) header.findViewById(R.id.tv_genera_person_click_count)).setText(data.getClick_cnt());
             ((TextView) header.findViewById(R.id.tv_genera_person_transmit)).setText(data.getShare_cnt());
             ((TextView) header.findViewById(R.id.tv_genera_person_click_rate)).setText(data.getClick_rate());
             ((TextView) header.findViewById(R.id.tv_generalize_company_des)).setText(data.getAd_prize());
-            myGeneralizePersonAdapter.addHeaderView(header);
+//            myGeneralizePersonAdapter.addHeaderView(header);
         }
+
+    }
+
+    private void requestListInfo() {
         OkGo.<GeneraPersonStaticBean>post(Constant.GENERALIZE_PERSON_LIST_URL)
                 .execute(new JsonCallback<GeneraPersonStaticBean>() {
                     @Override
@@ -86,25 +114,15 @@ public class GeneraPersonalFragment extends BaseFragment {
         if (generaPersonStaticBean.getCode() == 0) {
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
             myGeneralizePersonAdapter.setNewData(dataList);
-
             myGeneralizePersonAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     int uuid = dataList.get(position).data_uuid;
                     String video_url = dataList.get(position).video_url;
-                    if (video_url != null) {
-                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                        intent.putExtra("uuid", uuid);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
-                        intent.putExtra("uuid", uuid);
-                        startActivity(intent);
-                    }
-
-
+                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                    intent.putExtra("uuid", uuid);
+                    intent.putExtra("url", video_url != null ? Constant.VIDEO_DETAIL_URL : Constant.HOME_NEWS_DETAIL_URL);
+                    startActivity(intent);
                 }
             });
         }
