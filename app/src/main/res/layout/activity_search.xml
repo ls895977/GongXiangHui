@@ -8,9 +8,9 @@
 
     <LinearLayout
         android:id="@+id/top_bar"
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingEnd="10dp">
@@ -27,8 +27,8 @@
             android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginStart="15dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:background="@drawable/search_background"
             android:drawableLeft="@drawable/ic_search_24dp"
@@ -50,10 +50,10 @@
     </LinearLayout>
 
     <View
-        android:background="#E5E5E5"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"/>
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
+        android:background="#E5E5E5" />
 
     <include
         layout="@layout/include_search_layout"
@@ -100,9 +100,9 @@
             </LinearLayout>
 
             <View
-                android:background="#E5E5E5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"/>
+                android:layout_height="0.5dp"
+                android:background="#E5E5E5" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_search_history"
@@ -113,23 +113,23 @@
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
             <View
-                android:background="#E5E5E5"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp"
+                android:background="#E5E5E5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
-                android:text="猜你想要的"
                 android:gravity="center_vertical"
+                android:text="猜你想要的"
                 android:textColor="#7B7B7B"
                 android:textSize="13dp" />
 
             <View
-                android:background="#E5E5E5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"/>
+                android:layout_height="0.5dp"
+                android:background="#E5E5E5" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_search_guess"

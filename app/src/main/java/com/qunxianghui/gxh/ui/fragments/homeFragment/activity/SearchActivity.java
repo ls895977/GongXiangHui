@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +29,7 @@ import com.qunxianghui.gxh.bean.home.GuessBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchFragment;
 import com.qunxianghui.gxh.utils.JsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -78,7 +78,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected int getLayoutId() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_search;
     }
 
@@ -130,25 +130,21 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(SpConstant.HISTORIES, "");
-        List<String> datas = JsonUtil.fromJsonList(histories, String.class);
-        if (datas != null) {
-            historyDatas = datas;
-        } else {
+        historyDatas = JsonUtil.fromJsonList(histories, String.class);
+        if (historyDatas == null) {
+            historyDatas = new ArrayList<>();
             ivClearHistory.setVisibility(View.GONE);
         }
-
-        if (historyDatas != null) {
-            historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
-            historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    searchText = historyDatas.get(position);
-                    refreshSearchText();
-                    tvCancel.performClick();
-                }
-            });
-            rvSearchHistory.setAdapter(historyAdapter);
-        }
+        historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
+        historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                searchText = historyDatas.get(position);
+                refreshSearchText();
+                tvCancel.performClick();
+            }
+        });
+        rvSearchHistory.setAdapter(historyAdapter);
     }
 
     /**
@@ -193,10 +189,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 trim = etSearch.getText().toString().trim();
                 if (TextUtils.isEmpty(trim)) {
                     ToastUtils.showShortToast(this, "搜索内容不能为空");
-                } else {
-                    if (mViewpager != null) {
-                        setupViewPager(trim);
-                    }
+                } else if (mViewpager != null) {
+                    setupViewPager(trim);
                 }
                 break;
             case R.id.iv_home_search_back:
@@ -223,14 +217,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================保存历史=====================
      */
     private void saveHistory(String item) {
-        if (historyDatas.size() == 0) {
+        if (historyDatas.isEmpty()) {
             historyDatas.add(item);
-            SPUtils.saveString(SpConstant.HISTORIES, item);
-        } else {
-            if (!historyDatas.contains(item)) {
-                historyDatas.add(item);
-                SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
-            }
+            SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
+        } else if (!historyDatas.contains(item)) {
+            historyDatas.add(item);
+            SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
         }
     }
 
@@ -251,9 +243,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         return false;
     }
 
-    /**
-     * ==================初始化fragment=====================
-     */
     private void setupViewPager(String data) {
         //添加历史记录
         searchText = data;
@@ -267,24 +256,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     }
 
-    /**
-     * ==================监听切换搜索页面=====================
-     */
-    TextWatcher getTextChanged = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
+    TextWatcher getTextChanged = new NewTextWatcher() {
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void afterTextChanged(Editable s) {
             if (TextUtils.isEmpty(s)) {
                 mNestedScrollView.setVisibility(View.VISIBLE);
                 mLlSearch.setVisibility(View.GONE);
             }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
         }
     };
 
