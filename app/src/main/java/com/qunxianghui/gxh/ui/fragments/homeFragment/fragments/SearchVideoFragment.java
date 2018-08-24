@@ -12,6 +12,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeVideoSearchAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.HomeVideoSearchBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -35,6 +36,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     RecyclerView mRecyclerview;
     private HomeVideoSearchBean mBean;
     private List<HomeVideoSearchBean.DataBean> mSearchVideodata;
+    private HomeVideoSearchAdapter mAdapter;
 
     /**
      * 子类实现此抽象方法返回View进行展示
@@ -73,10 +75,10 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     private void parseData(HomeVideoSearchBean body) {
         mBean = body;
         mSearchVideodata = mBean.getData();
-        HomeVideoSearchAdapter adapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
-        adapter.setVideoSearchListClickListener(this);
-        mRecyclerview.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+        mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
+        mAdapter.setVideoSearchListClickListener(this);
+        mRecyclerview.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 String url = mBean.getData().get(position).getVideo_url();
@@ -111,5 +113,27 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         sb.append("?token=").append(SPUtils.getString(SpConstant.ACCESS_TOKEN, "")).append("&uuid=").append(mSearchVideodata.get(position).getUuid());
         intent.putExtra("url", sb.toString());
         startActivity(intent);
+    }
+
+    /*搜索视频的关注*/
+    @Override
+    public void SearchVideoClick(final int position) {
+        OkGo.<CommonBean>post(Constant.ATTENTION_URL)
+                .params("be_member_id", mSearchVideodata.get(position).getMember_id())
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 0) {
+                            asyncShowToast("关注成功");
+                            mSearchVideodata.get(position).setFollow("true");
+                        } else if (code == 202) {
+                            asyncShowToast("取消关注");
+                            mSearchVideodata.get(position).setFollow("");
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                });
     }
 }

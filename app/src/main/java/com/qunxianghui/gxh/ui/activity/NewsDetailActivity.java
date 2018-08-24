@@ -275,7 +275,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
             web.setTitle(title);//标题
             web.setThumb(image);  //缩略图
-            web.setDescription(mDescrip);//描述
+            web.setDescription(mDescrip.substring(0,70));//描述
             View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
             mUmShareDialog.setContentView(view);
             View.OnClickListener listener = new View.OnClickListener() {

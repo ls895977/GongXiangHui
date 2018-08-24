@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.adapter.homeAdapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +27,12 @@ public class HomeVideoSearchAdapter extends BaseRecycleViewAdapter<HomeVideoSear
 
     @Override
     protected void convert(MyViewHolder holder, final int position, HomeVideoSearchBean.DataBean dataBean) {
+        TextView mTvSearchVideoAttention = holder.getView(R.id.tv_mycollect_video_attention);
+        TextView mTvSearchVideoUserName = holder.getView(R.id.tv_item_collect_video_personname);
+
         holder.setText(R.id.iv_homesearch_video_title, dataBean.getTitle());
+        holder.setText(R.id.tv_mycollect_video_attention, TextUtils.isEmpty(dataBean.getFollow()) ? "+关注" : "已关注");
+
         TextView videoSearchPaster = holder.getView(R.id.tv_mycollect_video_paster);
         ImageView mSearchVideoPic = holder.getView(R.id.iv_homesearch_pic);
         RequestOptions options = new RequestOptions();
@@ -40,6 +46,12 @@ public class HomeVideoSearchAdapter extends BaseRecycleViewAdapter<HomeVideoSear
                 mVideoSearchListClickListener.PasterClick(position);
             }
         });
+        mTvSearchVideoAttention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVideoSearchListClickListener.SearchVideoClick(position);
+            }
+        });
 
     }
 
@@ -50,6 +62,8 @@ public class HomeVideoSearchAdapter extends BaseRecycleViewAdapter<HomeVideoSear
 
     public interface VideoSearchListClickListener {
         void PasterClick(int position);
+
+        void  SearchVideoClick(int position);
 
 
     }

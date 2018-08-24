@@ -115,16 +115,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================猜你想要的数据=====================
      */
     private void initFireRecycle(final List<GuessBean.DataBean> guessBean) {
-        FireSearchAdapter adapter = new FireSearchAdapter(mContext, guessBean);
-        adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                searchText = guessBean.get(position).getTitle();
-                refreshSearchText();
-                tvCancel.performClick();
-            }
-        });
-        rvSearchGuess.setAdapter(adapter);
+        if (guessBean!=null){
+            FireSearchAdapter adapter = new FireSearchAdapter(mContext, guessBean);
+            adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    searchText = guessBean.get(position).getTitle();
+                    refreshSearchText();
+                    tvCancel.performClick();
+                }
+            });
+            rvSearchGuess.setAdapter(adapter);
+        }
+
     }
 
     /*加载历史记录*/
