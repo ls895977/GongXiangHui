@@ -2,10 +2,11 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
@@ -21,6 +22,7 @@ import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,9 +35,9 @@ import butterknife.BindView;
 public class SearchVideoFragment extends BaseFragment implements HomeVideoSearchAdapter.VideoSearchListClickListener {
     public static final String DATA = "data";
     @BindView(R.id.recyclerview_video)
-    RecyclerView mRecyclerview;
+    XRecyclerView mRecyclerview;
     private HomeVideoSearchBean mBean;
-    private List<HomeVideoSearchBean.DataBean> mSearchVideodata;
+    private List<HomeVideoSearchBean.DataBean> mSearchVideodata=new ArrayList<>();
     private HomeVideoSearchAdapter mAdapter;
 
     /**
@@ -44,6 +46,11 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     @Override
     public int getLayoutId() {
         return R.layout.fragment_video_search;
+    }
+
+    @Override
+    public void initViews(View view) {
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
     /**
@@ -55,6 +62,22 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         if (!TextUtils.isEmpty(keyWords)) {
             goNextWorks(keyWords);
         }
+    }
+
+    @Override
+    protected void initListeners() {
+
+        mRecyclerview.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                mRecyclerview.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                mRecyclerview.refreshComplete();
+            }
+        });
     }
 
     /**
@@ -134,6 +157,27 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                         mAdapter.notifyDataSetChanged();
                     }
 
+                });
+    }
+
+    /*搜索视频的喜欢*/
+    @Override
+    public void SearchVideoLikeClick(final int position) {
+        OkGo.<CommonBean>post(Constant.VIDEO_LIKE_URL)
+                .params("data_uuid", mSearchVideodata.get(position).getUuid())
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 100) {
+                            asyncShowToast("点赞成功");
+                            mSearchVideodata.get(position).setIs_like(1);
+                        } else if (code == 101) {
+                            asyncShowToast("取消点赞");
+                            mSearchVideodata.get(position).setIs_like(0);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
                 });
     }
 }

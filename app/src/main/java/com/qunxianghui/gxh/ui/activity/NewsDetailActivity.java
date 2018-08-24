@@ -56,7 +56,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     TextView mTvNewsdetailIssue;
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
-
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
     private String url;

@@ -41,11 +41,8 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         if (is_like == 0) {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
 
-
         } else {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_select);
-
-
 
         }  holder.setText(R.id.tv_like, listBean.getLike_cnt());
 
