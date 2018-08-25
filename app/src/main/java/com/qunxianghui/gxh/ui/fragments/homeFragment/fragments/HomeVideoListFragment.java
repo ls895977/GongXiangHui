@@ -74,7 +74,6 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                videoDataList.clear();
                 mPage = 0;
                 requestHomeVideoList();
             }
@@ -125,11 +124,11 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                     public void onSuccess(Response<HomeVideoListBean> response) {
                         HomeVideoListBean homeVideoListBean = response.body();
                         if (homeVideoListBean.getCode() == 0) {
+                            if (mPage == 0) videoDataList.clear();
                             int index = videoDataList.size();
                             videoDataList.addAll(homeVideoListBean.getData().getList());
                             mPage++;
                             mRv.refreshComplete();
-                            personDetailVideoAdapter.notifyItemRangeChanged(index, homeVideoListBean.getData().getList().size());
                             personDetailVideoAdapter.notifyDataSetChanged();
                         }
                     }
