@@ -21,7 +21,7 @@ public class EnterpriseMaterial {
             public int member_id;
             //广告类型：1大图通栏 2名片广告 3通栏广告 4二维码 5QQ广告 6贴片广告 7店铺广告 8图文广告
             public int ad_type;
-//            public int showTime;
+            //            public int showTime;
             public int linksEnterprise;
             //  广告位置：1顶部广告，2底部广告，3互推广告
             public int position;
@@ -37,7 +37,7 @@ public class EnterpriseMaterial {
             public String ctime;
             public String mtime;
             //            0-禁用，1-正常
-            public int is_slide;
+            public int is_slide = 1;
             public int is_float;
             public boolean isSelect;
 

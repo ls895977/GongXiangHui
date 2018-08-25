@@ -270,18 +270,13 @@ public class AddAdvertActivity extends BaseActivity {
         rl_share_link.setOnClickListener(listener);
         share_cancel_btn.setOnClickListener(listener);
 
-        //获取当前activity所在的窗体
-        final Window dialogWindow = dialog.getWindow();
-        //设置dialog从窗体底部弹出
+        Window dialogWindow = dialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
-        //获得窗体的属性
-        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-
-        final WindowManager windowManager = getWindowManager();
-        final Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
         lp.width = (int) display.getWidth();  //设置宽度
         lp.y = 5;  //设置dialog距离底部的距离
-        //将属性设置给窗体
         dialogWindow.setAttributes(lp);
         dialog.show();
 
@@ -306,11 +301,15 @@ public class AddAdvertActivity extends BaseActivity {
                         AddAdvert body = response.body();
                         if (body != null && body.code == 200) {
                             if (body.data.top != null && !body.data.top.isEmpty()) {
+                                mBannerTop.setVisibility(View.VISIBLE);
                                 addBanner(mBannerTop, body.data.top);
+                            } else {
+                                mBannerTop.setVisibility(View.GONE);
                             }
                             if (body.data.bottom != null && !body.data.bottom.isEmpty()) {
+                                mBannerBottom.setVisibility(View.VISIBLE);
                                 for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : body.data.bottom) {
-                                    if (companyAdvert.ad_type == 1) {
+                                    if (companyAdvert.ad_type == 1 && companyAdvert.is_slide == 1) {
                                         List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> list = new ArrayList<>();
                                         list.add(companyAdvert);
                                         addBanner(mBannerBottom, list);
@@ -318,6 +317,8 @@ public class AddAdvertActivity extends BaseActivity {
                                     }
                                 }
                                 addBanner(mBannerBottom, body.data.bottom);
+                            } else {
+                                mBannerBottom.setVisibility(View.GONE);
                             }
                         }
                     }
