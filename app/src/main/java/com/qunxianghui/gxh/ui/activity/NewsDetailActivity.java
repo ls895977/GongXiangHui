@@ -56,7 +56,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     TextView mTvNewsdetailIssue;
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
-
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
     private String url;
@@ -109,7 +108,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
         return loadingDialog;
-
     }
 
     @Override

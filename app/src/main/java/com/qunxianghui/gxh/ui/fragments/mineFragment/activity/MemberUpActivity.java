@@ -55,7 +55,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     CardView cvCompany;
     @BindView(R.id.cv_register)
     CardView cvRegister;
-
     private String selfcompayname;
     private String expire_time;
     private String avatar;

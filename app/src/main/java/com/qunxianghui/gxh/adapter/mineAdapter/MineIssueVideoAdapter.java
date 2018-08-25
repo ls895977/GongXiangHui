@@ -1,9 +1,10 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
@@ -14,6 +15,7 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
 
     private int uuid;
     private MyIssueVideoClikListener myIssueVideoClikListener;
+    private String mImage;
 
     public void setMyIssueVideoClikListener(MyIssueVideoClikListener myIssueVideoClikListener) {
         this.myIssueVideoClikListener = myIssueVideoClikListener;
@@ -25,15 +27,21 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
 
     @Override
     protected void convert(MyViewHolder holder, final int position, final MineIssueVideoBean.DataBean dataBean) {
-        holder.setText(R.id.tv_item_issue_vido_time, dataBean.getNewctime());
-        final TextView deleteVideo = holder.getView(R.id.tv_item_issue_video_delete);
-        deleteVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myIssueVideoClikListener.deleVideoItem(position);
-                notifyDataSetChanged();
-            }
-        });
+        ImageView iconMyIssueVideo = holder.getView(R.id.iv_item_issue_video_head);
+        holder.setText(R.id.tv_item_issue_video_title,dataBean.getTitle());
+
+        List<String> images = dataBean.getImages();
+        for (int i=0; i<images.size();i++){
+            mImage = images.get(i);
+
+        }
+
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.placeholder(R.mipmap.default_img);
+        options.error(R.mipmap.default_img);
+
+        Glide.with(mContext).load(mImage).apply(options).into(iconMyIssueVideo);
     }
 
     @Override

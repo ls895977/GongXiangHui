@@ -57,7 +57,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment {
             }
         });
     }
-
     /*请求我发布的精选的数据*/
     private void RequestMyIssueGoodSelectData() {
         OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
