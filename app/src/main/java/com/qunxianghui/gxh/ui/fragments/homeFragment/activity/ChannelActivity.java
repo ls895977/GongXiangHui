@@ -137,13 +137,14 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
         if (isMove) {
             return;
         }
+        isMove = true;
         switch (parent.getId()) {
             case R.id.userGridView:
                 //position为 0 的不进行任何操作
                 if (position == 0 || position == 1) return;
                 final ImageView moveImageView = getView(view);
                 if (moveImageView != null) {
-                    TextView newTextView = (TextView) view.findViewById(R.id.text_item);
+                    TextView newTextView = view.findViewById(R.id.text_item);
                     final int[] startLocation = new int[2];
                     newTextView.getLocationInWindow(startLocation);
                     final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);//获取点击的频道内容
@@ -165,7 +166,12 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                                             userAdapter.setRemove(position);
                                         }
                                     }, 50L);
+                                }
 
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    isMove = false;
                                 }
                             });
                 }
@@ -199,7 +205,12 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                                             }
                                         }
                                     }, 50L);
+                                }
 
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    isMove = false;
                                 }
                             });
                 }
