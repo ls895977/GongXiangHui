@@ -1,7 +1,5 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -37,7 +34,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MineCommonFragment extends BaseFragment implements MyCollectPostAdapter.CollectOnClickListener {
+public class MineCommonFragment extends BaseFragment  {
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
@@ -56,8 +53,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
 
     @Override
     public void initData() {
-
-
         if (getArguments() != null) {
             mMemberId = getArguments().getInt("member_id");
         }
@@ -92,7 +87,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
             if (mIsFirst) {
                 mIsFirst = false;
                 myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                myCollectPostAdapter.setCollectOnClickListener(this);
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
@@ -176,52 +170,6 @@ public class MineCommonFragment extends BaseFragment implements MyCollectPostAda
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void cancelNewsCollect(final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("删除提示");
-        builder.setMessage("您确定要删除该条消息吗?");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                CancelNewsData(position);
-
-            }
-        });
-        builder.setNeutralButton("取消", null);
-        builder.show();
-    }
-
-    /**
-     * 取消收藏
-     */
-    private void CancelNewsData(final int position) {
-        OkGo.<String>post(Constant.ADD_COLLECT_URL)
-                .params("data_uuid", dataList.get(position).getData_uuid())
-                .execute(new JsonCallback<String>() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mActivity, "取消收藏", Toast.LENGTH_SHORT).show();
-                                dataList.remove(position);
-                                myCollectPostAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-
-                        Toast.makeText(mActivity, "取消收藏失败", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                });
     }
 
 
