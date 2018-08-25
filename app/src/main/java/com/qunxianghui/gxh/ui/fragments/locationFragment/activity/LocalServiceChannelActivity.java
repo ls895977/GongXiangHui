@@ -108,6 +108,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
         if (isMove) {
             return;
         }
+        isMove = true;
         switch (parent.getId()) {
             case R.id.userGridView:
                 //position为 0 的不进行任何操作
@@ -139,7 +140,12 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                                             }
                                         }
                                     }, 50L);
+                                }
 
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    isMove = false;
                                 }
                             });
                 }
@@ -173,7 +179,12 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                                             }
                                         }
                                     }, 50L);
+                                }
 
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    isMove = false;
                                 }
                             });
                 }

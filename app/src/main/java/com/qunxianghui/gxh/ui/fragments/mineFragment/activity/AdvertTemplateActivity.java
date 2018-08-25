@@ -55,6 +55,8 @@ public class AdvertTemplateActivity extends BaseActivity {
     private PostRequest<CommonBean> mPost;
     private int mCount;
     private int mSeondCount;
+    //0为底部，1为顶部，2为贴片，3为所有
+    private int mPosition;
     private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
     public static String mLinkUrl;
 
@@ -77,10 +79,10 @@ public class AdvertTemplateActivity extends BaseActivity {
     @Override
     protected void initData() {
         mLinkUrl = SPUtils.getSp("companymessage").getString("aboutus_showh5", "");
-        int position = getIntent().getIntExtra("position", 3);
+        mPosition = getIntent().getIntExtra("position", 3);
         mFragments.add(new AdvertBottomFragment());
         mFragments.add(new AdvertTopFragment());
-        if (position == 0 || position == 1) {
+        if (mPosition == 0 || mPosition == 1) {
             mSegmentTab.setTabData(mTitleTwo);
         } else {
             mSegmentTab.setTabData(mTitles);
@@ -88,9 +90,9 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
         mVp.setOffscreenPageLimit(mSegmentTab.getTabCount() - 1);
-        if (position == 1 || position == 2) {
-            mSegmentTab.setCurrentTab(position);
-            mVp.setCurrentItem(position);
+        if (mPosition == 1 || mPosition == 2) {
+            mSegmentTab.setCurrentTab(mPosition);
+            mVp.setCurrentItem(mPosition);
         }
     }
 
@@ -135,29 +137,54 @@ public class AdvertTemplateActivity extends BaseActivity {
     }
 
     private void upLoadData() {
-        for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
-            if (TextUtils.isEmpty(companyAdvert.images)) {
-                asyncShowToast("请完善底部广告相关信息");
+        mList = new ArrayList<>();
+        if (mPosition == 3) {
+            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
+                if (TextUtils.isEmpty(companyAdvert.images)) {
+                    asyncShowToast("请完善底部广告相关信息");
+                    return;
+                }
+            }
+            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
+                if (TextUtils.isEmpty(companyAdvert.images)) {
+                    asyncShowToast("请完善顶部广告相关信息");
+                    return;
+                }
+            }
+            if (AdvertTiePianFragment.mAdvertBean != null && AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)) {
+                asyncShowToast("请完善贴片广告相关信息");
                 return;
             }
-        }
-        for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
-            if (TextUtils.isEmpty(companyAdvert.images)) {
-                asyncShowToast("请完善顶部广告相关信息");
+            mList.addAll(AdvertBottomFragment.mList);
+            mList.addAll(AdvertTopFragment.mList);
+            if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
+                mList.add(AdvertTiePianFragment.mAdvertBean);
+        } else if (mPosition == 0) {
+            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
+                if (TextUtils.isEmpty(companyAdvert.images)) {
+                    asyncShowToast("请完善底部广告相关信息");
+                    return;
+                }
+            }
+            mList.addAll(AdvertBottomFragment.mList);
+        } else if (mPosition == 1) {
+            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
+                if (TextUtils.isEmpty(companyAdvert.images)) {
+                    asyncShowToast("请完善顶部广告相关信息");
+                    return;
+                }
+            }
+            mList.addAll(AdvertTopFragment.mList);
+        } else if (mPosition == 2) {
+            if (AdvertTiePianFragment.mAdvertBean != null && AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)) {
+                asyncShowToast("请完善贴片广告相关信息");
                 return;
             }
-        }
-        if (AdvertTiePianFragment.mAdvertBean != null && AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)) {
-            asyncShowToast("请完善贴片广告相关信息");
-            return;
+            if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
+                mList.add(AdvertTiePianFragment.mAdvertBean);
         }
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
-        mList = new ArrayList<>();
-        mList.addAll(AdvertBottomFragment.mList);
-        mList.addAll(AdvertTopFragment.mList);
-        if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
-            mList.add(AdvertTiePianFragment.mAdvertBean);
         upLoadPic(mList.get(0), 0);
     }
 
@@ -267,7 +294,9 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPost.params("ad[" + index + "][position]", companyAdvert.position);
         if (companyAdvert.id != 0)
             mPost.params("ad[" + index + "][id]", companyAdvert.id);
-        mPost.params("ad[" + index + "][is_slide]", companyAdvert.status);
+
+        mPost.params("ad[" + index + "][is_slide]", companyAdvert.is_slide);
+
         if (companyAdvert.settings == null) {
             return;
         }

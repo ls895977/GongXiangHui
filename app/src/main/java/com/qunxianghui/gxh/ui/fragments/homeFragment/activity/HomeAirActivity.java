@@ -1,9 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,8 +41,6 @@ public class HomeAirActivity extends BaseActivity {
     @BindView(R.id.iv_homeair_airbg)
     ImageView ivHomeairAirbg;
 
-    private String cityId;
-    private String areaId;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
 
     @Override
@@ -59,18 +55,11 @@ public class HomeAirActivity extends BaseActivity {
     }
 
     @Override
-    protected void initData() {
-        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
-        cityId = spLocation.getString("X-cityId", "");
-        areaId = spLocation.getString("X-areaId", "");
+    protected void onStart() {
+        super.onStart();
         requestAirList();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         String currcity = SPUtils.getLocation("currcity");
-        mHomeAirLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
+        mHomeAirLocation.setText(currcity);
     }
 
     @Override
@@ -90,8 +79,6 @@ public class HomeAirActivity extends BaseActivity {
 
     private void requestAirList() {
         OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
-                .headers("X-cityId", cityId)
-                .headers("X-areaId", areaId)
                 .execute(new JsonCallback<HomeAirBean>() {
                     @Override
                     public void onSuccess(Response<HomeAirBean> response) {
@@ -115,11 +102,8 @@ public class HomeAirActivity extends BaseActivity {
         mTvHomeairMiddleAirdetail.setText(String.format("%s|%s%s", weather, windDirection, windPower));
         mTvHomeairBottomDayDetail.setText(dateTime);
         mTvHomeairDes.setText(notice);
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.placeholder(R.mipmap.homeair_sun);
-        options.error(R.mipmap.homeair_rain);
-        Glide.with(mContext).load(bgImage).apply(options).into(ivHomeairAirbg);
+        Glide.with(mContext).load(bgImage).apply(new RequestOptions()
+                .placeholder(R.mipmap.homeair_sun).error(R.mipmap.homeair_rain).centerCrop()).into(ivHomeairAirbg);
 
     }
 

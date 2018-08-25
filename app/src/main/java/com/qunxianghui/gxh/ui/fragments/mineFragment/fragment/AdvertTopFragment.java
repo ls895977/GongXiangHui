@@ -262,7 +262,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             rlAddImg.setVisibility(View.GONE);
             etPhone.setVisibility(View.GONE);
             TextView tvType = view.findViewById(R.id.tv_choose_type);
-            sw.setChecked(data.status == 1);
+            sw.setChecked(data.is_slide == 1);
             Glide.with(AdvertTopFragment.this).load(data.images)
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
 //            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
@@ -331,7 +331,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mList.get(mVp.getCurrentItem()).status = isChecked ? 1 : 0;
+        mList.get(mVp.getCurrentItem()).is_slide = isChecked ? 1 : 0;
     }
 
     @Override

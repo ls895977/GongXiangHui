@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -16,9 +15,11 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.MemberActiviteBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MemberUpActiveActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.et_member_active_code)
@@ -31,12 +32,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
     @Override
     protected int getLayoutId() {
         return R.layout.activity_active;
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-
     }
 
     @Override
@@ -66,23 +61,18 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
             String avatar = memberData.getAvatar();
             int company_id = memberData.getCompany_id();
             String code_endtime = memberData.getCode_endtime();
+            SPUtils.saveBoolean(SpConstant.IS_COMPANY, true);
             SharedPreferences companyData = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = companyData.edit();
             spCompanymessageEditor.putString("expire_time", code_endtime);
             spCompanymessageEditor.putString("avatar", avatar);
             spCompanymessageEditor.apply();
+            EventManager.getInstance().publishMessage("company");
+            setResult(0x0022);
             finish();
         } else if (code == 101) {
             asyncShowToast(msg);
         }
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
 
     }
 
@@ -95,7 +85,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
             case R.id.tv_member_activite_quickly:
                 String activeCode = etMemberActiveCode.getText().toString().trim();
                 if (TextUtils.isEmpty(activeCode)) {
-
                     asyncShowToast("激活码为空");
                 } else {
                     ActiviteData(activeCode);

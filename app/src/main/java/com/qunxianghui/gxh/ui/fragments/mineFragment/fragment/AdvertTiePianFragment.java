@@ -145,7 +145,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mAdvertBean.status = isChecked ? 1 : 0;
+                mAdvertBean.is_slide = isChecked ? 1 : 0;
             }
         });
 

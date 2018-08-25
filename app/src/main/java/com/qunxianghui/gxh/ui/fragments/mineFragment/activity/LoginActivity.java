@@ -324,7 +324,6 @@ public class LoginActivity extends BaseActivity {
                         SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
                         SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
                         spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
-
                         spCompanymessageEditor.apply();
                     } catch (JSONException ignored) {
 

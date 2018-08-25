@@ -32,6 +32,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CityInfo;
 import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -172,7 +173,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void onResume() {
         super.onResume();
         String currcity = SPUtils.getLocation("currcity");
-        mTvHomeLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
+        mTvHomeLocation.setText(currcity);
     }
 
     /**
@@ -273,9 +274,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                     mTvHomeLocation.setText(city);
                 } else {
                     mTvHomeLocation.setText(cityName);
-                    String cityCode = aMapLocation.getCityCode();
-                    String adCode = aMapLocation.getAdCode();
-                    SaveLocationData(cityCode, adCode, cityName);
+                    requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -287,11 +286,29 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         mlocationClient.stopLocation();
     }
 
+    private void requestCityInfo(Double lat, Double lng, final String cityName) {
+        OkGo.<CityInfo>get(Constant.GET_CITY_INFO)
+                .params("lat", lat)
+                .params("lng", lng)
+                .execute(new JsonCallback<CityInfo>() {
+                    @Override
+                    public void onSuccess(Response<CityInfo> response) {
+                        if (response.body().code == 0) {
+                            String cityId = response.body().data.cityInfo.cityid;
+                            String areaId = response.body().data.cityInfo.areaid;
+                            saveLocationData(cityId, areaId, cityName);
+                        }
+                    }
+                });
+    }
+
     /*sp存储一些信息*/
-    private void SaveLocationData(String cityCode, String adCode, String cityName) {
+    private void saveLocationData(String cityCode, String areaId, String cityName) {
         SPUtils.saveLocation("X-cityId", cityCode);
-        SPUtils.saveLocation("X-areaId", adCode);
-        SPUtils.saveLocation("X-cityName", cityName);
+        SPUtils.saveLocation("X-areaId", areaId);
+        SPUtils.saveLocation("currcity", cityName);
+        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
     }
 
 }

@@ -328,6 +328,7 @@ public class AddAdvertActivity extends BaseActivity {
     private void goToAdvertTemplateActivity() {
         Intent intent = new Intent(this, AdvertTemplateActivity.class);
         intent.putExtra("position", mAddPosition);
+        intent.putExtra("addtype", mAddPosition);
         startActivityForResult(intent, 100);
     }
 

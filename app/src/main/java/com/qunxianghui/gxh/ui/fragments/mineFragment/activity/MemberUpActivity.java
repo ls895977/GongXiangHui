@@ -1,7 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -18,7 +18,6 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 会员升级界面
@@ -27,8 +26,6 @@ import butterknife.ButterKnife;
 
 public class MemberUpActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.ll_memberup_company_state)
-    LinearLayout mLlMemberupCompanyState;
     @BindView(R.id.iv_memberup_back)
     ImageView mIvMemberupBack;
     @BindView(R.id.tv_memberup_quickly_active)
@@ -55,6 +52,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     CardView cvCompany;
     @BindView(R.id.cv_register)
     CardView cvRegister;
+
     private String selfcompayname;
     private String expire_time;
     private String avatar;
@@ -66,7 +64,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
-
         SharedPreferences companyData = getSharedPreferences("companymessage", 0);
         selfcompayname = companyData.getString("selfcompayname", "");
         expire_time = companyData.getString("expire_time", "");
@@ -79,7 +76,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         layoutParams.width = width * 4 / 5;
         cvCompany.setLayoutParams(layoutParams);
         cvRegister.setLayoutParams(layoutParams);
-
     }
 
     @Override
@@ -98,13 +94,10 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             tvMemberupCompanyState.setText("会员状态: 已激活");
             tvMemberupActiviteTime.setText("激活日期" + expire_time);
             tvMemberupPersonState.setText("会员状态:正常");
-
         } else {
             mTvMemberupQuicklyActive.setVisibility(View.VISIBLE);
             tvMemberupPersonActive.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     @Override
@@ -114,10 +107,8 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.tv_memberup_quickly_active:
-                toActivity(MemberUpActiveActivity.class);
-                break;
             case R.id.tv_memberup_person_active:
-                toActivity(MemberUpActiveActivity.class);
+                toActivityWithResult(MemberUpActiveActivity.class, 0x0011);
                 break;
         }
     }
@@ -128,13 +119,14 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         mIvMemberupBack.setOnClickListener(this);
         mTvMemberupQuicklyActive.setOnClickListener(this);
         tvMemberupPersonActive.setOnClickListener(this);
-
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 0x0022) {
+            initViews();
+            initData();
+        }
     }
 }

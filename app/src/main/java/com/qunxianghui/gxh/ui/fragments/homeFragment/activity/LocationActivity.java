@@ -23,6 +23,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.TreeRecyclerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.Address;
+import com.qunxianghui.gxh.bean.CityInfo;
 import com.qunxianghui.gxh.bean.home.ProvinceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -53,8 +54,8 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     private AMapLocationClient mLocationClient;
     AMapLocationClientOption mLocationOption = null;
     private String mCurrentCity;
-    private String mCityId;
-    private String mAreaId;
+    private Double mLng;
+    private Double mLag;
 
 
     @Override
@@ -67,8 +68,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
         mLoadView.setVisibility(View.VISIBLE);
         recyclerviewLocationCity.setLayoutManager(new GridLayoutManager(mContext, 3));
         recyclerviewLocationCity.setAdapter(treeRecyclerAdapter);
-        String currcity = SPUtils.getLocation("X-cityName");
-        mTvCurrentCity.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("currcity") : currcity);
+        mTvCurrentCity.setText(SPUtils.getLocation("currcity"));
     }
 
     @Override
@@ -104,9 +104,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     }
 
     public void callback(ProvinceBean.CityBean.AreasBean areasBean) {
-        SPUtils.saveLocation("currcity", areasBean.areaName);
-        SPUtils.saveLocation("X-cityId", areasBean.pid);
-        SPUtils.saveLocation("X-areaId", areasBean.areaId);
+        saveLocationData(areasBean.pid, areasBean.areaId, areasBean.areaName);
         mTvCurrentCity.setText(areasBean.areaName);
         finish();
     }
@@ -116,8 +114,8 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 mCurrentCity = aMapLocation.getDistrict();
-                mCityId = aMapLocation.getCityCode();
-                mAreaId = aMapLocation.getAdCode();
+                mLag = aMapLocation.getLatitude();
+                mLng = aMapLocation.getLongitude();
                 String city = SPUtils.getLocation("currcity");
                 if (TextUtils.isEmpty(mCurrentCity)) {
                     mTvCurrentCity.setText(city);
@@ -132,7 +130,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
             }
         }
         mLocationClient.stopLocation();
-
     }
 
     private void requestAbleLocation() {
@@ -168,13 +165,35 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
 
     @OnClick(R.id.tv_current_address)
     public void onViewClicked() {
-        SPUtils.saveLocation("currcity", mCurrentCity);
-        SPUtils.saveLocation("X-cityId", mCityId);
-        SPUtils.saveLocation("X-areaId", mAreaId);
         mTvCurrentCity.setText(mCurrentCity);
-        finish();
+        requestCityInfo(mLag, mLng, mCurrentCity);
     }
 
+    private void requestCityInfo(Double lat, Double lng, final String cityName) {
+        OkGo.<CityInfo>get(Constant.GET_CITY_INFO)
+                .params("lat", lat)
+                .params("lng", lng)
+                .execute(new JsonCallback<CityInfo>() {
+                    @Override
+                    public void onSuccess(Response<CityInfo> response) {
+                        if (response.body().code == 0) {
+                            String cityId = response.body().data.cityInfo.cityid;
+                            String areaId = response.body().data.cityInfo.areaid;
+                            saveLocationData(cityId, areaId, cityName);
+                        }
+                        finish();
+                    }
+                });
+    }
+
+    /*sp存储一些信息*/
+    private void saveLocationData(String cityCode, String areaId, String cityName) {
+        SPUtils.saveLocation("X-cityId", cityCode);
+        SPUtils.saveLocation("X-areaId", areaId);
+        SPUtils.saveLocation("currcity", cityName);
+        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
+    }
 
     public static class Callback implements AreaItem.Callback {
 
