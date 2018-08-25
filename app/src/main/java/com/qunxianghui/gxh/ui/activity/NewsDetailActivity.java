@@ -33,7 +33,6 @@ import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -52,8 +51,6 @@ import butterknife.OnClick;
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.tv_newsdetail_issue)
-    TextView mTvNewsdetailIssue;
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
     private Dialog mShareDialog;
@@ -317,10 +314,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         case R.id.share_cancel_btn:
                             mUmShareDialog.dismiss();
                             break;
-                        case R.id.tv_newsdetail_issue:
-                            toActivity(CompanySetActivity.class);
-                            break;
+
                     }
+                    mLoadingDialog.dismiss();
                 }
             };
             view.findViewById(R.id.rl_share_wx).setOnClickListener(listener);

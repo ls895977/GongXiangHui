@@ -268,7 +268,6 @@ public class AdvertTemplateActivity extends BaseActivity {
         if (companyAdvert.id != 0)
             mPost.params("ad[" + index + "][id]", companyAdvert.id);
         mPost.params("ad[" + index + "][is_slide]", companyAdvert.status);
-
         if (companyAdvert.settings == null) {
             return;
         }

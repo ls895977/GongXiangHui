@@ -260,6 +260,7 @@ public class AddAdvertActivity extends BaseActivity {
                         dialog.dismiss();
                         break;
                 }
+                dialog.dismiss();
             }
         };
         rl_share_wx.setOnClickListener(listener);
