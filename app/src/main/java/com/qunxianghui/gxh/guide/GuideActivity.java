@@ -3,11 +3,11 @@ package com.qunxianghui.gxh.guide;
 import android.support.v4.view.ViewPager;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.guide.view.IndicatorView;
 import com.youth.banner.transformer.DepthPageTransformer;
 
 public class GuideActivity extends BaseActivity {
     private static final String TAG = GuideActivity.class.getName();
-    private ViewPager vpContainer;
 
     @Override
     protected int getLayoutId() {
@@ -18,8 +18,11 @@ public class GuideActivity extends BaseActivity {
     protected void initViews() {
         super.initViews();
 
-        vpContainer = (ViewPager) findViewById(R.id.guide_vp_container);
-        vpContainer.setPageTransformer(true, new DepthPageTransformer());
-        vpContainer.setAdapter(new GuideViewPagerAdapter(getSupportFragmentManager()));
+        ViewPager viewPager = (ViewPager) findViewById(R.id.guide_vp_container);
+        viewPager.setPageTransformer(true, new DepthPageTransformer());
+        viewPager.setAdapter(new GuideViewPagerAdapter(getSupportFragmentManager()));
+
+        IndicatorView indicatorView = (IndicatorView) findViewById(R.id.guide_iv_indicator_view);
+        indicatorView.bindViewPager(viewPager);
     }
 }

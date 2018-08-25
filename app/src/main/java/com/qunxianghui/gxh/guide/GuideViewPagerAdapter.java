@@ -26,13 +26,11 @@ public class GuideViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.d(TAG, "getItem() position: " + position);
         return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        Log.d(TAG, "getCount() count: " + mFragments.size());
         return mFragments.size();
     }
 }
