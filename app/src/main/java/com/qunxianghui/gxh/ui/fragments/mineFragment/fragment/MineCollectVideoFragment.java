@@ -1,7 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -12,14 +12,12 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MineCollectVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -27,8 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MineCollectVideoFragment extends BaseFragment implements MineCollectVideoAdapter.MyCollectVideoClickListener {
-
+public class MineCollectVideoFragment extends BaseFragment {
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
 
@@ -37,17 +34,14 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
     private boolean mIsRefresh = false;
     private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
     private MineCollectVideoAdapter mineCollectVideoAdapter;
-
     @Override
     protected void onLoadData() {
         RequestMineCollectVideo();
     }
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_collect_video;
     }
-
     @Override
     public void initData() {
     }
@@ -79,7 +73,6 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
             if (mIsFirst) {
                 mIsFirst = false;
                 mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
-                mineCollectVideoAdapter.setMyCollectVideoClickListener(this);
                 xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
                 mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
@@ -142,42 +135,8 @@ public class MineCollectVideoFragment extends BaseFragment implements MineCollec
 
     @Override
     public void initViews(View view) {
-        xrecyclerMycollectVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity,2, GridLayoutManager.VERTICAL, false));
     }
 
-    @Override
-    public void attentionClick(final int position) {
-        OkGo.<CommonBean>post(Constant.ATTENTION_URL)
-                .params("be_member_id", dataList.get(position).getId())
-                .execute(new JsonCallback<CommonBean>() {
-                    @Override
-                    public void onSuccess(Response<CommonBean> response) {
-                        final int code = response.body().code;
-                        if (code == 0) {
-                            asyncShowToast("关注成功");
-                            dataList.get(position).getMember().setFollow("true");
-                        } else if (code == 202) {
-                            asyncShowToast("取消关注");
-                            dataList.get(position).getMember().setFollow("");
-                        } else if (code == 101) {
-                            asyncShowToast("请不要自己关注自己");
-                        }
-                        mineCollectVideoAdapter.notifyItemChanged(position);
-                        mineCollectVideoAdapter.notifyDataSetChanged();
-                    }
 
-                    @Override
-                    public void onError(Response<CommonBean> response) {
-                        super.onError(response);
-                        Logger.e("视频关注" + response.body().toString());
-                    }
-                });
-    }
-
-    @Override
-    public void videoHeadImageClick(int position) {
-        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
-        intent.putExtra("member_id", dataList.get(position).getMember_id());
-        startActivity(intent);
-    }
 }
