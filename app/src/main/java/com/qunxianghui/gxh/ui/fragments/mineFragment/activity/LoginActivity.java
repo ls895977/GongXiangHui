@@ -6,12 +6,9 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
+import butterknife.BindView;
+import butterknife.OnClick;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -34,14 +31,10 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 
 /**
@@ -275,7 +268,11 @@ public class LoginActivity extends BaseActivity {
                 toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
-                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                if (!mShareAPI.isInstall(this, SHARE_MEDIA.WEIXIN)) {
+                    Toast.makeText(this, "请先安装微信客户端", Toast.LENGTH_SHORT).show();
+                } else {
+                    mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                }
                 break;
             case R.id.iv_qq_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);
