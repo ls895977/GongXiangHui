@@ -35,6 +35,7 @@ public class LoginDialog extends Dialog {
         findViewById(R.id.tv_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
                 context.startActivity(new Intent(context, LoginActivity.class));
             }
         });

@@ -86,8 +86,6 @@ public class AdvertTemplateActivity extends BaseActivity {
             mSegmentTab.setTabData(mTitles);
             mFragments.add(new AdvertTiePianFragment());
         }
-//        Intent intent = getIntent();
-//        int adverTag = intent.getIntExtra("adverTag", 0);
         mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
         mVp.setOffscreenPageLimit(mSegmentTab.getTabCount() - 1);
         if (position == 1 || position == 2) {
@@ -267,9 +265,8 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPost.params("ad[" + index + "][images]", companyAdvert.images);
         mPost.params("ad[" + index + "][ad_type]", companyAdvert.ad_type);
         mPost.params("ad[" + index + "][position]", companyAdvert.position);
-        if (companyAdvert.id != 0) {
+        if (companyAdvert.id != 0)
             mPost.params("ad[" + index + "][id]", companyAdvert.id);
-        }
         mPost.params("ad[" + index + "][is_slide]", companyAdvert.status);
 
         if (companyAdvert.settings == null) {
@@ -277,23 +274,20 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         //贴片广告
         if (companyAdvert.ad_type == 6) {
-            if (!TextUtils.isEmpty(companyAdvert.settings.time)) {
+            if (!TextUtils.isEmpty(companyAdvert.settings.time))
                 mPost.params("ad[" + index + "][settings][time]", companyAdvert.settings.time);
-            }
             if (companyAdvert.settings.operate != 0) {
                 mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                 switch (companyAdvert.settings.operate) {
                     case 1:
-                        if (!TextUtils.isEmpty(companyAdvert.link)) {
+                        if (!TextUtils.isEmpty(companyAdvert.link))
                             mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                        }
                         mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                         break;
                     case 2:
                     case 3:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.link)) {
-                                mPost.params("ad[" + index + "][settings][link]", companyAdvert.settings.link);
-                        }
+                        if (!TextUtils.isEmpty(companyAdvert.settings.link))
+                            mPost.params("ad[" + index + "][settings][link]", companyAdvert.settings.link);
                         break;
                 }
             }
@@ -305,112 +299,88 @@ public class AdvertTemplateActivity extends BaseActivity {
                 case 1:
                     switch (companyAdvert.settings.operate) {
                         case 1:
-                            if (!TextUtils.isEmpty(companyAdvert.link)) {
+                            if (!TextUtils.isEmpty(companyAdvert.link))
                                 mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                            }
                             mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                             break;
                         case 2:
-                            if (!TextUtils.isEmpty(companyAdvert.settings.mobile)) {
+                            if (!TextUtils.isEmpty(companyAdvert.settings.mobile))
                                 mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
-                            }
                             break;
                         case 3:
-                            if (!TextUtils.isEmpty(companyAdvert.settings.qq)) {
+                            if (!TextUtils.isEmpty(companyAdvert.settings.qq))
                                 mPost.params("ad[" + index + "][settings][qq]", companyAdvert.settings.qq);
-                            }
                             break;
                     }
                     break;
                 case 2:
-                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan))
                         mPost.params("ad[" + index + "][settings][slogan]", companyAdvert.settings.slogan);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.mobile)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.mobile))
                         mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.intro)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.intro))
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
-                    }
                     break;
                 case 3:
                     if (companyAdvert.settings.operate != 0) {
                         mPost.params("ad[" + index + "][settings][operate]", companyAdvert.settings.operate);
                         switch (companyAdvert.settings.operate) {
                             case 1:
-                                if (!TextUtils.isEmpty(companyAdvert.link)) {
+                                if (!TextUtils.isEmpty(companyAdvert.link))
                                     mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                                }
                                 mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                                 break;
                             case 2:
-                                if (!TextUtils.isEmpty(companyAdvert.settings.mobile)) {
+                                if (!TextUtils.isEmpty(companyAdvert.settings.mobile))
                                     mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
-                                }
                                 break;
                             case 3:
-                                if (!TextUtils.isEmpty(companyAdvert.link)) {
+                                if (!TextUtils.isEmpty(companyAdvert.link))
                                     mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                                }
                                 break;
                             case 4:
                             case 5:
-                                if (!TextUtils.isEmpty(companyAdvert.settings.pgn_url)) {
+                                if (!TextUtils.isEmpty(companyAdvert.settings.pgn_url))
                                     mPost.params("ad[" + index + "][settings][pgn_url]", companyAdvert.settings.pgn_url);
-                                }
                                 break;
                         }
                     }
                     break;
                 case 4:
-                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan))
                         mPost.params("ad[" + index + "][settings][slogan]", companyAdvert.settings.slogan);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.intro)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.intro))
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
-                    }
                     break;
                 case 5:
-                    if (!TextUtils.isEmpty(companyAdvert.settings.name)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.name))
                         mPost.params("ad[" + index + "][settings][name]", companyAdvert.settings.name);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.qq)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.qq))
                         mPost.params("ad[" + index + "][settings][qq]", companyAdvert.settings.qq);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.intro)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.intro))
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
-                    }
                     break;
                 case 7:
-                    if (!TextUtils.isEmpty(companyAdvert.settings.product_name)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.product_name))
                         mPost.params("ad[" + index + "][settings][product_name]", companyAdvert.settings.product_name);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.product_price)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.product_price))
                         mPost.params("ad[" + index + "][settings][product_price]", companyAdvert.settings.product_price);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.product_url)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.product_url))
                         mPost.params("ad[" + index + "][settings][product_url]", companyAdvert.settings.product_url);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.qq)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.qq))
                         mPost.params("ad[" + index + "][settings][qq]", companyAdvert.settings.qq);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.mobile)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.mobile))
                         mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.store_url)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.store_url))
                         mPost.params("ad[" + index + "][settings][store_url]", companyAdvert.settings.store_url);
-                    }
                     break;
                 case 8:
-                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan))
                         mPost.params("ad[" + index + "][settings][slogan]", companyAdvert.settings.slogan);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.link)) {
+                    if (!TextUtils.isEmpty(companyAdvert.link))
                         mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                    }
-                    if (!TextUtils.isEmpty(companyAdvert.settings.intro)) {
+                    if (!TextUtils.isEmpty(companyAdvert.settings.intro))
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
-                    }
                     break;
             }
             //顶部广告
@@ -419,26 +389,22 @@ public class AdvertTemplateActivity extends BaseActivity {
                 mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                 switch (companyAdvert.settings.operate) {
                     case 1:
-                        if (!TextUtils.isEmpty(companyAdvert.link)) {
+                        if (!TextUtils.isEmpty(companyAdvert.link))
                             mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                        }
                         mPost.params("ad[" + index + "][settings][is_link]", companyAdvert.settings.is_link);
                         break;
                     case 2:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.mobile)) {
+                        if (!TextUtils.isEmpty(companyAdvert.settings.mobile))
                             mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
-                        }
                         break;
                     case 3:
-                        if (!TextUtils.isEmpty(companyAdvert.link)) {
+                        if (!TextUtils.isEmpty(companyAdvert.link))
                             mPost.params("ad[" + index + "][link]", companyAdvert.link);
-                        }
                         break;
                     case 4:
                     case 5:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.pgn_url)) {
+                        if (!TextUtils.isEmpty(companyAdvert.settings.pgn_url))
                             mPost.params("ad[" + index + "][settings][pgn_url]", companyAdvert.settings.pgn_url);
-                        }
                         break;
                 }
             }
