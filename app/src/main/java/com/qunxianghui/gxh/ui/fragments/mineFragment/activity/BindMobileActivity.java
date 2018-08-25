@@ -15,7 +15,6 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
@@ -93,7 +92,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                                     String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                                     SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                     SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                                    MyApplication.getInstance().setAccessToken(access_token);
+                                    OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                     asyncShowToast("登录成功");
                                     toActivity(MainActivity.class);
                                     finish();

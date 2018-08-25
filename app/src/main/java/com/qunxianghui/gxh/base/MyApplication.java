@@ -95,7 +95,7 @@ public class MyApplication extends MultiDexApplication {
         HttpHeaders header = new HttpHeaders();
         header.put("X-appkey", "100");
         header.put("X-accesstoken", mAccessToken);
-        header.put("X-systemType","android" );
+        header.put("X-systemType", "android");
 //        header.put("X-deviceModel", SystemUtil.getSystemModel());
 //        header.put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
 
@@ -146,11 +146,6 @@ public class MyApplication extends MultiDexApplication {
                 return true; //关闭打印日志设置为false
             }
         });
-    }
-
-    public void setAccessToken(String accessToken) {
-        mAccessToken = accessToken;
-        initOkGo();
     }
 
     private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {

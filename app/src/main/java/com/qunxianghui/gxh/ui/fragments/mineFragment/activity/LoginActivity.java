@@ -17,7 +17,6 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
@@ -82,6 +81,7 @@ public class LoginActivity extends BaseActivity {
     /*1为QQ,2为微信*/
     private String thirdType;
     private String companyName;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getInstance().setAccessToken(access_token);
+                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -166,7 +166,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getInstance().setAccessToken(access_token);
+                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -200,8 +200,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getInstance().setAccessToken(access_token);
-                                                Log.e(TAG, "onSuccess: " + access_token);
+                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
                                                 finish();
@@ -298,7 +297,7 @@ public class LoginActivity extends BaseActivity {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                            MyApplication.getInstance().setAccessToken(access_token);
+                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                             fillUserData();
                             holdReneraCompanyData();
                         }

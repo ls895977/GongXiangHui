@@ -39,6 +39,7 @@ public class Constant {
     public static final String FETCH_PROVINCE_URL = BASE_URL + "province/getProvince";
     //获取城市
     public static final String FETCH_CITY_URL = BASE_URL + "city/getCity";
+    public static final String GET_CITY_INFO = BASE_URL + "region/getCityInfo";
     //获取县城
     public static final String FETCH_COUNTRY_URL = BASE_URL + "area/getArea";
     //获取省市区

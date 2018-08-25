@@ -93,7 +93,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         StatusBarUtil.setViewTopPadding(this, R.id.top_bar);
     }
 
-
     @Override
     protected void initData() {
         //猜你想要的数据
@@ -127,7 +126,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             });
             rvSearchGuess.setAdapter(adapter);
         }
-
     }
 
     /*加载历史记录*/

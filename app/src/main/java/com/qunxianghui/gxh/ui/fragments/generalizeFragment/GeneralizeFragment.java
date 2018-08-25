@@ -51,7 +51,7 @@ public class GeneralizeFragment extends BaseFragment {
     @Override
     public void initData() {
         if (mLlGenera == null) return;
-        if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+        if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
             mSegmentTab.setCurrentTab(0);
             mLlGenera.setVisibility(View.VISIBLE);
             mVp.setVisibility(View.VISIBLE);

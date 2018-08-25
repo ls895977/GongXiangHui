@@ -36,6 +36,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @BindView(R.id.xrv)
     XRecyclerView mRv;
+
     private int mPage;
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
@@ -171,13 +172,16 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
-                        int code = response.body().code;
-                        if (code == 100) {
+                        HomeVideoListBean.DataBean.ListBean listBean = videoDataList.get(position);
+                        int likeCnt = Integer.parseInt(listBean.getLike_cnt());
+                        if (response.body().code == 100) {
                             asyncShowToast("点赞成功");
-                            videoDataList.get(position).setIs_like(1);
-                        } else if (code == 101) {
+                            listBean.setIs_like(1);
+                            listBean.setLike_cnt(++likeCnt + "");
+                        } else if (response.body().code == 101) {
                             asyncShowToast("取消点赞");
-                            videoDataList.get(position).setIs_like(0);
+                            listBean.setIs_like(0);
+                            listBean.setLike_cnt(--likeCnt + "");
                         }
                         personDetailVideoAdapter.notifyDataSetChanged();
                     }

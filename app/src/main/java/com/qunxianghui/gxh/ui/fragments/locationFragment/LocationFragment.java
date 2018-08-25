@@ -68,30 +68,16 @@ public class LocationFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<HomeVideoChannel> response) {
                 if (response.body().code == 200 && response.body().data != null) {
+                    fragments.clear();
                     List<ChannelItem> datas = response.body().data;
                     setFragments(datas);
-                    userChannelList.addAll(datas);
                     setViewpager();
+                    userChannelList.addAll(datas);
                 } else {
                     asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().msg));
                 }
-
             }
         });
-
-    }
-    private void setViewpager() {
-        MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, mTitles);
-        mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
-        mSlidingTabLayout.setViewPager(mLocalViewPager);
-        mLocalViewPager.setOffscreenPageLimit(fragments.size() - 1);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        String currcity = SPUtils.getLocation("currcity");
-        mTvLocalcircleLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }
 
     private void setFragments(List<ChannelItem> datas) {
@@ -107,6 +93,20 @@ public class LocationFragment extends BaseFragment {
             mTitles[i] = dataBean.name;
             fragments.add(locationDetailFragment);
         }
+    }
+
+    private void setViewpager() {
+        MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getChildFragmentManager(), fragments, mTitles);
+        mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
+        mSlidingTabLayout.setViewPager(mLocalViewPager);
+        mLocalViewPager.setOffscreenPageLimit(fragments.size() - 1);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String currcity = SPUtils.getLocation("currcity");
+        mTvLocalcircleLocation.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
     }
 
     @Override
@@ -133,7 +133,6 @@ public class LocationFragment extends BaseFragment {
                     mTvLocalcircleLocation.setText(SPUtils.getLocation("currcity"));
                 }
                 break;
-
         }
 
         if (resultCode == POST_CHANNELRESULT) {

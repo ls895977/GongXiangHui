@@ -30,12 +30,14 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.activity.GeneralMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -156,6 +158,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         asyncShowToast("教学视频");
                         break;
                     default:
+                        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false) && mViewList.size() >= 2) {
+                            asyncShowToast("注册会员最多只可添加2个模版哦!");
+                            return;
+                        }
                         if (mViewList.size() >= 10) {
                             asyncShowToast("亲，最多只可添加10个模版哦!");
                             return;
