@@ -29,15 +29,23 @@ public class IndicatorView extends FrameLayout {
     }
 
     public void setCurrentPosition(int position) {
-        MarginLayoutParams marginLayoutParams = (MarginLayoutParams) ivCurrentIndicator.getLayoutParams();
-        marginLayoutParams.leftMargin = mInitialMarginLeft + mIntervalMargins * position;
-        ivCurrentIndicator.requestLayout();
+        setCurrentPosition(position, 0);
     }
 
     public void setCurrentPosition(int position, float positionOffset) {
         MarginLayoutParams marginLayoutParams = (MarginLayoutParams) ivCurrentIndicator.getLayoutParams();
         marginLayoutParams.leftMargin = (int) (mInitialMarginLeft + mIntervalMargins * (position + positionOffset));
         ivCurrentIndicator.requestLayout();
+
+        if (position > 1) {
+            setAlpha(0);
+            return;
+        }
+        if (position == 1) {
+            setAlpha(1 - positionOffset);
+            return;
+        }
+        setAlpha(1);
     }
 
     public void bindViewPager(ViewPager viewPager) {
@@ -57,7 +65,6 @@ public class IndicatorView extends FrameLayout {
 
         @Override
         public void onPageSelected(int position) {
-            setCurrentPosition(position);
         }
 
         @Override
