@@ -74,7 +74,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-
         mLoadingDialog = createLoadingDialog(NewsDetailActivity.this, "加载中...");
         mLoadingDialog.show();
 
