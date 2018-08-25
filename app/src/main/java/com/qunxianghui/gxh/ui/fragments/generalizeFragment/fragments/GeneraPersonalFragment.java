@@ -121,6 +121,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                     Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                     intent.putExtra("uuid", uuid);
                     intent.putExtra("url", video_url != null ? Constant.VIDEO_DETAIL_URL : Constant.HOME_NEWS_DETAIL_URL);
+                    intent.putExtra("descrip", dataList.get(position).content);
                     startActivity(intent);
                 }
             });
