@@ -29,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
     protected String TAG = this.getClass().getSimpleName();
     protected Context mContext;
     protected Resources mResources;
+
     /**
      * 创建Activity时加到管理栈中
      *
@@ -74,12 +75,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
 
     @Override
     public void update(Observable o, Object arg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new LoginDialog(BaseActivity.this).show();
+        if (arg instanceof String) {
+            String arg1 = (String) arg;
+            if ("signout".equals(arg1)) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new LoginDialog(BaseActivity.this).show();
+                    }
+                });
             }
-        });
+        }
     }
 
     protected void toActivity(Class<?> target) {
@@ -148,6 +154,5 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
             }
         });
     }
-
 
 }

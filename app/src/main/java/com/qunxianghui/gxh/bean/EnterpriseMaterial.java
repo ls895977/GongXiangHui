@@ -31,12 +31,12 @@ public class EnterpriseMaterial {
 
             public String link;
             public String images;
-//            0-禁用，1-正常
-            public int status = 1;
+            //            0-禁用，1-正常
+//            public int status = 1;
             public Settings settings = new Settings();
             public String ctime;
             public String mtime;
-//            是否轮播：0不轮播，1轮播
+            //            0-禁用，1-正常
             public int is_slide;
             public int is_float;
             public boolean isSelect;

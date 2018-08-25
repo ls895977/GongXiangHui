@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
 
@@ -85,7 +83,7 @@ public class HomeVideoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         String currcity = SPUtils.getLocation("currcity");
-        mTvAddress.setText(TextUtils.isEmpty(currcity) ? SPUtils.getLocation("X-cityName") : currcity);
+        mTvAddress.setText(currcity);
     }
 
     private void setFragments(List<ChannelItem> datas) {
@@ -112,7 +110,6 @@ public class HomeVideoActivity extends BaseActivity {
 
     @Override
     protected void initListeners() {
-
         mSlidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -169,13 +166,5 @@ public class HomeVideoActivity extends BaseActivity {
         }
         super.onBackPressed();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
 
 }
