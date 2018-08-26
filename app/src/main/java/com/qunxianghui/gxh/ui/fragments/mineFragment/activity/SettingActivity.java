@@ -41,6 +41,7 @@ import butterknife.BindView;
  */
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.tv_setting_quit)
     TextView mTvSettingQuit;
     @BindView(R.id.tv_mine_set_cache)

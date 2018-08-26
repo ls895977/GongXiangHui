@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,15 +88,22 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*删除评论*/
-                    OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
-                            params("id", mList.get(position).getId())
-                            .execute(new JsonCallback<String>() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    deleteItemView(position);
-                                }
-                            });
+
+                    new AlertDialog.Builder(v.getContext()).setTitle("是否删除评论").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            /*删除评论*/
+                            OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
+                                    params("id", mList.get(position).getId())
+                                    .execute(new JsonCallback<String>() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+                                            deleteItemView(position);
+                                        }
+                                    });
+                        }
+                    }).setNeutralButton("否", null).show();
+
                 }
             });
         } else {
