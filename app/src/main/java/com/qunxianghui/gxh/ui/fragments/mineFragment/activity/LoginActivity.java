@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +29,6 @@ import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
-import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -49,7 +50,6 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity {
-
     public static final int LOGIN_REQUEST = 1;
     public static final int LOGIN_RESULT = 1;
 
@@ -69,6 +69,8 @@ public class LoginActivity extends BaseActivity {
     ImageView ivQqLogin;
     @BindView(R.id.iv_sina_login)
     ImageView ivSinaLogin;
+    @BindView(R.id.iv_login_bick)
+    ImageView ivLoginBick;
     private UMShareAPI mShareAPI;
     private UMAuthListener mUmAuthListener;
     private UMShareListener umShareListener;
@@ -89,12 +91,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        new TitleBuilder(this).setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }).setTitleText("用户登录");
         //数据库操作类
         userDao = new UserDao(this);
     }
@@ -214,12 +210,10 @@ public class LoginActivity extends BaseActivity {
                                 });
                         break;
                 }
-                Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-//                Log.w("test", "性别: " + data.get("gender"));
             }
 
             @Override
@@ -250,10 +244,9 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(LoginActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
             }
         };
-
     }
 
-    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
+    @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login, R.id.iv_login_bick})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -262,6 +255,7 @@ public class LoginActivity extends BaseActivity {
                 password = etLoginPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
+
                 } else if (!REGutil.checkCellphone(phone)) {
                     asyncShowToast("手机号格式不正确");
                 } else {
@@ -275,13 +269,20 @@ public class LoginActivity extends BaseActivity {
                 toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
-                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                if (!mShareAPI.isInstall(this, SHARE_MEDIA.WEIXIN)) {
+                    Toast.makeText(this, "请先安装微信客户端", Toast.LENGTH_SHORT).show();
+                } else {
+                    mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                }
                 break;
             case R.id.iv_qq_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);
                 break;
             case R.id.iv_sina_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.SINA, mUmAuthListener);
+                break;
+            case R.id.iv_login_bick:
+                finish();
                 break;
         }
     }
@@ -396,6 +397,12 @@ public class LoginActivity extends BaseActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
 
 

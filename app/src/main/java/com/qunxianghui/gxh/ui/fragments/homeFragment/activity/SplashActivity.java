@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.lzy.okgo.OkGo;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.guide.GuideActivity;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.SystemUtil;
@@ -29,7 +30,7 @@ public class SplashActivity extends BaseActivity {
             OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
         }
         if (isFirstUse) {
-            toActivity(GuidActivity.class);
+            toActivity(GuideActivity.class);
         } else {
             toActivity(WelcomeActivity.class);
         }

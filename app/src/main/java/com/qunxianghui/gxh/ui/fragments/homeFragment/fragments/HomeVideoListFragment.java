@@ -148,12 +148,15 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
+                        String msg = response.body().msg;
                         if (code == 0) {
-                            asyncShowToast("关注成功");
+                            asyncShowToast(msg);
                             videoDataList.get(position).setFollow("true");
                         } else if (code == 202) {
-                            asyncShowToast("取消关注");
+                            asyncShowToast(msg);
                             videoDataList.get(position).setFollow("");
+                        } else if (code == 101) {
+                            asyncShowToast(msg);
                         }
                         personDetailVideoAdapter.notifyDataSetChanged();
                     }

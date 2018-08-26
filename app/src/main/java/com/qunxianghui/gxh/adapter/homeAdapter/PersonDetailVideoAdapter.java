@@ -36,8 +36,16 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
         RoundImageView personHeadImag = holder.getView(R.id.round_item_collect_video_personhead);
         ImageView ivCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
         ImageView mIvItemCollectVideoLike = holder.getView(R.id.iv_item_collect_video_like);
+        TextView mTvVideoAttention = holder.getView(R.id.tv_mycollect_video_attention);
         TextView mTvCommentCount = holder.getView(R.id.tv_comment);
         int is_like = listBean.getIs_like();
+        String follow = listBean.getFollow();
+        if (TextUtils.isEmpty(follow)){
+            mTvVideoAttention.setText("关注");
+        }else {
+            mTvVideoAttention.setVisibility(View.GONE);
+        }
+
         if (is_like == 0) {
             mIvItemCollectVideoLike.setImageResource(R.mipmap.home_video_collect_normal);
 
@@ -46,7 +54,7 @@ public class PersonDetailVideoAdapter extends BaseRecycleViewAdapter<HomeVideoLi
 
         }  holder.setText(R.id.tv_like, listBean.getLike_cnt());
 
-        holder.setText(R.id.tv_mycollect_video_attention, TextUtils.isEmpty(listBean.getFollow()) ? "+关注" : "已关注");
+//        holder.setText(R.id.tv_mycollect_video_attention, TextUtils.isEmpty(listBean.getFollow()) ? "+关注" : "已关注");
         holder.setText(R.id.tv_item_collect_video_personname, listBean.getMember_name());
 
         holder.setText(R.id.tv_comment, listBean.getComment_cnt());

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+    <ImageView
+            android:id="@+id/guide_indicator_iv_first"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/guide_indicator_normal"/>
+
+    <ImageView
+            android:id="@+id/guide_indicator_iv_second"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/guide_indicator_normal"
+            android:layout_toEndOf="@id/guide_indicator_iv_first"/>
+
+    <ImageView
+            android:id="@+id/guide_indicator_iv_third"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/guide_indicator_normal"
+            android:layout_toEndOf="@id/guide_indicator_iv_second"/>
+
+    <ImageView
+            android:id="@+id/guide_indicator_iv_current"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/guide_indicator_selected"
+            android:layout_alignStart="@id/guide_indicator_iv_first"/>
+
+</RelativeLayout>

@@ -39,18 +39,19 @@
         android:layout_height="47dp"
         android:layout_gravity="bottom"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="168dp"
         android:src="@mipmap/default_img" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_below="@+id/rl_home_videoimage">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -60,6 +61,7 @@
                 android:background="@drawable/shape_button"
                 android:gravity="center"
                 android:text="+关注"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/white"
                 android:textSize="11sp" />
 
@@ -68,7 +70,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:layout_marginTop="3dp"
                 android:text="香馍馍"
                 android:textColor="#2D2D2D"
                 android:textSize="13sp" />

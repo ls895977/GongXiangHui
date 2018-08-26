@@ -241,7 +241,8 @@ public class MainActivity extends BaseActivity {
         if (dialog == null) {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
-        dialog.blurBg().show();
+       dialog.blurBg().show();
+
     }
 }
 
