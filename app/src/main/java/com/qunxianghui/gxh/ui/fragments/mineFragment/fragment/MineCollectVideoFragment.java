@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
+import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -22,12 +23,16 @@ import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 
-public class MineCollectVideoFragment extends BaseFragment {
+public class MineCollectVideoFragment extends BaseFragment implements Observer{
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
+    @BindView(R.id.bt_mycollect_delete)
+    Button btnDelete;
 
     private boolean mIsFirst = true;
     private int count;
@@ -136,7 +141,30 @@ public class MineCollectVideoFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity,2, GridLayoutManager.VERTICAL, false));
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i <dataList.size() ; i++) {
+                    if (dataList.get(i).isChecked() == true) {
+                        //这边获取选中的数据id,
+                    }
+                }
+            }
+        });
     }
 
 
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof String && "video".equals(o)) {
+            mineCollectVideoAdapter.isShow=true;
+            mineCollectVideoAdapter.notifyDataSetChanged();
+            btnDelete.setVisibility(View.VISIBLE);
+        }
+        if (o instanceof String && "cancel".equals(o)) {
+            mineCollectVideoAdapter.isShow=false;
+            mineCollectVideoAdapter.notifyDataSetChanged();
+            btnDelete.setVisibility(View.GONE);
+        }
+    }
 }
