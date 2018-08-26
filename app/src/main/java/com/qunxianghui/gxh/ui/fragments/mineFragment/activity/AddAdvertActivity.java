@@ -35,6 +35,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -62,6 +63,8 @@ public class AddAdvertActivity extends BaseActivity {
     Banner mBannerTop;
     @BindView(R.id.banner_bottom)
     Banner mBannerBottom;
+    @BindView(R.id.rl_bottom)
+    RelativeLayout mRlBottom;
 
     private UMShareListener umShareListener;
     private String url;
@@ -311,12 +314,18 @@ public class AddAdvertActivity extends BaseActivity {
                                 mBannerBottom.setVisibility(View.VISIBLE);
                                 for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : body.data.bottom) {
                                     if (companyAdvert.ad_type == 1 && companyAdvert.is_slide == 1) {
+                                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRlBottom.getLayoutParams();
+                                        layoutParams.height = ScreenUtils.dp2px(150);
+                                        mRlBottom.setLayoutParams(layoutParams);
                                         List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> list = new ArrayList<>();
                                         list.add(companyAdvert);
                                         addBanner(mBannerBottom, list);
                                         return;
                                     }
                                 }
+                                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRlBottom.getLayoutParams();
+                                layoutParams.height = ScreenUtils.dp2px(90);
+                                mRlBottom.setLayoutParams(layoutParams);
                                 addBanner(mBannerBottom, body.data.bottom);
                             } else {
                                 mBannerBottom.setVisibility(View.GONE);
