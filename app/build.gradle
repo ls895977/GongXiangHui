@@ -116,7 +116,7 @@ dependencies {
     //键盘适应
     implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
     implementation 'me.relex:circleindicator:1.2.2@aar'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
 }

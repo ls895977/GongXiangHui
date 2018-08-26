@@ -121,9 +121,8 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                         int code = myColleNewsDetailBean.getCode();
                         if (code == 200) {
                             int uuid = myColleNewsDetailBean.getData().getDetail().getUuid();
-                            String url = myColleNewsDetailBean.getData().getRand_data().get(position).getUrl();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                            intent.putExtra("url", url);
+                            intent.putExtra("url",  Constant.HOME_NEWS_DETAIL_URL);
                             intent.putExtra("uuid", uuid);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             startActivity(intent);

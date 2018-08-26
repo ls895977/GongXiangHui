@@ -109,9 +109,8 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
                         int code = myCollectVideoDetailBean.getCode();
                         if (code == 200) {
                             int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
-                            String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                            intent.putExtra("url", url);
+                            intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                             intent.putExtra("uuid", uuid);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             intent.putExtra("position", 4);
