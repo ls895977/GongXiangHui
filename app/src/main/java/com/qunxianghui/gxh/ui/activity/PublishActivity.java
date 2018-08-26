@@ -223,6 +223,8 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
+            }else {
+                asyncShowToast("没有数据");
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
             //预览图片返回
