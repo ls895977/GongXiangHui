@@ -54,7 +54,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="65dp"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
+                app:cardElevation="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -66,6 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="89dp"
                         android:orientation="horizontal">
+
                         <LinearLayout
                             android:id="@+id/ll_generacompany_articalcount"
                             android:layout_width="0dp"
@@ -282,15 +283,38 @@
                     android:textColor="#282828"
                     android:textSize="13sp" />
 
-                <com.flyco.tablayout.SegmentTabLayout
-                    android:id="@+id/segment_tab"
+                <LinearLayout
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
-                    tl:tl_bar_color="#fff"
-                    tl:tl_indicator_color="#D81717"
-                    tl:tl_indicator_corner_radius="8dp"
-                    tl:tl_tab_padding="10dp" />
+                    android:padding="1dp"
+                    android:background="@drawable/shape_radius_red"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_month"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector_genera_company_rank_month"
+                        android:drawableEnd="@mipmap/icon_arrow_down"
+                        android:drawablePadding="-5dp"
+                        android:gravity="center"
+                        android:paddingEnd="10dp"
+                        android:text="7月"
+                        android:textColor="@color/generalize_company_rank_text_color"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector_genera_company_rank_total"
+                        android:gravity="center"
+                        android:text="总榜"
+                        android:textColor="@color/generalize_company_rank_text_color"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -321,16 +345,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-    <!--<android.support.v4.view.ViewPager-->
-    <!--android:id="@+id/viewpager"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent" />-->
-    <!--</LinearLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>

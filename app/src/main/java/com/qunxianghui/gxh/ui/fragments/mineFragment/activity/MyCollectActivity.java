@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -21,30 +20,28 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener,Observer {
+public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
     ViewPager mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
-    @BindView(R.id.tv_mycollect_edit)
-    TextView mTvMycollectEdit;
+    @BindView(R.id.tv_mycollect_cancel)
+    TextView tvMycollectCancel;
 
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter tabViewPagerAdapter;
-    private Boolean isEdit=true;
+    private Boolean isEdit = true;
 
     @Override
     protected int getLayoutId() {
@@ -53,8 +50,6 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initViews() {
-        //注册观察者
-        EventManager.getInstance().addObserver(this);
         //设置tabLayout的一个显示方式
         mineTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         //循环注入标签
@@ -86,7 +81,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         //设置tablayout的点击事件
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
-        mTvMycollectEdit.setOnClickListener(this);
+        tvMycollectCancel.setOnClickListener(this);
     }
 
     private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
@@ -143,36 +138,11 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
             case R.id.iv_myCollect_back:
                 finish();
                 break;
-            case R.id.tv_mycollect_edit:
-                if(isEdit) {
-                    EventManager.getInstance().publishMessage(true);
-                    isEdit=false;
-                }else{
-                    EventManager.getInstance().publishMessage(false);
-                    isEdit=true;
-                }
+            case R.id.tv_mycollect_cancel:
+                EventManager.getInstance().publishMessage(false);
+                isEdit = true;
                 break;
-
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //删除注册的观察者
-        EventManager.getInstance().deleteObserver(this);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
     }
 
 }

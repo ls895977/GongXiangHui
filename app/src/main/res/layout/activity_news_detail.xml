@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progress_newsdetail"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/white"
-        android:max="100" />
-
     <RelativeLayout
+        android:id="@+id/rl_newsdetail_title"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:paddingTop="20dp"
         android:background="@color/white"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingTop="20dp">
 
         <ImageView
             android:id="@+id/iv_newsdetail_back"
@@ -47,69 +40,21 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <FrameLayout
+
+    <WebView
+        android:id="@+id/wed_news_detail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_newsdetail_title" />
 
-        <WebView
-            android:id="@+id/wed_news_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/iv_news_detail_addAdver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="70dp"
+        android:src="@mipmap/iv_add_advert" />
 
-        <ImageView
-            android:id="@+id/iv_news_detail_addAdver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="80dp"
-            android:src="@mipmap/iv_add_advert" />
 
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_gravity="center_vertical"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <EditText
-            android:id="@+id/et_input_discuss"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_background"
-            android:drawablePadding="5dp"
-            android:drawableStart="@mipmap/icon_input"
-            android:focusable="false"
-            android:hint="我要说两句..."
-            android:imeOptions="actionSend"
-            android:lines="3"
-            android:paddingStart="5dp"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_news_detail_message"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="17dp"
-            android:drawablePadding="5dp"
-            android:drawableStart="@mipmap/icon_message"
-            android:textColor="#6B6B6B"
-            android:textSize="12sp"
-            tools:text="100" />
-
-        <ImageView
-            android:id="@+id/iv_news_detail_collect"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:padding="10dp"
-            android:src="@mipmap/icon_un_collect" />
-
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

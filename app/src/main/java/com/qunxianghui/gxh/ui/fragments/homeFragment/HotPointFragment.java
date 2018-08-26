@@ -13,25 +13,24 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.home.HomeLunBoBean;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
-import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -44,7 +43,6 @@ import java.util.List;
 import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -56,7 +54,6 @@ public class HotPointFragment extends BaseFragment {
     RecyclerView mRv;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-
     private Banner viewpagerHome;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
@@ -81,7 +78,6 @@ public class HotPointFragment extends BaseFragment {
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
         }
-//        View footer = LayoutInflater.from(mActivity).inflate(R.layout.layout_footer, mRv, false);
         homeItemListAdapter = new HomeItemListAdapter();
         homeItemListAdapter.setNewData(dataList);
         if (mChannelId == -1) {
@@ -93,31 +89,19 @@ public class HotPointFragment extends BaseFragment {
             initGuideAndBanner();
             homeItemListAdapter.addHeaderView(headerNavigator);
             homeItemListAdapter.addHeaderView(headerVp, 1);
-        } else if ("本地".equals(getArguments().getString("channel_name"))) {
-            View localLocationView = LayoutInflater.from(mActivity).inflate(R.layout.home_local_location, null);
-            mhomeLocalLocation = localLocationView.findViewById(R.id.tv_home_local_location);
-            mhomeLocalLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
-                }
-            });
-            homeItemListAdapter.addHeaderView(localLocationView);
         }
-//        homeItemListAdapter.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRv, false));
-//        homeItemListAdapter.addFooterView(footer);
     }
 
     @Override
     public void initData() {
         //首页新闻数据
-        OkGo.<LzyResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
+        OkGo.<CommonResponse<List<HomeNewListBean>>>get(Constant.HOME_NEWS_LIST_URL)
                 .params("limit", 12)
                 .params("skip", mCount)
                 .params("channel_id", mChannelId)
-                .execute(new JsonCallback<LzyResponse<List<HomeNewListBean>>>() {
+                .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
-                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                    public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
                         setData(response);
                     }
                 });
@@ -127,11 +111,11 @@ public class HotPointFragment extends BaseFragment {
      * 首页下拉刷新 新的接口
      */
     private void homePullRefresh() {
-        OkGo.<LzyResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
+        OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                 .params("channel_id", mChannelId)
-                .execute(new JsonCallback<LzyResponse<List<HomeNewListBean>>>() {
+                .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
-                    public void onSuccess(Response<LzyResponse<List<HomeNewListBean>>> response) {
+                    public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
                         mSw.setRefreshing(false);
                         setData(response);
                         Display display = mActivity.getWindowManager().getDefaultDisplay();
@@ -143,7 +127,7 @@ public class HotPointFragment extends BaseFragment {
                 });
     }
 
-    private void setData(Response<LzyResponse<List<HomeNewListBean>>> response){
+    private void setData(Response<CommonResponse<List<HomeNewListBean>>> response) {
         if (response.body().code == 0) {
             List<HomeNewListBean> list = response.body().data;
             if (list == null || list.size() == 0) {
@@ -195,15 +179,16 @@ public class HotPointFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeNewListBean homeNewListBean = dataList.get(position);
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", homeNewListBean.getUrl());
+                intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
                 intent.putExtra("uuid", homeNewListBean.getUuid());
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                 intent.putExtra("id", homeNewListBean.getId());
                 intent.putExtra("title", homeNewListBean.getTitle());
+                intent.putExtra("descrip", homeNewListBean.getContent());
                 startActivity(intent);
             }
         });
     }
-
 
     private void initGuideAndBanner() {
         BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
@@ -224,18 +209,18 @@ public class HotPointFragment extends BaseFragment {
                     case 2:
                         //跳转生活圈
                         intent = new Intent(mActivity, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.BenDiService);
+                        intent.putExtra("url", Constant.HOME_LOCAL_SERVICE_URL);
                         intent.putExtra("tag", 1);
-                        startActivity(intent);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        mActivity.startActivity(intent);
                         break;
                     case 3:
                         //跳转优惠
                         intent = new Intent(mActivity, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.YouXuan);
-                        intent.putExtra("tag", 2);
-                        startActivity(intent);
+                        intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        intent.putExtra("tag", 1);
+                        mActivity.startActivity(intent);
                         break;
                     case 4:
                         //跳转便民
@@ -245,34 +230,27 @@ public class HotPointFragment extends BaseFragment {
             }
         });
 
-        OkGo.<String>get(Constant.HOME_PAGE_LUNBO_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseHomeLunBoPager(response.body());
-            }
-        });
+        OkGo.<HomeLunBoBean>get(Constant.HOME_PAGE_LUNBO_URL)
+                .execute(new JsonCallback<HomeLunBoBean>() {
+                    @Override
+                    public void onSuccess(Response<HomeLunBoBean> response) {
+                        parseHomeLunBoPager(response.body());
+                    }
+                });
     }
 
-    private void parseHomeLunBoPager(String body) {
-        HomeLunBoBean homeLunBoBean = GsonUtils.jsonFromJson(body, HomeLunBoBean.class);
+    private void parseHomeLunBoPager(HomeLunBoBean homeLunBoBean) {
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
-            //轮播图的标题
-            List<String> titles = new ArrayList<>();
             //轮播图的图片
             List<String> imags = new ArrayList<>();
             String image_src;
-            String title;
             for (int i = 0; i < lunboData.size(); i++) {
                 image_src = lunboData.get(i).getImage_src();  //图片
-                title = lunboData.get(i).getTitle();        //title
 //                //轮播图跳转的url
-//                image_url = lunboData.get(i).getImage_url();
                 imags.add(image_src);
-                titles.add(title);
             }
-            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
-                    .setBannerTitles(titles)
+            viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                     .setDelayTime(3000)
                     .setBannerAnimation(Transformer.Tablet)
                     .setImageLoader(new GlideImageLoader())
@@ -293,7 +271,7 @@ public class HotPointFragment extends BaseFragment {
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    mhomeLocalLocation.setText(getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+                    mhomeLocalLocation.setText(SPUtils.getLocation("currcity"));
                     break;
 
                 }

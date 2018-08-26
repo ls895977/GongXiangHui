@@ -1,9 +1,12 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -13,14 +16,19 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.UploadVideo;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +44,18 @@ public class VideoUploadActivity extends BaseActivity {
     @BindView(R.id.tv_type)
     TextView mTvVideoTypeChoice;
     @BindView(R.id.edit_UpdataVideo_title)
-    EditText mEditUpdataVideoTitle;
+    EditText mEditUpdateVideoTitle;
     @BindView(R.id.edit_UpdataVideo_Content)
-    EditText mEditUpdataVideoContent;
+    EditText mEditUpdateVideoContent;
+    @BindView(R.id.ll_bg_load)
+    View mLoadView;
+    @BindView(R.id.tv_load)
+    TextView mTvLoad;
 
     private String mVideoPath;
-    private List<String> mStrings;
-    private OptionsPickerView mChangeSex;
-    private List<HomeVideoSortBean.DataBean> mVideoSortList;
-    private String mCate_name;
+    private OptionsPickerView mChooseType;
+    public boolean mIsUploadIng;
+    private int mTypeId;
 
     @Override
     protected int getLayoutId() {
@@ -53,6 +64,7 @@ public class VideoUploadActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        mTvLoad.setText("上传中...");
         mVideoPath = getIntent().getStringExtra("videoPath");
         mVideoplayer.setUp(mVideoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
         Glide.with(this.getApplicationContext())
@@ -71,6 +83,10 @@ public class VideoUploadActivity extends BaseActivity {
         if (JZVideoPlayer.backPress()) {
             return;
         }
+        if (mIsUploadIng) {
+            asyncShowToast("上传中，请稍等...");
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -85,58 +101,118 @@ public class VideoUploadActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_UpdataVideo_UpLoad:
                 if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
-                    asyncShowToast("请先选择视频分类");
+                    asyncShowToast("请选择视频分类");
                     return;
                 }
-                if (TextUtils.isEmpty(mEditUpdataVideoTitle.getText().toString().trim())) {
+                if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
                     asyncShowToast("请填写视频标题");
                     return;
                 }
-                asyncShowToast("上传");
+                uploadVideo();
                 break;
             case R.id.tv_UpdataVideo_Cancel:
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_type:
-                chooseUserSex();
+                hideKeyboard(view);
+                chooseVideoType();
                 break;
         }
     }
-    private void chooseUserSex() {
-        OkGo.<String>post(Constant.UPLOAD_VIDEO_ADD_SORT_URL)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        ParseVideoSortData(response.body());
 
+    private void uploadVideo() {
+        mLoadView.setVisibility(View.VISIBLE);
+        mVideoplayer.thumbImageView.buildDrawingCache();
+        Bitmap bitmap = mVideoplayer.thumbImageView.getDrawingCache();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        File file = new File(getCacheDir() + "gongxianghui.png");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(byteArray, 0, byteArray.length);
+            fos.flush();
+            uploadVideo(file, mVideoPath, mEditUpdateVideoTitle.getText().toString(),
+                    mEditUpdateVideoContent.getText().toString(), mTypeId);
+        } catch (IOException e) {
+            mLoadView.setVisibility(View.GONE);
+            e.printStackTrace();
+        }
+    }
+
+    private void chooseVideoType() {
+        if (mChooseType != null) {
+            mChooseType.show();
+        } else {
+            OkGo.<HomeVideoSortBean>post(Constant.UPLOAD_VIDEO_ADD_SORT_URL)
+                    .execute(new JsonCallback<HomeVideoSortBean>() {
+                        @Override
+                        public void onSuccess(Response<HomeVideoSortBean> response) {
+                            parseVideoSortData(response.body());
+                        }
+                    });
+        }
+    }
+
+    private void parseVideoSortData(HomeVideoSortBean homeVideoSortBean ) {
+        int code = homeVideoSortBean.getCode();
+        final List<HomeVideoSortBean.DataBean> videoSortBeanData = homeVideoSortBean.getData();
+        if (code == 200) {
+            final List<String> strings = new ArrayList<>();
+            for (HomeVideoSortBean.DataBean dataBean : videoSortBeanData) {
+                strings.add(dataBean.getCate_name());
+            }
+            mChooseType = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    mTypeId = videoSortBeanData.get(options1).getId();
+                    mTvVideoTypeChoice.setText(strings.get(options1));
+                }
+            }).setCancelColor(Color.parseColor("#676767"))
+                    .setSubmitColor(Color.parseColor("#D81717"))
+                    .build();
+            mChooseType.setNPicker(strings, null, null);
+            mChooseType.show();
+        } else if (code == 300) {
+            toActivity(LoginActivity.class);
+        }
+    }
+
+    private void uploadVideo(File file, String videoPath, String title, String description, int videoId) {
+        mIsUploadIng = true;
+        asyncShowToast("上传中...");
+        OkGo.<UploadVideo>post(Constant.UPLOAD_VIDEO_URL)
+                .params("file", new File(videoPath))
+                .params("thumb", file)
+                .params("title", title)
+                .params("description", description)
+                .params("video_id", videoId)
+                .execute(new JsonCallback<UploadVideo>() {
+                    @Override
+                    public void onSuccess(Response<UploadVideo> response) {
+                        mIsUploadIng = false;
+                        mLoadView.setVisibility(View.GONE);
+                        UploadVideo uploadVideo = response.body();
+                        if (uploadVideo != null && "0".equals(uploadVideo.code)) {
+                            asyncShowToast("上传成功,请等待审核");
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<UploadVideo> response) {
+                        mIsUploadIng = false;
+                        mLoadView.setVisibility(View.GONE);
+                        asyncShowToast("上传失败...");
                     }
                 });
     }
 
-    private void ParseVideoSortData(String body) {
-        HomeVideoSortBean homeVideoSortBean = GsonUtils.jsonFromJson(body, HomeVideoSortBean.class);
-        int code = homeVideoSortBean.getCode();
-        mVideoSortList = homeVideoSortBean.getData();
-        if (code == 200) {
-            if (mChangeSex == null) {
-                mStrings = new ArrayList<>();
-                for (int i=0;i<mVideoSortList.size();i++){
-                    mCate_name = mVideoSortList.get(i).getCate_name();
-                    mStrings.add(mCate_name);
-
-                }
-                mChangeSex = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-
-                    @Override
-                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                        mTvVideoTypeChoice.setText(mStrings.get(options1));
-                    }
-                }).setCancelColor(Color.parseColor("#676767"))
-                        .setSubmitColor(Color.parseColor("#D81717"))
-                        .build();
-                mChangeSex.setNPicker(mStrings, null, null);
-            }
-            mChangeSex.show();
+    public static void hideKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
     }
 

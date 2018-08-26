@@ -1,9 +1,14 @@
 package com.qunxianghui.gxh.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,13 +19,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.WelcomeAdverBean;
+import com.qunxianghui.gxh.bean.home.WelcomeAdvertBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import butterknife.BindView;
 
@@ -65,6 +69,11 @@ public class WelcomeActivity extends BaseActivity {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_text);
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
+            }
+        }
     }
 
     private int getCount() {
@@ -82,23 +91,24 @@ public class WelcomeActivity extends BaseActivity {
     /**
      * 请求网络广告
      */
-    private void RequestWelcomeAdver() {
-        OkGo.<String>get(Constant.WELCOM_ADVER_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                WelcomeAdverBean welcomeAdverBean = GsonUtils.jsonFromJson(response.body(), WelcomeAdverBean.class);
-                if (welcomeAdverBean.getCode() == 0) {
-                    WelcomeAdverBean.DataBean data = welcomeAdverBean.getData();
-                    String image = data.getImage();
-                    Glide.with(mContext)
-                            .load(image)
-                            .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
-                                    .error(R.mipmap.icon_starpage)
-                                    .centerCrop())
-                            .into(mIvWelcomeadver);
-                }
-            }
-        });
+    private void requestWelcomeAdvert() {
+        OkGo.<WelcomeAdvertBean>get(Constant.WELCOM_ADVER_URL)
+                .execute(new JsonCallback<WelcomeAdvertBean>() {
+                    @Override
+                    public void onSuccess(Response<WelcomeAdvertBean> response) {
+                        WelcomeAdvertBean welcomeAdvertBean = response.body();
+                        if (welcomeAdvertBean.getCode() == 0) {
+                            WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
+                            String image = data.getImage();
+                            Glide.with(mContext)
+                                    .load(image)
+                                    .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
+                                            .error(R.mipmap.icon_starpage)
+                                            .centerCrop())
+                                    .into(mIvWelcomeadver);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -106,7 +116,7 @@ public class WelcomeActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                RequestWelcomeAdver();
+                requestWelcomeAdvert();
             }
         }, 1000);
     }
@@ -117,10 +127,13 @@ public class WelcomeActivity extends BaseActivity {
         mLlWelcomeSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeCallbacksAndMessages(null);
                 toActivity(MainActivity.class);
                 finish();
             }
         });
+
+
     }
 
     @Override

@@ -16,9 +16,9 @@
 
             <ImageView
                 android:id="@+id/iv_memberup_back"
-                android:layout_width="8dp"
-                android:layout_height="19dp"
-                android:layout_marginLeft="10dp"
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginTop="30dp"
                 android:src="@mipmap/icon_memberup_back" />
 
@@ -36,7 +36,7 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="65dp"
         android:scrollbars="none">
 
         <LinearLayout

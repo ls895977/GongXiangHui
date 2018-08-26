@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_comment_selflist"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,49 +8,45 @@
 
     <LinearLayout
         android:id="@+id/ll_comment_view"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="龙涛"
-            android:textColor="@color/liji_c_blue"
+            tools:text="龙涛"
+            android:textColor="#1E6CA9"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_item_reply_lb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="\u3000回复\u3000"
-            android:visibility="gone"/>
+            android:text="回复"
+            android:paddingLeft="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_item_replyed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aaa"
-            android:visibility="gone"/>
+            tools:text="aaa"
+            android:textColor="#1E6CA9"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="dsfdsfds"
+            tools:text="dsfdsfds"
             android:textColor="@color/color_text_02"
 
             android:textSize="14sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_item_discuss_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:text="删除"
-        android:textColor="#f00" />
 
 </LinearLayout>

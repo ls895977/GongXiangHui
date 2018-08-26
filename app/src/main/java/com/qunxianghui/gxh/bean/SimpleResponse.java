@@ -24,10 +24,10 @@ public class SimpleResponse implements Serializable {
     public int code;
     public String message;
 
-    public LzyResponse toLzyResponse() {
-        LzyResponse lzyResponse = new LzyResponse();
-        lzyResponse.code = code;
-        lzyResponse.message = message;
-        return lzyResponse;
+    public CommonResponse toLzyResponse() {
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.code = code;
+        commonResponse.message = message;
+        return commonResponse;
     }
 }

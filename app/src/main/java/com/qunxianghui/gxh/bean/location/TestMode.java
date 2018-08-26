@@ -135,7 +135,7 @@ public class TestMode {
 
             public List<ClickLikeBean> getTem() {
                 if (tem==null || tem.size()==0) {
-                    tem = new ArrayList<ClickLikeBean>();
+                    tem = new ArrayList<>();
                     tem.addAll(getClick_like());
                 }
                 return tem;

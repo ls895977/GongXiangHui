@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,28 +16,24 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class PublishActivity extends BaseActivity implements View.OnClickListener, ImagePickerAdapter.OnRecyclerViewItemClickListener {
     @BindView(R.id.iv_fabu_back)
@@ -55,6 +50,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     EditText etBaoliaoFabuContent;
     @BindView(R.id.recyclerView_publish_images)
     RecyclerView recyclerViewPublishImages;
+
     @BindView(R.id.ll_publich_load)
     LinearLayout llPublichLoad;
     private int maxImgCount = 8;               //允许选择图片最大数
@@ -104,7 +100,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                 Intent intent = new Intent(PublishActivity.this, ImageGridActivity.class);
                 intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                 startActivityForResult(intent, REQUEST_CODE_SELECT);
-                selectPhotoDialog.dismiss();
             }
 
             @Override
@@ -113,15 +108,10 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                 ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
                 Intent intent1 = new Intent(PublishActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
-                selectPhotoDialog.dismiss();
-            }
-
-            @Override
-            public void onDismiss() {
-                selectPhotoDialog.dismiss();
             }
         });
     }
+
     private void requestBaoLiaoFaBu() {
         llPublichLoad.setVisibility(View.VISIBLE);
         if (selImageList.size() == 0) {
@@ -155,25 +145,28 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                 stringBuilder.append(upLoadPics.get(i));
             }
         }
-        OkGo.<String>post(Constant.PUBLISH_ARTICLE)
+        OkGo.<CommonBean>post(Constant.PUBLISH_ARTICLE)
                 .params("content", faBuContent)
                 .params("images", stringBuilder.toString())
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        parseBaoLiaoData(response.body());
+                    public void onSuccess(Response<CommonBean> response) {
+                        if (response.body().code == 0) {
+                            asyncShowToast("上传成功");
+                            finish();
+                        }
                     }
                 });
     }
 
     //上传图片
     private void upLoadPic(String urls, final boolean isUpdate) {
-        OkGo.<String>post(Constant.UP_LOAD_PIC)
+        OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<UploadImage>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        UploadImage uploadImage = GsonUtils.jsonFromJson(response.body(), UploadImage.class);
+                    public void onSuccess(Response<UploadImage> response) {
+                        UploadImage uploadImage = response.body();
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
                             if (isUpdate) {
@@ -183,40 +176,17 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<UploadImage> response) {
                         super.onError(response);
                         llPublichLoad.setVisibility(View.GONE);
                     }
                 });
     }
 
-    //解析发布的数据
-    private void parseBaoLiaoData(String body) {
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            int code = jsonObject.getInt("code");
-            if (code == 0) {
-                asyncShowToast("上传成功");
-                Logger.d("意见发布" + body.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finish();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_home_baoliao_fabu:
-
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
                     finish();

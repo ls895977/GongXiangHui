@@ -3,33 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
-    android:gravity="center_vertical">
+    android:orientation="vertical"
+    android:paddingTop="15dp">
 
-    <com.qunxianghui.gxh.widget.RoundImageView
-        android:id="@+id/iv_generalize_person_head"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
-
-    <TextView
-        android:id="@+id/iv_generalize_person_name"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_weight="1"
-        android:gravity="left"
-        android:textColor="#282828"
-        android:textSize="13sp"
-        tools:ignore="RtlHardcoded"
-        tools:text="xxx" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tv_generalize_person_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        tools:text="N次" />
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="20sp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textColor="#999999"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:background="@mipmap/genera_company_sort_one" />
+
+        <com.qunxianghui.gxh.widget.RoundImageView
+            android:id="@+id/iv_generalize_person_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/iv_generalize_person_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textColor="#282828"
+            android:textSize="13sp"
+            tools:ignore="RtlHardcoded"
+            tools:text="xxx" />
+
+        <TextView
+            android:id="@+id/tv_generalize_person_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            tools:text="N次" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="#E5E5E5" />
 
 </LinearLayout>

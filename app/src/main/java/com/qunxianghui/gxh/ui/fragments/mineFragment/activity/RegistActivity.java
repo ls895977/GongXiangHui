@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +28,9 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
-import com.qunxianghui.gxh.bean.mine.RegistBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
@@ -76,10 +76,9 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     EditText etRegisterconfirmPassword;
     @BindView(R.id.et_regist_code)
     EditText etRegistCode;
-    //    private StudentDao studentDao;
+
     private String mPhone;
     private UserDao userDao;
-
 
     @Override
     protected int getLayoutId() {
@@ -98,7 +97,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         initProtocol();
         initCall();
         userDao = new UserDao(mContext);
-
     }
 
     private void initCall() {
@@ -109,7 +107,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         NoLineClickSpan clickSpan1 = new NoLineClickSpan("#ff4049") {
             @Override
             public void onClick(View widget) {
-
                 builder.setTitle("拨打给客服？");
                 builder.setMessage("13295815771");
                 builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -145,10 +142,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         NoLineClickSpan clickSpan2 = new NoLineClickSpan("#ff4049") {
             @Override
             public void onClick(View widget) {
-//                Toast.makeText(LoginActivity.this, "至尊宝豪车共享服务协议", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, ProtocolActivity.class);
                 intent.putExtra("title", "平台服务协议");
                 intent.putExtra("url", Constant.BenDiService);
+                intent.putExtra("tag", 2);
                 startActivity(intent);
 
             }
@@ -156,7 +153,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         spStr.setSpan(clickSpan2, spStr.length() - s2.length(), spStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvProtocol.append(spStr);
         tvProtocol.setMovementMethod(LinkMovementMethod.getInstance());
-//        //设置文本不高亮，如果需要点击后高亮文本，删掉这句即可
+        //设置文本不高亮，如果需要点击后高亮文本，删掉这句即可
         tvProtocol.setHighlightColor(Color.parseColor("#ff4049"));
     }
 
@@ -179,10 +176,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 final String registCode = etRegistCode.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pass)) {
                     asyncShowToast("手机号和密码不能为空");
-                } else if (!REGutil.checkCellphone(phone)){
+                } else if (!REGutil.checkCellphone(phone)) {
                     asyncShowToast("手机号格式不对");
 
-                }else {
+                } else {
                     final String confirmpass = etRegisterconfirmPassword.getText().toString().trim();
                     if (!pass.equals(confirmpass)) {
                         asyncShowToast("两次输入的密码不一致");
@@ -190,7 +187,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                         if (userDao.dbQueryOneByUsername(phone) == null) {
                             userDao.dbInsert(phone, pass);
 //                            asyncShowToast("注册成功" + phone + ",密码:" + pass);
-                            RegistUser(phone,pass,registCode);
+                            RegistUser(phone, pass, registCode);
                         } else {
                             asyncShowToast("该用户已经注册");
                         }
@@ -204,19 +201,17 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void RegistUser(String phone, String pass,String registCode) {
-
-        OkGo.<String>post(Constant.REGIST_URL).tag(TAG)
+    private void RegistUser(String phone, String pass, String registCode) {
+        OkGo.<CommonBean>post(Constant.REGIST_URL).tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
-                .params("mobile",phone)
-                .params("password",pass)
-                .params("captcha",registCode)
-                .execute(new StringCallback() {
+                .params("mobile", phone)
+                .params("password", pass)
+                .params("captcha", registCode)
+                .execute(new JsonCallback<CommonBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        final RegistBean registBean = GsonUtil.parseJsonWithGson(response.body(), RegistBean.class);
-                        if (registBean.getCode()==0){
+                    public void onSuccess(Response<CommonBean> response) {
+                        if (response.code() == 0) {
                             asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
                         }
@@ -231,29 +226,28 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
         OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
-                 .cacheKey("cachePostKey")
+                .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
-                .params("mobile",mPhone)
-                .params("type",1)
+                .params("mobile", mPhone)
+                .params("type", 1)
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
-                if (responseBean.getCode() == 0) {
-                    handler.sendEmptyMessage(MSG_SEND_SUCCESS);
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
+                        if (responseBean.getCode() == 0) {
+                            handler.sendEmptyMessage(MSG_SEND_SUCCESS);
 
-                } else {
-                    handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
-                }
-            }
+                        } else {
+                            handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                        }
+                    }
 
-            @Override
-            public void onError(Response<String> response) {
-                handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
-            }
-        });
+                    @Override
+                    public void onError(Response<String> response) {
+                        handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                    }
+                });
 
     }
 

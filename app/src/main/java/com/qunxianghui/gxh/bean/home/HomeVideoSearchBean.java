@@ -8,7 +8,7 @@ public class HomeVideoSearchBean  implements Serializable{
     /**
      * code : 200
      * msg : 请求成功
-     * data : [{"id":227,"uuid":1521859739,"channel_id":0,"member_id":1000052,"cate_id":0,"title":"尼泊尔大金钢","picurl":"http://api.qunxianghui.com.cn/upload/video/20180530/5818801cb06e228c76352e80f0690a65.jpg","description":"","video_url":"http://api.qunxianghui.com.cn/upload/video/20180530/fe507bda1802f331ebabe2675da6a526.mp4","content":"<iframe height=\"298\" src=\"http://api.qunxianghui.com.cn/upload/video/20180530/fe507bda1802f331ebabe2675da6a526.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":0,"comment_cnt":0,"ctime":1527657305,"ip":"113.215.161.106","status":1,"view_cnt":6,"source":"","images":"","forward_cnt":0,"share_cnt":0},{"id":213,"uuid":1521859251,"channel_id":0,"member_id":1000052,"cate_id":0,"title":"后悔当初对面没买下来，这么大的露台可以变成大花园","picurl":"http://api.qunxianghui.com.cn/upload/video/20180527/0bee67b0e2b90837cf5d31cce6cb36d5.jpg","description":"","video_url":"http://api.qunxianghui.com.cn/upload/video/20180527/bfe55ce07ede9b81d9b501306c73fe20.mp4","content":"<iframe height=\"298\" src=\"http://api.qunxianghui.com.cn/upload/video/20180527/bfe55ce07ede9b81d9b501306c73fe20.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":0,"comment_cnt":0,"ctime":1527385784,"ip":"218.0.238.36","status":1,"view_cnt":3,"source":"","images":"","forward_cnt":0,"share_cnt":0},{"id":292,"uuid":1521861009,"channel_id":0,"member_id":1000113,"cate_id":0,"title":"身临其境","picurl":"http://api.qunxianghui.com.cn/upload/video/20180605/6672506155ade4a9590090c730a4e856.jpg","description":"身临其境","video_url":"http://api.qunxianghui.com.cn/upload/video/20180605/60e2ee36958dd2f897ed04954728b187.mp4","content":"<iframe height=\"298\" src=\"http://api.qunxianghui.com.cn/upload/video/20180605/60e2ee36958dd2f897ed04954728b187.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":0,"comment_cnt":0,"ctime":1528187712,"ip":"112.17.237.74","status":1,"view_cnt":7,"source":"","images":"","forward_cnt":0,"share_cnt":0},{"id":303,"uuid":1521861258,"channel_id":0,"member_id":1000212,"cate_id":0,"title":"在哪？","picurl":"http://api.qunxianghui.com.cn/upload/video/20180606/e2aace4b30f582721f80c2873711ff91.jpg","description":"在哪？","video_url":"http://api.qunxianghui.com.cn/upload/video/20180606/047ecc06d13c44a9368816ca5751e74f.mp4","content":"<iframe height=\"298\" src=\"http://api.qunxianghui.com.cn/upload/video/20180606/047ecc06d13c44a9368816ca5751e74f.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":0,"comment_cnt":0,"ctime":1528277325,"ip":"125.118.63.177","status":1,"view_cnt":1,"source":"","images":"","forward_cnt":0,"share_cnt":0},{"id":274,"uuid":1521860662,"channel_id":0,"member_id":1000099,"cate_id":0,"title":"爆笑","picurl":"http://api.qunxianghui.com.cn/upload/video/20180604/665419ee6792642de9b1f6004f252d1b.jpg","description":"","video_url":"http://api.qunxianghui.com.cn/upload/video/20180604/f63ea9c6f1b1440b41bc4849f975d8b7.mp4","content":"<iframe height=\"298\" src=\"http://api.qunxianghui.com.cn/upload/video/20180604/f63ea9c6f1b1440b41bc4849f975d8b7.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":0,"comment_cnt":0,"ctime":1528079044,"ip":"183.158.241.237","status":1,"view_cnt":2,"source":"","images":"","forward_cnt":0,"share_cnt":0},{"id":278,"uuid":1521860807,"channel_id":0,"member_id":1000089,"cate_id":0,"title":"广场舞的新标准","picurl":"http://api.qunxianghui.com.cn/upload/video/20180604/f3cb1e30b9dd8d1bf6e73af426e0a5b5.jpg","description":"","video_url":"http://api.qunxianghui.com.cn/upload/video/20180604/551b3988d3d9038558637553494a251c.mp4","content":"<iframe height=\"298\" src=\"http://api.qunxianghui.com.cn/upload/video/20180604/551b3988d3d9038558637553494a251c.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":0,"comment_cnt":0,"ctime":1528106556,"ip":"113.215.161.231","status":1,"view_cnt":1,"source":"","images":"","forward_cnt":0,"share_cnt":0}]
+     * data : [{"id":528,"uuid":1521864325,"channel_id":0,"member_id":1000028,"cate_id":1,"title":"法国进口","picurl":"http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/image/20180822/06f1b54661ec01a95340e31a7f72b7c8310f1c4e.png","description":"","video_url":"http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180822/80956ee62d6ca0760ac3eda0d09c630539c939d1.mp4","content":"<iframe height=\"298\" src=\"http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180822/80956ee62d6ca0760ac3eda0d09c630539c939d1.mp4\" frameborder=\"0\" width=\"100%\"><\/iframe>","like_cnt":3,"comment_cnt":0,"ctime":1534936052,"ip":"223.104.246.159","status":1,"view_cnt":20,"source":"0","images":"0","forward_cnt":0,"share_cnt":0,"member_name":"先生q","member_avatar":"http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/upload/image/20180824/1ef8c1918eebd5d3b25196168364b3f7.jpeg","follow":"true","is_like":1}]
      */
 
     private int code;
@@ -41,26 +41,30 @@ public class HomeVideoSearchBean  implements Serializable{
 
     public static class DataBean {
         /**
-         * id : 227
-         * uuid : 1521859739
+         * id : 528
+         * uuid : 1521864325
          * channel_id : 0
-         * member_id : 1000052
-         * cate_id : 0
-         * title : 尼泊尔大金钢
-         * picurl : http://api.qunxianghui.com.cn/upload/video/20180530/5818801cb06e228c76352e80f0690a65.jpg
+         * member_id : 1000028
+         * cate_id : 1
+         * title : 法国进口
+         * picurl : http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/image/20180822/06f1b54661ec01a95340e31a7f72b7c8310f1c4e.png
          * description :
-         * video_url : http://api.qunxianghui.com.cn/upload/video/20180530/fe507bda1802f331ebabe2675da6a526.mp4
-         * content : <iframe height="298" src="http://api.qunxianghui.com.cn/upload/video/20180530/fe507bda1802f331ebabe2675da6a526.mp4" frameborder="0" width="100%"></iframe>
-         * like_cnt : 0
+         * video_url : http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180822/80956ee62d6ca0760ac3eda0d09c630539c939d1.mp4
+         * content : <iframe height="298" src="http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180822/80956ee62d6ca0760ac3eda0d09c630539c939d1.mp4" frameborder="0" width="100%"></iframe>
+         * like_cnt : 3
          * comment_cnt : 0
-         * ctime : 1527657305
-         * ip : 113.215.161.106
+         * ctime : 1534936052
+         * ip : 223.104.246.159
          * status : 1
-         * view_cnt : 6
-         * source :
-         * images :
+         * view_cnt : 20
+         * source : 0
+         * images : 0
          * forward_cnt : 0
          * share_cnt : 0
+         * member_name : 先生q
+         * member_avatar : http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/upload/image/20180824/1ef8c1918eebd5d3b25196168364b3f7.jpeg
+         * follow : true
+         * is_like : 1
          */
 
         private int id;
@@ -83,6 +87,10 @@ public class HomeVideoSearchBean  implements Serializable{
         private String images;
         private int forward_cnt;
         private int share_cnt;
+        private String member_name;
+        private String member_avatar;
+        private String follow;
+        private int is_like;
 
         public int getId() {
             return id;
@@ -242,6 +250,38 @@ public class HomeVideoSearchBean  implements Serializable{
 
         public void setShare_cnt(int share_cnt) {
             this.share_cnt = share_cnt;
+        }
+
+        public String getMember_name() {
+            return member_name;
+        }
+
+        public void setMember_name(String member_name) {
+            this.member_name = member_name;
+        }
+
+        public String getMember_avatar() {
+            return member_avatar;
+        }
+
+        public void setMember_avatar(String member_avatar) {
+            this.member_avatar = member_avatar;
+        }
+
+        public String getFollow() {
+            return follow;
+        }
+
+        public void setFollow(String follow) {
+            this.follow = follow;
+        }
+
+        public int getIs_like() {
+            return is_like;
+        }
+
+        public void setIs_like(int is_like) {
+            this.is_like = is_like;
         }
     }
 }

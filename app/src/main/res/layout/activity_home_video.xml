@@ -20,24 +20,38 @@
             android:padding="10dp"
             android:src="@mipmap/common_black_back" />
 
-        <TextView
-            android:id="@+id/tv_search"
+
+        <LinearLayout
+            android:id="@+id/ll_home_video_search"
             android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:background="@drawable/video_search_background"
-            android:drawableStart="@mipmap/home_video_collect_search"
-            android:paddingLeft="15dp" />
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_home_video_search"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@mipmap/icon_home_video_search" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:hint="搜索标题或分类"
+                android:textSize="12sp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
-            android:drawableStart="@mipmap/home_video_location"
-            android:text="西湖" />
+            android:drawableStart="@mipmap/home_video_location" />
 
     </LinearLayout>
 

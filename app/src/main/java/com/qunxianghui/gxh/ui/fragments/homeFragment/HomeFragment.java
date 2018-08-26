@@ -7,7 +7,6 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,25 +27,26 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.CityInfo;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
-import com.qunxianghui.gxh.db.ChannelManage;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.AbleNewSearchActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ChannelActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -92,59 +91,51 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //定位
-                mlocationClient = new AMapLocationClient(mActivity);
-                //初始化定位参数
-                mLocationOption = new AMapLocationClientOption();
-                //设置返回地址信息，默认为true
-                mLocationOption.setNeedAddress(true);
-                //设置定位监听
-                mlocationClient.setLocationListener(this);
-                //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-                //设置定位间隔,单位毫秒,默认为2000ms
-                mLocationOption.setInterval(2000);
-                //设置定位参数
-                mlocationClient.setLocationOption(mLocationOption);
-                mlocationClient.startLocation();
+                setLocation();
             } else {
                 ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
-
             }
         } else {
-            //定位
-            mlocationClient = new AMapLocationClient(mActivity);
-            //初始化定位参数
-            mLocationOption = new AMapLocationClientOption();
-            //设置返回地址信息，默认为true
-            mLocationOption.setNeedAddress(true);
-            //设置定位监听
-            mlocationClient.setLocationListener(this);
-            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-            //设置定位间隔,单位毫秒,默认为2000ms
-            mLocationOption.setInterval(2000);
-            //设置定位参数
-            mlocationClient.setLocationOption(mLocationOption);
-            mlocationClient.startLocation();
+            setLocation();
+
         }
+    }
+
+    private void setLocation() {
+        //定位
+        mlocationClient = new AMapLocationClient(mActivity);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置返回地址信息，默认为true
+        mLocationOption.setNeedAddress(true);
+        //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        mlocationClient.startLocation();
     }
 
     @Override
     public void initData() {
         mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         //频道列表（用户订阅的频道）
-        OkGo.<String>post(Constant.CHANNEL_GETLIST).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                String json = response.body();
-                if (HttpStatusUtil.getStatus(json)) {
-                    setChannelData(json);
-                    initFragment();
-                } else {
-                    ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
-                }
-            }
-        });
+        OkGo.<String>post(Constant.CHANNEL_GETLIST)
+                .execute(new JsonCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String json = response.body();
+                        if (HttpStatusUtil.getStatus(json)) {
+                            setChannelData(json);
+                            initFragment();
+                        } else {
+                            ToastUtils.showShortToast(getContext(), HttpStatusUtil.getStatusMsg(json));
+                        }
+                    }
+                });
     }
 
     @Override
@@ -168,6 +159,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     private void setChannelData(String body) {
         ChannelGetallBean bean = GsonUtil.parseJsonWithGson(body, ChannelGetallBean.class);
         if (null != bean) {
+            userChannelList.clear();
             List<ChannelGetallBean.DataBean> datas = bean.getData();
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
@@ -180,7 +172,8 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void onResume() {
         super.onResume();
-        mTvHomeLocation.setText(mActivity.getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+        String currcity = SPUtils.getLocation("currcity");
+        mTvHomeLocation.setText(currcity);
     }
 
     /**
@@ -191,18 +184,11 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         mTopSlidingLayout.setViewPager(mViewPager);
     }
 
-    /**
-     * 获取Column栏目 数据
-     */
-    private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(MyApplication.getInstance().getSQLHelper()).getUserChannel());
-    }
-
-    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns,R.id.iv_home_paste_artical})
+    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns, R.id.iv_home_paste_artical})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_home_location:
-                startActivityForResult(new Intent(mActivity, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
+                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
             case R.id.ll_home_search:
                 toActivity(SearchActivity.class);
@@ -215,24 +201,49 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 startActivityForResult(intent_channel, CHANNELREQUEST);
                 break;
             case R.id.iv_home_paste_artical:
-                if (view.getId() == R.id.iv_home_paste_artical) {
-                    if (!LoginMsgHelper.isLogin()) {
-                        toActivity(LoginActivity.class);
-                        return;
-                    }
-                    //粘贴板有数据并且是文本
-                    if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                        final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
-                        final CharSequence text = item.getText();
-                        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                        intent.putExtra("url", text);
-                        startActivity(intent);
-                    } else {
-                        asyncShowToast("没有找到粘贴的内容");
-                    }
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    ClipArticalData();
                 }
                 break;
         }
+    }
+
+    /*粘贴文章*/
+    private void ClipArticalData() {
+        //粘贴板有数据并且是文本
+        if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+            final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
+            final String text = (String) item.getText();
+            OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
+                    .params("url", text)
+                    .execute(new JsonCallback<CommonBean>() {
+                        @Override
+                        public void onSuccess(Response<CommonBean> response) {
+                            int code = response.body().code;
+                            String msg = response.body().msg;
+                            if (code == 0) {
+                                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                                intent.putExtra("url", text);
+                                startActivity(intent);
+                            } else if (code == 101) {
+                                asyncShowToast(msg);
+                            } else {
+                                asyncShowToast(msg);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<CommonBean> response) {
+                            super.onError(response);
+                            asyncShowToast(response.message().toString());
+                        }
+                    });
+
+        }
+
     }
 
     @Override
@@ -246,8 +257,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 break;
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
-                    mTvHomeLocation.setText(city);
+                    mTvHomeLocation.setText(SPUtils.getLocation("currcity"));
                     break;
                 }
                 super.onActivityResult(requestCode, resultCode, data);
@@ -258,15 +268,13 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void onLocationChanged(final AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                String currCity = aMapLocation.getDistrict();
-                String city = getActivity().getSharedPreferences("location", MODE_PRIVATE).getString("currcity", "");
+                String cityName = aMapLocation.getDistrict();
+                String city = SPUtils.getLocation("currcity");
                 if (!TextUtils.isEmpty(city)) {
                     mTvHomeLocation.setText(city);
                 } else {
-                    mTvHomeLocation.setText(currCity);
-                    String cityCode = aMapLocation.getCityCode();
-                    String adCode = aMapLocation.getAdCode();
-                    SaveLocationData(cityCode, adCode);
+                    mTvHomeLocation.setText(cityName);
+                    requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -278,11 +286,29 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         mlocationClient.stopLocation();
     }
 
+    private void requestCityInfo(Double lat, Double lng, final String cityName) {
+        OkGo.<CityInfo>get(Constant.GET_CITY_INFO)
+                .params("lat", lat)
+                .params("lng", lng)
+                .execute(new JsonCallback<CityInfo>() {
+                    @Override
+                    public void onSuccess(Response<CityInfo> response) {
+                        if (response.body().code == 0) {
+                            String cityId = response.body().data.cityInfo.cityid;
+                            String areaId = response.body().data.cityInfo.areaid;
+                            saveLocationData(cityId, areaId, cityName);
+                        }
+                    }
+                });
+    }
+
     /*sp存储一些信息*/
-    private void SaveLocationData(String cityCode, String adCode) {
-        SharedPreferences location = getActivity().getSharedPreferences("location", 0);
-        SharedPreferences.Editor editor = location.edit();
-        editor.putString("X-cityId", cityCode).putString("X-areaId", adCode).apply();
+    private void saveLocationData(String cityCode, String areaId, String cityName) {
+        SPUtils.saveLocation("X-cityId", cityCode);
+        SPUtils.saveLocation("X-areaId", areaId);
+        SPUtils.saveLocation("currcity", cityName);
+        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
     }
 
 }

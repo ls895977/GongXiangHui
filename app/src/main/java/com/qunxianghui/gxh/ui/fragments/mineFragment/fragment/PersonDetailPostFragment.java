@@ -8,16 +8,14 @@ import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.location.TestMode;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class PersonDetailPostFragment extends BaseFragment {
     @Override
     protected void onLoadData() {
 
-}
+    }
 
     @Override
     public int getLayoutId() {
@@ -43,37 +41,26 @@ public class PersonDetailPostFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        final PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
+        PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
         /**
          * 获取帖子列表
          */
-        OkGo.<String>post(Constant.LOCATION_NEWS_LIST_URL)
+        OkGo.<TestMode>post(Constant.LOCATION_NEWS_LIST_URL)
                 .params("user_id", personDetailActivity.member_id)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<TestMode>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        Logger.e("用户发布的帖子+++++" + response.body().toString());
-
+                    public void onSuccess(Response<TestMode> response) {
                         parsePersonDetailPostData(response.body());
-
-
                     }
                 });
     }
 
-    private void parsePersonDetailPostData(String body) {
-        final TestMode testMode = GsonUtils.jsonFromJson(body, TestMode.class);
-
+    private void parsePersonDetailPostData(TestMode testMode) {
         if (testMode.getCode() == 0) {
             postList = testMode.getData().getList();
-
             final NineGridTest2Adapter persondetailPostAdapter = new NineGridTest2Adapter(mActivity, postList);
             xrecyclerPersondetailPost.setAdapter(persondetailPostAdapter);
-
-
         }
-
-
     }
 
     @Override

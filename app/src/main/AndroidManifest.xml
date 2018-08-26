@@ -35,6 +35,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".base.MyApplication"
@@ -47,7 +50,7 @@
 
         <!-- app的入口 -->
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name=".ui.fragments.homeFragment.activity.SplashActivity"
             android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -140,10 +143,6 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.LiftStyleActivity"
             android:screenOrientation="portrait" />
-        <!-- 本地圈发布动态界面 -->
-        <activity
-            android:name=".ui.fragments.locationFragment.activity.PublishStateActivity"
-            android:screenOrientation="portrait" />
         <!-- 我的板块我的收藏界面 -->
         <activity
             android:name=".ui.fragments.mineFragment.activity.MyCollectActivity"
@@ -216,9 +215,6 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.NewSearchActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.fragments.homeFragment.activity.AbleNewSearchActivity"
-            android:screenOrientation="portrait" />
         <!-- 本地圈界面我要发布视频的界面 -->
         <activity
             android:name=".ui.fragments.locationFragment.activity.VideoListActivity"
@@ -250,7 +246,7 @@
             android:name=".ui.fragments.mineFragment.activity.BindMobileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.fragments.mineFragment.activity.AddAdverActivity"
+            android:name=".ui.fragments.mineFragment.activity.AddAdvertActivity"
             android:screenOrientation="portrait" />
         <!-- 企业名片界面 -->
         <activity
@@ -297,6 +293,37 @@
         <!--首页视频汇的搜索界面-->
         <activity
             android:name=".ui.fragments.homeFragment.activity.SearchVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LocationPublishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EnterpriseMaterialTiePianActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EnterpriseMaterialActivity"
+            android:screenOrientation="portrait" />
+        <!--本地圈频分类的界面-->
+        <activity
+            android:name=".ui.fragments.locationFragment.activity.LocalServiceChannelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GeneralMaterialActivity"
+            android:screenOrientation="portrait" />
+        <!--首页常用电话-->
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.CommoentCallActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.AddTiePianAdvertActivity"
+            android:screenOrientation="portrait" />
+        <!--启动广告页-->
+        <activity
+            android:name=".ui.activity.WelcomeActivity"
+            android:screenOrientation="portrait" />
+        <!--引导页-->
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.GuidActivity"
             android:screenOrientation="portrait" />
     </application>
 

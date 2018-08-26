@@ -37,7 +37,7 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
         getMultiTypeDelegate()
                 .registerItemType(0, R.layout.item_text_text)
                 .registerItemType(1, R.layout.item_left_img)
-                .registerItemType(2, R.layout.item_three_img);
+                .registerItemType(2, R.layout.item_left_img);
         options = new RequestOptions();
         options.placeholder(R.mipmap.default_img)
                 .error(R.mipmap.default_img)
@@ -72,16 +72,13 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
                 Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
                 break;
             case 2:
-                //三张图片的
-                baseViewHolder.setText(R.id.tv_item_three_title, title);
-                imageView = baseViewHolder.getView(R.id.iv_itemthree_imgfirst);
+                baseViewHolder.setText(R.id.tv_item_right_image_title, title)
+                        .setText(R.id.tv_right_iamge_bottom_science, source)
+                        .setText(R.id.tv_right_iamge_bottom_science2, String.valueOf(view_cnt))
+                        .setText(R.id.tv_right_iamge_bottom_science3, ctime);
+
+                imageView = baseViewHolder.getView(R.id.iv_item_right_iamge);
                 Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
-                imageView = baseViewHolder.getView(R.id.iv_itemthree_second);
-                Glide.with(mContext).load(images.get(1)).apply(options).into(imageView);
-                if (images.size() >= 3) {
-                    imageView = baseViewHolder.getView(R.id.iv_itemthree_third);
-                    Glide.with(mContext).load(images.get(2)).apply(options).into(imageView);
-                }
                 break;
         }
     }

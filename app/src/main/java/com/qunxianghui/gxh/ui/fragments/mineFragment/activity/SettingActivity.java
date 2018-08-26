@@ -19,10 +19,11 @@ import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
@@ -30,8 +31,6 @@ import com.qunxianghui.gxh.utils.DataCleanManager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-
-import org.json.JSONObject;
 
 import java.io.File;
 
@@ -159,26 +158,22 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      */
 
     private void ExitUserLogin() {
-        OkGo.<String>post(Constant.LOGIN_OUT_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseLoginOutData(response.body());
-            }
-        });
+        OkGo.<CommonBean>post(Constant.LOGIN_OUT_URL)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        parseLoginOutData(response.body());
+                    }
+                });
     }
 
-    private void parseLoginOutData(String body) {
-        try {
-            final JSONObject jsonObject = new JSONObject(body);
-            final int code = jsonObject.getInt("code");
-            if (code == 0) {
-                LoginMsgHelper.exitLogin();
-                asyncShowToast("退出登录成功");
-                toActivity(MainActivity.class);
-                finish();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void parseLoginOutData(CommonBean body) {
+        final int code = body.code;
+        if (code == 0) {
+            LoginMsgHelper.exitLogin();
+            asyncShowToast("退出登录成功");
+            toActivity(MainActivity.class);
+            finish();
         }
     }
 

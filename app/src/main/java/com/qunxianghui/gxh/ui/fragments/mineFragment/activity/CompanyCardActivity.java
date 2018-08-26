@@ -4,8 +4,8 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,14 +20,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.CompanyCardBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -38,30 +36,14 @@ import com.umeng.socialize.media.UMWeb;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class CompanyCardActivity extends BaseActivity implements View.OnClickListener {
+public class CompanyCardActivity extends BaseActivity {
 
-    @BindView(R.id.iv_companycard_back)
-    ImageView mIvCompanycardBack;
-    @BindView(R.id.iv_companycard_share)
-    ImageView mIvCompanycardShare;
-    @BindView(R.id.ll_companycard_diamond)
-    LinearLayout mLlCompanycardDiamond;
-    @BindView(R.id.rl_companycard_center_advance)
-    RelativeLayout mRlCompanycardCenterAdvance;
-    @BindView(R.id.ll_companycard_goodselect)
-    LinearLayout mLlCompanycardGoodselect;
-    @BindView(R.id.rl_companycard_company_product)
-    RelativeLayout mRlCompanycardCompanyProduct;
     @BindView(R.id.tv_company_card_name)
     TextView mTvCompanyCardName;
     @BindView(R.id.iv_head)
     ImageView mIvHead;
-    @BindView(R.id.iv_companycard_editlocation)
-    ImageView ivCompanycardEditlocation;
-    @BindView(R.id.rl_mine_person_data)
-    LinearLayout mLlMinePersonData;
     @BindView(R.id.tv_company_mobile)
     TextView tvCompanyMobile;
     @BindView(R.id.tv_company_card_username)
@@ -72,6 +54,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     TextView tvCompanyAdress;
     @BindView(R.id.tv_company_duty)
     TextView tvCompanyDuty;
+
     private Dialog mDialog;
     private UMWeb mWeb;
     private UMShareListener umShareListener;
@@ -80,71 +63,43 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
     protected int getLayoutId() {
         return R.layout.activity_company_card;
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation-
-        ButterKnife.bind(this);
-    }
 
-    @Override
-    protected void initViews() {
-        super.initViews();
-    }
     @Override
     protected void initData() {
         super.initData();
-        OkGo.<String>post(Constant.MINE_COMPANY_CARD_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseCompanyCardData(response.body());
-            }
+        OkGo.<CompanyCardBean>post(Constant.MINE_COMPANY_CARD_URL)
+                .execute(new JsonCallback<CompanyCardBean>() {
+                    @Override
+                    public void onSuccess(Response<CompanyCardBean> response) {
+                        parseCompanyCardData(response.body());
+                    }
 
-
-            @Override
-            public void onError(Response<String> response) {
-                super.onError(response);
-                Logger.e("获取失败了" + response.body().toString());
-            }
-        });
+                    @Override
+                    public void onError(Response<CompanyCardBean> response) {
+                        super.onError(response);
+                        Logger.e("获取失败了" + response.body().toString());
+                    }
+                });
 
     }
 
-    private void parseCompanyCardData(String body) {
-        CompanyCardBean companyCardBean = GsonUtils.jsonFromJson(body, CompanyCardBean.class);
+    private void parseCompanyCardData( CompanyCardBean companyCardBean) {
         int code = companyCardBean.getCode();
-        CompanyCardBean.DataBean dataList = companyCardBean.getData();
-        String address = dataList.getAddress();
-        String company_name = dataList.getCompany_name();
-        String duty = dataList.getDuty();
-        String email = dataList.getEmail();
-        String mobile = dataList.getMobile();
-        String avatar = dataList.getAvatar();
-        String username = dataList.getUsername();
         if (code == 200) {
-            tvCompanyMobile.setText(mobile);
-            mTvCompanyCardName.setText(company_name);
-            mTvCompanyCardUsername.setText(username);
-            tvCompanyEmail.setText(email);
-            tvCompanyAdress.setText(address);
-            tvCompanyDuty.setText(duty);
-
-            RequestOptions options = new RequestOptions();
-            options.centerCrop();
-            options.circleCrop();
-            options.placeholder(R.mipmap.default_img);
-            options.error(R.mipmap.default_img);
-            Glide.with(mContext).load(avatar).apply(options).into(mIvHead);
+            CompanyCardBean.DataBean data = companyCardBean.getData();
+            tvCompanyMobile.setText(data.getMobile());
+            mTvCompanyCardName.setText(data.getCompany_name());
+            mTvCompanyCardUsername.setText(data.getUsername());
+            tvCompanyEmail.setText(data.getEmail());
+            tvCompanyAdress.setText(data.getAddress());
+            tvCompanyDuty.setText(data.getDuty());
+            Glide.with(mContext).load(data.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.default_img)
+                    .error(R.mipmap.default_img).centerCrop().circleCrop()).into(mIvHead);
         }
-
     }
 
     @Override
     protected void initListeners() {
-        mIvCompanycardBack.setOnClickListener(this);
-        mIvCompanycardShare.setOnClickListener(this);
-        mRlCompanycardCenterAdvance.setOnClickListener(this);
-        mRlCompanycardCompanyProduct.setOnClickListener(this);
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -159,7 +114,7 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(CompanyCardActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompanyCardActivity.this, platform + " 分享失败啦" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -169,42 +124,45 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         };
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    @OnClick({R.id.iv_companycard_back, R.id.iv_companycard_share, R.id.rl_companycard_center_advance, R.id.rl_companycard_company_product, R.id.rl_company_card_adress_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
             case R.id.iv_companycard_back:
                 finish();
                 break;
-            case R.id.rl_companycard_company_product:
-                asyncShowToast("点击了公司产品");
-                toActivity(ComPanyProductActivity.class);
-                break;
             case R.id.iv_companycard_share:
-                RequestCompanyCardInfo();
-                break;
-            case R.id.iv_companycard_editlocation:
-                asyncShowToast("点击了编辑地址");
+                requestCompanyCardInfo();
                 break;
             case R.id.rl_companycard_center_advance:
                 toActivity(ComPanyAdvanceActivity.class);
                 break;
+            case R.id.rl_companycard_company_product:
+                toActivity(ComPanyProductActivity.class);
+                break;
+            case R.id.rl_company_card_adress_edit:
+                Intent intent = getIntent();
+                intent.setClass(CompanyCardActivity.this, PersonDataActivity.class);
+                startActivity(intent);
+                break;
         }
     }
+
+
     /*分享我的企业名片*/
-    private void RequestCompanyCardInfo() {
+    private void requestCompanyCardInfo() {
         OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
-                            JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
-                            String avatar = mCompanyCardData.getString("avatar");
-                            String title = mCompanyCardData.getString("title");
-                            String content = mCompanyCardData.getString("content");
-                            String url = mCompanyCardData.getString("url");
                             int code = jsonObject.getInt("code");
-                            if (code == 200&&mCompanyCardData!=null) {
+                            if (code == 200) {
+                                JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
+                                String avatar = mCompanyCardData.getString("avatar");
+                                String title = mCompanyCardData.getString("title");
+                                String content = mCompanyCardData.getString("content");
+                                String url = mCompanyCardData.getString("url");
                                 shareCompanyCardInfo(avatar, title, content, url);
                             }
                         } catch (Exception e) {
@@ -212,12 +170,12 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
                         }
                     }
                 });
-
     }
+
     /*调用三方接口分享出去*/
     private void shareCompanyCardInfo(String avatar, String title, String content, final String url) {
         //以下代码是分享示例代码
-        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        UMImage image = new UMImage(this, avatar);//分享图标
         //切记切记 这里分享的链接必须是http开头
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
@@ -309,4 +267,5 @@ public class CompanyCardActivity extends BaseActivity implements View.OnClickLis
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
     }
+
 }

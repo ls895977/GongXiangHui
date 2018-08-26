@@ -11,19 +11,25 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.qunxianghui.gxh.interfaces.PermissionListener;
+import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.dialog.LoginDialog;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
 import com.qunxianghui.gxh.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements Observer {
 
     private static PermissionListener mlistener;
     protected String TAG = this.getClass().getSimpleName();
     protected Context mContext;
     protected Resources mResources;
+
     /**
      * 创建Activity时加到管理栈中
      *
@@ -36,14 +42,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         mContext = this;
         mResources = getResources();
+        EventManager.getInstance().addObserver(this);
         ButterKnife.bind(this);
         initViews();
         initData();
         initListeners();
-        //  MyApplication.appManager.addActivity(this);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//        }
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
@@ -61,39 +64,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         MobclickAgent.onPause(this);
     }
 
-    /**
-     * 销毁时从Activity管理栈中移除
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventManager.getInstance().deleteObserver(this);
         mContext = null;
         mResources = null;
 //        MyApplication.appManager.finishActivity(this);  现在用不到 应该用到地图的时候用到  现在加上的话 报空指针
     }
 
-//    /**
-//     * 需要登陆才能跳转的aty
-//     */
-//    protected void toActivity(Class<?> target, boolean needSignin) {
-//        toActivity(target, null, needSignin);
-//    }
-//
-//    /**
-//     * 需要登陆才能跳转的aty
-//     */
-//    protected void toActivity(Class<?> target, Bundle bundle, boolean needSignin) {
-//        MyApplication.nextBundle = bundle;
-//        if (needSignin) {
-//            final SigninBean.DataBean.MemberBean signInfo = SPUtils.getSignInfo(mContext);
-//            if (signInfo == null) {
-//                Toast.makeText(BaseActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
-//                toActivity(LoginActivity.class, bundle);
-//                MyApplication.next = target;
-//            } else toActivity(target, bundle);
-//        } else toActivity(target, bundle);
-//    }
-
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String) {
+            String arg1 = (String) arg;
+            if ("signout".equals(arg1)) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new LoginDialog(BaseActivity.this).show();
+                    }
+                });
+            }
+        }
+    }
 
     protected void toActivity(Class<?> target) {
         toActivity(target, null);
@@ -137,12 +130,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 初始化view
      **/
-    protected void initViews(){}
+    protected void initViews() {
+    }
 
     /**
      * 初始化数据
      */
-    protected void initData(){}
+    protected void initData() {
+    }
 
     protected void setStatusBar() {
         StatusBarUtil.setTransparentForImageView(this, null);
@@ -151,7 +146,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void setBackButon(int id) {
-
         final View back = findViewById(id);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +154,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

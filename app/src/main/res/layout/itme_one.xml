@@ -6,29 +6,31 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_marginLeft="24dp"
         android:layout_width="match_parent"
-        android:layout_height="35dp">
+        android:layout_height="40dp"
+        android:layout_marginStart="25dp">
+
         <TextView
-            android:layout_marginTop="8dp"
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_centerVertical="true"
-            android:text="一级"
+            android:layout_marginTop="8dp"
             android:textColor="#282828"
             android:textSize="16sp" />
-
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
             android:background="@mipmap/common_gray_s_row_down" />
     </RelativeLayout>
 
+    <View
+        android:background="#E5E5E5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
 
 </LinearLayout>

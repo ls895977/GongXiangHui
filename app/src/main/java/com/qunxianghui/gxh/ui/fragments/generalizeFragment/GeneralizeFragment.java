@@ -10,12 +10,15 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 
@@ -23,7 +26,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/3/9 0009.
  */
 
-public class GeneralizeFragment extends BaseFragment {
+public class GeneralizeFragment extends BaseFragment implements Observer{
 
     @BindView(R.id.view_person)
     View mViewPerson;
@@ -45,13 +48,14 @@ public class GeneralizeFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(this);
         mSegmentTab.setTabData(mTitles);
     }
 
     @Override
     public void initData() {
         if (mLlGenera == null) return;
-        if (SPUtils.getBoolean(SpConstant.IS_COMPANY, false)) {
+        if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
             mSegmentTab.setCurrentTab(0);
             mLlGenera.setVisibility(View.VISIBLE);
             mVp.setVisibility(View.VISIBLE);
@@ -104,4 +108,16 @@ public class GeneralizeFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventManager.getInstance().deleteObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String && "company".equals(arg)) {
+            initData();
+        }
+    }
 }

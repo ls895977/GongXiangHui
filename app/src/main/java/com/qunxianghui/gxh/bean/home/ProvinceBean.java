@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.bean.home;
 
+import com.google.gson.annotations.SerializedName;
 import com.qunxianghui.gxh.item.AreaItem;
 import com.qunxianghui.gxh.item.CountyItemParent;
 import com.qunxianghui.gxh.item.ProvinceItemParent;
@@ -13,33 +14,12 @@ public class ProvinceBean  {
      * provinceId : 1
      * provinceName : 北京
      */
-    private int provinceId;
-    private String provinceName;
-    private List<CityBean> citys;
-
-    public int getProvinceId() {
-        return provinceId;
-    }
-
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
-    }
-
-    public String getProvinceName() {
-        return provinceName;
-    }
-
-    public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
-    }
-
-    public List<CityBean> getCitys() {
-        return citys;
-    }
-
-    public void setCitys(List<CityBean> citys) {
-        this.citys = citys;
-    }
+    @SerializedName("id")
+    public int provinceId;
+    @SerializedName("name")
+    public String provinceName;
+    @SerializedName("sub")
+    public List<CityBean> citys;
 
     @TreeItemClass(iClass = CountyItemParent.class)
     public static class CityBean {
@@ -48,34 +28,12 @@ public class ProvinceBean  {
          * cityId : 72
          * cityName : 朝阳区
          */
-
-        private int cityId;
-        private String cityName;
-        private List<AreasBean> areas;
-
-        public int getCityId() {
-            return cityId;
-        }
-
-        public void setCityId(int cityId) {
-            this.cityId = cityId;
-        }
-
-        public String getCityName() {
-            return cityName;
-        }
-
-        public void setCityName(String cityName) {
-            this.cityName = cityName;
-        }
-
-        public List<AreasBean> getAreas() {
-            return areas;
-        }
-
-        public void setAreas(List<AreasBean> areas) {
-            this.areas = areas;
-        }
+        @SerializedName("id")
+        public int cityId;
+        @SerializedName("name")
+        public String cityName;
+        @SerializedName("sub")
+        public List<AreasBean> areas;
 
         @TreeItemClass(iClass = AreaItem.class)
         public static class AreasBean{
@@ -83,26 +41,11 @@ public class ProvinceBean  {
              * areaId : 2799
              * areaName : 三环以内
              */
-
-            private int areaId;
-            private String areaName;
-
-            public int getAreaId() {
-                return areaId;
-            }
-
-            public void setAreaId(int areaId) {
-                this.areaId = areaId;
-            }
-
-            public String getAreaName() {
-                return areaName;
-            }
-
-            public void setAreaName(String areaName) {
-                this.areaName = areaName;
-            }
-
+            @SerializedName("id")
+            public String areaId;
+            @SerializedName("name")
+            public String areaName;
+            public String pid;
         }
     }
 }

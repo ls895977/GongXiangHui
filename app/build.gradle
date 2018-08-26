@@ -1,9 +1,6 @@
 apply plugin: 'com.android.application'
 
-
 android {
-
-
     aaptOptions {
         cruncherEnabled = false//禁止检查png的合法性
         useNewCruncher = false
@@ -52,8 +49,8 @@ android {
     }
 }
 
-
 dependencies {
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -116,5 +113,10 @@ dependencies {
     implementation 'com.umeng.sdk:share-wechat:6.9.1'
     implementation 'com.umeng.sdk:share-sina:6.9.1'
     implementation project(':library')
+    //键盘适应
+    implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
 }

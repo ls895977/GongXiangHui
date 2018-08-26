@@ -1,200 +1,338 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
+import com.qunxianghui.gxh.bean.location.ActionItem;
+import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
+import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.CommentItemAdapter;
 import com.qunxianghui.gxh.widget.BigListView;
-import com.qunxianghui.gxh.widget.MyGridView;
+import com.qunxianghui.gxh.widget.RoundImageView;
+import com.qunxianghui.gxh.widget.SnsPopupWindow;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAdapter.ViewHolder> implements MineCollectPostAdapter.MycollectPostListener {
-    private MyPostOnClickListener postOnClickListener;
-    private List<TestMode.DataBean.ListBean> mList;
+public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAdapter.myViewHolder> implements  CommentItemAdapter.CommentRecallListener  {
     private Context mContext;
-    private CommentItemAdapter commentItemAdapter;
-    public void setPostOnClickListener(MyPostOnClickListener postOnClickListener) {
-        this.postOnClickListener = postOnClickListener;
-    }
-    public MineIssurePostAdapter(Context context,  List<TestMode.DataBean.ListBean> dataBeanList){
+    protected LayoutInflater inflater;
+    private List<TestMode.DataBean.ListBean> dataBeanList;
+    private CircleOnClickListener listener;
+    private LocationFragment context;
+    private final int MAX_LINE_COUNT = 6;//最大显示行数
+    private final int STATE_UNKNOW = -1;//未知状态
+    private final int STATE_NOT_OVERFLOW = 1;//文本行数小于最大可显示行数
+    private final int STATE_COLLAPSED = 2;//折叠状态
+    private final int STATE_EXPANDED = 3;//展开状态
+    private SparseArray<Integer> mTextStateList; //保存文本状态集合
+    private boolean flag = false;
+    private StringBuilder stringBuilder;
+
+    @SuppressLint("UseSparseArrays")
+    public MineIssurePostAdapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
-        this.mList = dataBeanList;
+        this.dataBeanList = dataBeanList;
+        inflater = LayoutInflater.from(context);
+        mTextStateList = new SparseArray<>();
     }
-    @Override
-    public MineIssurePostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View convertView = LayoutInflater.from(mContext).inflate(R.layout.item_mine_issue_post, parent, false);
-        return new ViewHolder(convertView);
+
+    public CircleOnClickListener getListener() {
+        return listener;
     }
+
+    public void setListener(CircleOnClickListener listener) {
+        this.listener = listener;
+    }
+
     @Override
-    public void onBindViewHolder(final MineIssurePostAdapter.ViewHolder holder, final int position) {
-        TestMode.DataBean.ListBean listBean = mList.get(position);
-        final String collect = mList.get(position).getCollect();
-        if (collect.length() == 0 || collect == null) {
-            holder.mTvCollect.setText("已收藏");
-            holder.mIvCollect.setBackgroundResource(R.mipmap.collect);
+    public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View convertView = inflater.inflate(R.layout.item_bbs_nine_grid, parent, false);
+        return new myViewHolder(convertView);
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public void onBindViewHolder(final myViewHolder holder, final int position) {
+        final int state = mTextStateList.get(position, STATE_UNKNOW);
+        if (state == STATE_UNKNOW) {
+            holder.tv_location_person_content.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    //这个回掉会调用多次，获取玩行数后记得注销监听
+                    holder.tv_location_person_content.getViewTreeObserver().removeOnPreDrawListener(this);
+                    //如果内容显示的行数大于限定显示行数
+                    if (holder.tv_location_person_content.getLineCount() > MAX_LINE_COUNT) {
+                        holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);//设置最大显示行数
+                        holder.tvShoworHide.setVisibility(View.VISIBLE);
+                        holder.tvShoworHide.setText("全文");//设置其文字为全文
+                        mTextStateList.put(position, STATE_COLLAPSED);
+                    } else {
+                        holder.tvShoworHide.setVisibility(View.GONE);//显示全文隐藏
+                        mTextStateList.put(position, STATE_NOT_OVERFLOW);//让其不能超过限定的行数
+                    }
+                    return true;
+                }
+            });
         } else {
-            holder.mTvCollect.setText("收藏");
-            holder.mIvCollect.setBackgroundResource(R.mipmap.collect_normal);
-        }
-        List<TestMode.DataBean.ListBean.ClickLikeBean> click_like = mList.get(position).getClick_like();
-        String like_info_res = mList.get(position).getLike_info_res();
-
-        if (!TextUtils.isEmpty(like_info_res)) {
-            holder.mTvlike.setText("已赞");
-            holder.mIvLike.setBackgroundResource(R.mipmap.icon_good_true);
-        } else {
-            holder.mTvlike.setText("点赞");
-
-            holder.mIvLike.setBackgroundResource(R.mipmap.icon_good);
-        }
-        List<String> images = ((List<String>) mList.get(position).getImages());
-        holder.mTvMineName.setText(listBean.getMember_name());
-        holder.mTvMineContent.setText(listBean.getContent());
-        holder.mTvIssueTime.setText(listBean.getCtime());
-        LocationGridAdapter myIssuePostAdapter = new LocationGridAdapter(mContext, images);
-        holder.myGridView.setAdapter(myIssuePostAdapter);
-        myIssuePostAdapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
-            @Override
-            public void onClick(View v, int p) {
-                postOnClickListener.onPicClick(holder.getAdapterPosition(), p);
+            //            如果之前已经初始化过了，则使用保存的状态，无需在获取一次
+            switch (state) {
+                case STATE_NOT_OVERFLOW:
+                    holder.tvShoworHide.setVisibility(View.GONE);
+                    break;
+                case STATE_COLLAPSED:
+                    holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);
+                    holder.tvShoworHide.setVisibility(View.VISIBLE);
+                    holder.tvShoworHide.setText("全文");
+                    break;
+                case STATE_EXPANDED:
+                    holder.tv_location_person_content.setMaxLines(Integer.MAX_VALUE);
+                    holder.tvShoworHide.setVisibility(View.VISIBLE);
+                    holder.tvShoworHide.setText("收起");
+                    break;
             }
-        });
-        holder.mTvDiscuss.setOnClickListener(new View.OnClickListener() {
+        }
+        holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
+        holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
+        holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
+        final List<String> imageList = dataBeanList.get(position).getImages();
+        Glide.with(mContext)
+                .load(dataBeanList.get(position).getMember_avatar())
+                .apply(new RequestOptions().placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop())
+                .into(holder.iv_location_person_head);
+        if (imageList.size() == 1) {
+            holder.gridLayout.setVisibility(View.GONE);
+            holder.img.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load(imageList.get(0))
+                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop())
+                    .into(holder.img);
+            holder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPicClick(position, 0);
+                }
+            });
+        } else {
+            holder.gridLayout.setVisibility(View.VISIBLE);
+            holder.img.setVisibility(View.GONE);
+            LocationGridAdapter adapter = new LocationGridAdapter(mContext, imageList);
+            holder.gridLayout.setAdapter(adapter);
+            adapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
+                @Override
+                public void onClick(View v, int p) {
+                    listener.onPicClick(position, p);
+                }
+
+
+            });
+        }
+        final int size = dataBeanList.get(position).getComment_res().size();
+        if (size != 0) {
+
+            List<CommentBean> commentBeans = new ArrayList<>();
+            holder.digCommentBody.setVisibility(View.VISIBLE);
+            final CommentItemAdapter commentItemAdapter = new CommentItemAdapter(mContext, commentBeans, holder.comment_list);
+            commentItemAdapter.setCommentRecallListener(this);
+            holder.comment_list.setAdapter(commentItemAdapter);
+            if (size>7){
+                holder.llShowComment.setVisibility(View.VISIBLE);
+                holder.llShowComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!flag){
+
+                            commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
+                            //holder.llShowComment.setVisibility(View.GONE);
+                            holder.tvShowText.setText("收起");
+                            flag = true;
+                            holder.ivShow.setImageResource(R.mipmap.ic_up);
+                        }else {
+                            commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
+                            holder.tvShowText.setText("展开");
+                            flag = false;
+                            holder.ivShow.setImageResource(R.mipmap.ic_down);
+                        }
+                    }
+                });
+                commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
+            }else {
+                holder.llShowComment.setVisibility(View.GONE);
+                commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
+            }
+        } else {
+            holder.digCommentBody.setVisibility(View.GONE);
+        }
+        holder.tvShoworHide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了评论", Toast.LENGTH_SHORT).show();
-
-                if (postOnClickListener != null) {
-                    postOnClickListener.onCommentClick(position, "");
+                if (state == STATE_COLLAPSED) {
+                    holder.tv_location_person_content.setMaxLines(Integer.MAX_VALUE);
+                    holder.tvShoworHide.setText("收起");
+                    mTextStateList.put(position, STATE_EXPANDED);
+                    notifyDataSetChanged();
+                } else if (state == STATE_EXPANDED) {
+                    holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);
+                    holder.tvShoworHide.setText("全文");
+                    mTextStateList.put(position, STATE_COLLAPSED);
+                    notifyDataSetChanged();
                 }
             }
         });
-        holder.mLLLike.setOnClickListener(new View.OnClickListener() {
+
+        //点击了提交
+        holder.tv_location_discuss_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                postOnClickListener.onLaunLikeClick(position);
+                String content = holder.comment_edit.getText().toString();
+                if (listener != null) {
+                    listener.onCommentClick(position, content);
+                }
             }
         });
-        holder.mLLCollect.setOnClickListener(new View.OnClickListener() {
+        final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
+        snsPopupWindow.setClick_like(dataBeanList.get(position).getLike_info_res());
+        snsPopupWindow.setCollect(dataBeanList.get(position).getCollect());
+        snsPopupWindow.initItemData();
+
+        snsPopupWindow.setmItemClickListener(new SnsPopupWindow.OnItemClickListener() {
+            @Override
+            public void onItemClick(ActionItem item, int p) {
+                switch (p) {
+                    case 0://点赞
+                        listener.onPraiseClick(position);
+                        break;
+                    case 1:
+                        listener.onCollectionClick(position);
+                        break;
+                    case 2://评论
+                        if (listener != null) {
+                            listener.onCommentClick(position, "");
+                        }
+                        break;
+                }
+            }
+        });
+        holder.iv_location_person_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                postOnClickListener.onCollectionItemClick(holder.getAdapterPosition());
+                listener.headImageClick(position);
             }
         });
-        holder.mTvDelete.setOnClickListener(new View.OnClickListener() {
+        holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了删除", Toast.LENGTH_SHORT).show();
-                postOnClickListener.deletePost(position);
+                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position), mContext);
             }
         });
-
-        if (mList.get(position).getComment_res().size() != 0) {
-            holder.llCommentBody.setVisibility(View.VISIBLE);
-            commentItemAdapter = new CommentItemAdapter(mContext, mList.get(position).getComment_res(), holder.comment_list);
-            holder.comment_list.setAdapter(commentItemAdapter);
-        } else {
-            holder.llCommentBody.setVisibility(View.GONE);
-        }
-        //点赞用户
-        if ( mList.get(position).getTem().size() >0 ){
-            holder.llCommentBody.setVisibility(View.VISIBLE);
-            holder.click_like_user.setVisibility(View.VISIBLE);
+        if (dataBeanList.get(position).getTem().size() != 0) {
+            holder.digCommentBody.setVisibility(View.VISIBLE);
+            holder.clickusertext.setVisibility(View.VISIBLE);
             String content = "";
-            for (int i = 0; i<mList.get(position).getTem().size(); i++){
-                TestMode.DataBean.ListBean.ClickLikeBean like = mList.get(position).getTem().get(i);
-                content = content + like.getMember_name() + " ";
+            stringBuilder = new StringBuilder();
+            for (int i = 0; i < dataBeanList.get(position).getTem().size(); i++) {
+                TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(position).getTem().get(i);
+                content = like.getMember_name() + " ";
+                stringBuilder.append(content);
             }
-            holder.click_like_user.setText(content);
-        }else {
-            holder.click_like_user.setVisibility(View.GONE);
+            holder.clickusertext.setText(stringBuilder);
+        } else {
+            holder.clickusertext.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return mList == null ? 0 : mList.size();
+        return dataBeanList.size();
     }
 
+    /*回复评论的接口回调*/
     @Override
-    public void cancelCollect(int position) {
+    public void recommentContentListener(int position, CommentBean commentBean, TextView tvContent) {
+        listener.commentRecall(position, commentBean,tvContent);
     }
 
-    @Override
-    public void onPicClick(int position, int picpostion) {
 
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        MyGridView myGridView;
-        TextView mTvMineName;
-        TextView mTvMineContent;
-        TextView mTvIssueTime;
-        TextView mTvDiscuss;
-        TextView mTvlike;
-        TextView mTvDelete;
-        TextView mTvCollect;
-        TextView click_like_user;
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        SnsPopupWindow snsPopupWindow;
+        GridView gridLayout;
+        TextView tv_location_person_name;
+        TextView tv_location_person_content;
+        TextView tv_location_issure_name, tvShoworHide;
+        TextView tv_location_comment;
+        ImageView snsBtn, img;
+        RoundImageView iv_location_person_head;
+        LinearLayout digCommentBody;
+        TextView tv_location_discuss_commit;
         EditText comment_edit;
         BigListView comment_list;
-        ImageView mIvCollect;
-        ImageView mIvLike;
-        LinearLayout mLLCollect, mLLLike, llCommentBody;
+        TextView clickusertext;
+        LinearLayout llShowComment;
+        TextView tvShowText;
+        ImageView ivShow;
 
-        public ViewHolder(View itemView) {
+        myViewHolder(View itemView) {
             super(itemView);
-            myGridView = itemView.findViewById(R.id.layout_nine_grid_mineissue_post);
-            llCommentBody = itemView.findViewById(R.id.llCommentBody);
-            mTvMineName = itemView.findViewById(R.id.tv_mine_issue_post_name);
-            mTvMineContent = itemView.findViewById(R.id.tv_mine_issue_post_content);
-            mTvIssueTime = itemView.findViewById(R.id.tv_mine_issue_post_issuetime);
-            mTvDiscuss = itemView.findViewById(R.id.tv_mine_issue_post_discuss);
-            mTvlike = itemView.findViewById(R.id.tv_mine_issue_post_like);
-            mTvDelete = itemView.findViewById(R.id.tv_mine_issue_post_delete);
-            mTvCollect = itemView.findViewById(R.id.tv_mine_issue_post_collect);
-            mTvCollect = itemView.findViewById(R.id.tv_mine_issue_post_collect);
-            mLLCollect = itemView.findViewById(R.id.ll_mine_issue_post_collect);
-            mIvCollect = itemView.findViewById(R.id.iv_mine_issue_post_collect);
-            mLLLike = itemView.findViewById(R.id.ll_mine_issue_post_like);
-            click_like_user = itemView.findViewById(R.id.click_like_user);
-            mIvLike = itemView.findViewById(R.id.iv_mine_issue_post_like);
-            comment_list = itemView.findViewById(R.id.comment_list);
+            gridLayout = itemView.findViewById(R.id.layout_nine_grid);
+            tv_location_person_name = itemView.findViewById(R.id.tv_location_person_name);
+            tv_location_person_content = itemView.findViewById(R.id.tv_location_person_content);
+            tv_location_issure_name = itemView.findViewById(R.id.tv_location_issure_name);
+            iv_location_person_head = itemView.findViewById(R.id.iv_location_person_head);
+            tv_location_comment = itemView.findViewById(R.id.tv_location_comment);
+            tv_location_discuss_commit = itemView.findViewById(R.id.tv_location_discuss_commit);
+            tvShoworHide = itemView.findViewById(R.id.tv_show_or_hide);
+            snsBtn = itemView.findViewById(R.id.snsBtn);
+            img = itemView.findViewById(R.id.img);
+            snsPopupWindow = new SnsPopupWindow(itemView.getContext());
             comment_edit = itemView.findViewById(R.id.comment_edit);
+            digCommentBody = itemView.findViewById(R.id.digCommentBody);
+            clickusertext = itemView.findViewById(R.id.click_like_user);
+            comment_list = itemView.findViewById(R.id.comment_list);
+            llShowComment = itemView.findViewById(R.id.ll_show_comment);
+            tvShowText = itemView.findViewById(R.id.tv_showText);
+            ivShow = itemView.findViewById(R.id.iv_show_icon);
         }
     }
 
-
-    public interface MyPostOnClickListener {
-        /* 收藏*/
-        void onCollectionItemClick(int position);
-
-        /* 点赞*/
-        void onLaunLikeClick(int position);
-
-        /* 图片点击*/
+    public interface CircleOnClickListener {
+        /* 图片点击 */
         void onPicClick(int position, int picpostion);
 
-        /*删除*/
-        void deletePost(int position);
-
-        /*图片点击*/
+        /* 评论点击 */
         void onCommentClick(int position, String content);
+
+        /* 点赞 */
+        void onPraiseClick(int position);
+
+        /* 收藏*/
+        void onCollectionClick(int position);
+
+        /* 头像点击*/
+        void headImageClick(int position);
+
+        /*回复评论*/
+        void commentRecall(int position, CommentBean commentBean, TextView topLocation);
+
     }
+
 }

@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.bean.home;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -100,6 +102,15 @@ public class HomeVideoListBean implements Serializable {
             private String member_avatar;
             private String url;
             private String follow;
+            private int is_like;
+
+            public int getIs_like() {
+                return is_like;
+            }
+
+            public void setIs_like(int is_like) {
+                this.is_like = is_like;
+            }
 
             public int getId() {
                 return id;
@@ -134,7 +145,8 @@ public class HomeVideoListBean implements Serializable {
             }
 
             public String getTitle() {
-                return title;
+                if (TextUtils.isEmpty(title)) return "";
+                else return title;
             }
 
             public void setTitle(String title) {

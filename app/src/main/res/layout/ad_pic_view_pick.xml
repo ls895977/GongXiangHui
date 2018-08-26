@@ -57,19 +57,26 @@
             android:background="@null"
             android:text="使用企业素材"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:visibility="gone" />
+            android:textSize="14sp"/>
 
-        <include layout="@layout/view_vertical_divide" />
-
-        <Button
-            android:id="@+id/btnCommon"
+        <LinearLayout
+            android:id="@+id/ll_common"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@null"
-            android:text="使用通用素材"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/view_vertical_divide" />
+
+            <Button
+                android:id="@+id/btnCommon"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:text="使用通用素材"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

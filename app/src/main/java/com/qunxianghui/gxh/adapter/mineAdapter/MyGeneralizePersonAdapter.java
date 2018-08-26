@@ -2,6 +2,8 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 
 
 import android.annotation.SuppressLint;
+import android.support.v7.widget.CardView;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -32,12 +34,17 @@ public class MyGeneralizePersonAdapter extends BaseQuickAdapter<GeneraPersonStat
     @Override
     protected void convert(BaseViewHolder helper, GeneraPersonStaticBean.DataBean item) {
         List<String> images = item.images;
+        CardView cardView = helper.getView(R.id.card);
         helper.setText(R.id.tv_generalize_person_time, item.source)
-        .setText(R.id.tv_generalize_person_title,item.title);
+                .setText(R.id.tv_generalize_seecount,item.view_cnt)
+                .setText(R.id.tv_generalize_person_title, item.title);
 
         if (images.size() >= 1) {
             ImageView img = helper.getView(R.id.iv_generalize_person_head);
+            cardView.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(images.get(0)).apply(mOptions).into(img);
+        } else if (images.size() < 1) {
+            cardView.setVisibility(View.GONE);
         }
     }
 }

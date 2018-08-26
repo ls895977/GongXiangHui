@@ -14,13 +14,17 @@ import java.util.List;
  */
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    private FragmentManager fragmentManager;
-    private final List<Fragment> mFragments = new ArrayList<>();
 
+    private final List<Fragment> mFragments = new ArrayList<>();
+    private String[] mTitles;
 
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
-        this.fragmentManager = fragmentManager;
+    }
+
+    public PagerAdapter(FragmentManager fragmentManager, String[] titles){
+        super(fragmentManager);
+        this.mTitles = titles;
     }
 
     @Override
@@ -33,9 +37,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         return mFragments.size();
     }
 
-    public void addFragment(Fragment fragment ){
+    public void addFragment(Fragment fragment) {
         mFragments.add(fragment);
     }
 
-
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (mTitles == null) {
+            return "";
+        }
+        return mTitles[position];
+    }
 }

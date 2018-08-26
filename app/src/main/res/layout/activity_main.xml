@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/iv_issue"
-                android:layout_width="43dp"
-                android:layout_height="43dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:src="@mipmap/ic_fabu" />
 
@@ -58,7 +58,9 @@
                 android:id="@+id/tv_issue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:text="一键发布"
+
                 android:textColor="@color/main_bottom_selector_color"
                 android:textSize="10sp" />
         </LinearLayout>

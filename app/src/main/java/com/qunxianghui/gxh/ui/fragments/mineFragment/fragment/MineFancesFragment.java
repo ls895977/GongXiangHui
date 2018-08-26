@@ -1,30 +1,25 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFansAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.MineFansBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MineFancesFragment extends BaseFragment {
@@ -47,26 +42,18 @@ public class MineFancesFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        RequestMyFansData();
-
-
-    }
-
-    private void RequestMyFansData() {
-
-        OkGo.<String>post(Constant.MYFANS_URL)
+        OkGo.<MineFansBean>post(Constant.MYFANS_URL)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                parseFocusData(response.body());
-            }
-        });
+                .execute(new JsonCallback<MineFansBean>() {
+                    @Override
+                    public void onSuccess(Response<MineFansBean> response) {
+                        parseFocusData(response.body());
+                    }
+                });
     }
 
-    private void parseFocusData(String body) {
-        final MineFansBean mineFansBean = GsonUtils.jsonFromJson(body, MineFansBean.class);
+    private void parseFocusData(MineFansBean mineFansBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -91,7 +78,7 @@ public class MineFancesFragment extends BaseFragment {
                 }
             });
 
-            myFansAdapter.notifyItemChanged(count,mineFansBean.getData().size());
+            myFansAdapter.notifyItemChanged(count, mineFansBean.getData().size());
         }
     }
 
@@ -100,41 +87,22 @@ public class MineFancesFragment extends BaseFragment {
         recyclerMineFances.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-
-    }
-
     @Override
     protected void initListeners() {
         super.initListeners();
         recyclerMineFances.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                count=0;
+                count = 0;
                 mIsRefresh = true;
-                RequestMyFansData();
+                initData();
             }
 
             @Override
             public void onLoadMore() {
-                RequestMyFansData();
+                initData();
             }
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

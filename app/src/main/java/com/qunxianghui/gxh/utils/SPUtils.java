@@ -17,6 +17,24 @@ public final class SPUtils {
         return MyApplication.getInstance().getSharedPreferences(name, mode);
     }
 
+    public static SharedPreferences getSp(String spName) {
+        return MyApplication.getInstance().getSharedPreferences(spName, Context.MODE_PRIVATE);
+    }
+
+    public static void saveLocation(String key, String value) {
+        MyApplication.getInstance()
+                .getSharedPreferences("location", Context.MODE_PRIVATE)
+                .edit()
+                .putString(key, value)
+                .apply();
+    }
+
+    public static String getLocation(String key) {
+        return MyApplication.getInstance()
+                .getSharedPreferences("location", Context.MODE_PRIVATE)
+                .getString(key, "");
+    }
+
     /**
      * 保存首选项
      */
@@ -62,8 +80,7 @@ public final class SPUtils {
         if (sp == null) {
             sp = MyApplication.getInstance().getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
         }
-        boolean b = sp.getBoolean(key, false);
-        return b;
+        return sp.getBoolean(key, true);
     }
 
 
@@ -73,8 +90,8 @@ public final class SPUtils {
     public static SigninBean.DataBean.MemberBean getSignInfo() {
         final String user = getString("User", "");
         if (!user.equals("")) {
-            final SigninBean signinBean = GsonUtil.parseJsonWithGson(user, SigninBean.class);
-            final int errno = signinBean.getErrno();
+            SigninBean signinBean = GsonUtil.parseJsonWithGson(user, SigninBean.class);
+            int errno = signinBean.getErrno();
             if (errno == 0) {
                 return signinBean.getData().getMember();
             }
@@ -90,8 +107,8 @@ public final class SPUtils {
     public static void putSignInfo(SigninBean.DataBean.MemberBean signInfo) {
         final String user = getString("User", "");
         if (!user.equals("")) {
-            final SigninBean signinBean = GsonUtil.parseJsonWithGson(user, SigninBean.class);
-            final int errno = signinBean.getErrno();
+            SigninBean signinBean = GsonUtil.parseJsonWithGson(user, SigninBean.class);
+            int errno = signinBean.getErrno();
             if (errno == 0) {
                 signinBean.getData().setMember(signInfo);
                 saveString("User", new Gson().toJson(signinBean));

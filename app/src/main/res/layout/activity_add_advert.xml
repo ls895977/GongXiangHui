@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#f8f8f8"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_mingFragment_addTopAdver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@mipmap/addadver_toppic"
+            android:drawablePadding="5dp"
+            android:text="增加顶部广告"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:layout_below="@+id/tv_mingFragment_addTopAdver"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/add_adver_top_alert"
+            android:gravity="center"
+            android:text="顶部只支持通栏广告"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <WebView
+            android:id="@+id/webView_mineFragment_Adver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f8f8f8"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="28dp"
+                android:layout_above="@+id/tv_mingFragment_addBottomAdver"
+                android:layout_centerHorizontal="true"
+                android:background="@mipmap/add_adver_bottom_alert"
+                android:gravity="center"
+                android:text="顶部只支持通栏广告"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_mingFragment_addBottomAdver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableLeft="@mipmap/addadver_bottompic"
+                android:drawablePadding="5dp"
+                android:text="增加底部广告"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

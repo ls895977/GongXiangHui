@@ -49,7 +49,7 @@ public class BaoLiaoItemAdapter extends RecyclerView.Adapter<BaoLiaoItemAdapter.
         else return mData;
     }
 
-    BaoLiaoItemAdapter(Context mContext, List<ImageItem> data, int maxImgCount) {
+    public BaoLiaoItemAdapter(Context mContext, List<ImageItem> data, int maxImgCount) {
         this.mContext = mContext;
         this.maxImgCount = maxImgCount;
         this.mInflater = LayoutInflater.from(mContext);

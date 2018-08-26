@@ -17,8 +17,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.base.MyApplication;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -77,13 +76,11 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String password;
     private UserDao userDao;
-
     private IWXAPI mWxApi;
     private String openId;
     /*1为QQ,2为微信*/
     private String thirdType;
     private String companyName;
-
 
     @Override
     protected int getLayoutId() {
@@ -136,7 +133,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getInstance().setAccessToken(access_token);
+                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -169,7 +166,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getInstance().setAccessToken(access_token);
+                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                                 Log.e(TAG, "onSuccess: " + access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
@@ -203,8 +200,7 @@ public class LoginActivity extends BaseActivity {
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                MyApplication.getInstance().setAccessToken(access_token);
-                                                Log.e(TAG, "onSuccess: " + access_token);
+                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                                 asyncShowToast("登录成功");
                                                 toActivity(MainActivity.class);
                                                 finish();
@@ -291,24 +287,24 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLogin(String phone, String password) {
-        OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_URL).
+        OkGo.<CommonResponse<LoginBean>>post(Constant.LOGIN_URL).
                 params("mobile", phone).
                 params("password", password).
-                execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
+                execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
                     @Override
-                    public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                    public void onSuccess(Response<CommonResponse<LoginBean>> response) {
                         if (response.body().code == 0) {
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                            MyApplication.getInstance().setAccessToken(access_token);
+                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                             fillUserData();
                             holdReneraCompanyData();
                         }
                     }
 
                     @Override
-                    public void onError(Response<LzyResponse<LoginBean>> response) {
+                    public void onError(Response<CommonResponse<LoginBean>> response) {
                         super.onError(response);
                         asyncShowToast("用户名或密码错误！");
                     }
@@ -328,7 +324,6 @@ public class LoginActivity extends BaseActivity {
                         SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
                         SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
                         spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
-
                         spCompanymessageEditor.apply();
                     } catch (JSONException ignored) {
 
@@ -363,13 +358,33 @@ public class LoginActivity extends BaseActivity {
                                     SharedPreferences.Editor editor = spConpanyname.edit();
                                     editor.putString("selfcompanyname", companyName);
                                     editor.putString("expire_time", expire_time);
-                                    editor.putString("avatar",avatar );
+                                    editor.putString("avatar", avatar);
                                     editor.apply();
                                 }
 
                             } catch (Exception ignored) {
 
                             }
+                        }
+                    }
+                });
+        OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
+                                JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
+//                                String avatar = mCompanyCardData.getString("avatar");
+//                                String title = mCompanyCardData.getString("title");
+//                                String content = mCompanyCardData.getString("content");
+                                String url = mCompanyCardData.getString("url");
+                                SPUtils.getSp("companymessage").edit().putString("aboutus_showh5", url).apply();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });

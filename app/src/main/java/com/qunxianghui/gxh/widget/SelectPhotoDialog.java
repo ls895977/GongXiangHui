@@ -1,9 +1,7 @@
 package com.qunxianghui.gxh.widget;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -66,14 +64,11 @@ public class SelectPhotoDialog extends Dialog implements View.OnClickListener {
             case R.id.tv_slect_photo:
                 selectPhotoListener.onSelect();
                 break;
-            case R.id.tv_cancel_select:
-                selectPhotoListener.onDismiss();
-                break;
         }
+        dismiss();
     }
     public interface SelectPhotoListener{
         void onTakePhoto();
         void onSelect();
-        void onDismiss();
     }
 }

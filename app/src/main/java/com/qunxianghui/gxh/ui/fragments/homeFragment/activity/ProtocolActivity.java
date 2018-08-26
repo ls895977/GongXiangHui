@@ -3,8 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,9 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -23,7 +18,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -41,45 +36,22 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     final Activity activity = this;
     @BindView(R.id.ll_protocol_main)
-    LinearLayout llProtocolMain;
+    RelativeLayout llProtocolMain;
     @BindView(R.id.iv_webback)
     ImageView ivWebback;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.tv_newsdetail_issue)
     TextView tvNewsdetailIssue;
+    @BindView(R.id.rl_protocol_title)
+    RelativeLayout mRlProtocolTitle;
+
     private WebView webView;
-    private Dialog loadingDialog;
+    private StringBuffer mBuffer;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_protocol;
-    }
-
-    @Override
-    protected void initViews() {
-        loadingDialog = createLoadingDialog(ProtocolActivity.this, "加载中...");
-        loadingDialog.show();
-    }
-
-    private Dialog createLoadingDialog(Context context, String msg) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
-        LinearLayout layout = v.findViewById(R.id.dialog_view);//加载布局
-        // main.xml中的ImageView
-        ImageView spaceshipImage = v.findViewById(R.id.dialog_img);
-        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
-        //加载动画
-        final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
-        //使用imageView显示动画
-        spaceshipImage.startAnimation(animation);
-        tipTextView.setText(msg);  //设置加载信息
-        final Dialog loadingDialog = new Dialog(context);
-        loadingDialog.setCancelable(true);  //不可以用返回键 取消
-        loadingDialog.setCanceledOnTouchOutside(false);
-        loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
-        return loadingDialog;
-
     }
 
     @SuppressLint("NewApi")
@@ -88,17 +60,27 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         Intent intent = getIntent();
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
+        String mToken = intent.getStringExtra("token");
         int tag = intent.getIntExtra("tag", 0);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.setMargins(0, 120, 0, 0);
         if (tag == 1) {
-            tvNewsdetailIssue.setVisibility(View.VISIBLE);
-        } else {
-            tvNewsdetailIssue.setVisibility(View.GONE);
+            mBuffer = new StringBuffer(url);
+            mBuffer.append("?token=" + mToken);
+            mRlProtocolTitle.setVisibility(View.GONE);
+            params.setMargins(0, 25, 0, 0);
+        } else if (tag == 2) {
+            mBuffer = new StringBuffer(url);
         }
         tvTitle.setText(title);
         webView = new WebView(this);
-        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView.setLayoutParams(params);
         llProtocolMain.addView(webView);
+        RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        param.addRule(RelativeLayout.CENTER_IN_PARENT);
+        final View loadView = LayoutInflater.from(ProtocolActivity.this).inflate(R.layout.common_bg_load_view, llProtocolMain, false);
+        loadView.setLayoutParams(param);
+        llProtocolMain.addView(loadView);
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -116,45 +98,42 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int progress) {
-                activity.setTitle("Loading...");
-                activity.setProgress(progress * 100);
                 if (progress == 100) {
-                    activity.setTitle(title);
-                    loadingDialog.dismiss();
+                    loadView.setVisibility(View.GONE);
                 }
             }
         });
 
-
         webView.setWebViewClient(new WebViewClient() {
+            private Intent mMIntent;
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-
-                return false;
+                String url = request.getUrl().toString();
+                return isCall(url);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Logger.d("shouldOverrideUrlLoading--->:" + url);
-                Log.e("用户单机超链接", url);
-                //判断用户单机的是那个超链接
-                String tag = "tel";
-                if (url.contains(tag)) {
-                    final String mobile = url.substring(url.lastIndexOf("/") + 1);
-                    Log.e("mobile----------->", mobile);
-                    final Intent mIntent = new Intent(Intent.ACTION_CALL);
-                    final Uri data = Uri.parse(mobile);
-                    mIntent.setData(data);
+                return isCall(url);
+            }
+
+            private boolean isCall(String url) {
+                if (url.contains("tel:1516715042")) {
+                    ProtocolActivity.this.finish();
+                } else if (url.contains("tel")) {
+                    String mobile = url.substring(url.lastIndexOf("/") + 1);
+                    mMIntent = new Intent(Intent.ACTION_CALL);
+                    Uri data = Uri.parse(mobile);
+                    mMIntent.setData(data);
                     if (ActivityCompat.checkSelfPermission(ProtocolActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                        startActivity(mIntent);
-                        //这个超连接,java已经处理了，webview不要处理
-                        return true;
+                        startActivity(mMIntent);
                     } else {
                         //申请权限
                         ActivityCompat.requestPermissions(ProtocolActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -169,16 +148,13 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                         || error.getPrimaryError() == SslError.SSL_UNTRUSTED) {
 
                     handler.proceed();
-
                 } else {
                     handler.cancel();
                 }
-
             }
-        });
-        webView.loadUrl(url);
 
-        Logger.d("initDatas--->:");
+        });
+        webView.loadUrl(String.valueOf(mBuffer));
     }
 
     @Override
@@ -222,6 +198,16 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_newsdetail_issue:
                 toActivity(CompanySetActivity.class);
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            finish();
         }
     }
 }

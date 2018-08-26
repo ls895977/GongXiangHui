@@ -18,7 +18,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="45dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="5dp">
+        app:cardElevation="1dp">
 
         <RelativeLayout
             android:id="@+id/rl_mine_person_data"
@@ -32,18 +32,18 @@
             android:paddingTop="15dp">
 
             <ImageView
-                android:id="@+id/iv_head"
+                android:id="@+id/iv_user_avatar"
                 android:layout_width="59dp"
                 android:layout_height="59dp"
                 android:src="@mipmap/user_moren" />
 
             <TextView
-                android:id="@+id/mine_quickly_login"
+                android:id="@+id/mine_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="8dp"
-                android:layout_toEndOf="@id/iv_head"
+                android:layout_toEndOf="@id/iv_user_avatar"
                 android:textColor="#212121"
                 android:textSize="16sp"
                 tool:text="用户名字" />
@@ -52,8 +52,8 @@
                 android:id="@+id/tv_mine_company_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@id/mine_quickly_login"
-                android:layout_below="@id/mine_quickly_login"
+                android:layout_alignStart="@id/mine_user_name"
+                android:layout_below="@id/mine_user_name"
                 android:layout_marginTop="10dp"
                 android:textColor="#343434"
                 android:textSize="12sp"
@@ -75,7 +75,7 @@
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/iv_head"
+                android:layout_below="@id/iv_user_avatar"
                 android:layout_marginTop="10dp"
                 android:background="#F2F2F2" />
 
@@ -98,7 +98,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_mine_addlike_collect"
+                        android:id="@+id/tv_mine_collect"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#212121"
@@ -123,7 +123,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_mine_post_count"
+                        android:id="@+id/tv_mine_follow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#212121"
@@ -149,7 +149,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_mine_follow_post_count"
+                        android:id="@+id/tv_mine_fans"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#212121"
@@ -221,9 +221,6 @@
 
                 <TextView
                     style="@style/MineListStyle"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:drawableLeft="@mipmap/mine_add_memberup"
                     android:text="会员升级"
                     tool:ignore="RtlHardcoded" />

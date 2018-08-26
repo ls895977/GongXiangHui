@@ -6,7 +6,7 @@
     android:gravity="center"
     android:minHeight="60dp"
     android:minWidth="180dp"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/dialog_img"
@@ -20,6 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="清理中...."     />
+        android:text="清理中...." />
 
 </LinearLayout>

@@ -3,31 +3,43 @@ package com.qunxianghui.gxh.config;
 /**
  * Created by Administrator on 2018/3/22 0022.
  */
-
 public class Constant {
-    public static final long TIME_OUT = 3000;//网络请求超时时间
-
+    public static final String KEY_HAS_GUIDE = "key_has_guide";
+    public static final long TIME_OUT = 3000;//网络请求超时时//     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";间
     //首页精选链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com/optimization";
-    //首页本地服务链接的跳转
-    public static final String BenDiService = "http://www.qunxianghui.com/localservice";
-    //正式环境
-//    public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
-
-    //测试环境
-    public static final String BASE_URL ="http://api.test.gongxianghui.net/v2/";
+    //群享汇服务协议链接的跳转
+    public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
+    //便民服务中的黄历
+    public static final String BIANMIN_HUANGLI_URL= "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
+    //本地环境
+    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
+
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
+    //新闻详情
+    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
+    //本地发布详情
+    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
+    //精选发布详情
+    public static final String GOOD_SELECT__DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/jingxuan_fabu/index.html#/";
+    //视频详情
+    public static final String VIDEO_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/shipin_/index.html#/";
+    //首页上面优选的页面
+    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";
+    //首页上面本地服务的页面
+    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份
     public static final String FETCH_PROVINCE_URL = BASE_URL + "province/getProvince";
     //获取城市
     public static final String FETCH_CITY_URL = BASE_URL + "city/getCity";
+    public static final String GET_CITY_INFO = BASE_URL + "region/getCityInfo";
     //获取县城
     public static final String FETCH_COUNTRY_URL = BASE_URL + "area/getArea";
     //获取省市区
@@ -36,6 +48,8 @@ public class Constant {
     public static final String HOME_PAGE_LUNBO_URL = BASE_URL + "ad/getList?place=首页图片轮播";
     //首页爆料
     public static final String HOME_DISCLOSE_URL = BASE_URL + "iv_person_data_pic";
+    //首页粘贴文章
+    public static final String  PAST_ARTICAL_URL=BASE_URL+"user/paste";
     //获取全部频道
     public static final String CHANNEL_GETALL = BASE_URL + "channel/getAll";
     //频道列表（用户订阅的频道）
@@ -104,6 +118,8 @@ public class Constant {
     public static final String GENERALIZE_RERSON_STATIS_URL = BASE_URL + "promote/getStatistics";
     //喜欢
     public static final String LIKE_URL = BASE_URL + "like/clickLike";
+    //点赞
+    public static final String VIDEO_LIKE_URL = BASE_URL + "Like/clickLikes";
     //关注
     public static final String ATTENTION_URL = BASE_URL + "follow/addFollow";
     //不喜欢
@@ -123,7 +139,7 @@ public class Constant {
     //获取我的爆料信息
     public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";
     //获取分享信息
-    public static final String GET_SHARE_INFO = BASE_URL + "user/getShareInfo";
+    public static final String GET_SHARE_INFO = BASE_URL + "user/shareInfoV2";
     //删除我的发布
     public static final String DELETE_MYISSUE_URL = BASE_URL + "user/delRelease";
     //获取我发布的爆料
@@ -133,7 +149,8 @@ public class Constant {
     //用户升级
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
-    public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+    // public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
+    public static final String UP_LOAD_OSS_PIC = BASE_URL + "system/oss_uploadImage";
     //本地圈用户订阅的
     public static final String LOCAL_POST_SUB_URL = BASE_URL + "Posts/getPostsCate";
     //个人编辑本地圈接口
@@ -145,14 +162,13 @@ public class Constant {
     //上传本地圈的分类
     public static final String UPLOAD_LOCAL_POST_SORT_SUB_URL = BASE_URL + "Posts/addPosts";
     //上传视频
-    public static final String UPLOAD_VIDEO_URL = BASE_URL + "system/uploadVideo";
+    public static final String UPLOAD_VIDEO_URL = BASE_URL + "System/uploadVideo";
     //编辑视频汇分类接口
     public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";
     //个人添加视频汇分类接口
     public static final String ADD_VIDEO_TAB_URL = BASE_URL + "Video/addVideoCate";
     //个人删除视频汇分类接口
     public static final String DELETE_VIDEO_TAB_URL = BASE_URL + "Video/delVideoCate";
-
     //用户订阅的视频的频道
     public static final String VIDEO_SUB_URL = BASE_URL + "Video/getVideoCate";
     //上传视频的类别
@@ -160,7 +176,7 @@ public class Constant {
     //发布帖子
     public static final String PUBLISH_ARTICLE = BASE_URL + "posts/publish";
     //推广员工排行
-    public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRanking";
+    public static final String GENERALIZE_PAIHANG_URL = BASE_URL + "promote/getRankingV2";
     public static final String GENERALIZE_COMPANY_PUSH_URL = BASE_URL + "promote/getPushCompany";
     //推广公司统计
     public static final String GENERALIZE_COMPANY_STATICS_URL = BASE_URL + "promote/getCompanyStatistics";
@@ -172,12 +188,16 @@ public class Constant {
     public static final String DISCUSS_MINE_FOLLOW_URL = BASE_URL + "msg/getPosts";
     //我的消息的我的跟帖
     public static final String DISCUSS_MINE_SSYSTEM_URL = BASE_URL + "msg/getList";
+    //我的发布精选列表
+    public static final String MYISSURE_GOOD_SELECT_URL = BASE_URL + "User/getMySelection";
+    //我的发布的本地服务列表
+    public static final String MYISSURE_LOCAL_SERVICE_URL = BASE_URL + "User/getMySelection";
     //我的企业名片
     public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
     //分享我的企业名片
     public static final String SHARE_COMPANY_CARD_URL = BASE_URL + "Aboutus/showh5";
     //我的植入广告
-    public static final String GET_AD_LIST = BASE_URL + "user/getAdList";
+    public static final String GET_AD_LIST = BASE_URL + "user/getAdTemplates";
     //查看核心优势或公司产品
     public static final String CHECK_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/selectCore";
     //添加核心优势或公司产品
@@ -191,13 +211,18 @@ public class Constant {
     //添加广告
     public static final String ADD_AD = BASE_URL + "user/addAd";
     //删除单条广告
-    public static final String DELETE_AD = BASE_URL + "user/delAd";
+    public static final String DELETE_AD = BASE_URL + "user/delAdTemplates";
     //使用广告
     public static final String USED_AD = BASE_URL + "user/getAdTemplateV2";
     //加入轮播
     public static final String ADD_SILDE = BASE_URL + "user/setAdSlide";
-    //修改某条广告
-    public static final String EDIT_AD = BASE_URL + "user/editAd";
+    //
+    public static final String GET_ADVERT = BASE_URL + "user/getAd";
+    //通用广告
+    public static final String GENERAL_AD = BASE_URL + "user/getGeneralMaterial";
+    //修改广告
+    public static final String EDIT_AD = BASE_URL + "user/editAdTemplates";
+    public static final String ENTERPRISE_MATERIAL = BASE_URL + "user/getEnterpriseMaterial";
     //企业添加
     public static final String ADD_COMPANY_URL = BASE_URL + "service/addCompany";
     //企业设置   获取
@@ -208,7 +233,8 @@ public class Constant {
     public static final String LOGIN_BINE_MOBILE_URL = BASE_URL + "user/bindMobile";
     //QQ登录回调
     public static final String QQ_RESPONSE_URL = BASE_URL + "user/callback/qq";
-
+    //微信回调
     public static final String WEIXIN_RESPONSE_URL = BASE_URL + "user/callback/weixin ";
+    //新浪回调
     public static final String SINA_RESPONSE_URL = BASE_URL + "user/callback/sina";
 }

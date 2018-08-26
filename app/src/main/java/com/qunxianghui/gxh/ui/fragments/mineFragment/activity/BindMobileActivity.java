@@ -12,19 +12,17 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.base.MyApplication;
-import com.qunxianghui.gxh.bean.LzyResponse;
+import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
@@ -82,19 +80,19 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
         if (TextUtils.isEmpty(mobileCode) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(bindPassword)) {
             asyncShowToast("检查一下手机号 验证码 密码那个没有填");
         } else {
-            OkGo.<LzyResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
+            OkGo.<CommonResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
                     .params("mobile", phoneNumber)
                     .params("captcha", mobileCode)
                     .params("password", bindPassword)
                     .params("connect_id", getIntent().getIntExtra("connect_id", 0))
-                    .execute(new DialogCallback<LzyResponse<LoginBean>>(this) {
+                    .execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
                         @Override
-                        public void onSuccess(Response<LzyResponse<LoginBean>> response) {
+                        public void onSuccess(Response<CommonResponse<LoginBean>> response) {
                                 if (response.body().code==0) {
                                     String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
                                     SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                     SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                                    MyApplication.getInstance().setAccessToken(access_token);
+                                    OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                                     asyncShowToast("登录成功");
                                     toActivity(MainActivity.class);
                                     finish();
@@ -115,15 +113,15 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
             return;
         }
 
-        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
+        OkGo.<GeneralResponseBean>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
                 .params("mobile", phoneNumber)
                 .params("type", 3)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<GeneralResponseBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
+                    public void onSuccess(Response<GeneralResponseBean> response) {
+                        GeneralResponseBean responseBean = response.body();
                         if (responseBean.getCode() == 0) {
                             timerHandler.sendEmptyMessage(MSG_SEND_SUCCESS);
 
@@ -133,7 +131,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<GeneralResponseBean> response) {
                         timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                     }
                 });

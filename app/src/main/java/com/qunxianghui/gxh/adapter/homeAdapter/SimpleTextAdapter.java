@@ -13,10 +13,10 @@ import java.util.List;
  */
 
 public class SimpleTextAdapter extends BaseRecycleViewAdapter<String> {
+
     public SimpleTextAdapter(Context context, List datas) {
         super(context, datas);
     }
-
 
     @Override
     protected void convert(MyViewHolder holder, int position, String s) {

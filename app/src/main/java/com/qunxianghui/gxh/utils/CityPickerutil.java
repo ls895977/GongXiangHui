@@ -1,25 +1,17 @@
 package com.qunxianghui.gxh.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.bean.AddressBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CityPickerutil {
@@ -44,12 +36,11 @@ public class CityPickerutil {
 
     private static void getAddressData(Context mContext) {
         OkGo.<String>post(Constant.FETCH_COUNTRY_ADRESS)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (HttpStatusUtil.getStatus(response.body().toString())) {
+                        if (HttpStatusUtil.getStatus(response.body())) {
                             parseAddressData(response.body());
-                            return;
                         }
                     }
                 });

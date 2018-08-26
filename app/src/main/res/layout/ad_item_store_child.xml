@@ -8,29 +8,46 @@
     <EditText
         android:id="@+id/etNickName"
         style="@style/AdEditTextStyle"
-        android:hint="QQ昵称"
+        android:hint="产品名称"
         android:inputType="text"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />
 
     <EditText
-        android:id="@+id/etQQ"
+        android:id="@+id/etPrice"
         style="@style/AdEditTextStyle"
-        android:hint="QQ号"
+        android:hint="价格"
         android:inputType="phone"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />
 
     <EditText
-        android:id="@+id/etDes"
+        android:id="@+id/etLink"
         style="@style/AdEditTextStyle"
-        android:hint="填写联系方式介绍"
+        android:hint="添加商品链接（URL）"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />
 
     <include layout="@layout/ad_view_add_small_img" />
+
+    <RelativeLayout
+        android:id="@+id/rl_add_shop_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:visibility="gone"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/ivShop"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="18dp"
+            android:src="@mipmap/zhiru_tupian" />
+
+    </RelativeLayout>
 
 </LinearLayout>

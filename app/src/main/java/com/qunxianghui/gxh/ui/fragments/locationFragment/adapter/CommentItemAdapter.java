@@ -11,10 +11,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.location.CommentBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.UserUtil;
 
@@ -23,9 +23,7 @@ import java.util.List;
 public class CommentItemAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
-    private Context context;
     private List<CommentBean> mList;
-    private ListView listView;
     private CommentRecallListener commentRecallListener;
 
     public void setCommentRecallListener(CommentRecallListener commentRecallListener) {
@@ -33,9 +31,7 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
     public CommentItemAdapter(Context context, List<CommentBean> mList, ListView listView) {
-        this.context = context;
         this.mList = mList;
-        this.listView = listView;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -68,7 +64,7 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -76,10 +72,9 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.name = convertView.findViewById(R.id.name);
             holder.content = convertView.findViewById(R.id.content);
             holder.ll_comment_view = convertView.findViewById(R.id.ll_comment_view);
-            holder.tv_item_discuss_delete = convertView.findViewById(R.id.tv_item_discuss_delete);
             holder.ll_comment_selflist = convertView.findViewById(R.id.ll_comment_selflist);
-            holder.tv_item_reply_lb=convertView.findViewById(R.id.tv_item_reply_lb);
-            holder.tv_item_replyed=convertView.findViewById(R.id.tv_item_replyed);
+            holder.tv_item_reply_lb = convertView.findViewById(R.id.tv_item_reply_lb);
+            holder.tv_item_replyed = convertView.findViewById(R.id.tv_item_replyed);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -88,58 +83,54 @@ public class CommentItemAdapter extends BaseAdapter {
         UserUtil user = UserUtil.getInstance();
         CommentBean comment = mList.get(position);
         if (!TextUtils.isEmpty(user.mNick) && user.mNick.equalsIgnoreCase(comment.getMember_name())) {
-            holder.tv_item_discuss_delete.setVisibility(View.VISIBLE);
-        } else {
-            holder.tv_item_discuss_delete.setVisibility(View.GONE);
-        }
+            holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*删除评论*/
+                    OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
+                            params("id", mList.get(position).getId())
+                            .execute(new JsonCallback<String>() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    deleteItemView(position);
+                                }
+                            });
+                }
+            });
 
+        } else {
+            holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    commentRecallListener.recommentContentListener(position, mList.get(position), holder.content);
+                }
+            });
+        }
         return convertView;
     }
 
-    private void showView(ViewHolder holder, final int position, ViewGroup parent) {
-
+    private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
         holder.name.setText(mList.get(position).getMember_name());
+        if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())) {
+            holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
+            holder.tv_item_replyed.setVisibility(View.VISIBLE);
+            holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name());
+        } else {
+            holder.tv_item_reply_lb.setVisibility(View.GONE);
+            holder.tv_item_replyed.setVisibility(View.GONE);
+        }
         holder.content.setText(mList.get(position).getContent());
 
-        /***
-         * 删除评论
-         ***/
-        holder.tv_item_discuss_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
-                        params("id", mList.get(position).getId()).execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        deleteItemView(position);
-
-                    }
-                });
-
-            }
-        });
-
-        holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commentRecallListener.recommentcontentListener(position,mList.get(position));
-            }
-        });
-
     }
-
 
     public static class ViewHolder {
-        TextView name, content, tv_item_discuss_delete,tv_item_reply_lb,tv_item_replyed;
+        TextView name, content, tv_item_reply_lb, tv_item_replyed;
         LinearLayout ll_comment_selflist;
         LinearLayout ll_comment_view;
-
-
     }
 
-
     public interface CommentRecallListener {
-        void recommentcontentListener(int position,CommentBean commentBean);
+        void recommentContentListener(int position, CommentBean commentBean, TextView topLocation);
     }
 
 }

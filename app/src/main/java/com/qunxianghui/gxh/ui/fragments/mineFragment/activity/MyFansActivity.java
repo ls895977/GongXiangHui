@@ -1,30 +1,29 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyFansAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MineFansBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MyFansActivity extends BaseActivity {
+public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFansItemClickListener {
     @BindView(R.id.recycler_mine_fances)
     XRecyclerView mRecyclerMineFances;
 
@@ -33,6 +32,7 @@ public class MyFansActivity extends BaseActivity {
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
     private MyFansAdapter myFansAdapter;
+    private Handler handler = new Handler();
 
     @Override
     protected int getLayoutId() {
@@ -59,30 +59,30 @@ public class MyFansActivity extends BaseActivity {
 
     /*請求我的粉丝数据*/
     private void RequestMyFansData() {
-        OkGo.<String>post(Constant.MYFANS_URL)
+        OkGo.<MineFansBean>post(Constant.MYFANS_URL)
                 .params("limit", 10)
                 .params("skip", count)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<MineFansBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
+                    public void onSuccess(Response<MineFansBean> response) {
                         parseFocusData(response.body());
                     }
                 });
     }
 
     /*解析我的粉丝的数据*/
-    private void parseFocusData(String body) {
-        final MineFansBean mineFansBean = GsonUtils.jsonFromJson(body, MineFansBean.class);
+    private void parseFocusData(MineFansBean mineFansBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
         }
         dataList.addAll(mineFansBean.getData());
         count = dataList.size();
-        if (mineFansBean.getCode() == 0) {
+        if (mineFansBean.getCode() == 200) {
             if (mIsFirst) {
                 mIsFirst = false;
                 myFansAdapter = new MyFansAdapter(mContext, dataList);
+                myFansAdapter.setMyFansItemClickListener(this);
                 mRecyclerMineFances.setAdapter(myFansAdapter);
 
             }
@@ -119,10 +119,32 @@ public class MyFansActivity extends BaseActivity {
         });
     }
 
+    /*我的粉丝的关注*/
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    public void FansClick(final int position) {
+        int be_member_id = dataList.get(position).getMember_id();
+        OkGo.<CommonBean>post(Constant.ATTENTION_URL)
+                .params("be_member_id", be_member_id)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        if (code == 0) {
+                            asyncShowToast("关注成功");
+                            dataList.get(position).setFollow_type(1);
+
+                        } else if (code == 202) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    asyncShowToast("取消关注成功");
+                                    dataList.get(position).setFollow_type(0);
+                                }
+                            });
+                        }
+                        myFansAdapter.notifyDataSetChanged();
+
+                    }
+                });
     }
 }

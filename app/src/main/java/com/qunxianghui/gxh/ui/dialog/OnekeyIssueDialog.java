@@ -19,11 +19,13 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.ui.activity.PublishActivity;
+import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.ui.activity.LocationPublishActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CheckBoxActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.FastBlurUtility;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 public class OnekeyIssueDialog extends Dialog {
 
@@ -35,27 +37,29 @@ public class OnekeyIssueDialog extends Dialog {
         mActicity = ((Activity) context);
         View view = LayoutInflater.from(context).inflate(R.layout.pop_onekey_issue, null);
         View.OnClickListener listener = new View.OnClickListener() {
+            Intent intent = null;
 
             @Override
             public void onClick(View v) {
                 dismiss();
                 switch (v.getId()) {
                     case R.id.tv_video:
-                        FitchVideo();
+                        fitchVideo();
                         break;
                     case R.id.tv_location:
-                        startActivity(PublishActivity.class);
+                        startActivity(LocationPublishActivity.class);
                         break;
                     case R.id.tv_baoliao:
                         startActivity(BaoLiaoActivity.class);
                         break;
                     case R.id.tv_local_service:
-                        startActivity(CompanySetActivity.class);
-                        break;
                     case R.id.tv_choice:
-////                        toActivity(GuidActivity.class);
-//                        toActivity(GuidSlideActivity.class);
-                        startActivity(CheckBoxActivity.class);
+                        intent = new Intent(mActicity, ProtocolActivity.class);
+                        intent.putExtra("url", v.getId() == R.id.tv_local_service ? Constant.LOCAL_SERVICES_ISSUE_URL : Constant.GOOD_SELECT__DETAIL_URL);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        intent.putExtra("tag", 1);
+                        mActicity.startActivity(intent);
+                        break;
                 }
             }
         };
@@ -90,7 +94,7 @@ public class OnekeyIssueDialog extends Dialog {
     }
 
     /*获取系统的视频和录像*/
-    private void FitchVideo() {
+    private void fitchVideo() {
         PictureSelector.create(mActicity)
                 .openGallery(PictureMimeType.ofVideo())
                 .selectionMode(PictureConfig.SINGLE)

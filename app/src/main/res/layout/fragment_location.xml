@@ -19,7 +19,6 @@
             android:layout_marginLeft="9dp"
             android:drawableLeft="@mipmap/icon_local_location"
             android:drawablePadding="5dp"
-            android:text="西湖区"
             android:textSize="12sp" />
 
         <TextView
@@ -42,7 +41,7 @@
         android:orientation="horizontal">
 
         <com.flyco.tablayout.SlidingTabLayout
-            android:id="@+id/slidingTabLayout"
+            android:id="@+id/slidingLocationTabLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

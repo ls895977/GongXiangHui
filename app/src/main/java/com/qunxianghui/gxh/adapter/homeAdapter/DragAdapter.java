@@ -90,7 +90,8 @@ public class DragAdapter extends BaseAdapter {
         ChannelItem channel = getItem(position);
         item_text.setText(channel.getName());
 //        if ((position == 0) || (position == 1)) {
-        if (position == 0 || position == 1) {
+        // FIXME: 2018/8/13
+        if (position == 0) {
             item_text.setEnabled(false);
         }
         if (isChanged && (position == holdPosition) && !isItemShow) {
@@ -156,6 +157,7 @@ public class DragAdapter extends BaseAdapter {
      * 删除频道列表
      */
     public void remove() {
+        if (remove_position == -1) return;
         channelList.remove(remove_position);
         remove_position = -1;
         isListChanged = true;

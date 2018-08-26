@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,14 +10,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeAirListAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeAirBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.List;
 
@@ -42,8 +41,6 @@ public class HomeAirActivity extends BaseActivity {
     @BindView(R.id.iv_homeair_airbg)
     ImageView ivHomeairAirbg;
 
-    private String cityId;
-    private String areaId;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
 
     @Override
@@ -54,15 +51,15 @@ public class HomeAirActivity extends BaseActivity {
     @Override
     protected void initViews() {
         mXrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mHomeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+        mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
     }
 
     @Override
-    protected void initData() {
-        SharedPreferences spLocation = getSharedPreferences("location", MODE_PRIVATE);
-        cityId = spLocation.getString("X-cityId", "");
-        areaId = spLocation.getString("X-areaId", "");
+    protected void onStart() {
+        super.onStart();
         requestAirList();
+        String currcity = SPUtils.getLocation("currcity");
+        mHomeAirLocation.setText(currcity);
     }
 
     @Override
@@ -81,13 +78,11 @@ public class HomeAirActivity extends BaseActivity {
     }
 
     private void requestAirList() {
-        OkGo.<String>post(Constant.HOME_AIRLIST_URL)
-                .headers("X-cityId", cityId)
-                .headers("X-areaId", areaId)
-                .execute(new StringCallback() {
+        OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
+                .execute(new JsonCallback<HomeAirBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        HomeAirBean homeAirBean = GsonUtil.parseJsonWithGson(response.body(), HomeAirBean.class);
+                    public void onSuccess(Response<HomeAirBean> response) {
+                        HomeAirBean homeAirBean = response.body();
                         HomeAirBean.DataBean data = homeAirBean.getData();
                         setTopAirDetail(data);
                         final List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();
@@ -107,11 +102,8 @@ public class HomeAirActivity extends BaseActivity {
         mTvHomeairMiddleAirdetail.setText(String.format("%s|%s%s", weather, windDirection, windPower));
         mTvHomeairBottomDayDetail.setText(dateTime);
         mTvHomeairDes.setText(notice);
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.placeholder(R.mipmap.homeair_sun);
-        options.error(R.mipmap.homeair_rain);
-        Glide.with(mContext).load(bgImage).apply(options).into(ivHomeairAirbg);
+        Glide.with(mContext).load(bgImage).apply(new RequestOptions()
+                .placeholder(R.mipmap.homeair_sun).error(R.mipmap.homeair_rain).centerCrop()).into(ivHomeairAirbg);
 
     }
 
@@ -121,7 +113,7 @@ public class HomeAirActivity extends BaseActivity {
         switch (requestCode) {
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
-                    mHomeAirLocation.setText(getSharedPreferences("location", MODE_PRIVATE).getString("currcity", ""));
+                    mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
                 }
                 break;
         }
@@ -134,7 +126,7 @@ public class HomeAirActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.home_air_location:
-                startActivityForResult(new Intent(mContext, AbleNewSearchActivity.class), CITY_SELECT_RESULT_FRAG);
+                startActivityForResult(new Intent(mContext, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
                 break;
         }
     }

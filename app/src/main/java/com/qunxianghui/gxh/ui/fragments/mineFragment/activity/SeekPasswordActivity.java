@@ -12,17 +12,14 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
+import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.widget.TitleBuilder;
-
-import org.json.JSONObject;
 
 import butterknife.BindView;
 
@@ -84,38 +81,23 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
      */
     private void RequestNextStep() {
         vertifiCode = etFetchPassCode.getText().toString().trim();
-        OkGo.<String> post(Constant.SEEK_PASSWORD_URL)
-                .params("mobile",phoneNumber)
-                .params("captcha",vertifiCode).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                try {
-                    JSONObject jsonObject=new JSONObject(response.body());
-
-                    final int code = jsonObject.getInt("code");
-                    if (code==101){
-                        asyncShowToast("验证码不正确");
-                        return;
-                    }else if (code==0){
-                        Intent intent  = new Intent(mContext, ResetPasswordActivity.class);
-                        intent.putExtra("mobile", phoneNumber);
-                        intent.putExtra("captcha", vertifiCode);
-
-                        startActivity(intent);
+        OkGo.<CommonBean>post(Constant.SEEK_PASSWORD_URL)
+                .params("mobile", phoneNumber)
+                .params("captcha", vertifiCode)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        final int code = response.body().code;
+                        if (code == 101) {
+                            asyncShowToast("验证码不正确");
+                        } else if (code == 0) {
+                            Intent intent = new Intent(mContext, ResetPasswordActivity.class);
+                            intent.putExtra("mobile", phoneNumber);
+                            intent.putExtra("captcha", vertifiCode);
+                            startActivity(intent);
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onError(Response<String> response) {
-                super.onError(response);
-                Logger.e(response.body().toString());
-
-            }
-        });
+                });
     }
 
     private void getVertifiCode() {
@@ -125,16 +107,15 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
+        OkGo.<GeneralResponseBean>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
                 .params("mobile", phoneNumber)
                 .params("type", 2)
-                .execute(new StringCallback() {
+                .execute(new JsonCallback<GeneralResponseBean>() {
                     @Override
-                    public void onSuccess(Response<String> response) {
-                        final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
+                    public void onSuccess(Response<GeneralResponseBean> response) {
+                        GeneralResponseBean responseBean = response.body();
                         if (responseBean.getCode() == 0) {
                             handler.sendEmptyMessage(MSG_SEND_SUCCESS);
                         } else {
@@ -143,7 +124,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
                     }
 
                     @Override
-                    public void onError(Response<String> response) {
+                    public void onError(Response<GeneralResponseBean> response) {
                         handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                     }
                 });

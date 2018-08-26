@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:hint="请输入搜索内容"
+                android:hint="搜索标题或分类"
                 android:textColorHint="@color/white"
                 android:textSize="12sp" />
 
@@ -116,10 +116,11 @@
         android:id="@+id/iv_home_paste_artical"
         android:layout_width="52dp"
         android:layout_height="57dp"
+        android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:background="@mipmap/iv_add_artical"
+        android:src="@mipmap/iv_add_artical"
         android:focusable="true"
         tools:ignore="RtlHardcoded" />
 </RelativeLayout>

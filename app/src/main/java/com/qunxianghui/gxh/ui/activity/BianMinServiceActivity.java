@@ -8,6 +8,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.CommoentCallActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -32,37 +33,29 @@ public class BianMinServiceActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        final BianMinGridAdapter bianMinGridAdapter = new BianMinGridAdapter(mContext, images, iconName);
-        gridBianmin.setAdapter(bianMinGridAdapter);
-        bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
-            @Override
-            public void onpicItemClick(int position) {
-
-                switch (position) {
-                    case 0:
-                        asyncShowToast("点击了常用电话");
-                        break;
-
-                    case 1:
-                        Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.BenDiService);
-                        startActivity(intent);
-                        break;
-                }
-
-
-            }
-        });
-    }
-
-    @Override
-    protected void initData() {
         new TitleBuilder(this).setTitleText("便民服务").setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
-
+            }
+        });
+        BianMinGridAdapter bianMinGridAdapter = new BianMinGridAdapter(mContext, images, iconName);
+        gridBianmin.setAdapter(bianMinGridAdapter);
+        bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
+            @Override
+            public void onpicItemClick(int position) {
+                switch (position) {
+                    case 0:
+                        toActivity(CommoentCallActivity.class);
+                        break;
+                    case 1:
+                        Intent intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
+                        intent.putExtra("title", iconName[position]);
+                        intent.putExtra("url", Constant.BIANMIN_HUANGLI_URL);
+                        intent.putExtra("tag", 2);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
     }

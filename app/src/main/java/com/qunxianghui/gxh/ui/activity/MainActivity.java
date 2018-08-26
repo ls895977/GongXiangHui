@@ -21,6 +21,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.base.MyApplication;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
@@ -75,6 +76,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        MyApplication.mMainActivity = this;
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         mFragments[0] = new HomeFragment();
@@ -104,11 +106,6 @@ public class MainActivity extends BaseActivity {
                 try {
                     unregisterReceiver(receiver);
                 } catch (Exception e) {
-//                    if (e.getMessage().contains("Receiver not registered")) {
-//
-//                    } else {
-//                        throw e;
-//                    }
                 }
             }
         };
@@ -124,10 +121,13 @@ public class MainActivity extends BaseActivity {
         );
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        ((BaseFragment) mFragments[0]).initData();
+        if (mFragments[1].isAdded()) {
+            ((BaseFragment) mFragments[1]).initData();
+        }
         if (!LoginMsgHelper.isLogin()) {
             onViewClicked(mTvHome);
         } else {
@@ -138,10 +138,14 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.tv_home, R.id.tv_location, R.id.ll_issue, R.id.tv_generation, R.id.tv_mine})
     public void onViewClicked(View view) {
-        if (mCurrentView == view) {
-            if (view.getId() == R.id.ll_issue) {
-                showOneKeyIssuePop();
+        if (view.getId() == R.id.ll_issue) {
+            if (!LoginMsgHelper.isLogin()) {
+                toActivity(LoginActivity.class);
+                return;
             }
+            showOneKeyIssuePop();
+        }
+        if (mCurrentView == view) {
             return;
         }
         if ((view.getId() == R.id.tv_generation || view.getId() == R.id.tv_mine) && !LoginMsgHelper.isLogin()) {
@@ -166,7 +170,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mFragments[1];
                 break;
             case R.id.ll_issue:
-                showOneKeyIssuePop();
+//                showOneKeyIssuePop();
                 mTvIssue.setSelected(true);
                 break;
             case R.id.tv_generation:
@@ -205,7 +209,7 @@ public class MainActivity extends BaseActivity {
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
                     Intent intent = new Intent(mContext, VideoUploadActivity.class);
                     intent.putExtra("videoPath", selectList.get(0).getPath());
-                    startActivity(intent);
+                    startActivityForResult(intent, 0x0011);
                     break;
             }
         }
@@ -238,9 +242,6 @@ public class MainActivity extends BaseActivity {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
         dialog.blurBg().show();
-//        Intent intent = new Intent(MainActivity.this, AdvertTemplateActivity.class);
-//        intent.putExtra("adverTag", 1);
-//        startActivity(intent);
     }
 }
 
