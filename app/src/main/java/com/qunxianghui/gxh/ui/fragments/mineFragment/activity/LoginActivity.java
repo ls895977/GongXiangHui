@@ -50,7 +50,6 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity {
-
     public static final int LOGIN_REQUEST = 1;
     public static final int LOGIN_RESULT = 1;
 
