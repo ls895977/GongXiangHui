@@ -290,7 +290,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
 
     private void setWidth() {
         float density = getResources().getDisplayMetrics().density;
-        if (mList.get(mVp.getCurrentItem()).ad_type == 3) {
+        if (mList.get(mVp.getCurrentItem()).ad_type == 1) {
             AdvertTemplateActivity.sImagePicker.setFocusWidth((int) (density * 360));   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
             AdvertTemplateActivity.sImagePicker.setFocusHeight((int) (density * 150));  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
             AdvertTemplateActivity.sImagePicker.setOutPutX((int) (density * 360));//保存文件的宽度。单位像素

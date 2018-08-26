@@ -185,7 +185,13 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
-        upLoadPic(mList.get(0), 0);
+        if (!mList.isEmpty()) {
+            upLoadPic(mList.get(0), 0);
+        } else {
+            asyncShowToast("保存成功");
+            setResult(0x0022);
+            finish();
+        }
     }
 
     private void upLoadPic(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
