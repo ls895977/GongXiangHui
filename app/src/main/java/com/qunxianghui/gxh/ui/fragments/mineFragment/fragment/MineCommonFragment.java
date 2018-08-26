@@ -194,7 +194,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
             myCollectPostAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.VISIBLE);
         }
-        if (o instanceof String && "cancel".equals(o)) {
+        if (o instanceof String && "news_c".equals(o)) {
             myCollectPostAdapter.isShow=false;
             myCollectPostAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);
