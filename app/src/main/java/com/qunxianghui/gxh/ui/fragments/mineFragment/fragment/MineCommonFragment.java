@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -20,11 +21,15 @@ import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +39,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MineCommonFragment extends BaseFragment  {
+public class MineCommonFragment extends BaseFragment implements Observer {
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
@@ -44,6 +49,8 @@ public class MineCommonFragment extends BaseFragment  {
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
+    @BindView(R.id.bt_mycollect_delete)
+    Button btnDelete;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
@@ -128,7 +135,18 @@ public class MineCommonFragment extends BaseFragment  {
 
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(this);
         xrecycler_mine_collect_news.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i <dataList.size() ; i++) {
+                    if (dataList.get(i).isChecked() == true) {
+                        //这边获取选中的数据id
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -169,4 +187,17 @@ public class MineCommonFragment extends BaseFragment  {
     }
 
 
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof String && "news".equals(o)) {
+            myCollectPostAdapter.isShow=true;
+            myCollectPostAdapter.notifyDataSetChanged();
+            btnDelete.setVisibility(View.VISIBLE);
+        }
+        if (o instanceof String && "cancel".equals(o)) {
+            myCollectPostAdapter.isShow=false;
+            myCollectPostAdapter.notifyDataSetChanged();
+            btnDelete.setVisibility(View.GONE);
+        }
+    }
 }

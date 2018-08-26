@@ -10,5 +10,14 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-
+    <Button
+        android:id="@+id/bt_mycollect_delete"
+        android:layout_width="62dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_red_solid_corner"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 </LinearLayout>

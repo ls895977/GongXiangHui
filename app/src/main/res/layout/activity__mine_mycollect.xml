@@ -34,6 +34,13 @@
             android:text="我的收藏"
             android:textColor="#000"
             android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_mycollect_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="编辑"
+            android:layout_alignParentRight="true"
+            android:visibility="visible" />
 
 
     </RelativeLayout>

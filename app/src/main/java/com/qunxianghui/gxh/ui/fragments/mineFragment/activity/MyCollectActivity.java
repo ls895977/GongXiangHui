@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
     ImageView ivMyCollectBack;
     @BindView(R.id.tv_mycollect_cancel)
     TextView tvMycollectCancel;
+    @BindView(R.id.tv_mycollect_edit)
+    TextView tvMycollectEdit;
 
     private String[] titles = new String[]{"资讯", "视频"};
     private List<Fragment> fragments = new ArrayList<>();
@@ -82,6 +85,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
         mineTablayoutCommon.setOnTabSelectedListener(this);
         ivMyCollectBack.setOnClickListener(this);
         tvMycollectCancel.setOnClickListener(this);
+        tvMycollectEdit.setOnClickListener(this);
     }
 
     private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
@@ -140,7 +144,21 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
                 break;
             case R.id.tv_mycollect_cancel:
                 EventManager.getInstance().publishMessage(false);
-                isEdit = true;
+//                isEdit = true;
+                tvMycollectCancel.setVisibility(View.GONE);
+                ivMyCollectBack.setVisibility(View.VISIBLE);
+                EventManager.getInstance().publishMessage("cancel");
+                break;
+            case R.id.tv_mycollect_edit:
+                if(mineCommonViewpager.getCurrentItem()==0){
+                    EventManager.getInstance().publishMessage("news");
+                }
+                if(mineCommonViewpager.getCurrentItem()==1){
+                    EventManager.getInstance().publishMessage("video");
+                }
+//                isEdit = true;
+                tvMycollectCancel.setVisibility(View.VISIBLE);
+                ivMyCollectBack.setVisibility(View.GONE);
                 break;
         }
     }
