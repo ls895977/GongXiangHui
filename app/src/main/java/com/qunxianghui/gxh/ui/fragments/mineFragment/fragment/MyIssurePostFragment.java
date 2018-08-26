@@ -365,15 +365,11 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                                     commentDialog.dismiss();
                                     asyncShowToast(commentResponseBean.getMsg());
                                     List<CommentBean> commentBeanList = dataList.get(position).getComment_res();
-                                    CommentBean comment = new CommentBean();
                                     ReplyCommentResponseBean.DataBean dataBean = commentResponseBean.getData();
                                     if (dataBean != null) {
-                                        ReplyCommentResponseBean.DataBean.ComOneResBean comOneResBean = dataBean.getCom_one_res();
+                                        CommentBean comOneResBean = dataBean.getCom_one_res();
                                         if (comOneResBean != null) {
-                                            comment.setContent(comOneResBean.getContent());
-                                            comment.setUuid(comOneResBean.getData_uuid());
-                                            comment.setMember_name(comOneResBean.getMember_name());
-                                            commentBeanList.add(comment);
+                                            commentBeanList.add(comOneResBean);
                                             mineIssurePostAdapter.notifyDataSetChanged();
                                             OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                                                     .params("uuid", commentBean.getUuid())

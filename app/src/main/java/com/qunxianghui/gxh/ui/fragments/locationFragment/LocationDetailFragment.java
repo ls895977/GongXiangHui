@@ -43,18 +43,16 @@ import butterknife.BindView;
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
 
     @BindView(R.id.recyclerView_location)
-    XRecyclerView recyclerView;
-    private List<TestMode.DataBean.ListBean> localDataList = new ArrayList<>();
-    private int commentPosition;
-    private int scrollOffsetY = 0;
-    private int count = 0;
-    NineGridTest2Adapter mAdapter;
+    XRecyclerView mRecyclerView;
+
+    private List<TestMode.DataBean.ListBean> locationBean = new ArrayList<>();
+    private int mSkip = 0;
+    private NineGridTest2Adapter mAdapter;
     private CommentDialog commentDialog;
     private int mCateId;
     private Dialog mShareDialog;
     private TextView mTv_inform_harass;
     private TextView mTv_inform_tort;
-    private TextView mTv_bottom_ainform_cancle;
     private TextView mTv_inform_sex;
     private int mUuid;
 
@@ -65,35 +63,42 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void initViews(View view) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new NineGridTest2Adapter(mActivity, localDataList);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        mAdapter = new NineGridTest2Adapter(mActivity, locationBean);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void initData() {
         mCateId = getArguments().getInt("channel_id");
-        RequestLocalServiceData();
+        requestLocalServiceData();
     }
 
-    private void RequestLocalServiceData() {
+    private void requestLocalServiceData() {
         OkGo.<TestMode>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
-                .params("skip", count)
+                .params("skip", mSkip)
                 .execute(new JsonCallback<TestMode>() {
                     @Override
                     public void onSuccess(Response<TestMode> response) {
-                        if (count == 0) {
-                            localDataList.clear();
-                        }
                         TestMode locationListBean = response.body();
-                        localDataList.addAll(locationListBean.getData().getList());
-                        count = localDataList.size();
                         if (locationListBean.getCode() == 0) {
-                            recyclerView.refreshComplete();
-                            mAdapter.notifyDataSetChanged();
+                            if (mSkip == 0) {
+                                locationBean.clear();
+                                mRecyclerView.refreshComplete();
+                                mRecyclerView.setLoadingMoreEnabled(true);
+                            }
+                            List<TestMode.DataBean.ListBean> list = locationListBean.getData().getList();
+                            locationBean.addAll(list);
+                            if (list.size() < 10) {
+                                mRecyclerView.setLoadingMoreEnabled(false);
+                            }
+                        } else {
+                            mRecyclerView.setLoadingMoreEnabled(false);
                         }
+                        mRecyclerView.loadMoreComplete();
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -101,20 +106,19 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     protected void initListeners() {
         mAdapter.setListener(this);
-        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                count = 0;
+                mSkip = 0;
                 initData();
             }
 
             @Override
             public void onLoadMore() {
-                count = count + 10;
+                mSkip += 10;
                 initData();
             }
         });
-
 
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
@@ -123,9 +127,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
                     int tvContentTop = getLocationOnScreen(clickContent);// textview top值
                     int scrollY = tvContentTop - etTop + clickContent.getHeight();
-                    recyclerView.smoothScrollBy(0, scrollY);
+                    mRecyclerView.smoothScrollBy(0, scrollY);
                 }
-
             }
 
             @Override
@@ -143,26 +146,21 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         return locations[1];
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_alertbottom_up_pic:
                 toActivity(PublishActivity.class);
                 break;
-
             case R.id.tv_inform_sex:
                 asyncShowToast("点击举报了色情");
                 String TvInformSex = mTv_inform_sex.getText().toString().trim();
                 RestInformData(TvInformSex);
                 break;
-
             case R.id.tv_inform_harass:
                 asyncShowToast("点击举报了骚扰");
                 String TvInformHarass = mTv_inform_harass.getText().toString().trim();
                 RestInformData(TvInformHarass);
-
-
                 break;
             case R.id.tv_inform_tort:
                 asyncShowToast("点击举报了侵权");
@@ -198,7 +196,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void onPicClick(int position, int picpostion) {
-        List<String> imageList = localDataList.get(position).getImages();
+        List<String> imageList = locationBean.get(position).getImages();
         ArrayList<String> arrayList = new ArrayList<>(imageList);
         Intent intent = new Intent(getActivity(), PhotoBrowserActivity.class);
         intent.putStringArrayListExtra("url", arrayList);
@@ -206,7 +204,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
     }
-
 
     /**
      * 评论的点击
@@ -222,16 +219,15 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             toActivity(LoginActivity.class);
             return;
         }
-        commentPosition = position;
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
 
             @Override
             public void sendComment(String inputText) {
-                final int uuid = localDataList.get(position).getUuid();
-                if (localDataList.get(position).getComment_res().size() <= 0) {
-                    localDataList.get(position).setComment_res(new ArrayList<CommentBean>());
+                final int uuid = locationBean.get(position).getUuid();
+                if (locationBean.get(position).getComment_res().size() <= 0) {
+                    locationBean.get(position).setComment_res(new ArrayList<CommentBean>());
                 }
-                List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
+                List<CommentBean> commentBeanList = locationBean.get(position).getComment_res();
                 CommentBean comment = new CommentBean();
                 UserUtil user = UserUtil.getInstance();
                 comment.setContent(inputText);
@@ -250,7 +246,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
-                                    recyclerView.refresh();
+//                                    mRecyclerView.refresh();
                                 } else {
                                     asyncShowToast(response.message());
                                 }
@@ -271,25 +267,25 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             mActivity.finish();
             return;
         }
-        if (localDataList.get(position).getClick_like() != null && localDataList.get(position).getClick_like().toString().length() == 0) {
-            if (localDataList.get(position).getClick_like().size() <= 0) {
-                localDataList.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
+        if (locationBean.get(position).getClick_like() != null && locationBean.get(position).getClick_like().toString().length() == 0) {
+            if (locationBean.get(position).getClick_like().size() <= 0) {
+                locationBean.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
             }
             TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
             UserUtil user = UserUtil.getInstance();
             like.setMember_name(user.mNick);
-            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = localDataList.get(position).getClick_like();
+            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = locationBean.get(position).getClick_like();
             likeBeanList.add(like);
             mAdapter.notifyDataSetChanged();
             mAdapter.notifyItemChanged(position);
             OkGo.<String>post(Constant.LIKE_URL)
-                    .params("data_uuid", localDataList.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
+                    .params("data_uuid", locationBean.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
                 @Override
                 public void onSuccess(Response<String> response) {
                     TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
                     UserUtil user = UserUtil.getInstance();
                     like.setMember_name(user.mNick);
-                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = localDataList.get(position).getClick_like();
+                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = locationBean.get(position).getClick_like();
                     likeBeanList.add(like);
                     mAdapter.notifyDataSetChanged();
                     mAdapter.notifyItemChanged(position);
@@ -303,7 +299,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             });
         } else {
             OkGo.<CommonBean>post(Constant.LIKE_URL)
-                    .params("data_uuid", localDataList.get(position).getUuid())
+                    .params("data_uuid", locationBean.get(position).getUuid())
                     .execute(new JsonCallback<CommonBean>() {
                         @Override
                         public void onSuccess(Response<CommonBean> response) {
@@ -311,24 +307,24 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
                             if ("点赞成功".equals(response.body().msg)) {
-                                localDataList.get(position).getTem().add(clickLikeBean);
-                                localDataList.get(position).setLike_info_res("true");
+                                locationBean.get(position).getTem().add(clickLikeBean);
+                                locationBean.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
                                 asyncShowToast("点赞成功");
                             } else if ("取消点赞成功".equals(response.body().msg)) {
-                                List<TestMode.DataBean.ListBean.ClickLikeBean> list = localDataList.get(position).getTem();
-                                for (int i = 0; i < localDataList.get(position).getTem().size(); i++) {
-                                    TestMode.DataBean.ListBean.ClickLikeBean tem = localDataList.get(position).getTem().get(i);
+                                List<TestMode.DataBean.ListBean.ClickLikeBean> list = locationBean.get(position).getTem();
+                                for (int i = 0; i < locationBean.get(position).getTem().size(); i++) {
+                                    TestMode.DataBean.ListBean.ClickLikeBean tem = locationBean.get(position).getTem().get(i);
                                     if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
-                                        if (localDataList.get(position).getClick_like().size() == 1 && localDataList.get(position).getTem().size() == 1) {
-                                            localDataList.get(position).setClick_like("");
+                                        if (locationBean.get(position).getClick_like().size() == 1 && locationBean.get(position).getTem().size() == 1) {
+                                            locationBean.get(position).setClick_like("");
                                         }
-                                        localDataList.get(position).getTem().remove(tem);
+                                        locationBean.get(position).getTem().remove(tem);
                                         break;
                                     }
                                 }
-                                localDataList.get(position).setLike_info_res("");
+                                locationBean.get(position).setLike_info_res("");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
                                 asyncShowToast("取消点赞");
@@ -347,8 +343,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void onCollectionClick(final int position) {
         showBottomDialog();
-        mUuid = localDataList.get(position).getUuid();
-
+        mUuid = locationBean.get(position).getUuid();
     }
 
     /*弹出底部弹出框*/
@@ -361,7 +356,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             mTv_inform_sex = alertView.findViewById(R.id.tv_inform_sex);
             mTv_inform_harass = alertView.findViewById(R.id.tv_inform_harass);
             mTv_inform_tort = alertView.findViewById(R.id.tv_inform_tort);
-            mTv_bottom_ainform_cancle = alertView.findViewById(R.id.tv_bottom_ainform_cancle);
+            TextView mTv_bottom_ainform_cancle = alertView.findViewById(R.id.tv_bottom_ainform_cancle);
 
             mTv_bottom_ainform_cancle.setOnClickListener(this);
             mTv_inform_tort.setOnClickListener(this);
@@ -393,16 +388,14 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void headImageClick(int position) {
         Intent intent = new Intent(mActivity, PersonDetailActivity.class);
-        intent.putExtra("member_id", localDataList.get(position).getMember_id());
+        intent.putExtra("member_id", locationBean.get(position).getMember_id());
         startActivity(intent);
     }
-
 
     private View clickContent;
 
     @Override
-    public void commentRecall(final int position, final CommentBean commentBean, TextView tvContent) {
-
+    public void commentRecall(final int outPosition, final int position, final CommentBean commentBean, TextView tvContent) {
         this.clickContent = tvContent;
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
@@ -423,16 +416,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 if (commentResponseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(commentResponseBean.getMsg());
-                                    List<CommentBean> commentBeanList = localDataList.get(position).getComment_res();
-                                    CommentBean comment = new CommentBean();
+                                    List<CommentBean> commentBeanList = locationBean.get(outPosition).getComment_res();
                                     ReplyCommentResponseBean.DataBean dataBean = commentResponseBean.getData();
                                     if (dataBean != null) {
-                                        ReplyCommentResponseBean.DataBean.ComOneResBean comOneResBean = dataBean.getCom_one_res();
+                                        CommentBean comOneResBean = dataBean.getCom_one_res();
                                         if (comOneResBean != null) {
-                                            comment.setContent(comOneResBean.getContent());
-                                            comment.setUuid(comOneResBean.getData_uuid());
-                                            comment.setMember_name(comOneResBean.getMember_name());
-                                            commentBeanList.add(comment);
+                                            commentBeanList.add(comOneResBean);
                                             mAdapter.notifyDataSetChanged();
                                             OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                                                     .params("uuid", commentBean.getUuid())
@@ -442,15 +431,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                                         public void onSuccess(Response<ReplyCommentResponseBean> response) {
                                                             ReplyCommentResponseBean responseBean = response.body();
                                                             if (responseBean.getCode() == 0) {
-                                                                commentDialog.dismiss();
                                                                 asyncShowToast(responseBean.getMsg());
-                                                                recyclerView.refresh();
+                                                                mRecyclerView.refresh();
                                                             } else {
                                                                 asyncShowToast(response.message());
                                                             }
                                                         }
                                                     });
-
                                         }
                                     }
                                 } else {

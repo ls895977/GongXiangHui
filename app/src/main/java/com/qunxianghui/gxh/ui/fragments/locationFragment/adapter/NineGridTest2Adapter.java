@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
-import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
 import com.qunxianghui.gxh.widget.SnsPopupWindow;
@@ -33,13 +31,12 @@ import java.util.List;
 /**
  * Created by HMY on 2016/8/6
  */
-public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.myViewHolder> implements CommentItemAdapter.CommentRecallListener {
+public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adapter.myViewHolder> {
 
     private Context mContext;
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
     private CircleOnClickListener listener;
-    private LocationFragment context;
     private final int MAX_LINE_COUNT = 6;//最大显示行数
     private final int STATE_UNKNOW = -1;//未知状态
     private final int STATE_NOT_OVERFLOW = 1;//文本行数小于最大可显示行数
@@ -77,7 +74,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     }
 
     @Override
-    public void onBindViewHolder(final myViewHolder holder, final int position) {
+    public void onBindViewHolder(final myViewHolder holder, int position) {
         final int state = mTextStateList.get(position, STATE_UNKNOW);
         if (state == STATE_UNKNOW) {
             holder.tv_location_person_content.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -90,10 +87,10 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                         holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);//设置最大显示行数
                         holder.tvShoworHide.setVisibility(View.VISIBLE);
                         holder.tvShoworHide.setText("全文");//设置其文字为全文
-                        mTextStateList.put(position, STATE_COLLAPSED);
+                        mTextStateList.put(holder.getAdapterPosition() - 1, STATE_COLLAPSED);
                     } else {
                         holder.tvShoworHide.setVisibility(View.GONE);//显示全文隐藏
-                        mTextStateList.put(position, STATE_NOT_OVERFLOW);//让其不能超过限定的行数
+                        mTextStateList.put(holder.getAdapterPosition() - 1, STATE_NOT_OVERFLOW);//让其不能超过限定的行数
                     }
                     return true;
                 }
@@ -116,12 +113,12 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                     break;
             }
         }
-        holder.tv_location_person_name.setText(dataBeanList.get(position).getMember_name());
-        holder.tv_location_person_content.setText(dataBeanList.get(position).getContent());
-        holder.tv_location_issure_name.setText(dataBeanList.get(position).getCtime());
-        final List<String> imageList = dataBeanList.get(position).getImages();
+        holder.tv_location_person_name.setText(dataBeanList.get(holder.getAdapterPosition() - 1).getMember_name());
+        holder.tv_location_person_content.setText(dataBeanList.get(holder.getAdapterPosition() - 1).getContent());
+        holder.tv_location_issure_name.setText(dataBeanList.get(holder.getAdapterPosition() - 1).getCtime());
+        List<String> imageList = dataBeanList.get(holder.getAdapterPosition() - 1).getImages();
         Glide.with(mContext)
-                .load(dataBeanList.get(position).getMember_avatar())
+                .load(dataBeanList.get(holder.getAdapterPosition() - 1).getMember_avatar())
                 .apply(new RequestOptions().placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop())
                 .into(holder.iv_location_person_head);
         if (imageList.size() == 1) {
@@ -134,7 +131,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onPicClick(position, 0);
+                    listener.onPicClick(holder.getAdapterPosition() - 1, 0);
                 }
             });
         } else {
@@ -145,42 +142,45 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             adapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
                 @Override
                 public void onClick(View v, int p) {
-                    listener.onPicClick(position, p);
+                    listener.onPicClick(holder.getAdapterPosition() - 1, p);
                 }
-
-
             });
         }
-        final int size = dataBeanList.get(position).getComment_res().size();
+        int size = dataBeanList.get(holder.getAdapterPosition() - 1).getComment_res().size();
         if (size != 0) {
             List<CommentBean> commentBeans = new ArrayList<>();
             holder.digCommentBody.setVisibility(View.VISIBLE);
             final CommentItemAdapter commentItemAdapter = new CommentItemAdapter(mContext, commentBeans, holder.comment_list);
-            commentItemAdapter.setCommentRecallListener(this);
+            commentItemAdapter.setCommentRecallListener(new CommentItemAdapter.CommentRecallListener() {
+                @Override
+                public void recommentContentListener(int position, CommentBean commentBean, TextView topLocation) {
+                    listener.commentRecall(holder.getAdapterPosition() - 1, position, commentBean, topLocation);
+                }
+            });
             holder.comment_list.setAdapter(commentItemAdapter);
-            if (size>7){
+            if (size > 7) {
                 holder.llShowComment.setVisibility(View.VISIBLE);
                 holder.llShowComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!flag){
-                            commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
+                        if (!flag) {
+                            commentItemAdapter.refreshData(dataBeanList.get(holder.getAdapterPosition() - 1).getComment_res());
                             //holder.llShowComment.setVisibility(View.GONE);
                             holder.tvShowText.setText("收起");
                             flag = true;
                             holder.ivShow.setImageResource(R.mipmap.ic_up);
-                        }else {
-                            commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
+                        } else {
+                            commentItemAdapter.refreshData(dataBeanList.get(holder.getAdapterPosition() - 1).getComment_res().subList(0, 7));
                             holder.tvShowText.setText("展开");
                             flag = false;
                             holder.ivShow.setImageResource(R.mipmap.ic_down);
                         }
                     }
                 });
-                commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res().subList(0,7));
-            }else {
+                commentItemAdapter.refreshData(dataBeanList.get(holder.getAdapterPosition() - 1).getComment_res().subList(0, 7));
+            } else {
                 holder.llShowComment.setVisibility(View.GONE);
-                commentItemAdapter.refreshData(dataBeanList.get(position).getComment_res());
+                commentItemAdapter.refreshData(dataBeanList.get(holder.getAdapterPosition() - 1).getComment_res());
             }
         } else {
             holder.digCommentBody.setVisibility(View.GONE);
@@ -191,12 +191,12 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 if (state == STATE_COLLAPSED) {
                     holder.tv_location_person_content.setMaxLines(Integer.MAX_VALUE);
                     holder.tvShoworHide.setText("收起");
-                    mTextStateList.put(position, STATE_EXPANDED);
+                    mTextStateList.put(holder.getAdapterPosition() - 1, STATE_EXPANDED);
                     notifyDataSetChanged();
                 } else if (state == STATE_EXPANDED) {
                     holder.tv_location_person_content.setMaxLines(MAX_LINE_COUNT);
                     holder.tvShoworHide.setText("全文");
-                    mTextStateList.put(position, STATE_COLLAPSED);
+                    mTextStateList.put(holder.getAdapterPosition() - 1, STATE_COLLAPSED);
                     notifyDataSetChanged();
                 }
             }
@@ -208,13 +208,13 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             public void onClick(View v) {
                 String content = holder.comment_edit.getText().toString();
                 if (listener != null) {
-                    listener.onCommentClick(position, content,holder.itemView);
+                    listener.onCommentClick(holder.getAdapterPosition() - 1, content, holder.itemView);
                 }
             }
         });
         final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
-        snsPopupWindow.setClick_like(dataBeanList.get(position).getLike_info_res());
-        snsPopupWindow.setCollect(dataBeanList.get(position).getCollect());
+        snsPopupWindow.setClick_like(dataBeanList.get(holder.getAdapterPosition() - 1).getLike_info_res());
+        snsPopupWindow.setCollect(dataBeanList.get(holder.getAdapterPosition() - 1).getCollect());
         snsPopupWindow.initItemData();
 
         snsPopupWindow.setmItemClickListener(new SnsPopupWindow.OnItemClickListener() {
@@ -222,14 +222,14 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             public void onItemClick(ActionItem item, int p) {
                 switch (p) {
                     case 0://点赞
-                        listener.onPraiseClick(position);
+                        listener.onPraiseClick(holder.getAdapterPosition() - 1);
                         break;
                     case 1:
-                        listener.onCollectionClick(position);
+                        listener.onCollectionClick(holder.getAdapterPosition() - 1);
                         break;
                     case 2://评论
                         if (listener != null) {
-                            listener.onCommentClick(position, "",holder.itemView);
+                            listener.onCommentClick(holder.getAdapterPosition() - 1, "", holder.itemView);
                         }
                         break;
                 }
@@ -238,22 +238,22 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.iv_location_person_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.headImageClick(position);
+                listener.headImageClick(holder.getAdapterPosition() - 1);
             }
         });
         holder.snsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                snsPopupWindow.showPopupWindow(v, dataBeanList.get(position), mContext);
+                snsPopupWindow.showPopupWindow(v, dataBeanList.get(holder.getAdapterPosition() - 1), mContext);
             }
         });
-        if (dataBeanList.get(position).getTem().size() != 0) {
+        if (dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
-            String content = "";
+            String content;
             stringBuilder = new StringBuilder();
-            for (int i = 0; i < dataBeanList.get(position).getTem().size(); i++) {
-                TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(position).getTem().get(i);
+            for (int i = 0; i < dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size(); i++) {
+                TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(holder.getAdapterPosition() - 1).getTem().get(i);
                 content = like.getMember_name() + " ";
                 stringBuilder.append(content);
             }
@@ -267,13 +267,6 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     public int getItemCount() {
         return dataBeanList.size();
     }
-
-    /*回复评论的接口回调*/
-    @Override
-    public void recommentContentListener(int position, CommentBean commentBean, TextView tvContent) {
-        listener.commentRecall(position, commentBean,tvContent);
-    }
-
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         SnsPopupWindow snsPopupWindow;
@@ -321,7 +314,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void onPicClick(int position, int picpostion);
 
         /* 评论点击 */
-        void onCommentClick(int position, String content,View itemView);
+        void onCommentClick(int position, String content, View itemView);
 
         /* 点赞 */
         void onPraiseClick(int position);
@@ -333,7 +326,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         void headImageClick(int position);
 
         /*回复评论*/
-        void commentRecall(int position, CommentBean commentBean, TextView topLocation);
+        void commentRecall(int outPosition, int position, CommentBean commentBean, TextView topLocation);
 
     }
 
