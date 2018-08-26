@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -25,7 +24,7 @@ import com.qunxianghui.gxh.bean.mine.UserDetailInfoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailBaoLiaoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailVideoFragment;
 import com.qunxianghui.gxh.widget.RoundImageView;
@@ -58,7 +57,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     @BindView(R.id.tv_persondetail_fans)
     TextView tvPersondetailFans;
 
-    private String[] titles = new String[]{"资讯", "视频", "帖子"};
+    private String[] titles = new String[]{"爆料", "视频", "本地圈","本地服务","精选"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     public int member_id;
@@ -89,16 +88,14 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         final Intent intent = getIntent();
         member_id = intent.getIntExtra("member_id", 1);
         FetchPersonData();
-        Bundle bundle = new Bundle();
-        bundle.putInt("member_id", member_id);
-        MineCommonFragment mineCommonFragment = new MineCommonFragment();
-        mineCommonFragment.setArguments(bundle);
-        fragments.add(mineCommonFragment);
+        fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new PersonDetailVideoFragment());
+        fragments.add(new PersonDetailPostFragment());
+        fragments.add(new PersonDetailPostFragment());
         fragments.add(new PersonDetailPostFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         minePersonDetailViewpager.setAdapter(mineTabViewPagerAdapter);
-        minePersonDetailViewpager.setOffscreenPageLimit(2);
+        minePersonDetailViewpager.setOffscreenPageLimit(fragments.size());
         mineTablayoutPersonDetail.setupWithViewPager(minePersonDetailViewpager);
     }
 

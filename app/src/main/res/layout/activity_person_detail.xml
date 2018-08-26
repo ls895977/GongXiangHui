@@ -72,9 +72,9 @@
                 android:textSize="12sp" />
 
             <View
-                android:layout_gravity="center_vertical"
                 android:layout_width="1dp"
                 android:layout_height="13dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="5dp"
                 android:background="@color/white" />
 
@@ -108,6 +108,7 @@
         app:tabBackground="@drawable/tab_selector"
         app:tabIndicatorColor="@color/white"
         app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/TextAppearance.Design.Tab.Custom"
         app:tabTextColor="#000" />
 
     <android.support.v4.view.ViewPager
@@ -115,5 +116,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
 
 </LinearLayout>

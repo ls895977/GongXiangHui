@@ -58,20 +58,10 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     @Override
     public void initViews(View view) {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
-        mAdapter.setVideoSearchListClickListener(this);
-        mRecyclerview.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                int uuid = mBean.getData().get(position).getUuid();
-                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                intent.putExtra("uuid", uuid);
-                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                startActivity(intent);
-            }
-        });
+        mKeyWords = getArguments().getString(DATA);
+        if (!TextUtils.isEmpty(mKeyWords)) {
+            goNextWorks(mKeyWords);
+        }
     }
 
     /**
@@ -79,10 +69,20 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
      */
     @Override
     public void initData() {
-        mKeyWords = getArguments().getString(DATA);
-        if (!TextUtils.isEmpty(mKeyWords)) {
-            goNextWorks(mKeyWords);
-        }
+        mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
+        mAdapter.setVideoSearchListClickListener(this);
+        mRecyclerview.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                int uuid = mBean.getData().get(position-1).getUuid();
+                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                intent.putExtra("uuid", uuid);
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -159,12 +159,15 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
+                        String msg = response.body().msg;
                         if (code == 0) {
-                            asyncShowToast("关注成功");
+                            asyncShowToast(msg);
                             mSearchVideodata.get(position).setFollow("true");
                         } else if (code == 202) {
-                            asyncShowToast("取消关注");
+                            asyncShowToast(msg);
                             mSearchVideodata.get(position).setFollow("");
+                        }else if (code==101){
+                            asyncShowToast(msg);
                         }
                         mAdapter.notifyDataSetChanged();
                     }
@@ -180,13 +183,18 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
+                        HomeVideoSearchBean.DataBean videoSearchDataBean = mSearchVideodata.get(position);
+                        int like_cnt = videoSearchDataBean.getLike_cnt();
+
                         int code = response.body().code;
                         if (code == 100) {
                             asyncShowToast("点赞成功");
-                            mSearchVideodata.get(position).setIs_like(1);
+                            videoSearchDataBean.setIs_like(1);
+                            videoSearchDataBean.setLike_cnt(++like_cnt);
                         } else if (code == 101) {
                             asyncShowToast("取消点赞");
-                            mSearchVideodata.get(position).setIs_like(0);
+                            videoSearchDataBean.setIs_like(0);
+                            videoSearchDataBean.setLike_cnt(--like_cnt);
                         }
                         mAdapter.notifyDataSetChanged();
                     }

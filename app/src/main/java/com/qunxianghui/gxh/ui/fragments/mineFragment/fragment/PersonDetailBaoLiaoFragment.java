@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -34,29 +34,33 @@ import butterknife.Unbinder;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MineCommonFragment extends BaseFragment  {
+public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     Unbinder unbinder;
+
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
-    private Handler handler = new Handler();
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
+    private PersonDetailActivity mPersonDetailActivity;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
     }
 
+
     @Override
     public void initData() {
-
+        mPersonDetailActivity = (PersonDetailActivity) getActivity();
         LoadMycolectNews();
     }
 
     private void LoadMycolectNews() {
-        OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
+        OkGo.<MyCollectPostBean>post(Constant.HOME_NEWS_LIST_URL)
+                .params("user_id", mPersonDetailActivity.member_id)
                 .params("limit", 12)
                 .params("skip", count)
                 .execute(new JsonCallback<MyCollectPostBean>() {
@@ -66,7 +70,6 @@ public class MineCommonFragment extends BaseFragment  {
                     }
                 });
     }
-
     /**
      * 解析我的收藏列表
      *
