@@ -70,7 +70,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         sImagePicker = ImagePicker.getInstance();
         sImagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
         sImagePicker.setShowCamera(true);                      //显示拍照按钮
-        sImagePicker.setCrop(false);                           //允许裁剪（单选才有效）
+        sImagePicker.setCrop(true);                           //允许裁剪（单选才有效）
         sImagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
         sImagePicker.setMultiMode(false);
         sImagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
@@ -185,7 +185,13 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
-        upLoadPic(mList.get(0), 0);
+        if (!mList.isEmpty()) {
+            upLoadPic(mList.get(0), 0);
+        } else {
+            asyncShowToast("保存成功");
+            setResult(0x0022);
+            finish();
+        }
     }
 
     private void upLoadPic(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
@@ -294,6 +300,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPost.params("ad[" + index + "][position]", companyAdvert.position);
         if (companyAdvert.id != 0)
             mPost.params("ad[" + index + "][id]", companyAdvert.id);
+
         mPost.params("ad[" + index + "][is_slide]", companyAdvert.is_slide);
 
         if (companyAdvert.settings == null) {

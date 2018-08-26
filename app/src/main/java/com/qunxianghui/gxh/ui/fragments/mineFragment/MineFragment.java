@@ -24,13 +24,13 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
+import com.qunxianghui.gxh.ui.activity.SelfTextActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyCollectActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFansActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
@@ -172,7 +172,8 @@ public class MineFragment extends BaseFragment {
                 toActivity(MyFollowActivity.class);
                 break;
             case R.id.ll_mine_fans:
-                toActivity(MyFansActivity.class);
+//                toActivity(MyFansActivity.class);
+                toActivity(SelfTextActivity.class);
                 break;
             case R.id.ll_mine_mycollect:
                 toActivity(MyCollectActivity.class);

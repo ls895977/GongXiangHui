@@ -31,13 +31,13 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchFragment;
-import com.qunxianghui.gxh.utils.JsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
 import com.qunxianghui.gxh.widget.SpaceSize;
 import com.qunxianghui.gxh.widget.SpacesItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -78,7 +78,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected int getLayoutId() {
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_search;
     }
 
@@ -114,7 +113,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * ==================猜你想要的数据=====================
      */
     private void initFireRecycle(final List<GuessBean.DataBean> guessBean) {
-        if (guessBean!=null){
+        if (guessBean != null) {
             FireSearchAdapter adapter = new FireSearchAdapter(mContext, guessBean);
             adapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
@@ -131,8 +130,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(SpConstant.HISTORIES, "");
-        historyDatas = JsonUtil.fromJsonList(histories, String.class);
-        if (historyDatas == null) {
+        if (!TextUtils.isEmpty(histories)) {
+            historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
+        } else {
             historyDatas = new ArrayList<>();
             ivClearHistory.setVisibility(View.GONE);
         }

@@ -5,6 +5,7 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,8 +34,9 @@ public class UserUtil {
     }
 
     private void getUserData() {
-        OkGo.<String>post(Constant.CATCH_USERDATA_URL).
-                execute(new JsonCallback<String>() {
+        OkGo.<String>post(Constant.CATCH_USERDATA_URL)
+                .headers("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""))
+                .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body())) {

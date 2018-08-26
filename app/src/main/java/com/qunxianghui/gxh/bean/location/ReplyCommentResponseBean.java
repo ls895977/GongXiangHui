@@ -44,7 +44,7 @@ public class ReplyCommentResponseBean {
          */
 
         private String uuid;
-        private ComOneResBean com_one_res;
+        private CommentBean com_one_res;
 
         public String getUuid() {
             return uuid;
@@ -54,11 +54,11 @@ public class ReplyCommentResponseBean {
             this.uuid = uuid;
         }
 
-        public ComOneResBean getCom_one_res() {
+        public CommentBean getCom_one_res() {
             return com_one_res;
         }
 
-        public void setCom_one_res(ComOneResBean com_one_res) {
+        public void setCom_one_res(CommentBean com_one_res) {
             this.com_one_res = com_one_res;
         }
 

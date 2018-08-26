@@ -52,7 +52,6 @@ public class LocationFragment extends BaseFragment {
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
     private String[] mTitles;
-    public final static int POST_CHANNELREQUEST = 1; // 请求码
     public final static int POST_CHANNELRESULT = 100; // 返回码
 
     @Override
@@ -126,15 +125,9 @@ public class LocationFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case CITY_SELECT_RESULT_FRAG:
-                if (resultCode == RESULT_OK) {
-                    mTvLocalcircleLocation.setText(SPUtils.getLocation("currcity"));
-                }
-                break;
-        }
-
-        if (resultCode == POST_CHANNELRESULT) {
+        if (requestCode == CITY_SELECT_RESULT_FRAG && resultCode == RESULT_OK) {
+            mTvLocalcircleLocation.setText(SPUtils.getLocation("currcity"));
+        } else if (resultCode == POST_CHANNELRESULT) {
             userChannelList.clear();
             userChannelList.addAll(DragAdapter.channelList);
             DragAdapter.channelList.clear();
@@ -155,11 +148,9 @@ public class LocationFragment extends BaseFragment {
             case R.id.iv_more_columns:
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
-                    return;
-                }else {
+                } else {
                     toActivityWithResult(LocalServiceChannelActivity.class, 0x0011);
                 }
-
                 break;
         }
     }

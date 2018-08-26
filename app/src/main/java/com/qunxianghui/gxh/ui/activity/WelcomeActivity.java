@@ -3,12 +3,10 @@ package com.qunxianghui.gxh.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,8 +23,12 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.WelcomeAdvertBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.SystemUtil;
 
 import butterknife.BindView;
+import kr.co.namee.permissiongen.PermissionGen;
 
 
 /**
@@ -70,9 +72,13 @@ public class WelcomeActivity extends BaseActivity {
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
-            }
+            PermissionGen.needPermission(WelcomeActivity.this, 105,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }
+            );
         }
     }
 
@@ -113,6 +119,17 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+        OkGo.getInstance().getCommonHeaders().put("X-deviceModel", SystemUtil.getSystemModel());
+        OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+
+        String cityCode = SPUtils.getLocation("X-cityId");
+        if (!TextUtils.isEmpty(cityCode)) {
+            String areaId = SPUtils.getLocation("X-areaId");
+            OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+            OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
+        }
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

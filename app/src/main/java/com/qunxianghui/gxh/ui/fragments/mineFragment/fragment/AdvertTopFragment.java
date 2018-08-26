@@ -191,10 +191,10 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_delete:
-                if (mViewList.size() <= 1) {
-                    asyncShowToast("亲，至少有一个模版哦！");
-                    return;
-                }
+//                if (mViewList.size() <= 1) {
+//                    asyncShowToast("亲，至少有一个模版哦！");
+//                    return;
+//                }
                 delete();
                 break;
             case R.id.iv_add_big_img:

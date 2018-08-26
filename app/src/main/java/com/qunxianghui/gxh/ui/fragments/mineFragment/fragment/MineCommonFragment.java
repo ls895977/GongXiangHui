@@ -44,8 +44,6 @@ public class MineCommonFragment extends BaseFragment  {
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
-    private int mMemberId;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
@@ -53,9 +51,7 @@ public class MineCommonFragment extends BaseFragment  {
 
     @Override
     public void initData() {
-        if (getArguments() != null) {
-            mMemberId = getArguments().getInt("member_id");
-        }
+
         LoadMycolectNews();
     }
 
