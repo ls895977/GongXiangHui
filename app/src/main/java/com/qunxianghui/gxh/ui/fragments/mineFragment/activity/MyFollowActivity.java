@@ -106,10 +106,8 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
 
                 @Override
                 public void onItemClick(View v, int position) {
-                    asyncShowToast("点击了" + position);
                     Intent intent = new Intent(mContext, PersonDetailActivity.class);
                     intent.putExtra("member_id", dataList.get(position - 1).getBe_member_id());
-
                     startActivity(intent);
 
                 }

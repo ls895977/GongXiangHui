@@ -72,7 +72,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new NewGlideImageLoader());
         imagePicker.setShowCamera(true);
-        imagePicker.setCrop(false);
+        imagePicker.setCrop(true);
         imagePicker.setSaveRectangle(true);
         imagePicker.setSelectLimit(1);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);

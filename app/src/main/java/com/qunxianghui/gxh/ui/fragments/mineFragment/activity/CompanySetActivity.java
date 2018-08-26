@@ -104,7 +104,7 @@ public class CompanySetActivity extends BaseActivity implements View.OnClickList
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
         imagePicker.setShowCamera(true);                      //显示拍照按钮
-        imagePicker.setCrop(false);                           //允许裁剪（单选才有效）
+        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
         imagePicker.setSelectLimit(maxImgCount);              //选中数量限制
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状

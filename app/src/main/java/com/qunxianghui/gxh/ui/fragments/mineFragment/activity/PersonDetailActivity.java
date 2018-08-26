@@ -71,6 +71,8 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        final Intent intent = getIntent();
+        member_id = intent.getIntExtra("member_id", 1);
         //设置tablayout的一个显示方式
         mineTablayoutPersonDetail.setTabMode(TabLayout.MODE_FIXED);
         for (String tab : titles) {
@@ -85,8 +87,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initData() {
-        final Intent intent = getIntent();
-        member_id = intent.getIntExtra("member_id", 1);
         FetchPersonData();
         fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new PersonDetailVideoFragment());

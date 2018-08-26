@@ -214,7 +214,6 @@ public class LoginActivity extends BaseActivity {
                                 });
                         break;
                 }
-                Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -250,7 +249,6 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(LoginActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
             }
         };
-
     }
 
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login})
@@ -275,7 +273,11 @@ public class LoginActivity extends BaseActivity {
                 toActivity(SeekPasswordActivity.class);
                 break;
             case R.id.iv_wx_login:
-                mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                if (!mShareAPI.isInstall(this, SHARE_MEDIA.WEIXIN)) {
+                    Toast.makeText(this, "请先安装微信客户端", Toast.LENGTH_SHORT).show();
+                } else {
+                    mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUmAuthListener);
+                }
                 break;
             case R.id.iv_qq_login:
                 mShareAPI.getPlatformInfo(this, SHARE_MEDIA.QQ, mUmAuthListener);

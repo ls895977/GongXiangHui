@@ -50,7 +50,6 @@ import butterknife.OnClick;
  */
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
-
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
     private Dialog mShareDialog;
