@@ -89,6 +89,7 @@ public class GeneraCompanyFragment extends BaseFragment {
         mTabLayout.setTabData(mTabEntities);
         vpGeneralizeCompanyMain.setOffscreenPageLimit(mType.length - 1);
         mTvTotal.setSelected(true);
+        mTvMonth.setText(Calendar.getInstance().get(Calendar.MONTH) + 1 + "月");
         setViewpager(1, 0);
     }
 
