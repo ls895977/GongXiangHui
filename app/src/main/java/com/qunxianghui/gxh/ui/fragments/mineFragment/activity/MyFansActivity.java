@@ -87,7 +87,6 @@ public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFans
 
             }
             mRecyclerMineFances.refreshComplete();
-
             myFansAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
