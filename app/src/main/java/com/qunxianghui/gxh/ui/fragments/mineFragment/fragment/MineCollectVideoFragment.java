@@ -163,7 +163,7 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
             mineCollectVideoAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.VISIBLE);
         }
-        if (o instanceof String && "cancel".equals(o)) {
+        if (o instanceof String && "video_c".equals(o)) {
             mineCollectVideoAdapter.isShow=false;
             mineCollectVideoAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);

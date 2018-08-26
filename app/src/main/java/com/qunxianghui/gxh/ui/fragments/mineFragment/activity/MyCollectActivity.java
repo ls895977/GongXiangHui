@@ -147,7 +147,12 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 //                isEdit = true;
                 tvMycollectCancel.setVisibility(View.GONE);
                 ivMyCollectBack.setVisibility(View.VISIBLE);
-                EventManager.getInstance().publishMessage("cancel");
+                if(mineCommonViewpager.getCurrentItem()==0){
+                    EventManager.getInstance().publishMessage("news_c");
+                }
+                if(mineCommonViewpager.getCurrentItem()==1){
+                    EventManager.getInstance().publishMessage("video_c");
+                }
                 break;
             case R.id.tv_mycollect_edit:
                 if(mineCommonViewpager.getCurrentItem()==0){
