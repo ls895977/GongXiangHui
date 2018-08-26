@@ -35,10 +35,11 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     public static final String DATA = "data";
     @BindView(R.id.recyclerview_video)
     XRecyclerView mRecyclerview;
-
+    private HomeVideoSearchBean mBean;
     private List<HomeVideoSearchBean.DataBean> mSearchVideodata = new ArrayList<>();
     private HomeVideoSearchAdapter mAdapter;
-    private int mSkip;
+    private int mPage;
+    private boolean mIsRefresh = false;
     private String mKeyWords;
 
     public static SearchVideoFragment newInstance(String data) {
@@ -74,7 +75,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                int uuid = mSearchVideodata.get(position).getUuid();
+                int uuid = mBean.getData().get(position-1).getUuid();
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                 intent.putExtra("uuid", uuid);
@@ -89,13 +90,13 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         mRecyclerview.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mSkip = 0;
+                mIsRefresh = true;
+                mPage = 0;
                 goNextWorks(mKeyWords);
             }
 
             @Override
             public void onLoadMore() {
-                mSkip += 10;
                 goNextWorks(mKeyWords);
             }
         });
@@ -108,7 +109,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         OkGo.<HomeVideoSearchBean>get(Constant.SEARCH_GET_VIDEO_LIST).
                 params("keywords", trim).
                 params("limit", 10)
-                .params("skip", mSkip).
+                .params("skip", mPage).
                 execute(new JsonCallback<HomeVideoSearchBean>() {
                     @Override
                     public void onSuccess(Response<HomeVideoSearchBean> response) {
@@ -125,19 +126,18 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
 
     //设置数据
     private void parseData(HomeVideoSearchBean body) {
-        if (body.getCode() == 0) {
-            if (mSkip == 0) {
-                mSearchVideodata.clear();
-                mRecyclerview.setLoadingMoreEnabled(true);
-            }
-            int total = body.getData().size();
-            if (total < 10) {
-                mRecyclerview.setLoadingMoreEnabled(false);
-            }
-            mSearchVideodata.addAll(body.getData());
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mSearchVideodata.clear();
         }
-        mRecyclerview.loadMoreComplete();
-        mAdapter.notifyDataSetChanged();
+        mBean = body;
+        mSearchVideodata.addAll(mBean.getData());
+        mPage++;
+        int code = mBean.getCode();
+        if (code == 200) {
+            mRecyclerview.refreshComplete();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     /*搜索的贴片的点击事件 */
