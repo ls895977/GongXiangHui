@@ -54,6 +54,7 @@ public class HotPointFragment extends BaseFragment {
     RecyclerView mRv;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
+
     private Banner viewpagerHome;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配

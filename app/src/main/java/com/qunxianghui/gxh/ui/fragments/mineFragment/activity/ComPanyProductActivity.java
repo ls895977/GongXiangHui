@@ -27,8 +27,7 @@ public class ComPanyProductActivity extends BaseActivity {
     @BindView(R.id.xrecycler_activity_product)
     XRecyclerView mXrecyclerActivityProduct;
 
-    private int mPage;
-    private boolean mIsRefresh = false;
+    private int mSkip;
     private List<AddAdvanceBean.DataBean> mDataList = new ArrayList<>();
     private ProductAdapter mProductAdapter;
 
@@ -57,7 +56,7 @@ public class ComPanyProductActivity extends BaseActivity {
         OkGo.<AddAdvanceBean>post(Constant.CHECK_COMPANY_CENTER_ADVANCE)
                 .params("datatype", 2)
                 .params("limit", 10)
-                .params("skip", mPage)
+                .params("skip", mSkip)
                 .execute(new JsonCallback<AddAdvanceBean>() {
                     @Override
                     public void onSuccess(Response<AddAdvanceBean> response) {
@@ -73,22 +72,22 @@ public class ComPanyProductActivity extends BaseActivity {
                 });
     }
 
-    private void parseCompanyAdvanceData(AddAdvanceBean mAddAdvanceBean) {
-        if (mIsRefresh) {
-            mIsRefresh = false;
-            mDataList.clear();
-            mXrecyclerActivityProduct.setLoadingMoreEnabled(true);
-        }
-        mDataList.addAll(mAddAdvanceBean.getData());
-        mPage++;
-        int code = mAddAdvanceBean.getCode();
-        if (code == 200) {
-            mXrecyclerActivityProduct.setLoadingMoreEnabled(mAddAdvanceBean.getData().size() >= 10);
+    private void parseCompanyAdvanceData(AddAdvanceBean addAdvanceBean) {
+        if (addAdvanceBean.getCode() == 200) {
+            if (mSkip == 0) {
+                mDataList.clear();
+                mXrecyclerActivityProduct.refreshComplete();
+                mXrecyclerActivityProduct.setLoadingMoreEnabled(true);
+            }
+            if (addAdvanceBean.getData().size() < 10) {
+                mXrecyclerActivityProduct.setLoadingMoreEnabled(false);
+            }
+            mDataList.addAll(addAdvanceBean.getData());
             mXrecyclerActivityProduct.refreshComplete();
-            mProductAdapter.notifyDataSetChanged();
         } else {
             mXrecyclerActivityProduct.setLoadingMoreEnabled(false);
         }
+        mProductAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -96,13 +95,13 @@ public class ComPanyProductActivity extends BaseActivity {
         mXrecyclerActivityProduct.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mIsRefresh = true;
-                mPage = 0;
+                mSkip = 0;
                 initData();
             }
 
             @Override
             public void onLoadMore() {
+                mSkip += 10;
                 initData();
             }
 
@@ -125,8 +124,7 @@ public class ComPanyProductActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0x0022) {
-            mIsRefresh = true;
-            mPage = 0;
+            mSkip = 0;
             initData();
         }
     }

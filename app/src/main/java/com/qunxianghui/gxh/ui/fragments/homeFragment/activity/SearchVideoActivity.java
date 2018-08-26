@@ -130,21 +130,19 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(SpConstant.HISTORIES, "");
-        if (!TextUtils.isEmpty(histories)) {
-            historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
-            historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
-            historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    searchText = historyDatas.get(position);
-                    refreshSearchText();
-                    tvVideoSearch.performClick();
-                }
-            });
-            rvVideoSearchHistory.setAdapter(historyAdapter);
-        } else {
+        historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
+        historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
+        historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                searchText = historyDatas.get(position);
+                refreshSearchText();
+                tvVideoSearch.performClick();
+            }
+        });
+        rvVideoSearchHistory.setAdapter(historyAdapter);
+        if (TextUtils.isEmpty(histories))
             ivVideoClearHistory.setVisibility(View.GONE);
-        }
     }
 
     /**

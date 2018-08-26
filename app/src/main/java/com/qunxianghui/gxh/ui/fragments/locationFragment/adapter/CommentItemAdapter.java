@@ -97,7 +97,6 @@ public class CommentItemAdapter extends BaseAdapter {
                             });
                 }
             });
-
         } else {
             holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
                 @Override

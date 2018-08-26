@@ -24,7 +24,6 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.GestureDetectorActivity;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.widget.DragGrid;
 import com.qunxianghui.gxh.widget.OtherGridView;
@@ -65,12 +64,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
         new TitleBuilder(LocalServiceChannelActivity.this).setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userAdapter != null && userAdapter.isListChanged()) {
-                    setResult(HomeVideoActivity.VIDEO_CHANNELRESULT);
-                    finish();
-                } else {
-                    finish();
-                }
+                onBackPressed();
             }
         }).setTitleText("频道管理");
 

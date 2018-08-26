@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -37,11 +36,10 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     @BindView(R.id.xrv)
     XRecyclerView mRv;
 
-    private int mPage;
+    private int mSkip;
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
-    private TextView mMTvComment;
 
     @Override
     public int getLayoutId() {
@@ -57,7 +55,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void initData() {
-        mPage = 0;
+        mSkip = 0;
         mCateId = getArguments().getInt("channel_id");
         requestHomeVideoList();
     }
@@ -74,12 +72,13 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mPage = 0;
+                mSkip = 0;
                 requestHomeVideoList();
             }
 
             @Override
             public void onLoadMore() {
+                mSkip += 10;
                 requestHomeVideoList();
             }
         });
@@ -118,19 +117,25 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         OkGo.<HomeVideoListBean>post(Constant.HOME_VIDEO_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
-                .params("skip", mPage)
+                .params("skip", mSkip)
                 .execute(new JsonCallback<HomeVideoListBean>() {
                     @Override
                     public void onSuccess(Response<HomeVideoListBean> response) {
                         HomeVideoListBean homeVideoListBean = response.body();
                         if (homeVideoListBean.getCode() == 0) {
-                            if (mPage == 0) videoDataList.clear();
-                            int index = videoDataList.size();
+                            if (mSkip == 0) {
+                                videoDataList.clear();
+                                mRv.refreshComplete();
+                                mRv.setLoadingMoreEnabled(true);
+                            }
+                            int total = homeVideoListBean.getData().getList().size();
+                            if (total < 10) {
+                                mRv.setLoadingMoreEnabled(false);
+                            }
                             videoDataList.addAll(homeVideoListBean.getData().getList());
-                            mPage++;
-                            mRv.refreshComplete();
-                            personDetailVideoAdapter.notifyDataSetChanged();
                         }
+                        mRv.loadMoreComplete();
+                        personDetailVideoAdapter.notifyDataSetChanged();
                     }
                 });
     }
