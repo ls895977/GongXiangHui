@@ -77,16 +77,10 @@ public class JsonUtil {
      */
 
     public static <T> List<T> fromJsonList(String content, Class<T> cls) {
-        List<T> list = new ArrayList<T>();
-
-        if (TextUtils.isEmpty(content) || cls == null) {
-            return null;
-        }
+        List<T> list;
+        if (TextUtils.isEmpty(content) || cls == null) return null;
         try {
-
-            list = gson.fromJson(content, new TypeToken<List<T>>() {
-            }.getType());
-
+            list = gson.fromJson(content, new TypeToken<List<T>>() {}.getType());
         } catch (Exception e) {
             return null;
         }

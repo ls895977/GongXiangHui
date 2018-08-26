@@ -28,7 +28,6 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- *
  * @time 2018/5/28  18:07
  * @desc 搜索的页面
  */
@@ -41,12 +40,16 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     private HomeVideoSearchAdapter mAdapter;
     private int mPage;
     private boolean mIsRefresh = false;
-    private boolean mIsFirst = true;
     private String mKeyWords;
 
-    /**
-     * 子类实现此抽象方法返回View进行展示
-     */
+    public static SearchVideoFragment newInstance(String data) {
+        SearchVideoFragment fragment = new SearchVideoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(SearchVideoFragment.DATA, data);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_video_search;
@@ -55,7 +58,20 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     @Override
     public void initViews(View view) {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-
+        mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
+        mAdapter.setVideoSearchListClickListener(this);
+        mRecyclerview.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                int uuid = mBean.getData().get(position).getUuid();
+                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                intent.putExtra("uuid", uuid);
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -67,19 +83,16 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         if (!TextUtils.isEmpty(mKeyWords)) {
             goNextWorks(mKeyWords);
         }
-
     }
 
     @Override
     protected void initListeners() {
-
         mRecyclerview.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 mIsRefresh = true;
                 mPage = 0;
                 goNextWorks(mKeyWords);
-
             }
 
             @Override
@@ -117,48 +130,15 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
             mIsRefresh = false;
             mSearchVideodata.clear();
         }
-
-        mSearchVideodata.addAll(mBean.getData());
-        mPage=mSearchVideodata.size();
         mBean = body;
+        mSearchVideodata.addAll(mBean.getData());
+        mPage++;
         int code = mBean.getCode();
         if (code == 200) {
-            if (mIsFirst){
-                mIsFirst=false;
-                mAdapter = new HomeVideoSearchAdapter(mActivity, mSearchVideodata);
-                mAdapter.setVideoSearchListClickListener(this);
-                mRecyclerview.setAdapter(mAdapter);
-                mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        int uuid = mBean.getData().get(position).getUuid();
-                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                        intent.putExtra("uuid", uuid);
-                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                        startActivity(intent);
-                    }
-                });
-            }
-
             mRecyclerview.refreshComplete();
             mAdapter.notifyDataSetChanged();
-            mAdapter.notifyItemRangeChanged(mPage, mBean.getData().size());
         }
-
     }
-
-    /**
-     * ==================初始化fragment=====================
-     */
-    public static SearchVideoFragment newInstance(String data) {
-        SearchVideoFragment fragment = new SearchVideoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(SearchVideoFragment.DATA, data);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
 
     /*搜索的贴片的点击事件 */
     @Override
@@ -212,4 +192,5 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                     }
                 });
     }
+
 }

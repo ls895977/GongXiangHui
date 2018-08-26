@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
@@ -31,18 +30,18 @@ import com.qunxianghui.gxh.bean.home.HomeVideoSearchBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchVideoFragment;
-import com.qunxianghui.gxh.utils.JsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
 import com.qunxianghui.gxh.widget.SpaceSize;
 import com.qunxianghui.gxh.widget.SpacesItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/16 0016.
@@ -126,20 +125,13 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
                 tvVideoSearch.performClick();
             }
         });
-
     }
 
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(SpConstant.HISTORIES, "");
-        List<String> datas = JsonUtil.fromJsonList(histories, String.class);
-        if (datas != null) {
-            historyDatas = datas;
-        } else {
-            ivVideoClearHistory.setVisibility(View.GONE);
-        }
-
-        if (historyDatas != null) {
+        if (!TextUtils.isEmpty(histories)) {
+            historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
             historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
             historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
@@ -150,6 +142,8 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
                 }
             });
             rvVideoSearchHistory.setAdapter(historyAdapter);
+        } else {
+            ivVideoClearHistory.setVisibility(View.GONE);
         }
     }
 
@@ -196,10 +190,8 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
                 trim = etVideoSearch.getText().toString().trim();
                 if (TextUtils.isEmpty(trim)) {
                     ToastUtils.showShortToast(this, "搜索内容不能为空");
-                } else {
-                    if (viewpager != null) {
-                        setupViewPager(trim);
-                    }
+                } else if (viewpager != null) {
+                    setupViewPager(trim);
                 }
                 break;
             case R.id.iv_video_search_back:
@@ -273,28 +265,14 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     /**
      * ==================监听切换搜索页面=====================
      */
-    TextWatcher getTextChanged = new TextWatcher() {
+    TextWatcher getTextChanged = new NewTextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void afterTextChanged(Editable s) {
             if (TextUtils.isEmpty(s)) {
                 nestedVideoScrollView.setVisibility(View.VISIBLE);
                 llSearch.setVisibility(View.GONE);
             }
         }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
