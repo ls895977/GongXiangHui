@@ -18,6 +18,7 @@ import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
@@ -140,6 +141,7 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
 
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(this);
         xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity,2, GridLayoutManager.VERTICAL, false));
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
