@@ -3,12 +3,9 @@ package com.qunxianghui.gxh.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,6 +28,7 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.SystemUtil;
 
 import butterknife.BindView;
+import kr.co.namee.permissiongen.PermissionGen;
 
 
 /**
@@ -74,9 +72,13 @@ public class WelcomeActivity extends BaseActivity {
         //textView.startAnimation(animation);
         handler.sendEmptyMessageDelayed(0, 1000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
-            }
+            PermissionGen.needPermission(WelcomeActivity.this, 105,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }
+            );
         }
     }
 
