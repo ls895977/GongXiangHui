@@ -17,21 +17,14 @@ public class HomeAirListAdapter extends BaseRecycleViewAdapter<HomeAirBean.DataB
 
     @Override
     protected void convert(MyViewHolder holder, int position, HomeAirBean.DataBean.ForecastBean forecastBean) {
-        final String airListData = forecastBean.getDate();
-        final String high = forecastBean.getHigh();
-        final String low = forecastBean.getLow();
-        final String weather = forecastBean.getDay().getWeather();
-
-
-
+        String airListData = forecastBean.getDate();
+        String high = forecastBean.getHigh();
+        String low = forecastBean.getLow();
+        String weather = forecastBean.getDay().getWeather();
         /**展示列表**/
-        holder.setText(R.id.tv_airList_days,airListData);
-        holder.setText(R.id.tv_airList_air_true,weather);
-        holder.setText(R.id.tv_airList_degree,high+low);
-
-
-
-
+        holder.setText(R.id.tv_airList_days, airListData);
+        holder.setText(R.id.tv_airList_air_true, weather);
+        holder.setText(R.id.tv_airList_degree, high + low);
     }
 
     @Override

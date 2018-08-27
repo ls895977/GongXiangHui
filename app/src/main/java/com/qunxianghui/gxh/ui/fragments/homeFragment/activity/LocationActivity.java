@@ -191,8 +191,8 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
         SPUtils.saveLocation("X-cityId", cityCode);
         SPUtils.saveLocation("X-areaId", areaId);
         SPUtils.saveLocation("currcity", cityName);
-        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
-        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
+//        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+//        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
     }
 
     public static class Callback implements AreaItem.Callback {

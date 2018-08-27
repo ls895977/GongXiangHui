@@ -130,7 +130,12 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     /*加载历史记录*/
     private void initHistories() {
         String histories = SPUtils.getString(SpConstant.HISTORIES, "");
-        historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
+        if (!TextUtils.isEmpty(histories)) {
+            historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
+        } else {
+            historyDatas = new ArrayList<>();
+            ivVideoClearHistory.setVisibility(View.GONE);
+        }
         historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
         historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
@@ -141,8 +146,6 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
             }
         });
         rvVideoSearchHistory.setAdapter(historyAdapter);
-        if (TextUtils.isEmpty(histories))
-            ivVideoClearHistory.setVisibility(View.GONE);
     }
 
     /**
@@ -218,7 +221,7 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     private void saveHistory(String item) {
         if (historyDatas.size() == 0) {
             historyDatas.add(item);
-            SPUtils.saveString(SpConstant.HISTORIES, item);
+            SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
         } else {
             if (!historyDatas.contains(item)) {
                 historyDatas.add(item);

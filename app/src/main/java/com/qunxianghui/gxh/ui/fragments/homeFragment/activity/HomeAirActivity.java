@@ -79,13 +79,15 @@ public class HomeAirActivity extends BaseActivity {
 
     private void requestAirList() {
         OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
+                .headers("X-cityId",  SPUtils.getLocation("X-cityId"))
+                .headers("X-areaId", SPUtils.getLocation("X-areaId"))
                 .execute(new JsonCallback<HomeAirBean>() {
                     @Override
                     public void onSuccess(Response<HomeAirBean> response) {
                         HomeAirBean homeAirBean = response.body();
                         HomeAirBean.DataBean data = homeAirBean.getData();
                         setTopAirDetail(data);
-                        final List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();
+                        List<HomeAirBean.DataBean.ForecastBean> forecast = data.getForecast();
                         mXrecycler.setAdapter(new HomeAirListAdapter(mContext, forecast));
                     }
                 });

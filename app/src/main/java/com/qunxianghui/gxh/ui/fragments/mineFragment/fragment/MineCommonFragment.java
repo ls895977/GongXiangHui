@@ -1,12 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -16,7 +13,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.Result;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -33,7 +30,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
@@ -52,7 +48,8 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     private boolean mIsRefresh = false;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
-    private String data_id="";
+    private String data_id = "";
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
@@ -124,7 +121,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                         if (code == 200) {
                             int uuid = myColleNewsDetailBean.getData().getDetail().getUuid();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                            intent.putExtra("url",  Constant.HOME_NEWS_DETAIL_URL);
+                            intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
                             intent.putExtra("uuid", uuid);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             startActivity(intent);
@@ -141,25 +138,25 @@ public class MineCommonFragment extends BaseFragment implements Observer {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i <dataList.size() ; i++) {
+                for (int i = 0; i < dataList.size(); i++) {
                     if (dataList.get(i).isChecked() == true) {
                         //这边获取选中的数据id
                         if (data_id.equals("")) {
-                            data_id = data_id +dataList.get(i).getData_uuid();
+                            data_id = data_id + dataList.get(i).getData_uuid();
                         } else {
                             data_id = data_id + "," + dataList.get(i).getData_uuid();
                         }
-                        OkGo.<Result>post(Constant.CANCEL_COLLECT_URL)
+                        OkGo.<CommonBean>post(Constant.CANCEL_COLLECT_URL)
                                 .params("data_uuid", data_id)
-                                .execute(new JsonCallback<Result>() {
+                                .execute(new JsonCallback<CommonBean>() {
                                     @Override
-                                    public void onSuccess(Response<Result> response) {
-                                        Result bean = response.body();
-                                        int code = bean.getCode();
+                                    public void onSuccess(Response<CommonBean> response) {
+                                        CommonBean bean = response.body();
+                                        int code = bean.code;
                                         if (code == 200) {
                                             ToastUtils.showLong("删除成功");
                                             LoadMycolectNews();
-                                            myCollectPostAdapter.isShow=false;
+                                            myCollectPostAdapter.isShow = false;
                                             myCollectPostAdapter.notifyDataSetChanged();
                                             btnDelete.setVisibility(View.GONE);
                                         }
@@ -191,34 +188,19 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
     protected void onLoadData() {
 
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-
-    @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "news".equals(o)) {
-            myCollectPostAdapter.isShow=true;
+            myCollectPostAdapter.isShow = true;
             myCollectPostAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.VISIBLE);
         }
         if (o instanceof String && "news_c".equals(o)) {
-            myCollectPostAdapter.isShow=false;
+            myCollectPostAdapter.isShow = false;
             myCollectPostAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);
         }
