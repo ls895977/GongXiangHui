@@ -92,8 +92,8 @@ public class Constant {
     public static final String GET_ISSURE_POST_URL = BASE_URL + "user/myPosts";
     //我的粉丝
     public static final String MYFANS_URL = BASE_URL + "user/myFans";
-    public static final String MYFOCUS_URL = BASE_URL + "user/myFollow";
     //我的关注
+    public static final String MYFOCUS_URL = BASE_URL + "user/myFollow";
     //获取收藏的新闻
     public static final String GET_COLLECT_NEWS_URL = BASE_URL + "user/getCollect&model=news";
     //获取内容详情

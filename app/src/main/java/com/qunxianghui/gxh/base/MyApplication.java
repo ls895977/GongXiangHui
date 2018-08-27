@@ -19,12 +19,10 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CityPickerutil;
-import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
@@ -90,8 +88,7 @@ public class MyApplication extends MultiDexApplication {
         header.put("X-appkey", "100");
 //        header.put("X-accesstoken", mAccessToken);
         header.put("X-systemType", "android");
-//        header.put("X-deviceModel", SystemUtil.getSystemModel());
-//        header.put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关

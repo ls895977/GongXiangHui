@@ -9,6 +9,7 @@
         android:layout_height="match_parent" />
 
     <com.qunxianghui.gxh.guide.view.IndicatorView
+        android:visibility="gone"
         android:id="@+id/guide_iv_indicator_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -95,7 +95,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        int id = dataList.get(position).getData_uuid();
+                        int id = dataList.get(position-1).getData_uuid();
                         SkipMycollectNewsDetail(id, position);
                     }
                 });

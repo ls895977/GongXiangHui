@@ -62,7 +62,6 @@ public class GeneraCompanyFragment extends BaseFragment {
     TextView mTvMonth;
     @BindView(R.id.tv_total)
     TextView mTvTotal;
-
     private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
     private String[] mType = {"view_cnt", "click_cnt", "forward_cnt", "article_cnt"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
@@ -80,9 +79,8 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        SharedPreferences spCompany = mActivity.getSharedPreferences("companymessage", 0);
-        String selfcompayname = spCompany.getString("selfcompanyname", "");
-        tvGeneracompanyName.setText(selfcompayname);
+
+
         for (int i = 0; i < mTabTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTabTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
         }
@@ -148,6 +146,7 @@ public class GeneraCompanyFragment extends BaseFragment {
                             tvArticleCount.setText(String.format("%s篇", dataBean.article_cnt));
                             tvArticleTransmitCount.setText(String.format("%s次", dataBean.forward_cnt));
                             tvAdverClickCount.setText(String.format("%s次", dataBean.click_cnt));
+                            tvGeneracompanyName.setText(dataBean.getCompany_name());
                             tvAdverClickRate.setText(dataBean.click_rate);
                             tvArticleTransmitRate.setText(dataBean.forward_rate);
                             SharedPreferences spCompanymessage = mActivity.getSharedPreferences("companymessage", Context.MODE_PRIVATE);

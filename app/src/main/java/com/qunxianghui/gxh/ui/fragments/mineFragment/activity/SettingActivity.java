@@ -110,12 +110,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String s;
                 if (isChecked) {
-                    s = "选中做的处理";
 
                 } else {
-                    s = "关闭";
+
                 }
-                asyncShowToast(s);
+
 
             }
         });

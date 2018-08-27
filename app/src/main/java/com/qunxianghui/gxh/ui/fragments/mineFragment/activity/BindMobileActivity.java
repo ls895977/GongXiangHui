@@ -1,5 +1,4 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
-
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -26,7 +25,6 @@ import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
-
 /**
  * Created by user on 2018/6/22.
  */
@@ -73,7 +71,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 break;
         }
     }
-
     private void BindMobilePhone() {
         mobileCode = etBindmobileCode.getText().toString().trim();
         phoneNumber = EtBindmobilePhone.getText().toString().trim();
@@ -100,7 +97,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                                     asyncShowToast("绑定失败" + response.body().toString());
                                 }
                             }
-
                     });
         }
     }
@@ -129,7 +125,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                             timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                         }
                     }
-
                     @Override
                     public void onError(Response<GeneralResponseBean> response) {
                         timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);

@@ -50,6 +50,7 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity {
     public static final int LOGIN_REQUEST = 1;
     public static final int LOGIN_RESULT = 1;
+
     @BindView(R.id.et_login_password)
     EditText etLoginPassword;
     @BindView(R.id.bt_login_login)

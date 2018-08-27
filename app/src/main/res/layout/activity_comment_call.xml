@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/iv_homebianmin_call_back"
-            android:layout_width="10dp"
+            android:layout_width="25dp"
             android:layout_height="18dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"

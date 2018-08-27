@@ -73,6 +73,15 @@ public class GeneralizeCompanyStaticsBean implements Serializable {
         public String forward_rate;
         public String staff_cnt;
         public String ad_prize;
+        public String company_name;
+
+        public String getCompany_name() {
+            return company_name;
+        }
+
+        public void setCompany_name(String company_name) {
+            this.company_name = company_name;
+        }
 
         public static DataBean objectFromData(String str) {
 

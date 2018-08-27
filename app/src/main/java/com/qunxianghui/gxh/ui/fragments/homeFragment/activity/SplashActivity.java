@@ -1,10 +1,15 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
+import android.text.TextUtils;
+
+import com.lzy.okgo.OkGo;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.guide.GuideActivity;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.SystemUtil;
 
 public class SplashActivity extends BaseActivity {
 
@@ -22,5 +27,21 @@ public class SplashActivity extends BaseActivity {
             toActivity(WelcomeActivity.class);
         }
         finish();
+    }
+
+    @Override
+    protected void initData() {
+        OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+        OkGo.getInstance().getCommonHeaders().put("X-deviceModel", SystemUtil.getSystemModel());
+        OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+
+        String cityCode = SPUtils.getLocation("X-cityId");
+        if (!TextUtils.isEmpty(cityCode)) {
+            String areaId = SPUtils.getLocation("X-areaId");
+            OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+            OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
+        }
+
+
     }
 }

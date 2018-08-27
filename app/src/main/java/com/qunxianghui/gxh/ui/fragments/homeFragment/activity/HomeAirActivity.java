@@ -36,6 +36,8 @@ public class HomeAirActivity extends BaseActivity {
     @BindView(R.id.tv_homeair_des)
     TextView mTvHomeairDes;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+    private String mCityId;
+    private String mAreadId;
 
     @Override
     protected int getLayoutId() {
@@ -46,6 +48,14 @@ public class HomeAirActivity extends BaseActivity {
     protected void initViews() {
         mXrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mCityId = SPUtils.getLocation("X-cityId");
+        mAreadId = SPUtils.getLocation("X-areaId");
+
     }
 
     @Override
@@ -63,7 +73,6 @@ public class HomeAirActivity extends BaseActivity {
             public void onRefresh() {
                 mXrecycler.refreshComplete();
             }
-
             @Override
             public void onLoadMore() {
                 mXrecycler.refreshComplete();
@@ -73,6 +82,8 @@ public class HomeAirActivity extends BaseActivity {
 
     private void requestAirList() {
         OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
+                .headers("X-cityId", mCityId)
+                .headers("X-areaId", mAreadId)
                 .execute(new JsonCallback<HomeAirBean>() {
                     @Override
                     public void onSuccess(Response<HomeAirBean> response) {
@@ -84,7 +95,6 @@ public class HomeAirActivity extends BaseActivity {
                     }
                 });
     }
-
     private void setTopAirDetail(HomeAirBean.DataBean data) {
         String weather = data.getForecast().get(0).getDay().getWeather();
         String windPower = data.getForecast().get(0).getDay().getWindPower();

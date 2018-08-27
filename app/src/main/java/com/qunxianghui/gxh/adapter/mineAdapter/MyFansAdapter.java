@@ -40,11 +40,10 @@ public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean>
         String level_type = dataBean.getLevel_type();
         if (level_type.equals("1")) {
             mMyFansLevelType.setImageResource(R.mipmap.icon_fans_company);
-
         } else {
             mMyFansLevelType.setImageResource(R.mipmap.icon_fans_regist);
-
         }
+
         RequestOptions options = new RequestOptions();
         options.placeholder(R.mipmap.default_img);
         options.placeholder(R.mipmap.default_img);

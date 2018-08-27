@@ -41,7 +41,6 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     private int mPage;
     private boolean mIsRefresh = false;
     private String mKeyWords;
-
     public static SearchVideoFragment newInstance(String data) {
         SearchVideoFragment fragment = new SearchVideoFragment();
         Bundle bundle = new Bundle();
@@ -54,7 +53,6 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     public int getLayoutId() {
         return R.layout.fragment_video_search;
     }
-
     @Override
     public void initViews(View view) {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -101,7 +99,6 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
             }
         });
     }
-
     /**
      * ==================请求网络=====================
      */
