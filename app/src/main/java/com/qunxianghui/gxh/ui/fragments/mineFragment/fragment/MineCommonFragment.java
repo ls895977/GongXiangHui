@@ -16,6 +16,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.Result;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -51,6 +52,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     private boolean mIsRefresh = false;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
+    private String data_id="";
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
@@ -143,6 +145,28 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                 for (int i = 0; i <dataList.size() ; i++) {
                     if (dataList.get(i).isChecked() == true) {
                         //这边获取选中的数据id
+                        if (data_id.equals("")) {
+                            data_id = data_id +dataList.get(i).getData_uuid();
+                        } else {
+                            data_id = data_id + "," + dataList.get(i).getData_uuid();
+                        }
+                        OkGo.<Result>post(Constant.CANCEL_COLLECT_URL)
+                                .params("data_uuid", data_id)
+                                .execute(new JsonCallback<Result>() {
+                                    @Override
+                                    public void onSuccess(Response<Result> response) {
+                                        Result bean = response.body();
+                                        int code = bean.getCode();
+                                        if (code == 200) {
+                                            ToastUtils.showLong("删除成功");
+                                            LoadMycolectNews();
+                                            myCollectPostAdapter.isShow=false;
+                                            myCollectPostAdapter.notifyDataSetChanged();
+                                            btnDelete.setVisibility(View.GONE);
+                                        }
+
+                                    }
+                                });
                     }
                 }
             }
