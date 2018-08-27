@@ -1,22 +1,21 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
-import android.content.Context;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+        import android.annotation.SuppressLint;
+        import android.content.Context;
+        import android.view.View;
+        import android.widget.ImageView;
+        import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
-import com.qunxianghui.gxh.bean.mine.MineFansBean;
+        import com.bumptech.glide.Glide;
+        import com.bumptech.glide.request.RequestOptions;
+        import com.qunxianghui.gxh.R;
+        import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
+        import com.qunxianghui.gxh.bean.mine.MineFansBean;
 
-import java.util.List;
+        import java.util.List;
 
 public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean> {
-
-    private  myFansItemClickListener mMyFansItemClickListener;
-
+    private myFansItemClickListener mMyFansItemClickListener;
     public void setMyFansItemClickListener(myFansItemClickListener myFansItemClickListener) {
         mMyFansItemClickListener = myFansItemClickListener;
     }
@@ -25,14 +24,13 @@ public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean>
         super(context, datas);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void convert(MyViewHolder holder, final int position, MineFansBean.DataBean dataBean) {
         final ImageView headImave = holder.getView(R.id.iv_mine_fans_head);
-        final TextView mMyFansLevelType = holder.getView(R.id.tv_myfans_leveltype);
+        final ImageView mMyFansLevelType = holder.getView(R.id.iv_myfans_leveltype);
         final TextView mMyFansFollow = holder.getView(R.id.tv_myfocus_follow);
-
-        holder.setText(R.id.tv_mine_fans_title,dataBean.getMember_name());
-
+        holder.setText(R.id.tv_mine_fans_title, dataBean.getMember_name());
         int follow_type = dataBean.getFollow_type();
         if (follow_type == 0) {
             mMyFansFollow.setText("关注");
@@ -41,9 +39,11 @@ public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean>
         }
         String level_type = dataBean.getLevel_type();
         if (level_type.equals("1")) {
-            mMyFansLevelType.setText("企业会员");
+            mMyFansLevelType.setImageResource(R.mipmap.icon_fans_company);
+
         } else {
-            mMyFansLevelType.setText("注册会员");
+            mMyFansLevelType.setImageResource(R.mipmap.icon_fans_regist);
+
         }
         RequestOptions options = new RequestOptions();
         options.placeholder(R.mipmap.default_img);
@@ -62,7 +62,8 @@ public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean>
     protected int getItemView() {
         return R.layout.fragment_myfans_item;
     }
-    public  interface myFansItemClickListener{
+
+    public interface myFansItemClickListener {
         void FansClick(int position);
     }
 }

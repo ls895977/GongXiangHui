@@ -3,11 +3,8 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -38,9 +35,6 @@ public class HomeAirActivity extends BaseActivity {
     XRecyclerView mXrecycler;
     @BindView(R.id.tv_homeair_des)
     TextView mTvHomeairDes;
-    @BindView(R.id.iv_homeair_airbg)
-    ImageView ivHomeairAirbg;
-
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
 
     @Override
@@ -102,8 +96,7 @@ public class HomeAirActivity extends BaseActivity {
         mTvHomeairMiddleAirdetail.setText(String.format("%s|%s%s", weather, windDirection, windPower));
         mTvHomeairBottomDayDetail.setText(dateTime);
         mTvHomeairDes.setText(notice);
-        Glide.with(mContext).load(bgImage).apply(new RequestOptions()
-                .placeholder(R.mipmap.homeair_sun).error(R.mipmap.homeair_rain).centerCrop()).into(ivHomeairAirbg);
+
 
     }
 

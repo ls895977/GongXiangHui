@@ -60,7 +60,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
-
         LoadMycolectNews();
     }
 

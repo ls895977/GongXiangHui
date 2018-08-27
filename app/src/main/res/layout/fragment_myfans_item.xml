@@ -39,13 +39,12 @@
                     android:text="臭居居的归来"
                     android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/tv_myfans_leveltype"
-                    android:layout_marginLeft="10dp"
+                <ImageView
+                    android:id="@+id/iv_myfans_leveltype"
                     android:layout_width="wrap_content"
-                    android:textSize="10sp"
                     android:layout_height="wrap_content"
-                    android:text="注册会员" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp" />
 
             </LinearLayout>
 

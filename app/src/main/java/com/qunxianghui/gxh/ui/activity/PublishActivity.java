@@ -50,7 +50,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     EditText etBaoliaoFabuContent;
     @BindView(R.id.recyclerView_publish_images)
     RecyclerView recyclerViewPublishImages;
-
     @BindView(R.id.ll_publich_load)
     LinearLayout llPublichLoad;
     private int maxImgCount = 8;               //允许选择图片最大数
@@ -223,7 +222,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
-            }else {
+            } else {
                 asyncShowToast("没有数据");
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {

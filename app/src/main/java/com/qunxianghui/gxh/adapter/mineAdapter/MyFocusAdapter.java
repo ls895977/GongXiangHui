@@ -31,7 +31,7 @@ public myFocusItemClickListener mMyFocusItemClickListener;
     protected void convert(MyViewHolder holder, final int position, MyFocusBean.DataBean dataBean) {
         final ImageView headImave = holder.getView(R.id.iv_mine_focus_head);
         TextView mMyFocusFollow = holder.getView(R.id.tv_myfocus_follow);
-        final TextView mFocusLevelType = holder.getView(R.id.tv_myfocus_leveltype);
+        final ImageView mFocusLevelType = holder.getView(R.id.iv_myfocus_leveltype);
 
         int follow_type = dataBean.getFollow_type();
         if (follow_type == 0) {
@@ -41,9 +41,9 @@ public myFocusItemClickListener mMyFocusItemClickListener;
         }
         String level_type = dataBean.getLevel_type();
         if (level_type.equals("1")) {
-            mFocusLevelType.setText("企业会员");
+            mFocusLevelType.setImageResource(R.mipmap.icon_fans_company);
         } else {
-            mFocusLevelType.setText("注册会员");
+            mFocusLevelType.setImageResource(R.mipmap.icon_fans_regist);
         }
 
         holder.setText(R.id.tv_mine_focus_title, dataBean.getMember_name());
