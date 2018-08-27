@@ -159,10 +159,15 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                                             int code = jsonObject.getInt("code");
                                             if (code == 200) {
                                                 ToastUtils.showLong("删除成功");
-                                                LoadMycolectNews();
+                                                for (int j = 0; j <dataList.size() ; j++) {
+                                                    if (dataList.get(j).isChecked() == true) {
+                                                        dataList.remove(j);
+                                                    }
+                                                }
                                                 myCollectPostAdapter.isShow=false;
                                                 myCollectPostAdapter.notifyDataSetChanged();
                                                 btnDelete.setVisibility(View.GONE);
+                                                EventManager.getInstance().publishMessage("init");
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -211,6 +216,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventManager.getInstance().deleteObserver(this);
     }
 
 

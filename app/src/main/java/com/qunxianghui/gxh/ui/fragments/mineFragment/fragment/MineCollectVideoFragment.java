@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
@@ -21,6 +22,9 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.ToastUtils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
     private boolean mIsRefresh = false;
     private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
     private MineCollectVideoAdapter mineCollectVideoAdapter;
+    private String data_id="";
     @Override
     protected void onLoadData() {
         RequestMineCollectVideo();
@@ -147,13 +152,48 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
             public void onClick(View view) {
                 for (int i = 0; i <dataList.size() ; i++) {
                     if (dataList.get(i).isChecked() == true) {
-                        //这边获取选中的数据id,
+                        //这边获取选中的数据id
+                        if (data_id.equals("")) {
+                            data_id = data_id +dataList.get(i).getInfo().getUuid();
+                        } else {
+                            data_id = data_id + "," + dataList.get(i).getInfo().getUuid();
+                        }
+                        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+                                .params("uuid", data_id)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject=new JSONObject(response.body());
+                                            int code = jsonObject.getInt("code");
+                                            if (code == 200) {
+                                                ToastUtils.showLong("删除成功");
+                                                for (int j = 0; j <dataList.size() ; j++) {
+                                                    if (dataList.get(j).isChecked() == true) {
+                                                        dataList.remove(j);
+                                                    }
+                                                }
+                                                mineCollectVideoAdapter.isShow=false;
+                                                mineCollectVideoAdapter.notifyDataSetChanged();
+                                                btnDelete.setVisibility(View.GONE);
+                                                EventManager.getInstance().publishMessage("init");
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                });
                     }
                 }
             }
         });
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventManager.getInstance().deleteObserver(this);
+    }
 
     @Override
     public void update(Observable observable, Object o) {
