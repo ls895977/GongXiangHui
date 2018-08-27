@@ -4,6 +4,8 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 import android.content.Context;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +28,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
     }
-
+    public boolean isShow = false;
     @Override
     protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
         final ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
@@ -45,6 +47,27 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
             Glide.with(mContext).load(images.get(0)).apply(options).into(collectHeadImag);
 
         }
+        if (isShow) {
+            holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.ch_delete).setVisibility(View.GONE);
+        }
+        CheckBox checkBox = holder.getView(R.id.ch_delete);
+        if (dataBean.isChecked() == true) {
+            checkBox.setChecked(true);
+        } else {
+            checkBox.setChecked(false);
+        }
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dataBean.isChecked() == true) {
+                    dataBean.setChecked(false);
+                } else {
+                    dataBean.setChecked(true);
+                }
+            }
+        });
 
     }
     public static boolean isInMainThread() {

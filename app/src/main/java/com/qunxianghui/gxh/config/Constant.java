@@ -11,11 +11,11 @@ public class Constant {
     //群享汇服务协议链接的跳转
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //便民服务中的黄历
-    public static final String BIANMIN_HUANGLI_URL= "http://yun.rili.cn/wnl/m/huangli.html?channel=bttoutiao";
-    //正式环境
-    //public static final String BASE_URL = "http://api.qunxianghui.com.cn/v1/";
+    public static final String BIANMIN_HUANGLI_URL= "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
+    //欢迎页广告
     //本地环境
     private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
+
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     TextView tvNewsdetailIssue;
     @BindView(R.id.rl_protocol_title)
     RelativeLayout mRlProtocolTitle;
-
     private WebView webView;
     private StringBuffer mBuffer;
 
@@ -157,6 +157,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         webView.loadUrl(String.valueOf(mBuffer));
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -167,8 +168,11 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
-        webView.onPause();
-        webView.pauseTimers();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            webView.onPause();
+            webView.pauseTimers(); // 暂停网页中正在播放的视频
+        }
+
     }
 
     @Override

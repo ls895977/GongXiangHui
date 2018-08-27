@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.qunxianghui.gxh"
         minSdkVersion 17
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         multiDexEnabled = true
@@ -117,5 +117,8 @@ dependencies {
     implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
 }

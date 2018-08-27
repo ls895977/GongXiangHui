@@ -26,7 +26,6 @@ import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CityPickerutil;
 import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.ScreenUtils;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -69,15 +68,15 @@ public class MyApplication extends MultiDexApplication {
         SINSTANCE = this;
         appManager = AppManager.getAppManager();
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        if (BuildConfig.DEBUG) {
-            LeakCanary.install(this);
-            CrashHandler.getInstance().init(getApplicationContext());
-        }
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        if (BuildConfig.DEBUG) {
+//            LeakCanary.install(this);
+//            CrashHandler.getInstance().init(getApplicationContext());
+//        }
         Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();

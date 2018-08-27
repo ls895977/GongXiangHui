@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +70,8 @@ public class HotPointFragment extends BaseFragment {
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+    private int mWidth;
+    private int mHeight;
 
     @Override
     public int getLayoutId() {
@@ -76,6 +81,10 @@ public class HotPointFragment extends BaseFragment {
     @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        mWidth = dm.widthPixels;
+        mHeight = dm.heightPixels;
+
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
         }
@@ -86,6 +95,10 @@ public class HotPointFragment extends BaseFragment {
             grid_home_navigator = headerNavigator.findViewById(R.id.grid_home_navigator);
             View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, mRv, false);
             viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpagerHome.getLayoutParams();
+            layoutParams.height = mHeight*7/24;
+            viewpagerHome.setLayoutParams(layoutParams);
+
             //加載首頁那个导航图//加载首页轮播图
             initGuideAndBanner();
             homeItemListAdapter.addHeaderView(headerNavigator);

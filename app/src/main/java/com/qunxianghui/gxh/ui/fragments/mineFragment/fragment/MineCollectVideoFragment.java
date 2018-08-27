@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
+import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -17,17 +18,22 @@ import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 
-public class MineCollectVideoFragment extends BaseFragment {
+public class MineCollectVideoFragment extends BaseFragment implements Observer{
     @BindView(R.id.xrecycler_mycollect_video)
     XRecyclerView xrecyclerMycollectVideo;
+    @BindView(R.id.bt_mycollect_delete)
+    Button btnDelete;
 
     private boolean mIsFirst = true;
     private int count;
@@ -103,9 +109,8 @@ public class MineCollectVideoFragment extends BaseFragment {
                         int code = myCollectVideoDetailBean.getCode();
                         if (code == 200) {
                             int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
-                            String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                            intent.putExtra("url", url);
+                            intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                             intent.putExtra("uuid", uuid);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             intent.putExtra("position", 4);
@@ -135,8 +140,32 @@ public class MineCollectVideoFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(this);
         xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity,2, GridLayoutManager.VERTICAL, false));
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i <dataList.size() ; i++) {
+                    if (dataList.get(i).isChecked() == true) {
+                        //这边获取选中的数据id,
+                    }
+                }
+            }
+        });
     }
 
 
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof String && "video".equals(o)) {
+            mineCollectVideoAdapter.isShow=true;
+            mineCollectVideoAdapter.notifyDataSetChanged();
+            btnDelete.setVisibility(View.VISIBLE);
+        }
+        if (o instanceof String && "video_c".equals(o)) {
+            mineCollectVideoAdapter.isShow=false;
+            mineCollectVideoAdapter.notifyDataSetChanged();
+            btnDelete.setVisibility(View.GONE);
+        }
+    }
 }
