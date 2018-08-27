@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.view.Display;
 import android.view.Gravity;
@@ -84,6 +85,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
         mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mWedNewsDetail.onPause();
+
+            // 暂停网页中正在播放的视频
+        }
     }
 
     private Dialog createLoadingDialog(Context context, String msg) {

@@ -93,6 +93,12 @@ public class GeneraCompanyFragment extends BaseFragment {
         setViewpager(1, 0);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private void setViewpager(int total, int month) {
         List<Fragment> fragments = new ArrayList<>();
         for (String aMType : mType) {

@@ -326,7 +326,7 @@
             android:name=".ui.fragments.homeFragment.activity.GuidActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activity.SelfTextActivity" />
+
 
         <activity android:name=".guide.GuideActivity"/>
 
