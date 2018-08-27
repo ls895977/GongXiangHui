@@ -3,11 +3,8 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -38,10 +35,9 @@ public class HomeAirActivity extends BaseActivity {
     XRecyclerView mXrecycler;
     @BindView(R.id.tv_homeair_des)
     TextView mTvHomeairDes;
-    @BindView(R.id.iv_homeair_airbg)
-    ImageView ivHomeairAirbg;
-
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+    private String mCityId;
+    private String mAreadId;
 
     @Override
     protected int getLayoutId() {
@@ -52,6 +48,13 @@ public class HomeAirActivity extends BaseActivity {
     protected void initViews() {
         mXrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mCityId = SPUtils.getLocation("X-cityId");
+        mAreadId = SPUtils.getLocation("X-areaId");
     }
 
     @Override
@@ -79,8 +82,8 @@ public class HomeAirActivity extends BaseActivity {
 
     private void requestAirList() {
         OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
-                .headers("X-cityId",  SPUtils.getLocation("X-cityId"))
-                .headers("X-areaId", SPUtils.getLocation("X-areaId"))
+                .headers("X-cityId", SPUtils.getLocation("X-areaId"))
+                .headers("X-areaId", SPUtils.getLocation("X-cityId"))
                 .execute(new JsonCallback<HomeAirBean>() {
                     @Override
                     public void onSuccess(Response<HomeAirBean> response) {
@@ -104,9 +107,6 @@ public class HomeAirActivity extends BaseActivity {
         mTvHomeairMiddleAirdetail.setText(String.format("%s|%s%s", weather, windDirection, windPower));
         mTvHomeairBottomDayDetail.setText(dateTime);
         mTvHomeairDes.setText(notice);
-        Glide.with(mContext).load(bgImage).apply(new RequestOptions()
-                .placeholder(R.mipmap.homeair_sun).error(R.mipmap.homeair_rain).centerCrop()).into(ivHomeairAirbg);
-
     }
 
     @Override

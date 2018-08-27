@@ -8,12 +8,12 @@ import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -23,6 +23,8 @@ import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ToastUtils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
-
         LoadMycolectNews();
     }
 
@@ -93,7 +94,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        int id = dataList.get(position).getData_uuid();
+                        int id = dataList.get(position - 1).getData_uuid();
                         SkipMycollectNewsDetail(id, position);
                     }
                 });
@@ -142,25 +143,33 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                     if (dataList.get(i).isChecked() == true) {
                         //这边获取选中的数据id
                         if (data_id.equals("")) {
-                            data_id = data_id + dataList.get(i).getData_uuid();
+                            data_id = data_id + dataList.get(i).getInfo().getUuid();
                         } else {
-                            data_id = data_id + "," + dataList.get(i).getData_uuid();
+                            data_id = data_id + "," + dataList.get(i).getInfo().getUuid();
                         }
-                        OkGo.<CommonBean>post(Constant.CANCEL_COLLECT_URL)
-                                .params("data_uuid", data_id)
-                                .execute(new JsonCallback<CommonBean>() {
+                        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+                                .params("uuid", data_id)
+                                .execute(new StringCallback() {
                                     @Override
-                                    public void onSuccess(Response<CommonBean> response) {
-                                        CommonBean bean = response.body();
-                                        int code = bean.code;
-                                        if (code == 200) {
-                                            ToastUtils.showLong("删除成功");
-                                            LoadMycolectNews();
-                                            myCollectPostAdapter.isShow = false;
-                                            myCollectPostAdapter.notifyDataSetChanged();
-                                            btnDelete.setVisibility(View.GONE);
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response.body());
+                                            int code = jsonObject.getInt("code");
+                                            if (code == 200) {
+                                                ToastUtils.showLong("删除成功");
+                                                for (int j = 0; j < dataList.size(); j++) {
+                                                    if (dataList.get(j).isChecked() == true) {
+                                                        dataList.remove(j);
+                                                    }
+                                                }
+                                                myCollectPostAdapter.isShow = false;
+                                                myCollectPostAdapter.notifyDataSetChanged();
+                                                btnDelete.setVisibility(View.GONE);
+                                                EventManager.getInstance().publishMessage("init");
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-
                                     }
                                 });
                     }
@@ -190,6 +199,13 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     @Override
     protected void onLoadData() {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+        EventManager.getInstance().deleteObserver(this);
     }
 
     @Override

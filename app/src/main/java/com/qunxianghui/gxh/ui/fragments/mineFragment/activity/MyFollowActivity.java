@@ -27,7 +27,6 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
     XRecyclerView mRecyclerMineAttention;
 
     private List<MyFocusBean.DataBean> dataList = new ArrayList<>();
-
     private boolean mIsFirst = true;
     private int count = 0;
     private MyFocusAdapter myFocusAdapter;

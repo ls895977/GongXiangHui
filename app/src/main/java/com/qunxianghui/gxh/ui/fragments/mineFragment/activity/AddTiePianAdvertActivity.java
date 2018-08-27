@@ -289,8 +289,14 @@ public class AddTiePianAdvertActivity extends BaseActivity {
 
     @OnClick(R.id.rl_add)
     public void onViewClicked() {
-        Intent intent = new Intent(this, AdvertTemplateActivity.class);
-        intent.putExtra("position", 2);
-        startActivityForResult(intent, 100);
+        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+            asyncShowToast("注册会员只可操作底部广告");
+            return;
+        }else {
+            Intent intent = new Intent(this, AdvertTemplateActivity.class);
+            intent.putExtra("position", 2);
+            startActivityForResult(intent, 100);
+        }
+
     }
 }

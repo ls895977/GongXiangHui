@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +20,8 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 
@@ -28,7 +29,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/3/23 0023.
  */
 
-public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+public class MyCollectActivity extends BaseActivity implements Observer, TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
@@ -53,6 +54,7 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
 
     @Override
     protected void initViews() {
+        EventManager.getInstance().addObserver(this);
         //设置tabLayout的一个显示方式
         mineTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
         //循环注入标签
@@ -167,5 +169,11 @@ public class MyCollectActivity extends BaseActivity implements TabLayout.OnTabSe
                 break;
         }
     }
-
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof String && "init".equals(o)) {
+            tvMycollectCancel.setVisibility(View.GONE);
+            ivMyCollectBack.setVisibility(View.VISIBLE);
+        }
+    }
 }

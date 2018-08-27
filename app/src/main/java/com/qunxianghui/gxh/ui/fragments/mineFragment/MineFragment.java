@@ -66,6 +66,7 @@ public class MineFragment extends BaseFragment {
     private UserInfo.DataBean mUserInfo;
     private int userSize;
     private int code;
+    private String mMobile;
 
     @Override
     public int getLayoutId() {
@@ -110,6 +111,7 @@ public class MineFragment extends BaseFragment {
         code = userInfo.code;
         if (userInfo.code == 0) {
             mUserInfo = userInfo.data;
+            mMobile = mUserInfo.agency_info.mobile;
             if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                 mTvMineCompanyName.setText(mUserInfo.company_info.company_name);
             } else {
@@ -159,7 +161,7 @@ public class MineFragment extends BaseFragment {
                 toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.hezuo_call:
-                requestCall();
+                requestCall(mMobile);
                 break;
             case R.id.write_advertise:
                 intent = new Intent(mActivity, AdvertTemplateActivity.class);
@@ -180,9 +182,9 @@ public class MineFragment extends BaseFragment {
         }
     }
 
-    private void requestCall() {
+    private void requestCall(String mobile) {
         if (PermissionsUtil.hasPermission(mActivity, Manifest.permission.CALL_PHONE)) {
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001884660"));
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {

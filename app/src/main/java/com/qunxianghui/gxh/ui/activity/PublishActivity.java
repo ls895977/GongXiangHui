@@ -50,7 +50,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     EditText etBaoliaoFabuContent;
     @BindView(R.id.recyclerView_publish_images)
     RecyclerView recyclerViewPublishImages;
-
     @BindView(R.id.ll_publich_load)
     LinearLayout llPublichLoad;
     private int maxImgCount = 8;               //允许选择图片最大数
@@ -73,7 +72,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new NewGlideImageLoader());   //设置图片加载器
         imagePicker.setShowCamera(true);                      //显示拍照按钮
-        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
+        imagePicker.setCrop(false);                           //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
         imagePicker.setSelectLimit(maxImgCount);              //选中数量限制
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
@@ -223,6 +222,8 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
+            } else {
+                asyncShowToast("没有数据");
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
             //预览图片返回

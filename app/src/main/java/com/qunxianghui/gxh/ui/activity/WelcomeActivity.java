@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,9 +22,6 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.WelcomeAdvertBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.utils.SPUtils;
-import com.qunxianghui.gxh.utils.SystemUtil;
 
 import butterknife.BindView;
 import kr.co.namee.permissiongen.PermissionGen;
@@ -119,17 +115,6 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-        OkGo.getInstance().getCommonHeaders().put("X-deviceModel", SystemUtil.getSystemModel());
-        OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
-
-        String cityCode = SPUtils.getLocation("X-cityId");
-        if (!TextUtils.isEmpty(cityCode)) {
-            String areaId = SPUtils.getLocation("X-areaId");
-            OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
-            OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
-        }
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -56,14 +56,6 @@
             android:textColor="#8A1717"
             android:textSize="58sp" />
 
-        <ImageView
-            android:id="@+id/iv_homeair_airbg"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/tv_homeair_wendu"
-            android:src="@mipmap/homeair_rain" />
 
         <TextView
             android:id="@+id/home_air_location"
@@ -155,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        android:text="最近7天天气情况"
+        android:text="最近5天气情况"
         android:textColor="#9B9B9B"
         android:textSize="12sp" />
 
