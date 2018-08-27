@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.CompanyCardBean;
@@ -74,11 +73,6 @@ public class CompanyCardActivity extends BaseActivity {
                         parseCompanyCardData(response.body());
                     }
 
-                    @Override
-                    public void onError(Response<CompanyCardBean> response) {
-                        super.onError(response);
-                        Logger.e("获取失败了" + response.body().toString());
-                    }
                 });
 
     }

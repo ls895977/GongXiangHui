@@ -20,9 +20,9 @@ public class Convert {
         private static Gson gson = new Gson();
     }
 
-    public static <T> T fromJson(String json, Class<T> type) throws JsonIOException, JsonSyntaxException {
-        return create().fromJson(json, type);
-    }
+//    public static <T> T fromJson(String json, Class<T> type) throws JsonIOException, JsonSyntaxException {
+//        return create().fromJson(json, type);
+//    }
 
     public static <T> T fromJson(String json, Type type) {
         return create().fromJson(json, type);

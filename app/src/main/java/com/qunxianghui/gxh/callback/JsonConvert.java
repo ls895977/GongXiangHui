@@ -85,25 +85,19 @@ public class JsonConvert<T> implements Converter<T> {
         if (rawType == null) return null;
         ResponseBody body = response.body();
         if (body == null) return null;
-        JsonReader jsonReader = new JsonReader(body.charStream());
-
+        String string = body.string();
+        isFialure(string);
         if (rawType == String.class) {
             //noinspection unchecked
-            String string = body.string();
-            isFialure(string);
             return (T) string;
         } else if (rawType == JSONObject.class) {
             //noinspection unchecked
-            String string = body.string();
-            isFialure(string);
             return (T) new JSONObject(string);
         } else if (rawType == JSONArray.class) {
             //noinspection unchecked
-            String string = body.string();
-            isFialure(string);
             return (T) new JSONArray(string);
         } else {
-            T t = Convert.fromJson(jsonReader, rawType);
+            T t = Convert.fromJson(string, rawType);
             response.close();
             return t;
         }

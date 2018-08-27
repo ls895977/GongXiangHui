@@ -35,9 +35,8 @@ public class HomeAirActivity extends BaseActivity {
     XRecyclerView mXrecycler;
     @BindView(R.id.tv_homeair_des)
     TextView mTvHomeairDes;
+
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private String mCityId;
-    private String mAreadId;
 
     @Override
     protected int getLayoutId() {
@@ -48,13 +47,6 @@ public class HomeAirActivity extends BaseActivity {
     protected void initViews() {
         mXrecycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mHomeAirLocation.setText(SPUtils.getLocation("currcity"));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mCityId = SPUtils.getLocation("X-cityId");
-        mAreadId = SPUtils.getLocation("X-areaId");
     }
 
     @Override

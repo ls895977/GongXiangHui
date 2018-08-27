@@ -104,14 +104,8 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-                for (Map.Entry<String, String> entry : data.entrySet()) {
-                    Log.d(TAG, "onComplete: " + entry.getKey() + ":" + entry.getValue());
-                }
                 switch (platform) {
                     case QQ:
-                        /**
-                         * qq登录完成后的回掉
-                         */
                         OkGo.<String>post(Constant.QQ_RESPONSE_URL)
                                 .params("status", true)
                                 .params("accessToken", data.get("accessToken"))
@@ -142,9 +136,6 @@ public class LoginActivity extends BaseActivity {
                                 });
                         break;
                     case WEIXIN:
-                        /**
-                         * weixin登录完成后的回掉
-                         */
                         OkGo.<String>post(Constant.WEIXIN_RESPONSE_URL)
                                 .params("status", true)
                                 .params("accessToken", data.get("accessToken"))
@@ -176,12 +167,9 @@ public class LoginActivity extends BaseActivity {
 
                         break;
                     case SINA:
-                        /**
-                         * sina登录完成后的回掉
-                         */
                         OkGo.<String>post(Constant.SINA_RESPONSE_URL)
                                 .params("status", true)
-                                .params("accessToken", data.get("accessToken"))
+                                .params("accessToken", data.get("access_token"))
                                 .params("openId", data.get("uid"))
                                 .execute(new StringCallback() {
                                     @Override
