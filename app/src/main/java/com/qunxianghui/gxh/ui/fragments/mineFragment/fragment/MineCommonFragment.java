@@ -11,12 +11,12 @@ import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.Result;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -26,7 +26,7 @@ import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ToastUtils;
-
+import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -145,23 +145,27 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                     if (dataList.get(i).isChecked() == true) {
                         //这边获取选中的数据id
                         if (data_id.equals("")) {
-                            data_id = data_id +dataList.get(i).getData_uuid();
+                            data_id = data_id +dataList.get(i).getInfo().getUuid();
                         } else {
-                            data_id = data_id + "," + dataList.get(i).getData_uuid();
+                            data_id = data_id + "," + dataList.get(i).getInfo().getUuid();
                         }
-                        OkGo.<Result>post(Constant.CANCEL_COLLECT_URL)
-                                .params("data_uuid", data_id)
-                                .execute(new JsonCallback<Result>() {
+                        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+                                .params("uuid", data_id)
+                                .execute(new StringCallback() {
                                     @Override
-                                    public void onSuccess(Response<Result> response) {
-                                        Result bean = response.body();
-                                        int code = bean.getCode();
-                                        if (code == 200) {
-                                            ToastUtils.showLong("删除成功");
-                                            LoadMycolectNews();
-                                            myCollectPostAdapter.isShow=false;
-                                            myCollectPostAdapter.notifyDataSetChanged();
-                                            btnDelete.setVisibility(View.GONE);
+                                    public void onSuccess(Response<String> response) {
+                                        try {
+                                            JSONObject jsonObject=new JSONObject(response.body());
+                                            int code = jsonObject.getInt("code");
+                                            if (code == 200) {
+                                                ToastUtils.showLong("删除成功");
+                                                LoadMycolectNews();
+                                                myCollectPostAdapter.isShow=false;
+                                                myCollectPostAdapter.notifyDataSetChanged();
+                                                btnDelete.setVisibility(View.GONE);
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
 
                                     }
