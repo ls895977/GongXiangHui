@@ -46,6 +46,7 @@ public class ProvinceBean  {
             @SerializedName("name")
             public String areaName;
             public String pid;
+            public String city_id;
         }
     }
 }

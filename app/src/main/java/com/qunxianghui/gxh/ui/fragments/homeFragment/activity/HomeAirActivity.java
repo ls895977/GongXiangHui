@@ -74,8 +74,8 @@ public class HomeAirActivity extends BaseActivity {
 
     private void requestAirList() {
         OkGo.<HomeAirBean>post(Constant.HOME_AIRLIST_URL)
-                .headers("X-cityId", SPUtils.getLocation("X-areaId"))
-                .headers("X-areaId", SPUtils.getLocation("X-cityId"))
+                .headers("X-cityId", SPUtils.getLocation("X-cityId"))
+                .headers("X-areaId", SPUtils.getLocation("X-areaId"))
                 .execute(new JsonCallback<HomeAirBean>() {
                     @Override
                     public void onSuccess(Response<HomeAirBean> response) {

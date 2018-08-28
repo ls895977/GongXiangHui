@@ -40,12 +40,8 @@ public class UserUtil {
                     @Override
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body())) {
-//                            Logger.d("onSuccess-->:" + response.body().toString());
                             parseUserData(response.body());
-                            return;
                         }
-                        //toActivity(LoginActivity.class);
-//                        Logger.d("onSuccess-->:" + response.body().toString());
                     }
                 });
 
