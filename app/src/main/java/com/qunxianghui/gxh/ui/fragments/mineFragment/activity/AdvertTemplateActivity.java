@@ -103,7 +103,7 @@ public class AdvertTemplateActivity extends BaseActivity {
             public void onTabSelect(int position) {
                 if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                     mSegmentTab.setCurrentTab(0);
-                    asyncShowToast("注册会员只可操作底部广告");
+                    asyncShowToast("亲，非企业会员只可添加底部广告哦！");
                     return;
                 }
                 mVp.setCurrentItem(position, false);

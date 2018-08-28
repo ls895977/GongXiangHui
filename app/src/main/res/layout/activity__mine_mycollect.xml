@@ -6,6 +6,18 @@
     android:layout_marginTop="35dp"
     android:orientation="vertical">
 
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mine_tablayout_common"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="#f9f9f9"
+        app:tabIndicatorColor="@color/tab_color"
+        app:tabSelectedTextColor="@color/tab_color"
+        app:tabTextColor="#000" />
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,28 +46,17 @@
             android:text="我的收藏"
             android:textColor="#000"
             android:textSize="16sp" />
+
         <TextView
             android:id="@+id/tv_mycollect_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="编辑"
             android:layout_alignParentRight="true"
+            android:text="编辑"
             android:visibility="visible" />
 
 
     </RelativeLayout>
-
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/mine_tablayout_common"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="#f9f9f9"
-        app:tabIndicatorColor="@color/tab_color"
-        app:tabSelectedTextColor="@color/tab_color"
-        app:tabTextColor="#000" />
-
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mine_common_viewpager"

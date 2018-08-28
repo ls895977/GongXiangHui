@@ -118,13 +118,19 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         if (userDetailInfoBean.getCode() == 200) {
             dataList = userDetailInfoBean.getData();
             follow = dataList.getFollow();
+            String self_introduction = dataList.getSelf_introduction();
             if (TextUtils.isEmpty(follow)) {
                 tvPersonDetailAttention.setText("关注");
             } else {
                 tvPersonDetailAttention.setText("已关注");
             }
             tvPersonDetailName.setText(dataList.getNick());
-            tvPersondetailIntroduce.setText(dataList.getSelf_introduction());
+            if (self_introduction.length()!=0){
+                tvPersondetailIntroduce.setText(self_introduction);
+            }else {
+                tvPersondetailIntroduce.setText("本宝宝还没有想到有个性的签名哦!");
+
+            }
             tvPersondetailFollow.setText(String.valueOf("关注 " + dataList.getFollow_num()));
             tvPersondetailFans.setText(String.valueOf(" 粉丝 " + dataList.getFans_num()));
             Glide.with(mContext).load(dataList.getMember_avatar())
@@ -151,7 +157,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
         }
     }
-
     private void acctionPerson() {
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
@@ -163,13 +168,16 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                         @Override
                         public void onSuccess(final Response<CommonBean> response) {
                             int code = response.body().code;
+                            int fans_num = dataList.getFans_num();
                             if (code == 0) {
                                 asyncShowToast("关注成功");
                                 tvPersonDetailAttention.setText("已关注");
                                 dataList.setFollow("true");
+                                tvPersondetailFans.setText(" 粉丝 "+String.valueOf(++fans_num));
                             } else if (code == 202) {
                                 asyncShowToast("取消关注成功");
                                 tvPersonDetailAttention.setText("关注");
+                                tvPersondetailFans.setText(" 粉丝 "+String.valueOf(fans_num));
                                 dataList.setFollow("");
                             } else if (code == 101) {
                                 asyncShowToast("请不要自己关注自己");

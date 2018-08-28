@@ -23,8 +23,10 @@ import com.qunxianghui.gxh.bean.mine.MineIssueVideoBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectVideoDetailBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,8 +116,9 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                             String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
                             int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                            intent.putExtra("url", url);
+                            intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                             intent.putExtra("uuid", uuid);
+                            intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             startActivity(intent);
                         }
                     }

@@ -290,7 +290,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     @OnClick(R.id.rl_add)
     public void onViewClicked() {
         if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
-            asyncShowToast("注册会员只可操作底部广告");
+            asyncShowToast("亲，非企业会员只可添加底部广告哦！");
             return;
         }else {
             Intent intent = new Intent(this, AdvertTemplateActivity.class);

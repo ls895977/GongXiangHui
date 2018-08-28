@@ -190,6 +190,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
             }
         };
+
+        mLoadingDialog.dismiss();
     }
 
     @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver})
@@ -326,8 +328,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                             break;
 
                     }
-                    mLoadingDialog.dismiss();
+                    mUmShareDialog.dismiss();
                 }
+
             };
             view.findViewById(R.id.rl_share_wx).setOnClickListener(listener);
             view.findViewById(R.id.rl_share_wxfriend).setOnClickListener(listener);

@@ -176,4 +176,9 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
             ivMyCollectBack.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

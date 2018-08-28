@@ -34,6 +34,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.activity_photo_browser);
         initViews();
+        initDatas();
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -77,6 +78,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+
     @Override
     public void finish() {
         super.finish();
@@ -91,4 +93,5 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnCl
 //                break;
 //        }
     }
+
 }

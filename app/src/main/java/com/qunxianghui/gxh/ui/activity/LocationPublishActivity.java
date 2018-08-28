@@ -1,11 +1,13 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -174,18 +176,22 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 }
                 break;
             case R.id.tv_type:
-                if (mChooseType != null) {
-                    mChooseType.show();
-                } else {
-                    OkGo.<HomeVideoSortBean>post(Constant.UPLOAD_LOCAL_POST_SORT_SUB_URL)
-                            .execute(new JsonCallback<HomeVideoSortBean>() {
-                                @Override
-                                public void onSuccess(Response<HomeVideoSortBean> response) {
-                                    parseVideoSortData(response.body());
-                                }
-                            });
-                }
+                hideKeyboard(view);
+                chooseVideoType();
                 break;
+        }
+    }
+    private void chooseVideoType() {
+        if (mChooseType != null) {
+            mChooseType.show();
+        } else {
+            OkGo.<HomeVideoSortBean>post(Constant.UPLOAD_LOCAL_POST_SORT_SUB_URL)
+                    .execute(new JsonCallback<HomeVideoSortBean>() {
+                        @Override
+                        public void onSuccess(Response<HomeVideoSortBean> response) {
+                            parseVideoSortData(response.body());
+                        }
+                    });
         }
     }
 
@@ -285,6 +291,14 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
             mChooseType.show();
         } else {
             asyncShowToast(homeVideoSortBean.getMsg());
+        }
+    }
+
+    public static void hideKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
     }
 }
