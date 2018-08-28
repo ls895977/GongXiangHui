@@ -456,6 +456,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
         });
         SwitchButton sB = view.findViewById(R.id.sw);
+        sB.setChecked(false);
         sB.setOnCheckedChangeListener(this);
         if (companyAdvert != null) {
             mList.add(companyAdvert);
@@ -485,6 +486,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+            advert.is_slide = 0;
             advert.ad_type = 1;
             advert.position = 2;
             mList.add(advert);

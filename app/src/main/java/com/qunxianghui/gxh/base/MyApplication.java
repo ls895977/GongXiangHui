@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
-import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
@@ -22,7 +21,6 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
-import com.qunxianghui.gxh.utils.CityPickerutil;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
@@ -116,9 +114,9 @@ public class MyApplication extends MultiDexApplication {
         /**
          * 预先加载三级列表显示省市区的数据
          */
-        CityListLoader.getInstance().loadProData(this);
+//        CityListLoader.getInstance().loadProData(this);
         //重复 ？
-        CityPickerutil.initDatas(this);
+//        CityPickerutil.initDatas(this);
         UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null); //  友盟初始化
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL); // 友盟统计场景：普通统计场景类型
         PlatformConfig.setWeixin("wx8dd50e08a25101d7", "b84c68b1fc941afec1aabda8360e34e1");//微信APPID和AppSecret
