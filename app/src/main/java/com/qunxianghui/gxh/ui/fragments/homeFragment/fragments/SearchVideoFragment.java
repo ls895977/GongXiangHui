@@ -120,7 +120,6 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                     }
                 });
     }
-
     //设置数据
     private void parseData(HomeVideoSearchBean body) {
         if (mIsRefresh) {

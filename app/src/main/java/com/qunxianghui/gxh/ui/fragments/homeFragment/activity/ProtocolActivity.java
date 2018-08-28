@@ -3,6 +3,8 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -19,6 +23,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,7 +39,6 @@ import butterknife.BindView;
  */
 
 public class ProtocolActivity extends BaseActivity implements View.OnClickListener {
-
     final Activity activity = this;
     @BindView(R.id.ll_protocol_main)
     RelativeLayout llProtocolMain;
@@ -48,10 +52,35 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout mRlProtocolTitle;
     private WebView webView;
     private StringBuffer mBuffer;
-
+    private Dialog mMLoadingDialog;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_protocol;
+    }
+
+    @Override
+    protected void initViews() {
+        mMLoadingDialog = createLoadingDialog(ProtocolActivity.this, "加载中...");
+        mMLoadingDialog.show();
+    }
+
+    private Dialog createLoadingDialog(Context context, String msg) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
+        LinearLayout layout = v.findViewById(R.id.dialog_view);//加载布局
+        // main.xml中的ImageView
+        ImageView spaceshipImage = v.findViewById(R.id.dialog_img);
+        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
+        //加载动画
+        final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
+        //使用imageView显示动画
+        spaceshipImage.startAnimation(animation);
+        tipTextView.setText(msg);  //设置加载信息
+        final Dialog loadingDialog = new Dialog(context);
+        loadingDialog.setCancelable(true);  //不可以用返回键 取消
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setContentView(v, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)); //设置布局
+        return loadingDialog;
     }
 
     @SuppressLint("NewApi")
@@ -81,7 +110,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         final View loadView = LayoutInflater.from(ProtocolActivity.this).inflate(R.layout.common_bg_load_view, llProtocolMain, false);
         loadView.setLayoutParams(param);
         llProtocolMain.addView(loadView);
-
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);

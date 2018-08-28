@@ -41,6 +41,8 @@ import butterknife.Unbinder;
 public class MineCommonFragment extends BaseFragment implements Observer {
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
+    @BindView(R.id.bt_mycollect_delete)
+    Button btnDelete;
     Unbinder unbinder;
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
@@ -48,8 +50,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
-    @BindView(R.id.bt_mycollect_delete)
-    Button btnDelete;
     private String data_id = "";
 
     @Override

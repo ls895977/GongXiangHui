@@ -37,7 +37,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     protected LayoutInflater inflater;
     private List<TestMode.DataBean.ListBean> dataBeanList;
     private CircleOnClickListener listener;
-    private final int MAX_LINE_COUNT = 6;//最大显示行数
+    private final int MAX_LINE_COUNT = 7;//最大显示行数
     private final int STATE_UNKNOW = -1;//未知状态
     private final int STATE_NOT_OVERFLOW = 1;//文本行数小于最大可显示行数
     private final int STATE_COLLAPSED = 2;//折叠状态

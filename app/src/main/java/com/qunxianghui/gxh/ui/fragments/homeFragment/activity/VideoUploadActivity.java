@@ -101,11 +101,11 @@ public class VideoUploadActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_UpdataVideo_UpLoad:
                 if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
-                    asyncShowToast("请选择视频分类");
+                    asyncShowToast("您尚未选择分类！");
                     return;
                 }
                 if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
-                    asyncShowToast("请填写视频标题");
+                    asyncShowToast("您尚未填写视频标题！");
                     return;
                 }
                 uploadVideo();
@@ -194,7 +194,7 @@ public class VideoUploadActivity extends BaseActivity {
                         mLoadView.setVisibility(View.GONE);
                         UploadVideo uploadVideo = response.body();
                         if (uploadVideo != null && "0".equals(uploadVideo.code)) {
-                            asyncShowToast("上传成功,请等待审核");
+                            asyncShowToast("视频发布成功！");
                             finish();
                         }
                     }

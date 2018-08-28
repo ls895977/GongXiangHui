@@ -64,7 +64,7 @@ public class GeneraCompanyFragment extends BaseFragment {
     TextView mTvTotal;
 
     private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
-    private String[] mType = {"view_cnt", "click_cnt", "forward_cnt", "article_cnt"};
+    private String[] mType = {"article_cnt", "view_cnt", "click_cnt", "forward_cnt"};
     private int[] mIconUnselectIds = {
             R.mipmap.icon_company_article_selector, R.mipmap.icon_company_exposure_selector,
             R.mipmap.icon_company_click_selector, R.mipmap.icon_company_transpond_selector};

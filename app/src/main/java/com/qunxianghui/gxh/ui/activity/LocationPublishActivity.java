@@ -158,11 +158,11 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 break;
             case R.id.tv_upload:
                 if (TextUtils.isEmpty(mEtTitle.getText().toString().trim())) {
-                    asyncShowToast("填写下介绍吧!");
+                    asyncShowToast("您尚未填写本地圈内容！");
                     return;
                 }
                 if (mTypeId == 0) {
-                    asyncShowToast("请选择分类");
+                    asyncShowToast("您尚未选择分类！");
                     return;
                 }
                 mIsUploadIng = true;

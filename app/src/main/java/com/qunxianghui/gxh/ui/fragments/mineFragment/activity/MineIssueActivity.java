@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServiceFragment;
@@ -20,6 +21,8 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragm
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +30,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-public class MineIssueActivity extends BaseActivity implements View.OnClickListener {
+public class MineIssueActivity extends BaseActivity implements View.OnClickListener,Observer {
     @BindView(R.id.mine_MyIssureTablayout_common)
     TabLayout mineMyIssureTablayoutCommon;
     @BindView(R.id.mine_MyIssure_viewpager)
@@ -36,6 +39,8 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     ImageView ivMyissueBack;
     @BindView(R.id.tv_mineissue_edit)
     TextView tvMineissueEdit;
+    @BindView(R.id.tv_mycollect_cancel)
+    TextView tvMycollectCancel;
     private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
@@ -74,7 +79,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initListeners() {
         ivMyissueBack.setOnClickListener(this);
-        
+        tvMineissueEdit.setOnClickListener(this);
     }
 
     @Override
@@ -84,5 +89,45 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         ButterKnife.bind(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_mineissue_edit:
+                MineIssueEditDataState();
+                break;
+            case R.id.iv_myissue_back:
+                break;
+        }
+    }
 
+    /*我的发布的编辑状态*/
+    private void MineIssueEditDataState() {
+        EventManager.getInstance().publishMessage(false);
+//                isEdit = true;
+        if (mineMyIssureViewpager.getCurrentItem() == 0) {
+            EventManager.getInstance().publishMessage("baoliao");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 1) {
+            EventManager.getInstance().publishMessage("video");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 2) {
+            EventManager.getInstance().publishMessage("localcircle");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 3) {
+            EventManager.getInstance().publishMessage("localser");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 4) {
+            EventManager.getInstance().publishMessage("goodselect");
+        }
+        ivMyissueBack.setVisibility(View.GONE);
+        tvMycollectCancel.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof String && "init".equals(o)) {
+            tvMycollectCancel.setVisibility(View.GONE);
+            ivMyissueBack.setVisibility(View.VISIBLE);
+        }
+    }
 }

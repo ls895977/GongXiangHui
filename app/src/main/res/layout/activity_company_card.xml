@@ -15,13 +15,17 @@
             android:layout_height="117dp"
             android:background="@mipmap/icon_companycard_topbg">
 
-            <ImageView
-                android:id="@+id/iv_companycard_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="30dp"
-                android:background="@mipmap/common_white_back" />
+
+
+                <ImageView
+                    android:id="@+id/iv_companycard_back"
+                    android:layout_width="12dp"
+                    android:layout_height="14dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@mipmap/icon_companycard_back" />
+
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,7 +43,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="30dp"
-                android:background="@mipmap/addadver_share" />
+                android:background="@mipmap/icon_companycard_share" />
 
         </RelativeLayout>
 

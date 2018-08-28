@@ -92,7 +92,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             tvMemberupPersonActive.setVisibility(View.GONE);
             tvMemberupActiviteTime.setVisibility(View.VISIBLE);
             tvMemberupCompanyState.setText("会员状态: 已激活");
-            tvMemberupActiviteTime.setText("激活日期" + expire_time);
+            tvMemberupActiviteTime.setText("到期日期 : " + expire_time);
             tvMemberupPersonState.setText("会员状态:正常");
         } else {
             mTvMemberupQuicklyActive.setVisibility(View.VISIBLE);

@@ -20,11 +20,8 @@ import java.util.List;
  * 我收藏贴子的适配器
  */
 public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBean.DataBean> {
-
     private int data_uuid;
-
     private android.os.Handler handler = new android.os.Handler();
-
     public MyCollectPostAdapter(Context context, List<MyCollectPostBean.DataBean> datas) {
         super(context, datas);
     }

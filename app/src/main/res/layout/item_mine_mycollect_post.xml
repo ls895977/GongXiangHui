@@ -74,10 +74,10 @@
         android:button="@drawable/select_check_box"
         android:visibility="gone" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignBottom="@+id/rl_picture"
-        android:layout_marginTop="3dp"
-        android:background="#d3d3d3" />
-</RelativeLayout>
+<View
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_alignBottom="@+id/rl_picture"
+android:layout_marginTop="3dp"
+android:background="#d3d3d3" />
+    </RelativeLayout>

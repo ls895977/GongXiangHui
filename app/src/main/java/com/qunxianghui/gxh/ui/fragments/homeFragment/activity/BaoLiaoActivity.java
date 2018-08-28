@@ -140,8 +140,11 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             mBaoLiaoContent = mEtContent.getText().toString().trim();
         }
         String mBaoLiaoTitle = mEtTitle.getText().toString().trim();
-        if (TextUtils.isEmpty(mBaoLiaoContent) || TextUtils.isEmpty(mBaoLiaoTitle)) {
-            asyncShowToast("标题和内容不能为空");
+        if (TextUtils.isEmpty(mBaoLiaoContent)) {
+            asyncShowToast("您尚未填写发布内容！");
+            return false;
+        }else if (TextUtils.isEmpty(mBaoLiaoTitle)){
+            asyncShowToast("您尚未输入标题！");
             return false;
         }
         return true;

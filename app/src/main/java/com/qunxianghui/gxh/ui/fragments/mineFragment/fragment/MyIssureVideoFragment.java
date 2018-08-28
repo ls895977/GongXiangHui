@@ -21,17 +21,11 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-<<<<<<< HEAD
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
-=======
->>>>>>> 42864530f69118aacf1f48a14ae633d53d929ccf
 
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
-
 public class MyIssureVideoFragment extends BaseFragment implements MineIssueVideoAdapter.MyIssueVideoClikListener {
 
     @BindView(R.id.recycler_mine_issue_video)

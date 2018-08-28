@@ -3,19 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="35dp"
+    android:layout_marginTop="30dp"
     android:orientation="vertical">
-
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/mine_tablayout_common"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="#f9f9f9"
-        app:tabIndicatorColor="@color/tab_color"
-        app:tabSelectedTextColor="@color/tab_color"
-        app:tabTextColor="#000" />
 
 
     <RelativeLayout
@@ -55,8 +44,19 @@
             android:text="编辑"
             android:visibility="visible" />
 
-
     </RelativeLayout>
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mine_tablayout_common"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="#f9f9f9"
+        app:tabIndicatorColor="@color/tab_color"
+        app:tabSelectedTextColor="@color/tab_color"
+        app:tabTextColor="#000" />
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mine_common_viewpager"
