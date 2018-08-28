@@ -41,6 +41,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     private int mPage;
     private boolean mIsRefresh = false;
     private String mKeyWords;
+
     public static SearchVideoFragment newInstance(String data) {
         SearchVideoFragment fragment = new SearchVideoFragment();
         Bundle bundle = new Bundle();
@@ -53,6 +54,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     public int getLayoutId() {
         return R.layout.fragment_video_search;
     }
+
     @Override
     public void initViews(View view) {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -73,7 +75,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
         mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                int uuid = mBean.getData().get(position-1).getUuid();
+                int uuid = mBean.getData().get(position - 1).getUuid();
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                 intent.putExtra("uuid", uuid);
@@ -99,6 +101,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
             }
         });
     }
+
     /**
      * ==================请求网络=====================
      */
@@ -120,6 +123,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                     }
                 });
     }
+
     //设置数据
     private void parseData(HomeVideoSearchBean body) {
         if (mIsRefresh) {
@@ -127,8 +131,12 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
             mSearchVideodata.clear();
         }
         mBean = body;
-        mSearchVideodata.addAll(mBean.getData());
-        mPage++;
+        if (mBean.getData() != null) {
+            mSearchVideodata.addAll(mBean.getData());
+            mPage++;
+        } else {
+            asyncShowToast(mBean.getMsg());
+        }
         int code = mBean.getCode();
         if (code == 200) {
             mRecyclerview.refreshComplete();
@@ -162,7 +170,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                         } else if (code == 202) {
                             asyncShowToast(msg);
                             mSearchVideodata.get(position).setFollow("");
-                        }else if (code==101){
+                        } else if (code == 101) {
                             asyncShowToast(msg);
                         }
                         mAdapter.notifyDataSetChanged();

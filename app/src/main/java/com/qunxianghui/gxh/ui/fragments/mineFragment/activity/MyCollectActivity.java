@@ -125,7 +125,6 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mineCommonViewpager.setCurrentItem(tab.getPosition());
-
     }
 
     @Override
@@ -149,18 +148,18 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
 //                isEdit = true;
                 tvMycollectCancel.setVisibility(View.GONE);
                 ivMyCollectBack.setVisibility(View.VISIBLE);
-                if(mineCommonViewpager.getCurrentItem()==0){
+                if (mineCommonViewpager.getCurrentItem() == 0) {
                     EventManager.getInstance().publishMessage("news_c");
                 }
-                if(mineCommonViewpager.getCurrentItem()==1){
+                if (mineCommonViewpager.getCurrentItem() == 1) {
                     EventManager.getInstance().publishMessage("video_c");
                 }
                 break;
             case R.id.tv_mycollect_edit:
-                if(mineCommonViewpager.getCurrentItem()==0){
+                if (mineCommonViewpager.getCurrentItem() == 0) {
                     EventManager.getInstance().publishMessage("news");
                 }
-                if(mineCommonViewpager.getCurrentItem()==1){
+                if (mineCommonViewpager.getCurrentItem() == 1) {
                     EventManager.getInstance().publishMessage("video");
                 }
 //                isEdit = true;
@@ -169,6 +168,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
                 break;
         }
     }
+
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "init".equals(o)) {
@@ -177,8 +177,4 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

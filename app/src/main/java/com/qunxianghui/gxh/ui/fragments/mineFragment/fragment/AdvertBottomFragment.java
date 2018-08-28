@@ -150,8 +150,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 1:
                         mIsBottomClick = true;
                         intent = new Intent(mActivity, GeneralMaterialActivity.class);
-                        intent.putExtra("isMultiSelect", false);
-                        intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
+                        intent.putExtra("isMultiSelect", true);
+                        intent.putExtra("type", 3);
                         startActivityForResult(intent, 0x0011);
                         break;
                     case 9:
