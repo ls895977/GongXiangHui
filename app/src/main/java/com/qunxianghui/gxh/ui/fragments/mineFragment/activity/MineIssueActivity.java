@@ -1,16 +1,20 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.TabEntity;
+import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServiceFragment;
@@ -21,22 +25,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
 public class MineIssueActivity extends BaseActivity {
-    @BindView(R.id.mine_MyIssureTablayout_common)
-    TabLayout mineMyIssureTablayoutCommon;
+
+    @BindView(R.id.tabLayout)
+    CommonTabLayout mTabLayout;
     @BindView(R.id.mine_MyIssure_viewpager)
     ViewPager mineMyIssureViewpager;
     @BindView(R.id.iv_myissue_back)
     ImageView ivMyissueBack;
-    private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
+    @BindView(R.id.tv_edit)
+    TextView mTvEdit;
+
+    private String[] mTabTitles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
-    private MineTabViewPagerAdapter mineTabViewPagerAdapter;
-    private int position;
+    public static boolean sIsDeletes;
 
     @Override
     protected int getLayoutId() {
@@ -45,11 +51,11 @@ public class MineIssueActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        //设置tablayout的一个显示方式
-        mineMyIssureTablayoutCommon.setTabMode(TabLayout.MODE_FIXED);
-        for (String tab : titles) {
-            mineMyIssureTablayoutCommon.addTab(mineMyIssureTablayoutCommon.newTab().setText(tab));
+        ArrayList<CustomTabEntity> tabEntities = new ArrayList<>();
+        for (String title : mTabTitles) {
+            tabEntities.add(new TabEntity(title, 0, 0));
         }
+        mTabLayout.setTabData(tabEntities);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -61,11 +67,9 @@ public class MineIssueActivity extends BaseActivity {
         fragments.add(new MyIssurePostFragment());
         fragments.add(new MyIssueLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, null);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
-        mineMyIssureTablayoutCommon.setupWithViewPager(mineMyIssureViewpager);
-
     }
 
     @Override
@@ -76,12 +80,36 @@ public class MineIssueActivity extends BaseActivity {
                 finish();
             }
         });
+        mTvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ("编辑".equals(mTvEdit.getText().toString())) {
+                    mTvEdit.setText("删除");
+                    sIsDeletes = true;
+                } else {
+                    mTvEdit.setText("编辑");
+                    sIsDeletes = false;
+                }
+            }
+        });
+        mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                mineMyIssureViewpager.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+
+        mineMyIssureViewpager.addOnPageChangeListener(new PageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mTabLayout.setCurrentTab(position);
+            }
+        });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

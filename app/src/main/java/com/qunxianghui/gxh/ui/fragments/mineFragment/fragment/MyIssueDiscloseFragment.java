@@ -1,10 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -20,18 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class MyIssueDiscloseFragment extends BaseFragment {
+
     @BindView(R.id.recycler_mineissue_disclose)
-    XRecyclerView recyclerMineissueDisclose;
-    Unbinder unbinder;
-    private int count = 0;
-    private boolean mIsFirst = true;
-    private boolean mIsRefresh = false;
-    private List<MyIssueDiscloseBean.DataBean> dataList = new ArrayList<>();
-    private MineIssueDiscloseAdapter mineIssueDiscloseAdapter;
+    XRecyclerView mRv;
+
+    private int mSkip = 0;
+    private List<MyIssueDiscloseBean.DataBean> mList = new ArrayList<>();
+    private MineIssueDiscloseAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -39,84 +33,53 @@ public class MyIssueDiscloseFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
-        RequestMyIssueDisClose();
-    }
-
-    /**
-     * 请求我发布中的我的爆料
-     */
-    private void RequestMyIssueDisClose() {
-        OkGo.<MyIssueDiscloseBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
-                .params("limit", 10)
-                .params("skip", count)
-                .execute(new JsonCallback<MyIssueDiscloseBean>() {
-                    @Override
-                    public void onSuccess(Response<MyIssueDiscloseBean> response) {
-                        ParseIssureDiscloseData(response.body());
-                    }
-                });
-    }
-
-    private void ParseIssureDiscloseData(MyIssueDiscloseBean myIssueDiscloseBean) {
-        if (mIsRefresh) {
-            mIsRefresh = false;
-            dataList.clear();
-        }
-        dataList.addAll(myIssueDiscloseBean.getData());
-        count = dataList.size();
-        if (myIssueDiscloseBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                mineIssueDiscloseAdapter = new MineIssueDiscloseAdapter(mActivity, dataList);
-                recyclerMineissueDisclose.setAdapter(mineIssueDiscloseAdapter);
-            }
-            recyclerMineissueDisclose.refreshComplete();
-            mineIssueDiscloseAdapter.notifyDataSetChanged();
-            mineIssueDiscloseAdapter.notifyItemRangeChanged(count, dataList.size());
-        }
-    }
-
-    @Override
     public void initViews(View view) {
-        recyclerMineissueDisclose.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    protected void onLoadData() {
-
-    }
-
-    @Override
-    protected void initListeners() {
-        super.initListeners();
-        recyclerMineissueDisclose.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        mAdapter = new MineIssueDiscloseAdapter(getContext(), mList);
+        mRv.setAdapter(mAdapter);
+        mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                count = 0;
-                mIsRefresh = true;
-                RequestMyIssueDisClose();
-
+                mSkip = 0;
+                initData();
             }
 
             @Override
             public void onLoadMore() {
-                RequestMyIssueDisClose();
+                mSkip += 10;
+                initData();
             }
         });
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void initData() {
+        OkGo.<MyIssueDiscloseBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
+                .params("limit", 10)
+                .params("skip", mSkip)
+                .execute(new JsonCallback<MyIssueDiscloseBean>() {
+                    @Override
+                    public void onSuccess(Response<MyIssueDiscloseBean> response) {
+                        parseData(response.body());
+                    }
+                });
     }
+
+    private void parseData(MyIssueDiscloseBean data) {
+        if (data.getCode() == 0) {
+            if (mSkip == 0) {
+                mList.clear();
+                mRv.setLoadingMoreEnabled(true);
+            }
+            if (data.getData().size() < 10) {
+                mRv.setLoadingMoreEnabled(false);
+            }
+            mList.addAll(data.getData());
+            mRv.refreshComplete();
+        } else {
+            mRv.setLoadingMoreEnabled(false);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
 }

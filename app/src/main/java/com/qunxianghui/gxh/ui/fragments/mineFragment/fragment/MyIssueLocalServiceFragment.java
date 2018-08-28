@@ -1,10 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -16,16 +13,19 @@ import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class MyIssueLocalServiceFragment extends BaseFragment {
+
     @BindView(R.id.xrecycler_mylocal_servive)
-    XRecyclerView mXecyclerMylocalServive;
-    Unbinder unbinder;
+    XRecyclerView mRv;
+
+    private int mSkip = 0;
+    private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
+    private MyIssueLocalServiceAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -34,63 +34,52 @@ public class MyIssueLocalServiceFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        mXecyclerMylocalServive.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public void initData() {
-        RequestMyIssueLocalServicesData();
-    }
-
-    @Override
-    protected void initListeners() {
-        mXecyclerMylocalServive.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        mAdapter = new MyIssueLocalServiceAdapter(getContext(), mList);
+        mRv.setAdapter(mAdapter);
+        mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mXecyclerMylocalServive.refreshComplete();
+                mSkip = 0;
+                initData();
             }
 
             @Override
             public void onLoadMore() {
-                mXecyclerMylocalServive.refreshComplete();
+                mSkip += 10;
+                initData();
             }
         });
     }
 
-    /*请求本地服务的数据*/
-    private void RequestMyIssueLocalServicesData() {
+    @Override
+    public void initData() {
         OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                .params("limit", 10)
+                .params("skip", mSkip)
                 .execute(new JsonCallback<MineIssueLocalServiceBean>() {
                     @Override
                     public void onSuccess(Response<MineIssueLocalServiceBean> response) {
-                        parseLocalServiceData(response.body());
+                        parseData(response.body());
                     }
                 });
-
     }
 
-    /*解析本地服务的数据*/
-    private void parseLocalServiceData(MineIssueLocalServiceBean myIssueGoodSelectBean) {
-        int code = myIssueGoodSelectBean.getCode();
-        List<MineIssueLocalServiceBean.DataBean> localServiceData = myIssueGoodSelectBean.getData();
-        if (code == 200) {
-            MyIssueLocalServiceAdapter myIssueLocalServiceAdapter = new MyIssueLocalServiceAdapter(mActivity, localServiceData);
-            mXecyclerMylocalServive.setAdapter(myIssueLocalServiceAdapter);
-
+    private void parseData(MineIssueLocalServiceBean data) {
+        if (data.getCode() == 200) {
+            if (mSkip == 200) {
+                mList.clear();
+                mRv.setLoadingMoreEnabled(true);
+            }
+            if (data.getData().size() < 10) {
+                mRv.setLoadingMoreEnabled(false);
+            }
+            mList.addAll(data.getData());
+            mRv.refreshComplete();
+        } else {
+            mRv.setLoadingMoreEnabled(false);
         }
+        mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }
