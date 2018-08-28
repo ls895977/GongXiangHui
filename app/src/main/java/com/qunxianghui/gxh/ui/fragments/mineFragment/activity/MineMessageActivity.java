@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public class MineMessageActivity extends BaseActivity implements View.OnClickListener, TabLayout.OnTabSelectedListener {
+
     @BindView(R.id.mine_myMessaageTablayout_common)
     TabLayout mineMyMessaageTablayoutCommon;
     @BindView(R.id.mine_mymessage_viewpager)

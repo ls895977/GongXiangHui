@@ -76,7 +76,6 @@ public class ComPanyProductActivity extends BaseActivity {
         if (addAdvanceBean.getCode() == 200) {
             if (mSkip == 0) {
                 mDataList.clear();
-                mXrecyclerActivityProduct.refreshComplete();
                 mXrecyclerActivityProduct.setLoadingMoreEnabled(true);
             }
             if (addAdvanceBean.getData().size() < 10) {

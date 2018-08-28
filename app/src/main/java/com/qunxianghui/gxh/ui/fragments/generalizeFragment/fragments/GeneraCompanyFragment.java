@@ -62,9 +62,9 @@ public class GeneraCompanyFragment extends BaseFragment {
     TextView mTvMonth;
     @BindView(R.id.tv_total)
     TextView mTvTotal;
+
     private String[] mTabTitles = {"文章", "曝光", "点击", "转发"};
     private String[] mType = {"view_cnt", "click_cnt", "forward_cnt", "article_cnt"};
-    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private int[] mIconUnselectIds = {
             R.mipmap.icon_company_article_selector, R.mipmap.icon_company_exposure_selector,
             R.mipmap.icon_company_click_selector, R.mipmap.icon_company_transpond_selector};
@@ -79,8 +79,7 @@ public class GeneraCompanyFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-
-
+        ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
         for (int i = 0; i < mTabTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTabTitles[i], mIconUnselectIds[i], mIconSelectIds[i]));
         }

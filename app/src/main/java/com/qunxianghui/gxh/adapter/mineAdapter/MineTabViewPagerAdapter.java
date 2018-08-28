@@ -30,6 +30,9 @@ public class MineTabViewPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
+        if (titles == null) {
+            return "";
+        }
         return titles[position];
     }
 

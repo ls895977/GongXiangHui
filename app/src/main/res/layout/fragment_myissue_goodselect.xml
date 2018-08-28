@@ -7,8 +7,6 @@
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/xrecler_myissue_goodselect"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
