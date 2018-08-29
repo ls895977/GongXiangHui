@@ -73,6 +73,7 @@ public class AddAdvertActivity extends BaseActivity {
     private Dialog dialog;
     private UMWeb web;
     private String mDescrip;
+    private String mTitle;
 
     @Override
     protected int getLayoutId() {
@@ -97,6 +98,7 @@ public class AddAdvertActivity extends BaseActivity {
 
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        mTitle = intent.getStringExtra("title");
         mDescrip = intent.getStringExtra("descrip");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
@@ -186,11 +188,15 @@ public class AddAdvertActivity extends BaseActivity {
                         if (response.body().code == 200) {
                             ShareInfo.ShareInfoBean data = response.body().data;
                             if (data != null) {
-                                startThirdShare(data.url, data.title, data.imgUrl);
-                            } else if (response.body().code == 105) {
-                                Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
+                                startThirdShare(data.url, data.title, data.desc);
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<ShareInfo> response) {
+                        super.onError(response);
+                        asyncShowToast(response.message());
                     }
                 });
     }
@@ -198,12 +204,12 @@ public class AddAdvertActivity extends BaseActivity {
     /**
      * 三方分享
      */
-    private void startThirdShare(String url, String title, String imgUrl) {
+    private void startThirdShare(String url, String title, String descrip) {
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         //切记切记 这里分享的链接必须是http开头
         web = new UMWeb(url);
-        web.setTitle(title);//标题
+        web.setTitle(mTitle);//标题
         web.setThumb(image);  //缩略图
         web.setDescription(mDescrip.substring(0, 70));//描述
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
@@ -254,6 +260,8 @@ public class AddAdvertActivity extends BaseActivity {
                         break;
                     case R.id.rl_share_link:
                         ClipContent();
+                        dialog.dismiss();
+
                         break;
                     case R.id.share_cancel_btn:
                         dialog.dismiss();
@@ -288,7 +296,6 @@ public class AddAdvertActivity extends BaseActivity {
         ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(String.valueOf(web)));
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
-        dialog.dismiss();
     }
 
     @Override
@@ -360,6 +367,7 @@ public class AddAdvertActivity extends BaseActivity {
                 break;
         }
         goToAdvertTemplateActivity();
+        dialog.dismiss();
     }
 
     private void addBanner(Banner banner, List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> list) {

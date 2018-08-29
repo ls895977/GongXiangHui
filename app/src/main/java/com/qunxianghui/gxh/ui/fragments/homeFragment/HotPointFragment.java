@@ -151,8 +151,8 @@ public class HotPointFragment extends BaseFragment {
                 }
                 dataList.addAll(list);
                 int total = dataList.size();
-                if (mCount + 10 <= total) {
-                    mCount += 10;
+                if (mCount + 12 <= total) {
+                    mCount += 12;
                     homeItemListAdapter.loadMoreComplete();
                 } else {
                     homeItemListAdapter.loadMoreEnd();

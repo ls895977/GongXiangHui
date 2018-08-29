@@ -52,7 +52,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:background="#E5E5E5" />
 
     <include
@@ -108,14 +108,12 @@
                 android:id="@+id/rv_search_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginRight="22dp"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="#E5E5E5" />
+                android:background="#F9F9F9" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -129,14 +127,12 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#E5E5E5" />
+                android:background="#ececec" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_search_guess"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginRight="22dp"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
                 app:spanCount="2" />
 

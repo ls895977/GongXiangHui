@@ -91,6 +91,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                 intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                 intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
+                intent.putExtra("descrip",videoDataList.get(position-1).getDescription());
+                intent.putExtra("title",videoDataList.get(position-1).getTitle());
                 intent.putExtra("position", 4);
                 startActivity(intent);
             }

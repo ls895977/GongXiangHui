@@ -25,7 +25,7 @@ public class SimpleTextAdapter extends BaseRecycleViewAdapter<String> {
 
     @Override
     protected int getItemView() {
-        return  R.layout.search_history_item;
+        return  R.layout.hostory_item;
     }
 
 }

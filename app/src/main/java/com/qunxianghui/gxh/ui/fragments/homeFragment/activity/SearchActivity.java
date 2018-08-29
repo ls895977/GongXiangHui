@@ -3,7 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -33,8 +33,6 @@ import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchFragment;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
-import com.qunxianghui.gxh.widget.SpaceSize;
-import com.qunxianghui.gxh.widget.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,12 +81,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initViews() {
+
+        rvSearchHistory.setLayoutManager(new GridLayoutManager(mContext,2,GridLayoutManager.VERTICAL,false));
+        rvSearchGuess.setLayoutManager(new GridLayoutManager(mContext,2,GridLayoutManager.VERTICAL,false));
         mViewpager.setOffscreenPageLimit(2);
         //解决嵌套滑动的问题
         rvSearchGuess.setNestedScrollingEnabled(false);
         rvSearchHistory.setNestedScrollingEnabled(false);
-        rvSearchGuess.addItemDecoration(new SpacesItemDecoration(new SpaceSize(20, 12, 20, 12)));
-        rvSearchHistory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         StatusBarUtil.setViewTopPadding(this, R.id.top_bar);
     }
 

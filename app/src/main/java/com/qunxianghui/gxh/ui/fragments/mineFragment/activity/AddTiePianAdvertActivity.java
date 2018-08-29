@@ -60,6 +60,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     private String mUrl;
     private Dialog mDialog;
     private UMWeb mWeb;
+    private String mTitle;
+    private String mDescrip;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +89,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
         });
         Intent intent = getIntent();
         mUrl = intent.getStringExtra("url");
+        mTitle = intent.getStringExtra("title");
+        mDescrip = intent.getStringExtra("descrip");
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -170,7 +174,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                         if (response.body().code == 200) {
                             ShareInfo.ShareInfoBean data = response.body().data;
                             if (data != null) {
-                                startThirdShare(data.url, data.title, data.imgUrl);
+                                startThirdShare(data.url, data.title, data.desc);
                             }
 //                            else if (r == 105) {
 //                                Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
@@ -183,14 +187,19 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     /**
      * 三方分享
      */
-    private void startThirdShare(String url, String title, String imgUrl) {
+    private void startThirdShare(String url, String title, String desc) {
         //以下代码是分享示例代码
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         //切记切记 这里分享的链接必须是http开头
+
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
         mWeb.setThumb(image);  //缩略图
-//        web.setDescription("你要分享内容的描述");//描述
+        if (mDescrip!=null){
+           mWeb.setDescription(mDescrip);
+        }else {
+            mWeb.setDescription("群享汇-中小微企业成长平台，让创业更容易！");//描述
+        }
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
         RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);
@@ -244,6 +253,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                         mDialog.dismiss();
                         break;
                 }
+                mDialog.dismiss();
             }
         };
         rl_share_wx.setOnClickListener(listener);

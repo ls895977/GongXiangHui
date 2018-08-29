@@ -1,24 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,10 +26,10 @@ import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.REGutil;
-import com.qunxianghui.gxh.widget.NoLineClickSpan;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/12 0012.
@@ -47,19 +37,8 @@ import butterknife.BindView;
 
 public class RegistActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.title_leftIco)
-    ImageView titleLeftIco;
-    @BindView(R.id.title_text)
-    TextView titleText;
-    @BindView(R.id.title_rightIco)
-    ImageView titleRightIco;
-    @BindView(R.id.title_bar)
-    RelativeLayout titleBar;
-
     @BindView(R.id.et_regist_phone)
     EditText etRegistPhone;
-    @BindView(R.id.iv_login_password)
-    ImageView ivLoginPassword;
     @BindView(R.id.tv_login_quickly)
     TextView tvLoginQuickly;
     @BindView(R.id.tv_regist_code)
@@ -68,15 +47,12 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     EditText etRegisterPassword;
     @BindView(R.id.bt_register_quickly)
     Button btRegisterQuickly;
-    @BindView(R.id.tv_protocol)
-    TextView tvProtocol;
-    @BindView(R.id.tv_call)
-    TextView tvCall;
-    @BindView(R.id.et_registerconfirm_password)
-    EditText etRegisterconfirmPassword;
     @BindView(R.id.et_regist_code)
     EditText etRegistCode;
-
+    @BindView(R.id.tv_regist_link)
+    TextView tvRegistLink;
+    @BindView(R.id.ch_regist)
+    CheckBox chRegist;
     private String mPhone;
     private UserDao userDao;
 
@@ -94,67 +70,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             }
         }).setTitleText("用户注册");
 
-        initProtocol();
-        initCall();
         userDao = new UserDao(mContext);
-    }
-
-    private void initCall() {
-        tvCall.setText("如需帮助可拨打群享汇服务热线");
-        SpannableString spCall = new SpannableString("13295815771");
-        String s2 = "13295815771";
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        NoLineClickSpan clickSpan1 = new NoLineClickSpan("#ff4049") {
-            @Override
-            public void onClick(View widget) {
-                builder.setTitle("拨打给客服？");
-                builder.setMessage("13295815771");
-                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "13295815771"));
-                        if (ActivityCompat.checkSelfPermission(RegistActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        startActivity(intent);
-
-                    }
-                });
-                builder.setNeutralButton("取消", null);
-                builder.show();
-            }
-        };
-        spCall.setSpan(clickSpan1, spCall.length() - s2.length(), spCall.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        tvCall.append(spCall);
-        tvCall.setMovementMethod(LinkMovementMethod.getInstance());
-        //设置文本不高亮，如果需要点击后高亮文本，删掉这句即可
-        tvCall.setHighlightColor(Color.parseColor("#ff4049"));
-
-    }
-
-    /**
-     * 协议
-     */
-    private void initProtocol() {
-        tvProtocol.setText("未注册群享汇的手机号，点击确认时自动注册，且代表您已同意");
-        SpannableString spStr = new SpannableString("《群享汇服务协议》");
-        String s2 = "《群享汇服务协议》";
-        NoLineClickSpan clickSpan2 = new NoLineClickSpan("#ff4049") {
-            @Override
-            public void onClick(View widget) {
-                Intent intent = new Intent(mContext, ProtocolActivity.class);
-                intent.putExtra("title", "平台服务协议");
-                intent.putExtra("url", Constant.BenDiService);
-                intent.putExtra("tag", 2);
-                startActivity(intent);
-
-            }
-        };
-        spStr.setSpan(clickSpan2, spStr.length() - s2.length(), spStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        tvProtocol.append(spStr);
-        tvProtocol.setMovementMethod(LinkMovementMethod.getInstance());
-        //设置文本不高亮，如果需要点击后高亮文本，删掉这句即可
-        tvProtocol.setHighlightColor(Color.parseColor("#ff4049"));
     }
 
     @Override
@@ -162,6 +78,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         tvLoginQuickly.setOnClickListener(this);
         btRegisterQuickly.setOnClickListener(this);
         tvRegistCode.setOnClickListener(this);
+        tvRegistLink.setOnClickListener(this);
+        chRegist.setOnClickListener(this);
     }
 
     @Override
@@ -178,19 +96,14 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     asyncShowToast("手机号和密码不能为空");
                 } else if (!REGutil.checkCellphone(phone)) {
                     asyncShowToast("手机号格式不对");
-
+                } else if (!chRegist.isChecked()) {
+                    asyncShowToast("请勾选用户协议");
                 } else {
-                    final String confirmpass = etRegisterconfirmPassword.getText().toString().trim();
-                    if (!pass.equals(confirmpass)) {
-                        asyncShowToast("两次输入的密码不一致");
+                    if (userDao.dbQueryOneByUsername(phone) == null) {
+                        userDao.dbInsert(phone, pass);
+                        RegistUser(phone, pass, registCode);
                     } else {
-                        if (userDao.dbQueryOneByUsername(phone) == null) {
-                            userDao.dbInsert(phone, pass);
-//                            asyncShowToast("注册成功" + phone + ",密码:" + pass);
-                            RegistUser(phone, pass, registCode);
-                        } else {
-                            asyncShowToast("该用户已经注册");
-                        }
+                        asyncShowToast("该用户已经注册");
                     }
                 }
                 break;
@@ -198,6 +111,18 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             case R.id.tv_regist_code:
                 getVertifiCode();
                 break;
+            case R.id.tv_regist_link:
+                Intent intent = new Intent(mContext, ProtocolActivity.class);
+                intent.putExtra("title", "平台服务协议");
+                intent.putExtra("url", Constant.BenDiService);
+                intent.putExtra("tag", 2);
+                startActivity(intent);
+                break;
+            case R.id.ch_regist:
+
+                break;
+
+
         }
     }
 
@@ -248,7 +173,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                         handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                     }
                 });
-
     }
 
     private TimerHandler handler = new TimerHandler();
@@ -257,6 +181,13 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     private static final int MSG_TIMER = 2;
 
     private int time = 60;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 
     public class TimerHandler extends Handler {
         @Override
@@ -269,7 +200,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     handler.sendEmptyMessage(MSG_TIMER);
                     break;
                 case MSG_SEND_CODE_ERROR:
-                    Toast.makeText(mContext, "验证码发送失败，请重试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "用户已存在", Toast.LENGTH_SHORT).show();
                     break;
                 case MSG_TIMER:
                     startTimer();

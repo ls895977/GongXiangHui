@@ -17,11 +17,11 @@ public class FireSearchVideoAdapter extends BaseRecycleViewAdapter<HomeVideoSear
 
     @Override
     protected void convert(MyViewHolder holder, int position, HomeVideoSearchBean.DataBean dataBean) {
-        holder.setText(R.id.tv_fire_search_item, dataBean.getTitle());
+        holder.setText(R.id.tv_simple_1_line, dataBean.getTitle());
     }
 
     @Override
     protected int getItemView() {
-        return R.layout.fire_search_item;
+        return R.layout.hostory_item;
     }
 }

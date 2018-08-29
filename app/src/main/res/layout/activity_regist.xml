@@ -4,20 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/activity_title" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-
-        <include layout="@layout/activity_title" />
-    </LinearLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#fff"
-        android:src="@mipmap/home_logo" />
+        android:layout_height="0.8dp"
+        android:background="@color/divider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,8 +18,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/login_phone" />
 
@@ -40,7 +33,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:hint="手机号码"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View style="@style/dividerStyle" />
@@ -53,10 +46,11 @@
 
         <ImageView
             android:id="@+id/iv_login_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/login_captcha" />
+            android:src="@mipmap/icon_regist_code" />
 
         <EditText
             android:id="@+id/et_regist_code"
@@ -68,18 +62,20 @@
             android:layout_weight="1"
             android:background="@null"
             android:hint="验证码"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
 
         <TextView
             android:id="@+id/tv_regist_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="28dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:text="发送验证码"
-            android:textColor="#f00"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/shape_button_white"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="#D81717"
             android:textSize="14sp" />
 
     </RelativeLayout>
@@ -93,10 +89,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/login_pass" />
+            android:src="@mipmap/icon_regist_pass" />
 
         <EditText
             android:id="@+id/et_register_password"
@@ -108,45 +105,19 @@
             android:background="@null"
             android:hint="密码"
             android:inputType="textPassword"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <View style="@style/dividerStyle" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:src="@mipmap/login_pass" />
-
-        <EditText
-            android:id="@+id/et_registerconfirm_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="12dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="确认密码"
-            android:inputType="textPassword"
-            android:textSize="15sp" />
-    </LinearLayout>
 
     <View style="@style/dividerStyle" />
 
     <Button
         android:id="@+id/bt_register_quickly"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/shape_button"
         android:text="立即注册"
         android:textColor="#fff"
@@ -156,34 +127,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:lineSpacingExtra="2dp"
-            android:text="如需帮助可拨打群享汇服务热线"
-            android:textSize="12sp" />
+
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_protocol"
+        <CheckBox
+            android:id="@+id/ch_regist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:lineSpacingExtra="2dp"
+            android:layout_gravity="center_vertical"
+            android:checked="false"
+            android:button="@drawable/select_check_box_blue" />
+
+        <TextView
+            android:id="@+id/tv_regist_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/ch_delete"
+            android:text="我同意并继续"
             android:textSize="12sp" />
-    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_regist_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/tv_regist_agree"
+            android:text="用户协议和隐私条款"
+            android:textColor="#2A7DC4"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -196,8 +179,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="立即登录 >"
-            android:textColor="#f00"
+            android:text="立即登录 >>"
+            android:textColor="#D81717"
             android:textSize="16sp" />
     </RelativeLayout>
 
