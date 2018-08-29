@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="18dp"
+    android:layout_marginStart="18dp"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/bg_advert"
+    android:paddingBottom="10dp"
+    android:paddingEnd="10dp">
 
     <android.support.v7.widget.CardView
         style="@style/AdCardViewStyle"

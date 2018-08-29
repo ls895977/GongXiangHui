@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -16,17 +17,22 @@
 
             <com.qunxianghui.gxh.widget.ViewPagerForScrollView
                 android:id="@+id/vp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="5dp" />
+                android:layout_marginStart="18dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_advert"/>
 
             <com.qunxianghui.gxh.widget.CircleIndicatorView
                 android:id="@+id/circleIndicatorView"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_marginTop="380dp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="380dp" />
         </RelativeLayout>
 
     </ScrollView>
