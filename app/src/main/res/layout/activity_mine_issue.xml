@@ -1,33 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tl="http://schemas.android.com/tools"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginTop="23dp">
 
         <ImageView
             android:id="@+id/iv_myissue_back"
-            android:layout_width="25dp"
-            android:layout_height="18dp"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/common_black_back"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_mycollect_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="取消"
-            android:visibility="gone" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@mipmap/common_black_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,30 +23,35 @@
             android:layout_centerInParent="true"
             android:text="我的发布"
             android:textColor="#000"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
 
         <TextView
-            android:id="@+id/tv_mineissue_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:id="@+id/tv_edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
             android:text="编辑"
-            android:textSize="14sp"
-            android:visibility="gone" />
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/mine_MyIssureTablayout_common"
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/tab_color"
-        app:tabSelectedTextColor="@color/tab_color"
-        app:tabTextAppearance="@style/TextAppearance.Design.Tab.Custom"
-        app:tabTextColor="#000" />
-
+        android:layout_height="45dp"
+        android:background="#F9F9F9"
+        tl:tl_iconVisible="false"
+        tl:tl_indicator_bounce_enable="false"
+        tl:tl_indicator_color="#D81717"
+        tl:tl_indicator_corner_radius="2dp"
+        tl:tl_indicator_gravity="BOTTOM"
+        tl:tl_indicator_width="20dp"
+        tl:tl_textSelectColor="#D81717"
+        tl:tl_textUnselectColor="#282828"
+        tl:tl_textsize="12sp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mine_MyIssure_viewpager"

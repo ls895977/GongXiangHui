@@ -157,8 +157,8 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 onBackPressed();
                 break;
             case R.id.tv_upload:
-                if (TextUtils.isEmpty(mEtTitle.getText().toString().trim())) {
-                    asyncShowToast("您尚未填写本地圈内容！");
+                if (TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()) {
+                    asyncShowToast("请填写本地圈内容或者上传图片！");
                     return;
                 }
                 if (mTypeId == 0) {
