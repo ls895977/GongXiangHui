@@ -3,7 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -34,8 +34,6 @@ import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchVideoFragment;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
-import com.qunxianghui.gxh.widget.SpaceSize;
-import com.qunxianghui.gxh.widget.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,12 +82,12 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initViews() {
+        rvVideoSearchHistory.setLayoutManager(new GridLayoutManager(mContext,2,GridLayoutManager.VERTICAL, false));
+        rvVideoSearchGuess.setLayoutManager(new GridLayoutManager(mContext,2,GridLayoutManager.VERTICAL, false));
         viewpager.setOffscreenPageLimit(2);
         //解决嵌套滑动的问题
         rvVideoSearchGuess.setNestedScrollingEnabled(false);
         rvVideoSearchHistory.setNestedScrollingEnabled(false);
-        rvVideoSearchGuess.addItemDecoration(new SpacesItemDecoration(new SpaceSize(20, 12, 20, 12)));
-        rvVideoSearchHistory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         StatusBarUtil.setViewTopPadding(this, R.id.home_video_top_bar);
     }
 

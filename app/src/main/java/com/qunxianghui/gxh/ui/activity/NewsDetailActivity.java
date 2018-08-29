@@ -81,7 +81,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         title = intent.getStringExtra("title");
         mDescrip = intent.getStringExtra("descrip");
         int uuid = intent.getIntExtra("uuid", 0);
-//        int id = intent.getIntExtra("id", 0);
+
         String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
         mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
@@ -228,18 +228,29 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        mShareDialog.dismiss();
+
         switch (v.getId()) {
             case R.id.tv_addAdver_share:
-                Toast.makeText(mContext, "点击添加广告分享", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, AddAdvertActivity.class);
-                intent.putExtra("url", mBuffer.toString());
-                startActivity(intent);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    Intent intent;
+                    if (getIntent().getIntExtra("position", 0) == 4) {
+                        intent = new Intent(mContext, AddTiePianAdvertActivity.class);
+                    } else {
+                        intent = new Intent(mContext, AddAdvertActivity.class);
+                    }
+                    intent.putExtra("url", mBuffer.toString());
+                    intent.putExtra("descrip", mDescrip);
+                    startActivity(intent);
+                }
                 break;
             case R.id.tv_article_share:
                 showShareDialog();
                 break;
         }
+        mShareDialog.dismiss();
     }
 
     //底部弹出对话框
