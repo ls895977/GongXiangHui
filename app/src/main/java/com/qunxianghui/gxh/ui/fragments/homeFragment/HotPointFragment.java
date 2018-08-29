@@ -9,7 +9,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,7 +95,7 @@ public class HotPointFragment extends BaseFragment {
             View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, mRv, false);
             viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpagerHome.getLayoutParams();
-            layoutParams.height = mHeight*7/24;
+            layoutParams.height = mHeight * 7 / 30;
             viewpagerHome.setLayoutParams(layoutParams);
 
             //加載首頁那个导航图//加载首页轮播图

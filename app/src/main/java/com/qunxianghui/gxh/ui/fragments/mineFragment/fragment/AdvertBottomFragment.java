@@ -335,12 +335,13 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
                     if (mIsHasBigPage && companyAdvert.ad_type == 1) {
                         asyncShowToast("亲，大图通栏广告只可添加一个～～");
-                        return;
+                        break;
                     }
                     companyAdvert.id = 0;
                     mList.add(companyAdvert);
                     addData(companyAdvert);
                 }
+                EnterpriseMateriaItemFragment.clearData();
             } else {
                 EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
                 Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
@@ -360,9 +361,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(i);
                     if (mIsHasBigPage && companyAdvert.ad_type == 1) {
                         asyncShowToast("亲，大图通栏广告只可添加一个～～");
-                        return;
+                        break;
                     }
                     companyAdvert.id = 0;
+                    companyAdvert.ad_type = 3;
                     mList.add(companyAdvert);
                     addData(companyAdvert);
                 }
