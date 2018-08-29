@@ -1,4 +1,5 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
+
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -23,8 +24,10 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
+
 /**
  * Created by user on 2018/6/22.
  */
@@ -52,6 +55,17 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    protected void initViews() {
+        super.initViews();
+        new TitleBuilder(BindMobileActivity.this).setLeftIco(R.mipmap.common_black_back).setLeftIcoListening(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        }).setTitleText("绑定手机号");
+    }
+
+    @Override
     protected void initListeners() {
         super.initListeners();
         tvBindmobileGetcode.setOnClickListener(this);
@@ -71,6 +85,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 break;
         }
     }
+
     private void BindMobilePhone() {
         mobileCode = etBindmobileCode.getText().toString().trim();
         phoneNumber = EtBindmobilePhone.getText().toString().trim();
@@ -85,18 +100,18 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                     .execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
                         @Override
                         public void onSuccess(Response<CommonResponse<LoginBean>> response) {
-                                if (response.body().code==0) {
-                                    String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
-                                    SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                    SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                                    OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                    asyncShowToast("登录成功");
-                                    toActivity(MainActivity.class);
-                                    finish();
-                                } else {
-                                    asyncShowToast("绑定失败" + response.body().toString());
-                                }
+                            if (response.body().code == 0) {
+                                String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
+                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
+                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                asyncShowToast("登录成功");
+                                toActivity(MainActivity.class);
+                                finish();
+                            } else {
+                                asyncShowToast("绑定失败" + response.body().toString());
                             }
+                        }
                     });
         }
     }
@@ -125,6 +140,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                             timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
                         }
                     }
+
                     @Override
                     public void onError(Response<GeneralResponseBean> response) {
                         timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
