@@ -20,6 +20,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.mine.LoginBean;
 import com.qunxianghui.gxh.callback.DialogCallback;
+import com.qunxianghui.gxh.callback.JsonConvert;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.StudentDao;
@@ -28,6 +29,7 @@ import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.UserUtil;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -118,6 +120,7 @@ public class LoginActivity extends BaseActivity {
                                             JSONObject data = jsonObject.getJSONObject("data");
                                             int code = jsonObject.getInt("code");
                                             if (code == 0) {
+                                                JsonConvert.sIsShow = true;
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
@@ -148,6 +151,7 @@ public class LoginActivity extends BaseActivity {
                                             JSONObject data = jsonObject.getJSONObject("data");
                                             int code = jsonObject.getInt("code");
                                             if (code == 0) {
+                                                JsonConvert.sIsShow = true;
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
@@ -179,6 +183,7 @@ public class LoginActivity extends BaseActivity {
                                             JSONObject data = jsonObject.getJSONObject("data");
                                             int code = jsonObject.getInt("code");
                                             if (code == 0) {
+                                                JsonConvert.sIsShow = true;
                                                 String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
                                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
@@ -281,7 +286,9 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<CommonResponse<LoginBean>> response) {
                         if (response.body().code == 0) {
+                            JsonConvert.sIsShow = true;
                             String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
+                            UserUtil.getInstance().mNick = response.body().data.getNick();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
                             OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);

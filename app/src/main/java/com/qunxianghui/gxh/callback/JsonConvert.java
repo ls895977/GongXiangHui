@@ -38,6 +38,7 @@ public class JsonConvert<T> implements Converter<T> {
 
     private Type type;
     private Class<T> clazz;
+    public static boolean sIsShow = true;
 
     public JsonConvert() {
     }
@@ -157,7 +158,7 @@ public class JsonConvert<T> implements Converter<T> {
     }
 
     private void isFialure(String str){
-        if (!TextUtils.isEmpty(str) && str.contains("\"code\":1000")) {
+        if (!TextUtils.isEmpty(str) && str.contains("\"code\":1000") && sIsShow) {
             EventManager.getInstance().publishMessage("signout");
         }
     }
