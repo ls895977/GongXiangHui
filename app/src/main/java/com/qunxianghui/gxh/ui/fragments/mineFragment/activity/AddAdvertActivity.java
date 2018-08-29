@@ -28,6 +28,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.AddAdvert;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.ShareInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -90,7 +91,9 @@ public class AddAdvertActivity extends BaseActivity {
         }).setRightIco(R.mipmap.addadver_share).setRightIcoListening(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getShareInfo();
+
+                RequestMemberPermission();
+
 
             }
         });
@@ -175,6 +178,27 @@ public class AddAdvertActivity extends BaseActivity {
         };
     }
 
+
+    /*会员权限检测检测*/
+    private void RequestMemberPermission() {
+        OkGo.<CommonBean>post(Constant.CHECK_ADD).execute(new JsonCallback<CommonBean>() {
+            @Override
+            public void onSuccess(Response<CommonBean> response) {
+                if (response.body().code == 0) {
+                    getShareInfo();
+                } else if (response.body().code == 400) {
+                    asyncShowToast(response.body().msg);
+                }
+            }
+
+            @Override
+            public void onError(Response<CommonBean> response) {
+                super.onError(response);
+                asyncShowToast(response.body().msg);
+            }
+        });
+    }
+
     private void getShareInfo() {
         String[] split = url.split("=");
         String uuid = split[split.length - 1];
@@ -187,10 +211,14 @@ public class AddAdvertActivity extends BaseActivity {
                             ShareInfo.ShareInfoBean data = response.body().data;
                             if (data != null) {
                                 startThirdShare(data.url, data.title, data.imgUrl);
-                            } else if (response.body().code == 105) {
-                                Toast.makeText(activity, "请在首次会员激活的设备上进行分享", Toast.LENGTH_SHORT).show();
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<ShareInfo> response) {
+                        super.onError(response);
+                        asyncShowToast(response.message());
                     }
                 });
     }

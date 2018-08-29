@@ -14,9 +14,13 @@
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="88dp"
         android:background="#f8f8f8"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/tv_mingFragment_addTopAdver"
@@ -36,6 +40,7 @@
             android:layout_centerHorizontal="true"
             android:background="@mipmap/add_adver_top_alert"
             android:gravity="center"
+            android:paddingTop="5dp"
             android:text="顶部只支持通栏广告"
             android:textColor="@color/white"
             android:textSize="14sp" />
@@ -73,7 +78,8 @@
                 android:layout_centerHorizontal="true"
                 android:background="@mipmap/add_adver_bottom_alert"
                 android:gravity="center"
-                android:text="顶部只支持通栏广告"
+                android:paddingBottom="3dp"
+                android:text="底部只支持所有广告"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 

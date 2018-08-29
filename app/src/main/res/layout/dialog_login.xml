@@ -47,6 +47,7 @@
         android:layout_below="@id/view1"
         android:layout_toEndOf="@id/view2"
         android:gravity="center"
-        android:text="去登录" />
+        android:text="去登录"
+        android:textColor="#000" />
 
 </RelativeLayout>

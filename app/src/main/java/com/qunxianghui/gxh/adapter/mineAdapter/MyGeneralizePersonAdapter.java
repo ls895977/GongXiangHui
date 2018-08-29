@@ -34,9 +34,11 @@ public class MyGeneralizePersonAdapter extends BaseQuickAdapter<GeneraPersonStat
     @Override
     protected void convert(BaseViewHolder helper, GeneraPersonStaticBean.DataBean item) {
         String video_url = item.video_url;
-        if (video_url!=null){
-            helper.setText(R.id.tv_generalize_person_time, "群享汇");
-        }else {
+        if (video_url != null) {
+            helper.setText(R.id.tv_generalize_person_time, "群享汇")
+                    .setText(R.id.tv_generalize_person_title, item.title)
+                    .setText(R.id.tv_generalize_seecount, item.view_cnt);
+        } else {
             helper.setText(R.id.tv_generalize_person_time, item.source)
                     .setText(R.id.tv_generalize_seecount, item.view_cnt)
                     .setText(R.id.tv_generalize_person_title, item.title);
