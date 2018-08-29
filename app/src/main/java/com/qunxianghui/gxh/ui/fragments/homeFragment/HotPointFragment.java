@@ -9,7 +9,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -152,8 +151,8 @@ public class HotPointFragment extends BaseFragment {
                 }
                 dataList.addAll(list);
                 int total = dataList.size();
-                if (mCount + 10 <= total) {
-                    mCount += 10;
+                if (mCount + 12 <= total) {
+                    mCount += 12;
                     homeItemListAdapter.loadMoreComplete();
                 } else {
                     homeItemListAdapter.loadMoreEnd();

@@ -60,6 +60,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     private String mUrl;
     private Dialog mDialog;
     private UMWeb mWeb;
+    private String mTitle;
+    private String mDescrip;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +89,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
         });
         Intent intent = getIntent();
         mUrl = intent.getStringExtra("url");
+        mTitle = intent.getStringExtra("title");
+        mDescrip = intent.getStringExtra("descrip");
         //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
@@ -191,8 +195,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
         mWeb.setThumb(image);  //缩略图
-        if (desc!=null){
-           mWeb.setDescription(desc);
+        if (mDescrip!=null){
+           mWeb.setDescription(mDescrip);
         }else {
             mWeb.setDescription("群享汇-中小微企业成长平台，让创业更容易！");//描述
         }
@@ -249,6 +253,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                         mDialog.dismiss();
                         break;
                 }
+                mDialog.dismiss();
             }
         };
         rl_share_wx.setOnClickListener(listener);

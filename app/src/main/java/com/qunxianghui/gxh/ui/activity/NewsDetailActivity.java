@@ -63,6 +63,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private StringBuffer mBuffer;
     private String mDescrip;
     private Dialog mLoadingDialog;
+    private int mPosition;
 
     @Override
     protected int getLayoutId() {
@@ -81,6 +82,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         title = intent.getStringExtra("title");
         mDescrip = intent.getStringExtra("descrip");
         int uuid = intent.getIntExtra("uuid", 0);
+        mPosition = intent.getIntExtra("position", 0);
 
         String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
@@ -92,7 +94,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         super.onPause();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mWedNewsDetail.onPause();
-
             // 暂停网页中正在播放的视频
         }
     }
@@ -213,12 +214,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     return;
                 } else {
                     Intent intent;
-                    if (getIntent().getIntExtra("position", 0) == 4) {
+                    if (mPosition == 4) {
                         intent = new Intent(mContext, AddTiePianAdvertActivity.class);
+
                     } else {
                         intent = new Intent(mContext, AddAdvertActivity.class);
                     }
                     intent.putExtra("url", mBuffer.toString());
+                    intent.putExtra("title", title);
                     intent.putExtra("descrip", mDescrip);
                     startActivity(intent);
                 }
@@ -236,21 +239,34 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     return;
                 } else {
                     Intent intent;
-                    if (getIntent().getIntExtra("position", 0) == 4) {
+                    if (mPosition == 4) {
                         intent = new Intent(mContext, AddTiePianAdvertActivity.class);
                     } else {
                         intent = new Intent(mContext, AddAdvertActivity.class);
                     }
                     intent.putExtra("url", mBuffer.toString());
+                    intent.putExtra("title", title);
                     intent.putExtra("descrip", mDescrip);
                     startActivity(intent);
                 }
                 break;
             case R.id.tv_article_share:
-                showShareDialog();
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    showShareDialog();
+                }
                 break;
+
+            case R.id.tv_bottom_alertdialog_cancle:
+                mShareDialog.dismiss();
+                break;
+
+
         }
         mShareDialog.dismiss();
+
     }
 
     //底部弹出对话框
@@ -287,10 +303,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         if (mUmShareDialog == null) {
             mUmShareDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
             UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
-            final UMWeb web = new UMWeb(url); //切记切记 这里分享的链接必须是http开头
+            final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
             web.setTitle(title);//标题
             web.setThumb(image);  //缩略图
-            web.setDescription(mDescrip.substring(0,70));//描述
+            if (mPosition == 4) {
+                web.setDescription(mDescrip);//描述
+            } else {
+                web.setDescription(mDescrip.substring(0, 70));//描述
+            }
             View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
             mUmShareDialog.setContentView(view);
             View.OnClickListener listener = new View.OnClickListener() {
@@ -337,7 +357,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                             break;
 
                     }
-                    mLoadingDialog.dismiss();
+                    mUmShareDialog.dismiss();
                 }
             };
             view.findViewById(R.id.rl_share_wx).setOnClickListener(listener);
