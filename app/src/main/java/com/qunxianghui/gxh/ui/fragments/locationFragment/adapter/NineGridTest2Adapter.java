@@ -42,7 +42,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
     private final int STATE_NOT_OVERFLOW = 1;//文本行数小于最大可显示行数
     private final int STATE_COLLAPSED = 2;//折叠状态
     private final int STATE_EXPANDED = 3;//展开状态
-    private SparseArray<Integer> mTextStateList; //保存文本状态集合
+    public SparseArray<Integer> mTextStateList; //保存文本状态集合
     private boolean flag = false;
     private StringBuilder stringBuilder;
 
@@ -188,7 +188,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.tvShoworHide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (state == STATE_COLLAPSED) {
+                if (state == STATE_COLLAPSED || state == STATE_UNKNOW) {
                     holder.tv_location_person_content.setMaxLines(Integer.MAX_VALUE);
                     holder.tvShoworHide.setText("收起");
                     mTextStateList.put(holder.getAdapterPosition() - 1, STATE_EXPANDED);

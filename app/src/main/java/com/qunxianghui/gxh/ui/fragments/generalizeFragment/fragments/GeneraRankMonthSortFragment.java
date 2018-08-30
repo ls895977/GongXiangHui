@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
 import android.annotation.SuppressLint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
                 if (employeePaiHangBean.code == 200) {
                     List<EmployeePaiHangBean.EmployeePaiHang.DataBean> dataList = employeePaiHangBean.data.staff_list;
                     View header = LayoutInflater.from(getContext()).inflate(R.layout.item_generalize_sort_header, null);
-                    ((TextView) header.findViewById(R.id.tv_rank)).setText(String.format("%s.", employeePaiHangBean.data.my_data.ranking));
+                    TextView tvRank = header.findViewById(R.id.tv_rank);
                     RoundImageView img = header.findViewById(R.id.iv_generalize_person_head);
                     TextView tvName = header.findViewById(R.id.iv_generalize_person_name);
                     TextView tvCount = header.findViewById(R.id.tv_generalize_person_count);
@@ -77,6 +78,15 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
                     tvName.setText(employeePaiHangBean.data.my_data.member_name);
                     String textSource = "<font color='#D81717'>%s</font><font color='#999999'>次</font>";
                     tvCount.setText(Html.fromHtml(String.format(textSource, employeePaiHangBean.data.my_data.cnt)));
+                    if (1 == employeePaiHangBean.data.my_data.ranking) {
+                        tvRank.setBackground(ContextCompat.getDrawable(mActivity, R.mipmap.genera_company_sort_one));
+                    } else if (2 == employeePaiHangBean.data.my_data.ranking) {
+                        tvRank.setBackground(ContextCompat.getDrawable(mActivity, R.mipmap.genera_company_sort_two));
+                    } else if (3 == employeePaiHangBean.data.my_data.ranking) {
+                        tvRank.setBackground(ContextCompat.getDrawable(mActivity, R.mipmap.genera_company_sort_three));
+                    } else {
+                        tvRank.setText(String.format("%s.", employeePaiHangBean.data.my_data.ranking));
+                    }
 
                     GeneralizeSortAdapter generalizeSortAdapter = new GeneralizeSortAdapter(dataList);
                     generalizeSortAdapter.addHeaderView(header);

@@ -1,9 +1,11 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -80,12 +82,14 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 .params("limit", 10)
                 .params("skip", mSkip)
                 .execute(new JsonCallback<TestMode>() {
+                    @SuppressLint("UseSparseArrays")
                     @Override
                     public void onSuccess(Response<TestMode> response) {
                         TestMode locationListBean = response.body();
                         if (locationListBean.getCode() == 0) {
                             if (mSkip == 0) {
                                 locationBean.clear();
+                                mAdapter.mTextStateList = new SparseArray<>();
                                 mRecyclerView.refreshComplete();
                                 mRecyclerView.setLoadingMoreEnabled(true);
                             }
