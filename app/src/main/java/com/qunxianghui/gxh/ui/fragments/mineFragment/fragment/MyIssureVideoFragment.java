@@ -51,7 +51,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 mSkip = 0;
                 initData();
             }
-
             @Override
             public void onLoadMore() {
                 mSkip += 10;
