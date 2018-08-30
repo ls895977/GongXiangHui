@@ -17,10 +17,7 @@
         android:layout_height="88dp"
         android:background="#f8f8f8"
         android:orientation="vertical"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_mingFragment_addTopAdver"
@@ -79,7 +76,7 @@
                 android:background="@mipmap/add_adver_bottom_alert"
                 android:gravity="center"
                 android:paddingBottom="3dp"
-                android:text="底部只支持所有广告"
+                android:text="底部支持所有广告"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -97,7 +94,9 @@
             <com.youth.banner.Banner
                 android:id="@+id/banner_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
 
         </RelativeLayout>
 

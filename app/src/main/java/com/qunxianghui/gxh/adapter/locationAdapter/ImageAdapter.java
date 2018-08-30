@@ -17,6 +17,11 @@ import java.util.List;
 public class ImageAdapter extends PagerAdapter {
     private List<String> imageUrls;
     private AppCompatActivity activity;
+    private OnItemClick mOnItemClick;
+
+    public void setOnItemClick(OnItemClick onItemClick) {
+        mOnItemClick = onItemClick;
+    }
 
     public ImageAdapter(List<String> imageUrls, AppCompatActivity activity) {
         this.imageUrls = imageUrls;
@@ -24,16 +29,16 @@ public class ImageAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        String url = imageUrls.get(position);
+    public Object instantiateItem(ViewGroup container, final int position) {
+        final String url = imageUrls.get(position);
         PhotoView photoView = new PhotoView(activity);
         photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         Display display = activity.getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
         int height = display.getHeight();
-        ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width,height);
+        ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width, height);
 
-        layout.setMargins(0,100,0,100);
+        layout.setMargins(0, 100, 0, 100);
 
 //        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(photoView.getLayoutParams());
 //        int offset = 100;
@@ -54,7 +59,17 @@ public class ImageAdapter extends PagerAdapter {
                 activity.finish();
             }
         });
+
+        photoView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mOnItemClick.PicLongClick(position,url);
+                return true;
+            }
+        });
         return photoView;
+
+
     }
 
     @Override
@@ -75,5 +90,10 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
+    }
+
+
+    public interface OnItemClick {
+        void PicLongClick(int position,String url);
     }
 }

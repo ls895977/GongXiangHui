@@ -55,14 +55,12 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     TextView mTvSeconds;
     @BindView(R.id.rl_top)
     RelativeLayout mRlTop;
-
     private UMShareListener umShareListener;
     private String mUrl;
     private Dialog mDialog;
     private UMWeb mWeb;
     private String mTitle;
     private String mDescrip;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_tiepian_advert;

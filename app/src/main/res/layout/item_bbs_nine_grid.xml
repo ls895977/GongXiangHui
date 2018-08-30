@@ -88,6 +88,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
+                android:visibility="gone"
                 android:text="全文"
                 android:textColor="@color/liji_c_blue"
                 android:textSize="12sp" />
