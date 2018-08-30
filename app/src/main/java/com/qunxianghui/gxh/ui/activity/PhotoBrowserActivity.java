@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.ImageAdapter;
-import com.qunxianghui.gxh.utils.SavePicByUrlUtils;
 import com.qunxianghui.gxh.widget.PhotoViewPager;
 
 import java.util.ArrayList;
@@ -72,6 +71,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
     protected void initDatas() {
 
     }
+
     @Override
     public void finish() {
         super.finish();
@@ -79,8 +79,9 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
     }
 
     private void savePicToColume(int position, String url) {
-        SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
+//        SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
         Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+        mDialog.dismiss();
     }
 
     /*图片长按的处理*/
