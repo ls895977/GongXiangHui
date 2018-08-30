@@ -16,11 +16,11 @@ import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.ImageAdapter;
-import com.qunxianghui.gxh.utils.SavePicByUrlUtils;
 import com.qunxianghui.gxh.widget.PhotoViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdapter.OnItemClick {
     private PhotoViewPager mViewPager;
     private int currentPosition;
@@ -32,6 +32,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
+
     protected void initViews() {
         mViewPager = findViewById(R.id.view_pager_photo);
         mViewPager.setBackgroundColor(Color.parseColor("#000000"));
@@ -66,7 +68,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
     }
 
     protected void initDatas() {
-
     }
 
     @Override
@@ -74,8 +75,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
         super.finish();
         this.overridePendingTransition(0, R.anim.activity_pop_out);
     }
-
-
 
 
     /*图片长按的处理*/
@@ -94,14 +93,17 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
             alertView.findViewById(R.id.tv_savepicto_colume).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                            SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
+//
+//                            mDialog.dismiss();
+//                        }
+//                    }).start();
+
+                    Toast.makeText(PhotoBrowserActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                     mDialog.dismiss();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
-                            Toast.makeText(PhotoBrowserActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                        }
-                    }).start();
                 }
             });
             alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(new View.OnClickListener() {

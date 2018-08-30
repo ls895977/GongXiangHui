@@ -18,8 +18,8 @@ public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssue
 
     @Override
     protected void convert(MyViewHolder holder, int position, MineIssueLocalServiceBean.DataBean dataBean) {
-        holder.setText(R.id.tv_myissue_localservice_title, "发布的标题");
-        holder.setText(R.id.tv_myissue_localservice_phone,"18356265985");
+        holder.setText(R.id.tv_myissue_localservice_title, dataBean.getTitle());
+        holder.setText(R.id.tv_myissue_localservice_phone,dataBean.getMobile());
         holder.setText(R.id.tv_myissue_localservice_call,"18356265985");
         ImageView mLocalServicePic = holder.getView(R.id.tv_myissue_localservice_pic);
         RequestOptions options = new RequestOptions();

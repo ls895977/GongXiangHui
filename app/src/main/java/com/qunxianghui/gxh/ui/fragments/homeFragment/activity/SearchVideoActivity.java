@@ -34,6 +34,7 @@ import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchVideoFragment;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
+import com.qunxianghui.gxh.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,10 +188,12 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
             //搜索按钮
             case R.id.tv_video_search:
                 trim = etVideoSearch.getText().toString().trim();
-                if (TextUtils.isEmpty(trim)) {
-                    ToastUtils.showShortToast(this, "搜索内容不能为空");
-                } else if (viewpager != null) {
-                    setupViewPager(trim);
+                if (Utils.isFastClick()){
+                    if (TextUtils.isEmpty(trim)) {
+                        ToastUtils.showShortToast(this, "搜索内容不能为空");
+                    } else if (viewpager != null) {
+                        setupViewPager(trim);
+                    }
                 }
                 break;
             case R.id.iv_video_search_back:

@@ -217,28 +217,33 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = (String) item.getText();
-            OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
-                    .params("url", text)
-                    .execute(new JsonCallback<CommonBean>() {
-                        @Override
-                        public void onSuccess(Response<CommonBean> response) {
-                            int code = response.body().code;
-                            String msg = response.body().msg;
-                            if (code == 0) {
-                                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                                intent.putExtra("url", text);
-                                startActivity(intent);
-                            } else {
-                                asyncShowToast(msg);
+            if (TextUtils.isEmpty(text)) {
+                asyncShowToast("您复制的不是链接");
+            } else {
+                OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
+                        .params("url", text)
+                        .execute(new JsonCallback<CommonBean>() {
+                            @Override
+                            public void onSuccess(Response<CommonBean> response) {
+                                int code = response.body().code;
+                                String msg = response.body().msg;
+                                if (code == 0) {
+                                    Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                                    intent.putExtra("url", text);
+                                    startActivity(intent);
+                                } else {
+                                    asyncShowToast(msg);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onError(Response<CommonBean> response) {
-                            super.onError(response);
-                            asyncShowToast(response.message());
-                        }
-                    });
+                            @Override
+                            public void onError(Response<CommonBean> response) {
+                                super.onError(response);
+                                asyncShowToast(response.message());
+                            }
+                        });
+
+            }
 
         }
 

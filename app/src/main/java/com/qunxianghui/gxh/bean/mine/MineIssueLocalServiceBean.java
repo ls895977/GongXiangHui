@@ -7,7 +7,7 @@ public class MineIssueLocalServiceBean {
     /**
      * code : 200
      * msg : 获取数据成功
-     * data : [{"id":19,"member_id":1000038,"company_name":"杭州思丹莱培训学校","description":"中小学学科培优、辅导选择思丹莱","company_trade":"65","tel":"4008584452","mobile":"18506825451","qq":"5632486548","province_id":3,"city_id":26,"area_id":267,"address":"蓝桥景苑","images":"/upload/posts/5ad01d9ce17a3.jpeg","linkname":"陈老师","content":"思丹莱培训学校，是杭州市教育局和民政局批准备案的中小学校外优质培训机构。是杭州市AAAA级单位，每年有多达3000余人次的学生在这里培训，强大的师资力量和严格的教学管理，60%以上的学生先后进入各自心仪的重优高。就保送生而言，几年来，近500名保送生经我校培训后，全部进入各重点高中，赢得社会的广泛认可和高度评价。","ctime":"2018-04-13 11:11:04","view_cnt":11,"status":1,"push_id":0,"change_ad_id":0,"cate_name":"教育培训/家教机构/IT"}]
+     * data : [{"id":201,"member_id":1000010,"cate_id":31,"title":"yyyy","price":"52.00","province_id":2,"city_id":23,"area_id":251,"address":"西湖","content":"考虑考虑","images":null,"linkname":"赵龙涛","sex":1,"mobile":"13843854188","ctime":"2018-08-30 17:57:10","view_cnt":null,"status":null,"listorder":null,"image_url":null,"cate_name":"亲子"},{"id":77,"member_id":1000010,"cate_id":148,"title":"强盛登山杖折叠碳素超轻超短越野行走健走杖外锁伸缩5节户外爬山","price":"95.00","province_id":3,"city_id":31,"area_id":320,"address":"翡翠园","content":"<p><br/><\/p><p>强盛登山杖折叠碳素超轻 超短越野行走健走杖外锁伸缩5节户外爬山 可放入背包，超轻配外袋，收藏送护膝杖尖套<\/p><p><br/><\/p>","images":"/upload/sys/image/2e/35180f307baf311f6078af9ce325bc.jpg","linkname":"力强","sex":1,"mobile":"15774423369","ctime":"2018-04-14 15:20:54","view_cnt":45,"status":1,"listorder":0,"image_url":"","cate_name":"登山杖"},{"id":75,"member_id":1000010,"cate_id":140,"title":"国标纯铜芯RVV护套线2 3 4二芯0.5 0.75 1软1.5平方2.5电缆电源线","price":"95.00","province_id":2,"city_id":5,"area_id":73,"address":"稻香园南区","content":"国标纯铜芯RVV护套线2 3 4二芯0.5 0.75 1软1.5平方2.5电缆电源线","images":"/upload/sys/image/61/0ac6375371483091f27f11b7468000.jpg","linkname":"王国成","sex":1,"mobile":"17826332119","ctime":"2018-04-13 17:27:07","view_cnt":8,"status":1,"listorder":0,"image_url":"","cate_name":"电线"},{"id":73,"member_id":1000010,"cate_id":147,"title":"定制笔记本文具记事本A5加厚小清新大学生日记本子办公学生用商务","price":"8.50","province_id":3,"city_id":26,"area_id":265,"address":"天地世嘉","content":"定制笔记本文具记事本A5加厚小清新大学生日记本子办公学生用商务\r\n","images":"/upload/sys/image/20/13246a09a7574258438fe24e63d83a.jpg","linkname":"晓光","sex":1,"mobile":"13295877552","ctime":"2018-04-13 17:19:23","view_cnt":1,"status":1,"listorder":0,"image_url":"","cate_name":"办公本"},{"id":68,"member_id":1000010,"cate_id":143,"title":"飞利浦CORD118固定电话机座机电话 家用座式有线坐机办公商务固话","price":"79.00","province_id":3,"city_id":29,"area_id":302,"address":"星光国际广场","content":"飞利浦CORD118固定电话机座机电话 家用座式有线坐机办公商务固话\r\n","images":"/upload/sys/image/18/929d55c73a38e19d81b9d6eaf4814b.jpg","linkname":"张不道","sex":1,"mobile":"17855233263","ctime":"2018-04-13 17:08:21","view_cnt":8,"status":1,"listorder":0,"image_url":"","cate_name":"电话"},{"id":63,"member_id":1000010,"cate_id":164,"title":"[耐摔大号]瑞可遥控飞机航拍无人机玩具四轴飞行器男孩儿童直升机","price":"168.00","province_id":2,"city_id":6,"area_id":89,"address":"景瑞御蓝湾","content":"[耐摔大号]瑞可遥控飞机航拍无人机玩具四轴飞行器男孩儿童直升机","images":"/upload/sys/image/51/50689df8cea9c784ec93e7a77dd94c.jpg","linkname":"王梦","sex":1,"mobile":"13900202254","ctime":"2018-04-13 16:56:01","view_cnt":4,"status":1,"listorder":0,"image_url":"","cate_name":"遥控飞机"}]
      */
 
     private int code;
@@ -40,49 +40,47 @@ public class MineIssueLocalServiceBean {
 
     public static class DataBean {
         /**
-         * id : 19
-         * member_id : 1000038
-         * company_name : 杭州思丹莱培训学校
-         * description : 中小学学科培优、辅导选择思丹莱
-         * company_trade : 65
-         * tel : 4008584452
-         * mobile : 18506825451
-         * qq : 5632486548
-         * province_id : 3
-         * city_id : 26
-         * area_id : 267
-         * address : 蓝桥景苑
-         * images : /upload/posts/5ad01d9ce17a3.jpeg
-         * linkname : 陈老师
-         * content : 思丹莱培训学校，是杭州市教育局和民政局批准备案的中小学校外优质培训机构。是杭州市AAAA级单位，每年有多达3000余人次的学生在这里培训，强大的师资力量和严格的教学管理，60%以上的学生先后进入各自心仪的重优高。就保送生而言，几年来，近500名保送生经我校培训后，全部进入各重点高中，赢得社会的广泛认可和高度评价。
-         * ctime : 2018-04-13 11:11:04
-         * view_cnt : 11
-         * status : 1
-         * push_id : 0
-         * change_ad_id : 0
-         * cate_name : 教育培训/家教机构/IT
+         * id : 201
+         * member_id : 1000010
+         * cate_id : 31
+         * title : yyyy
+         * price : 52.00
+         * province_id : 2
+         * city_id : 23
+         * area_id : 251
+         * address : 西湖
+         * content : 考虑考虑
+         * images : null
+         * linkname : 赵龙涛
+         * sex : 1
+         * mobile : 13843854188
+         * ctime : 2018-08-30 17:57:10
+         * view_cnt : null
+         * status : null
+         * listorder : null
+         * image_url : null
+         * cate_name : 亲子
          */
 
         private int id;
         private int member_id;
-        private String company_name;
-        private String description;
-        private String company_trade;
-        private String tel;
-        private String mobile;
-        private String qq;
+        private int cate_id;
+        private String title;
+        private String price;
         private int province_id;
         private int city_id;
         private int area_id;
         private String address;
-        private String images;
-        private String linkname;
         private String content;
+        private Object images;
+        private String linkname;
+        private int sex;
+        private String mobile;
         private String ctime;
-        private int view_cnt;
-        private int status;
-        private int push_id;
-        private int change_ad_id;
+        private Object view_cnt;
+        private Object status;
+        private Object listorder;
+        private Object image_url;
         private String cate_name;
 
         public int getId() {
@@ -101,52 +99,28 @@ public class MineIssueLocalServiceBean {
             this.member_id = member_id;
         }
 
-        public String getCompany_name() {
-            return company_name;
+        public int getCate_id() {
+            return cate_id;
         }
 
-        public void setCompany_name(String company_name) {
-            this.company_name = company_name;
+        public void setCate_id(int cate_id) {
+            this.cate_id = cate_id;
         }
 
-        public String getDescription() {
-            return description;
+        public String getTitle() {
+            return title;
         }
 
-        public void setDescription(String description) {
-            this.description = description;
+        public void setTitle(String title) {
+            this.title = title;
         }
 
-        public String getCompany_trade() {
-            return company_trade;
+        public String getPrice() {
+            return price;
         }
 
-        public void setCompany_trade(String company_trade) {
-            this.company_trade = company_trade;
-        }
-
-        public String getTel() {
-            return tel;
-        }
-
-        public void setTel(String tel) {
-            this.tel = tel;
-        }
-
-        public String getMobile() {
-            return mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-        }
-
-        public String getQq() {
-            return qq;
-        }
-
-        public void setQq(String qq) {
-            this.qq = qq;
+        public void setPrice(String price) {
+            this.price = price;
         }
 
         public int getProvince_id() {
@@ -181,11 +155,19 @@ public class MineIssueLocalServiceBean {
             this.address = address;
         }
 
-        public String getImages() {
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public Object getImages() {
             return images;
         }
 
-        public void setImages(String images) {
+        public void setImages(Object images) {
             this.images = images;
         }
 
@@ -197,12 +179,20 @@ public class MineIssueLocalServiceBean {
             this.linkname = linkname;
         }
 
-        public String getContent() {
-            return content;
+        public int getSex() {
+            return sex;
         }
 
-        public void setContent(String content) {
-            this.content = content;
+        public void setSex(int sex) {
+            this.sex = sex;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
         }
 
         public String getCtime() {
@@ -213,36 +203,36 @@ public class MineIssueLocalServiceBean {
             this.ctime = ctime;
         }
 
-        public int getView_cnt() {
+        public Object getView_cnt() {
             return view_cnt;
         }
 
-        public void setView_cnt(int view_cnt) {
+        public void setView_cnt(Object view_cnt) {
             this.view_cnt = view_cnt;
         }
 
-        public int getStatus() {
+        public Object getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(Object status) {
             this.status = status;
         }
 
-        public int getPush_id() {
-            return push_id;
+        public Object getListorder() {
+            return listorder;
         }
 
-        public void setPush_id(int push_id) {
-            this.push_id = push_id;
+        public void setListorder(Object listorder) {
+            this.listorder = listorder;
         }
 
-        public int getChange_ad_id() {
-            return change_ad_id;
+        public Object getImage_url() {
+            return image_url;
         }
 
-        public void setChange_ad_id(int change_ad_id) {
-            this.change_ad_id = change_ad_id;
+        public void setImage_url(Object image_url) {
+            this.image_url = image_url;
         }
 
         public String getCate_name() {

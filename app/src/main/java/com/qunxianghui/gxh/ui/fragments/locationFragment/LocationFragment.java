@@ -40,7 +40,6 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class LocationFragment extends BaseFragment {
-
     @BindView(R.id.tv_localcircle_location)
     TextView mTvLocalcircleLocation;
     @BindView(R.id.slidingLocationTabLayout)
