@@ -40,6 +40,8 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     ViewPager mineMyIssureViewpager;
     @BindView(R.id.iv_myissue_back)
     ImageView ivMyissueBack;
+    @BindView(R.id.tv_myissue_cancel)
+    TextView tvMyissueCancel;
     @BindView(R.id.tv_edit)
     TextView mTvEdit;
 
@@ -54,6 +56,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initViews() {
+        EventManager.getInstance().addObserver(this);
         ArrayList<CustomTabEntity> tabEntities = new ArrayList<>();
         for (String title : mTabTitles) {
             tabEntities.add(new TabEntity(title, 0, 0));
@@ -77,24 +80,8 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initListeners() {
-        ivMyissueBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        mTvEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ("编辑".equals(mTvEdit.getText().toString())) {
-                    mTvEdit.setText("删除");
-                    sIsDeletes = true;
-                } else {
-                    mTvEdit.setText("编辑");
-                    sIsDeletes = false;
-                }
-            }
-        });
+        ivMyissueBack.setOnClickListener(this);
+        mTvEdit.setOnClickListener(this);
         mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -113,17 +100,52 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
                 mTabLayout.setCurrentTab(position);
             }
         });
+        tvMyissueCancel.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit:
+//                if ("编辑".equals(mTvEdit.getText().toString())) {
+//                    mTvEdit.setText("删除");
+//                    sIsDeletes = true;
+//                } else {
+//                    mTvEdit.setText("编辑");
+//                    sIsDeletes = false;
+//                }
                 MineIssueEditDataState();
                 break;
             case R.id.iv_myissue_back:
+                finish();
+                break;
+            case R.id.tv_myissue_cancel:
+                MineIssueCancelDataState();
                 break;
         }
+    }
+
+    /*我的发布的删除状态*/
+    private void MineIssueCancelDataState() {
+        EventManager.getInstance().publishMessage(false);
+//                isEdit = true;
+        if (mineMyIssureViewpager.getCurrentItem() == 0) {
+            EventManager.getInstance().publishMessage("baoliao_c");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 1) {
+            EventManager.getInstance().publishMessage("issue_video_c");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 2) {
+            EventManager.getInstance().publishMessage("localcircle_c");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 3) {
+            EventManager.getInstance().publishMessage("localser_c");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 4) {
+            EventManager.getInstance().publishMessage("goodselect_c");
+        }
+        ivMyissueBack.setVisibility(View.VISIBLE);
+        tvMyissueCancel.setVisibility(View.GONE);
     }
 
     /*我的发布的编辑状态*/
@@ -134,7 +156,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
             EventManager.getInstance().publishMessage("baoliao");
         }
         if (mineMyIssureViewpager.getCurrentItem() == 1) {
-            EventManager.getInstance().publishMessage("video");
+            EventManager.getInstance().publishMessage("issue_video");
         }
         if (mineMyIssureViewpager.getCurrentItem() == 2) {
             EventManager.getInstance().publishMessage("localcircle");
@@ -146,13 +168,13 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
             EventManager.getInstance().publishMessage("goodselect");
         }
         ivMyissueBack.setVisibility(View.GONE);
-//        tvMycollectCancel.setVisibility(View.VISIBLE);
+        tvMyissueCancel.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "init".equals(o)) {
-//            tvMycollectCancel.setVisibility(View.GONE);
+            tvMyissueCancel.setVisibility(View.GONE);
             ivMyissueBack.setVisibility(View.VISIBLE);
         }
     }

@@ -7,7 +7,17 @@
         android:id="@+id/recycler_mineissue_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+    <Button
+        android:id="@+id/bt_myissue_issuepost_delete"
+        android:layout_width="62dp"
+        android:layout_height="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_red_solid_corner"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:visibility="gone" />
     <LinearLayout
         android:id="@+id/issuepost_send_comment_view"
         android:layout_width="match_parent"

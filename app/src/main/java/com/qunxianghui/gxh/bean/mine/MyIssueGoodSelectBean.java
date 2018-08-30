@@ -83,6 +83,16 @@ public class MyIssueGoodSelectBean {
         private String image_url;
         private String cate_name;
 
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+
+        private boolean isChecked;
+
         public int getId() {
             return id;
         }

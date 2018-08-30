@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -16,7 +18,7 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
     private int uuid;
     private MyIssueVideoClikListener myIssueVideoClikListener;
     private String mImage;
-
+    public boolean isShow = false;
     public void setMyIssueVideoClikListener(MyIssueVideoClikListener myIssueVideoClikListener) {
         this.myIssueVideoClikListener = myIssueVideoClikListener;
     }
@@ -42,6 +44,30 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
         options.error(R.mipmap.default_img);
 
         Glide.with(mContext).load(mImage).apply(options).into(iconMyIssueVideo);
+
+        if (isShow) {
+            //videoImag.setClickable(false);
+            holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
+        } else {
+            //videoImag.setClickable(true);
+            holder.getView(R.id.ch_delete).setVisibility(View.GONE);
+        }
+        CheckBox checkBox = holder.getView(R.id.ch_delete);
+        if (dataBean.isChecked() == true) {
+            checkBox.setChecked(true);
+        } else {
+            checkBox.setChecked(false);
+        }
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dataBean.isChecked() == true) {
+                    dataBean.setChecked(false);
+                } else {
+                    dataBean.setChecked(true);
+                }
+            }
+        });
     }
 
     @Override

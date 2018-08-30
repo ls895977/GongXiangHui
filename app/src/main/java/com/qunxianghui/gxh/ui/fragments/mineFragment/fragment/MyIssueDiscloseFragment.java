@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+/**
+ * 爆料
+ */
 public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
+
     @BindView(R.id.recycler_mineissue_disclose)
     XRecyclerView mRv;
     @BindView(R.id.bt_myissue_delete)
@@ -41,12 +46,15 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     private List<MyIssueDiscloseBean.DataBean> mList = new ArrayList<>();
     private MineIssueDiscloseAdapter mAdapter;
     private String data_id = "";
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_issue_disclose;
     }
+
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MineIssueDiscloseAdapter(getContext(), mList);
         mRv.setAdapter(mAdapter);
@@ -56,6 +64,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                 mSkip = 0;
                 initData();
             }
+
             @Override
             public void onLoadMore() {
                 mSkip += 10;
@@ -63,6 +72,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
             }
         });
     }
+
     @Override
     public void initData() {
         OkGo.<MyIssueDiscloseBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
@@ -75,6 +85,8 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                     }
                 });
     }
+
+
     @Override
     protected void initListeners() {
         btMyissueDelete.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +117,8 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
 
     private void RequestDeleteData() {
         OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
-                .params("uuid", data_id)
+                .params("id", data_id)
+                .params("type","1")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -114,10 +127,15 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                             int code = jsonObject.getInt("code");
                             if (code == 200) {
                                 ToastUtils.showLong("删除成功");
-                                for (int j = 0; j < mList.size(); j++) {
+                                ArrayList<MyIssueDiscloseBean.DataBean> selectList = new ArrayList<MyIssueDiscloseBean.DataBean>();
+                                for (int j = 0; j <mList.size() ; j++) {
                                     if (mList.get(j).isChecked() == true) {
-                                        mList.remove(j);
+                                        selectList.add(mList.get(j));
+                                        //dataList.remove(j);
                                     }
+                                }
+                                for(int k=0; k < selectList.size(); k++){
+                                    mList.remove(selectList.get(k));
                                 }
                                 mAdapter.isShow = false;
                                 mAdapter.notifyDataSetChanged();
@@ -158,12 +176,14 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o instanceof String && "news".equals(o)) {
+        Log.d(TAG,"接收到了消息baoliao" + o);
+        if (o instanceof String && "baoliao".equals(o)) {
+            Log.d(TAG,"接收到了消息baoliao");
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
             btMyissueDelete.setVisibility(View.VISIBLE);
         }
-        if (o instanceof String && "news_c".equals(o)) {
+        if (o instanceof String && "baoliao_c".equals(o)) {
             mAdapter.isShow = false;
             mAdapter.notifyDataSetChanged();
             btMyissueDelete.setVisibility(View.GONE);
@@ -173,6 +193,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventManager.getInstance().deleteObserver(this);
     }
 
 }
