@@ -33,6 +33,7 @@ import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.SearchFragment;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
+import com.qunxianghui.gxh.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,8 +83,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initViews() {
 
-        rvSearchHistory.setLayoutManager(new GridLayoutManager(mContext,2,GridLayoutManager.VERTICAL,false));
-        rvSearchGuess.setLayoutManager(new GridLayoutManager(mContext,2,GridLayoutManager.VERTICAL,false));
+        rvSearchHistory.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false));
+        rvSearchGuess.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false));
         mViewpager.setOffscreenPageLimit(2);
         //解决嵌套滑动的问题
         rvSearchGuess.setNestedScrollingEnabled(false);
@@ -187,11 +188,15 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             //搜索按钮
             case R.id.tv_cancel:
                 trim = etSearch.getText().toString().trim();
-                if (TextUtils.isEmpty(trim)) {
-                    ToastUtils.showShortToast(this, "搜索内容不能为空");
-                } else if (mViewpager != null) {
-                    setupViewPager(trim);
+
+                if (Utils.isFastClick()) {
+                    if (TextUtils.isEmpty(trim)) {
+                        ToastUtils.showShortToast(this, "搜索内容不能为空");
+                    } else if (mViewpager != null) {
+                        setupViewPager(trim);
+                    }
                 }
+
                 break;
             case R.id.iv_home_search_back:
                 finish();

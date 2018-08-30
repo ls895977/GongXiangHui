@@ -18,6 +18,7 @@ import com.qunxianghui.gxh.bean.mine.MyIssueDiscloseBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     private List<MyIssueDiscloseBean.DataBean> mList = new ArrayList<>();
     private MineIssueDiscloseAdapter mAdapter;
     private String data_id = "";
-
+    private PersonDetailActivity personDetailActivity;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_issue_disclose;
@@ -70,9 +71,11 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
+        personDetailActivity = (PersonDetailActivity) getActivity();
         OkGo.<MyIssueDiscloseBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                 .params("limit", 10)
                 .params("skip", mSkip)
+                .params("member_id", personDetailActivity.member_id)
                 .execute(new JsonCallback<MyIssueDiscloseBean>() {
                     @Override
                     public void onSuccess(Response<MyIssueDiscloseBean> response) {

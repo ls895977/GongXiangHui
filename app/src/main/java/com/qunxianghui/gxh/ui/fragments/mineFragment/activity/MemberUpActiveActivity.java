@@ -20,7 +20,6 @@ import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import butterknife.BindView;
-
 public class MemberUpActiveActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.et_member_active_code)
     EditText etMemberActiveCode;
@@ -28,7 +27,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
     TextView tvMemberActiviteQuickly;
     @BindView(R.id.iv_memberup_activite_back)
     ImageView ivMemberupActiviteBack;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_active;
@@ -48,6 +46,11 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onSuccess(Response<MemberActiviteBean> response) {
                         ParseActivieData(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<MemberActiviteBean> response) {
+                        super.onError(response);
                     }
                 });
     }
@@ -70,8 +73,6 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
             EventManager.getInstance().publishMessage("company");
             setResult(0x0022);
             finish();
-        } else if (code == 101) {
-            asyncShowToast(msg);
         }
 
     }

@@ -76,10 +76,15 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
             @Override
             public void onItemClick(View v, int position) {
                 int uuid = mBean.getData().get(position - 1).getUuid();
+                String content = mBean.getData().get(position - 1).getContent();
+                String title = mBean.getData().get(position - 1).getTitle();
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                 intent.putExtra("uuid", uuid);
                 intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                intent.putExtra("descrip", content);
+                intent.putExtra("title",title);
+                intent.putExtra("position", 4);
                 startActivity(intent);
             }
         });

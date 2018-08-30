@@ -59,7 +59,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     }
 
     private void LoadMycolectNews() {
-        OkGo.<MyCollectPostBean>post(Constant.HOME_NEWS_LIST_URL)
+        OkGo.<MyCollectPostBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                 .params("user_id", mPersonDetailActivity.member_id)
                 .params("limit", 12)
                 .params("skip", count)

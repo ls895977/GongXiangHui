@@ -90,8 +90,9 @@
 
         <TextView
             android:id="@+id/tv_member_activite_quickly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:text="立即激活"
             android:textColor="#DBB07C"

@@ -217,6 +217,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = (String) item.getText();
+
             OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
                     .params("url", text)
                     .execute(new JsonCallback<CommonBean>() {
@@ -239,11 +240,12 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                             asyncShowToast(response.message());
                         }
                     });
-        } else {
+    } else
+        {
             asyncShowToast("您复制的不是文章链接");
-        }
-    }
 
+        }
+}
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

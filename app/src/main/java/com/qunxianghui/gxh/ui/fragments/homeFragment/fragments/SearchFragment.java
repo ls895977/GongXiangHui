@@ -103,10 +103,16 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         String url = mBean.getData().getList().get(position).getUrl();
         int uuid = mBean.getData().getList().get(position).getUuid();
+        int id = mBean.getData().getList().get(position).getId();
+        String title = mBean.getData().getList().get(position).getTitle();
+        String description = mBean.getData().getList().get(position).getContent();
         Intent intent = new Intent(mActivity, NewsDetailActivity.class);
         intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
         intent.putExtra("uuid",uuid);
         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN,""));
+        intent.putExtra("id", id);
+        intent.putExtra("title", title);
+        intent.putExtra("descrip",description);
         startActivity(intent);
     }
 }

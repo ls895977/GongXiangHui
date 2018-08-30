@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MineIssueLocalServiceBean {
 
+
     /**
      * code : 200
      * msg : 获取数据成功

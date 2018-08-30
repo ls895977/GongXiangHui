@@ -144,7 +144,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="70dp"
         app:cardCornerRadius="5dp"
-        app:cardElevation="1dp">
+        app:cardElevation="2dp">
 
         <LinearLayout
             android:id="@+id/rl_mine_person_data"
