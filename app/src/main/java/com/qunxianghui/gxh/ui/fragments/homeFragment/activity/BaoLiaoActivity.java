@@ -17,6 +17,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.BaoLiaoBean;
 import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -24,7 +25,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
-import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
 
     private List<String> upLoadPics = new ArrayList<>();
     private int maxImgCount = 3;               //允许选择图片最大数
-    private BaoLiaoAdapter adapter;
+    private BaoLiaoAdapter mAdapter;
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
@@ -80,10 +80,10 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
 
         selImageList = new ArrayList<>();
-        adapter = new BaoLiaoAdapter(this);
-        adapter.setOnItemClickListener(this);
+        mAdapter = new BaoLiaoAdapter(this);
+        mAdapter.setOnItemClickListener(this);
         mRv.setHasFixedSize(true);
-        mRv.setAdapter(adapter);
+        mRv.setAdapter(mAdapter);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 if (!isCanUpload()) {
                     return;
                 }
-                RequestBaoLiaoData();
+                uploadBaoLiaoData();
                 break;
         }
     }
@@ -134,18 +134,19 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      * @return
      */
     private boolean isCanUpload() {
+        String mBaoLiaoTitle = mEtTitle.getText().toString().trim();
+        if (TextUtils.isEmpty(mBaoLiaoTitle)) {
+            asyncShowToast("您尚未输入标题！");
+            return false;
+        }
         for (int i = 0; i < mRv.getChildCount(); i++) {
             LinearLayout layout = (LinearLayout) mRv.getChildAt(i);  //获得子item的layout
             mEtContent = layout.findViewById(R.id.et_content);
             mBaoLiaoContent = mEtContent.getText().toString().trim();
-        }
-        String mBaoLiaoTitle = mEtTitle.getText().toString().trim();
-        if (TextUtils.isEmpty(mBaoLiaoContent)) {
-            asyncShowToast("您尚未填写发布内容！");
-            return false;
-        }else if (TextUtils.isEmpty(mBaoLiaoTitle)){
-            asyncShowToast("您尚未输入标题！");
-            return false;
+            if (TextUtils.isEmpty(mBaoLiaoContent)) {
+                asyncShowToast("您尚未填写发布内容！");
+                return false;
+            }
         }
         return true;
     }
@@ -153,63 +154,21 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     /**
      * 上传爆料的内容
      */
-    private void RequestBaoLiaoData() {
+    private void uploadBaoLiaoData() {
         mLlLoad.setVisibility(View.VISIBLE);
-        if (selImageList.size() == 0) {
-            fetchBaoLiaoData();
-        } else {
-            for (int i = 0, length = selImageList.size(); i < length; i++) {
-                String path = selImageList.get(i).path;
-                if (!path.contains("http")) {
-                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(path), i == length - 1);
-                } else {
-                    upLoadPics.add(path);
-                    if (i == length - 1) {
-                        fetchBaoLiaoData();
-                    }
-
-                }
+        for (BaoLiaoBean datum : mAdapter.mData) {
+            for (ImageItem imageItem : datum.mList) {
+//                if (!imageItem.path.contains("http")) {
+//                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path), i == length - 1);
+//                } else {
+//                    upLoadPics.add(path);
+//                    if (i == length - 1) {
+//                        fetchBaoLiaoData();
+//                    }
+//                }
             }
         }
-
-    }
-
-    /**
-     * 填充爆料
-     */
-    private void fetchBaoLiaoData() {
-        final String faBuContent = mEtContent.getText().toString().trim();
-        final String faBuTitle = mEtTitle.getText().toString().trim();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0, length = upLoadPics.size(); i < length; i++) {
-            if (i != upLoadPics.size() - 1) {
-                stringBuilder.append(upLoadPics.get(i) + ",");
-            } else {
-                stringBuilder.append(upLoadPics.get(i));
-            }
-        }
-        OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)
-                .params("title", faBuTitle)
-                .params("content", faBuContent)
-                .params("images", stringBuilder.toString())
-                .execute(new JsonCallback<CommonBean>() {
-                    @Override
-                    public void onSuccess(Response<CommonBean> response) {
-//                        mLoadView.setVisibility(View.GONE);
-                            int code = response.body().code;
-                            if (code == 0) {
-                                asyncShowToast("爆料成功");
-                                finish();
-                            }
-                    }
-
-                    @Override
-                    public void onError(Response<CommonBean> response) {
-                        super.onError(response);
-//                        mLoadView.setVisibility(View.GONE);
-                        asyncShowToast(response.message());
-                    }
-                });
+        fetchBaoLiaoData();
     }
 
     /**
@@ -241,17 +200,55 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 });
     }
 
+    /**
+     * 填充爆料
+     */
+    private void fetchBaoLiaoData() {
+        final String faBuContent = mEtContent.getText().toString().trim();
+        final String faBuTitle = mEtTitle.getText().toString().trim();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0, length = upLoadPics.size(); i < length; i++) {
+            if (i != upLoadPics.size() - 1) {
+                stringBuilder.append(upLoadPics.get(i) + ",");
+            } else {
+                stringBuilder.append(upLoadPics.get(i));
+            }
+        }
+        OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)
+                .params("title", faBuTitle)
+                .params("content", faBuContent)
+                .params("images", stringBuilder.toString())
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+//                        mLoadView.setVisibility(View.GONE);
+                        int code = response.body().code;
+                        if (code == 0) {
+                            asyncShowToast("爆料成功");
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<CommonBean> response) {
+                        super.onError(response);
+//                        mLoadView.setVisibility(View.GONE);
+                        asyncShowToast(response.message());
+                    }
+                });
+    }
+
     @Override
     public void onItemClick(View view, int position, int type) {
         switch (view.getId()) {
             case R.id.iv_delete:
-                adapter.remove(position);
+                mAdapter.remove(position);
                 break;
             case R.id.tv_add:
-                adapter.addItem(position);
+                mAdapter.addItem(position);
                 break;
             case R.id.rv:
-                selImageList = adapter.getImages();
+                selImageList = mAdapter.getImages();
                 switch (type) {
                     case IMAGE_ITEM_ADD:
                         selectPhotoDialog.show();
@@ -259,7 +256,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     default:
                         //打开预览
                         Intent intentPreview = new Intent(this, ImagePreviewDelActivity.class);
-                        intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, adapter.getImages());
+                        intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, mAdapter.getImages());
                         intentPreview.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, type);
                         intentPreview.putExtra(ImagePicker.EXTRA_FROM_ITEMS, true);
                         startActivityForResult(intentPreview, REQUEST_CODE_PREVIEW);
@@ -278,7 +275,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 if (images != null) {
                     selImageList.addAll(images);
-                    adapter.setImages(selImageList);
+                    mAdapter.setImages(selImageList);
                 }
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
@@ -288,21 +285,10 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 if (images != null) {
                     selImageList.clear();
                     selImageList.addAll(images);
-                    adapter.setImages(selImageList);
+                    mAdapter.setImages(selImageList);
                 }
             }
         }
 
     }
-
-
-//    private boolean isCanUpload() {
-//        final String faBuContent = etBaoliaoFabuContent.getText().toString().trim();
-//        final String faBuTitle = etBaoliaoFabuTitle.getText().toString().trim();
-//        if (TextUtils.isEmpty(faBuTitle) || TextUtils.isEmpty(faBuContent)) {
-//            asyncShowToast("还有一些信息没有填，仔细检查一下");
-//            return false;
-//        }
-//        return true;
-//    }
 }

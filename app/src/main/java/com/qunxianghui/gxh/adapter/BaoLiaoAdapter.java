@@ -22,7 +22,7 @@ import java.util.List;
 public class BaoLiaoAdapter extends RecyclerView.Adapter<BaoLiaoAdapter.BaoLiaoViewHolder> {
 
     private Context mContext;
-    private List<BaoLiaoBean> mData;
+    public List<BaoLiaoBean> mData;
     private LayoutInflater mInflater;
     private OnRecyclerViewItemClickListener mListener;
     private boolean isAdded;   //是否额外添加了最后一个图片

@@ -205,14 +205,14 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                     toActivity(LoginActivity.class);
                     return;
                 } else {
-                    ClipArticalData();
+                    clipArticalData();
                 }
                 break;
         }
     }
 
     /*粘贴文章*/
-    private void ClipArticalData() {
+    private void clipArticalData() {
         //粘贴板有数据并且是文本
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
@@ -228,8 +228,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
                                 intent.putExtra("url", text);
                                 startActivity(intent);
-                            } else if (code == 101) {
-                                asyncShowToast(msg);
                             } else {
                                 asyncShowToast(msg);
                             }
@@ -238,7 +236,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         @Override
                         public void onError(Response<CommonBean> response) {
                             super.onError(response);
-                            asyncShowToast(response.message().toString());
+                            asyncShowToast(response.message());
                         }
                     });
 

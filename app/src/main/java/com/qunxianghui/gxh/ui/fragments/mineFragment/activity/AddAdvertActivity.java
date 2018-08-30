@@ -288,6 +288,7 @@ public class AddAdvertActivity extends BaseActivity {
         lp.width = (int) display.getWidth();  //设置宽度
         lp.y = 5;  //设置dialog距离底部的距离
         dialogWindow.setAttributes(lp);
+        dialog.show();
     }
 
     /*粘贴url*/
@@ -319,7 +320,7 @@ public class AddAdvertActivity extends BaseActivity {
                                     if (companyAdvert.ad_type == 1 && companyAdvert.is_slide == 1) {
                                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRlBottom.getLayoutParams();
                                         layoutParams.height = ScreenUtils.dp2px(150);
-                                        layoutParams.setMargins(0, 0, 0, 0);
+                                        mRlBottom.setPadding(0, 0, 0, 0);
                                         mRlBottom.setLayoutParams(layoutParams);
                                         List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> list = new ArrayList<>();
                                         list.add(companyAdvert);
@@ -329,8 +330,8 @@ public class AddAdvertActivity extends BaseActivity {
                                 }
                                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRlBottom.getLayoutParams();
                                 layoutParams.height = ScreenUtils.dp2px(90);
-                                int margin = ScreenUtils.dp2px(8);
-                                layoutParams.setMargins(margin, margin, margin, margin);
+                                int padding = ScreenUtils.dp2px(8);
+                                mRlBottom.setPadding(padding, padding, padding, padding);
                                 mRlBottom.setLayoutParams(layoutParams);
                                 addBanner(mBannerBottom, body.data.bottom);
                             } else {
