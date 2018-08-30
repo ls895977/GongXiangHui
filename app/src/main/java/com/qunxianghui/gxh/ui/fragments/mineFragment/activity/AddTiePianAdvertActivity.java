@@ -155,7 +155,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     }
 
     private void resetView() {
-        mIv.setImageResource(R.mipmap.icon_add_tiepian);
+        mIv.setImageResource(R.mipmap.icon_add_tiepian_);
         mTvType.setVisibility(View.GONE);
         mTvSeconds.setVisibility(View.GONE);
         mTvTop.setVisibility(View.GONE);
