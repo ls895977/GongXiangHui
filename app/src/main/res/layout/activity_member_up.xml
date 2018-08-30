@@ -57,7 +57,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/ll_memberup_company_state"
@@ -230,7 +230,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/ll_memberup_regist_state"

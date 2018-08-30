@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.ImageAdapter;
+import com.qunxianghui.gxh.utils.SavePicByUrlUtils;
 import com.qunxianghui.gxh.widget.PhotoViewPager;
 
 import java.util.ArrayList;
@@ -93,17 +93,15 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
             alertView.findViewById(R.id.tv_savepicto_colume).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-////                            SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
-//
-//                            mDialog.dismiss();
-//                        }
-//                    }).start();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
+                            mDialog.dismiss();
+                        }
+                    }).start();
 
-                    Toast.makeText(PhotoBrowserActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                    mDialog.dismiss();
+
                 }
             });
             alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(new View.OnClickListener() {

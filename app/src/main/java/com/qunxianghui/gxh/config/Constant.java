@@ -191,7 +191,7 @@ public class Constant {
     //我的发布精选列表
     public static final String MYISSURE_GOOD_SELECT_URL = BASE_URL + "User/getMySelection";
     //我的发布的本地服务列表
-    public static final String MYISSURE_LOCAL_SERVICE_URL = BASE_URL + "User/getMySelection";
+    public static final String MYISSURE_LOCAL_SERVICE_URL = BASE_URL + "User/getMyService";
     //我的企业名片
     public static final String MINE_COMPANY_CARD_URL = BASE_URL + "User/companyCard";
     //分享我的企业名片
