@@ -4,7 +4,9 @@ package com.qunxianghui.gxh.config;
  * Created by Administrator on 2018/3/22 0022.
  */
 public class Constant {
+    public static boolean MyIssueIsShow = false;
     public static final String KEY_HAS_GUIDE = "key_has_guide";
+    public static boolean MyCollectIsShow = false;
     public static final long TIME_OUT = 3000;//网络请求超时时//     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";间
     //首页精选链接的跳转
     public static final String YouXuan = "http://www.qunxianghui.com/optimization";
@@ -204,6 +206,8 @@ public class Constant {
     public static final String ADD_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/addCore";
     //删除企业优势和产品
     public static final String DELETE_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/delCore";
+    //删除我的发布
+    public static final String CANCEL_ISSUE_URL = BASE_URL + "User/delRelease";
     //修改核心优势和产品
     public static final String EDIT_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/editCore";
     //广告权限

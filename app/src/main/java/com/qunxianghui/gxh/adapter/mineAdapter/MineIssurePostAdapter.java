@@ -3,11 +3,13 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -44,7 +46,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
     private SparseArray<Integer> mTextStateList; //保存文本状态集合
     private boolean flag = false;
     private StringBuilder stringBuilder;
-
+    public boolean isShow = false;
     @SuppressLint("UseSparseArrays")
     public MineIssurePostAdapter(Context context, List<TestMode.DataBean.ListBean> dataBeanList) {
         mContext = context;
@@ -120,6 +122,29 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
                 .load(dataBeanList.get(position).getMember_avatar())
                 .apply(new RequestOptions().placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren).centerCrop())
                 .into(holder.iv_location_person_head);
+        Log.i("MineIssurePostAdapter","isShow = " + isShow);
+        if (isShow) {
+            holder.checkbox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkbox.setVisibility(View.GONE);
+        }
+        if (dataBeanList.get(position).isChecked() == true) {
+            holder.checkbox.setChecked(true);
+        } else {
+            holder.checkbox.setChecked(false);
+        }
+        holder.checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dataBeanList.get(position).isChecked() == true) {
+                    dataBeanList.get(position).setChecked(false);
+                } else {
+                    dataBeanList.get(position).setChecked(true);
+                }
+            }
+        });
+
+
         if (imageList.size() == 1) {
             holder.gridLayout.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
@@ -259,6 +284,8 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         } else {
             holder.clickusertext.setVisibility(View.GONE);
         }
+
+
     }
 
     @Override
@@ -290,7 +317,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
         LinearLayout llShowComment;
         TextView tvShowText;
         ImageView ivShow;
-
+        CheckBox checkbox;
         myViewHolder(View itemView) {
             super(itemView);
             gridLayout = itemView.findViewById(R.id.layout_nine_grid);
@@ -311,6 +338,7 @@ public class MineIssurePostAdapter extends RecyclerView.Adapter<MineIssurePostAd
             llShowComment = itemView.findViewById(R.id.ll_show_comment);
             tvShowText = itemView.findViewById(R.id.tv_showText);
             ivShow = itemView.findViewById(R.id.iv_show_icon);
+            checkbox = itemView.findViewById(R.id.ch_issue_delete);
         }
     }
 

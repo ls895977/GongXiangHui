@@ -4,7 +4,6 @@ import java.util.List;
 
 public class MineIssueLocalServiceBean {
 
-
     /**
      * code : 200
      * msg : 获取数据成功
@@ -85,7 +84,15 @@ public class MineIssueLocalServiceBean {
         private int push_id;
         private int change_ad_id;
         private String cate_name;
+        private boolean isChecked;
 
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
         public int getId() {
             return id;
         }

@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -88,6 +89,9 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
                 mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
+                        if(mineCollectVideoAdapter.isShow){
+                            return;
+                        }
                         int data_uuid = dataList.get(position - 1).getData_uuid();
                         SkipMycollectVideoDetail(data_uuid, position);
                     }
@@ -143,50 +147,65 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
         });
     }
 
+    public void postDeteteSelect(){
+        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+                .params("uuid", data_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject=new JSONObject(response.body());
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
+                                ToastUtils.showLong("删除成功");
+                                ArrayList<MineCollectVideoBean.DataBean> selectList = new ArrayList<MineCollectVideoBean.DataBean>();
+                                for (int j = 0; j <dataList.size() ; j++) {
+                                    if (dataList.get(j).isChecked() == true) {
+                                        selectList.add(dataList.get(j));
+                                        //dataList.remove(j);
+                                    }
+                                }
+                                for(int k=0; k < selectList.size(); k++){
+                                    dataList.remove(selectList.get(k));
+                                }
+                                Log.d(TAG,"dataList = " + dataList.size());
+                                mineCollectVideoAdapter.isShow=false;
+                                mineCollectVideoAdapter.notifyDataSetChanged();
+                                btnDelete.setVisibility(View.GONE);
+                                EventManager.getInstance().publishMessage("init");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+    }
+
     @Override
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
         xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity,2, GridLayoutManager.VERTICAL, false));
+        //btnDelete.setVisibility(Constant.MyCollectIsShow ? View.VISIBLE : View.GONE);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i <dataList.size() ; i++) {
+                ;
+                for (int i = 0; i < dataList.size(); i++) {
+
                     if (dataList.get(i).isChecked() == true) {
                         //这边获取选中的数据id
                         if (data_id.equals("")) {
-                            data_id = data_id +dataList.get(i).getInfo().getUuid();
+                            data_id = data_id + dataList.get(i).getInfo().getUuid();
                         } else {
                             data_id = data_id + "," + dataList.get(i).getInfo().getUuid();
                         }
-                        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
-                                .params("uuid", data_id)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        try {
-                                            JSONObject jsonObject=new JSONObject(response.body());
-                                            int code = jsonObject.getInt("code");
-                                            if (code == 200) {
-                                                ToastUtils.showLong("删除成功");
-                                                for (int j = 0; j <dataList.size() ; j++) {
-                                                    if (dataList.get(j).isChecked() == true) {
-                                                        dataList.remove(j);
-                                                    }
-                                                }
-                                                mineCollectVideoAdapter.isShow=false;
-                                                mineCollectVideoAdapter.notifyDataSetChanged();
-                                                btnDelete.setVisibility(View.GONE);
-                                                EventManager.getInstance().publishMessage("init");
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                });
                     }
                 }
+
+                postDeteteSelect();
             }
+
         });
     }
     @Override
@@ -198,11 +217,13 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer{
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "video".equals(o)) {
+            Constant.MyCollectIsShow = true;
             mineCollectVideoAdapter.isShow=true;
             mineCollectVideoAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.VISIBLE);
         }
         if (o instanceof String && "video_c".equals(o)) {
+            Constant.MyCollectIsShow = false;
             mineCollectVideoAdapter.isShow=false;
             mineCollectVideoAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);

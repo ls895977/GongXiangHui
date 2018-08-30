@@ -108,6 +108,16 @@ public class TestMode {
             private String delete;
             private int client_id;
             private List<String> images;
+            private boolean isChecked;
+
+            public boolean isChecked() {
+                return isChecked;
+            }
+
+            public void setChecked(boolean checked) {
+                isChecked = checked;
+            }
+
             private List<CommentBean> comment_res;
 
             public List<ClickLikeBean> getClick_like() {

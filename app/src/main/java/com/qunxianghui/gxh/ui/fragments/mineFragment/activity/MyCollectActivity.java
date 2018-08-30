@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCollectVideoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
@@ -146,6 +147,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
             case R.id.tv_mycollect_cancel:
                 EventManager.getInstance().publishMessage(false);
 //                isEdit = true;
+                Constant.MyCollectIsShow = false;
                 tvMycollectCancel.setVisibility(View.GONE);
                 ivMyCollectBack.setVisibility(View.VISIBLE);
                 if (mineCommonViewpager.getCurrentItem() == 0) {
@@ -165,6 +167,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
 //                isEdit = true;
                 tvMycollectCancel.setVisibility(View.VISIBLE);
                 ivMyCollectBack.setVisibility(View.GONE);
+                Constant.MyCollectIsShow = true;
                 break;
         }
     }
@@ -172,6 +175,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "init".equals(o)) {
+            Constant.MyCollectIsShow = false;
             tvMycollectCancel.setVisibility(View.GONE);
             ivMyCollectBack.setVisibility(View.VISIBLE);
         }
