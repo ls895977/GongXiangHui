@@ -239,9 +239,9 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                             asyncShowToast(response.message());
                         }
                     });
-
+        } else {
+            asyncShowToast("您复制的不是文章链接");
         }
-
     }
 
     @Override
