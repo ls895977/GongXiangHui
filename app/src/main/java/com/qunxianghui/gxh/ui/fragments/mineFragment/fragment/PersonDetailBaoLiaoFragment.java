@@ -1,11 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -27,17 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
  */
 
 public class PersonDetailBaoLiaoFragment extends BaseFragment  {
+
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
-    Unbinder unbinder;
+    @BindView(R.id.ll_empty)
+    View mEmptyView;
 
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
@@ -94,6 +91,9 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
                         SkipMycollectNewsDetail(id, position);
                     }
                 });
+                if (dataList.isEmpty()) {
+                    mEmptyView.setVisibility(View.VISIBLE);
+                }
             }
 
         }
@@ -153,23 +153,8 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
     protected void onLoadData() {
 
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
 
 }

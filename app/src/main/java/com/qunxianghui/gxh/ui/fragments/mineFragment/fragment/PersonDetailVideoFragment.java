@@ -1,11 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -23,13 +20,14 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivi
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class PersonDetailVideoFragment extends BaseFragment {
+
     @BindView(R.id.xrecycler_persondetail_video)
     XRecyclerView xrecyclerPersondetailVideo;
-    Unbinder unbinder;
+    @BindView(R.id.ll_empty)
+    View mEmptyView;
+
     private PersonDetailActivity personDetailActivity;
 
     @Override
@@ -73,8 +71,6 @@ public class PersonDetailVideoFragment extends BaseFragment {
     @Override
     public void initData() {
         personDetailActivity = (PersonDetailActivity) getActivity();
-
-
     }
 
     @Override
@@ -96,19 +92,5 @@ public class PersonDetailVideoFragment extends BaseFragment {
                 xrecyclerPersondetailVideo.refreshComplete();
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }
