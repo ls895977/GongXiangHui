@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.ImageAdapter;
@@ -52,7 +51,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
 
 
     protected void initViews() {
-        mViewPager = (PhotoViewPager) findViewById(R.id.view_pager_photo);
+        mViewPager = findViewById(R.id.view_pager_photo);
         mViewPager.setBackgroundColor(Color.parseColor("#000000"));
         Urls = this.getIntent().getStringArrayListExtra("url");
         currentPosition = this.getIntent().getIntExtra("position", 0);
@@ -72,23 +71,17 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
     protected void initDatas() {
 
     }
+
     @Override
     public void finish() {
         super.finish();
         this.overridePendingTransition(0, R.anim.activity_pop_out);
     }
 
-    private void savePicToColume(int position, String url) {
-        SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
-        Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
-    }
-
     /*图片长按的处理*/
     @Override
     public void PicLongClick(int position, String url) {
         showBottomDialog(position, url);
-
-
     }
 
     /*弹出底部弹出框*/
@@ -101,7 +94,13 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
             alertView.findViewById(R.id.tv_savepicto_colume).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    savePicToColume(position, url);
+                    mDialog.dismiss();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
+                        }
+                    }).start();
                 }
             });
             alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(new View.OnClickListener() {
@@ -126,6 +125,5 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
             dialogWindow.setAttributes(lp);
         }
         mDialog.show();
-
     }
 }
