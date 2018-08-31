@@ -61,6 +61,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     private UMWeb mWeb;
     private String mTitle;
     private String mDescrip;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_tiepian_advert;
@@ -155,7 +156,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     }
 
     private void resetView() {
-        mIv.setImageResource(R.mipmap.icon_add_tiepian_);
+        mIv.setImageResource(R.mipmap.icon_add_tiepian);
         mTvType.setVisibility(View.GONE);
         mTvSeconds.setVisibility(View.GONE);
         mTvTop.setVisibility(View.GONE);
@@ -298,7 +299,6 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     public void onViewClicked() {
         if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
             asyncShowToast("亲，非企业会员只可添加底部广告哦！");
-            return;
         } else {
             Intent intent = new Intent(this, AdvertTemplateActivity.class);
             intent.putExtra("position", 2);
