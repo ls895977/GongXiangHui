@@ -136,10 +136,8 @@ public class MyIssueLocalServiceFragment extends BaseFragment implements Observe
 
     private void parseData(MineIssueLocalServiceBean data) {
         if (data.getCode() == 200) {
-            if (mSkip == 200) {
                 mList.clear();
                 mRv.setLoadingMoreEnabled(true);
-            }
             if (data.getData().size() < 10) {
                 mRv.setLoadingMoreEnabled(false);
             }

@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
 public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener
@@ -228,10 +227,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             //填充对话框的布局
             View alertView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_educate, null);
             //初始化控件
-            JZVideoPlayer videoPlayer = alertView.findViewById(R.id.bottom_videoplayer);
-            videoPlayer.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
+            JZVideoPlayerStandard videoPlayer = alertView.findViewById(R.id.bottom_videoplayer);
+            videoPlayer.setUp(Constant.EDUCATION_VIDEO_URL,
                     JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                    "饺子闭眼睛");
+                    "教学视频");
+//            videoPlayer.thumbImageView.setImage(Constant.EDUCATION_VIDEO_PIC);
             //将布局设置给dialog
             mDialog.setContentView(alertView);
             //获取当前activity所在的窗体
