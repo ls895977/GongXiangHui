@@ -27,7 +27,7 @@ public class SimpleResponse implements Serializable {
     public CommonResponse toLzyResponse() {
         CommonResponse commonResponse = new CommonResponse();
         commonResponse.code = code;
-        commonResponse.msg = message;
+        commonResponse.message = message;
         return commonResponse;
     }
 }

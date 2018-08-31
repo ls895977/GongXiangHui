@@ -128,6 +128,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             public void onProgressChanged(WebView view, int progress) {
                 if (progress == 100) {
                     loadView.setVisibility(View.GONE);
+                    mMLoadingDialog.dismiss();
                 }
             }
         });

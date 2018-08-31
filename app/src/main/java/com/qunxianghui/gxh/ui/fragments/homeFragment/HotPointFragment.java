@@ -66,6 +66,8 @@ public class HotPointFragment extends BaseFragment {
     private HomeItemListAdapter homeItemListAdapter;
     private List<HomeNewListBean> dataList = new ArrayList<>();
     private int mCount = 0;
+    private int mRefreshCount= 0;
+
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
@@ -126,6 +128,7 @@ public class HotPointFragment extends BaseFragment {
     private void homePullRefresh() {
         OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                 .params("channel_id", mChannelId)
+                .params("times",mRefreshCount)
                 .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
                     public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
@@ -133,9 +136,13 @@ public class HotPointFragment extends BaseFragment {
                         setData(response);
                         Display display = mActivity.getWindowManager().getDefaultDisplay();
                         int height = display.getHeight();
-                        Toast toast = Toast.makeText(mActivity, "已经为你推荐了" + dataList.size() + "条新闻", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.TOP, 0, height / 8);
-                        toast.show();
+                        if (response.body().code==0){
+                            Toast toast = Toast.makeText(mActivity, response.body().message, Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.TOP, 0, height / 8);
+                            toast.show();
+                        }
+
+
                     }
                 });
     }
@@ -150,6 +157,7 @@ public class HotPointFragment extends BaseFragment {
                     dataList.clear();
                 }
                 dataList.addAll(list);
+                mRefreshCount++;
                 int total = dataList.size();
                 if (mCount + 12 <= total) {
                     mCount += 12;

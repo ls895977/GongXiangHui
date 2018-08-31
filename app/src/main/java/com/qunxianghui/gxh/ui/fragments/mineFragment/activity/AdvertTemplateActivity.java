@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jzvd.JZVideoPlayer;
 
 /**
  * Created by Administrator on 2018/4/2 0002.
@@ -129,7 +130,6 @@ public class AdvertTemplateActivity extends BaseActivity {
                 break;
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -443,5 +443,19 @@ public class AdvertTemplateActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
     }
 }
