@@ -20,17 +20,6 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        boolean isFirstUse = SPUtils.getBoolean("isFirstUse");
-        if (isFirstUse) {
-            toActivity(GuideActivity.class);
-        } else {
-            toActivity(WelcomeActivity.class);
-        }
-        finish();
-    }
-
-    @Override
-    protected void initData() {
         OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
         OkGo.getInstance().getCommonHeaders().put("X-deviceModel", SystemUtil.getSystemModel());
         OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
@@ -41,5 +30,16 @@ public class SplashActivity extends BaseActivity {
             OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
             OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
         }
+    }
+
+    @Override
+    protected void initData() {
+        boolean isFirstUse = SPUtils.getBoolean("isFirstUse");
+        if (isFirstUse) {
+            toActivity(GuideActivity.class);
+        } else {
+            toActivity(WelcomeActivity.class);
+        }
+        finish();
     }
 }

@@ -29,7 +29,7 @@ public class LoginBean implements Serializable {
     private String avatar;
     private int company_id;
     private AccessTokenInfoBean accessTokenInfo;
-    private Object company_info;
+    private CompanyInfoBean company_info;
     public int getId() {
         return id;
     }
@@ -118,12 +118,12 @@ public class LoginBean implements Serializable {
         this.accessTokenInfo = accessTokenInfo;
     }
 
-    public Object getCompany_info() {
+    public CompanyInfoBean getCompany_info() {
 
         return company_info;
     }
 
-    public void setCompany_info(Object company_info) {
+    public void setCompany_info(CompanyInfoBean company_info) {
 
         this.company_info = company_info;
     }
@@ -350,7 +350,7 @@ public class LoginBean implements Serializable {
          */
 
         private String access_token;
-        private int expires_time;
+        private String expires_time;
         private ClientBean client;
 
         public String getAccess_token() {
@@ -361,11 +361,11 @@ public class LoginBean implements Serializable {
             this.access_token = access_token;
         }
 
-        public int getExpires_time() {
+        public String getExpires_time() {
             return expires_time;
         }
 
-        public void setExpires_time(int expires_time) {
+        public void setExpires_time(String expires_time) {
             this.expires_time = expires_time;
         }
 

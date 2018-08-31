@@ -25,8 +25,6 @@ public class GuideActivity extends BaseActivity {
             PermissionGen.needPermission(GuideActivity.this, 105,
                     new String[]{
                             Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
                     }
             );
         }

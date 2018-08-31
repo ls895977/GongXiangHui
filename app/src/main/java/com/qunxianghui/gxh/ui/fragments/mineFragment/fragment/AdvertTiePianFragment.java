@@ -121,6 +121,8 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                         } else {
                             mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
                             mAdvertBean.ad_type = 6;
+                            mAdvertBean.settings.operate = 1;
+                            mTvTiePianShowType.setText("跳转链接");
                         }
                     }
 
