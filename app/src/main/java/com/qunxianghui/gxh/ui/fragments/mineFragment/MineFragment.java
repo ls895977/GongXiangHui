@@ -38,6 +38,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import java.util.ArrayList;
 
@@ -83,6 +84,12 @@ public class MineFragment extends BaseFragment {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
+
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    }
+
     @Override
     public void initData() {
         if (mMineUserName == null) return;

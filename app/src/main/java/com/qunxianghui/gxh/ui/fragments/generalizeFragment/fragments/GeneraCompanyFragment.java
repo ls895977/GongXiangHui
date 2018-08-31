@@ -27,6 +27,7 @@ import com.qunxianghui.gxh.bean.generalize.GeneralizeCompanyStaticsBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.PageChangeListener;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,7 +88,10 @@ public class GeneraCompanyFragment extends BaseFragment {
         //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         //window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
-
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    }
     @Override
     public void initViews(View view) {
         ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();

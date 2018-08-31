@@ -35,6 +35,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -87,6 +88,11 @@ public class HotPointFragment extends BaseFragment {
         Window window = mActivity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
+    }
+
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,mActivity);
     }
 
     @SuppressLint("NewApi")
