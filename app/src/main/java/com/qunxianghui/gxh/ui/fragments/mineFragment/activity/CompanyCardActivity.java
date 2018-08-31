@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -61,6 +62,14 @@ public class CompanyCardActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_company_card;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void setStatusBarColor(){
+        //Window window = getWindow();
+        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //window.setStatusBarColor(getResources().getColor(R.color.company_card_top_color));
     }
 
     @Override

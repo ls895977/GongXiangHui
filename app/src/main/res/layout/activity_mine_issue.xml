@@ -61,7 +61,7 @@
         tl:tl_textUnselectColor="#282828"
         tl:tl_textsize="12sp" />
 
-    <android.support.v4.view.ViewPager
+    <com.qunxianghui.gxh.ui.view.MyScrollViewPage
         android:id="@+id/mine_MyIssure_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

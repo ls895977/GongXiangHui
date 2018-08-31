@@ -1,16 +1,21 @@
 package com.qunxianghui.gxh.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -35,6 +40,31 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = (FragmentActivity) context;
+
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            setStatusBarColor();
+        }
+        //Log.d(TAG,"onHiddenChanged = " + hidden);
+    }
+
+    @SuppressLint("NewApi")
+    protected void setStatusBarColor(){
+        Window window =mActivity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.default_status_color));
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setStatusBarColor();
+        Log.d(TAG,"onResume");
     }
 
     /*

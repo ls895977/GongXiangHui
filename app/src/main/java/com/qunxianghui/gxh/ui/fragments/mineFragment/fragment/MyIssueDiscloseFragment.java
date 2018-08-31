@@ -101,7 +101,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     private void deleteDiscloseData() {
 
         for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).isChecked() == true) {
+            if (mList.get(i).isChecked()) {
                 //这边获取选中的数据id
                 if (data_id.equals("")) {
                     //这边获取选中的数据id
@@ -129,7 +129,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                                 ToastUtils.showLong("删除成功");
                                 ArrayList<MyIssueDiscloseBean.DataBean> selectList = new ArrayList<MyIssueDiscloseBean.DataBean>();
                                 for (int j = 0; j <mList.size() ; j++) {
-                                    if (mList.get(j).isChecked() == true) {
+                                    if (mList.get(j).isChecked()) {
                                         selectList.add(mList.get(j));
                                         //dataList.remove(j);
                                     }

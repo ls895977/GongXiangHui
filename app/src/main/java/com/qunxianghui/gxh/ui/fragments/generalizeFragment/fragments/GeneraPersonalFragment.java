@@ -1,9 +1,12 @@
 package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,6 +44,14 @@ public class GeneraPersonalFragment extends BaseFragment {
     @Override
     public int getLayoutId() {
         return R.layout.fragment_genera_personl;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void setStatusBarColor(){
+        //Window window = mActivity.getWindow();
+        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
 
     @Override

@@ -13,6 +13,11 @@
     <color name="color_f6">#f6f6f6</color>
     <color name="actionsheet_blue">#2298EF</color>
     <color name="app_style_color">#D81717</color>
+    <!--各界面状态栏的颜色-->
+    <color name="default_status_color">#000</color>
+    <color name="style_status_color">#D81717</color>
+    <color name="company_card_top_color">#BC6E4B</color>
+    <color name="member_up_top_color">#BE6C46</color>
 
     //新添加的搜索需要的color
     <color name="gray_f8">#F8F8F8</color>

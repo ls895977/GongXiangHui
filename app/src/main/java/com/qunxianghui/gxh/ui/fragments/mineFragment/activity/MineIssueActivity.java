@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -21,6 +22,8 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectF
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServiceFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
+import com.qunxianghui.gxh.ui.view.MyScrollViewPage;
+import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     @BindView(R.id.tabLayout)
     CommonTabLayout mTabLayout;
     @BindView(R.id.mine_MyIssure_viewpager)
-    ViewPager mineMyIssureViewpager;
+    MyScrollViewPage mineMyIssureViewpager;
     @BindView(R.id.iv_myissue_back)
     ImageView ivMyissueBack;
     @BindView(R.id.tv_myissue_cancel)
@@ -77,6 +80,27 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
     }
+    /**
+     *
+     * @param canClick
+     */
+    public void setTabLayoutCanClick(boolean canClick){
+        LinearLayout tabStrip= (LinearLayout) mTabLayout.getChildAt(0);
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            View tabView = tabStrip.getChildAt(i);
+            if(tabView !=null){
+                tabView.setClickable(canClick);
+            }
+        }
+    }
+
+
+
+    private void setViewPageSlide(boolean canChange) {
+        mineMyIssureViewpager.setScanScroll(canChange);
+        setTabLayoutCanClick(canChange);
+    }
+
 
     @Override
     protected void initListeners() {
@@ -146,6 +170,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         }
         ivMyissueBack.setVisibility(View.VISIBLE);
         tvMyissueCancel.setVisibility(View.GONE);
+        setViewPageSlide(true);
     }
 
     /*我的发布的编辑状态*/
@@ -169,6 +194,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         }
         ivMyissueBack.setVisibility(View.GONE);
         tvMyissueCancel.setVisibility(View.VISIBLE);
+        setViewPageSlide(false);
     }
 
     @Override
@@ -176,6 +202,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         if (o instanceof String && "init".equals(o)) {
             tvMyissueCancel.setVisibility(View.GONE);
             ivMyissueBack.setVisibility(View.VISIBLE);
+            setViewPageSlide(true);
         }
     }
 }
