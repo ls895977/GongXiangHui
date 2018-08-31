@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,6 +69,7 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     LinearLayout homeVideoTopBar;
     @BindView(R.id.ll_search)
     LinearLayout llSearch;
+
     private String searchText = "";
     private List<String> historyDatas = new ArrayList<>();
     private SimpleTextAdapter historyAdapter;
@@ -77,7 +77,6 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected int getLayoutId() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.activity_video_search;
     }
 
@@ -128,7 +127,7 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
 
     /*加载历史记录*/
     private void initHistories() {
-        String histories = SPUtils.getString(SpConstant.HISTORIES, "");
+        String histories = SPUtils.getString(SpConstant.VIDEO_HISTORIES, "");
         if (!TextUtils.isEmpty(histories)) {
             historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
         } else {
@@ -209,7 +208,7 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
         if (clear) {
             //清空历史数据
             historyDatas.clear();
-            SPUtils.removePreference(SpConstant.HISTORIES);
+            SPUtils.removePreference(SpConstant.VIDEO_HISTORIES);
         } else {
             saveHistory(item);
         }
@@ -222,11 +221,11 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
     private void saveHistory(String item) {
         if (historyDatas.size() == 0) {
             historyDatas.add(item);
-            SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
+            SPUtils.saveString(SpConstant.VIDEO_HISTORIES, historyDatas.toString());
         } else {
             if (!historyDatas.contains(item)) {
                 historyDatas.add(item);
-                SPUtils.saveString(SpConstant.HISTORIES, historyDatas.toString());
+                SPUtils.saveString(SpConstant.VIDEO_HISTORIES, historyDatas.toString());
             }
         }
     }

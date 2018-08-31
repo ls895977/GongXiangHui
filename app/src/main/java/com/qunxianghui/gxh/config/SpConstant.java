@@ -14,4 +14,7 @@ public class SpConstant {
     public static final String IS_COMPANY = "is_company";//是否是企业会员
 
     public static final String HISTORIES = "histories";//保存用户搜索历史
+
+    public static final String VIDEO_HISTORIES = "video_histories";//保存用户搜索历史
+
 }

@@ -16,7 +16,6 @@
         android:ellipsize="end"
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
-
         android:lines="1"
         android:textColor="#282828"
         android:textSize="12sp"
@@ -29,5 +28,10 @@
         android:layout_marginTop="5dp"
         android:background="@color/divider" />
 
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:background="@color/divider" />
 
 </RelativeLayout>

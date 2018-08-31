@@ -97,11 +97,9 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
                         @Override
                         public void run() {
                             SavePicByUrlUtils.getBitmap(PhotoBrowserActivity.this, url);
-                            mDialog.dismiss();
                         }
                     }).start();
-
-
+                    mDialog.dismiss();
                 }
             });
             alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(new View.OnClickListener() {
