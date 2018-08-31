@@ -79,6 +79,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, null);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
+        setViewPageSlide(true);
     }
     /**
      *
