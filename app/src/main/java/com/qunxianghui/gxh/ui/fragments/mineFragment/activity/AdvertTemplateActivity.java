@@ -281,7 +281,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                     finish();
                 } else {
                     mLoadView.setVisibility(View.GONE);
-                    asyncShowToast(response.body().msg);
+                    asyncShowToast(response.body().message);
                 }
             }
 

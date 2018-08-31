@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +22,6 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServic
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
 import com.qunxianghui.gxh.ui.view.MyScrollViewPage;
-import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
