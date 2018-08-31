@@ -165,6 +165,8 @@ public class Constant {
     public static final String UPLOAD_LOCAL_POST_SORT_SUB_URL = BASE_URL + "Posts/addPosts";
     //上传视频
     public static final String UPLOAD_VIDEO_URL = BASE_URL + "System/uploadVideo";
+    //教学视频
+
     //编辑视频汇分类接口
     public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";
     //个人添加视频汇分类接口
