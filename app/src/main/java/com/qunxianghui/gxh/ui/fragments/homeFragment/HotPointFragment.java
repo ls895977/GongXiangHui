@@ -66,7 +66,7 @@ public class HotPointFragment extends BaseFragment {
     private HomeItemListAdapter homeItemListAdapter;
     private List<HomeNewListBean> dataList = new ArrayList<>();
     private int mCount = 0;
-    private int mRefreshCount= 0;
+    private int mRefreshCount = 0;
 
     private int mChannelId = 0;
     private TextView mhomeLocalLocation;
@@ -128,15 +128,16 @@ public class HotPointFragment extends BaseFragment {
     private void homePullRefresh() {
         OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                 .params("channel_id", mChannelId)
-                .params("times",mRefreshCount)
+                .params("times", mRefreshCount)
                 .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
                     public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
+                        mRefreshCount++;
                         mSw.setRefreshing(false);
                         setData(response);
-                        Display display = mActivity.getWindowManager().getDefaultDisplay();
-                        int height = display.getHeight();
-                        if (response.body().code==0){
+                        if (response.body().code == 0) {
+                            Display display = mActivity.getWindowManager().getDefaultDisplay();
+                            int height = display.getHeight();
                             Toast toast = Toast.makeText(mActivity, response.body().message, Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.TOP, 0, height / 8);
                             toast.show();
