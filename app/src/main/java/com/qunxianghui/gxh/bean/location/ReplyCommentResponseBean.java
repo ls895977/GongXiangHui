@@ -10,7 +10,7 @@ public class ReplyCommentResponseBean {
      */
 
     private int code;
-    private String msg;
+    private String message;
     private DataBean data;
 
     public int getCode() {
@@ -22,11 +22,11 @@ public class ReplyCommentResponseBean {
     }
 
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 
     public DataBean getData() {
