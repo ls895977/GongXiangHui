@@ -16,6 +16,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.interfaces.PermissionListener;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.dialog.LoginDialog;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
 import com.qunxianghui.gxh.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -50,8 +51,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
         initViews();
         initData();
         initListeners();
-        setStatusBarColor();
+        setStatusBarTextColor();
+        //setStatusBarColor();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    protected void setStatusBarTextColor(){
+        //Log.d(TAG,"setStatusBarTextColor");
+        StatusBarColorUtil.setStatusTextColor(true,this);
     }
 
     @SuppressLint("NewApi")

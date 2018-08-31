@@ -18,6 +18,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import butterknife.BindView;
@@ -71,6 +72,11 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         //Window window = getWindow();
         //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
        // window.setStatusBarColor(getResources().getColor(R.color.member_up_top_color));
+    }
+
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,this);
     }
 
     @Override

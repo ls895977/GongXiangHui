@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.generalize.EmployeePaiHangBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.List;
@@ -62,7 +63,10 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
-
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    }
 
     @Override
     protected void onLoadData() {

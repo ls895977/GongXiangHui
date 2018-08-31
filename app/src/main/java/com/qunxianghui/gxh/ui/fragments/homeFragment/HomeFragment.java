@@ -50,6 +50,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,10 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
-
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    }
     @Override
     public void initViews(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
