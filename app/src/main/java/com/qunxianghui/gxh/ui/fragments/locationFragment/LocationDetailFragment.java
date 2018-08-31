@@ -157,17 +157,14 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 toActivity(PublishActivity.class);
                 break;
             case R.id.tv_inform_sex:
-                asyncShowToast("点击举报了色情");
                 String TvInformSex = mTv_inform_sex.getText().toString().trim();
                 RestInformData(TvInformSex);
                 break;
             case R.id.tv_inform_harass:
-                asyncShowToast("点击举报了骚扰");
                 String TvInformHarass = mTv_inform_harass.getText().toString().trim();
                 RestInformData(TvInformHarass);
                 break;
             case R.id.tv_inform_tort:
-                asyncShowToast("点击举报了侵权");
                 String TvInformTort = mTv_inform_tort.getText().toString().trim();
                 RestInformData(TvInformTort);
                 break;
@@ -187,7 +184,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
-                        String msg = response.body().msg;
+                        String msg = response.body().message;
                         if (code == 200) {
                             asyncShowToast("举报成功");
                             mShareDialog.dismiss();
@@ -252,7 +249,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                     asyncShowToast(responseBean.getMsg());
 //                                    mRecyclerView.refresh();
                                 } else {
-                                    asyncShowToast(response.message());
+                                    asyncShowToast(responseBean.getMsg());
                                 }
                             }
                         });
@@ -310,13 +307,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                             UserUtil user = UserUtil.getInstance();
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
-                            if ("点赞成功".equals(response.body().msg)) {
+                            if ("点赞成功".equals(response.body().message)) {
                                 locationBean.get(position).getTem().add(clickLikeBean);
                                 locationBean.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
                                 asyncShowToast("点赞成功");
-                            } else if ("取消点赞成功".equals(response.body().msg)) {
+                            } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = locationBean.get(position).getTem();
                                 for (int i = 0; i < locationBean.get(position).getTem().size(); i++) {
                                     TestMode.DataBean.ListBean.ClickLikeBean tem = locationBean.get(position).getTem().get(i);
@@ -438,7 +435,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                                                 asyncShowToast(responseBean.getMsg());
                                                                 mRecyclerView.refresh();
                                                             } else {
-                                                                asyncShowToast(response.message());
+                                                                asyncShowToast(responseBean.getMsg());
                                                             }
                                                         }
                                                     });

@@ -3,7 +3,7 @@ package com.qunxianghui.gxh.bean;
 public class ShareInfo {
 
     public int code;
-    public String msg;
+    public String message;
     public ShareInfoBean data;
 
     public static class ShareInfoBean{

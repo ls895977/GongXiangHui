@@ -176,7 +176,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                                 startThirdShare(data.url, data.title, data.desc);
                             }
                         } else {
-                            asyncShowToast(response.body().msg);
+                            asyncShowToast(response.body().message);
                         }
                     }
                 });

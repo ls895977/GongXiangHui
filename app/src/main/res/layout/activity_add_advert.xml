@@ -16,8 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="88dp"
         android:background="#f8f8f8"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_mingFragment_addTopAdver"
