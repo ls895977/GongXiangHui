@@ -240,5 +240,5 @@ public class Constant {
     //微信回调
     public static final String WEIXIN_RESPONSE_URL = BASE_URL + "user/callback/weixin ";
     //新浪回调
-    public static final String SINA_RESPONSE_URL = BASE_URL + "user/callback/sina";
+    public static final String SINA_RESPONSE_URL = BASE_URL + "user/callback/weibo";
 }
