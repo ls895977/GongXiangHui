@@ -28,14 +28,16 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     public boolean isShow = false;
     @Override
     protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
-        final ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
-        final List<String> images = dataBean.getImages();
-        final String source = dataBean.getInfo().getSource();
-        final String title = dataBean.getInfo().getTitle();
+        ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
+        List<String> images = dataBean.getImages();
         data_uuid = dataBean.getData_uuid();
 
-        holder.setText(R.id.tv_mine_mycollect_from, source);
-        holder.setText(R.id.tv_mine_mycollect_title, title);
+        if (dataBean.getInfo() != null) {
+            String source = dataBean.getInfo().getSource();
+            String title = dataBean.getInfo().getTitle();
+            holder.setText(R.id.tv_mine_mycollect_from, source);
+            holder.setText(R.id.tv_mine_mycollect_title, title);
+        }
         if (images.size() >= 1) {
             RequestOptions options = new RequestOptions();
             options.centerCrop();
