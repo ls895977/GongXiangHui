@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.SigninBean;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
 import butterknife.ButterKnife;
@@ -43,13 +44,16 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(true,mActivity);
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if(!hidden){
-            setStatusBarColor();
+            setStatusBarTextColor();
         }
-        //Log.d(TAG,"onHiddenChanged = " + hidden);
     }
 
     @SuppressLint("NewApi")
@@ -63,8 +67,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setStatusBarColor();
-        Log.d(TAG,"onResume");
+        setStatusBarTextColor();
+        //setStatusBarColor();
     }
 
     /*

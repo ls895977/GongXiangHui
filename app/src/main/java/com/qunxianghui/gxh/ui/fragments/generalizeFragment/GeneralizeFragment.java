@@ -17,6 +17,7 @@ import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraCompanyFragment;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments.GeneraPersonalFragment;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,10 @@ public class GeneralizeFragment extends BaseFragment implements Observer{
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
 
+    @Override
+    protected void setStatusBarTextColor(){
+        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    }
     @Override
     public void initData() {
         if (mLlGenera == null) return;

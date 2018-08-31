@@ -246,9 +246,9 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
             View alertView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_educate, null);
             //初始化控件
             JZVideoPlayerStandard  videoPlayer = (JZVideoPlayerStandard ) alertView.findViewById(R.id.bottom_videoplayer);
-            videoPlayer.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
+            videoPlayer.setUp(Constant.EDUCATION_VIDEO_URL,
                     JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                    "饺子闭眼睛");
+                    "教学视频");
 
             //将布局设置给dialog
             mDialog.setContentView(alertView);

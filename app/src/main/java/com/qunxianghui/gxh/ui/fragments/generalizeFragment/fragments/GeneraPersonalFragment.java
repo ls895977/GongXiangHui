@@ -21,6 +21,7 @@ import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,6 @@ public class GeneraPersonalFragment extends BaseFragment {
         //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         //window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
-
     @Override
     public void initData() {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());

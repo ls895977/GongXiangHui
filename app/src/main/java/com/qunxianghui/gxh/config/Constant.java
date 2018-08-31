@@ -13,11 +13,10 @@ public class Constant {
     //群享汇服务协议链接的跳转
     public static final String BenDiService = "http://fx.qunxianghui.com.cn/register/index.html";
     //便民服务中的黄历
-    public static final String BIANMIN_HUANGLI_URL= "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
+    public static final String BIANMIN_HUANGLI_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
     //本地环境
     private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
-
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
@@ -51,7 +50,7 @@ public class Constant {
     //首页爆料
     public static final String HOME_DISCLOSE_URL = BASE_URL + "iv_person_data_pic";
     //首页粘贴文章
-    public static final String  PAST_ARTICAL_URL=BASE_URL+"user/paste";
+    public static final String PAST_ARTICAL_URL = BASE_URL + "user/paste";
     //获取全部频道
     public static final String CHANNEL_GETALL = BASE_URL + "channel/getAll";
     //频道列表（用户订阅的频道）
@@ -165,6 +164,10 @@ public class Constant {
     public static final String UPLOAD_LOCAL_POST_SORT_SUB_URL = BASE_URL + "Posts/addPosts";
     //上传视频
     public static final String UPLOAD_VIDEO_URL = BASE_URL + "System/uploadVideo";
+    //教学视频
+    public static final String EDUCATION_VIDEO_URL = "http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180831/94b305ee4859ef6054b03b8b5051ae7673818a14.mp4";
+    //视频截图
+    public static final String EDUCATION_VIDEO_PIC="http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/image/20180831/f0086940e285a7229c050850674911b08060f302.png";
     //编辑视频汇分类接口
     public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";
     //个人添加视频汇分类接口
