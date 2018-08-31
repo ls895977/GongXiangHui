@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.view.Display;
 import android.view.Gravity;
@@ -51,8 +50,10 @@ import butterknife.OnClick;
  */
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
+
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
     private String url;
@@ -90,12 +91,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mWedNewsDetail.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mWedNewsDetail.onPause();
-            // 暂停网页中正在播放的视频
-        }
+        mWedNewsDetail.onPause();
     }
 
     private Dialog createLoadingDialog(Context context, String msg) {
@@ -206,7 +210,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 } else {
                     showBottomDialog();
                 }
-
                 break;
             case R.id.iv_news_detail_addAdver:
                 if (!LoginMsgHelper.isLogin()) {
@@ -216,7 +219,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     Intent intent;
                     if (mPosition == 4) {
                         intent = new Intent(mContext, AddTiePianAdvertActivity.class);
-
                     } else {
                         intent = new Intent(mContext, AddAdvertActivity.class);
                     }
@@ -231,7 +233,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.tv_addAdver_share:
                 if (!LoginMsgHelper.isLogin()) {
@@ -262,11 +263,8 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_bottom_alertdialog_cancle:
                 mShareDialog.dismiss();
                 break;
-
-
         }
         mShareDialog.dismiss();
-
     }
 
     //底部弹出对话框

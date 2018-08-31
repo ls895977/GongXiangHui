@@ -11,21 +11,22 @@
         android:layout_height="170dp"
         android:background="@mipmap/icon_person_detail_bg2">
 
+
         <ImageView
             android:id="@+id/iv_person_detail_back"
-            android:layout_width="8dp"
-            android:layout_height="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="18dp"
+            android:padding="13dp"
             android:src="@mipmap/icon_memberup_back" />
 
         <TextView
             android:id="@+id/tv_person_detail_attention"
             android:layout_width="60dp"
             android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/shape_blue_bg"
             android:gravity="center"
             android:text="关注"
@@ -116,6 +117,5 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
 
 </LinearLayout>

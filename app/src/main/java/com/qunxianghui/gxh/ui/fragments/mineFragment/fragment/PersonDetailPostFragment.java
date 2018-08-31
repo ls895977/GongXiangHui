@@ -1,10 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -20,13 +17,14 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivi
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class PersonDetailPostFragment extends BaseFragment {
+
     @BindView(R.id.xrecycler_persondetail_post)
     XRecyclerView xrecyclerPersondetailPost;
-    Unbinder unbinder;
+    @BindView(R.id.ll_empty)
+    View mEmptyView;
+
     private List<TestMode.DataBean.ListBean> postList;
 
     @Override
@@ -85,19 +83,5 @@ public class PersonDetailPostFragment extends BaseFragment {
                 xrecyclerPersondetailPost.refreshComplete();
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

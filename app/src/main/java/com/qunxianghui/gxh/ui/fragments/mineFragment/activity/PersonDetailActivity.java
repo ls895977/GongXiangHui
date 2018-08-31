@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -31,6 +32,7 @@ import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -57,7 +59,9 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     @BindView(R.id.tv_persondetail_fans)
     TextView tvPersondetailFans;
 
-    private String[] titles = new String[]{"爆料", "视频", "本地圈","本地服务","精选"};
+    private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
+    private int[] mBgs = new int[]{R.mipmap.icon_person_detail_bg1, R.mipmap.icon_person_detail_bg2
+            , R.mipmap.icon_person_detail_bg3, R.mipmap.icon_person_detail_bg4, R.mipmap.icon_person_detail_bg5};
     private List<Fragment> fragments = new ArrayList<>();
     private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     public int member_id;
@@ -83,6 +87,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlPersondetailBg.getLayoutParams();
         params.height = height / 3;
         rlPersondetailBg.setLayoutParams(params);
+        rlPersondetailBg.setBackground(ContextCompat.getDrawable(this, mBgs[new Random().nextInt(4) % 5]));
     }
 
     @Override
@@ -125,9 +130,9 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                 tvPersonDetailAttention.setText("已关注");
             }
             tvPersonDetailName.setText(dataList.getNick());
-            if (self_introduction.length()!=0){
+            if (self_introduction.length() != 0) {
                 tvPersondetailIntroduce.setText(self_introduction);
-            }else {
+            } else {
                 tvPersondetailIntroduce.setText("本宝宝还没有想到有个性的签名哦!");
 
             }
@@ -157,6 +162,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
         }
     }
+
     private void acctionPerson() {
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
@@ -173,11 +179,11 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                                 asyncShowToast("关注成功");
                                 tvPersonDetailAttention.setText("已关注");
                                 dataList.setFollow("true");
-                                tvPersondetailFans.setText(" 粉丝 "+String.valueOf(++fans_num));
+                                tvPersondetailFans.setText(" 粉丝 " + String.valueOf(++fans_num));
                             } else if (code == 202) {
                                 asyncShowToast("取消关注成功");
                                 tvPersonDetailAttention.setText("关注");
-                                tvPersondetailFans.setText(" 粉丝 "+String.valueOf(fans_num));
+                                tvPersondetailFans.setText(" 粉丝 " + String.valueOf(fans_num));
                                 dataList.setFollow("");
                             } else if (code == 101) {
                                 asyncShowToast("请不要自己关注自己");

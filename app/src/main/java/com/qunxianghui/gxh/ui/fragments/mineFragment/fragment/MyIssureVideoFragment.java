@@ -87,7 +87,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ;
                 for (int i = 0; i < mList.size(); i++) {
 
                     if (mList.get(i).isChecked() == true) {

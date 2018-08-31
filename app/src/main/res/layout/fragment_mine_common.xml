@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mycollect_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,21 +8,37 @@
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/xrecycler_mine_collect_news"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="15dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/bt_mycollect_delete"
+        android:layout_marginTop="15dp" />
 
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="20dp"
+            android:drawableTop="@mipmap/icon_empty"
+            android:text="您还没发布哦～"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/bt_mycollect_delete"
         android:layout_width="62dp"
         android:layout_height="24dp"
-        android:layout_gravity="end"
+        android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
         android:background="@drawable/bg_red_solid_corner"
         android:text="删除"
         android:textColor="@color/white"
         android:visibility="gone" />
 
-
-</LinearLayout>
+</RelativeLayout>
