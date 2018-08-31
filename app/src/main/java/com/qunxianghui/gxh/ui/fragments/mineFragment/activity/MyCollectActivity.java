@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +16,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCollectVideoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MineCommonFragment;
+import com.qunxianghui.gxh.ui.view.MyScrollViewPage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
-    ViewPager mineCommonViewpager;
+    MyScrollViewPage mineCommonViewpager;
     @BindView(R.id.iv_myCollect_back)
     ImageView ivMyCollectBack;
     @BindView(R.id.tv_mycollect_cancel)
@@ -52,6 +52,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
     protected int getLayoutId() {
         return R.layout.activity__mine_mycollect;
     }
+
 
     @Override
     protected void initViews() {
@@ -71,6 +72,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
         tabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         mineCommonViewpager.setAdapter(tabViewPagerAdapter);
         mineCommonViewpager.setOffscreenPageLimit(2);
+
         mineTablayoutCommon.setupWithViewPager(mineCommonViewpager);
         mineTablayoutCommon.post(new Runnable() {
             @Override
@@ -78,7 +80,29 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
                 setIndicator(mineTablayoutCommon, 60, 60);
             }
         });
+        setViewPageSlide(true);
 
+    }
+
+    /**
+     *
+     * @param canClick
+     */
+    public void setTabLayoutCanClick(boolean canClick){
+        LinearLayout tabStrip= (LinearLayout) mineTablayoutCommon.getChildAt(0);
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            View tabView = tabStrip.getChildAt(i);
+            if(tabView !=null){
+                tabView.setClickable(canClick);
+            }
+        }
+    }
+
+
+
+    private void setViewPageSlide(boolean canChange) {
+        mineCommonViewpager.setScanScroll(canChange);
+        setTabLayoutCanClick(canChange);
     }
 
     @Override
@@ -150,6 +174,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
                 Constant.MyCollectIsShow = false;
                 tvMycollectCancel.setVisibility(View.GONE);
                 ivMyCollectBack.setVisibility(View.VISIBLE);
+                setViewPageSlide(true);
                 if (mineCommonViewpager.getCurrentItem() == 0) {
                     EventManager.getInstance().publishMessage("news_c");
                 }
@@ -167,7 +192,8 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
 //                isEdit = true;
                 tvMycollectCancel.setVisibility(View.VISIBLE);
                 ivMyCollectBack.setVisibility(View.GONE);
-                Constant.MyCollectIsShow = true;
+                setViewPageSlide(false);
+                //Constant.MyCollectIsShow = true;
                 break;
         }
     }
@@ -178,6 +204,7 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
             Constant.MyCollectIsShow = false;
             tvMycollectCancel.setVisibility(View.GONE);
             ivMyCollectBack.setVisibility(View.VISIBLE);
+            setViewPageSlide(true);
         }
     }
 

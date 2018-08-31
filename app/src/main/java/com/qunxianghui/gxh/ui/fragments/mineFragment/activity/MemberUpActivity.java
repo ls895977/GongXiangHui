@@ -1,10 +1,13 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,6 +63,14 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected int getLayoutId() {
         return R.layout.activity_member_up;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void setStatusBarColor(){
+        //Window window = getWindow();
+        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+       // window.setStatusBarColor(getResources().getColor(R.color.member_up_top_color));
     }
 
     @Override

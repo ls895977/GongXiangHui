@@ -1,8 +1,11 @@
 package com.qunxianghui.gxh.ui.fragments.generalizeFragment;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -50,6 +53,13 @@ public class GeneralizeFragment extends BaseFragment implements Observer{
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
         mSegmentTab.setTabData(mTitles);
+    }
+    @SuppressLint("NewApi")
+    @Override
+    protected void setStatusBarColor(){
+        Window window = mActivity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
 
     @Override

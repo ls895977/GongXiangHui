@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -16,6 +17,8 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -84,6 +87,14 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void setStatusBarColor(){
+        Window window = mActivity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
 
     @Override

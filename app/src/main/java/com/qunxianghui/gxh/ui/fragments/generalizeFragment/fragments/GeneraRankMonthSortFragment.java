@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -52,6 +54,15 @@ public class GeneraRankMonthSortFragment extends BaseFragment {
     public void initViews(View view) {
         onVisible();
     }
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void setStatusBarColor(){
+        Window window = mActivity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
+    }
+
 
     @Override
     protected void onLoadData() {

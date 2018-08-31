@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,8 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
+import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.interfaces.PermissionListener;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.dialog.LoginDialog;
@@ -47,9 +50,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
         initViews();
         initData();
         initListeners();
+        setStatusBarColor();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
+    @SuppressLint("NewApi")
+    protected void setStatusBarColor() {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.default_status_color));
+    }
 
     @Override
     protected void onResume() {
