@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +17,7 @@ import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
 import org.json.JSONObject;
@@ -39,6 +42,9 @@ public class MyIssueLocalServiceFragment extends BaseFragment implements Observe
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private MyIssueLocalServiceAdapter mAdapter;
     private String data_id="";
+
+    public int member_id = -1;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_myissue_localservice;
@@ -69,6 +75,10 @@ public class MyIssueLocalServiceFragment extends BaseFragment implements Observe
                     deleteLocalServiceData();
             }
         });
+
+        if(getContext() instanceof PersonDetailActivity) {
+            member_id = ((PersonDetailActivity)getContext()).member_id;
+        }
     }
     private void RequestDeleteData() {
         OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
@@ -123,21 +133,36 @@ public class MyIssueLocalServiceFragment extends BaseFragment implements Observe
 
     @Override
     public void initData() {
-        OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
-                .params("limit", 10)
-                .params("skip", mSkip)
-                .execute(new JsonCallback<MineIssueLocalServiceBean>() {
-                    @Override
-                    public void onSuccess(Response<MineIssueLocalServiceBean> response) {
-                        parseData(response.body());
-                    }
-                });
+        if(member_id != -1){
+            OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
+                    .params("member_id", member_id)
+                    .execute(new JsonCallback<MineIssueLocalServiceBean>() {
+                        @Override
+                        public void onSuccess(Response<MineIssueLocalServiceBean> response) {
+                            parseData(response.body());
+                        }
+                    });
+        } else {
+            OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
+                    .execute(new JsonCallback<MineIssueLocalServiceBean>() {
+                        @Override
+                        public void onSuccess(Response<MineIssueLocalServiceBean> response) {
+                            parseData(response.body());
+                        }
+                    });
+        }
     }
 
     private void parseData(MineIssueLocalServiceBean data) {
         if (data.getCode() == 200) {
+            if(mSkip == 0) {
                 mList.clear();
                 mRv.setLoadingMoreEnabled(true);
+            }
             if (data.getData().size() < 10) {
                 mRv.setLoadingMoreEnabled(false);
             }

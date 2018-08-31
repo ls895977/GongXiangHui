@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,6 +26,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
+import com.qunxianghui.gxh.utils.ToastUtils;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import java.util.ArrayList;
@@ -58,6 +61,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private SelectPhotoDialog selectPhotoDialog;
     private String mBaoLiaoContent;
     private EditText mEtContent;
+    private int selectImgSize = 0;
 
     @Override
     protected int getLayoutId() {
@@ -156,19 +160,16 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      */
     private void uploadBaoLiaoData() {
         mLlLoad.setVisibility(View.VISIBLE);
+        upLoadPics.clear();
         for (BaoLiaoBean datum : mAdapter.mData) {
             for (ImageItem imageItem : datum.mList) {
-//                if (!imageItem.path.contains("http")) {
-//                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path), i == length - 1);
-//                } else {
-//                    upLoadPics.add(path);
-//                    if (i == length - 1) {
-//                        fetchBaoLiaoData();
-//                    }
-//                }
+                if (!imageItem.path.contains("http")) {
+                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
+                } else {
+                    upLoadPics.add(imageItem.path);
+                }
             }
         }
-        fetchBaoLiaoData();
     }
 
     /**
@@ -177,7 +178,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      * @param
      * @param
      */
-    private void upLoadPic(String urls, final boolean isUpdate) {
+    private void upLoadPic(String urls) {
         OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
                 .execute(new JsonCallback<UploadImage>() {
@@ -186,7 +187,16 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                         UploadImage uploadImage = response.body();
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
-                            if (isUpdate) {
+                            if(selectImgSize == 0) {
+                                for (int i = 0; i < mAdapter.mData.size(); i++) {
+                                    int itemSize = 0;
+                                    if (null != mAdapter.mData.get(i).mList && !mAdapter.mData.get(i).mList.isEmpty()) {
+                                        itemSize = mAdapter.mData.get(i).mList.size();
+                                    }
+                                    selectImgSize += itemSize;
+                                }
+                            }
+                            if (selectImgSize == upLoadPics.size()) {
                                 fetchBaoLiaoData();
                             }
                         }
@@ -195,7 +205,8 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     @Override
                     public void onError(Response<UploadImage> response) {
                         super.onError(response);
-//                        mLoadView.setVisibility(View.GONE);
+                        ToastUtils.showShort(response.message());
+                        mLlLoad.setVisibility(View.GONE);
                     }
                 });
     }
@@ -221,7 +232,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
-//                        mLoadView.setVisibility(View.GONE);
+                        mLlLoad.setVisibility(View.GONE);
                         int code = response.body().code;
                         if (code == 0) {
                             asyncShowToast("爆料成功");
@@ -232,7 +243,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     @Override
                     public void onError(Response<CommonBean> response) {
                         super.onError(response);
-//                        mLoadView.setVisibility(View.GONE);
+                        mLlLoad.setVisibility(View.GONE);
                         asyncShowToast(response.message());
                     }
                 });
