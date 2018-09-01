@@ -32,7 +32,6 @@
 
     </RelativeLayout>
 
-
     <WebView
         android:id="@+id/wed_news_detail"
         android:layout_width="match_parent"

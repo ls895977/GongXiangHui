@@ -19,8 +19,8 @@
             android:layout_height="30dp"
             android:gravity="center"
             android:textColor="#999999"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textStyle="bold"
             tools:background="@mipmap/genera_company_sort_one" />
 
         <com.qunxianghui.gxh.widget.RoundImageView

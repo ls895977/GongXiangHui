@@ -138,54 +138,55 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     private void upLoadData() {
         mList = new ArrayList<>();
-        if (mPosition == 3) {
-            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
-                if (TextUtils.isEmpty(companyAdvert.images)) {
-                    asyncShowToast("请完善底部广告相关信息");
-                    return;
-                }
-            }
-            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
-                if (TextUtils.isEmpty(companyAdvert.images)) {
-                    asyncShowToast("请完善顶部广告相关信息");
-                    return;
-                }
-            }
-            if (AdvertTiePianFragment.mAdvertBean != null && (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)
-            || TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.settings.time))) {
-                asyncShowToast("请完善贴片广告相关信息");
-                return;
-            }
+//        if (mPosition == 3) {
+//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
+//                if (TextUtils.isEmpty(companyAdvert.images)) {
+//                    asyncShowToast("请完善底部广告相关信息");
+//                    return;
+//                }
+//            }
+//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
+//                if (TextUtils.isEmpty(companyAdvert.images)) {
+//                    asyncShowToast("请完善顶部广告相关信息");
+//                    return;
+//                }
+//            }
+//            if (AdvertTiePianFragment.mAdvertBean != null && (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)
+//            || TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.settings.time))) {
+//                asyncShowToast("请完善贴片广告相关信息");
+//                return;
+//            }
             mList.addAll(AdvertBottomFragment.mList);
             mList.addAll(AdvertTopFragment.mList);
             if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
                 mList.add(AdvertTiePianFragment.mAdvertBean);
-        } else if (mPosition == 0) {
-            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
-                if (TextUtils.isEmpty(companyAdvert.images)) {
-                    asyncShowToast("请完善底部广告相关信息");
-                    return;
-                }
-            }
-            mList.addAll(AdvertBottomFragment.mList);
-        } else if (mPosition == 1) {
-            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
-                if (TextUtils.isEmpty(companyAdvert.images)) {
-                    asyncShowToast("请完善顶部广告相关信息");
-                    return;
-                }
-            }
-            mList.addAll(AdvertTopFragment.mList);
-        } else if (mPosition == 2) {
-            if (AdvertTiePianFragment.mAdvertBean != null && (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)
-                || TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.settings.time))) {
-                asyncShowToast("请完善贴片广告相关信息");
-                return;
-            }
-
-            if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
-                mList.add(AdvertTiePianFragment.mAdvertBean);
-        }
+//        }
+//        else if (mPosition == 0) {
+//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
+//                if (TextUtils.isEmpty(companyAdvert.images)) {
+//                    asyncShowToast("请完善底部广告相关信息");
+//                    return;
+//                }
+//            }
+//            mList.addAll(AdvertBottomFragment.mList);
+//        } else if (mPosition == 1) {
+//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
+//                if (TextUtils.isEmpty(companyAdvert.images)) {
+//                    asyncShowToast("请完善顶部广告相关信息");
+//                    return;
+//                }
+//            }
+//            mList.addAll(AdvertTopFragment.mList);
+//        } else if (mPosition == 2) {
+//            if (AdvertTiePianFragment.mAdvertBean != null && (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)
+//                || TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.settings.time))) {
+//                asyncShowToast("请完善贴片广告相关信息");
+//                return;
+//            }
+//
+//            if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
+//                mList.add(AdvertTiePianFragment.mAdvertBean);
+//        }
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
         if (!mList.isEmpty()) {
@@ -199,7 +200,7 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     private void upLoadPic(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
         mCount++;
-        if (companyAdvert.images.startsWith("http")) {
+        if (companyAdvert.images == null || companyAdvert.images.startsWith("http")) {
             if (index == mList.size() - 1) {
                 uploadSecondImg(mList.get(0), 0);
             } else {
@@ -278,13 +279,12 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPost.execute(new JsonCallback<CommonBean>() {
             @Override
             public void onSuccess(Response<CommonBean> response) {
+                asyncShowToast(response.body().message);
                 if (response.body().code == 200) {
-                    asyncShowToast("保存成功");
                     setResult(0x0022);
                     finish();
                 } else {
                     mLoadView.setVisibility(View.GONE);
-                    asyncShowToast(response.body().message);
                 }
             }
 

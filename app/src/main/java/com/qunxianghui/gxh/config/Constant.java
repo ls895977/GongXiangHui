@@ -185,7 +185,7 @@ public class Constant {
     public static final String GENERALIZE_COMPANY_PUSH_URL = BASE_URL + "promote/getPushCompany";
     //推广公司统计
     public static final String GENERALIZE_COMPANY_STATICS_URL = BASE_URL + "promote/getCompanyStatistics";
-    //我的推广列表
+    //我的推广列表ma
     public static final String GENERALIZE_PERSON_LIST_URL = BASE_URL + "promote/getList";
     //我的消息的评论我的
     public static final String DISCUSS_MINE_URL = BASE_URL + "msg/getComment";

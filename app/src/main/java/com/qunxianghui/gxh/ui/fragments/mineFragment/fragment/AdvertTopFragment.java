@@ -29,6 +29,7 @@ import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
+import com.qunxianghui.gxh.ui.activity.EducationActivity;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.activity.GeneralMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
@@ -137,7 +138,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 addPage(null);
                 break;
             case R.id.ll_video:
-                asyncShowToast("教学视频");
+                toActivity(EducationActivity.class);
                 break;
         }
     }
