@@ -217,7 +217,13 @@ public class HotPointFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeNewListBean homeNewListBean = dataList.get(position);
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("info", homeNewListBean);
+                intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
+                intent.putExtra("uuid", homeNewListBean.getUuid());
+                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                intent.putExtra("id", homeNewListBean.getId());
+                intent.putExtra("title", homeNewListBean.getTitle());
+                intent.putExtra("descrip", homeNewListBean.getContent());
+                intent.putStringArrayListExtra("images", homeNewListBean.getImages());
                 startActivity(intent);
             }
         });

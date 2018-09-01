@@ -3,7 +3,7 @@ package com.qunxianghui.gxh.bean.home;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 public class HomeNewListBean implements MultiItemEntity, Serializable {
 
@@ -28,7 +28,7 @@ public class HomeNewListBean implements MultiItemEntity, Serializable {
     private int forward_cnt;
     private int share_cnt;
     private String url;
-    private List<String> images;
+    private ArrayList<String> images;
 
 
     public int getId() {
@@ -191,11 +191,11 @@ public class HomeNewListBean implements MultiItemEntity, Serializable {
         this.url = url;
     }
 
-    public List<String> getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
     }
 

@@ -4,6 +4,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.qunxianghui.gxh.adapter.homeAdapter.SearchFragmentAdapter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -139,7 +140,7 @@ public class SearchBean implements Serializable {
             private String url;
             private String channel_name;
             private String type;
-            private List<String> images;
+            private ArrayList<String> images;
 
             public int getId() {
                 return id;
@@ -317,11 +318,11 @@ public class SearchBean implements Serializable {
                 this.type = type;
             }
 
-            public List<String> getImages() {
+            public ArrayList<String> getImages() {
                 return images;
             }
 
-            public void setImages(List<String> images) {
+            public void setImages(ArrayList<String> images) {
                 this.images = images;
             }
 

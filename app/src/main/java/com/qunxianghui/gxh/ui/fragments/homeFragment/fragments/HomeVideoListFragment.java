@@ -16,9 +16,11 @@ import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
@@ -98,6 +100,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
                 intent.putExtra("descrip", videoDataList.get(position - 1).getDescription());
                 intent.putExtra("title", videoDataList.get(position - 1).getTitle());
+                intent.putExtra("image", videoDataList.get(position - 1).getPicurl());
                 intent.putExtra("position", 4);
                 HomeVideoListFragment.this.startActivityForResult(intent, 0x0011);
             }
@@ -149,6 +152,10 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void attentionClick(final int position) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
         OkGo.<CommonBean>post(Constant.ATTENTION_URL)
                 .params("be_member_id", videoDataList.get(position).getMember_id())
                 .execute(new JsonCallback<CommonBean>() {
@@ -157,14 +164,11 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                         int code = response.body().code;
                         String msg = response.body().msg;
                         if (code == 0) {
-                            asyncShowToast(msg);
                             videoDataList.get(position).setFollow("true");
                         } else if (code == 202) {
-                            asyncShowToast(msg);
                             videoDataList.get(position).setFollow("");
-                        } else if (code == 101) {
-                            asyncShowToast(msg);
                         }
+                        asyncShowToast(msg);
                         personDetailVideoAdapter.notifyDataSetChanged();
                     }
 
@@ -181,6 +185,10 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void videoLikeItemClick(final int position) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
         OkGo.<CommonBean>post(Constant.VIDEO_LIKE_URL)
                 .params("data_uuid", videoDataList.get(position).getUuid())
                 .execute(new JsonCallback<CommonBean>() {
@@ -189,14 +197,13 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                         HomeVideoListBean.DataBean.ListBean listBean = videoDataList.get(position);
                         int likeCnt = Integer.parseInt(listBean.getLike_cnt());
                         if (response.body().code == 100) {
-                            asyncShowToast("点赞成功");
                             listBean.setIs_like(1);
                             listBean.setLike_cnt(++likeCnt + "");
                         } else if (response.body().code == 101) {
-                            asyncShowToast("取消点赞");
                             listBean.setIs_like(0);
                             listBean.setLike_cnt(--likeCnt + "");
                         }
+                        asyncShowToast(response.body().message);
                         personDetailVideoAdapter.notifyDataSetChanged();
                     }
                 });
@@ -204,6 +211,10 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void videoAddAdvert(int position) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
         Intent intent = new Intent(mActivity, AddTiePianAdvertActivity.class);
         intent.putExtra("url", Constant.VIDEO_DETAIL_URL
                 + "?token=" + SPUtils.getString(SpConstant.ACCESS_TOKEN, "")

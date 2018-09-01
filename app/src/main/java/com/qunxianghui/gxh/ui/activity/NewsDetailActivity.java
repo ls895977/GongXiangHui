@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,14 +29,10 @@ import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.home.HomeNewListBean;
-import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
-import com.qunxianghui.gxh.utils.SPUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -66,6 +63,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private String title;
     private String mDescrip;
     private List<String> mImages;
+    private String mImage;
     private StringBuffer mBuffer;
     private int mPosition;
 
@@ -79,14 +77,18 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mLoadingDialog = createLoadingDialog(NewsDetailActivity.this, "加载中...");
         mLoadingDialog.show();
 
-        HomeNewListBean info = (HomeNewListBean) getIntent().getSerializableExtra("info");
-        mPosition = getIntent().getIntExtra("position", 0);
-        url = Constant.HOME_NEWS_DETAIL_URL;
-        title = info.getTitle();
-        mDescrip = info.getContent();
-        mImages = info.getImages();
+        Intent intent = getIntent();
+        url = intent.getStringExtra("url");
+        title = intent.getStringExtra("title");
+        mDescrip = intent.getStringExtra("descrip");
+        int uuid = intent.getIntExtra("uuid", 0);
+        mPosition = intent.getIntExtra("position", 0);
+        mImages = intent.getStringArrayListExtra("images");
+        mImage = intent.getStringExtra("image");
+
+        String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
-        mBuffer.append("?token=").append(SPUtils.getString(SpConstant.ACCESS_TOKEN, "")).append("&uuid=").append(info.getUuid());
+        mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
     }
 
     @Override
@@ -277,10 +279,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         if (mUmShareDialog == null) {
             mUmShareDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
             UMImage image;
-            if (mImages.isEmpty()) {
-                image = new UMImage(this, R.mipmap.logo);//分享图标
-            } else {
+            if (mImages != null && !mImages.isEmpty()) {
                 image = new UMImage(this, mImages.get(0));
+            } else if (!TextUtils.isEmpty(mImage)) {
+                image = new UMImage(this, mImage);
+            } else {
+                image = new UMImage(this, R.mipmap.logo);
             }
             final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
             web.setTitle(title);//标题

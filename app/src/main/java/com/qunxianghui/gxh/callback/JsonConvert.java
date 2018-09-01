@@ -142,7 +142,8 @@ public class JsonConvert<T> implements Converter<T> {
                 int code = commonResponse.code;
                 //这里的0是以下意思
                 //一般来说服务器会和客户端约定一个数表示成功，其余的表示失败，这里根据实际情况修改
-                if (code == 1000) {
+                if ((code == 300 code == 1000) &&sIsShow){
+                    sIsShow = false;
                     EventManager.getInstance().publishMessage("signout");
                 }
                 if (code == 0) {
@@ -157,8 +158,9 @@ public class JsonConvert<T> implements Converter<T> {
         }
     }
 
-    private void isFialure(String str){
-        if (!TextUtils.isEmpty(str) && str.contains("\"code\":1000") && sIsShow) {
+    private void isFialure(String str) {
+        if (!TextUtils.isEmpty(str) && (str.contains("\"code\":1000") || str.contains("\"code\":300")) && sIsShow) {
+            sIsShow = false;
             EventManager.getInstance().publishMessage("signout");
         }
     }

@@ -9,7 +9,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.callback.JsonConvert;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 
@@ -40,7 +39,6 @@ public class LoginDialog extends Dialog {
                 context.startActivity(new Intent(context, LoginActivity.class));
             }
         });
-        JsonConvert.sIsShow = false;
         LoginMsgHelper.exitLogin();
     }
 
