@@ -31,6 +31,7 @@ import butterknife.BindView;
  */
 
 public class MyCollectActivity extends BaseActivity implements Observer, TabLayout.OnTabSelectedListener, View.OnClickListener {
+
     @BindView(R.id.mine_tablayout_common)
     TabLayout mineTablayoutCommon;
     @BindView(R.id.mine_common_viewpager)
@@ -80,7 +81,6 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
             }
         });
         setViewPageSlide(true);
-
     }
 
     /**
@@ -96,8 +96,6 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
             }
         }
     }
-
-
 
     private void setViewPageSlide(boolean canChange) {
         mineCommonViewpager.setScanScroll(canChange);

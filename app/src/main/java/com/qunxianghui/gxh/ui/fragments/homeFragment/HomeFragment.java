@@ -231,7 +231,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         //粘贴板有数据并且是文本
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
-            final String text = (String) item.getText();
+            final String text = item.getText().toString();
 
             OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
                     .params("url", text)

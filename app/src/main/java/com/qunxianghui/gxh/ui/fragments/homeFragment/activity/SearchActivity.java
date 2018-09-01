@@ -99,11 +99,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onSuccess(Response<GuessBean> response) {
                         GuessBean guessBean = response.body();
-                        if (guessBean.getCode() == 0 && !guessBean.getData().isEmpty()){
+                        if (guessBean.getCode() == 0 && !guessBean.getData().isEmpty()) {
                             List<GuessBean.DataBean> data = guessBean.getData();
                             initFireRecycle(data);
-                        }else{
-                            asyncShowToast("没有查询到相关数据");
                         }
                     }
                 });
@@ -189,7 +187,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             //搜索按钮
             case R.id.tv_cancel:
                 trim = etSearch.getText().toString().trim();
-
                 if (Utils.isFastClick()) {
                     if (TextUtils.isEmpty(trim)) {
                         ToastUtils.showShortToast(this, "搜索内容不能为空");

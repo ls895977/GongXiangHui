@@ -2,16 +2,14 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssurePostAdapter;
@@ -32,13 +30,11 @@ import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.InFormActivity
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.ToastUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 import com.tencent.mm.opensdk.utils.Log;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -49,23 +45,22 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/14 0014.
  * 本地圈
  */
-public class MyIssurePostFragment extends BaseFragment implements MineIssurePostAdapter.CircleOnClickListener, View.OnClickListener,Observer {
+public class MyIssurePostFragment extends BaseFragment implements MineIssurePostAdapter.CircleOnClickListener, View.OnClickListener, Observer {
 
     @BindView(R.id.recycler_mineissue_post)
     XRecyclerView recyclerMineissuePost;
     @BindView(R.id.bt_myissue_issuepost_delete)
     Button btnDelete;
+
     private int count = 0;
     private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
     private boolean mIsFirst = true;
     private MineIssurePostAdapter mineIssurePostAdapter;
     private boolean mIsRefresh = false;
-    private EditText IssuePostCommentEdit;
-    private LinearLayout IssuePostCommentView;
     private TextView IssuePostCommentSend;
-    private int commentPosition;
     private CommentDialog commentDialog;
-    private String data_id="";
+    private String data_id = "";
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -74,13 +69,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initData() {
-        RequestMyIssurePost();
-    }
-
-    /**
-     * 网络请求我发布的帖子
-     */
-    private void RequestMyIssurePost() {
         OkGo.<TestMode>post(Constant.GET_ISSURE_POST_URL)
                 .params("limit", 10)
                 .params("skip", count)
@@ -91,6 +79,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     }
                 });
     }
+
 
     private void parseIssuePostData(TestMode mineIssurePostBean) {
         if (mineIssurePostBean.getCode() == 0) {
@@ -120,8 +109,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         EventManager.getInstance().addObserver(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         recyclerMineissuePost.setLayoutManager(linearLayoutManager);
-        IssuePostCommentEdit = view.findViewById(R.id.issuepost_comment_edit);         //底部输入框
-        IssuePostCommentView = view.findViewById(R.id.issuepost_send_comment_view); //底部根布局
         IssuePostCommentSend = view.findViewById(R.id.issuepost_comment_to_send);  //底部提交
     }
 
@@ -134,12 +121,12 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
             public void onRefresh() {
                 mIsRefresh = true;
                 count = 0;
-                RequestMyIssurePost();
+                initData();
             }
 
             @Override
             public void onLoadMore() {
-                RequestMyIssurePost();
+                initData();
             }
         });
 
@@ -200,9 +187,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
             toActivity(LoginActivity.class);
             return;
         }
-        commentPosition = position;
-
-
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
 
             @Override
@@ -400,55 +384,42 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     }
 
-    private void RequestDeleteData() {
-        OkGo.<String>post(Constant.CANCEL_ISSUE_URL)
-                .params("uuid", data_id)
-                //.params("type",)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 200) {
-                                ToastUtils.showLong("删除成功");
-                                ArrayList<TestMode.DataBean.ListBean> selectList = new ArrayList<TestMode.DataBean.ListBean>();
-                                for (int j = 0; j <dataList.size() ; j++) {
-                                    if (dataList.get(j).isChecked() == true) {
-                                        selectList.add(dataList.get(j));
-                                        //dataList.remove(j);
-                                    }
-                                }
-                                for(int k=0; k < selectList.size(); k++){
-                                    dataList.remove(selectList.get(k));
-                                }
-                                mineIssurePostAdapter.isShow = false;
-                                mineIssurePostAdapter.notifyDataSetChanged();
-                                btnDelete.setVisibility(View.GONE);
-                                EventManager.getInstance().publishMessage("init");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
     /*多条删除*/
     private void deleteDiscloseData() {
-
         for (int i = 0; i < dataList.size(); i++) {
-            if (dataList.get(i).isChecked() == true) {
-                //这边获取选中的数据id
-                if (data_id.equals("")) {
-                    //这边获取选中的数据id
+            if (dataList.get(i).isChecked()) {
+                if (TextUtils.isEmpty(data_id)) {
                     data_id = data_id + dataList.get(i).getUuid();
                 } else {
                     data_id = data_id + "," + dataList.get(i).getUuid();
                 }
-                RequestDeleteData();
-
             }
         }
+        if (TextUtils.isEmpty(data_id)) return;
+        OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
+                .params("uuid", data_id)
+                //.params("type",)
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        CommonBean body = response.body();
+                        asyncShowToast(body.message);
+                        if (body.code == 200) {
+                            Iterator<TestMode.DataBean.ListBean> iterator = dataList.iterator();
+                            while (iterator.hasNext()) {
+                                TestMode.DataBean.ListBean next = iterator.next();
+                                if (next.isChecked()) {
+                                    iterator.remove();
+                                }
+                            }
+                        }
+                        data_id = "";
+                        mineIssurePostAdapter.isShow = false;
+                        mineIssurePostAdapter.notifyDataSetChanged();
+                        btnDelete.setVisibility(View.GONE);
+                        EventManager.getInstance().publishMessage("init");
+                    }
+                });
     }
 
     @Override

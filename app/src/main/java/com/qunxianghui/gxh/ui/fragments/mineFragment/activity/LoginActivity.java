@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonConvert;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -134,6 +136,30 @@ public class LoginActivity extends BaseActivity {
         };
     }
 
+    @Override
+    protected void initListeners() {
+        etLoginPhone.addTextChangedListener(new NewTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (etLoginPhone.getText().toString().trim().length() == 11 && etLoginPassword.getText().toString().trim().length() > 5) {
+                    btLoginLogin.setEnabled(true);
+                } else {
+                    btLoginLogin.setEnabled(false);
+                }
+            }
+        });
+        etLoginPassword.addTextChangedListener(new NewTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (etLoginPhone.getText().toString().trim().length() == 11 && etLoginPassword.getText().toString().trim().length() > 5) {
+                    btLoginLogin.setEnabled(true);
+                } else {
+                    btLoginLogin.setEnabled(false);
+                }
+            }
+        });
+    }
+
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login, R.id.iv_login_bick})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -187,7 +213,6 @@ public class LoginActivity extends BaseActivity {
                             UserUtil.getInstance().mNick = userData.getNick();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, userData.getCompany_id() != 0);
-
                             if (userData.getCompany_info() != null) {
                                 SharedPreferences.Editor editor = getSharedPreferences("companymessage", 0).edit();
                                 editor.putString("selfcompanyname", userData.getCompany_info().getCompany_name());

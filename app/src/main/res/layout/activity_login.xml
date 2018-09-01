@@ -13,10 +13,9 @@
             android:id="@+id/iv_login_bick"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:padding="13dp"
             android:layout_centerVertical="true"
+            android:padding="13dp"
             android:src="@mipmap/common_black_back" />
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,6 +60,7 @@
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:background="@null"
+            android:digits="0123456789"
             android:hint="手机号码"
             android:inputType="phone"
             android:textSize="15sp" />
@@ -95,7 +95,6 @@
             android:inputType="textPassword"
             android:textSize="15sp" />
 
-
         <TextView
             android:id="@+id/tv_login_forget_password"
             android:layout_width="wrap_content"
@@ -106,7 +105,6 @@
             android:text="忘记密码"
             android:textColor="#D81717"
             android:textSize="14sp" />
-
 
     </RelativeLayout>
 
@@ -119,7 +117,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/shape_button"
+        android:background="@drawable/btn_login_bg"
+        android:enabled="false"
         android:text="登录"
         android:textColor="#fff"
         android:textSize="15sp" />
@@ -164,7 +163,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@mipmap/iv_qq" />
-
 
     </LinearLayout>
 

@@ -77,6 +77,8 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
 
     //设置数据
     private void parseData(SearchBean body) {
+        if (body.getData().getList().isEmpty())
+            asyncShowToast("没有查询到相关数据");
         mBean = body;
         SearchFragmentAdapter adapter = new SearchFragmentAdapter(mBean.getData().getList());
         mRecyclerview.setAdapter(adapter);

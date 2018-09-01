@@ -3,17 +3,18 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -22,28 +23,26 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
-import com.qunxianghui.gxh.utils.ToastUtils;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
  */
 
 public class MineCommonFragment extends BaseFragment implements Observer {
+
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
-    Unbinder unbinder;
+
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
     private Handler handler = new Handler();
@@ -94,7 +93,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        if(!myCollectPostAdapter.isShow){
+                        if (!myCollectPostAdapter.isShow) {
                             int id = dataList.get(position - 1).getData_uuid();
                             SkipMycollectNewsDetail(id, position);
                         }
@@ -143,40 +142,38 @@ public class MineCommonFragment extends BaseFragment implements Observer {
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < dataList.size(); i++) {
-                    if (dataList.get(i).isChecked() == true) {
-                        //这边获取选中的数据id
-                        if (data_id.equals("")) {
+                    if (dataList.get(i).isChecked()) {
+                        if (TextUtils.isEmpty(data_id)) {
                             data_id = data_id + dataList.get(i).getInfo().getUuid();
                         } else {
                             data_id = data_id + "," + dataList.get(i).getInfo().getUuid();
                         }
-                        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
-                                .params("uuid", data_id)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response.body());
-                                            int code = jsonObject.getInt("code");
-                                            if (code == 200) {
-                                                ToastUtils.showLong("删除成功");
-                                                for (int j = 0; j < dataList.size(); j++) {
-                                                    if (dataList.get(j).isChecked() == true) {
-                                                        dataList.remove(j);
-                                                    }
-                                                }
-                                                myCollectPostAdapter.isShow = false;
-                                                myCollectPostAdapter.notifyDataSetChanged();
-                                                btnDelete.setVisibility(View.GONE);
-                                                EventManager.getInstance().publishMessage("init");
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
                     }
                 }
+                if (TextUtils.isEmpty(data_id)) return;
+                OkGo.<CommonBean>post(Constant.CANCEL_COLLECT_URL)
+                        .params("uuid", data_id)
+                        .execute(new JsonCallback<CommonBean>() {
+                            @Override
+                            public void onSuccess(Response<CommonBean> response) {
+                                CommonBean body = response.body();
+                                asyncShowToast(body.message);
+                                if (body.code == 200) {
+                                    Iterator<MyCollectPostBean.DataBean> iterator = dataList.iterator();
+                                    while (iterator.hasNext()) {
+                                        MyCollectPostBean.DataBean next = iterator.next();
+                                        if (next.isChecked()) {
+                                            iterator.remove();
+                                        }
+                                    }
+                                }
+                                data_id = "";
+                                myCollectPostAdapter.isShow = false;
+                                myCollectPostAdapter.notifyDataSetChanged();
+                                btnDelete.setVisibility(View.GONE);
+                                EventManager.getInstance().publishMessage("init");
+                            }
+                        });
             }
         });
     }

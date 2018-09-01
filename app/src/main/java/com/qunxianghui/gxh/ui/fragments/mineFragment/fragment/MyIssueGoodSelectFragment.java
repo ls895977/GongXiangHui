@@ -2,27 +2,26 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyIssueGoodSelectAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MyIssueGoodSelectBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
-import com.qunxianghui.gxh.utils.ToastUtils;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -38,6 +37,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     XRecyclerView mRv;
     @BindView(R.id.bt_myissue_goodselect_delete)
     Button btnDelete;
+
     private int mSkip = 0;
     private List<MyIssueGoodSelectBean.DataBean> mList = new ArrayList<>();
     private MyIssueGoodSelectAdapter mAdapter;
@@ -93,54 +93,42 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
         }
     }
 
-    private void RequestDeleteData() {
-        OkGo.<String>post(Constant.CANCEL_ISSUE_URL)
-                .params("id", data_id)
-                .params("type","3")
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body());
-                            int code = jsonObject.getInt("code");
-                            if (code == 200) {
-                                ToastUtils.showLong("删除成功");
-                                ArrayList<MyIssueGoodSelectBean.DataBean> selectList = new ArrayList<MyIssueGoodSelectBean.DataBean>();
-                                for (int j = 0; j <mList.size() ; j++) {
-                                    if (mList.get(j).isChecked() == true) {
-                                        selectList.add(mList.get(j));
-                                        //dataList.remove(j);
-                                    }
-                                }
-                                for(int k=0; k < selectList.size(); k++){
-                                    mList.remove(selectList.get(k));
-                                }
-                                mAdapter.isShow = false;
-                                mAdapter.notifyDataSetChanged();
-                                btnDelete.setVisibility(View.GONE);
-                                EventManager.getInstance().publishMessage("init");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
     /*多条删除*/
     private void deleteGoodSelectData() {
         for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).isChecked() == true) {
-                //这边获取选中的数据id
-                if (data_id.equals("")) {
-                    //这边获取选中的数据id
+            if (mList.get(i).isChecked()) {
+                if (TextUtils.isEmpty(data_id)) {
                     data_id = data_id + mList.get(i).getId();
                 } else {
                     data_id = data_id + "," + mList.get(i).getId();
                 }
-                RequestDeleteData();
-
             }
         }
+        if (TextUtils.isEmpty(data_id)) return;
+        OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
+                .params("id", data_id)
+                .params("type","3")
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        CommonBean body = response.body();
+                        asyncShowToast(body.message);
+                        if (body.code == 200) {
+                            Iterator<MyIssueGoodSelectBean.DataBean> iterator = mList.iterator();
+                            while (iterator.hasNext()) {
+                                MyIssueGoodSelectBean.DataBean next = iterator.next();
+                                if (next.isChecked()) {
+                                    iterator.remove();
+                                }
+                            }
+                        }
+                        data_id = "";
+                        mAdapter.isShow = false;
+                        mAdapter.notifyDataSetChanged();
+                        btnDelete.setVisibility(View.GONE);
+                        EventManager.getInstance().publishMessage("init");
+                    }
+                });
     }
 
 
