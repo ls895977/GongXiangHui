@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -10,15 +11,19 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
+import com.qunxianghui.gxh.adapter.mineAdapter.MybaoliaoPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.bean.mine.MyColleNewsDetailBean;
 import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.ui.activity.BaoliaoDetailActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +41,8 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     @BindView(R.id.ll_empty)
     View mEmptyView;
 
-    private MyCollectPostAdapter myCollectPostAdapter;
-    private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
+    private MybaoliaoPostAdapter myCollectPostAdapter;
+    private List<BaoliaoBean.DataBean> dataList = new ArrayList<>();
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
@@ -56,13 +61,13 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     }
 
     private void LoadMycolectNews() {
-        OkGo.<MyCollectPostBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
+        OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                 .params("user_id", mPersonDetailActivity.member_id)
                 .params("limit", 12)
                 .params("skip", count)
-                .execute(new JsonCallback<MyCollectPostBean>() {
+                .execute(new JsonCallback<BaoliaoBean>() {
                     @Override
-                    public void onSuccess(Response<MyCollectPostBean> response) {
+                    public void onSuccess(Response<BaoliaoBean> response) {
                         parseCollectPostData(response.body());
                     }
                 });
@@ -72,34 +77,38 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
      *
      * @param
      */
-    private void parseCollectPostData(MyCollectPostBean myCollectPostBean) {
+    private void parseCollectPostData(BaoliaoBean myCollectPostBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
         }
+
         dataList.addAll(myCollectPostBean.getData());
         count = dataList.size();
         if (myCollectPostBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
-                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                myCollectPostAdapter = new MybaoliaoPostAdapter(mActivity, dataList);
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        int id = dataList.get(position).getData_uuid();
-                        SkipMycollectNewsDetail(id, position);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("baoliao",dataList.get(position-1));
+                        toActivity(BaoliaoDetailActivity.class,bundle);
                     }
                 });
                 if (dataList.isEmpty()) {
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
             }
-
+            xrecycler_mine_collect_news.refreshComplete();
+            myCollectPostAdapter.notifyDataSetChanged();
+            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+        } else{
+            ToastUtils.showShort(myCollectPostBean.getMessage());
         }
-        xrecycler_mine_collect_news.refreshComplete();
-        myCollectPostAdapter.notifyDataSetChanged();
-        myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+
     }
 
     /**

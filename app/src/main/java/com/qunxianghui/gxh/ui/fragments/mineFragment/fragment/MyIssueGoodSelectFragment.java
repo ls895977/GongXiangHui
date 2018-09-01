@@ -1,7 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.app.Activity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,6 +19,7 @@ import com.qunxianghui.gxh.bean.mine.MyIssueGoodSelectBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
 import org.json.JSONObject;
@@ -41,6 +44,8 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     private List<MyIssueGoodSelectBean.DataBean> mList = new ArrayList<>();
     private MyIssueGoodSelectAdapter mAdapter;
     private String data_id="";
+    private int member_id = -1;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_myissue_goodselect;
@@ -84,6 +89,10 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                 deleteGoodSelectData();
             }
         });
+
+        if(getContext() instanceof PersonDetailActivity) {
+            member_id = ((PersonDetailActivity)getContext()).member_id;
+        }
     }
 
     private void RequestDeleteData() {
@@ -141,15 +150,28 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
 
     @Override
     public void initData() {
-        OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
-                .params("limit", 10)
-                .params("skip", mSkip)
-                .execute(new JsonCallback<MyIssueGoodSelectBean>() {
-                    @Override
-                    public void onSuccess(Response<MyIssueGoodSelectBean> response) {
-                        parseData(response.body());
-                    }
-                });
+        if(member_id == -1) {
+            OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
+                    .execute(new JsonCallback<MyIssueGoodSelectBean>() {
+                        @Override
+                        public void onSuccess(Response<MyIssueGoodSelectBean> response) {
+                            parseData(response.body());
+                        }
+                    });
+        } else{
+            OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
+                    .params("member_id", member_id)
+                    .execute(new JsonCallback<MyIssueGoodSelectBean>() {
+                        @Override
+                        public void onSuccess(Response<MyIssueGoodSelectBean> response) {
+                            parseData(response.body());
+                        }
+                    });
+        }
     }
 
     @Override

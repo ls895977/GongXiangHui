@@ -25,20 +25,24 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.mine.MyCollectNewsDetailBean;
+import com.qunxianghui.gxh.bean.home.HomeNewListBean;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -54,16 +58,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
 
+    private Dialog mLoadingDialog;
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
-    private String url;
     private UMShareListener umShareListener;
+    private String url;
     private String title;
-    private ClipboardManager mClipboardManager;
-    private MyCollectNewsDetailBean.DataBean mDataList;
-    private StringBuffer mBuffer;
     private String mDescrip;
-    private Dialog mLoadingDialog;
+    private List<String> mImages;
+    private StringBuffer mBuffer;
     private int mPosition;
 
     @Override
@@ -76,18 +79,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mLoadingDialog = createLoadingDialog(NewsDetailActivity.this, "加载中...");
         mLoadingDialog.show();
 
-        //这句是调取粘贴的系统服务
-        mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        Intent intent = getIntent();
-        url = intent.getStringExtra("url");
-        title = intent.getStringExtra("title");
-        mDescrip = intent.getStringExtra("descrip");
-        int uuid = intent.getIntExtra("uuid", 0);
-        mPosition = intent.getIntExtra("position", 0);
-
-        String mToken = intent.getStringExtra("token");
+        HomeNewListBean info = (HomeNewListBean) getIntent().getSerializableExtra("info");
+        mPosition = getIntent().getIntExtra("position", 0);
+        url = Constant.HOME_NEWS_DETAIL_URL;
+        title = info.getTitle();
+        mDescrip = info.getContent();
+        mImages = info.getImages();
         mBuffer = new StringBuffer(url);
-        mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
+        mBuffer.append("?token=").append(SPUtils.getString(SpConstant.ACCESS_TOKEN, "")).append("&uuid=").append(info.getUuid());
     }
 
     @Override
@@ -105,13 +104,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loading_dialog, null);//得到加载view
-        LinearLayout layout = v.findViewById(R.id.dialog_view);//加载布局
-        // main.xml中的ImageView
         ImageView spaceshipImage = v.findViewById(R.id.dialog_img);
         TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
-        //加载动画
         final Animation animation = AnimationUtils.loadAnimation(context, R.anim.load_animation);
-        //使用imageView显示动画
         spaceshipImage.startAnimation(animation);
         tipTextView.setText(msg);  //设置加载信息
         final Dialog loadingDialog = new Dialog(context);
@@ -172,8 +167,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
         mWedNewsDetail.loadUrl(String.valueOf(mBuffer));
-
-        //此回调用于分享
         umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
@@ -182,17 +175,17 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(NewsDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                asyncShowToast(platform + " 分享成功啦");
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(NewsDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                asyncShowToast(platform + " 分享失败啦");
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(NewsDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                asyncShowToast(platform + " 分享取消了");
             }
         };
     }
@@ -206,7 +199,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_topshare:
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
-                    return;
                 } else {
                     showBottomDialog();
                 }
@@ -214,7 +206,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_news_detail_addAdver:
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
-                    return;
                 } else {
                     Intent intent;
                     if (mPosition == 4) {
@@ -237,7 +228,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_addAdver_share:
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
-                    return;
                 } else {
                     Intent intent;
                     if (mPosition == 4) {
@@ -254,14 +244,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_article_share:
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
-                    return;
                 } else {
                     showShareDialog();
                 }
-                break;
-
-            case R.id.tv_bottom_alertdialog_cancle:
-                mShareDialog.dismiss();
                 break;
         }
         mShareDialog.dismiss();
@@ -271,36 +256,32 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private void showBottomDialog() {
         if (mShareDialog == null) {
             mShareDialog = new Dialog(NewsDetailActivity.this, R.style.ActionSheetDialogStyle);
-            //填充对话框的布局
             View alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
-            //初始化控件
             alertView.findViewById(R.id.tv_addAdver_share).setOnClickListener(this);
             alertView.findViewById(R.id.tv_article_share).setOnClickListener(this);
             alertView.findViewById(R.id.tv_bottom_alertdialog_cancle).setOnClickListener(this);
-            //将布局设置给dialog
             mShareDialog.setContentView(alertView);
-            //获取当前activity所在的窗体
             Window dialogWindow = mShareDialog.getWindow();
-            //设置dialog从窗体底部弹出
             dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
             WindowManager.LayoutParams lp = dialogWindow.getAttributes();
             WindowManager windowManager = getWindowManager();
             Display display = windowManager.getDefaultDisplay();
             lp.width = (int) display.getWidth();  //设置宽度
             lp.y = 5;  //设置dialog距离底部的距离
-            //将属性设置给窗体
             dialogWindow.setAttributes(lp);
         }
         mShareDialog.show();
     }
 
-    /*三方分享唤起*/
     private void showShareDialog() {
-        //以下代码是分享示例代码
         if (mUmShareDialog == null) {
             mUmShareDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
-            UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+            UMImage image;
+            if (mImages.isEmpty()) {
+                image = new UMImage(this, R.mipmap.logo);//分享图标
+            } else {
+                image = new UMImage(this, mImages.get(0));
+            }
             final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
             web.setTitle(title);//标题
             web.setThumb(image);  //缩略图
@@ -317,34 +298,19 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 public void onClick(View v) {
                     switch (v.getId()) {
                         case R.id.rl_share_wx:
-                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
+                            share(SHARE_MEDIA.WEIXIN);
                             break;
                         case R.id.rl_share_wxfriend:
-                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
+                            share(SHARE_MEDIA.WEIXIN_CIRCLE);
                             break;
                         case R.id.rl_share_qq:
-                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.QQ)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
+                            share(SHARE_MEDIA.QQ);
                             break;
                         case R.id.rl_share_qqzone:
-                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.QZONE)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
+                            share(SHARE_MEDIA.QZONE);
                             break;
                         case R.id.rl_share_sina:
-                            new ShareAction(NewsDetailActivity.this).setPlatform(SHARE_MEDIA.SINA)
-                                    .withMedia(web)
-                                    .setCallback(umShareListener)
-                                    .share();
+                            share(SHARE_MEDIA.SINA);
                             break;
                         case R.id.rl_share_link:
                             copyContent();
@@ -357,6 +323,13 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     }
                     mUmShareDialog.dismiss();
                 }
+
+                private void share(SHARE_MEDIA var1) {
+                    new ShareAction(NewsDetailActivity.this).setPlatform(var1)
+                            .withMedia(web)
+                            .setCallback(umShareListener)
+                            .share();
+                }
             };
             view.findViewById(R.id.rl_share_wx).setOnClickListener(listener);
             view.findViewById(R.id.rl_share_wxfriend).setOnClickListener(listener);
@@ -365,18 +338,13 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             view.findViewById(R.id.rl_share_sina).setOnClickListener(listener);
             view.findViewById(R.id.rl_share_link).setOnClickListener(listener);
             view.findViewById(R.id.share_cancel_btn).setOnClickListener(listener);
-            //获取当前activity所在的窗体
             Window dialogWindow = mUmShareDialog.getWindow();
-            //设置dialog从窗体底部弹出
             dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
             WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-
             WindowManager windowManager = getWindowManager();
             Display display = windowManager.getDefaultDisplay();
-            lp.width = (int) display.getWidth();  //设置宽度
-            lp.y = 5;  //设置dialog距离底部的距离
-            //将属性设置给窗体
+            lp.width = display.getWidth();
+            lp.y = 5;
             dialogWindow.setAttributes(lp);
         }
         mUmShareDialog.show();

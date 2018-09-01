@@ -1,10 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,20 +21,14 @@ import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonConvert;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.db.StudentDao;
-import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
-import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -50,8 +42,6 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity {
-    public static final int LOGIN_REQUEST = 1;
-    public static final int LOGIN_RESULT = 1;
 
     @BindView(R.id.et_login_password)
     EditText etLoginPassword;
@@ -71,28 +61,13 @@ public class LoginActivity extends BaseActivity {
     ImageView ivSinaLogin;
     @BindView(R.id.iv_login_bick)
     ImageView ivLoginBick;
+
     private UMShareAPI mShareAPI;
     private UMAuthListener mUmAuthListener;
-    private UMShareListener umShareListener;
-    private StudentDao studentDao;
-    private String phone;
-    private String password;
-    private UserDao userDao;
-    private IWXAPI mWxApi;
-    private String openId;
-    /*1为QQ,2为微信*/
-    private String thirdType;
-    private String companyName;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
-    }
-
-    @Override
-    protected void initViews() {
-        //数据库操作类
-        userDao = new UserDao(this);
     }
 
     @Override
@@ -106,101 +81,46 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+                String url = Constant.QQ_RESPONSE_URL;
                 switch (platform) {
                     case QQ:
-                        OkGo.<String>post(Constant.QQ_RESPONSE_URL)
-                                .params("status", true)
-                                .params("accessToken", data.get("accessToken"))
-                                .params("openId", data.get("uid"))
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response.body());
-                                            JSONObject data = jsonObject.getJSONObject("data");
-                                            int code = jsonObject.getInt("code");
-                                            if (code == 0) {
-                                                JsonConvert.sIsShow = true;
-                                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                                Log.e(TAG, "onSuccess: " + access_token);
-                                                asyncShowToast("登录成功");
-                                                toActivity(MainActivity.class);
-                                                finish();
-                                            } else if (code == 200) {
-                                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+                        url = Constant.QQ_RESPONSE_URL;
                         break;
                     case WEIXIN:
-                        OkGo.<String>post(Constant.WEIXIN_RESPONSE_URL)
-                                .params("status", true)
-                                .params("accessToken", data.get("accessToken"))
-                                .params("openId", data.get("uid"))
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response.body());
-                                            JSONObject data = jsonObject.getJSONObject("data");
-                                            int code = jsonObject.getInt("code");
-                                            if (code == 0) {
-                                                JsonConvert.sIsShow = true;
-                                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                                Log.e(TAG, "onSuccess: " + access_token);
-                                                asyncShowToast("登录成功");
-                                                toActivity(MainActivity.class);
-                                                finish();
-                                            } else if (code == 200) {
-                                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-
+                        url = Constant.WEIXIN_RESPONSE_URL;
                         break;
                     case SINA:
-                        OkGo.<String>post(Constant.SINA_RESPONSE_URL)
-                                .params("status", true)
-                                .params("accessToken", data.get("access_token"))
-                                .params("openId", data.get("uid"))
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response.body());
-                                            JSONObject data = jsonObject.getJSONObject("data");
-                                            int code = jsonObject.getInt("code");
-                                            if (code == 0) {
-                                                JsonConvert.sIsShow = true;
-                                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                                asyncShowToast("登录成功");
-                                                toActivity(MainActivity.class);
-                                                finish();
-                                            } else if (code == 200) {
-                                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+                        url = Constant.SINA_RESPONSE_URL;
                         break;
                 }
+                OkGo.<String>post(url)
+                        .params("status", true)
+                        .params("accessToken", data.get("accessToken"))
+                        .params("openId", data.get("uid"))
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+                                    JSONObject data = jsonObject.getJSONObject("data");
+                                    int code = jsonObject.getInt("code");
+                                    if (code == 0) {
+                                        JsonConvert.sIsShow = true;
+                                        String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                        SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                        SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                        OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                        asyncShowToast("登录成功");
+                                        toActivity(MainActivity.class);
+                                        finish();
+                                    } else if (code == 200) {
+                                        startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
             }
 
             @Override
@@ -212,41 +132,16 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
             }
         };
-
-        //此回调用于分享
-        umShareListener = new UMShareListener() {
-            @Override
-            public void onStart(SHARE_MEDIA platform) {
-                //分享开始的回调
-            }
-
-            @Override
-            public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(LoginActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(LoginActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(LoginActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-            }
-        };
     }
 
     @OnClick({R.id.bt_login_login, R.id.tv_login_regist, R.id.tv_login_forget_password, R.id.iv_wx_login, R.id.iv_qq_login, R.id.iv_sina_login, R.id.iv_login_bick})
     public void onViewClicked(View view) {
-        Intent intent = null;
         switch (view.getId()) {
             case R.id.bt_login_login:
-                phone = etLoginPhone.getText().toString().trim();
-                password = etLoginPassword.getText().toString().trim();
+                String phone = etLoginPhone.getText().toString().trim();
+                String password = etLoginPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(mContext, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
-
+                    asyncShowToast("手机号和密码不能为空");
                 } else if (!REGutil.checkCellphone(phone)) {
                     asyncShowToast("手机号格式不正确");
                 } else {
@@ -287,81 +182,36 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(Response<CommonResponse<LoginBean>> response) {
                         if (response.body().code == 0) {
                             JsonConvert.sIsShow = true;
-                            String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
-                            UserUtil.getInstance().mNick = response.body().data.getNick();
+                            LoginBean userData = response.body().data;
+                            String access_token = userData.getAccessTokenInfo().getAccess_token();
+                            UserUtil.getInstance().mNick = userData.getNick();
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                            fillUserData();
-                            holdReneraCompanyData();
-                        }
-                    }
+                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, userData.getCompany_id() != 0);
 
-                    @Override
-                    public void onError(Response<CommonResponse<LoginBean>> response) {
-                        super.onError(response);
-                        asyncShowToast("用户名或密码错误！");
+                            if (userData.getCompany_info() != null) {
+                                SharedPreferences.Editor editor = getSharedPreferences("companymessage", 0).edit();
+                                editor.putString("selfcompanyname", userData.getCompany_info().getCompany_name());
+                                editor.putString("expire_time", userData.getAccessTokenInfo().getExpires_time());
+                                editor.putString("avatar", userData.getAvatar());
+                                editor.apply();
+                            }
+                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                            holdReneraCompanyData();
+                        } else {
+                            asyncShowToast(response.body().message);
+                        }
                     }
                 });
     }
 
     private void holdReneraCompanyData() {
-        OkGo.<String>post(Constant.GENERALIZE_COMPANY_STATICS_URL).execute(new StringCallback() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                if (response.body() != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body());
-                        JSONObject data = jsonObject.getJSONObject("data");
-                        int staff_cnt = data.getInt("staff_cnt");
-                        String avatar = data.getString("avatar");
-                        SharedPreferences spCompanymessage = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor spCompanymessageEditor = spCompanymessage.edit();
-                        spCompanymessageEditor.putInt("staff_cnt", staff_cnt);
-                        spCompanymessageEditor.apply();
-                    } catch (JSONException ignored) {
-
-                    }
-                }
-                asyncShowToast("登录成功");
-                toActivity(MainActivity.class);
-                finish();
-            }
-        });
+        getH5Url();
+        asyncShowToast("登录成功");
+        toActivity(MainActivity.class);
+        finish();
     }
 
-    /*获取个人资料*/
-    private void fillUserData() {
-        OkGo.<String>post(Constant.CATCH_USERDATA_URL).
-                execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        if (HttpStatusUtil.getStatus(response.body())) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response.body());
-                                JSONObject data = jsonObject.getJSONObject("data");
-                                int code = jsonObject.getInt("code");
-                                if (code == 0) {
-                                    companyName = data.getJSONObject("company_info").getString("company_name");
-                                    String expire_time = data.getString("expire_time");
-                                    String avatar = data.getString("avatar");
-                                    /**
-                                     * 保存自己的公司名称
-                                     */
-                                    SharedPreferences spConpanyname = getSharedPreferences("companymessage", 0);
-                                    SharedPreferences.Editor editor = spConpanyname.edit();
-                                    editor.putString("selfcompanyname", companyName);
-                                    editor.putString("expire_time", expire_time);
-                                    editor.putString("avatar", avatar);
-                                    editor.apply();
-                                }
-
-                            } catch (Exception ignored) {
-
-                            }
-                        }
-                    }
-                });
+    private void getH5Url() {
         OkGo.<String>post(Constant.SHARE_COMPANY_CARD_URL)
                 .execute(new StringCallback() {
                     @Override

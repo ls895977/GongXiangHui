@@ -1,8 +1,10 @@
 package com.qunxianghui.gxh.ui.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -36,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kr.co.namee.permissiongen.PermissionGen;
 
 public class MainActivity extends BaseActivity {
 
@@ -85,6 +88,16 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.add(R.id.content, mCurrentFragment).commitAllowingStateLoss();
         mCurrentView = mTvHome;
         mTvHome.setSelected(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionGen.needPermission(MainActivity.this, 105,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }
+            );
+        }
     }
 
     @Override

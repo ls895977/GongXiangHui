@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
     <RelativeLayout
         android:id="@+id/rl_picture"
@@ -37,7 +38,7 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/rl_picture"
         android:lines="2"
-        android:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务"
+        tools:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务"
         android:textColor="#000"
         android:textSize="15sp" />
 
@@ -61,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
-                android:text="科技"
+                tools:text="科技"
                 android:textSize="13sp" />
         </LinearLayout>
 

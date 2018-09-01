@@ -30,7 +30,7 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
         options.centerCrop();
         Glide.with(mContext).load(dataBean.getImages()).apply(options).into(mMyIssueGoodSelect);
 
-        if (isShow) {
+       /* if (isShow) {
             //videoImag.setClickable(false);
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
         } else {
@@ -52,7 +52,7 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
                     dataBean.setChecked(true);
                 }
             }
-        });
+        });*/
 
     };
 

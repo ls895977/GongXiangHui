@@ -72,10 +72,8 @@ public class HotPointFragment extends BaseFragment {
     private int mRefreshCount = 0;
 
     private int mChannelId = 0;
-    private TextView mhomeLocalLocation;
+    public TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
-    private int mWidth;
-    private int mHeight;
 
     @Override
     public int getLayoutId() {
@@ -84,23 +82,22 @@ public class HotPointFragment extends BaseFragment {
 
     @SuppressLint("NewApi")
     @Override
-    protected void setStatusBarColor(){
+    protected void setStatusBarColor() {
         Window window = mActivity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
 
     @Override
-    protected void setStatusBarTextColor(){
-        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    protected void setStatusBarTextColor() {
+        StatusBarColorUtil.setStatusTextColor(false, mActivity);
     }
 
     @SuppressLint("NewApi")
     @Override
     public void initViews(View view) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        mWidth = dm.widthPixels;
-        mHeight = dm.heightPixels;
+        int mHeight = dm.heightPixels;
 
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
@@ -150,8 +147,11 @@ public class HotPointFragment extends BaseFragment {
                     public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
                         mRefreshCount++;
                         mSw.setRefreshing(false);
-                        setData(response);
                         if (response.body().code == 0) {
+                            if (response.body().data != null) {
+                                dataList.addAll(0, response.body().data);
+                                homeItemListAdapter.notifyDataSetChanged();
+                            }
                             Display display = mActivity.getWindowManager().getDefaultDisplay();
                             int height = display.getHeight();
                             Toast toast = Toast.makeText(mActivity, response.body().message, Toast.LENGTH_SHORT);
@@ -217,12 +217,7 @@ public class HotPointFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeNewListBean homeNewListBean = dataList.get(position);
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
-                intent.putExtra("uuid", homeNewListBean.getUuid());
-                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                intent.putExtra("id", homeNewListBean.getId());
-                intent.putExtra("title", homeNewListBean.getTitle());
-                intent.putExtra("descrip", homeNewListBean.getContent());
+                intent.putExtra("info", homeNewListBean);
                 startActivity(intent);
             }
         });
@@ -280,12 +275,10 @@ public class HotPointFragment extends BaseFragment {
     private void parseHomeLunBoPager(HomeLunBoBean homeLunBoBean) {
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
-            //轮播图的图片
             List<String> imags = new ArrayList<>();
             String image_src;
             for (int i = 0; i < lunboData.size(); i++) {
-                image_src = lunboData.get(i).getImage_src();  //图片
-//                //轮播图跳转的url
+                image_src = lunboData.get(i).getImage_src();
                 imags.add(image_src);
             }
             viewpagerHome.setImages(imags).setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
@@ -311,7 +304,6 @@ public class HotPointFragment extends BaseFragment {
                 if (resultCode == RESULT_OK) {
                     mhomeLocalLocation.setText(SPUtils.getLocation("currcity"));
                     break;
-
                 }
                 super.onActivityResult(requestCode, resultCode, data);
         }

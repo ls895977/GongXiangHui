@@ -329,7 +329,7 @@ public class AddAdvertActivity extends BaseActivity {
                                     }
                                 }
                                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRlBottom.getLayoutParams();
-                                layoutParams.height = ScreenUtils.dp2px(90);
+                                layoutParams.height = ScreenUtils.dp2px(100);
                                 int padding = ScreenUtils.dp2px(8);
                                 mRlBottom.setPadding(padding, padding, padding, padding);
                                 mRlBottom.setLayoutParams(layoutParams);
@@ -337,7 +337,7 @@ public class AddAdvertActivity extends BaseActivity {
                             } else {
                                 mBannerBottom.setVisibility(View.GONE);
                                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRlBottom.getLayoutParams();
-                                layoutParams.height = ScreenUtils.dp2px(90);
+                                layoutParams.height = ScreenUtils.dp2px(100);
                                 mRlBottom.setLayoutParams(layoutParams);
                             }
                         }

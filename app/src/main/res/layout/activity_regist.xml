@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/tv_regist_agree"
-            android:text="用户协议和隐私条款"
+            android:text="《用户协议和隐私条款》"
             android:textColor="#2A7DC4"
             android:textSize="12sp" />
     </LinearLayout>

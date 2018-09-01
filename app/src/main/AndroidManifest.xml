@@ -326,9 +326,9 @@
             android:name=".ui.fragments.homeFragment.activity.GuidActivity"
             android:screenOrientation="portrait" />
 
-
-
         <activity android:name=".guide.GuideActivity"/>
+
+        <activity android:name=".ui.activity.BaoliaoDetailActivity" android:screenOrientation="portrait"/>
 
     </application>
 
