@@ -61,7 +61,10 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
         mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                ToastUtils.showShort("todo 跳爆料详情");
+
+                if (!mAdapter.isShow){
+                    ToastUtils.showShort("todo 跳爆料详情");
+                }
             }
         });
         mRv.setAdapter(mAdapter);
@@ -123,7 +126,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     }
 
     private void RequestDeleteData() {
-        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+        OkGo.<String>post(Constant.CANCEL_ISSUE_URL)
                 .params("id", data_id)
                 .params("type","1")
                 .execute(new StringCallback() {

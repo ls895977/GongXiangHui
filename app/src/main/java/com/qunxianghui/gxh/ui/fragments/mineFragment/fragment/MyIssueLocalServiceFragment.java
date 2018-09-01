@@ -1,8 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -81,7 +79,7 @@ public class MyIssueLocalServiceFragment extends BaseFragment implements Observe
         }
     }
     private void RequestDeleteData() {
-        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+        OkGo.<String>post(Constant.CANCEL_ISSUE_URL)
                 .params("id", data_id)
                 .params("type","2")
                 .execute(new StringCallback() {

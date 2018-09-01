@@ -401,7 +401,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     }
 
     private void RequestDeleteData() {
-        OkGo.<String>post(Constant.CANCEL_COLLECT_URL)
+        OkGo.<String>post(Constant.CANCEL_ISSUE_URL)
                 .params("uuid", data_id)
                 //.params("type",)
                 .execute(new StringCallback() {
