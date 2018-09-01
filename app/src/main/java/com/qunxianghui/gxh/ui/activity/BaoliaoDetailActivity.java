@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,11 +10,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.BaoliaoDetailAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.observer.EventManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observer;
 
 import butterknife.BindView;
@@ -23,6 +28,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/26 0026.
  */
 public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickListener, Observer {
+
 
     @BindView(R.id.iv_myissue_back)
     ImageView ivMyissueBack;
@@ -34,16 +40,11 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
     TextView tvBaoliaoTitle;
     @BindView(R.id.tv_baoliao_time)
     TextView tvBaoliaoTime;
-    @BindView(R.id.tv_baoliao_content)
-    TextView tvBaoliaoContent;
-    @BindView(R.id.iv_image0)
-    ImageView ivImage0;
-    @BindView(R.id.iv_image1)
-    ImageView ivImage1;
-    @BindView(R.id.iv_image2)
-    ImageView ivImage2;
-
+    @BindView(R.id.recyclerView)
+    XRecyclerView recyclerView;
     private BaoliaoBean.DataBean dataBean;
+    private List<BaoliaoBean.DataBean> mList = new ArrayList();
+    private BaoliaoDetailAdapter mAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -54,28 +55,22 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
     protected void initViews() {
         EventManager.getInstance().addObserver(this);
 
-        dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
-        if(!TextUtils.isEmpty(dataBean.getCtime())){
-            tvBaoliaoTime.setText(dataBean.getCtime());
-        }if(!TextUtils.isEmpty(dataBean.getTitle())){
-            tvBaoliaoTitle.setText(dataBean.getTitle());
-        }if(!TextUtils.isEmpty(dataBean.getContent())){
-            tvBaoliaoContent.setText(dataBean.getContent());
-        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        if(dataBean.getImages()!= null && !dataBean.getImages().isEmpty()){
-            RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.default_img)
-                    .error(R.mipmap.default_img)
-                    .centerCrop();
-            for (int i = 0; i < dataBean.getImages().size(); i++) {
-                if(i == 0){
-                    Glide.with(this).load(dataBean.getImages().get(i)).apply(requestOptions).into(ivImage0);
-                }if(i == 1){
-                    Glide.with(this).load(dataBean.getImages().get(i)).apply(requestOptions).into(ivImage1);
-                }if(i == 2){
-                    Glide.with(this).load(dataBean.getImages().get(i)).apply(requestOptions).into(ivImage2);
-                }
-            }
+        dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
+        mList.add(dataBean);
+
+        mAdapter = new BaoliaoDetailAdapter(this,mList);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLoadingMoreEnabled(false);
+        recyclerView.setPullRefreshEnabled(false);
+
+
+        if (!TextUtils.isEmpty(dataBean.getCtime())) {
+            tvBaoliaoTime.setText(dataBean.getCtime());
+        }
+        if (!TextUtils.isEmpty(dataBean.getTitle())) {
+            tvBaoliaoTitle.setText(dataBean.getTitle());
         }
     }
 
@@ -97,5 +92,11 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
     }
 }

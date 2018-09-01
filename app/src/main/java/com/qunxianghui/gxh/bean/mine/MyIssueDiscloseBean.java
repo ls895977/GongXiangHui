@@ -57,7 +57,7 @@ public class MyIssueDiscloseBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * id : 138
          * member_id : 1000175
