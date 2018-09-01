@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,8 +18,9 @@ import com.qunxianghui.gxh.bean.generalize.GeneraLizePersonTopBean;
 import com.qunxianghui.gxh.bean.generalize.GeneraPersonStaticBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
-import com.qunxianghui.gxh.utils.StatusBarColorUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +57,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     public void initData() {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());
         mXrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
-//        GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
         View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
-//        ((TextView) header.findViewById(R.id.tv_genera_person_exposure)).setText(data.getView_cnt());
-//        ((TextView) header.findViewById(R.id.tv_genera_person_click_count)).setText(data.getClick_cnt());
-//        ((TextView) header.findViewById(R.id.tv_genera_person_transmit)).setText(data.getShare_cnt());
-//        ((TextView) header.findViewById(R.id.tv_genera_person_click_rate)).setText(data.getClick_rate());
-//        ((TextView) header.findViewById(R.id.tv_generalize_company_des)).setText(data.getAd_prize());
         myGeneralizePersonAdapter.addHeaderView(header);
     }
 
@@ -129,10 +122,14 @@ public class GeneraPersonalFragment extends BaseFragment {
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     int uuid = dataList.get(position).data_uuid;
                     String video_url = dataList.get(position).video_url;
+
                     Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                     intent.putExtra("uuid", uuid);
+                    intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                     intent.putExtra("url", video_url != null ? Constant.VIDEO_DETAIL_URL : Constant.HOME_NEWS_DETAIL_URL);
                     intent.putExtra("descrip", dataList.get(position).content);
+                    intent.putStringArrayListExtra("images", (ArrayList<String>) dataList.get(position).images);
+                    intent.putExtra("title",      dataList.get(position).title);
                     startActivity(intent);
                 }
             });
