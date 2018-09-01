@@ -71,7 +71,6 @@ public class PersonDataActivity extends BaseActivity {
     EditText etPersonDataAdress;
     @BindView(R.id.et_person_data_introduce)
     EditText etPersonDataIntroduce;
-
     private String[] sexArray = new String[]{"男", "女"};
     private List<String> upLoadPics = new ArrayList<>();
     private ImagePicker imagePicker;
@@ -80,7 +79,6 @@ public class PersonDataActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_person_data;
     }
-
     @Override
     protected void initViews() {
         imagePicker = new ImagePicker();
@@ -123,7 +121,6 @@ public class PersonDataActivity extends BaseActivity {
                 break;
         }
     }
-
     public void saveInfo(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), 0);
         String nickName = etPersonDataNickName.getText().toString().trim();
