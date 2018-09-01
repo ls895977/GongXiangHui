@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -192,11 +193,13 @@ public class AddTiePianAdvertActivity extends BaseActivity {
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
         mWeb.setThumb(image);  //缩略图
-        if (mDescrip != null) {
-            mWeb.setDescription(mDescrip);
-        } else {
+        if (TextUtils.isEmpty(mDescrip)) {
             mWeb.setDescription("群享汇-中小微企业成长平台，让创业更容易！");//描述
+        } else {
+            mWeb.setDescription(mDescrip);
         }
+
+
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
         RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);

@@ -45,7 +45,6 @@ public class GeneraPersonalFragment extends BaseFragment {
     public int getLayoutId() {
         return R.layout.fragment_genera_personl;
     }
-
     @SuppressLint("NewApi")
     @Override
     protected void setStatusBarColor(){
@@ -112,7 +111,6 @@ public class GeneraPersonalFragment extends BaseFragment {
                     }
                 });
     }
-
     private void parseGeneralizePersonData(GeneraPersonStaticBean generaPersonStaticBean) {
         if (generaPersonStaticBean.getCode() == 0) {
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
@@ -122,7 +120,6 @@ public class GeneraPersonalFragment extends BaseFragment {
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     int uuid = dataList.get(position).data_uuid;
                     String video_url = dataList.get(position).video_url;
-
                     Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                     intent.putExtra("uuid", uuid);
                     intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
@@ -130,6 +127,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                     intent.putExtra("descrip", dataList.get(position).content);
                     intent.putStringArrayListExtra("images", (ArrayList<String>) dataList.get(position).images);
                     intent.putExtra("title",      dataList.get(position).title);
+                    intent.putExtra("position", 4);
                     startActivity(intent);
                 }
             });

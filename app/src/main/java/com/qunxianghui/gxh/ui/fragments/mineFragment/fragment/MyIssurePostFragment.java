@@ -289,13 +289,13 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                             UserUtil user = UserUtil.getInstance();
                             TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
                             clickLikeBean.setMember_name(user.mNick);
-                            if ("点赞成功".equals(response.body().msg)) {
+                            if ("点赞成功".equals(response.body().message)) {
                                 dataList.get(position).getTem().add(clickLikeBean);
                                 dataList.get(position).setLike_info_res("true");
                                 mineIssurePostAdapter.notifyDataSetChanged();
                                 mineIssurePostAdapter.notifyItemChanged(position);
                                 asyncShowToast("点赞成功");
-                            } else if ("取消点赞成功".equals(response.body().msg)) {
+                            } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataList.get(position).getTem();
                                 for (int i = 0; i < dataList.get(position).getTem().size(); i++) {
                                     TestMode.DataBean.ListBean.ClickLikeBean tem = dataList.get(position).getTem().get(i);

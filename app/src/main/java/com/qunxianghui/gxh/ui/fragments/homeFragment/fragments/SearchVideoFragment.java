@@ -168,7 +168,7 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
-                        String msg = response.body().msg;
+                        String msg = response.body().message;
                         if (code == 0) {
                             asyncShowToast(msg);
                             mSearchVideodata.get(position).setFollow("true");
