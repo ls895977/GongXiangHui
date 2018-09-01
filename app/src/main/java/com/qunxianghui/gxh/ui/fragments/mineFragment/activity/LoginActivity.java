@@ -221,9 +221,6 @@ public class LoginActivity extends BaseActivity {
                             int code = jsonObject.getInt("code");
                             if (code == 200) {
                                 JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
-//                                String avatar = mCompanyCardData.getString("avatar");
-//                                String title = mCompanyCardData.getString("title");
-//                                String content = mCompanyCardData.getString("content");
                                 String url = mCompanyCardData.getString("url");
                                 SPUtils.getSp("companymessage").edit().putString("aboutus_showh5", url).apply();
                             }

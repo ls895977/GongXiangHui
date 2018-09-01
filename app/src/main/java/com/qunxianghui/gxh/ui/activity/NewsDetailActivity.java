@@ -39,6 +39,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,20 +64,16 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private String title;
     private String mDescrip;
     private List<String> mImages;
-    private String mImage;
     private StringBuffer mBuffer;
     private int mPosition;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_news_detail;
     }
-
     @Override
     protected void initViews() {
         mLoadingDialog = createLoadingDialog(NewsDetailActivity.this, "加载中...");
         mLoadingDialog.show();
-
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         title = intent.getStringExtra("title");
@@ -84,8 +81,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         int uuid = intent.getIntExtra("uuid", 0);
         mPosition = intent.getIntExtra("position", 0);
         mImages = intent.getStringArrayListExtra("images");
-        mImage = intent.getStringExtra("image");
-
         String mToken = intent.getStringExtra("token");
         mBuffer = new StringBuffer(url);
         mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
@@ -218,6 +213,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     intent.putExtra("url", mBuffer.toString());
                     intent.putExtra("title", title);
                     intent.putExtra("descrip", mDescrip);
+                    intent.putStringArrayListExtra("images", (ArrayList<String>) mImages);
                     startActivity(intent);
                 }
                 break;
@@ -281,16 +277,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             UMImage image;
             if (mImages != null && !mImages.isEmpty()) {
                 image = new UMImage(this, mImages.get(0));
-            } else if (!TextUtils.isEmpty(mImage)) {
-                image = new UMImage(this, mImage);
-            } else {
+            }  else {
                 image = new UMImage(this, R.mipmap.logo);
             }
             final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
             web.setTitle(title);//标题
             web.setThumb(image);  //缩略图
             if (mPosition == 4) {
-                web.setDescription(mDescrip);//描述
+                web.setDescription(!TextUtils.isEmpty(mDescrip)?mDescrip:"群享汇-中小微企业成长平台，让创业更容易！");//描述
             } else {
                 web.setDescription(mDescrip.substring(0, 70));//描述
             }
