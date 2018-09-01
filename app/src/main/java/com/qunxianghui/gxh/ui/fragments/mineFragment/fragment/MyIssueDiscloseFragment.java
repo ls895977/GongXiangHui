@@ -61,9 +61,8 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
         mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
                 if (!mAdapter.isShow){
-                    ToastUtils.showShort("todo 跳爆料详情");
+                    asyncShowToast("");
                 }
             }
         });
