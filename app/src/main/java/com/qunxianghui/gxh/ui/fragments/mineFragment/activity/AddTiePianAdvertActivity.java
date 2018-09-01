@@ -187,9 +187,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
      */
     private void startThirdShare(String url, String title, String desc) {
         //以下代码是分享示例代码
-        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        UMImage image = new UMImage(this, R.mipmap.video_icon_share);//分享图标
         //切记切记 这里分享的链接必须是http开头
-
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
         mWeb.setThumb(image);  //缩略图
