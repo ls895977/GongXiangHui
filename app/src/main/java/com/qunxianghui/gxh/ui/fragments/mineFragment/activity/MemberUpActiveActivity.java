@@ -41,14 +41,31 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
         tvMemberActiviteQuickly.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_memberup_activite_back:
+                finish();
+                break;
+            case R.id.tv_member_activite_quickly:
+                String activeCode = etMemberActiveCode.getText().toString().trim();
+                if (TextUtils.isEmpty(activeCode)) {
+                    asyncShowToast("激活码为空");
+                } else {
+                    activityData(activeCode);
+                }
+                break;
+        }
+    }
+
     //激活码激活
-    private void ActiviteData(String activeCode) {
+    private void activityData(String activeCode) {
         OkGo.<MemberActiviteBean>post(Constant.PERSON_UPGRADE_URL)
                 .params("activecode", activeCode)
                 .execute(new JsonCallback<MemberActiviteBean>() {
                     @Override
                     public void onSuccess(Response<MemberActiviteBean> response) {
-                        ParseActivieData(response.body());
+                        parseActivieData(response.body());
                     }
 
                     @Override
@@ -58,12 +75,12 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
                 });
     }
 
-    private void ParseActivieData(MemberActiviteBean memberActiviteBean) {
+    private void parseActivieData(MemberActiviteBean memberActiviteBean) {
         int code = memberActiviteBean.getCode();
         String msg = memberActiviteBean.getMsg();
         MemberActiviteBean.DataBean memberData = memberActiviteBean.getData();
+        asyncShowToast(msg);
         if (code == 0) {
-            asyncShowToast(msg);
             String avatar = memberData.getAvatar();
             int company_id = memberData.getCompany_id();
             String code_endtime = memberData.getCode_endtime();
@@ -76,26 +93,7 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
             EventManager.getInstance().publishMessage("company");
             setResult(0x0022);
             finish();
-        } else {
-            asyncShowToast(memberActiviteBean.getMsg());
-        }
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_memberup_activite_back:
-                finish();
-                break;
-            case R.id.tv_member_activite_quickly:
-                String activeCode = etMemberActiveCode.getText().toString().trim();
-                if (TextUtils.isEmpty(activeCode)) {
-                    asyncShowToast("激活码为空");
-                } else {
-                    ActiviteData(activeCode);
-                }
-                break;
         }
     }
+
 }

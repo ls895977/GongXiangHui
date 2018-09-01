@@ -94,7 +94,6 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initData() {
-        //猜你想要的数据
         OkGo.<HomeVideoSearchBean>get(Constant.SEARCH_VIDEO_GUESS_URL)
                 .execute(new JsonCallback<HomeVideoSearchBean>() {
                     @Override

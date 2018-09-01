@@ -66,10 +66,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private List<String> mImages;
     private StringBuffer mBuffer;
     private int mPosition;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_news_detail;
     }
+
     @Override
     protected void initViews() {
         mLoadingDialog = createLoadingDialog(NewsDetailActivity.this, "加载中...");
@@ -267,7 +269,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             lp.width = (int) display.getWidth();  //设置宽度
             lp.y = 5;  //设置dialog距离底部的距离
             dialogWindow.setAttributes(lp);
-        }
+        }A
         mShareDialog.show();
     }
 
@@ -275,19 +277,20 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         if (mUmShareDialog == null) {
             mUmShareDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
             UMImage image;
-            if (mImages != null && !mImages.isEmpty()) {
-                image = new UMImage(this, mImages.get(0));
-            }  else {
-                image = new UMImage(this, R.mipmap.logo);
-            }
             final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
-            web.setTitle(title);//标题
-            web.setThumb(image);  //缩略图
             if (mPosition == 4) {
-                web.setDescription(!TextUtils.isEmpty(mDescrip)?mDescrip:"群享汇-中小微企业成长平台，让创业更容易！");//描述
+                image = new UMImage(this, R.mipmap.icon_video_share);
+                web.setDescription(!TextUtils.isEmpty(mDescrip) ? mDescrip : "群享汇-中小微企业成长平台，让创业更容易！");//描述
             } else {
+                if (mImages != null && !mImages.isEmpty()) {
+                    image = new UMImage(this, mImages.get(0));
+                } else {
+                    image = new UMImage(this, R.mipmap.logo);
+                }
                 web.setDescription(mDescrip.substring(0, 70));//描述
             }
+            web.setTitle(title);//标题
+            web.setThumb(image);  //缩略图
             View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
             mUmShareDialog.setContentView(view);
             View.OnClickListener listener = new View.OnClickListener() {

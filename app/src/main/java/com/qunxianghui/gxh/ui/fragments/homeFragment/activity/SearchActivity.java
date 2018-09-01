@@ -99,9 +99,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onSuccess(Response<GuessBean> response) {
                         GuessBean guessBean = response.body();
-                        if (guessBean.getCode() == 0) {
+                        if (guessBean.getCode() == 0 && !guessBean.getData().isEmpty()){
                             List<GuessBean.DataBean> data = guessBean.getData();
                             initFireRecycle(data);
+                        }else{
+                            asyncShowToast("没有查询到相关数据");
                         }
                     }
                 });
