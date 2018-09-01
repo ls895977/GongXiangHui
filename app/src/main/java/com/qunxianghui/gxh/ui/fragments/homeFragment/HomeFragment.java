@@ -232,7 +232,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = (String) item.getText();
-
             OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
                     .params("url", text)
                     .execute(new JsonCallback<CommonBean>() {

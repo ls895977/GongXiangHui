@@ -269,7 +269,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             lp.width = (int) display.getWidth();  //设置宽度
             lp.y = 5;  //设置dialog距离底部的距离
             dialogWindow.setAttributes(lp);
-        }A
+        }
         mShareDialog.show();
     }
 
@@ -324,7 +324,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     }
                     mUmShareDialog.dismiss();
                 }
-
                 private void share(SHARE_MEDIA var1) {
                     new ShareAction(NewsDetailActivity.this).setPlatform(var1)
                             .withMedia(web)

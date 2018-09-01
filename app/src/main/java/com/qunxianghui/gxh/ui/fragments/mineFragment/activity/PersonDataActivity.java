@@ -160,7 +160,7 @@ public class PersonDataActivity extends BaseActivity {
                             Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
-                            asyncShowToast("保存失败" + response.body().toString());
+                            asyncShowToast("保存失败" + response.body().message);
                         }
                     }
                 });

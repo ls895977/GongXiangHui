@@ -178,10 +178,7 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeAddTabActivity"
             android:screenOrientation="portrait" />
-        <!-- 自己测试玩的界面可以忽略 -->
-        <activity
-            android:name=".ui.fragments.homeFragment.activity.HomeSeachLocationActivity"
-            android:screenOrientation="portrait" />
+
         <!-- 我的板块的植入广告头部 navigator界面 -->
         <!-- 首页频道activity -->
         <activity

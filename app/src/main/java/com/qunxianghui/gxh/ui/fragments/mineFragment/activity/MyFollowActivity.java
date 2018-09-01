@@ -128,7 +128,7 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
                         if (code == 202) {
-                            asyncShowToast("取消关注成功");
+                            asyncShowToast(response.body().message);
                             dataList.get(position).setFollow_type(0);
                             dataList.remove(position);
                             myFocusAdapter.notifyDataSetChanged();

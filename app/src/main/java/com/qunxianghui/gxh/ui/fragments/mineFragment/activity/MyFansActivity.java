@@ -129,17 +129,13 @@ public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFans
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
                         if (code == 0) {
-                            asyncShowToast("关注成功");
+                            asyncShowToast(response.body().message);
                             dataList.get(position).setFollow_type(1);
 
                         } else if (code == 202) {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    asyncShowToast("取消关注成功");
-                                    dataList.get(position).setFollow_type(0);
-                                }
-                            });
+                            asyncShowToast(response.body().message);
+                            dataList.get(position).setFollow_type(0);
+
                         }
                         myFansAdapter.notifyDataSetChanged();
 
