@@ -32,6 +32,7 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.ShareInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -361,6 +362,10 @@ public class AddAdvertActivity extends BaseActivity {
 
     @OnClick({R.id.rl_top, R.id.rl_bottom})
     public void onViewClicked(View view) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
         switch (view.getId()) {
             case R.id.rl_top:
                 if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
@@ -390,6 +395,10 @@ public class AddAdvertActivity extends BaseActivity {
             banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
+                    if (!LoginMsgHelper.isLogin()) {
+                        toActivity(LoginActivity.class);
+                        return;
+                    }
                     if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                         Toast.makeText(AddAdvertActivity.this, "亲，非企业会员只可添加底部广告哦～～", Toast.LENGTH_SHORT).show();
                         return;
@@ -402,6 +411,10 @@ public class AddAdvertActivity extends BaseActivity {
             banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
+                    if (!LoginMsgHelper.isLogin()) {
+                        toActivity(LoginActivity.class);
+                        return;
+                    }
                     mAddPosition = 0;
                     goToAdvertTemplateActivity();
                 }

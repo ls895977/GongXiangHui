@@ -101,11 +101,11 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        String url = mBean.getData().getList().get(position).getUrl();
-        int uuid = mBean.getData().getList().get(position).getUuid();
-        int id = mBean.getData().getList().get(position).getId();
-        String title = mBean.getData().getList().get(position).getTitle();
-        String description = mBean.getData().getList().get(position).getContent();
+        SearchBean.DataBean.ListBean listBean = mBean.getData().getList().get(position);
+        int uuid = listBean.getUuid();
+        int id = listBean.getId();
+        String title = listBean.getTitle();
+        String description = listBean.getContent();
         Intent intent = new Intent(mActivity, NewsDetailActivity.class);
         intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
         intent.putExtra("uuid",uuid);
@@ -113,6 +113,7 @@ public class SearchFragment extends BaseFragment implements BaseQuickAdapter.OnI
         intent.putExtra("id", id);
         intent.putExtra("title", title);
         intent.putExtra("descrip",description);
+        intent.putStringArrayListExtra("images", listBean.getImages());
         startActivity(intent);
     }
 }
