@@ -60,6 +60,16 @@ public class BaoliaoBean implements Serializable {
         private String status;
         private List<String> images;
 
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+
+        private boolean isChecked;
+
         public int getId() {
             return id;
         }

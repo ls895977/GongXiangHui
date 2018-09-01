@@ -238,7 +238,9 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.iv_location_person_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.headImageClick(holder.getAdapterPosition() - 1);
+                if(listener != null) {
+                    listener.headImageClick(holder.getAdapterPosition() - 1);
+                }
             }
         });
         holder.snsBtn.setOnClickListener(new View.OnClickListener() {

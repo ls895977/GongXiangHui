@@ -38,7 +38,7 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
         }
         CheckBox checkBox = holder.getView(R.id.ch_delete);
-        if (dataBean.isChecked() == true) {
+        if (dataBean.isChecked()) {
             checkBox.setChecked(true);
         } else {
             checkBox.setChecked(false);
@@ -46,7 +46,7 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataBean.isChecked() == true) {
+                if (dataBean.isChecked()) {
                     dataBean.setChecked(false);
                 } else {
                     dataBean.setChecked(true);

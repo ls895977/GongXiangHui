@@ -324,7 +324,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     }
                     mUmShareDialog.dismiss();
                 }
-
                 private void share(SHARE_MEDIA var1) {
                     new ShareAction(NewsDetailActivity.this).setPlatform(var1)
                             .withMedia(web)

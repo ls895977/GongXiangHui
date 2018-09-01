@@ -120,7 +120,8 @@ public class BaoLiaoAdapter extends RecyclerView.Adapter<BaoLiaoAdapter.BaoLiaoV
         holder.mTvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) mListener.onItemClick(v, holder.getAdapterPosition(), 0);
+                if (mListener != null)
+                    mListener.onItemClick(v, holder.getAdapterPosition(), 0);
             }
         });
     }

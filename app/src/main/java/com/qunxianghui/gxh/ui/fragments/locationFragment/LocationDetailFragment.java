@@ -67,6 +67,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public void initViews(View view) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         mAdapter = new NineGridTest2Adapter(mActivity, locationBean);
+        mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -109,7 +110,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     protected void initListeners() {
-        mAdapter.setListener(this);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {

@@ -175,6 +175,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                             }
                         });
             }
+
         });
     }
 

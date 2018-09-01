@@ -1,8 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,10 +14,11 @@ import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueDiscloseAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
-import com.qunxianghui.gxh.bean.mine.MyIssueDiscloseBean;
+import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.activity.BaoliaoDetailActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,7 +39,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     Button btMyissueDelete;
 
     private int mSkip = 0;
-    private List<MyIssueDiscloseBean.DataBean> mList = new ArrayList<>();
+    private List<BaoliaoBean.DataBean> mList = new ArrayList<>();
     private MineIssueDiscloseAdapter mAdapter;
     private String data_id = "";
 
@@ -56,7 +57,9 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
             @Override
             public void onItemClick(View v, int position) {
                 if (!mAdapter.isShow) {
-                    asyncShowToast("");
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("baoliao", mList.get(position - 1));
+                    toActivity(BaoliaoDetailActivity.class, bundle);
                 }
             }
         });
@@ -78,12 +81,12 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
-        OkGo.<MyIssueDiscloseBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
+        OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                 .params("limit", 10)
                 .params("skip", mSkip)
-                .execute(new JsonCallback<MyIssueDiscloseBean>() {
+                .execute(new JsonCallback<BaoliaoBean>() {
                     @Override
-                    public void onSuccess(Response<MyIssueDiscloseBean> response) {
+                    public void onSuccess(Response<BaoliaoBean> response) {
                         parseData(response.body());
                     }
                 });
@@ -95,50 +98,45 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
         btMyissueDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteDiscloseData();
+                for (int i = 0; i < mList.size(); i++) {
+                    if (mList.get(i).isChecked()) {
+                        if (TextUtils.isEmpty(data_id)) {
+                            data_id = data_id + mList.get(i).getId();
+                        } else {
+                            data_id = data_id + "," + mList.get(i).getId();
+                        }
+                    }
+                }
+                if (TextUtils.isEmpty(data_id)) return;
+                OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
+                        .params("id", data_id)
+                        .params("type", "1")
+                        .execute(new JsonCallback<CommonBean>() {
+                            @Override
+                            public void onSuccess(Response<CommonBean> response) {
+                                CommonBean body = response.body();
+                                asyncShowToast(body.message);
+                                if (body.code == 200) {
+                                    Iterator<BaoliaoBean.DataBean> iterator = mList.iterator();
+                                    while (iterator.hasNext()) {
+                                        BaoliaoBean.DataBean next = iterator.next();
+                                        if (next.isChecked()) {
+                                            iterator.remove();
+                                        }
+                                    }
+                                }
+                                data_id = "";
+                                mAdapter.isShow = false;
+                                mAdapter.notifyDataSetChanged();
+                                btMyissueDelete.setVisibility(View.GONE);
+                                EventManager.getInstance().publishMessage("init");
+                            }
+                        });
             }
         });
     }
 
-    /*多条删除*/
-    private void deleteDiscloseData() {
-        for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).isChecked()) {
-                if (TextUtils.isEmpty(data_id)) {
-                    data_id = data_id + mList.get(i).getId();
-                } else {
-                    data_id = data_id + "," + mList.get(i).getId();
-                }
-            }
-        }
-        if (TextUtils.isEmpty(data_id)) return;
-        OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
-                .params("id", data_id)
-                .params("type", "1")
-                .execute(new JsonCallback<CommonBean>() {
-                    @Override
-                    public void onSuccess(Response<CommonBean> response) {
-                        CommonBean body = response.body();
-                        asyncShowToast(body.message);
-                        if (body.code == 200) {
-                            Iterator<MyIssueDiscloseBean.DataBean> iterator = mList.iterator();
-                            while (iterator.hasNext()) {
-                                MyIssueDiscloseBean.DataBean next = iterator.next();
-                                if (next.isChecked()) {
-                                    iterator.remove();
-                                }
-                            }
-                        }
-                        data_id = "";
-                        mAdapter.isShow = false;
-                        mAdapter.notifyDataSetChanged();
-                        btMyissueDelete.setVisibility(View.GONE);
-                        EventManager.getInstance().publishMessage("init");
-                    }
-                });
-    }
-
-    private void parseData(MyIssueDiscloseBean data) {
+    private void parseData(BaoliaoBean data) {
         if (data.getCode() == 0) {
             if (mSkip == 0) {
                 mList.clear();
@@ -157,9 +155,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        Log.d(TAG, "接收到了消息baoliao" + o);
         if (o instanceof String && "baoliao".equals(o)) {
-            Log.d(TAG, "接收到了消息baoliao");
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
             btMyissueDelete.setVisibility(View.VISIBLE);
