@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServic
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailBaoLiaoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailVideoFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonLocalServiceFragment;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new PersonDetailVideoFragment());
         fragments.add(new PersonDetailPostFragment());
-        fragments.add(new MyIssueLocalServiceFragment());
+        fragments.add(new PersonLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
         mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         minePersonDetailViewpager.setAdapter(mineTabViewPagerAdapter);

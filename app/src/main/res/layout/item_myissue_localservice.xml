@@ -9,6 +9,7 @@
         android:id="@+id/tv_myissue_localservice_pic"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/icon_advert_image_text" />
 
     <RelativeLayout

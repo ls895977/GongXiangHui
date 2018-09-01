@@ -146,9 +146,14 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         for (int i = 0; i < mRv.getChildCount(); i++) {
             LinearLayout layout = (LinearLayout) mRv.getChildAt(i);  //获得子item的layout
             mEtContent = layout.findViewById(R.id.et_content);
-            mBaoLiaoContent = mEtContent.getText().toString().trim();
-            if (TextUtils.isEmpty(mBaoLiaoContent)) {
-                asyncShowToast("您尚未填写发布内容！");
+            RecyclerView mChildImgRecview = layout.findViewById(R.id.rv);
+            String sd = "";
+            if(null != mEtContent.getText()){
+                sd = mEtContent.getText().toString();
+            }
+            int childCount = mChildImgRecview.getChildCount();
+            if (TextUtils.isEmpty(sd) && childCount == 1) {
+                ToastUtils.showShort("您尚未填写第"+(i+1)+"条发布内容！");
                 return false;
             }
         }
@@ -162,11 +167,13 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         mLlLoad.setVisibility(View.VISIBLE);
         upLoadPics.clear();
         for (BaoLiaoBean datum : mAdapter.mData) {
-            for (ImageItem imageItem : datum.mList) {
-                if (!imageItem.path.contains("http")) {
-                    upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
-                } else {
-                    upLoadPics.add(imageItem.path);
+            if(datum.mList != null && !datum.mList.isEmpty()) {
+                for (ImageItem imageItem : datum.mList) {
+                    if (!imageItem.path.contains("http")) {
+                        upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
+                    } else {
+                        upLoadPics.add(imageItem.path);
+                    }
                 }
             }
         }

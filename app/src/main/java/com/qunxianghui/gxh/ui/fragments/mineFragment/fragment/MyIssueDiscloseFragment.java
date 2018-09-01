@@ -16,10 +16,12 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueDiscloseAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.bean.mine.MyIssueDiscloseBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.activity.BaoliaoDetailActivity;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
 import org.json.JSONObject;
@@ -44,7 +46,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     Button btMyissueDelete;
     Unbinder unbinder;
     private int mSkip = 0;
-    private List<MyIssueDiscloseBean.DataBean> mList = new ArrayList<>();
+    private List<BaoliaoBean.DataBean> mList = new ArrayList<>();
     private MineIssueDiscloseAdapter mAdapter;
     private String data_id = "";
 
@@ -62,6 +64,10 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
             @Override
             public void onItemClick(View v, int position) {
                 if (!mAdapter.isShow){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("baoliao",mList.get(position-1));
+                    toActivity(BaoliaoDetailActivity.class,bundle);
+
                 }
             }
         });
@@ -83,12 +89,12 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
-        OkGo.<MyIssueDiscloseBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
+        OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                 .params("limit", 10)
                 .params("skip", mSkip)
-                .execute(new JsonCallback<MyIssueDiscloseBean>() {
+                .execute(new JsonCallback<BaoliaoBean>() {
                     @Override
-                    public void onSuccess(Response<MyIssueDiscloseBean> response) {
+                    public void onSuccess(Response<BaoliaoBean> response) {
                         parseData(response.body());
                     }
                 });
@@ -108,7 +114,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
     /*多条删除*/
     private void deleteDiscloseData() {
 
-        for (int i = 0; i < mList.size(); i++) {
+      /*  for (int i = 0; i < mList.size(); i++) {
             if (mList.get(i).isChecked()) {
                 //这边获取选中的数据id
                 if (data_id.equals("")) {
@@ -120,7 +126,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                 RequestDeleteData();
 
             }
-        }
+        }*/
     }
 
     private void RequestDeleteData() {
@@ -136,12 +142,12 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                             if (code == 200) {
                                 ToastUtils.showLong("删除成功");
                                 ArrayList<MyIssueDiscloseBean.DataBean> selectList = new ArrayList<MyIssueDiscloseBean.DataBean>();
-                                for (int j = 0; j <mList.size() ; j++) {
+                               /* for (int j = 0; j <mList.size() ; j++) {
                                     if (mList.get(j).isChecked()) {
                                         selectList.add(mList.get(j));
                                         //dataList.remove(j);
                                     }
-                                }
+                                }*/
                                 for(int k=0; k < selectList.size(); k++){
                                     mList.remove(selectList.get(k));
                                 }
@@ -157,7 +163,7 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                 });
     }
 
-    private void parseData(MyIssueDiscloseBean data) {
+    private void parseData(BaoliaoBean data) {
         if (data.getCode() == 0) {
             if (mSkip == 0) {
                 mList.clear();

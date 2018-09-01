@@ -36,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="7dp"
         android:layout_toRightOf="@+id/rl_picture"
         android:lines="2"
         tools:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务"
