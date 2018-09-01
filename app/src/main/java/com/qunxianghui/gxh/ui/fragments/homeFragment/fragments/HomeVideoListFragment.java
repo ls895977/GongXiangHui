@@ -162,7 +162,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
                         int code = response.body().code;
-                        String msg = response.body().msg;
+                        String msg = response.body().message;
                         if (code == 0) {
                             videoDataList.get(position).setFollow("true");
                         } else if (code == 202) {

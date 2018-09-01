@@ -11,17 +11,23 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.HomeVideoListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 
-public class PersonDetailVideoFragment extends BaseFragment {
+public class PersonDetailVideoFragment extends BaseFragment implements PersonDetailVideoAdapter.VideoListClickListener {
 
     @BindView(R.id.xrecycler_persondetail_video)
     XRecyclerView xrecyclerPersondetailVideo;
@@ -29,6 +35,8 @@ public class PersonDetailVideoFragment extends BaseFragment {
     View mEmptyView;
 
     private PersonDetailActivity personDetailActivity;
+    private List<HomeVideoListBean.DataBean.ListBean> mVideoList;
+    private PersonDetailVideoAdapter mPersonDetailVideoAdapter;
 
     @Override
     protected void onLoadData() {
@@ -49,14 +57,23 @@ public class PersonDetailVideoFragment extends BaseFragment {
      */
     private void parsePersonDetailVideoData(HomeVideoListBean homeVideoListBean) {
         if (homeVideoListBean.getCode() == 0) {
-            final List<HomeVideoListBean.DataBean.ListBean> videoList = homeVideoListBean.getData().getList();
-            PersonDetailVideoAdapter personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoList);
-            xrecyclerPersondetailVideo.setAdapter(personDetailVideoAdapter);
-            personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            mVideoList = homeVideoListBean.getData().getList();
+            mPersonDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, mVideoList);
+            xrecyclerPersondetailVideo.setAdapter(mPersonDetailVideoAdapter);
+            mPersonDetailVideoAdapter.setVideoListClickListener(this);
+            mPersonDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
+                    int uuid = mVideoList.get(position - 1).getUuid();
+                    String content = mVideoList.get(position - 1).getContent();
+                    String title = mVideoList.get(position - 1).getTitle();
                     Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                    intent.putExtra("url", videoList.get(position - 1).getUrl());
+                    intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                    intent.putExtra("uuid", uuid);
+                    intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                    intent.putExtra("descrip", content);
+                    intent.putExtra("title", title);
+                    intent.putExtra("position", 4);
                     startActivity(intent);
                 }
             });
@@ -93,4 +110,75 @@ public class PersonDetailVideoFragment extends BaseFragment {
             }
         });
     }
-}
+
+    @Override
+    public void attentionClick(final int position) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
+        OkGo.<CommonBean>post(Constant.ATTENTION_URL)
+                .params("be_member_id", mVideoList.get(position).getMember_id())
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        String msg = response.body().message;
+                        if (code == 0) {
+                            mVideoList.get(position).setFollow("true");
+                        } else if (code == 202) {
+                            mVideoList.get(position).setFollow("");
+                        }
+                        asyncShowToast(msg);
+                        mPersonDetailVideoAdapter.notifyDataSetChanged();
+                    }
+
+                });
+
+    }
+
+    @Override
+    public void videoHeadImageClick(int position) {
+        mPersonDetailVideoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void videoLikeItemClick(final int position) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
+        OkGo.<CommonBean>post(Constant.VIDEO_LIKE_URL)
+                .params("data_uuid", mVideoList.get(position).getUuid())
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        HomeVideoListBean.DataBean.ListBean listBean = mVideoList.get(position);
+                        int likeCnt = Integer.parseInt(listBean.getLike_cnt());
+                        if (response.body().code == 100) {
+                            listBean.setIs_like(1);
+                            listBean.setLike_cnt(++likeCnt + "");
+                        } else if (response.body().code == 101) {
+                            listBean.setIs_like(0);
+                            listBean.setLike_cnt(--likeCnt + "");
+                        }
+                        asyncShowToast(response.body().message);
+                        mPersonDetailVideoAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
+    @Override
+    public void videoAddAdvert(int position) {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        }
+        Intent intent = new Intent(mActivity, AddTiePianAdvertActivity.class);
+        intent.putExtra("url", Constant.VIDEO_DETAIL_URL
+                + "?token=" + SPUtils.getString(SpConstant.ACCESS_TOKEN, "")
+                + "&uuid=" + mVideoList.get(position).getUuid());
+        startActivity(intent);
+    }
+    }
+
