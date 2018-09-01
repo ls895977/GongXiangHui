@@ -1,8 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -45,13 +45,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     public int getLayoutId() {
         return R.layout.fragment_genera_personl;
     }
-    @SuppressLint("NewApi")
-    @Override
-    protected void setStatusBarColor(){
-        //Window window = mActivity.getWindow();
-        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        //window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
-    }
+
     @Override
     public void initData() {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());
@@ -72,7 +66,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Response<GeneraLizePersonTopBean> response) {
                         parseGeneraPersonTopData(response.body());
-                        if (mIsFirst){
+                        if (mIsFirst) {
                             mIsFirst = false;
                             requestListInfo();
                         }
@@ -90,15 +84,12 @@ public class GeneraPersonalFragment extends BaseFragment {
         if (generaLizePersonTopBean.getCode() == 0) {
             LinearLayout header = myGeneralizePersonAdapter.getHeaderLayout();
             GeneraLizePersonTopBean.DataBean data = generaLizePersonTopBean.getData();
-//            View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
             ((TextView) header.findViewById(R.id.tv_genera_person_exposure)).setText(data.getView_cnt());
             ((TextView) header.findViewById(R.id.tv_genera_person_click_count)).setText(data.getClick_cnt());
             ((TextView) header.findViewById(R.id.tv_genera_person_transmit)).setText(data.getShare_cnt());
             ((TextView) header.findViewById(R.id.tv_genera_person_click_rate)).setText(data.getClick_rate());
             ((TextView) header.findViewById(R.id.tv_generalize_company_des)).setText(data.getAd_prize());
-//            myGeneralizePersonAdapter.addHeaderView(header);
         }
-
     }
 
     private void requestListInfo() {
@@ -111,6 +102,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                     }
                 });
     }
+
     private void parseGeneralizePersonData(GeneraPersonStaticBean generaPersonStaticBean) {
         if (generaPersonStaticBean.getCode() == 0) {
             final List<GeneraPersonStaticBean.DataBean> dataList = generaPersonStaticBean.getData();
@@ -118,16 +110,22 @@ public class GeneraPersonalFragment extends BaseFragment {
             myGeneralizePersonAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    int uuid = dataList.get(position).data_uuid;
-                    String video_url = dataList.get(position).video_url;
+                    GeneraPersonStaticBean.DataBean dataBean = dataList.get(position);
+                    int uuid = (int) dataBean.data_uuid;
+                    String video_url = dataBean.video_url;
                     Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                     intent.putExtra("uuid", uuid);
                     intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                     intent.putExtra("url", video_url != null ? Constant.VIDEO_DETAIL_URL : Constant.HOME_NEWS_DETAIL_URL);
-                    intent.putExtra("descrip", dataList.get(position).content);
-                    intent.putStringArrayListExtra("images", (ArrayList<String>) dataList.get(position).images);
-                    intent.putExtra("title",      dataList.get(position).title);
-                    intent.putExtra("position", 4);
+                    intent.putStringArrayListExtra("images", (ArrayList<String>) dataBean.images);
+                    intent.putExtra("title", dataBean.title);
+                    if (TextUtils.isEmpty(video_url)) {
+                        intent.putExtra("position", 0);
+                        intent.putExtra("descrip", dataBean.content);
+                    } else {
+                        intent.putExtra("position", 4);
+                        intent.putExtra("descrip", dataBean.description);
+                    }
                     startActivity(intent);
                 }
             });

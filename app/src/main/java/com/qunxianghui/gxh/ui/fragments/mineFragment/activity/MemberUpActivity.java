@@ -1,13 +1,10 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +17,9 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.widget.RoundImageView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -66,14 +66,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         return R.layout.activity_member_up;
     }
 
-    @SuppressLint("NewApi")
-    @Override
-    protected void setStatusBarColor(){
-        //Window window = getWindow();
-        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-       // window.setStatusBarColor(getResources().getColor(R.color.member_up_top_color));
-    }
-
     @Override
     protected void setStatusBarTextColor(){
         StatusBarColorUtil.setStatusTextColor(false,this);
@@ -109,7 +101,9 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             tvMemberupPersonActive.setVisibility(View.GONE);
             tvMemberupActiviteTime.setVisibility(View.VISIBLE);
             tvMemberupCompanyState.setText("会员状态: 已激活");
-            tvMemberupActiviteTime.setText("到期日期 : " + expire_time);
+            Date date = new Date(Long.parseLong(expire_time) * 1000);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            tvMemberupActiviteTime.setText("到期日期 : " + simpleDateFormat.format(date));
             tvMemberupPersonState.setText("会员状态:正常");
         } else {
             mTvMemberupQuicklyActive.setVisibility(View.VISIBLE);
