@@ -62,7 +62,6 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
             @Override
             public void onItemClick(View v, int position) {
                 if (!mAdapter.isShow){
-                    asyncShowToast("");
                 }
             }
         });
