@@ -326,9 +326,15 @@
             android:name=".ui.fragments.homeFragment.activity.GuidActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".guide.GuideActivity"/>
+        <activity android:name=".guide.GuideActivity" />
 
-        <activity android:name=".ui.activity.BaoliaoDetailActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.BaoliaoDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EducationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
 
     </application>
 

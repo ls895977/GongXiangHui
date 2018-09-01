@@ -1,15 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +25,7 @@ import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
+import com.qunxianghui.gxh.ui.activity.EducationActivity;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialTiePianActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.TiePianChooseDialog;
@@ -41,7 +36,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.jzvd.JZVideoPlayerStandard;
 
 public class AdvertTiePianFragment extends BaseFragment implements AdvertChoosePicDialog.ImgPickListener, TiePianChooseDialog.ChooseTimeListener {
 
@@ -70,7 +64,6 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
     private AdvertChoosePicDialog mChoosePic;
     private boolean mIsChooseTime;
     public static EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert mAdvertBean;
-    private Dialog mDialog;
 
     @Override
     public int getLayoutId() {
@@ -233,39 +226,9 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 mFlLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_video:
-                showBottomDialog();
+                toActivity(EducationActivity.class);
                 break;
         }
-    }
-
-    /*教学视频*/
-    private void showBottomDialog() {
-        if (mDialog == null) {
-            mDialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
-            //填充对话框的布局
-            View alertView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_educate, null);
-            //初始化控件
-            JZVideoPlayerStandard  videoPlayer = (JZVideoPlayerStandard ) alertView.findViewById(R.id.bottom_videoplayer);
-            videoPlayer.setUp(Constant.EDUCATION_VIDEO_URL,
-                    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                    "教学视频");
-
-            //将布局设置给dialog
-            mDialog.setContentView(alertView);
-            //获取当前activity所在的窗体
-            Window dialogWindow = mDialog.getWindow();
-            //设置dialog从窗体底部弹出
-            dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            WindowManager windowManager = getActivity().getWindowManager();
-            Display display = windowManager.getDefaultDisplay();
-            lp.width = (int) display.getWidth();  //设置宽度
-            lp.y = 5;  //设置dialog距离底部的距离
-            //将属性设置给窗体
-            dialogWindow.setAttributes(lp);
-        }
-        mDialog.show();
     }
 
     private void delete() {

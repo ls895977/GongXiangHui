@@ -1,18 +1,13 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +32,7 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
+import com.qunxianghui.gxh.ui.activity.EducationActivity;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
 import com.qunxianghui.gxh.ui.activity.GeneralMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
@@ -49,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jzvd.JZVideoPlayerStandard;
 
 public class AdvertBottomFragment extends BaseFragment implements View.OnClickListener
         , CompoundButton.OnCheckedChangeListener, AdvertChoosePicDialog.ImgPickListener, AdvertChooseTypeDialog.Callback {
@@ -77,7 +72,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private AdvertChoosePicDialog mChoosePic;
     private AdvertChooseTypeDialog mChooseType;
     public static List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> mList;
-    private Dialog mDialog;
 
     @Override
     public int getLayoutId() {
@@ -162,9 +156,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         startActivityForResult(intent, 0x0011);
                         break;
                     case 9:
-                        showBottomDialog();
-
-
+                        toActivity(EducationActivity.class);
                         break;
                     default:
                         if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false) && mViewList.size() >= 2) {
@@ -219,37 +211,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
         });
     }
-
-    /*播放视频的dialog*/
-    private void showBottomDialog() {
-        if (mDialog == null) {
-            mDialog = new Dialog(mActivity, R.style.ActionSheetDialogStyle);
-            //填充对话框的布局
-            View alertView = LayoutInflater.from(mActivity).inflate(R.layout.bottom_video_educate, null);
-            //初始化控件
-            JZVideoPlayerStandard videoPlayer = alertView.findViewById(R.id.bottom_videoplayer);
-            videoPlayer.setUp(Constant.EDUCATION_VIDEO_URL,
-                    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                    "教学视频");
-//            videoPlayer.thumbImageView.setImage(Constant.EDUCATION_VIDEO_PIC);
-            //将布局设置给dialog
-            mDialog.setContentView(alertView);
-            //获取当前activity所在的窗体
-            Window dialogWindow = mDialog.getWindow();
-            //设置dialog从窗体底部弹出
-            dialogWindow.setGravity(Gravity.BOTTOM);
-            //获得窗体的属性
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            WindowManager windowManager = getActivity().getWindowManager();
-            Display display = windowManager.getDefaultDisplay();
-            lp.width = (int) display.getWidth();  //设置宽度
-            lp.y = 5;  //设置dialog距离底部的距离
-            //将属性设置给窗体
-            dialogWindow.setAttributes(lp);
-        }
-        mDialog.show();
-    }
-
 
     @Override
     public void onClick(View v) {
