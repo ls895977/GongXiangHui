@@ -398,7 +398,6 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         if (TextUtils.isEmpty(data_id)) return;
         OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
                 .params("uuid", data_id)
-                //.params("type",)
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {

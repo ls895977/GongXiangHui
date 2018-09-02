@@ -208,7 +208,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
     }
 
     private void next(String img) {
-        mSb.append(img);
+        mSb.append(img).append(",");
         if (mIndex == mAdapter.getImages().size()) {
             if (mId == 0) {
                 saveProduct();

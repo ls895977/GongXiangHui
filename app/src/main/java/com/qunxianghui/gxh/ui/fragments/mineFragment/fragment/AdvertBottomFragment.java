@@ -141,6 +141,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             public void onItemClick(int position) {
                 switch (position) {
                     case 0:
+                        if (mList.isEmpty()) {
+                            asyncShowToast("请先添加广告模版");
+                            return;
+                        }
                         mIsBottomClick = true;
                         Intent intent = new Intent();
                         intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
@@ -149,6 +153,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         startActivityForResult(intent, 0x0011);
                         break;
                     case 1:
+                        if (mList.isEmpty()) {
+                            asyncShowToast("请先添加广告模版");
+                            return;
+                        }
                         mIsBottomClick = true;
                         intent = new Intent(mActivity, GeneralMaterialActivity.class);
                         intent.putExtra("isMultiSelect", true);
@@ -339,10 +347,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         break;
                     }
                     companyAdvert.id = 0;
-                    mList.add(companyAdvert);
+//                    mList.add(companyAdvert);
                     addData(companyAdvert);
                 }
-                EnterpriseMateriaItemFragment.clearData();
             } else {
                 EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(0);
                 Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
@@ -366,7 +373,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     }
                     companyAdvert.id = 0;
                     companyAdvert.ad_type = 3;
-                    mList.add(companyAdvert);
+//                    mList.add(companyAdvert);
                     addData(companyAdvert);
                 }
             } else {
@@ -648,6 +655,24 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         view.findViewById(R.id.iv_delete).setOnClickListener(this);
         EditText etTitle = view.findViewById(R.id.etWechatId);
         EditText etDes = view.findViewById(R.id.etDes);
+        ImageView adImg = view.findViewById(R.id.ivAd);
+        adImg.setOnClickListener(this);
+        SwitchButton sB = view.findViewById(R.id.sw);
+        sB.setOnCheckedChangeListener(this);
+        if (companyAdvert != null) {
+            mList.add(companyAdvert);
+            sB.setChecked(companyAdvert.is_slide == 1);
+            Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
+            if (companyAdvert.settings != null) {
+                etDes.setText(companyAdvert.settings.intro);
+                etTitle.setText(companyAdvert.settings.slogan);
+            }
+        } else {
+            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
+            advert.ad_type = 4;
+            advert.position = 2;
+            mList.add(advert);
+        }
         etTitle.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -660,24 +685,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 getCurrentSettings().intro = s.toString();
             }
         });
-        ImageView adImg = view.findViewById(R.id.ivAd);
-        adImg.setOnClickListener(this);
-        SwitchButton sB = view.findViewById(R.id.sw);
-        sB.setOnCheckedChangeListener(this);
-        if (companyAdvert != null) {
-            sB.setChecked(companyAdvert.is_slide == 1);
-            Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
-            if (companyAdvert.settings != null) {
-                etDes.setText(companyAdvert.settings.intro);
-                etTitle.setText(companyAdvert.settings.slogan);
-            }
-            mList.add(companyAdvert);
-        } else {
-            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
-            advert.ad_type = 4;
-            advert.position = 2;
-            mList.add(advert);
-        }
         addPage(view);
     }
 
@@ -902,7 +909,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
-            advert.ad_type = 5;
+            advert.ad_type = 8;
             advert.position = 2;
             mList.add(advert);
         }
