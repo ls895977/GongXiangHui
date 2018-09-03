@@ -88,6 +88,9 @@ public class PersonDataActivity extends BaseActivity {
     @Override
     protected void initData() {
         UserInfo.DataBean userInfo = (UserInfo.DataBean) getIntent().getSerializableExtra("userinfo");
+        if (userInfo == null) {
+            return;
+        }
         String avatar = userInfo.avatar;
         if (!TextUtils.isEmpty(avatar)) {
             Glide.with(mContext).load(avatar).apply(new RequestOptions().placeholder(R.mipmap.user_moren)
