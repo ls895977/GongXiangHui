@@ -16,16 +16,16 @@ public class Constant {
     public static final String BIANMIN_HUANGLI_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
     //本地环境
-    private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
+    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
     //新闻详情
-    public static final String HOME_NEWS_DETAIL_URL = "http://api.qunxianghui.com.cn/v2/theme/new_details/xinwen_/index.html#/";
+    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
     //本地发布详情
-    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.qunxianghui.com.cn/v2/theme/new_details/bendi_fabu/index.html#/";
+    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
     //精选发布详情
     public static final String GOOD_SELECT__DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/jingxuan_fabu/index.html#/";
     //视频详情

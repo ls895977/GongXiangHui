@@ -79,15 +79,15 @@ public class MineFragment extends BaseFragment {
 
     @SuppressLint("NewApi")
     @Override
-    protected void setStatusBarColor(){
+    protected void setStatusBarColor() {
         Window window = mActivity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.style_status_color));
     }
 
     @Override
-    protected void setStatusBarTextColor(){
-        StatusBarColorUtil.setStatusTextColor(false,mActivity);
+    protected void setStatusBarTextColor() {
+        StatusBarColorUtil.setStatusTextColor(false, mActivity);
     }
 
     @Override
@@ -145,6 +145,7 @@ public class MineFragment extends BaseFragment {
             SharedPreferences spConpanyname = mActivity.getSharedPreferences("companymessage", 0);
             SharedPreferences.Editor editor = spConpanyname.edit();
             editor.putString("avatar", mUserInfo.avatar);
+            editor.putString("expire_time", mUserInfo.expire_time);
             editor.apply();
         }
     }

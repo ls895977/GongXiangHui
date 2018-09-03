@@ -58,6 +58,10 @@ public class PersonDetailPostFragment extends BaseFragment {
             postList = testMode.getData().getList();
             final NineGridTest2Adapter persondetailPostAdapter = new NineGridTest2Adapter(mActivity, postList);
             xrecyclerPersondetailPost.setAdapter(persondetailPostAdapter);
+
+            if (postList.isEmpty()){
+                mEmptyView.setVisibility(View.VISIBLE);
+            }
         }
     }
 

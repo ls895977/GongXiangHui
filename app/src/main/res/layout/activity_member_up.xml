@@ -164,6 +164,8 @@
                     android:drawableLeft="@mipmap/icon_memberup_support"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
+                    android:lineSpacingExtra="1.5dp"
+                    android:lineSpacingMultiplier="1.2"
                     android:text=""
                     android:textColor="#161616"
                     android:textSize="13sp" />
@@ -203,6 +205,8 @@
                     android:drawableLeft="@mipmap/icon_memberup_commadv"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
+                    android:lineSpacingExtra="1.5dp"
+                    android:lineSpacingMultiplier="1.2"
                     android:text="顶部通栏广告限10,底部所有广告权限10个
  贴片广告限1个"
                     android:textColor="#161616"
