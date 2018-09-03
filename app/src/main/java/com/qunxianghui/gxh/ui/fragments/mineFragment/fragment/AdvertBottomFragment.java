@@ -343,11 +343,15 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     }
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
                     if (mIsHasBigPage && companyAdvert.ad_type == 1) {
-                        asyncShowToast("亲，大图通栏广告只可添加一个～～");
-                        break;
+                        for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert : mList) {
+                            if (advert.ad_type == 1) {
+                                delete();
+                                mIsHasBigPage = false;
+                                break;
+                            }
+                        }
                     }
                     companyAdvert.id = 0;
-//                    mList.add(companyAdvert);
                     addData(companyAdvert);
                 }
             } else {
