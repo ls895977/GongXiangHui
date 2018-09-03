@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_picture"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="83dp"
         android:orientation="horizontal"
         android:padding="7dp">
@@ -28,61 +28,47 @@
                 android:scaleType="fitXY" />
         </android.support.v7.widget.CardView>
 
-        <RelativeLayout
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_item_right_image_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/rl_picture"
+        android:lines="2"
+        android:textColor="#000"
+        android:textSize="14sp"
+        tools:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/rl_picture"
+        android:paddingBottom="7dp">
+
+        <TextView
+            android:id="@+id/tv_right_iamge_bottom_science"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="3dp"
+            android:textSize="11sp"
+            tools:text="科技" />
 
-            <TextView
-                android:id="@+id/tv_item_right_image_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:lines="2"
-                android:textColor="#000"
-                android:textSize="14sp"
-                tools:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务" />
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:paddingBottom="7dp"
-                android:paddingLeft="7dp">
-
-                <TextView
-                    android:id="@+id/tv_right_iamge_bottom_science"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:textSize="11sp"
-                    tools:text="科技" />
-
-                <TextView
-                    android:id="@+id/tv_right_iamge_bottom_science2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
-                    android:drawableLeft="@mipmap/eye_test"
-                    android:drawablePadding="3dp"
-                    android:textSize="11sp"
-                    tools:text="52万" />
-
-                <TextView
-                    android:id="@+id/tv_right_iamge_bottom_science3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/eye_test"
-                    android:drawablePadding="3dp"
-                    android:text="刚刚"
-                    android:textSize="11sp"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-        </RelativeLayout
-        >
+        <TextView
+            android:id="@+id/tv_right_iamge_bottom_science2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:drawableLeft="@mipmap/eye_test"
+            android:drawablePadding="3dp"
+            android:textSize="11sp"
+            tools:text="52万" />
 
     </RelativeLayout>
 
@@ -90,9 +76,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_alignBottom="@+id/rl_picture"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
-        android:layout_marginTop="3dp"
+        android:layout_below="@+id/rl_picture"
+        android:layout_marginTop="10dp"
         android:background="@color/divider" />
-</LinearLayout>
+</RelativeLayout>

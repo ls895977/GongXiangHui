@@ -92,7 +92,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     protected void initViews() {
         SharedPreferences companyData = getSharedPreferences("companymessage", 0);
         selfcompayname = companyData.getString("selfcompayname", "");
-        expire_time = companyData.getString("expire_time", "");
+        expire_time = companyData.getString("member_expire_time", "");
         avatar = companyData.getString("avatar", "");
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
