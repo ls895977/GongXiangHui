@@ -14,7 +14,6 @@
             android:layout_height="170dp"
             android:background="@mipmap/icon_memberup_bg">
 
-
             <ImageView
                 android:id="@+id/iv_memberup_back"
                 android:layout_width="42dp"
@@ -89,7 +88,7 @@
                                 android:layout_toRightOf="@+id/iv_company_head"
                                 android:text="企业会员"
                                 android:textColor=" #000000"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/tv_memberup_company_state"
@@ -157,6 +156,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_company_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -164,11 +164,12 @@
                     android:drawableLeft="@mipmap/icon_memberup_support"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="支持微信、网易等外部文章链接分享"
+                    android:text=""
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_company_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -176,11 +177,12 @@
                     android:drawableLeft="@mipmap/icon_member_adv_memory"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="顶部、底部都可编辑"
+                    android:text="顶部广告、底部广告都可编辑"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_company_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -188,11 +190,12 @@
                     android:drawableLeft="@mipmap/icon_member_adv_memory"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="广告储存模板10个"
+                    android:text="广告储存模板21个(顶部.底部和贴片)"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_company_four"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -200,11 +203,13 @@
                     android:drawableLeft="@mipmap/icon_memberup_commadv"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="普通广告、视频广告、大图广告"
+                    android:text="顶部通栏广告限10,底部所有广告权限10个
+ 贴片广告限1个"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_company_five"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -212,7 +217,7 @@
                     android:drawableLeft="@mipmap/icon_memberup_muti"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="多账号管理、员工排行榜 广告权限管理、企业互推等"
+                    android:text="企业员工排行榜"
                     android:textColor="#161616"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -262,7 +267,7 @@
                                 android:layout_toRightOf="@+id/iv_regist_head"
                                 android:text="注册会员"
                                 android:textColor=" #000000"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/tv_memberup_person_state"
@@ -274,6 +279,7 @@
                                 android:layout_toRightOf="@+id/iv_regist_head"
                                 android:drawableLeft="@mipmap/icon_memberup_diamond"
                                 android:drawablePadding="5dp"
+                                android:textColor=" #161616"
                                 android:text="会员状态:正常"
                                 android:textSize="12sp" />
 
@@ -286,6 +292,7 @@
                                 android:layout_toRightOf="@+id/iv_regist_head"
                                 android:drawableLeft="@mipmap/icon_memberup_ready_active"
                                 android:drawablePadding="5dp"
+                                android:textColor=" #161616"
                                 android:text="激活即可享受企业版会员特权"
                                 android:textSize="12sp" />
                         </RelativeLayout>
@@ -296,6 +303,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="20dp"
+                            android:textColor=" #161616"
                             android:text="立即激活" />
                     </LinearLayout>
 
@@ -312,6 +320,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_regist_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -319,11 +328,12 @@
                     android:drawableLeft="@mipmap/icon_memberup_support"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="限APP内部文章链接分享"
+                    android:text="限app内部文章植入广告后分享"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_regist_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -331,11 +341,12 @@
                     android:drawableLeft="@mipmap/icon_member_adv_memory"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="仅限底部编辑"
+                    android:text="仅限底部广告编辑"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_regist_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -343,11 +354,12 @@
                     android:drawableLeft="@mipmap/icon_member_adv_memory"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="广告存储模板2个"
+                    android:text="底部所有广告限2个"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_memberup_regist_four"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -355,7 +367,7 @@
                     android:drawableLeft="@mipmap/icon_memberup_commadv"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="普通广告"
+                    android:text="广告储存模板限2个（限底部）"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 

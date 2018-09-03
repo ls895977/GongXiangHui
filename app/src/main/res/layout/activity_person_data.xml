@@ -54,7 +54,7 @@
         <RelativeLayout
             android:id="@+id/ll_person_data_img"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
@@ -76,81 +76,79 @@
 
         <View style="@style/dividerStyle" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:focusableInTouchMode="true">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:text="昵称" />
 
             <EditText
                 android:id="@+id/et_person_data_nickName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请设置昵称"
                 android:textSize="13sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_mineData_name"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:text="姓名" />
 
             <EditText
                 android:id="@+id/et_person_data_username"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请设置姓名"
+
                 android:textSize="14sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_mineData_sex"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:text="性别" />
 
             <TextView
                 android:id="@+id/tv_person_data_sex"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:clickable="false"
                 android:gravity="right"
@@ -158,127 +156,123 @@
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:text="手机号码" />
 
             <TextView
                 android:id="@+id/tv_person_data_phone"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请输入手机号"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center"
                 android:layout_marginStart="15dp"
                 android:text="邮箱" />
 
             <EditText
                 android:id="@+id/et_person_data_email"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请填写邮箱"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:text="公司" />
 
             <EditText
                 android:id="@+id/et_person_data_company"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请填写公司名"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:text="职位" />
 
             <EditText
                 android:id="@+id/et_person_data_job"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="right"
                 android:hint="请填写职位"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View style="@style/dividerStyle" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
 
             <TextView
                 style="@style/ConmmenTextStyle"
@@ -319,6 +313,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="72dp"
+            android:layout_marginTop="5dp"
             android:background="#f6f6f6">
 
             <EditText
