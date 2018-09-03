@@ -703,7 +703,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         etName.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentSettings().name = s.toString();
+                getCurrentSettings().slogan = s.toString();
             }
         });
         etQQ.addTextChangedListener(new NewTextWatcher() {
@@ -727,7 +727,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             sB.setChecked(companyAdvert.is_slide == 1);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(adImg);
             if (companyAdvert.settings != null) {
-                etName.setText(companyAdvert.settings.name);
+                etName.setText(companyAdvert.settings.slogan);
                 etQQ.setText(companyAdvert.settings.qq);
                 etDes.setText(companyAdvert.settings.intro);
             }

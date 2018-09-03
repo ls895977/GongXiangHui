@@ -311,6 +311,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         //贴片广告
         if (companyAdvert.ad_type == 6) {
+            mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
             if (!TextUtils.isEmpty(companyAdvert.settings.time))
                 mPost.params("ad[" + index + "][settings][time]", companyAdvert.settings.time);
             if (companyAdvert.settings.operate != 0) {
@@ -331,9 +332,9 @@ public class AdvertTemplateActivity extends BaseActivity {
             //底部广告
         } else if (companyAdvert.position == 2) {
             if (companyAdvert.settings.operate == 0) return;
-            mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
             switch (companyAdvert.ad_type) {
                 case 1:
+                    mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                     switch (companyAdvert.settings.operate) {
                         case 1:
                             if (!TextUtils.isEmpty(companyAdvert.link))
@@ -359,6 +360,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
                     break;
                 case 3:
+                    mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
                     if (companyAdvert.settings.operate != 0) {
                         mPost.params("ad[" + index + "][settings][operate]", companyAdvert.settings.operate);
                         switch (companyAdvert.settings.operate) {
@@ -390,8 +392,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
                     break;
                 case 5:
-                    if (!TextUtils.isEmpty(companyAdvert.settings.name))
-                        mPost.params("ad[" + index + "][settings][name]", companyAdvert.settings.name);
+                    if (!TextUtils.isEmpty(companyAdvert.settings.slogan))
+                        mPost.params("ad[" + index + "][settings][slogan]", companyAdvert.settings.slogan);
                     if (!TextUtils.isEmpty(companyAdvert.settings.qq))
                         mPost.params("ad[" + index + "][settings][qq]", companyAdvert.settings.qq);
                     if (!TextUtils.isEmpty(companyAdvert.settings.intro))
