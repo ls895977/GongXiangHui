@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -294,6 +295,10 @@ public class HotPointFragment extends BaseFragment {
                     .setOnBannerListener(new OnBannerListener() {
                         @Override
                         public void OnBannerClick(int position) {
+                            if (TextUtils.isEmpty(lunboData.get(position).getImage_url())) {
+                                asyncShowToast("敬请期待！");
+                                return;
+                            }
                             Intent intent = new Intent(mActivity, ProtocolActivity.class);
                             intent.putExtra("url", lunboData.get(position).getImage_url());
                             startActivity(intent);

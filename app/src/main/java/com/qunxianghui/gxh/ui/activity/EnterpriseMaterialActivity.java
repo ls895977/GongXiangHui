@@ -68,6 +68,10 @@ public class EnterpriseMaterialActivity extends BaseActivity {
 
             }
         });
+        if (sType == 9) {
+            mSegmentTab.setCurrentTab(1);
+            mVp.setCurrentItem(1, false);
+        }
     }
 
     @OnClick({R.id.iv_back, R.id.tv_save})
