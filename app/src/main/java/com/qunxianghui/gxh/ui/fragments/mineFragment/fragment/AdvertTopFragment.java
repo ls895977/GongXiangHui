@@ -75,7 +75,6 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     public void onSuccess(Response<PersonalAds> response) {
                         PersonalAds body = response.body();
                         if (body != null && body.code == 200 && !body.data.isEmpty()) {
-                            mList = body.data;
                             for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
                                 addPage(datum);
                             }
@@ -259,6 +258,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         SwitchButton sw = view.findViewById(R.id.sw);
         sw.setOnCheckedChangeListener(this);
         if (data != null) {
+            mList.add(data);
             tvChooseActivityLink.setVisibility(View.GONE);
             rlAddImg.setVisibility(View.GONE);
             etPhone.setVisibility(View.GONE);
@@ -360,7 +360,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     }
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
                     companyAdvert.id = 0;
-                    mList.add(companyAdvert);
+//                    mList.add(companyAdvert);
                     addPage(companyAdvert);
                 }
             } else {
@@ -380,7 +380,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     }
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(i);
                     companyAdvert.id = 0;
-                    mList.add(companyAdvert);
+//                    mList.add(companyAdvert);
                     addPage(companyAdvert);
                 }
             } else {

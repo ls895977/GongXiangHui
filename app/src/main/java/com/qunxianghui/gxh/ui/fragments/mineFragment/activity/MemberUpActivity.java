@@ -18,9 +18,6 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import butterknife.BindView;
 
 /**
@@ -101,9 +98,9 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             tvMemberupPersonActive.setVisibility(View.GONE);
             tvMemberupActiviteTime.setVisibility(View.VISIBLE);
             tvMemberupCompanyState.setText("会员状态: 已激活");
-            Date date = new Date(Long.parseLong(expire_time) * 1000);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            tvMemberupActiviteTime.setText("到期日期 : " + simpleDateFormat.format(date));
+//            Date date = new Date(Long.parseLong(expire_time) * 1000);
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            tvMemberupActiviteTime.setText("到期日期 : " + expire_time);
             tvMemberupPersonState.setText("会员状态:正常");
         } else {
             mTvMemberupQuicklyActive.setVisibility(View.VISIBLE);

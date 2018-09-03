@@ -166,8 +166,11 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private void uploadBaoLiaoData() {
         mLlLoad.setVisibility(View.VISIBLE);
         upLoadPics.clear();
+
+        boolean isHasPics = false;
         for (BaoLiaoBean datum : mAdapter.mData) {
             if(datum.mList != null && !datum.mList.isEmpty()) {
+                isHasPics = true;
                 for (ImageItem imageItem : datum.mList) {
                     if (!imageItem.path.contains("http")) {
                         upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
@@ -176,6 +179,9 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     }
                 }
             }
+        }
+        if(!isHasPics){
+            fetchBaoLiaoData();
         }
     }
 
@@ -224,12 +230,14 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private void fetchBaoLiaoData() {
         final String faBuContent = mEtContent.getText().toString().trim();
         final String faBuTitle = mEtTitle.getText().toString().trim();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0, length = upLoadPics.size(); i < length; i++) {
-            if (i != upLoadPics.size() - 1) {
-                stringBuilder.append(upLoadPics.get(i) + ",");
-            } else {
-                stringBuilder.append(upLoadPics.get(i));
+        StringBuilder stringBuilder = new StringBuilder("");
+        if(!upLoadPics.isEmpty()) {
+            for (int i = 0, length = upLoadPics.size(); i < length; i++) {
+                if (i != upLoadPics.size() - 1) {
+                    stringBuilder.append(upLoadPics.get(i) + ",");
+                } else {
+                    stringBuilder.append(upLoadPics.get(i));
+                }
             }
         }
         OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)

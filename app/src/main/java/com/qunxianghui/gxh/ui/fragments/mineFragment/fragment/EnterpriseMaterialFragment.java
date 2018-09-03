@@ -35,7 +35,7 @@ public class EnterpriseMaterialFragment extends BaseFragment {
         for (int i = 1; i <= mTitles.length; i++) {
             bundle = new Bundle();
             fragment = new EnterpriseMateriaItemFragment();
-            bundle.putInt("type", i >= 6 ? (++i) : i);
+            bundle.putInt("type", i >= 6 ? (i + 1) : i);
             bundle.putInt("position", 2);
             fragment.setArguments(bundle);
             adapter.addFragment(fragment);

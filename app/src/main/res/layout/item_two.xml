@@ -16,9 +16,9 @@
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="40dp"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical"
             android:textColor="#282828"
             android:textSize="15sp" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="15dp"
-            android:background="@mipmap/common_gray_s_row_down" />
+            android:src="@mipmap/common_black_row_right" />
     </LinearLayout>
 
 </RelativeLayout>

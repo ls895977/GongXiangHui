@@ -23,5 +23,6 @@ public class CountyItemParent extends TreeItemGroup<ProvinceBean.CityBean> {
     @Override
     public void onBindViewHolder(ViewHolder holder) {
         holder.setText(R.id.tv_content, getData().cityName);
+        holder.setImageResource(R.id.iv_twoStep_rightIcon, isExpand() ? R.mipmap.common_gray_s_row_down : R.mipmap.common_black_row_right);
     }
 }
