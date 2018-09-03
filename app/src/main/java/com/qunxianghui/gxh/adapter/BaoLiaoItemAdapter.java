@@ -87,7 +87,7 @@ public class BaoLiaoItemAdapter extends RecyclerView.Adapter<BaoLiaoItemAdapter.
             //根据条目位置设置图片
             ImageItem item = mData.get(position);
             if (isAdded && position == getItemCount() - 1) {
-                iv_img.setImageResource(R.drawable.selector_image_add);
+                iv_img.setImageResource(R.mipmap.icon_biaoliao_add);
                 clickPosition = CompanySetActivity.IMAGE_ITEM_ADD;
             } else {
                 ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);

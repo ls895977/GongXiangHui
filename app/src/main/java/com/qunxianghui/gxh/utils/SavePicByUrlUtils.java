@@ -18,7 +18,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SavePicByUrlUtils {
+
     private static HttpURLConnection urlConnection;
+    public static boolean sIsSaving;
 
     public static void getBitmap(Context context, String imageUrl) {
         try {
@@ -29,10 +31,12 @@ public class SavePicByUrlUtils {
             urlConnection.setRequestMethod("GET");
 
             if (urlConnection.getResponseCode() == 200) {
+                sIsSaving = true;
                 InputStream inputStream = urlConnection.getInputStream();
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 //将图片保存到本地
                 savePic2Phone(context, bitmap);
+                bitmap.recycle();
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -56,10 +60,10 @@ public class SavePicByUrlUtils {
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            sIsSaving = false;
         } catch (IOException e) {
             e.printStackTrace();
+            sIsSaving = false;
         }
 
         // 其次把文件插入到系统图库

@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.ImageAdapter;
 import com.qunxianghui.gxh.utils.SavePicByUrlUtils;
+import com.qunxianghui.gxh.utils.ToastUtils;
 import com.qunxianghui.gxh.widget.PhotoViewPager;
 
 import java.util.ArrayList;
@@ -85,6 +86,10 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
 
     /*弹出底部弹出框*/
     private void showBottomDialog(final int position, final String url) {
+        if (SavePicByUrlUtils.sIsSaving) {
+            ToastUtils.showShort("图片正在保存中，请稍后...");
+            return;
+        }
         if (mDialog == null) {
             mDialog = new Dialog(PhotoBrowserActivity.this, R.style.ActionSheetDialogStyle);
             //填充对话框的布局

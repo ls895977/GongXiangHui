@@ -121,8 +121,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             case R.id.ch_regist:
 
                 break;
-
-
         }
     }
 
