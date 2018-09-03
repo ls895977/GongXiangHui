@@ -19,12 +19,11 @@
 
             <ImageView
                 android:id="@+id/iv_companycard_back"
-                android:layout_width="13dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="30dp"
-                android:background="@mipmap/icon_companycard_back" />
-
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="18dp"
+                android:padding="13dp"
+                android:src="@mipmap/icon_memberup_back" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,12 +49,11 @@
         <RelativeLayout
             android:id="@+id/rl_companycard_center_advance"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="140dp"
-            android:background="@color/white">
+            android:layout_marginTop="140dp">
 
             <LinearLayout
                 android:id="@+id/ll_companycard_diamond"
@@ -71,23 +69,32 @@
             </LinearLayout>
 
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_height="60dp"
                 android:layout_toRightOf="@+id/ll_companycard_diamond"
-                android:text="核心优势"
-                android:textColor="#444444"
-                android:textSize="14sp" />
+                android:background="@color/white">
 
-            <ImageView
-                android:layout_width="7dp"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@mipmap/common_black_row_right" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical"
+                    android:text="核心优势"
+                    android:textColor="#444444"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@mipmap/common_black_row_right" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
 
@@ -98,8 +105,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/white">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:id="@+id/ll_companycard_goodselect"

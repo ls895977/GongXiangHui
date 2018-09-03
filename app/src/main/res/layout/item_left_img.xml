@@ -70,13 +70,23 @@
             android:textSize="11sp"
             tools:text="52万" />
 
+        <TextView
+            android:id="@+id/tv_right_iamge_bottom_science3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/eye_test"
+            android:drawablePadding="3dp"
+            android:text="刚刚"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
-
     <View
+
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="0.7dp"
         android:layout_below="@+id/rl_picture"
-        android:layout_marginTop="10dp"
+        android:layout_margin="7dp"
         android:background="@color/divider" />
 </RelativeLayout>

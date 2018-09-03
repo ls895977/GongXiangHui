@@ -21,7 +21,6 @@ import com.qunxianghui.gxh.widget.RoundImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 /**
  * 会员升级界面
  * Created by Administrator on 2018/4/16 0016.
