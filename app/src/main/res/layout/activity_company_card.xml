@@ -49,16 +49,17 @@
         <RelativeLayout
             android:id="@+id/rl_companycard_center_advance"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="140dp">
+            android:layout_marginTop="140dp"
+            android:background="@drawable/shape_button_companycard_white">
 
             <LinearLayout
                 android:id="@+id/ll_companycard_diamond"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:background="@mipmap/icon_companycard_rectangle"
                 android:gravity="center">
 
@@ -69,32 +70,23 @@
             </LinearLayout>
 
 
-            <RelativeLayout
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@+id/ll_companycard_diamond"
-                android:background="@color/white">
+                android:text="核心优势"
+                android:textColor="#444444"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center_vertical"
-                    android:text="核心优势"
-                    android:textColor="#444444"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="7dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@mipmap/common_black_row_right" />
-
-            </RelativeLayout>
-
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@mipmap/common_black_row_right" />
         </RelativeLayout>
 
 
@@ -105,12 +97,13 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_button_companycard_white">
 
             <LinearLayout
                 android:id="@+id/ll_companycard_goodselect"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:background="@mipmap/icon_companycard_rectangle"
                 android:gravity="center">
 
