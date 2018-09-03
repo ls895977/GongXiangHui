@@ -55,12 +55,10 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
     }
-
     @Override
     public void initData() {
         LoadMycolectNews();
     }
-
     private void LoadMycolectNews() {
         OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 12)
@@ -72,7 +70,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                     }
                 });
     }
-
     /**
      * 解析我的收藏列表
      *

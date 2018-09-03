@@ -107,9 +107,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         llProtocolMain.addView(webView);
         RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         param.addRule(RelativeLayout.CENTER_IN_PARENT);
-        final View loadView = LayoutInflater.from(ProtocolActivity.this).inflate(R.layout.common_bg_load_view, llProtocolMain, false);
-        loadView.setLayoutParams(param);
-        llProtocolMain.addView(loadView);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -127,7 +124,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 if (progress == 100) {
-                    loadView.setVisibility(View.GONE);
                     mMLoadingDialog.dismiss();
                 }
             }
