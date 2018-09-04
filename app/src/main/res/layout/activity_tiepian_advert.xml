@@ -21,15 +21,39 @@
         <RelativeLayout
             android:id="@+id/rl_add"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/iv"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
                 android:scaleType="fitXY"
                 android:src="@mipmap/icon_add_tiepian" />
+
+            <TextView
+                android:id="@+id/tv_addtiepian_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="植入贴片广告"
+                android:textColor="#D81717"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_addtiepian_des"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="点击此处编辑您的视频贴片广告"
+                android:textColor="#A0A0A0"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_top"
@@ -43,10 +67,10 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="4dp"
-                tools:text="跳过广告"
                 android:textColor="@color/white"
                 android:textSize="11sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:text="跳过广告" />
 
             <TextView
                 android:id="@+id/tv_type"

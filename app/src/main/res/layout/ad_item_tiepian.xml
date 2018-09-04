@@ -36,7 +36,9 @@
                 <ImageView
                     android:id="@id/ivAd"
                     android:layout_width="match_parent"
-                    android:layout_height="210dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:scaleType="fitXY"
                     android:src="@mipmap/icon_add_tiepian_" />
             </RelativeLayout>
