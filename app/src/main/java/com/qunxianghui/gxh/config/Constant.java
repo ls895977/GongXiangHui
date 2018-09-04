@@ -26,15 +26,15 @@ public class Constant {
     //新闻详情
     public static final String HOME_NEWS_DETAIL_URL = "http://api.qunxianghui.com.cn/theme/new_details/xinwen_/index.html#/";
     //本地发布详情
-    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
+    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.qunxianghui.com.cn/theme/new_details/bendi_fabu/index.html#/";
     //精选发布详情
-    public static final String GOOD_SELECT__DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/jingxuan_fabu/index.html#/";
+    public static final String GOOD_SELECT__DETAIL_URL = "http://api.qunxianghui.com.cn/theme/new_details/jingxuan_fabu/index.html#/";
     //视频详情
-    public static final String VIDEO_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/shipin_/index.html#/";
+    public static final String VIDEO_DETAIL_URL = "http://api.qunxianghui.com.cn/theme/new_details/shipin_/index.html#/";
     //首页上面优选的页面
-    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";
+    public static final String HOME_GOOD_SELECT_URL = "http://api.qunxianghui.com.cn/theme/new_details/youxuan_h5/index.html#/";
     //首页上面本地服务的页面
-    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";
+    public static final String HOME_LOCAL_SERVICE_URL = "http://api.qunxianghui.com.cn/theme/new_details/bendi_h5/index.html#/";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份
@@ -151,7 +151,6 @@ public class Constant {
     //用户升级
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";
     //上传图片
-    // public static final String UP_LOAD_PIC = BASE_URL + "system/uploadImage";
     public static final String UP_LOAD_OSS_PIC = BASE_URL + "system/oss_uploadImage";
     //本地圈用户订阅的
     public static final String LOCAL_POST_SUB_URL = BASE_URL + "Posts/getPostsCate";

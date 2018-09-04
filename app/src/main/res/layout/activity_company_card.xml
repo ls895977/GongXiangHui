@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e4e4e4"
+    android:background="#f4f4f4"
     android:orientation="vertical">
 
     <LinearLayout
@@ -58,8 +58,8 @@
 
             <LinearLayout
                 android:id="@+id/ll_companycard_diamond"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@mipmap/icon_companycard_rectangle"
                 android:gravity="center">
 
@@ -102,8 +102,8 @@
 
             <LinearLayout
                 android:id="@+id/ll_companycard_goodselect"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@mipmap/icon_companycard_rectangle"
                 android:gravity="center">
 
