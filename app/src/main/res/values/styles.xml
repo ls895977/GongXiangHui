@@ -203,6 +203,11 @@
     <style name="CheckBoxStyle">
         <item name="android:button">@drawable/checkbox_state</item>
     </style>
+    <!--自定义广告模板check的样式-->
+
+    <style name="MyCheckBox">
+        <item name="android:button">@drawable/checkbox_state</item>
+    </style>
     <!--tablayout 字体大小修改-->
     <style name="TextAppearance.Design.Tab.Custom" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">12sp</item>
