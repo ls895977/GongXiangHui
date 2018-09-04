@@ -33,6 +33,7 @@ import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeVideoActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.qunxianghui.gxh.utils.SPUtils;
@@ -132,6 +133,15 @@ public class HotPointFragment extends BaseFragment {
                         setData(response);
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (LocationActivity.sIsChangeArea) {
+            LocationActivity.sIsChangeArea = false;
+            homePullRefresh();
+        }
     }
 
     /**
