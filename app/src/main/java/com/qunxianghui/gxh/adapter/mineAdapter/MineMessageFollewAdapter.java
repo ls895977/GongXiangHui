@@ -2,7 +2,7 @@ package com.qunxianghui.gxh.adapter.mineAdapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MineMessageFollewAdapter extends BaseRecycleViewAdapter <MineMessageFollowBean.DataBean>{
 
-    private TextView mMineMessageResponse;
+    private ImageView mMineMessageResponse;
     private MineMessageResponseListener mineMessageResponseListener;
     private RequestOptions options;
 
@@ -32,7 +32,7 @@ public class MineMessageFollewAdapter extends BaseRecycleViewAdapter <MineMessag
     }
     @Override
     protected void convert(MyViewHolder holder, final int position, MineMessageFollowBean.DataBean dataBean) {
-        mMineMessageResponse = holder.getView(R.id.tv_mineMessage_response);
+        mMineMessageResponse = holder.getView(R.id.iv_mineMessage_response);
         final RoundImageView issueHead = holder.getView(R.id.iv_mineMessagefollow_issueImage);
         final RoundImageView commenHead = holder.getView(R.id.iv_mineMessagefollow_commenImage);
         holder.setText(R.id.tv_mineMessagefollow_headContent,dataBean.getPosts_content());
