@@ -79,7 +79,7 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
         public SelectedPicViewHolder(View itemView) {
             super(itemView);
             iv_img = (ImageView) itemView.findViewById(R.id.iv_img);
-    }
+        }
 
         public void bind(int position) {
             //设置条目的点击事件
@@ -87,13 +87,14 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
             //根据条目位置设置图片
             ImageItem item = mData.get(position);
             if (isAdded && position == getItemCount() - 1) {
-                iv_img.setImageResource(R.drawable.selector_image_add);
+                iv_img.setImageResource(R.mipmap.icon_biaoliao_add);
                 clickPosition = CompanySetActivity.IMAGE_ITEM_ADD;
             } else {
                 ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
                 clickPosition = position;
             }
         }
+
         @Override
         public void onClick(View v) {
             if (listener != null) listener.onItemClick(v, clickPosition);

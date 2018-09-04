@@ -13,11 +13,9 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyIssueLocalServiceAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 
 import java.util.ArrayList;
@@ -71,6 +69,10 @@ public class PersonLocalServiceFragment extends BaseFragment {
             }
             mList.addAll(data.getData());
             mAdapter.notifyDataSetChanged();
+
+            if(mList.isEmpty()){
+                llEmpty.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -66,7 +66,9 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <View style="@style/dividerStyle" />
+    <View
+        style="@style/dividerStyle"
+        android:layout_marginTop="10dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -108,7 +110,9 @@
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View
+        android:layout_marginTop="10dp"
+        style="@style/dividerStyle" />
 
     <Button
         android:id="@+id/bt_login_login"

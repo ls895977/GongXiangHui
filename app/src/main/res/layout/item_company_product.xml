@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#f9f9f9"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -12,6 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="20dp"
+        app:cardElevation="2dp"
         app:cardCornerRadius="8dp">
 
         <ImageView
@@ -35,7 +37,7 @@
         android:id="@+id/tv_iv_company_advan_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="5dp"
         android:textColor="#828282"
         tools:text="核心优势核心优势核心优势核心优势,核心优势核心优势核心优势核心优势" />

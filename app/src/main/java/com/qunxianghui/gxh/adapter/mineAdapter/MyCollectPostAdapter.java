@@ -33,6 +33,7 @@ public class MyCollectPostAdapter extends BaseRecycleViewAdapter<MyCollectPostBe
     @Override
     protected void convert(MyViewHolder holder, final int position, final MyCollectPostBean.DataBean dataBean) {
         ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
+
         List<String> images = dataBean.getImages();
 
         if (dataBean.getInfo() != null) {

@@ -55,7 +55,6 @@ public class CompanyCardActivity extends BaseActivity {
     TextView tvCompanyAdress;
     @BindView(R.id.tv_company_duty)
     TextView tvCompanyDuty;
-
     private Dialog mDialog;
     private UMWeb mWeb;
     private UMShareListener umShareListener;

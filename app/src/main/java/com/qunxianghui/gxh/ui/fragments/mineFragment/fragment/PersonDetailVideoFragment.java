@@ -77,6 +77,10 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
                     startActivity(intent);
                 }
             });
+            if (mVideoList.isEmpty()){
+                mEmptyView.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/rl_picture"
         android:layout_width="wrap_content"
@@ -39,9 +40,9 @@
         android:layout_marginTop="7dp"
         android:layout_toRightOf="@+id/rl_picture"
         android:lines="2"
-        tools:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务"
         android:textColor="#000"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text=" 猫眼微影票务入口彻底整合 娱票儿App将于2月1日停止服务" />
 
 
     <RelativeLayout
@@ -63,11 +64,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
-                tools:text="科技"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                tools:text="科技" />
         </LinearLayout>
 
     </RelativeLayout>
+
     <CheckBox
         android:id="@+id/ch_delete"
         android:layout_width="wrap_content"
@@ -76,10 +78,10 @@
         android:button="@drawable/select_check_box"
         android:visibility="gone" />
 
-<View
-android:layout_width="match_parent"
-android:layout_height="1dp"
-android:layout_alignBottom="@+id/rl_picture"
-android:layout_marginTop="3dp"
-android:background="#d3d3d3" />
-    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/rl_picture"
+        android:layout_marginTop="3dp"
+        android:background="#d3d3d3" />
+</RelativeLayout>

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +58,7 @@ public class PersonDataActivity extends BaseActivity {
     @BindView(R.id.iv_person_data_img)
     ImageView ivPersonDataImg;
     @BindView(R.id.rl_mineData_sex)
-    RelativeLayout rlMineDataSex;
+    LinearLayout rlMineDataSex;
     @BindView(R.id.et_person_data_username)
     EditText etPersonDataUserName;
     @BindView(R.id.et_person_data_email)

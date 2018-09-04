@@ -55,12 +55,10 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class HotPointFragment extends BaseFragment {
-
     @BindView(R.id.rv)
     RecyclerView mRv;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-
     private Banner viewpagerHome;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配

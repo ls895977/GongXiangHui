@@ -36,7 +36,9 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <View style="@style/dividerStyle" />
+    <View
+        style="@style/dividerStyle"
+        android:layout_marginTop="10dp" />
 
     <RelativeLayout
 
@@ -80,7 +82,9 @@
 
     </RelativeLayout>
 
-    <View style="@style/dividerStyle" />
+    <View
+        style="@style/dividerStyle"
+        android:layout_marginTop="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -109,7 +113,9 @@
     </LinearLayout>
 
 
-    <View style="@style/dividerStyle" />
+    <View
+        style="@style/dividerStyle"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/bt_register_quickly"
@@ -145,8 +151,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="true"
-            android:button="@drawable/select_check_box_blue" />
+            android:button="@drawable/select_check_box_blue"
+            android:checked="true" />
 
         <TextView
             android:id="@+id/tv_regist_agree"
