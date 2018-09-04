@@ -31,6 +31,7 @@ import com.qunxianghui.gxh.listener.SoftKeyBoardListener;
 import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.ui.activity.PublishActivity;
 import com.qunxianghui.gxh.ui.dialog.CommentDialog;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.NineGridTest2Adapter;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
@@ -102,6 +103,16 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                         parseData(response.body());
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCateId == 0 && LocationActivity.sLocationCanChange) {
+            LocationActivity.sLocationCanChange = false;
+            mSkip = 0;
+            initData();
+        }
     }
 
     @SuppressLint("UseSparseArrays")

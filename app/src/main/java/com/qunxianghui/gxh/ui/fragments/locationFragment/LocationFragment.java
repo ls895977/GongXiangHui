@@ -104,10 +104,6 @@ public class LocationFragment extends BaseFragment {
         super.onResume();
         String currcity = SPUtils.getLocation("currcity");
         mTvLocalcircleLocation.setText(currcity);
-        if (LocationActivity.sLocationCanChange) {
-            LocationActivity.sLocationCanChange = false;
-            initData();
-        }
     }
 
     @Override
