@@ -215,6 +215,10 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             toActivity(LoginActivity.class);
             return;
         }
+        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+            asyncShowToast("亲，非企业会员只可添加底部广告哦～～");
+            return;
+        }
         Intent intent = new Intent(mActivity, AddTiePianAdvertActivity.class);
         intent.putExtra("url", Constant.VIDEO_DETAIL_URL
                 + "?token=" + SPUtils.getString(SpConstant.ACCESS_TOKEN, "")

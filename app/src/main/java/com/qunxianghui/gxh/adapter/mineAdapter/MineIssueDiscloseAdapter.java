@@ -14,7 +14,14 @@ import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import java.util.List;
 
 public class MineIssueDiscloseAdapter extends BaseRecycleViewAdapter<BaoliaoBean.DataBean> {
+
     public boolean isShow = false;
+    private Callback mCallback;
+
+    public void setCallback(Callback callback) {
+        this.mCallback = callback;
+    }
+
 
     public MineIssueDiscloseAdapter(Context context, List<BaoliaoBean.DataBean> datas) {
         super(context, datas);
@@ -37,24 +44,32 @@ public class MineIssueDiscloseAdapter extends BaseRecycleViewAdapter<BaoliaoBean
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
         }
 
-        CheckBox checkBox = holder.getView(R.id.ch_delete);
-        if (dataBean.isChecked()) {
-            checkBox.setChecked(true);
-        } else {
-            checkBox.setChecked(false);
-        }
+        final CheckBox checkBox = holder.getView(R.id.ch_delete);
+        checkBox.setChecked(dataBean.isChecked());
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dataBean.setChecked(!dataBean.isChecked());
             }
         });
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isShow) {
+                    if (mCallback != null) mCallback.callback(dataBean);
+                } else {
+                    checkBox.performClick();
+                }
+            }
+        });
     }
-
 
     @Override
     protected int getItemView() {
         return R.layout.fragment_issue_disclose_item;
+    }
+
+    public interface Callback {
+        void callback(BaoliaoBean.DataBean dataBean);
     }
 }

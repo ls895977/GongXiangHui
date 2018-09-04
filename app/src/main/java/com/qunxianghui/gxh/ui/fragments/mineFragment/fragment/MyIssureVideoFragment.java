@@ -1,7 +1,5 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
@@ -12,7 +10,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -36,7 +33,7 @@ import butterknife.BindView;
 /**
  * 视频
  */
-public class MyIssureVideoFragment extends BaseFragment implements MineIssueVideoAdapter.MyIssueVideoClikListener, Observer {
+public class MyIssureVideoFragment extends BaseFragment implements Observer {
 
     @BindView(R.id.recycler_mine_issue_video)
     XRecyclerView mRv;
@@ -72,14 +69,10 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                 initData();
             }
         });
-        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+        mAdapter.setCallback(new MineIssueVideoAdapter.Callback() {
             @Override
-            public void onItemClick(View v, int position) {
-                if (!mAdapter.isShow) {
-                    int uuid = mList.get(position - 1).getUuid();
-                    SkipMyIssueVideoDetail(uuid, position);
-                }
-
+            public void callback(int id) {
+                skipMyIssueVideoDetail(id);
             }
         });
 
@@ -158,7 +151,7 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
      *
      * @param uuid
      */
-    private void SkipMyIssueVideoDetail(int uuid, final int position) {
+    private void skipMyIssueVideoDetail(int uuid) {
         OkGo.<MyCollectVideoDetailBean>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
                 .params("id", uuid)
                 .execute(new JsonCallback<MyCollectVideoDetailBean>() {
@@ -167,7 +160,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                         MyCollectVideoDetailBean myCollectVideoDetailBean = response.body();
                         int code = myCollectVideoDetailBean.getCode();
                         if (code == 0) {
-                            String url = myCollectVideoDetailBean.getData().getRand_data().get(position).getUrl();
                             int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                             intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
@@ -177,24 +169,6 @@ public class MyIssureVideoFragment extends BaseFragment implements MineIssueVide
                         }
                     }
                 });
-    }
-
-    /*接口回调  删除视频的操作*/
-    @Override
-    public void deleVideoItem(final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("删除提示");
-        builder.setMessage("您确定要删除该条消息吗?");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                DeleteVideo(position);
-            }
-
-        });
-        mAdapter.notifyDataSetChanged();
-        builder.setNegativeButton("取消", null);
-        builder.show();
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineIssueDiscloseAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -53,14 +52,12 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MineIssueDiscloseAdapter(getContext(), mList);
-        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+        mAdapter.setCallback(new MineIssueDiscloseAdapter.Callback() {
             @Override
-            public void onItemClick(View v, int position) {
-                if (!mAdapter.isShow) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("baoliao", mList.get(position - 1));
-                    toActivity(BaoliaoDetailActivity.class, bundle);
-                }
+            public void callback(BaoliaoBean.DataBean dataBean) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("baoliao", dataBean);
+                toActivity(BaoliaoDetailActivity.class, bundle);
             }
         });
         mRv.setAdapter(mAdapter);

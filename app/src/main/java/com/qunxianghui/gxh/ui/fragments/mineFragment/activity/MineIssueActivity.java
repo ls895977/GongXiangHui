@@ -78,6 +78,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         mineMyIssureViewpager.setOffscreenPageLimit(fragments.size());
         setViewPageSlide(true);
     }
+
     /**
      *
      * @param canClick
@@ -92,13 +93,10 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-
-
     private void setViewPageSlide(boolean canChange) {
         mineMyIssureViewpager.setScanScroll(canChange);
         setTabLayoutCanClick(canChange);
     }
-
 
     @Override
     protected void initListeners() {

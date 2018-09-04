@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyCollectPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -45,7 +43,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
-    private Handler handler = new Handler();
     private boolean mIsFirst = true;
     private int count;
     private boolean mIsRefresh = false;
@@ -58,10 +55,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
-        LoadMycolectNews();
-    }
-
-    private void LoadMycolectNews() {
         OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 12)
                 .params("skip", count)
@@ -90,14 +83,10 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                 mIsFirst = false;
                 myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-                myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                myCollectPostAdapter.setCallback(new MyCollectPostAdapter.Callback() {
                     @Override
-                    public void onItemClick(View v, int position) {
-                        if (!myCollectPostAdapter.isShow) {
-                            int id = dataList.get(position - 1).getData_uuid();
-                            SkipMycollectNewsDetail(id, position);
-                        }
-
+                    public void callback(int id) {
+                        skipMycollectNewsDetail(id);
                     }
                 });
             }
@@ -113,7 +102,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
      *
      * @param id
      */
-    private void SkipMycollectNewsDetail(final int id, final int position) {
+    private void skipMycollectNewsDetail(final int id) {
         OkGo.<MyColleNewsDetailBean>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
                 .params("id", id)
                 .execute(new JsonCallback<MyColleNewsDetailBean>() {
@@ -187,12 +176,12 @@ public class MineCommonFragment extends BaseFragment implements Observer {
             public void onRefresh() {
                 mIsRefresh = true;
                 count = 0;
-                LoadMycolectNews();
+                initData();
             }
 
             @Override
             public void onLoadMore() {
-                LoadMycolectNews();
+                initData();
             }
         });
     }

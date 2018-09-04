@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -25,10 +24,9 @@ import com.qunxianghui.gxh.bean.mine.UserDetailInfoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationDetailFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServiceFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailBaoLiaoFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailPostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonDetailVideoFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonLocalServiceFragment;
 import com.qunxianghui.gxh.widget.RoundImageView;
@@ -38,6 +36,7 @@ import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class PersonDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -49,8 +48,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     TextView tvPersonDetailName;
     @BindView(R.id.tv_person_detail_attention)
     TextView tvPersonDetailAttention;
-    @BindView(R.id.mine_tablayout_person_detail)
-    TabLayout mineTablayoutPersonDetail;
     @BindView(R.id.mine_person_detail_viewpager)
     ViewPager minePersonDetailViewpager;
     @BindView(R.id.rl_persondetail_bg)
@@ -61,14 +58,21 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     TextView tvPersondetailFollow;
     @BindView(R.id.tv_persondetail_fans)
     TextView tvPersondetailFans;
+    @BindView(R.id.tv_0)
+    TextView mTv0;
+    @BindView(R.id.tv_1)
+    TextView mTv1;
+    @BindView(R.id.tv_2)
+    TextView mTv2;
+    @BindView(R.id.tv_3)
+    TextView mTv3;
+    @BindView(R.id.tv_4)
+    TextView mTv4;
 
-    private String[] titles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private int[] mBgs = new int[]{R.mipmap.icon_person_detail_bg1, R.mipmap.icon_person_detail_bg2
             , R.mipmap.icon_person_detail_bg3, R.mipmap.icon_person_detail_bg4, R.mipmap.icon_person_detail_bg5};
     private List<Fragment> fragments = new ArrayList<>();
-    private MineTabViewPagerAdapter mineTabViewPagerAdapter;
     public int member_id;
-    private String follow;
     private UserDetailInfoBean.DataBean dataList;
 
     @Override
@@ -80,11 +84,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     protected void initViews() {
         final Intent intent = getIntent();
         member_id = intent.getIntExtra("member_id", 1);
-        //设置tablayout的一个显示方式
-        mineTablayoutPersonDetail.setTabMode(TabLayout.MODE_FIXED);
-        for (String tab : titles) {
-            mineTablayoutPersonDetail.addTab(mineTablayoutPersonDetail.newTab().setText(tab));
-        }
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int height = displayMetrics.heightPixels;
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlPersondetailBg.getLayoutParams();
@@ -96,15 +95,50 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initData() {
         FetchPersonData();
+        mTv0.setSelected(true);
         fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new PersonDetailVideoFragment());
-        fragments.add(new PersonDetailPostFragment());
+        LocationDetailFragment locationDetailFragment = new LocationDetailFragment();
+        locationDetailFragment.mMemberId = member_id;
+        fragments.add(locationDetailFragment);
         fragments.add(new PersonLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
-        mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, null);
         minePersonDetailViewpager.setAdapter(mineTabViewPagerAdapter);
         minePersonDetailViewpager.setOffscreenPageLimit(fragments.size());
-        mineTablayoutPersonDetail.setupWithViewPager(minePersonDetailViewpager);
+        minePersonDetailViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setAllSelect();
+                switch (position) {
+                    case 0:
+                        mTv0.setSelected(true);
+                        break;
+                    case 1:
+                        mTv1.setSelected(true);
+                        break;
+                    case 2:
+                        mTv2.setSelected(true);
+                        break;
+                    case 3:
+                        mTv3.setSelected(true);
+                        break;
+                    case 4:
+                        mTv4.setSelected(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**
@@ -125,7 +159,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     private void parseUserDetailInfo(UserDetailInfoBean userDetailInfoBean) {
         if (userDetailInfoBean.getCode() == 200) {
             dataList = userDetailInfoBean.getData();
-            follow = dataList.getFollow();
+            String follow = dataList.getFollow();
             String self_introduction = dataList.getSelf_introduction();
             if (TextUtils.isEmpty(follow)) {
                 tvPersonDetailAttention.setText("关注");
@@ -197,4 +231,38 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+    @OnClick({R.id.tv_0, R.id.tv_1, R.id.tv_2, R.id.tv_3, R.id.tv_4})
+    public void onViewClicked(View view) {
+        setAllSelect();
+        switch (view.getId()) {
+            case R.id.tv_0:
+                mTv0.setSelected(true);
+                minePersonDetailViewpager.setCurrentItem(0, false);
+                break;
+            case R.id.tv_1:
+                mTv1.setSelected(true);
+                minePersonDetailViewpager.setCurrentItem(1, false);
+                break;
+            case R.id.tv_2:
+                mTv2.setSelected(true);
+                minePersonDetailViewpager.setCurrentItem(2, false);
+                break;
+            case R.id.tv_3:
+                mTv3.setSelected(true);
+                minePersonDetailViewpager.setCurrentItem(3, false);
+                break;
+            case R.id.tv_4:
+                mTv4.setSelected(true);
+                minePersonDetailViewpager.setCurrentItem(4, false);
+                break;
+        }
+    }
+
+    public void setAllSelect() {
+        mTv0.setSelected(false);
+        mTv1.setSelected(false);
+        mTv2.setSelected(false);
+        mTv3.setSelected(false);
+        mTv4.setSelected(false);
+    }
 }

@@ -152,6 +152,10 @@ public class SearchVideoFragment extends BaseFragment implements HomeVideoSearch
     /*搜索的贴片的点击事件 */
     @Override
     public void PasterClick(int position) {
+        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+            asyncShowToast("亲，非企业会员只可添加底部广告哦～～");
+            return;
+        }
         Intent intent = new Intent(mActivity, AddTiePianAdvertActivity.class);
         StringBuilder sb = new StringBuilder(Constant.VIDEO_DETAIL_URL);
         sb.append("?token=").append(SPUtils.getString(SpConstant.ACCESS_TOKEN, "")).append("&uuid=").append(mSearchVideodata.get(position).getUuid());

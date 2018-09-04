@@ -15,12 +15,12 @@ import java.util.List;
 
 public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideoBean.DataBean> {
 
-    private int uuid;
-    private MyIssueVideoClikListener myIssueVideoClikListener;
     private String mImage;
     public boolean isShow = false;
-    public void setMyIssueVideoClikListener(MyIssueVideoClikListener myIssueVideoClikListener) {
-        this.myIssueVideoClikListener = myIssueVideoClikListener;
+    private Callback mCallback;
+
+    public void setCallback(Callback callback) {
+        this.mCallback = callback;
     }
 
     public MineIssueVideoAdapter(Context context, List<MineIssueVideoBean.DataBean> datas) {
@@ -37,14 +37,8 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
             mImage = images.get(i);
 
         }
-
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
-
-        Glide.with(mContext).load(mImage).apply(options).into(iconMyIssueVideo);
-
+        Glide.with(mContext).load(mImage).apply(new RequestOptions()
+                .placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop()).into(iconMyIssueVideo);
         if (isShow) {
             //videoImag.setClickable(false);
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
@@ -52,19 +46,21 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
             //videoImag.setClickable(true);
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
         }
-        CheckBox checkBox = holder.getView(R.id.ch_delete);
-        if (dataBean.isChecked() == true) {
-            checkBox.setChecked(true);
-        } else {
-            checkBox.setChecked(false);
-        }
+        final CheckBox checkBox = holder.getView(R.id.ch_delete);
+        checkBox.setChecked(dataBean.isChecked());
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataBean.isChecked() == true) {
-                    dataBean.setChecked(false);
+                dataBean.setChecked(!dataBean.isChecked());
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isShow) {
+                    if (mCallback != null) mCallback.callback(dataBean.getUuid());
                 } else {
-                    dataBean.setChecked(true);
+                    checkBox.performClick();
                 }
             }
         });
@@ -75,7 +71,8 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
         return R.layout.item_mine_issue_video;
     }
 
-    public interface MyIssueVideoClikListener {
-        void deleVideoItem(int position);
+    public interface Callback {
+        void callback(int id);
     }
+
 }

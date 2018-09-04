@@ -10,7 +10,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyIssueGoodSelectAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -54,14 +53,10 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MyIssueGoodSelectAdapter(getContext(), mList);
-        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+        mAdapter.setCallback(new MyIssueGoodSelectAdapter.Callback() {
             @Override
-            public void onItemClick(View v, int position) {
-                if(!mAdapter.isShow){
-                    int id = mList.get(position - 1).getId();
-                    //SkipMyIssueVideoDetail(uuid, position);
-                }
-
+            public void callback(int id) {
+                //SkipMyIssueVideoDetail(uuid, position);
             }
         });
 

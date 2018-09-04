@@ -50,9 +50,8 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity__mine_mycollect;
+        return R.layout.activity_mine_mycollect;
     }
-
 
     @Override
     protected void initViews() {
@@ -141,7 +140,6 @@ public class MyCollectActivity extends BaseActivity implements Observer, TabLayo
             child.setLayoutParams(params);
             child.invalidate();
         }
-
     }
 
     @Override

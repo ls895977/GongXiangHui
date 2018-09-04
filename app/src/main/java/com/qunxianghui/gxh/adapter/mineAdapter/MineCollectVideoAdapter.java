@@ -15,11 +15,18 @@ import java.util.List;
 
 public class MineCollectVideoAdapter extends BaseRecycleViewAdapter<MineCollectVideoBean.DataBean> {
 
+    public boolean isShow = false;
+    public Callback mCallback;
+
+    public void setCallback(Callback callback) {
+        this.mCallback = callback;
+    }
+
 
     public MineCollectVideoAdapter(Context context, List<MineCollectVideoBean.DataBean> datas) {
         super(context, datas);
     }
-    public boolean isShow = false;
+
     @Override
     protected void convert(MyViewHolder holder, final int position, final MineCollectVideoBean.DataBean dataBean) {
         final ImageView videoImag = holder.getView(R.id.iv_item_collect_video_head);
@@ -27,38 +34,32 @@ public class MineCollectVideoAdapter extends BaseRecycleViewAdapter<MineCollectV
         final String picurl = dataBean.getPicurl();
         final String title = dataBean.getInfo().getTitle();
         holder.setText(R.id.tv_mycollect_videotitle, title);
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
-
-        /**
-         * 加载视频第一张默认图
-         */
-        Glide.with(mContext).load(picurl).apply(options).into(videoImag);
+        Glide.with(mContext).load(picurl).apply(new RequestOptions()
+                .placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop()).into(videoImag);
 
         if (isShow) {
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
         } else {
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
         }
-        CheckBox checkBox = holder.getView(R.id.ch_delete);
-        if (dataBean.isChecked() == true) {
-            checkBox.setChecked(true);
-        } else {
-            checkBox.setChecked(false);
-        }
+        final CheckBox checkBox = holder.getView(R.id.ch_delete);
+        checkBox.setChecked(dataBean.isChecked());
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataBean.isChecked() == true) {
-                    dataBean.setChecked(false);
+                dataBean.setChecked(!dataBean.isChecked());
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isShow) {
+                    if (mCallback != null) mCallback.callback(dataBean.getData_uuid());
                 } else {
-                    dataBean.setChecked(true);
+                    checkBox.performClick();
                 }
             }
         });
-
     }
 
     @Override
@@ -66,6 +67,9 @@ public class MineCollectVideoAdapter extends BaseRecycleViewAdapter<MineCollectV
         return R.layout.item_mine_collect_video;
     }
 
+    public interface Callback{
+        void callback(int id);
+    }
 
 }
 

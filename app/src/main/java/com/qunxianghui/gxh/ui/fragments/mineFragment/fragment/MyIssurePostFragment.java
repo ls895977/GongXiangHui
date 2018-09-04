@@ -48,12 +48,12 @@ import butterknife.BindView;
 public class MyIssurePostFragment extends BaseFragment implements MineIssurePostAdapter.CircleOnClickListener, View.OnClickListener, Observer {
 
     @BindView(R.id.recycler_mineissue_post)
-    XRecyclerView recyclerMineissuePost;
+    XRecyclerView mRv;
     @BindView(R.id.bt_myissue_issuepost_delete)
     Button btnDelete;
 
     private int count = 0;
-    private List<TestMode.DataBean.ListBean> dataList = new ArrayList<TestMode.DataBean.ListBean>();
+    private List<TestMode.DataBean.ListBean> dataList = new ArrayList<>();
     private boolean mIsFirst = true;
     private MineIssurePostAdapter mineIssurePostAdapter;
     private boolean mIsRefresh = false;
@@ -94,9 +94,9 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     mIsFirst = false;
                     mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
                     mineIssurePostAdapter.setListener(this);
-                    recyclerMineissuePost.setAdapter(mineIssurePostAdapter);
+                    mRv.setAdapter(mineIssurePostAdapter);
                 }
-                recyclerMineissuePost.refreshComplete();
+                mRv.refreshComplete();
                 mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
             }
         } else {
@@ -108,7 +108,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
-        recyclerMineissuePost.setLayoutManager(linearLayoutManager);
+        mRv.setLayoutManager(linearLayoutManager);
         IssuePostCommentSend = view.findViewById(R.id.issuepost_comment_to_send);  //底部提交
     }
 
@@ -116,7 +116,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     protected void initListeners() {
         super.initListeners();
         IssuePostCommentSend.setOnClickListener(this);
-        recyclerMineissuePost.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 mIsRefresh = true;
@@ -137,7 +137,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     int etTop = getLocationOnScreen(commentDialog.et_content);//dialog top值
                     int tvContentTop = getLocationOnScreen(tvContent);// textview top值
                     int scrollY = tvContentTop - etTop + tvContent.getHeight();
-                    recyclerMineissuePost.smoothScrollBy(0, scrollY);
+                    mRv.smoothScrollBy(0, scrollY);
                 }
 
             }
@@ -214,7 +214,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
-                                    recyclerMineissuePost.refresh();
+                                    mRv.refresh();
                                 } else {
                                     asyncShowToast(response.message());
                                 }
@@ -358,7 +358,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                                                             if (responseBean.getCode() == 0) {
                                                                 commentDialog.dismiss();
                                                                 asyncShowToast(responseBean.getMsg());
-                                                                recyclerMineissuePost.refresh();
+                                                                mRv.refresh();
                                                             } else {
                                                                 asyncShowToast(response.message());
                                                             }

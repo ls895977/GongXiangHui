@@ -11,7 +11,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -33,8 +32,9 @@ import java.util.Observer;
 import butterknife.BindView;
 
 public class MineCollectVideoFragment extends BaseFragment implements Observer {
+
     @BindView(R.id.xrecycler_mycollect_video)
-    XRecyclerView xrecyclerMycollectVideo;
+    XRecyclerView mRv;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
 
@@ -42,27 +42,11 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     private int count;
     private boolean mIsRefresh = false;
     private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
-    private MineCollectVideoAdapter mineCollectVideoAdapter;
+    private MineCollectVideoAdapter mAdapter;
     private String data_id = "";
 
     @Override
     protected void onLoadData() {
-        RequestMineCollectVideo();
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_mine_collect_video;
-    }
-
-    @Override
-    public void initData() {
-    }
-
-    /**
-     * 请求我收藏的视频
-     */
-    private void RequestMineCollectVideo() {
         OkGo.<MineCollectVideoBean>post(Constant.GET_COLLECT_VIDEO_URL)
                 .params("limit", 12)
                 .params("skip", count)
@@ -75,6 +59,12 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
                 });
     }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_mine_collect_video;
+    }
+
+
     private void ParseMineCollectVideo(MineCollectVideoBean mineCollectVideoBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
@@ -85,22 +75,18 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
         if (mineCollectVideoBean.getCode() == 0) {
             if (mIsFirst) {
                 mIsFirst = false;
-                mineCollectVideoAdapter = new MineCollectVideoAdapter(mActivity, dataList);
-                xrecyclerMycollectVideo.setAdapter(mineCollectVideoAdapter);
-                mineCollectVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                mAdapter = new MineCollectVideoAdapter(mActivity, dataList);
+                mRv.setAdapter(mAdapter);
+                mAdapter.setCallback(new MineCollectVideoAdapter.Callback() {
                     @Override
-                    public void onItemClick(View v, int position) {
-                        if (mineCollectVideoAdapter.isShow) {
-                            return;
-                        }
-                        int data_uuid = dataList.get(position - 1).getData_uuid();
-                        SkipMycollectVideoDetail(data_uuid, position);
+                    public void callback(int id) {
+                        skipMycollectVideoDetail(id);
                     }
                 });
             }
-            xrecyclerMycollectVideo.refreshComplete();
-            mineCollectVideoAdapter.notifyDataSetChanged();
-            mineCollectVideoAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
+            mRv.refreshComplete();
+            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
         }
     }
 
@@ -109,7 +95,7 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
      *
      * @param data_uuid
      */
-    private void SkipMycollectVideoDetail(int data_uuid, final int position) {
+    private void skipMycollectVideoDetail(int data_uuid) {
         OkGo.<MyCollectVideoDetailBean>post(Constant.GET_NEWS_CONTENT_DETAIL_URL)
                 .params("id", data_uuid)
                 .execute(new JsonCallback<MyCollectVideoDetailBean>() {
@@ -133,17 +119,17 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     @Override
     protected void initListeners() {
         super.initListeners();
-        xrecyclerMycollectVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 mIsRefresh = true;
                 count = 0;
-                RequestMineCollectVideo();
+                onLoadData();
             }
 
             @Override
             public void onLoadMore() {
-                RequestMineCollectVideo();
+                onLoadData();
             }
         });
     }
@@ -151,8 +137,7 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     @Override
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
-        xrecyclerMycollectVideo.setLayoutManager(new GridLayoutManager(mActivity, 2, GridLayoutManager.VERTICAL, false));
-        //btnDelete.setVisibility(Constant.MyCollectIsShow ? View.VISIBLE : View.GONE);
+        mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, GridLayoutManager.VERTICAL, false));
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,8 +167,8 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
                                     }
                                 }
                                 data_id = "";
-                                mineCollectVideoAdapter.isShow = false;
-                                mineCollectVideoAdapter.notifyDataSetChanged();
+                                mAdapter.isShow = false;
+                                mAdapter.notifyDataSetChanged();
                                 btnDelete.setVisibility(View.GONE);
                                 EventManager.getInstance().publishMessage("init");
                             }
@@ -203,14 +188,14 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof String && "video".equals(o)) {
             Constant.MyCollectIsShow = true;
-            mineCollectVideoAdapter.isShow = true;
-            mineCollectVideoAdapter.notifyDataSetChanged();
+            mAdapter.isShow = true;
+            mAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.VISIBLE);
         }
         if (o instanceof String && "video_c".equals(o)) {
             Constant.MyCollectIsShow = false;
-            mineCollectVideoAdapter.isShow = false;
-            mineCollectVideoAdapter.notifyDataSetChanged();
+            mAdapter.isShow = false;
+            mAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);
         }
     }

@@ -57,6 +57,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private TextView mTv_inform_tort;
     private TextView mTv_inform_sex;
     private int mUuid;
+    public int mMemberId;
 
     @Override
     public int getLayoutId() {
@@ -73,11 +74,23 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void initData() {
-        mCateId = getArguments().getInt("channel_id");
+        if (getArguments() != null)
+            mCateId = getArguments().getInt("channel_id");
         requestLocalServiceData();
     }
 
     private void requestLocalServiceData() {
+        if (mMemberId != 0) {
+            OkGo.<TestMode>post(Constant.LOCATION_NEWS_LIST_URL)
+                    .params("user_id", mMemberId)
+                    .execute(new JsonCallback<TestMode>() {
+                        @Override
+                        public void onSuccess(Response<TestMode> response) {
+                            parseData(response.body());
+                        }
+                    });
+            return;
+        }
         OkGo.<TestMode>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
@@ -86,26 +99,30 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     @SuppressLint("UseSparseArrays")
                     @Override
                     public void onSuccess(Response<TestMode> response) {
-                        TestMode locationListBean = response.body();
-                        if (locationListBean.getCode() == 0) {
-                            if (mSkip == 0) {
-                                locationBean.clear();
-                                mAdapter.mTextStateList = new SparseArray<>();
-                                mRecyclerView.refreshComplete();
-                                mRecyclerView.setLoadingMoreEnabled(true);
-                            }
-                            List<TestMode.DataBean.ListBean> list = locationListBean.getData().getList();
-                            locationBean.addAll(list);
-                            if (list.size() < 10) {
-                                mRecyclerView.setLoadingMoreEnabled(false);
-                            }
-                        } else {
-                            mRecyclerView.setLoadingMoreEnabled(false);
-                        }
-                        mRecyclerView.loadMoreComplete();
-                        mAdapter.notifyDataSetChanged();
+                        parseData(response.body());
                     }
                 });
+    }
+
+    @SuppressLint("UseSparseArrays")
+    private void parseData(TestMode testMode) {
+        if (testMode.getCode() == 0) {
+            if (mSkip == 0) {
+                locationBean.clear();
+                mAdapter.mTextStateList = new SparseArray<>();
+                mRecyclerView.refreshComplete();
+                mRecyclerView.setLoadingMoreEnabled(true);
+            }
+            List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
+            locationBean.addAll(list);
+            if (list.size() < 10) {
+                mRecyclerView.setLoadingMoreEnabled(false);
+            }
+        } else {
+            mRecyclerView.setLoadingMoreEnabled(false);
+        }
+        mRecyclerView.loadMoreComplete();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

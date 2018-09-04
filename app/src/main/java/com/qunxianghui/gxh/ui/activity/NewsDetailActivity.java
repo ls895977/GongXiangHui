@@ -30,9 +30,11 @@ import android.widget.TextView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -224,6 +226,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        mShareDialog.dismiss();
         switch (v.getId()) {
             case R.id.tv_addAdver_share:
                 if (!LoginMsgHelper.isLogin()) {
@@ -231,6 +234,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 } else {
                     Intent intent;
                     if (mPosition == 4) {
+                        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                            asyncShowToast("亲，非企业会员只可添加底部广告哦～～");
+                            return;
+                        }
                         intent = new Intent(mContext, AddTiePianAdvertActivity.class);
                     } else {
                         intent = new Intent(mContext, AddAdvertActivity.class);
@@ -249,7 +256,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
         }
-        mShareDialog.dismiss();
     }
 
     //底部弹出对话框
