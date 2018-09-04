@@ -207,8 +207,8 @@ public class HotPointFragment extends BaseFragment {
                 homePullRefresh();
             }
         });
-//        //设置加载出来看的动画
-        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+////        //设置加载出来看的动画
+//        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         mRv.setAdapter(homeItemListAdapter);
         //对列表设置点击事件
         homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

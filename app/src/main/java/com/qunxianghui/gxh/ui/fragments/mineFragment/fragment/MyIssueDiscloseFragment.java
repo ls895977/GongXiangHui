@@ -88,8 +88,6 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                     }
                 });
     }
-
-
     @Override
     protected void initListeners() {
         btMyissueDelete.setOnClickListener(new View.OnClickListener() {

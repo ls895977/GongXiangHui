@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -39,6 +40,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -56,6 +58,8 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     TextView mTvSeconds;
     @BindView(R.id.rl_top)
     RelativeLayout mRlTop;
+    @BindView(R.id.rl_add)
+    RelativeLayout rlAdd;
     private UMShareListener umShareListener;
     private String mUrl;
     private Dialog mDialog;
@@ -307,5 +311,12 @@ public class AddTiePianAdvertActivity extends BaseActivity {
             startActivityForResult(intent, 100);
         }
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

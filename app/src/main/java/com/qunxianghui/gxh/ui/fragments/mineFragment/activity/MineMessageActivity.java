@@ -73,7 +73,7 @@ public class MineMessageActivity extends BaseActivity implements View.OnClickLis
         mineMyMessaageTablayoutCommon.post(new Runnable() {
             @Override
             public void run() {
-                setIndicator(mineMyMessaageTablayoutCommon, 55, 55);
+                setIndicator(mineMyMessaageTablayoutCommon, 60, 60);
             }
         });
     }

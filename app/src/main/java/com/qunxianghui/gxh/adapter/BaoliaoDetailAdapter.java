@@ -2,9 +2,6 @@ package com.qunxianghui.gxh.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -13,7 +10,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
-import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
 
 import java.util.List;
 
@@ -27,8 +23,8 @@ public class BaoliaoDetailAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
     @Override
     protected void convert(MyViewHolder holder, int position, final BaoliaoBean.DataBean dataBean) {
 
-        if (!TextUtils.isEmpty(dataBean.getContent())) {
-            holder.setText(R.id.tv_baoliao_content,dataBean.getContent());
+        if (!TextUtils.isEmpty((CharSequence) dataBean.getContent())) {
+            holder.setText(R.id.tv_baoliao_content, (String) dataBean.getContent());
         }
 
 
