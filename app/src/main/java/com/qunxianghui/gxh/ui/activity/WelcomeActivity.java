@@ -106,6 +106,9 @@ public class WelcomeActivity extends BaseActivity {
                         if (welcomeAdvertBean.getCode() == 0) {
                             WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
                             String image = data.getImage();
+                            if (mContext == null) {
+                                return;
+                            }
                             Glide.with(mContext)
                                     .load(image)
                                     .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)

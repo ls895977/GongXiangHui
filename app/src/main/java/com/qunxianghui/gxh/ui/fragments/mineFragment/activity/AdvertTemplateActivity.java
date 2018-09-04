@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -42,6 +43,8 @@ import cn.jzvd.JZVideoPlayer;
 
 public class AdvertTemplateActivity extends BaseActivity {
 
+    @BindView(R.id.tv)
+    TextView mTv;
     @BindView(R.id.segment_tab)
     SegmentTabLayout mSegmentTab;
     @BindView(R.id.vp)
@@ -81,6 +84,13 @@ public class AdvertTemplateActivity extends BaseActivity {
     protected void initData() {
         mLinkUrl = SPUtils.getSp("companymessage").getString("aboutus_showh5", "");
         mPosition = getIntent().getIntExtra("position", 3);
+        if (mPosition == 2) {
+            mTv.setVisibility(View.VISIBLE);
+            mSegmentTab.setVisibility(View.GONE);
+            mFragments.add(new AdvertTiePianFragment());
+            mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), mFragments));
+            return;
+        }
         mFragments.add(new AdvertBottomFragment());
         mFragments.add(new AdvertTopFragment());
         if (mPosition == 0 || mPosition == 1) {
