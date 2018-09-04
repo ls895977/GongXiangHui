@@ -53,6 +53,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     TreeRecyclerAdapter treeRecyclerAdapter = new TreeRecyclerAdapter(TreeRecyclerType.SHOW_EXPAND);
     private AMapLocationClient mLocationClient;
     AMapLocationClientOption mLocationOption = null;
+    public static boolean sIsChangeArea;
     private String mCurrentCity;
     private Double mLng;
     private Double mLag;
@@ -188,6 +189,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
 
     /*sp存储一些信息*/
     private void saveLocationData(String cityCode, String areaId, String cityName) {
+        sIsChangeArea = true;
         OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
         OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
 
