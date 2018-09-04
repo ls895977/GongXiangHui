@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,6 +28,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.DataCleanManager;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -81,8 +81,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initViews() {
-        //获得应用内部缓存(/data/data/com.example.androidclearcache/cache)
 
+        boolean checoState = SPUtils.getBoolean("checoState");
+        if (checoState) {
+            switchButtonMineSet.setChecked(true);
+
+        } else {
+            switchButtonMineSet.setChecked(false);
+        }
+        //获得应用内部缓存(/data/data/com.example.androidclearcache/cache)
         final File file = new File(this.getCacheDir().getPath());
         try {
             tvMineSetCache.setText(DataCleanManager.getCacheSize(file));
@@ -106,19 +113,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void initListeners() {
         mTvSettingQuit.setOnClickListener(this);
         rlSetCache.setOnClickListener(this);
-        switchButtonMineSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        switchButtonMineSet.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String s;
-                if (isChecked) {
-
-                } else {
-
-                }
-
-
+            public void onClick(View view) {
+                SPUtils.saveBoolean("checoState",switchButtonMineSet.isChecked());
             }
         });
+
     }
 
     @Override
