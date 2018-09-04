@@ -119,6 +119,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mRecyclerView.setLoadingMoreEnabled(false);
             }
         } else {
+            asyncShowToast(testMode.getMessage());
             mRecyclerView.setLoadingMoreEnabled(false);
         }
         mRecyclerView.loadMoreComplete();
