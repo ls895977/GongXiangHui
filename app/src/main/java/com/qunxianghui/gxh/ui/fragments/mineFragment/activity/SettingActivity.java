@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -125,7 +126,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (v.getId()) {
             case R.id.tv_setting_quit:
                 //*此按钮可点击时已经是登录状态*/
-                new AlertDialog.Builder(mContext).setTitle("是否退出登录").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                AlertDialog dialog = new AlertDialog.Builder(mContext).setTitle("是否退出登录").setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         /* 清楚登录信息*/
@@ -133,7 +134,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         deleteDatabase("SqliteTest.db");
                         ExitUserLogin();
                     }
-                }).setNeutralButton("否", null).show();
+                }).setNeutralButton("否", null).create();
+
+                dialog.show();
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.GRAY);
+                dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(Color.RED);
+
                 break;
             case R.id.rl_set_cache:
                 final Message msg = new Message();
