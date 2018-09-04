@@ -140,9 +140,10 @@ public class HotPointFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (LocationActivity.sIsChangeArea) {
+        if (mChannelId == 0 && LocationActivity.sIsChangeArea) {
             LocationActivity.sIsChangeArea = false;
             dataList.clear();
+            mRefreshCount = 0;
             OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                     .params("channel_id", mChannelId)
                     .params("times", mRefreshCount)
