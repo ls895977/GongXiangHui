@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoliaoDetailAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.BaoLiaoContentBean;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.observer.EventManager;
 
@@ -43,7 +46,7 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
     @BindView(R.id.recyclerView)
     XRecyclerView recyclerView;
     private BaoliaoBean.DataBean dataBean;
-    private List<BaoliaoBean.DataBean> mList = new ArrayList();
+    private List<BaoLiaoContentBean> mList = new ArrayList();
     private BaoliaoDetailAdapter mAdapter;
 
     @Override
@@ -58,8 +61,8 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
-        mList.add(dataBean);
 
+        mList = new Gson().fromJson(dataBean.getContent(), new TypeToken<List<BaoLiaoContentBean>>(){}.getType());
         mAdapter = new BaoliaoDetailAdapter(this,mList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLoadingMoreEnabled(false);
