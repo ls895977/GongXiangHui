@@ -188,6 +188,9 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
 
     /*sp存储一些信息*/
     private void saveLocationData(String cityCode, String areaId, String cityName) {
+        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
+
         SPUtils.saveLocation("X-cityId", cityCode);
         SPUtils.saveLocation("X-areaId", areaId);
         SPUtils.saveLocation("currcity", cityName);
