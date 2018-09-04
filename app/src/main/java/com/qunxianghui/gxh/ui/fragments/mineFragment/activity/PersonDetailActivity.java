@@ -154,19 +154,22 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                 });
     }
-
     //解析用户的详情资料
     private void parseUserDetailInfo(UserDetailInfoBean userDetailInfoBean) {
         if (userDetailInfoBean.getCode() == 200) {
             dataList = userDetailInfoBean.getData();
             String follow = dataList.getFollow();
+            String nick = dataList.getNick();
             String self_introduction = dataList.getSelf_introduction();
             if (TextUtils.isEmpty(follow)) {
                 tvPersonDetailAttention.setText("关注");
             } else {
                 tvPersonDetailAttention.setText("已关注");
             }
-            tvPersonDetailName.setText(dataList.getNick());
+            if (nick!=null) {
+                tvPersonDetailName.setText(dataList.getNick());
+                tvPersonDetailName.setVisibility(View.VISIBLE);
+            }
             if (self_introduction.length() != 0) {
                 tvPersondetailIntroduce.setText(self_introduction);
             } else {

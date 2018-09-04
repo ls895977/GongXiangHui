@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -26,6 +30,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 精选
@@ -36,11 +42,14 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     XRecyclerView mRv;
     @BindView(R.id.bt_myissue_goodselect_delete)
     Button btnDelete;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private int mSkip = 0;
     private List<MyIssueGoodSelectBean.DataBean> mList = new ArrayList<>();
     private MyIssueGoodSelectAdapter mAdapter;
-    private String data_id="";
+    private String data_id = "";
     private int member_id = -1;
 
     @Override
@@ -83,8 +92,8 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             }
         });
 
-        if(getContext() instanceof PersonDetailActivity) {
-            member_id = ((PersonDetailActivity)getContext()).member_id;
+        if (getContext() instanceof PersonDetailActivity) {
+            member_id = ((PersonDetailActivity) getContext()).member_id;
         }
     }
 
@@ -102,7 +111,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
         if (TextUtils.isEmpty(data_id)) return;
         OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
                 .params("id", data_id)
-                .params("type","3")
+                .params("type", "3")
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
@@ -127,10 +136,9 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     }
 
 
-
     @Override
     public void initData() {
-        if(member_id == -1) {
+        if (member_id == -1) {
             OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
                     .params("limit", 10)
                     .params("skip", mSkip)
@@ -140,7 +148,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                             parseData(response.body());
                         }
                     });
-        } else{
+        } else {
             OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
                     .params("limit", 10)
                     .params("skip", mSkip)
@@ -167,10 +175,12 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             btnDelete.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
     }
 
     private void parseData(MyIssueGoodSelectBean data) {
@@ -178,16 +188,30 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             if (mSkip == 0) {
                 mList.clear();
                 mRv.setLoadingMoreEnabled(true);
+
+
             }
             if (data.getData().size() < 10) {
                 mRv.setLoadingMoreEnabled(false);
             }
             mList.addAll(data.getData());
             mRv.refreshComplete();
+
+            if (mList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
         } else {
             mRv.setLoadingMoreEnabled(false);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 }
 

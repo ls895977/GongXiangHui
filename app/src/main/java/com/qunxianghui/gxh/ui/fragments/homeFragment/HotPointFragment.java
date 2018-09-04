@@ -299,6 +299,7 @@ public class HotPointFragment extends BaseFragment {
                             }
                             Intent intent = new Intent(mActivity, ProtocolActivity.class);
                             intent.putExtra("url", lunboData.get(position).getImage_url());
+                            intent.putExtra("tag",2);
                             startActivity(intent);
                         }
                     })
