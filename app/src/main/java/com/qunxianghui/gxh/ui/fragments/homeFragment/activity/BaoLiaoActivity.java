@@ -3,11 +3,11 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSONArray;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.BaoLiaoBean;
+import com.qunxianghui.gxh.bean.BaoLiaoContentBean;
 import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -29,6 +30,7 @@ import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.ToastUtils;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
+import com.sina.weibo.sdk.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,9 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private String mBaoLiaoContent;
     private EditText mEtContent;
     private int selectImgSize = 0;
+
+    private List<BaoLiaoContentBean> contentBeanList = new ArrayList<>();
+
 
     @Override
     protected int getLayoutId() {
@@ -148,12 +153,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             mEtContent = layout.findViewById(R.id.et_content);
             RecyclerView mChildImgRecview = layout.findViewById(R.id.rv);
             String sd = "";
-            if(null != mEtContent.getText()){
+            if (null != mEtContent.getText()) {
                 sd = mEtContent.getText().toString();
             }
             int childCount = mChildImgRecview.getChildCount();
             if (TextUtils.isEmpty(sd) && childCount == 1) {
-                ToastUtils.showShort("您尚未填写第"+(i+1)+"条发布内容！");
+                ToastUtils.showShort("您尚未填写第" + (i + 1) + "条发布内容！");
                 return false;
             }
         }
@@ -166,22 +171,31 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private void uploadBaoLiaoData() {
         mLlLoad.setVisibility(View.VISIBLE);
         upLoadPics.clear();
-
+        contentBeanList.clear();
         boolean isHasPics = false;
-        for (BaoLiaoBean datum : mAdapter.mData) {
-            if(datum.mList != null && !datum.mList.isEmpty()) {
-                isHasPics = true;
-                for (ImageItem imageItem : datum.mList) {
-                    if (!imageItem.path.contains("http")) {
-                        upLoadPic("data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
-                    } else {
-                        upLoadPics.add(imageItem.path);
+
+
+        try {
+            for (int i = 0; i < mAdapter.mData.size(); i++) {
+                BaoLiaoBean datum = mAdapter.mData.get(i);
+                BaoLiaoContentBean contentBean = new BaoLiaoContentBean();
+                contentBean.text = datum.mEt;
+                if (datum.mList != null && !datum.mList.isEmpty()) {
+                    isHasPics = true;
+                    for (int j = 0; j < datum.mList.size(); j++) {
+                        ImageItem imageItem = datum.mList.get(i);
+                        if (!imageItem.path.contains("http")) {
+                            upLoadPic(i,"data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
+                        }
                     }
                 }
+                contentBeanList.add(contentBean);
             }
-        }
-        if(!isHasPics){
-            fetchBaoLiaoData();
+            if (!isHasPics) {
+                fetchBaoLiaoData();
+            }
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getMessage());
         }
     }
 
@@ -190,8 +204,9 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      *
      * @param
      * @param
+     * @param
      */
-    private void upLoadPic(String urls) {
+    private void upLoadPic(final int position, String urls) {
         OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", urls)
                 .execute(new JsonCallback<UploadImage>() {
@@ -200,7 +215,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                         UploadImage uploadImage = response.body();
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
-                            if(selectImgSize == 0) {
+                            if (!contentBeanList.isEmpty()) {
+                                BaoLiaoContentBean contentBean = contentBeanList.get(position);
+                                contentBean.img += uploadImage.data.file + ",";
+                            }
+
+                            if (selectImgSize == 0) {
                                 for (int i = 0; i < mAdapter.mData.size(); i++) {
                                     int itemSize = 0;
                                     if (null != mAdapter.mData.get(i).mList && !mAdapter.mData.get(i).mList.isEmpty()) {
@@ -228,10 +248,19 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      * 填充爆料
      */
     private void fetchBaoLiaoData() {
-        final String faBuContent = mEtContent.getText().toString().trim();
+        JSONArray arrays = new JSONArray();
+        for (int i = 0; i < contentBeanList.size(); i++) {
+            BaoLiaoContentBean contentBean = contentBeanList.get(i);
+            if(!TextUtils.isEmpty(contentBean.img)){
+                contentBean.img = contentBean.img.substring(0,contentBean.img.length()-1);
+            }
+            arrays.add(contentBean);
+        }
+        final String faBuContent = arrays.toJSONString();
+        LogUtil.e(TAG, faBuContent);
         final String faBuTitle = mEtTitle.getText().toString().trim();
         StringBuilder stringBuilder = new StringBuilder("");
-        if(!upLoadPics.isEmpty()) {
+        if (!upLoadPics.isEmpty()) {
             for (int i = 0, length = upLoadPics.size(); i < length; i++) {
                 if (i != upLoadPics.size() - 1) {
                     stringBuilder.append(upLoadPics.get(i) + ",");
