@@ -56,10 +56,12 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class HotPointFragment extends BaseFragment {
+
     @BindView(R.id.rv)
     RecyclerView mRv;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
+
     private Banner viewpagerHome;
     private RecyclerView grid_home_navigator;
     //首页导航的坐标匹配
@@ -140,7 +142,21 @@ public class HotPointFragment extends BaseFragment {
         super.onResume();
         if (LocationActivity.sIsChangeArea) {
             LocationActivity.sIsChangeArea = false;
-            homePullRefresh();
+            dataList.clear();
+            OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
+                    .params("channel_id", mChannelId)
+                    .params("times", mRefreshCount)
+                    .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
+                        @Override
+                        public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
+                            mRefreshCount++;
+                            CommonResponse<List<HomeNewListBean>> body = response.body();
+                            if (body.code == 0 && body.data != null) {
+                                dataList.addAll(0, body.data);
+                                homeItemListAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
         }
     }
 
@@ -220,6 +236,7 @@ public class HotPointFragment extends BaseFragment {
 ////        //设置加载出来看的动画
 //        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         mRv.setAdapter(homeItemListAdapter);
+        homeItemListAdapter.setEmptyView(R.layout.layout_empty);
         //对列表设置点击事件
         homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -309,7 +326,7 @@ public class HotPointFragment extends BaseFragment {
                             }
                             Intent intent = new Intent(mActivity, ProtocolActivity.class);
                             intent.putExtra("url", lunboData.get(position).getImage_url());
-                            intent.putExtra("tag",2);
+                            intent.putExtra("tag", 2);
                             startActivity(intent);
                         }
                     })
