@@ -55,6 +55,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     AMapLocationClientOption mLocationOption = null;
     public static boolean sIsChangeArea;
     public static boolean sLocationCanChange;
+    public static boolean sVideoCanChange;
     private String mCurrentCity;
     private Double mLng;
     private Double mLag;
@@ -192,6 +193,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     private void saveLocationData(String cityCode, String areaId, String cityName) {
         sIsChangeArea = true;
         sLocationCanChange = true;
+        sVideoCanChange = true;
         OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
         OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
 

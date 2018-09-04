@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
@@ -65,6 +66,16 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         super.onStart();
         mSkip = 0;
         requestHomeVideoList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCateId == 0 && LocationActivity.sVideoCanChange) {
+            LocationActivity.sVideoCanChange = false;
+            mSkip = 0;
+            initData();
+        }
     }
 
     @Override
