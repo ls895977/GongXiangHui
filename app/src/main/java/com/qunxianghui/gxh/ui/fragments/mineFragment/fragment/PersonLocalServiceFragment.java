@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -20,18 +21,22 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivi
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PersonLocalServiceFragment extends BaseFragment {
+public class PersonLocalServiceFragment extends BaseFragment implements Observer {
 
     @BindView(R.id.xrecycler_persondetail_post)
     XRecyclerView xrecyclerPersondetailPost;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
     Unbinder unbinder;
+    @BindView(R.id.bt_myissue_localservice_delete)
+    Button btMyissueLocalserviceDelete;
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
@@ -47,7 +52,7 @@ public class PersonLocalServiceFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        if(getActivity() instanceof PersonDetailActivity) {
+        if (getActivity() instanceof PersonDetailActivity) {
             PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
@@ -59,7 +64,7 @@ public class PersonLocalServiceFragment extends BaseFragment {
                             parseData(response.body());
                         }
                     });
-        } else{
+        } else {
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
                     .params("skip", mSkip)
@@ -76,13 +81,13 @@ public class PersonLocalServiceFragment extends BaseFragment {
         xrecyclerPersondetailPost.refreshComplete();
         xrecyclerPersondetailPost.loadMoreComplete();
         if (data.getCode() == 200) {
-            if(mSkip == 0) {
+            if (mSkip == 0) {
                 mList.clear();
             }
             mList.addAll(data.getData());
             mAdapter.notifyDataSetChanged();
 
-            if(mList.isEmpty()){
+            if (mList.isEmpty()) {
                 llEmpty.setVisibility(View.VISIBLE);
             }
         }
@@ -130,5 +135,20 @@ public class PersonLocalServiceFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof String && "localser".equals(o)) {
+            mAdapter.isShow = true;
+            mAdapter.notifyDataSetChanged();
+            btMyissueLocalserviceDelete.setVisibility(View.VISIBLE);
+        }
+        if (o instanceof String && "localser_c".equals(o)) {
+            mAdapter.isShow = false;
+            mAdapter.notifyDataSetChanged();
+            btMyissueLocalserviceDelete.setVisibility(View.GONE);
+        }
     }
 }

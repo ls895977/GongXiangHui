@@ -11,24 +11,24 @@
         android:layout_marginTop="5dp" />
 
     <LinearLayout
-        android:id="@+id/ll_empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F5F5F5"
+    android:id="@+id/ll_empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:gravity="center"
+    android:visibility="gone"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="20dp"
+        android:drawableTop="@mipmap/icon_empty"
+        android:text="暂无数据～"
         android:gravity="center"
-        android:visibility="gone"
-      >
+        android:textSize="15sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="20dp"
-            android:drawableTop="@mipmap/icon_empty"
-            android:text="暂无数据～"
-            android:gravity="center"
-            android:textSize="15sp" />
-
-    </LinearLayout>
+</LinearLayout>
 
 </com.qunxianghui.gxh.widget.KeyboardLayout>
 

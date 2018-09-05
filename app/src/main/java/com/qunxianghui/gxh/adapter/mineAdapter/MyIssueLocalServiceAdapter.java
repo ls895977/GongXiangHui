@@ -16,6 +16,11 @@ import java.util.List;
 public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssueLocalServiceBean.DataBean> {
 
     public boolean isShow = false;
+    private Callback mCallback;
+
+    public void setCallback(Callback callback) {
+        this.mCallback = callback;
+    }
 
     public MyIssueLocalServiceAdapter(Context context, List<MineIssueLocalServiceBean.DataBean> datas) {
         super(context, datas);
@@ -42,7 +47,10 @@ public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssue
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isShow) {
+                if (!isShow) {
+                    if (mCallback != null) mCallback.callback(dataBean.getId());
+
+                } else {
                     checkBox.performClick();
                 }
             }
@@ -53,5 +61,10 @@ public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssue
     protected int getItemView() {
         return R.layout.item_myissue_localservice;
     }
+
+    public interface Callback {
+        void callback(int id);
+    }
+
 
 }

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawablePadding="20dp"
+        android:drawablePadding="15dp"
         android:drawableTop="@mipmap/icon_empty"
         android:gravity="center"
         android:text="没有啦～"

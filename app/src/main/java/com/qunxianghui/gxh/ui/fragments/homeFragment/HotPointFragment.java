@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -48,6 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -60,6 +64,9 @@ public class HotPointFragment extends BaseFragment {
     RecyclerView mRv;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private Banner viewpagerHome;
     private RecyclerView grid_home_navigator;
@@ -175,7 +182,7 @@ public class HotPointFragment extends BaseFragment {
                             if (body.code == 0 && body.data != null) {
                                 dataList.addAll(0, body.data);
                                 homeItemListAdapter.notifyDataSetChanged();
-                                homeItemListAdapter.setEmptyView(R.layout.layout_empty);
+
                             }
                         }
                     });
@@ -198,7 +205,7 @@ public class HotPointFragment extends BaseFragment {
                             if (response.body().data != null) {
                                 dataList.addAll(0, response.body().data);
                                 homeItemListAdapter.notifyDataSetChanged();
-                                homeItemListAdapter.setEmptyView(R.layout.layout_empty);
+
                             }
                             Display display = mActivity.getWindowManager().getDefaultDisplay();
                             int height = display.getHeight();
@@ -206,8 +213,6 @@ public class HotPointFragment extends BaseFragment {
                             toast.setGravity(Gravity.TOP, 0, height / 8);
                             toast.show();
                         }
-
-
                     }
                 });
     }
@@ -217,9 +222,11 @@ public class HotPointFragment extends BaseFragment {
             List<HomeNewListBean> list = response.body().data;
             if (list == null || list.size() == 0) {
                 homeItemListAdapter.loadMoreEnd();
+                llEmpty.setVisibility(View.VISIBLE);
             } else {
                 if (mCount == 0) {
                     dataList.clear();
+                    llEmpty.setVisibility(View.GONE);
                 }
                 dataList.addAll(list);
                 mRefreshCount++;
@@ -234,9 +241,7 @@ public class HotPointFragment extends BaseFragment {
         } else {
             homeItemListAdapter.loadMoreEnd();
         }
-        if (homeItemListAdapter.getEmptyView() == null)
-            homeItemListAdapter.setEmptyView(R.layout.layout_empty);
-        homeItemListAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -369,5 +374,19 @@ public class HotPointFragment extends BaseFragment {
                 }
                 super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

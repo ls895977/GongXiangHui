@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/xrecycler_persondetail_post"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+
+    <Button
+        android:id="@+id/bt_myissue_localservice_delete"
+        android:layout_width="62dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_red_solid_corner"
+        android:text="删除"
+        android:visibility="gone"
+        android:textColor="@color/white"
+   />
 
     <LinearLayout
         android:id="@+id/ll_empty"
@@ -23,6 +37,7 @@
             android:drawableTop="@mipmap/icon_empty"
             android:text="他还没发布哦～"
             android:textSize="15sp" />
-
     </LinearLayout>
-</RelativeLayout>
+
+
+</LinearLayout>
