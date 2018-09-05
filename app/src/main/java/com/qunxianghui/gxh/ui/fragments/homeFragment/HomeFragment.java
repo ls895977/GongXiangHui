@@ -42,10 +42,10 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
-import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ChannelActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
@@ -227,14 +227,13 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 break;
         }
     }
-
     /*粘贴文章*/
     private void clipArticalData() {
         //粘贴板有数据并且是文本
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = item.getText().toString();
-            OkGo.<CommonBean>post(Constant.PAST_ARTICAL_URL)
+            OkGo.<CommonBean>get(Constant.PAST_ARTICAL_URL)
                     .params("url", text)
                     .execute(new JsonCallback<CommonBean>() {
                         @Override
@@ -242,7 +241,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                             int code = response.body().code;
                             String msg = response.body().message;
                             if (code == 0) {
-                                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                                Intent intent = new Intent(getActivity(), AddAdvertActivity.class);
                                 intent.putExtra("url", text);
                                 startActivity(intent);
                             } else {
