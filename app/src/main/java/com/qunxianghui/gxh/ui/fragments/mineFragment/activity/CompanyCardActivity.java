@@ -163,6 +163,7 @@ public class CompanyCardActivity extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body());
                             int code = jsonObject.getInt("code");
+                            String message = jsonObject.getString("message");
                             if (code == 200) {
                                 JSONObject mCompanyCardData = jsonObject.getJSONObject("data");
                                 String avatar = mCompanyCardData.getString("avatar");
@@ -170,10 +171,18 @@ public class CompanyCardActivity extends BaseActivity {
                                 String content = mCompanyCardData.getString("content");
                                 String url = mCompanyCardData.getString("url");
                                 shareCompanyCardInfo(avatar, title, content, url);
+                            }else {
+                                asyncShowToast(message);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        asyncShowToast(response.message().toString());
                     }
                 });
     }
@@ -240,6 +249,7 @@ public class CompanyCardActivity extends BaseActivity {
                         mDialog.dismiss();
                         break;
                 }
+                mDialog.dismiss();
             }
         };
         rl_share_wx.setOnClickListener(listener);

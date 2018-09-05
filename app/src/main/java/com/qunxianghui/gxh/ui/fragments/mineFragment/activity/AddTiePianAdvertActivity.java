@@ -190,7 +190,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
      */
     private void startThirdShare(String url, String title, String desc) {
         //以下代码是分享示例代码
-        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        UMImage image = new UMImage(this, R.mipmap.icon_video_share);//分享图标
         //切记切记 这里分享的链接必须是http开头
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
@@ -200,8 +200,6 @@ public class AddTiePianAdvertActivity extends BaseActivity {
         } else {
             mWeb.setDescription(mDescrip);
         }
-
-
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
         RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);

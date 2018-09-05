@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MyIssueLocalServiceAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -40,7 +44,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
-
+    private String data_id = "";
     @Override
     protected void onLoadData() {
     }
@@ -95,8 +99,15 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
 
     @Override
     public void initViews(View view) {
+        EventManager.getInstance().addObserver(this);
         xrecyclerPersondetailPost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MyIssueLocalServiceAdapter(getContext(), mList);
+        mAdapter.setCallback(new MyIssueLocalServiceAdapter.Callback() {
+            @Override
+            public void callback(int id) {
+
+            }
+        });
         xrecyclerPersondetailPost.setAdapter(mAdapter);
     }
 
@@ -122,19 +133,51 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             }
 
         });
-    }
+        btMyissueLocalserviceDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteServiceData();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
+            }
+        });
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    }
+    private void deleteServiceData() {
+        for (int i = 0; i < mList.size(); i++) {
+            if (mList.get(i).isChecked()) {
+                if (TextUtils.isEmpty(data_id)) {
+                    data_id = data_id + mList.get(i).getId();
+                } else {
+                    data_id = data_id + "," + mList.get(i).getId();
+                }
+            }
+        }
+        if (TextUtils.isEmpty(data_id)) return;
+        OkGo.<CommonBean>post(Constant.CANCEL_ISSUE_URL)
+                .params("id", data_id)
+                .params("type", "2")
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        CommonBean body = response.body();
+                        asyncShowToast(body.message);
+                        if (body.code == 200) {
+                            Iterator<MineIssueLocalServiceBean.DataBean> iterator = mList.iterator();
+                            while (iterator.hasNext()) {
+                                MineIssueLocalServiceBean.DataBean next = iterator.next();
+                                if (next.isChecked()) {
+                                    iterator.remove();
+                                }
+                            }
+                        }
+                        data_id = "";
+                        mAdapter.isShow = false;
+                        mAdapter.notifyDataSetChanged();
+                        btMyissueLocalserviceDelete.setVisibility(View.GONE);
+                        EventManager.getInstance().publishMessage("init");
+                    }
+                });
+
     }
 
 
@@ -151,4 +194,20 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             btMyissueLocalserviceDelete.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
+    }
+
+
 }
