@@ -18,9 +18,9 @@ import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueLocalServiceFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.PersonLocalServiceFragment;
 import com.qunxianghui.gxh.ui.view.MyScrollViewPage;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
         fragments.add(new MyIssueDiscloseFragment());
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssurePostFragment());
-        fragments.add(new MyIssueLocalServiceFragment());
+        fragments.add(new PersonLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
         MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, null);
         mineMyIssureViewpager.setAdapter(mineTabViewPagerAdapter);
