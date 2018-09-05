@@ -93,6 +93,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                             for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
                                 addData(datum);
                             }
+                            mVp.setCurrentItem(0, false);
                         } else {
                             addBigPage(null);
                         }

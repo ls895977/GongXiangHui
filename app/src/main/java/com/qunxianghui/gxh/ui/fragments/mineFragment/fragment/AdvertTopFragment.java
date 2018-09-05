@@ -78,6 +78,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                             for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert datum : body.data) {
                                 addPage(datum);
                             }
+                            mVp.setCurrentItem(0, false);
                         } else {
                             addPage(null);
                         }
