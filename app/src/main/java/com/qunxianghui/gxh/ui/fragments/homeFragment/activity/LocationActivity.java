@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -106,19 +107,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                 break;
             case R.id.tv_current_address:
                 break;
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (Build.VERSION.SDK_INT >= 23) {
-            boolean hasLocationPermission =
-                    ContextCompat.checkSelfPermission(LocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-            if (hasLocationPermission)
-                setLocation();
-        } else {
-            setLocation();
         }
     }
 
@@ -277,5 +265,19 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                 .create()
                 .show();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0x0011) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                boolean hasLocationPermission =
+                        ContextCompat.checkSelfPermission(LocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                if (hasLocationPermission)
+                    setLocation();
+            } else {
+                setLocation();
+            }
+        }
     }
 }

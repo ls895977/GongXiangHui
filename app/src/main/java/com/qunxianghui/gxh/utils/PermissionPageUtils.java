@@ -1,8 +1,8 @@
 package com.qunxianghui.gxh.utils;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -22,12 +22,12 @@ import java.util.List;
 
 public class PermissionPageUtils {
     private final String TAG = "PermissionPageManager";
-    private Context mContext;
+    private Activity mActivity;
     //自己的项目包名
     private String packageName="com.qunxianghui.gxh";
 
-    public PermissionPageUtils(Context context) {
-        this.mContext = context;
+    public PermissionPageUtils(Activity activity) {
+        this.mActivity = activity;
     }
 
     public void jumpPermissionPage() {
@@ -72,9 +72,9 @@ public class PermissionPageUtils {
             Intent intent = new Intent(packageName);
             ComponentName comp = new ComponentName("com.android.settings", "com.android.settings.Settings$AccessLockSummaryActivity");
             intent.setComponent(comp);
-            mContext.startActivity(intent);
+            mActivity.startActivityForResult(intent, 0x0011);
         } catch (Exception e) {
-            Toast.makeText(mContext, "跳转失败", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "跳转失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
             goIntentSetting();
         }
@@ -84,9 +84,9 @@ public class PermissionPageUtils {
             Intent intent = new Intent(packageName);
             ComponentName comp = new ComponentName("com.sonymobile.cta", "com.sonymobile.cta.SomcCTAMainActivity");
             intent.setComponent(comp);
-            mContext.startActivity(intent);
+            mActivity.startActivityForResult(intent, 0x0011);
         } catch (Exception e) {
-            Toast.makeText(mContext, "跳转失败", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "跳转失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
             goIntentSetting();
         }
@@ -98,9 +98,9 @@ public class PermissionPageUtils {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ComponentName comp = new ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity");
             intent.setComponent(comp);
-            mContext.startActivity(intent);
+            mActivity.startActivityForResult(intent, 0x0011);
         } catch (Exception e) {
-            Toast.makeText(mContext, "跳转失败", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "跳转失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
             goIntentSetting();
         }
@@ -144,7 +144,7 @@ public class PermissionPageUtils {
         } else {
             goIntentSetting();
         }
-        mContext.startActivity(intent);
+        mActivity.startActivityForResult(intent, 0x0011);
     }
 
     private void goMeizuMainager() {
@@ -152,7 +152,7 @@ public class PermissionPageUtils {
             Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.putExtra("packageName", packageName);
-            mContext.startActivity(intent);
+            mActivity.startActivityForResult(intent, 0x0011);
         } catch (ActivityNotFoundException localActivityNotFoundException) {
             localActivityNotFoundException.printStackTrace();
             goIntentSetting();
@@ -166,10 +166,10 @@ public class PermissionPageUtils {
 
     private void goIntentSetting() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", mContext.getPackageName(), null);
+        Uri uri = Uri.fromParts("package", mActivity.getPackageName(), null);
         intent.setData(uri);
         try {
-            mContext.startActivity(intent);
+            mActivity.startActivityForResult(intent, 0x0011);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -207,11 +207,11 @@ public class PermissionPageUtils {
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= 9) {
             localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-            localIntent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
+            localIntent.setData(Uri.fromParts("package", mActivity.getPackageName(), null));
         } else if (Build.VERSION.SDK_INT <= 8) {
             localIntent.setAction(Intent.ACTION_VIEW);
             localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-            localIntent.putExtra("com.android.settings.ApplicationPkgName", mContext.getPackageName());
+            localIntent.putExtra("com.android.settings.ApplicationPkgName", mActivity.getPackageName());
         }
         return localIntent;
     }
@@ -220,7 +220,7 @@ public class PermissionPageUtils {
         // 通过包名获取此APP详细信息，包括Activities、services、versioncode、name等等
         PackageInfo packageinfo = null;
         try {
-            packageinfo = mContext.getPackageManager().getPackageInfo(packagename, 0);
+            packageinfo = mActivity.getPackageManager().getPackageInfo(packagename, 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -232,7 +232,7 @@ public class PermissionPageUtils {
         resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         resolveIntent.setPackage(packageinfo.packageName);
         // 通过getPackageManager()的queryIntentActivities方法遍历
-        List<ResolveInfo> resolveinfoList = mContext.getPackageManager()
+        List<ResolveInfo> resolveinfoList = mActivity.getPackageManager()
                 .queryIntentActivities(resolveIntent, 0);
         Log.e("PermissionPageManager", "resolveinfoList" + resolveinfoList.size());
         for (int i = 0; i < resolveinfoList.size(); i++) {
@@ -251,7 +251,7 @@ public class PermissionPageUtils {
             ComponentName cn = new ComponentName(packageName, className);
             intent.setComponent(cn);
             try {
-                mContext.startActivity(intent);
+                mActivity.startActivityForResult(intent, 0x0011);
             } catch (Exception e) {
                 goIntentSetting();
                 e.printStackTrace();
