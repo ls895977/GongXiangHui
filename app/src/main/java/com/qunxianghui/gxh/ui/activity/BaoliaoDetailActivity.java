@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -68,7 +66,6 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
         recyclerView.setLoadingMoreEnabled(false);
         recyclerView.setPullRefreshEnabled(false);
 
-
         if (!TextUtils.isEmpty(dataBean.getCtime())) {
             tvBaoliaoTime.setText(dataBean.getCtime());
         }
@@ -85,7 +82,7 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initListeners() {
-
+        ivMyissueBack.setOnClickListener(this);
     }
 
     @Override
