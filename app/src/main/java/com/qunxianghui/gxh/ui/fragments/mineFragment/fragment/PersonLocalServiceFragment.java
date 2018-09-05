@@ -38,9 +38,9 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     XRecyclerView xrecyclerPersondetailPost;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
-    Unbinder unbinder;
     @BindView(R.id.bt_myissue_localservice_delete)
     Button btMyissueLocalserviceDelete;
+    Unbinder unbinder;
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
@@ -88,12 +88,13 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             if (mSkip == 0) {
                 mList.clear();
             }
+            if (data.getData().size()==0) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
             mList.addAll(data.getData());
             mAdapter.notifyDataSetChanged();
 
-            if (mList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
-            }
+
         }
     }
 
