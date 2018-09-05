@@ -85,14 +85,14 @@ public class MainActivity extends BaseActivity {
         mFragments[2] = new GeneralizeFragment();
         mFragments[3] = new MineFragment();
         mCurrentFragment = mFragments[0];
-        fragmentTransaction.add(R.id.content, mCurrentFragment).commitAllowingStateLoss();
+        fragmentTransaction.add(R.id.content, mFragments[3]);
+        fragmentTransaction.add(R.id.content, mCurrentFragment).hide(mFragments[3]).commitAllowingStateLoss();
         mCurrentView = mTvHome;
         mTvHome.setSelected(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PermissionGen.needPermission(MainActivity.this, 105,
                     new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     }
@@ -190,11 +190,10 @@ public class MainActivity extends BaseActivity {
         if (fragment != mCurrentFragment) {
             if (fragment != null && fragment.isAdded()) {
                 fragmentTransaction.show(fragment).hide(mCurrentFragment);
-                mCurrentFragment = fragment;
             } else if (fragment != null) {
                 fragmentTransaction.add(R.id.content, fragment).hide(mCurrentFragment);
-                mCurrentFragment = fragment;
             }
+            mCurrentFragment = fragment;
         }
         fragmentTransaction.commitAllowingStateLoss();
     }

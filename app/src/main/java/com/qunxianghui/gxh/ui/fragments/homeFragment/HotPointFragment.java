@@ -119,6 +119,27 @@ public class HotPointFragment extends BaseFragment {
             homeItemListAdapter.addHeaderView(headerNavigator);
             homeItemListAdapter.addHeaderView(headerVp, 1);
         }
+        homeItemListAdapter.setLoadMoreView(new CustomLoadMoreView());
+        homeItemListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                initData();
+            }
+        }, mRv);
+        mSw.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        mSw.setColorSchemeResources(R.color.tab_color, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mCount = 0;
+                //首页下拉刷新
+                homePullRefresh();
+            }
+        });
+////        //设置加载出来看的动画
+//        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        mRv.setAdapter(homeItemListAdapter);
+        //对列表设置点击事件
     }
 
     @Override
@@ -213,6 +234,8 @@ public class HotPointFragment extends BaseFragment {
         } else {
             homeItemListAdapter.loadMoreEnd();
         }
+        if (homeItemListAdapter.getEmptyView() == null)
+            homeItemListAdapter.setEmptyView(R.layout.layout_empty);
         homeItemListAdapter.notifyDataSetChanged();
     }
 

@@ -133,6 +133,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             asyncShowToast(testMode.getMessage());
             mRecyclerView.setLoadingMoreEnabled(false);
         }
+        if (mRecyclerView.getEmptyView() == null)
+            mRecyclerView.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRecyclerView, false));
         mRecyclerView.loadMoreComplete();
         mAdapter.notifyDataSetChanged();
     }

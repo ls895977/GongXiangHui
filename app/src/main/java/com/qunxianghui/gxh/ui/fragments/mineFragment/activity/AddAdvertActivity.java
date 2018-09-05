@@ -73,8 +73,6 @@ public class AddAdvertActivity extends BaseActivity {
     private int mAddPosition = -1;
     private Dialog dialog;
     private UMWeb web;
-    private String mDescrip;
-    private String mTitle;
 
     @Override
     protected int getLayoutId() {
@@ -98,8 +96,6 @@ public class AddAdvertActivity extends BaseActivity {
         });
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
-        mTitle = intent.getStringExtra("title");
-        mDescrip = intent.getStringExtra("descrip");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
         settings.setJavaScriptEnabled(true);
@@ -180,6 +176,9 @@ public class AddAdvertActivity extends BaseActivity {
     private void getShareInfo() {
         String[] split = url.split("=");
         String uuid = split[split.length - 1];
+        if (getIntent().getBooleanExtra("isPaste", false)) {
+            uuid = getIntent().getStringExtra("uuid");
+        }
         OkGo.<ShareInfo>post(Constant.GET_SHARE_INFO)
                 .params("uuid", uuid)
                 .execute(new JsonCallback<ShareInfo>() {
@@ -211,9 +210,9 @@ public class AddAdvertActivity extends BaseActivity {
         UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
         //切记切记 这里分享的链接必须是http开头
         web = new UMWeb(url);
-        web.setTitle(mTitle);//标题
+        web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
-        web.setDescription(mDescrip.substring(0, 70));//描述
+        web.setDescription(descrip);//描述
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);
         RelativeLayout rl_share_wxfriend = view.findViewById(R.id.rl_share_wxfriend);

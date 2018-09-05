@@ -71,6 +71,7 @@ public class MineFragment extends BaseFragment {
     private int userSize;
     private int code;
     private String mMobile;
+    private boolean mIsFirst = true;
 
     @Override
     public int getLayoutId() {
@@ -100,6 +101,7 @@ public class MineFragment extends BaseFragment {
                 mMineUserName.setText(user.getUsername());
             }
         }
+        fillUserData();
     }
 
     @Override
@@ -111,7 +113,10 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        fillUserData();
+        if (!mIsFirst) {
+            fillUserData();
+        }
+        mIsFirst = false;
     }
 
     private void fillUserData() {

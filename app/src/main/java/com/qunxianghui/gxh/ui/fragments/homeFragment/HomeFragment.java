@@ -3,15 +3,17 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -36,8 +38,8 @@ import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CityInfo;
-import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.bean.home.PasteBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
@@ -110,11 +112,10 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 //定位
                 setLocation();
             } else {
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 10010);
+                HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0x0011);
             }
         } else {
             setLocation();
-
         }
     }
 
@@ -205,7 +206,21 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_home_location:
-                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    boolean hasLocationPermission =
+                            ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                    if (!hasLocationPermission) {
+                        if (HomeFragment.this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
+                            showMessageOKCancel();
+                        } else {//没有权限
+                            HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                        }
+                    } else {
+                        startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                    }
+                } else {
+                    startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                }
                 break;
             case R.id.ll_home_search:
                 toActivity(SearchActivity.class);
@@ -227,22 +242,26 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 break;
         }
     }
+
     /*粘贴文章*/
     private void clipArticalData() {
         //粘贴板有数据并且是文本
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = item.getText().toString();
-            OkGo.<CommonBean>get(Constant.PAST_ARTICAL_URL)
+            OkGo.<PasteBean>get(Constant.PAST_ARTICAL_URL)
                     .params("url", text)
-                    .execute(new JsonCallback<CommonBean>() {
+                    .execute(new JsonCallback<PasteBean>() {
                         @Override
-                        public void onSuccess(Response<CommonBean> response) {
+                        public void onSuccess(Response<PasteBean> response) {
                             int code = response.body().code;
                             String msg = response.body().message;
                             if (code == 0) {
+                                PasteBean.PasteDataBean data = response.body().data;
                                 Intent intent = new Intent(getActivity(), AddAdvertActivity.class);
                                 intent.putExtra("url", text);
+                                intent.putExtra("uuid", data.uuid);
+                                intent.putExtra("isPaste", true);
                                 startActivity(intent);
                             } else {
                                 asyncShowToast(msg);
@@ -250,7 +269,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         }
 
                         @Override
-                        public void onError(Response<CommonBean> response) {
+                        public void onError(Response<PasteBean> response) {
                             super.onError(response);
                             asyncShowToast(response.message());
                         }
@@ -325,4 +344,31 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0x0011) {
+            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+            } else {
+                asyncShowToast("\"不好意思，请先开启权限操作...\"");
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void showMessageOKCancel() {
+        new AlertDialog.Builder(mActivity)
+                .setMessage("请求定位权限")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setLocation();
+                        HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+
+    }
 }
