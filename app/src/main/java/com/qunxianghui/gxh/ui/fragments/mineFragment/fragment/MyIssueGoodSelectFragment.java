@@ -76,7 +76,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                 mSkip = 0;
                 initData();
             }
-
             @Override
             public void onLoadMore() {
                 mSkip += 10;

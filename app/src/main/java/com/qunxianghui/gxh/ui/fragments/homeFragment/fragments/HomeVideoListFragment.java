@@ -1,10 +1,13 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -30,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.jzvd.JZMediaManager;
 import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
@@ -39,6 +44,9 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @BindView(R.id.xrv)
     XRecyclerView mRv;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private int mSkip;
     private int mCateId;
@@ -150,11 +158,16 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                                 mRv.refreshComplete();
                                 mRv.setLoadingMoreEnabled(true);
                             }
+                            llEmpty.setVisibility(View.GONE);
                             int total = homeVideoListBean.getData().getList().size();
                             if (total < 10) {
                                 mRv.setLoadingMoreEnabled(false);
                             }
                             videoDataList.addAll(homeVideoListBean.getData().getList());
+
+                            if (videoDataList.isEmpty()){
+                                llEmpty.setVisibility(View.VISIBLE);
+                            }
                         }
                         mRv.loadMoreComplete();
                         if (mRv.getEmptyView() == null)
@@ -240,4 +253,17 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         startActivity(intent);
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

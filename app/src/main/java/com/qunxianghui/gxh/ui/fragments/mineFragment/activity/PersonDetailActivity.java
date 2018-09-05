@@ -68,7 +68,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     TextView mTv3;
     @BindView(R.id.tv_4)
     TextView mTv4;
-
     private int[] mBgs = new int[]{R.mipmap.icon_person_detail_bg1, R.mipmap.icon_person_detail_bg2
             , R.mipmap.icon_person_detail_bg3, R.mipmap.icon_person_detail_bg4, R.mipmap.icon_person_detail_bg5};
     private List<Fragment> fragments = new ArrayList<>();
