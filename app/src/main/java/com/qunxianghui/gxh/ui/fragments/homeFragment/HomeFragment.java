@@ -38,8 +38,8 @@ import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CityInfo;
-import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.bean.home.PasteBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
@@ -242,22 +242,26 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 break;
         }
     }
+
     /*粘贴文章*/
     private void clipArticalData() {
         //粘贴板有数据并且是文本
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = item.getText().toString();
-            OkGo.<CommonBean>get(Constant.PAST_ARTICAL_URL)
+            OkGo.<PasteBean>get(Constant.PAST_ARTICAL_URL)
                     .params("url", text)
-                    .execute(new JsonCallback<CommonBean>() {
+                    .execute(new JsonCallback<PasteBean>() {
                         @Override
-                        public void onSuccess(Response<CommonBean> response) {
+                        public void onSuccess(Response<PasteBean> response) {
                             int code = response.body().code;
                             String msg = response.body().message;
                             if (code == 0) {
+                                PasteBean.PasteDataBean data = response.body().data;
                                 Intent intent = new Intent(getActivity(), AddAdvertActivity.class);
                                 intent.putExtra("url", text);
+                                intent.putExtra("uuid", data.uuid);
+                                intent.putExtra("isPaste", true);
                                 startActivity(intent);
                             } else {
                                 asyncShowToast(msg);
@@ -265,7 +269,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         }
 
                         @Override
-                        public void onError(Response<CommonBean> response) {
+                        public void onError(Response<PasteBean> response) {
                             super.onError(response);
                             asyncShowToast(response.message());
                         }
