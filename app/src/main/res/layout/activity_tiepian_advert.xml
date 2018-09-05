@@ -50,6 +50,12 @@
                 android:textSize="11sp"
                 android:visibility="gone"
                 tools:text="跳过广告" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/rl_add">
 
             <TextView
                 android:id="@+id/tv_type"
@@ -69,8 +75,7 @@
                 android:id="@+id/tv_seconds"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:paddingEnd="10dp"

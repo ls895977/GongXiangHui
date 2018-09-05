@@ -238,6 +238,7 @@ public class HotPointFragment extends BaseFragment {
 //        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         mRv.setAdapter(homeItemListAdapter);
         homeItemListAdapter.setEmptyView(R.layout.layout_empty);
+
         //对列表设置点击事件
         homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

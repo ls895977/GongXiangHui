@@ -10,6 +10,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:text="没有啦～" />
 
 </LinearLayout>
