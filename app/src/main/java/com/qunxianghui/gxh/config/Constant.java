@@ -15,8 +15,11 @@ public class Constant {
     //便民服务中的黄历
     public static final String BIANMIN_HUANGLI_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
-    //本地环境
+    //上线环境
+//    private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
+    //线下问题
     private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
+
 
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表

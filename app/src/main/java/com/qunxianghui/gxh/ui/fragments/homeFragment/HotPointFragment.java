@@ -155,6 +155,7 @@ public class HotPointFragment extends BaseFragment {
                             if (body.code == 0 && body.data != null) {
                                 dataList.addAll(0, body.data);
                                 homeItemListAdapter.notifyDataSetChanged();
+                                homeItemListAdapter.setEmptyView(R.layout.layout_empty);
                             }
                         }
                     });
@@ -237,8 +238,6 @@ public class HotPointFragment extends BaseFragment {
 ////        //设置加载出来看的动画
 //        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         mRv.setAdapter(homeItemListAdapter);
-        homeItemListAdapter.setEmptyView(R.layout.layout_empty);
-
         //对列表设置点击事件
         homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
