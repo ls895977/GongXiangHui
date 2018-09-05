@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -113,7 +114,7 @@ public class WelcomeActivity extends BaseActivity {
                                     .load(image)
                                     .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
                                             .error(R.mipmap.icon_starpage)
-                                            .centerCrop())
+                                            .centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
                                     .into(mIvWelcomeadver);
                         }
                     }
@@ -150,15 +151,12 @@ public class WelcomeActivity extends BaseActivity {
                 finish();
             }
         });
-
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        finish();
     }
 
 }
