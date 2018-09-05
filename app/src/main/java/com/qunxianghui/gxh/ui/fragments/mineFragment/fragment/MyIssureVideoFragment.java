@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -29,6 +33,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 视频
@@ -39,6 +45,9 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
     XRecyclerView mRv;
     @BindView(R.id.bt_myissue_video_delete)
     Button btnDelete;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private int mSkip = 0;
     private List<MineIssueVideoBean.DataBean> mList = new ArrayList<>();
@@ -65,7 +74,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
 
             @Override
             public void onLoadMore() {
-                mSkip += 10;
+                mSkip += 12;
                 initData();
             }
         });
@@ -119,7 +128,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
     @Override
     public void initData() {
         OkGo.<MineIssueVideoBean>post(Constant.GET_ISSURE_VIDEO_URL)
-                .params("limit", 10)
+                .params("limit", 12)
                 .params("skip", mSkip)
                 .execute(new JsonCallback<MineIssueVideoBean>() {
                     @Override
@@ -135,11 +144,15 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
                 mList.clear();
                 mRv.setLoadingMoreEnabled(true);
             }
-            if (data.getData().size() < 10) {
+            if (data.getData().size() < 12) {
                 mRv.setLoadingMoreEnabled(false);
             }
             mList.addAll(data.getData());
             mRv.refreshComplete();
+
+            if (mList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
         } else {
             mRv.setLoadingMoreEnabled(false);
         }
@@ -209,6 +222,14 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
 }

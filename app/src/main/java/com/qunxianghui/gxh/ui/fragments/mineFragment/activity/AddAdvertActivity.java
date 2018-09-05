@@ -96,7 +96,6 @@ public class AddAdvertActivity extends BaseActivity {
 
             }
         });
-
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         mTitle = intent.getStringExtra("title");
@@ -345,7 +344,6 @@ public class AddAdvertActivity extends BaseActivity {
                     }
                 });
     }
-
     private void goToAdvertTemplateActivity() {
         Intent intent = new Intent(this, AdvertTemplateActivity.class);
         intent.putExtra("position", mAddPosition);

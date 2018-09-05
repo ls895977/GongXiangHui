@@ -56,7 +56,6 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class HotPointFragment extends BaseFragment {
-
     @BindView(R.id.rv)
     RecyclerView mRv;
     @BindView(R.id.sw)
@@ -155,6 +154,7 @@ public class HotPointFragment extends BaseFragment {
                             if (body.code == 0 && body.data != null) {
                                 dataList.addAll(0, body.data);
                                 homeItemListAdapter.notifyDataSetChanged();
+                                homeItemListAdapter.setEmptyView(R.layout.layout_empty);
                             }
                         }
                     });
@@ -177,6 +177,7 @@ public class HotPointFragment extends BaseFragment {
                             if (response.body().data != null) {
                                 dataList.addAll(0, response.body().data);
                                 homeItemListAdapter.notifyDataSetChanged();
+                                homeItemListAdapter.setEmptyView(R.layout.layout_empty);
                             }
                             Display display = mActivity.getWindowManager().getDefaultDisplay();
                             int height = display.getHeight();
@@ -237,7 +238,7 @@ public class HotPointFragment extends BaseFragment {
 ////        //设置加载出来看的动画
 //        homeItemListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         mRv.setAdapter(homeItemListAdapter);
-        homeItemListAdapter.setEmptyView(R.layout.layout_empty);
+
         //对列表设置点击事件
         homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
