@@ -47,17 +47,29 @@ public class PersonLocalServiceFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
-        OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
-                .params("limit", 10)
-                .params("skip", mSkip)
-                .params("member_id", personDetailActivity.member_id)
-                .execute(new JsonCallback<MineIssueLocalServiceBean>() {
-                    @Override
-                    public void onSuccess(Response<MineIssueLocalServiceBean> response) {
-                        parseData(response.body());
-                    }
-                });
+        if(getActivity() instanceof PersonDetailActivity) {
+            PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
+            OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
+                    .params("member_id", personDetailActivity.member_id)
+                    .execute(new JsonCallback<MineIssueLocalServiceBean>() {
+                        @Override
+                        public void onSuccess(Response<MineIssueLocalServiceBean> response) {
+                            parseData(response.body());
+                        }
+                    });
+        } else{
+            OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
+                    .execute(new JsonCallback<MineIssueLocalServiceBean>() {
+                        @Override
+                        public void onSuccess(Response<MineIssueLocalServiceBean> response) {
+                            parseData(response.body());
+                        }
+                    });
+        }
     }
 
     private void parseData(MineIssueLocalServiceBean data) {

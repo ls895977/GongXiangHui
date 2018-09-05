@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="臭居居的汤包"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tv_mineMessagefollow_headContent"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="图不错"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="浙江杭州"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tv_mineMessagefollow_issueTime"
@@ -59,7 +59,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@+id/tv_mineMessagefollow_personLocation"
                     android:text="2小时前"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
 
                 <ImageView
@@ -94,7 +94,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="今天的风好大，欣赏美图"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
             </LinearLayout>
 

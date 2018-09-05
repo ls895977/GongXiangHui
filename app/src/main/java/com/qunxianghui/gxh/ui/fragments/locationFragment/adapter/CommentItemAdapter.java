@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,7 +90,7 @@ public class CommentItemAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    new AlertDialog.Builder(v.getContext()).setTitle("是否删除评论").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    AlertDialog dialog = new AlertDialog.Builder(v.getContext()).setTitle("是否删除评论").setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             /*删除评论*/
@@ -102,7 +103,10 @@ public class CommentItemAdapter extends BaseAdapter {
                                         }
                                     });
                         }
-                    }).setNeutralButton("否", null).show();
+                    }).setNeutralButton("否", null).create();
+                    dialog.show();
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.GRAY);
+                    dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(Color.RED);
 
                 }
             });

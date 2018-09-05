@@ -53,6 +53,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     private WebView webView;
     private StringBuffer mBuffer;
     private Dialog mMLoadingDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_protocol;
@@ -128,7 +129,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 }
             }
         });
-
         webView.setWebViewClient(new WebViewClient() {
             private Intent mMIntent;
 
