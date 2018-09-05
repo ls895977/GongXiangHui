@@ -20,11 +20,13 @@ import android.util.Log;
 
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.convert.Converter;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.SimpleResponse;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.utils.Convert;
+import com.qunxianghui.gxh.utils.GsonUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -145,9 +147,8 @@ public class JsonConvert<T> implements Converter<T> {
                 //一般来说服务器会和客户端约定一个数表示成功，其余的表示失败，这里根据实际情况修改
 
                 if (LoginMsgHelper.isLogin() && (code == 300 || code == 1000) && sIsShow) {
-
                     sIsShow = false;
-                    EventManager.getInstance().publishMessage("signout");
+                    EventManager.getInstance().publishMessage("signout" + commonResponse.message);
                 }
                 if (code == 0) {
                     return (T) commonResponse;
@@ -163,8 +164,9 @@ public class JsonConvert<T> implements Converter<T> {
 
     private void isFialure(String str) {
         if (LoginMsgHelper.isLogin() && !TextUtils.isEmpty(str) && (str.contains("\"code\":1000") || str.contains("\"code\":300")) && sIsShow) {
+            CommonBean commonBean = GsonUtil.parseJsonWithGson(str, CommonBean.class);
             sIsShow = false;
-            EventManager.getInstance().publishMessage("signout");
+            EventManager.getInstance().publishMessage("signout" + commonBean.message);
         }
     }
 }

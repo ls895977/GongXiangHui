@@ -2,8 +2,11 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,6 +33,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.item.AreaItem;
 import com.qunxianghui.gxh.item.ItemHelperFactory;
 import com.qunxianghui.gxh.item.TreeRecyclerType;
+import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.lang.ref.WeakReference;
@@ -76,7 +80,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
 
     @Override
     protected void initData() {
-        requestAbleLocation();
         OkGo.<Address>post(Constant.FETCH_COUNTRY_ADRESS).execute(new JsonCallback<Address>() {
             @Override
             public void onSuccess(Response<Address> response) {
@@ -106,6 +109,19 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Build.VERSION.SDK_INT >= 23) {
+            boolean hasLocationPermission =
+                    ContextCompat.checkSelfPermission(LocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+            if (hasLocationPermission)
+                setLocation();
+        } else {
+            setLocation();
+        }
+    }
+
     public void callback(ProvinceBean.CityBean.AreasBean areasBean) {
         saveLocationData(areasBean.city_id, areasBean.areaId, areasBean.areaName);
         mTvCurrentCity.setText(areasBean.areaName);
@@ -125,6 +141,8 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                 } else {
                     mTvCurrentCity.setText(mCurrentCity);
                 }
+                mTvCurrentCity.setText(mCurrentCity);
+                requestCityInfo(mLag, mLng, mCurrentCity);
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "locations Error, ErrCode:"
@@ -136,12 +154,29 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     }
 
     private void requestAbleLocation() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            boolean hasLocationPermission =
+                    ContextCompat.checkSelfPermission(LocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+            if (!hasLocationPermission) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(LocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
+                    ActivityCompat.requestPermissions(LocationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                } else {//没有权限
+                    showMessageOKCancel();
+                }
+            } else {
+                setLocation();
+            }
+        } else {
+            setLocation();
+        }
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 setLocation();
             } else {
                 ActivityCompat.requestPermissions(LocationActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100010);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
             }
         } else {
             setLocation();
@@ -168,8 +203,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
 
     @OnClick(R.id.tv_current_address)
     public void onViewClicked() {
-        mTvCurrentCity.setText(mCurrentCity);
-        requestCityInfo(mLag, mLng, mCurrentCity);
+        requestAbleLocation();
     }
 
     private void requestCityInfo(Double lat, Double lng, final String cityName) {
@@ -202,6 +236,16 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
         SPUtils.saveLocation("currcity", cityName);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0x0011) {
+            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setLocation();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     public static class Callback implements AreaItem.Callback {
 
         private WeakReference<LocationActivity> mre;
@@ -218,5 +262,20 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     protected void onDestroy() {
         AreaItem.sCallback = null;
         super.onDestroy();
+    }
+
+    private void showMessageOKCancel() {
+        new AlertDialog.Builder(LocationActivity.this)
+                .setMessage("请求定位权限")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new PermissionPageUtils(LocationActivity.this).jumpPermissionPage();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+
     }
 }
