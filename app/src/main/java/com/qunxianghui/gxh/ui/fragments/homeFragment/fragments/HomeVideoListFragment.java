@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -156,6 +157,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                             videoDataList.addAll(homeVideoListBean.getData().getList());
                         }
                         mRv.loadMoreComplete();
+                        if (mRv.getEmptyView() == null)
+                            mRv.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRv, false));
                         personDetailVideoAdapter.notifyDataSetChanged();
                     }
                 });
