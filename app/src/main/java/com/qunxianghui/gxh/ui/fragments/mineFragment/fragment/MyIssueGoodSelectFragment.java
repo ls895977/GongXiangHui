@@ -187,18 +187,17 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             if (mSkip == 0) {
                 mList.clear();
                 mRv.setLoadingMoreEnabled(true);
-
-
             }
             if (data.getData().size() < 10) {
                 mRv.setLoadingMoreEnabled(false);
             }
+            if (data.getData().size()==0) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
             mList.addAll(data.getData());
             mRv.refreshComplete();
 
-            if (mList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
-            }
+
         } else {
             mRv.setLoadingMoreEnabled(false);
         }

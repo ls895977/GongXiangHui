@@ -250,7 +250,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (mClipboardManager.hasPrimaryClip() && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             final ClipData.Item item = mClipboardManager.getPrimaryClip().getItemAt(0);
             final String text = item.getText().toString();
-            OkGo.<PasteBean>get(Constant.PAST_ARTICAL_URL)
+            OkGo.<PasteBean>post(Constant.PAST_ARTICAL_URL)
                     .params("url", text)
                     .execute(new JsonCallback<PasteBean>() {
                         @Override
@@ -272,7 +272,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         @Override
                         public void onError(Response<PasteBean> response) {
                             super.onError(response);
-                            asyncShowToast(response.message());
+                            asyncShowToast("服务器忙..");
                         }
                     });
         } else {
