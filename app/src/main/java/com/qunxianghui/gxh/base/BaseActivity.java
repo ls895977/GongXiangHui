@@ -93,12 +93,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof String) {
-            String arg1 = (String) arg;
-            if ("signout".equals(arg1)) {
+            final String arg1 = (String) arg;
+            if (arg1.contains("signout")) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        new LoginDialog(BaseActivity.this).show();
+                        new LoginDialog(BaseActivity.this, arg1.substring(7)).show();
                     }
                 });
             }

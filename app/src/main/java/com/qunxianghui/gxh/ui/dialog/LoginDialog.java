@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
@@ -14,11 +16,13 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 
 public class LoginDialog extends Dialog {
 
-    public LoginDialog(@NonNull final Context context) {
+    public LoginDialog(@NonNull final Context context, String content) {
         super(context, R.style.LOGIN_DIALOG_THEME);
         setCanceledOnTouchOutside(false);
         setCancelable(true);
         setContentView(R.layout.dialog_login);
+        if (!TextUtils.isEmpty(content))
+            ((TextView) findViewById(R.id.tv_title)).setText(content);
         Window window = getWindow();
         android.view.WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;

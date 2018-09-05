@@ -51,6 +51,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
@@ -211,9 +212,9 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                             ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
                     if (!hasLocationPermission) {
                         if (HomeFragment.this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
-                            showMessageOKCancel();
-                        } else {//没有权限
                             HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                        } else {//没有权限
+                            showMessageOKCancel();
                         }
                     } else {
                         startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
@@ -346,13 +347,13 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 0x0011) {
-            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
-            } else {
-                asyncShowToast("\"不好意思，请先开启权限操作...\"");
-            }
-        }
+//        if (requestCode == 0x0011) {
+//            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+//            } else {
+//                asyncShowToast("\"不好意思，请先开启权限操作...\"");
+//            }
+//        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -362,11 +363,16 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setLocation();
-                        HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+//                        setLocation();
+                        new PermissionPageUtils(mActivity).jumpPermissionPage();
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                    }
+                })
                 .create()
                 .show();
 
