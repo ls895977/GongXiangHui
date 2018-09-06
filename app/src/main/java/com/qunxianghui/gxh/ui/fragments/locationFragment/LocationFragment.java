@@ -1,8 +1,15 @@
 package com.qunxianghui.gxh.ui.fragments.locationFragment;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +32,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.LocalServiceChannelActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -142,7 +150,21 @@ public class LocationFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_localcircle_location:
-                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    boolean hasLocationPermission =
+                            ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                    if (!hasLocationPermission) {
+                        if (LocationFragment.this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
+                            LocationFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                        } else {//没有权限
+                            showMessageOKCancel();
+                        }
+                    } else {
+                        startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                    }
+                } else {
+                    startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                }
                 break;
             case R.id.iv_more_columns:
                 if (!LoginMsgHelper.isLogin()) {
@@ -152,6 +174,33 @@ public class LocationFragment extends BaseFragment {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0x0011) {
+            startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void showMessageOKCancel() {
+        new AlertDialog.Builder(mActivity)
+                .setMessage("请求定位权限")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new PermissionPageUtils(mActivity).jumpPermissionPage();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                    }
+                })
+                .create()
+                .show();
     }
 }
 

@@ -72,7 +72,7 @@ public class PermissionPageUtils {
             Intent intent = new Intent(packageName);
             ComponentName comp = new ComponentName("com.android.settings", "com.android.settings.Settings$AccessLockSummaryActivity");
             intent.setComponent(comp);
-            mActivity.startActivityForResult(intent, 0x0011);
+            mActivity.startActivityForResult(intent, 0x0022);
         } catch (Exception e) {
             Toast.makeText(mActivity, "跳转失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class PermissionPageUtils {
             Intent intent = new Intent(packageName);
             ComponentName comp = new ComponentName("com.sonymobile.cta", "com.sonymobile.cta.SomcCTAMainActivity");
             intent.setComponent(comp);
-            mActivity.startActivityForResult(intent, 0x0011);
+            mActivity.startActivityForResult(intent, 0x0022);
         } catch (Exception e) {
             Toast.makeText(mActivity, "跳转失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class PermissionPageUtils {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ComponentName comp = new ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity");
             intent.setComponent(comp);
-            mActivity.startActivityForResult(intent, 0x0011);
+            mActivity.startActivityForResult(intent, 0x0022);
         } catch (Exception e) {
             Toast.makeText(mActivity, "跳转失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -144,7 +144,7 @@ public class PermissionPageUtils {
         } else {
             goIntentSetting();
         }
-        mActivity.startActivityForResult(intent, 0x0011);
+        mActivity.startActivityForResult(intent, 0x0022);
     }
 
     private void goMeizuMainager() {
@@ -152,7 +152,7 @@ public class PermissionPageUtils {
             Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.putExtra("packageName", packageName);
-            mActivity.startActivityForResult(intent, 0x0011);
+            mActivity.startActivityForResult(intent, 0x0022);
         } catch (ActivityNotFoundException localActivityNotFoundException) {
             localActivityNotFoundException.printStackTrace();
             goIntentSetting();
@@ -169,7 +169,7 @@ public class PermissionPageUtils {
         Uri uri = Uri.fromParts("package", mActivity.getPackageName(), null);
         intent.setData(uri);
         try {
-            mActivity.startActivityForResult(intent, 0x0011);
+            mActivity.startActivityForResult(intent, 0x0022);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -251,7 +251,7 @@ public class PermissionPageUtils {
             ComponentName cn = new ComponentName(packageName, className);
             intent.setComponent(cn);
             try {
-                mActivity.startActivityForResult(intent, 0x0011);
+                mActivity.startActivityForResult(intent, 0x0022);
             } catch (Exception e) {
                 goIntentSetting();
                 e.printStackTrace();

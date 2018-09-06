@@ -1,8 +1,15 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +32,7 @@ import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.fragments.HomeVideoListFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
+import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -33,6 +41,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
+
+import static com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment.CITY_SELECT_RESULT_FRAG;
 
 
 /**
@@ -124,7 +134,7 @@ public class HomeVideoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_address, R.id.iv_video_more_columns,R.id.ll_home_video_search})
+    @OnClick({R.id.iv_back, R.id.tv_address, R.id.iv_video_more_columns, R.id.ll_home_video_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -134,7 +144,21 @@ public class HomeVideoActivity extends BaseActivity {
                 toActivity(SearchVideoActivity.class);
                 break;
             case R.id.tv_address:
-                toActivity(LocationActivity.class);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    boolean hasLocationPermission =
+                            ContextCompat.checkSelfPermission(HomeVideoActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                    if (!hasLocationPermission) {
+                        if (HomeVideoActivity.this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
+                            HomeVideoActivity.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                        } else {//没有权限
+                            showMessageOKCancel();
+                        }
+                    } else {
+                        startActivityForResult(new Intent(HomeVideoActivity.this, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                    }
+                } else {
+                    startActivityForResult(new Intent(HomeVideoActivity.this, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                }
                 break;
             case R.id.iv_video_more_columns:
                 if (!LoginMsgHelper.isLogin()) {
@@ -148,6 +172,33 @@ public class HomeVideoActivity extends BaseActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0x0011) {
+            startActivityForResult(new Intent(HomeVideoActivity.this, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void showMessageOKCancel() {
+        new AlertDialog.Builder(HomeVideoActivity.this)
+                .setMessage("请求定位权限")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new PermissionPageUtils(HomeVideoActivity.this).jumpPermissionPage();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(HomeVideoActivity.this, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == VIDEO_CHANNELRESULT) {
             userChannelList.clear();
@@ -157,6 +208,8 @@ public class HomeVideoActivity extends BaseActivity {
             mFragments.clear();
             setFragments(userChannelList);
             setViewpager();
+        } else if (requestCode == 0x0011 && resultCode == 0x0022) {
+
         }
     }
 

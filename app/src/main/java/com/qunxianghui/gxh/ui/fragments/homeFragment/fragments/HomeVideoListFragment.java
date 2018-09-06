@@ -1,12 +1,10 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -33,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.jzvd.JZMediaManager;
 import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
@@ -46,7 +42,6 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     XRecyclerView mRv;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
-    Unbinder unbinder;
 
     private int mSkip;
     private int mCateId;
@@ -251,19 +246,5 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 + "?token=" + SPUtils.getString(SpConstant.ACCESS_TOKEN, "")
                 + "&uuid=" + videoDataList.get(position).getUuid());
         startActivity(intent);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }
