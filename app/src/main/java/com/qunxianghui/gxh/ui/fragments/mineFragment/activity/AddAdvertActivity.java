@@ -7,7 +7,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -389,12 +388,7 @@ public class AddAdvertActivity extends BaseActivity {
     private void addBanner(Banner banner, List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> list) {
         List<String> imags = new ArrayList<>();
 
-        for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : list) {
-            if (!TextUtils.isEmpty(companyAdvert.images)) {
-                imags.add(companyAdvert.images);
-            }
-        }
-        banner.setImages(imags)
+        banner.setImages(list)
                 .setDelayTime(3000);
         if (banner.getId() == R.id.banner_top) {
             banner.setOnBannerListener(new OnBannerListener() {

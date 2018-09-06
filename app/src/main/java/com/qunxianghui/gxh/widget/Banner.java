@@ -20,7 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.utils.GlideImageLoader;
+import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.BannerScroller;
 import com.youth.banner.WeakHandler;
@@ -57,7 +59,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private int lastPosition = 1;
     private int scaleType = 1;
     private List<String> titles;
-    private List imageUrls;
+    private List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> imageUrls;
     private List<View> imageViews;
     private List<ImageView> indicatorImages;
     private Context context;
@@ -231,19 +233,19 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         return this;
     }
 
-    public Banner setImages(List<?> imageUrls) {
+    public Banner setImages(List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> imageUrls) {
         this.imageUrls = imageUrls;
         this.count = imageUrls.size();
         return this;
     }
 
-    public void update(List<?> imageUrls, List<String> titles) {
+    public void update(List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> imageUrls, List<String> titles) {
         this.titles.clear();
         this.titles.addAll(titles);
         update(imageUrls);
     }
 
-    public void update(List<?> imageUrls) {
+    public void update(List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> imageUrls) {
         this.imageUrls.clear();
         this.imageViews.clear();
         this.indicatorImages.clear();
@@ -294,7 +296,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     }
 
     private void setBannerStyleUI() {
-        int visibility =count > 1 ? View.VISIBLE :View.GONE;
+        int visibility = count > 1 ? View.VISIBLE : View.GONE;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
@@ -330,7 +332,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         }
     }
 
-    private void setImageList(List<?> imagesUrl) {
+    private void setImageList(List<EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert> imagesUrl) {
         if (imagesUrl == null || imagesUrl.size() <= 0) {
             bannerDefaultImage.setVisibility(VISIBLE);
             Log.e(tag, "The image data set is empty.");
@@ -347,7 +349,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 //                imageView = new ImageView(context);
 //            }
             setScaleType(imageView);
-            Object url = null;
+            EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert url = null;
             if (i == 0) {
                 url = imagesUrl.get(count - 1);
             } else if (i == count + 1) {
@@ -356,9 +358,48 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 url = imagesUrl.get(i - 1);
             }
             imageViews.add(imageView);
-            if (imageLoader != null)
-                imageLoader.displayImage(context, url, ((ImageView) imageView.findViewById(R.id.iv)));
-            else
+            if (imageLoader != null) {
+                ImageView iv = imageView.findViewById(R.id.iv);
+                ViewGroup.LayoutParams layoutParams = iv.getLayoutParams();
+                if (url.ad_type == 1 || url.ad_type == 3) {
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                } else {
+                    layoutParams.width = layoutParams.height = ScreenUtils.dp2px(100);
+//                    广告类型：1大图通栏 2名片广告 3通栏广告 4二维码 5QQ广告 6贴片广告 7店铺广告 8图文广告
+                    TextView tvTitle = imageView.findViewById(R.id.tv_type);
+                    TextView tvContent = imageView.findViewById(R.id.tv_content);
+                    TextView tv = imageView.findViewById(R.id.tv);
+                    switch (url.ad_type) {
+                        case 2:
+                            tvTitle.setText("名片广告");
+                            tvContent.setText(url.settings.slogan);
+                            tv.setText("一键拨号");
+                            break;
+                        case 4:
+                            tvTitle.setText("二维码");
+                            tvContent.setText(url.settings.slogan);
+                            tv.setText("关注");
+                            break;
+                        case 5:
+                            tvTitle.setText("QQ广告");
+                            tvContent.setText(url.settings.slogan);
+                            tv.setText("在线资讯");
+                            break;
+                        case 7:
+                            tvTitle.setText("店铺");
+                            tvContent.setText(url.settings.store_name);
+                            tv.setText("联系店主");
+                            break;
+                        case 8:
+                            tvTitle.setText("图文");
+                            tvContent.setText(url.settings.slogan);
+                            tv.setVisibility(GONE);
+                            break;
+                    }
+                }
+                iv.setLayoutParams(layoutParams);
+                imageLoader.displayImage(context, url.images, iv);
+            } else
                 Log.e(tag, "Please set images loader.");
         }
     }
@@ -576,7 +617,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     @Override
     public void onPageSelected(int position) {
-        currentItem=position;
+        currentItem = position;
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(toRealPosition(position));
         }

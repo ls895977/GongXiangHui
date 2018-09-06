@@ -36,8 +36,7 @@ public class GlideImageLoader extends ImageLoader {
     }
 
     public View getView(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_banner, null);
-        return view;
+        return LayoutInflater.from(context).inflate(R.layout.item_banner, null);
     }
 
 }
