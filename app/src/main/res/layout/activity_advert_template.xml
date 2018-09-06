@@ -19,10 +19,22 @@
         android:layout_height="25dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:visibility="visible"
         tl:tl_bar_color="#fff"
         tl:tl_indicator_color="#D81717"
         tl:tl_indicator_corner_radius="3dp"
         tl:tl_tab_padding="15dp" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="底部素材"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv"
