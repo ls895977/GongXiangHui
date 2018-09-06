@@ -117,17 +117,13 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                String mCurrentCity = aMapLocation.getDistrict();
+                String currentCity = aMapLocation.getDistrict();
                 Double mLag = aMapLocation.getLatitude();
                 Double mLng = aMapLocation.getLongitude();
-                String city = SPUtils.getLocation("currcity");
-                if (TextUtils.isEmpty(mCurrentCity)) {
-                    mTvCurrentCity.setText(city);
-                } else {
-                    mTvCurrentCity.setText(mCurrentCity);
-                }
-                mTvCurrentCity.setText(mCurrentCity);
-                requestCityInfo(mLag, mLng, mCurrentCity);
+                if (TextUtils.isEmpty(currentCity))
+                    currentCity = SPUtils.getLocation("currcity");
+                mTvCurrentCity.setText(currentCity);
+                requestCityInfo(mLag, mLng, currentCity);
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "locations Error, ErrCode:"
@@ -139,7 +135,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     }
 
     private void requestAbleLocation() {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             boolean hasLocationPermission =
                     ContextCompat.checkSelfPermission(LocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
             if (!hasLocationPermission) {
@@ -150,18 +146,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                 }
             } else {
                 setLocation();
-            }
-        } else {
-            setLocation();
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                setLocation();
-            } else {
-                ActivityCompat.requestPermissions(LocationActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
             }
         } else {
             setLocation();
