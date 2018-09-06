@@ -353,6 +353,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         }
                     }
                     companyAdvert.id = 0;
+                    companyAdvert.position = 2;
                     addData(companyAdvert);
                 }
             } else {
@@ -378,7 +379,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     }
                     companyAdvert.id = 0;
                     companyAdvert.ad_type = 3;
-//                    mList.add(companyAdvert);
+                    companyAdvert.position = 2;
                     addData(companyAdvert);
                 }
             } else {

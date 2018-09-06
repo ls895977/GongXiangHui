@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
-import com.flyco.tablayout.SegmentTabLayout;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.MainViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -22,12 +20,14 @@ import butterknife.OnClick;
 
 public class EnterpriseMaterialActivity extends BaseActivity {
 
-    @BindView(R.id.segment_tab)
-    SegmentTabLayout mSegmentTab;
+    //    @BindView(R.id.segment_tab)
+//    SegmentTabLayout mSegmentTab;
     @BindView(R.id.tv_save)
     TextView mTvSave;
     @BindView(R.id.vp)
     NoScrollViewPager mVp;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
 
     public static int sType;
     public static boolean sIsMultiSelect;
@@ -43,35 +43,21 @@ public class EnterpriseMaterialActivity extends BaseActivity {
         sType = getIntent().getIntExtra("type", 1);
         sIsMultiSelect = getIntent().getBooleanExtra("isMultiSelect", false);
         mTvSave.setText("确定");
-        mSegmentTab.setTabData(new String[]{"底部", "顶部"});
+        mTvTitle.setVisibility(View.VISIBLE);
+//        mSegmentTab.setTabData(new String[]{"底部", "顶部"});
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new EnterpriseMaterialFragment());
-        Bundle bundle = new Bundle();
-        Fragment fragment = new EnterpriseMateriaItemFragment();
-        bundle.putInt("type", 3);
-        bundle.putInt("position", 1);
-        fragment.setArguments(bundle);
-        fragments.add(fragment);
-        mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), fragments));
-    }
-
-    @Override
-    protected void initListeners() {
-        mSegmentTab.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelect(int position) {
-                mVp.setCurrentItem(position, false);
-            }
-
-            @Override
-            public void onTabReselect(int position) {
-
-            }
-        });
         if (sType == 9) {
-            mSegmentTab.setCurrentTab(1);
-            mVp.setCurrentItem(1, false);
+            mTvTitle.setText("顶部广告");
+            Bundle bundle = new Bundle();
+            Fragment fragment = new EnterpriseMateriaItemFragment();
+            bundle.putInt("type", 3);
+            bundle.putInt("position", 1);
+            fragment.setArguments(bundle);
+            fragments.add(fragment);
+        } else {
+            fragments.add(new EnterpriseMaterialFragment());
         }
+        mVp.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), fragments));
     }
 
     @OnClick({R.id.iv_back, R.id.tv_save})
