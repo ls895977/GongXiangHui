@@ -416,8 +416,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                         mPost.params("ad[" + index + "][settings][product_price]", companyAdvert.settings.product_price);
                     if (!TextUtils.isEmpty(companyAdvert.settings.product_url))
                         mPost.params("ad[" + index + "][settings][product_url]", companyAdvert.settings.product_url);
-                    if (!TextUtils.isEmpty(companyAdvert.settings.qq))
-                        mPost.params("ad[" + index + "][settings][qq]", companyAdvert.settings.qq);
+                    if (!TextUtils.isEmpty(companyAdvert.settings.store_name))
+                        mPost.params("ad[" + index + "][settings][store_name]", companyAdvert.settings.store_name);
                     if (!TextUtils.isEmpty(companyAdvert.settings.mobile))
                         mPost.params("ad[" + index + "][settings][mobile]", companyAdvert.settings.mobile);
                     if (!TextUtils.isEmpty(companyAdvert.settings.store_url))

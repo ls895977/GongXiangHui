@@ -811,12 +811,12 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         });
         EditText etQQ = item2.findViewById(R.id.etNickName);
         EditText etMobile = item2.findViewById(R.id.etPrice);
-        etQQ.setHint("支持QQ即时聊天");
+        etQQ.setHint("店铺或公司名称");
         etMobile.setHint("联系电话");
         etQQ.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentSettings().qq = s.toString();
+                getCurrentSettings().store_name = s.toString();
             }
         });
         etMobile.addTextChangedListener(new NewTextWatcher() {
@@ -861,7 +861,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 etGoodsName.setText(companyAdvert.settings.product_name);
                 etGoodsPrice.setText(companyAdvert.settings.product_price);
                 etGoodsLink.setText(companyAdvert.settings.product_url);
-                etQQ.setText(companyAdvert.settings.qq);
+                etQQ.setText(companyAdvert.settings.store_name);
                 etMobile.setText(companyAdvert.settings.mobile);
                 Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.store_url).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivShop);
             }
