@@ -44,7 +44,6 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity {
-
     @BindView(R.id.et_login_password)
     EditText etLoginPassword;
     @BindView(R.id.bt_login_login)
@@ -131,7 +130,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
-                Toast.makeText(mContext, "取消了", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "登录取消", Toast.LENGTH_LONG).show();
             }
         };
     }

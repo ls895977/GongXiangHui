@@ -160,17 +160,17 @@ public class AddAdvertActivity extends BaseActivity {
 
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(AddAdvertActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, platform + " 分享成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(AddAdvertActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, platform + " 分享失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(AddAdvertActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, platform + " 分享取消", Toast.LENGTH_SHORT).show();
             }
         };
     }
