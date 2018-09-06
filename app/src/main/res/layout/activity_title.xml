@@ -25,12 +25,11 @@
 
     <ImageView
         android:id="@+id/title_rightIco"
-        android:layout_width="21dp"
-        android:layout_height="21dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:padding="12dp"
         android:visibility="gone" />
 </RelativeLayout>
