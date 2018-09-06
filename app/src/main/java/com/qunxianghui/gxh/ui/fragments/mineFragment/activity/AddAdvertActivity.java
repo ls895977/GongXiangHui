@@ -73,6 +73,7 @@ public class AddAdvertActivity extends BaseActivity {
     private int mAddPosition = -1;
     private Dialog dialog;
     private UMWeb web;
+    private ArrayList<String> mImages;
 
     @Override
     protected int getLayoutId() {
@@ -96,6 +97,7 @@ public class AddAdvertActivity extends BaseActivity {
         });
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+        mImages = intent.getStringArrayListExtra("images");
         WebSettings settings = webViewMineFragmentAdver.getSettings();
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
         settings.setJavaScriptEnabled(true);
@@ -207,7 +209,12 @@ public class AddAdvertActivity extends BaseActivity {
      */
     private void startThirdShare(String url, String title, String descrip) {
         //以下代码是分享示例代码
-        UMImage image = new UMImage(this, R.mipmap.logo);//分享图标
+        UMImage image;
+        if (mImages != null && !mImages.isEmpty()) {
+            image = new UMImage(this, mImages.get(0));//分享图标
+        } else {
+            image = new UMImage(this, R.mipmap.logo);
+        }
         //切记切记 这里分享的链接必须是http开头
         web = new UMWeb(url);
         web.setTitle(title);//标题
@@ -343,6 +350,7 @@ public class AddAdvertActivity extends BaseActivity {
                     }
                 });
     }
+
     private void goToAdvertTemplateActivity() {
         Intent intent = new Intent(this, AdvertTemplateActivity.class);
         intent.putExtra("position", mAddPosition);

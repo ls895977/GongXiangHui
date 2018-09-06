@@ -4,12 +4,13 @@
     android:id="@+id/ll_comment_selflist"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#f3f3f3"
     android:orientation="horizontal">
-
     <LinearLayout
         android:id="@+id/ll_comment_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
+        android:paddingLeft="8dp"
         android:orientation="horizontal">
 
         <TextView
@@ -17,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#1E6CA9"
+            android:layout_gravity="center_vertical"
             android:textSize="14sp"
             tools:text="龙涛" />
 
@@ -27,6 +29,7 @@
             android:paddingLeft="@dimen/dp_4"
             android:paddingRight="@dimen/dp_4"
             android:text="回复"
+            android:layout_gravity="center_vertical"
             android:visibility="gone" />
 
         <TextView
@@ -44,6 +47,7 @@
             android:layout_marginLeft="10dp"
             android:textColor="@color/color_text_02"
             android:textSize="14sp"
+            android:layout_gravity="center_vertical"
             tools:text="dsfdsfds" />
     </LinearLayout>
 

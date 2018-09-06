@@ -61,6 +61,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
 
     @Override
     public void initViews(View view) {
+
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, GridLayoutManager.VERTICAL, false));
         mAdapter = new MineIssueVideoAdapter(getContext(), mList);
