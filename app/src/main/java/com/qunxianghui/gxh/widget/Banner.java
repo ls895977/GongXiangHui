@@ -20,12 +20,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.utils.GlideImageLoader;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.BannerScroller;
 import com.youth.banner.WeakHandler;
 import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnBannerListener;
-import com.youth.banner.loader.ImageLoaderInterface;
 import com.youth.banner.view.BannerViewPager;
 
 import java.lang.reflect.Field;
@@ -65,7 +65,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
     private ImageView bannerDefaultImage;
-    private ImageLoaderInterface imageLoader;
+    private GlideImageLoader imageLoader;
     private BannerPagerAdapter adapter;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
@@ -152,7 +152,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         return this;
     }
 
-    public Banner setImageLoader(ImageLoaderInterface imageLoader) {
+    public Banner setImageLoader(GlideImageLoader imageLoader) {
         this.imageLoader = imageLoader;
         return this;
     }
@@ -341,11 +341,11 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         for (int i = 0; i <= count + 1; i++) {
             View imageView = null;
             if (imageLoader != null) {
-                imageView = imageLoader.createImageView(context);
+                imageView = imageLoader.getView(context);
             }
-            if (imageView == null) {
-                imageView = new ImageView(context);
-            }
+//            if (imageView == null) {
+//                imageView = new ImageView(context);
+//            }
             setScaleType(imageView);
             Object url = null;
             if (i == 0) {
@@ -357,13 +357,14 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             }
             imageViews.add(imageView);
             if (imageLoader != null)
-                imageLoader.displayImage(context, url, imageView);
+                imageLoader.displayImage(context, url, ((ImageView) imageView.findViewById(R.id.iv)));
             else
                 Log.e(tag, "Please set images loader.");
         }
     }
 
     private void setScaleType(View imageView) {
+        imageView = imageView.findViewById(R.id.iv);
         if (imageView instanceof ImageView) {
             ImageView view = ((ImageView) imageView);
             switch (scaleType) {

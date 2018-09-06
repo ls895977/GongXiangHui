@@ -365,7 +365,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     }
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = EnterpriseMateriaItemFragment.mList.get(i);
                     companyAdvert.id = 0;
-//                    mList.add(companyAdvert);
+                    companyAdvert.position = 1;
+                    companyAdvert.ad_type = 3;
                     addPage(companyAdvert);
                 }
             } else {
@@ -385,7 +386,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     }
                     EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = GeneralMateriaItemFragment.mList.get(i);
                     companyAdvert.id = 0;
-//                    mList.add(companyAdvert);
+                    companyAdvert.position = 1;
+                    companyAdvert.ad_type = 3;
                     addPage(companyAdvert);
                 }
             } else {

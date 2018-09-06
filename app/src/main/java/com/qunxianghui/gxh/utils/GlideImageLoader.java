@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.utils;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +25,7 @@ public class GlideImageLoader extends ImageLoader {
          切记不要胡乱强转！
          */
 
-        RequestOptions options=new RequestOptions();
+        RequestOptions options = new RequestOptions();
         options.error(R.mipmap.default_img);
         options.placeholder(R.mipmap.default_img);
         options.centerCrop();
@@ -31,6 +33,11 @@ public class GlideImageLoader extends ImageLoader {
                 .load(path)
                 .apply(options)
                 .into(imageView);
+    }
+
+    public View getView(Context context) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_banner, null);
+        return view;
     }
 
 }
