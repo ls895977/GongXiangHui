@@ -175,7 +175,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mFragments[1];
                 break;
             case R.id.ll_issue:
-//                showOneKeyIssuePop();
+                fragment = mCurrentFragment;
                 mTvIssue.setSelected(true);
                 break;
             case R.id.tv_generation:
