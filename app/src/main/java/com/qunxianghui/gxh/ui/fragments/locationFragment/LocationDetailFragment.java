@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -11,10 +10,8 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -45,16 +42,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
 
     @BindView(R.id.recyclerView_location)
     XRecyclerView mRecyclerView;
-    @BindView(R.id.ll_empty)
-    LinearLayout llEmpty;
-    Unbinder unbinder;
 
     private List<TestMode.DataBean.ListBean> locationBean = new ArrayList<>();
     private int mSkip = 0;
@@ -67,6 +59,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private TextView mTv_inform_sex;
     private int mUuid;
     public int mMemberId;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_detail_location;
@@ -131,17 +124,10 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mRecyclerView.refreshComplete();
                 mRecyclerView.setLoadingMoreEnabled(true);
             }
-
-            llEmpty.setVisibility(View.GONE);
             List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
             locationBean.addAll(list);
-
             if (list.size() < 10) {
                 mRecyclerView.setLoadingMoreEnabled(false);
-            }
-
-            if (list.size()==0){
-                llEmpty.setVisibility(View.VISIBLE);
             }
         } else {
             asyncShowToast(testMode.getMessage());
@@ -159,13 +145,13 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             @Override
             public void onRefresh() {
                 mSkip = 0;
-                initData();
+                requestLocalServiceData();
             }
 
             @Override
             public void onLoadMore() {
                 mSkip += 10;
-                initData();
+                requestLocalServiceData();
             }
         });
 
@@ -502,17 +488,4 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         commentDialog.show(getChildFragmentManager(), "comment");
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,6 +24,7 @@ import com.qunxianghui.gxh.bean.UploadVideo;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -36,9 +38,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 public class VideoUploadActivity extends BaseActivity {
 
+    @BindView(R.id.tv_UpdataVideo_UpLoad)
+    View mUpload;
     @BindView(R.id.video_player)
     JZVideoPlayerStandard mVideoplayer;
     @BindView(R.id.tv_type)
@@ -79,6 +85,20 @@ public class VideoUploadActivity extends BaseActivity {
     }
 
     @Override
+    protected void initListeners() {
+        mEditUpdateVideoTitle.addTextChangedListener(new NewTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString()) || TextUtils.isEmpty(s)) {
+                    mUpload.setEnabled(false);
+                } else {
+                    mUpload.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    @Override
     public void onBackPressed() {
         if (JZVideoPlayer.backPress()) {
             return;
@@ -100,14 +120,14 @@ public class VideoUploadActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_UpdataVideo_UpLoad:
-                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
-                    asyncShowToast("您尚未选择分类！");
-                    return;
-                }
-                if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
-                    asyncShowToast("您尚未填写视频标题！");
-                    return;
-                }
+//                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
+//                    asyncShowToast("您尚未选择分类！");
+//                    return;
+//                }
+//                if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
+//                    asyncShowToast("您尚未填写视频标题！");
+//                    return;
+//                }
                 uploadVideo();
                 break;
             case R.id.tv_UpdataVideo_Cancel:
@@ -132,8 +152,27 @@ public class VideoUploadActivity extends BaseActivity {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(byteArray, 0, byteArray.length);
             fos.flush();
-            uploadVideo(file, mVideoPath, mEditUpdateVideoTitle.getText().toString(),
-                    mEditUpdateVideoContent.getText().toString(), mTypeId);
+
+            Luban.with(VideoUploadActivity.this) // 初始化
+                    .load(file) // 要压缩的图片
+                    .setCompressListener(new OnCompressListener() {
+                        @Override
+                        public void onStart() {
+                        }
+
+                        @Override
+                        public void onSuccess(File newFile) {
+                            String newPath = newFile.getAbsolutePath();
+//                            Log.d("lubanLog", "new/" + "第" + 0 + "个图片的大小为：" + newFile.length() / 1024 + "KB");
+//                            Log.d("lubanLog", "new/" + "第" + 0 + "个图片的路径为：" + newPath);
+                            uploadVideo(newFile, mVideoPath, mEditUpdateVideoTitle.getText().toString(),
+                                    mEditUpdateVideoContent.getText().toString(), mTypeId);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+                    }).launch();
         } catch (IOException e) {
             mLoadView.setVisibility(View.GONE);
             e.printStackTrace();
@@ -154,7 +193,7 @@ public class VideoUploadActivity extends BaseActivity {
         }
     }
 
-    private void parseVideoSortData(HomeVideoSortBean homeVideoSortBean ) {
+    private void parseVideoSortData(HomeVideoSortBean homeVideoSortBean) {
         int code = homeVideoSortBean.getCode();
         final List<HomeVideoSortBean.DataBean> videoSortBeanData = homeVideoSortBean.getData();
         if (code == 200) {
@@ -167,6 +206,11 @@ public class VideoUploadActivity extends BaseActivity {
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     mTypeId = videoSortBeanData.get(options1).getId();
                     mTvVideoTypeChoice.setText(strings.get(options1));
+                    if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
+                        mUpload.setEnabled(false);
+                    } else {
+                        mUpload.setEnabled(true);
+                    }
                 }
             }).setCancelColor(Color.parseColor("#676767"))
                     .setSubmitColor(Color.parseColor("#D81717"))
@@ -208,11 +252,11 @@ public class VideoUploadActivity extends BaseActivity {
                 });
     }
 
-    public static void hideKeyboard(View view){
+    public static void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
