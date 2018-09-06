@@ -61,9 +61,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     public static boolean sIsChangeArea;
     public static boolean sLocationCanChange;
     public static boolean sVideoCanChange;
-    private String mCurrentCity;
-    private Double mLng;
-    private Double mLag;
 
 
     @Override
@@ -120,9 +117,9 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                mCurrentCity = aMapLocation.getDistrict();
-                mLag = aMapLocation.getLatitude();
-                mLng = aMapLocation.getLongitude();
+                String mCurrentCity = aMapLocation.getDistrict();
+                Double mLag = aMapLocation.getLatitude();
+                Double mLng = aMapLocation.getLongitude();
                 String city = SPUtils.getLocation("currcity");
                 if (TextUtils.isEmpty(mCurrentCity)) {
                     mTvCurrentCity.setText(city);

@@ -75,7 +75,6 @@ public class WelcomeActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PermissionGen.needPermission(WelcomeActivity.this, 105,
                     new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     }

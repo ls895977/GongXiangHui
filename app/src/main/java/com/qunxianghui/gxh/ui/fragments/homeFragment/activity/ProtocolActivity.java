@@ -2,14 +2,17 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -31,6 +35,10 @@ import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
+import com.qunxianghui.gxh.utils.FileUtils;
+import com.umeng.commonsdk.statistics.common.MLog;
+
+import java.io.File;
 
 import butterknife.BindView;
 
@@ -39,7 +47,9 @@ import butterknife.BindView;
  */
 
 public class ProtocolActivity extends BaseActivity implements View.OnClickListener {
-    final Activity activity = this;
+
+    final Activity mact = this;
+
     @BindView(R.id.ll_protocol_main)
     RelativeLayout llProtocolMain;
     @BindView(R.id.iv_webback)
@@ -50,9 +60,19 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     TextView tvNewsdetailIssue;
     @BindView(R.id.rl_protocol_title)
     RelativeLayout mRlProtocolTitle;
+
     private WebView webView;
     private StringBuffer mBuffer;
     private Dialog mMLoadingDialog;
+
+    //5.0以下使用
+    private ValueCallback mUploadMessage;
+    // 5.0及以上使用
+    private ValueCallback<Uri[]> mUploadMessageAboveL;
+    //图片
+    private final static int FILE_CHOOSER_RESULT_CODE = 135;
+    //拍照图片路径
+    private String mCameraFielPath;
 
     @Override
     protected int getLayoutId() {
@@ -116,6 +136,8 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(false);
+        settings.setDomStorageEnabled(true);
+        settings.setAllowFileAccess(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setDisplayZoomControls(false);
@@ -127,6 +149,32 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 if (progress == 100) {
                     mMLoadingDialog.dismiss();
                 }
+            }
+
+            // For Android < 3.0
+            public void openFileChooser(ValueCallback<Uri> valueCallback) {
+                mUploadMessage = valueCallback;
+                openImageChooser();
+            }
+
+            // For Android  >= 3.0
+            public void openFileChooser(ValueCallback valueCallback, String acceptType) {
+                mUploadMessage = valueCallback;
+                openImageChooser();
+            }
+
+            //For Android  >= 4.1
+            public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
+                mUploadMessage = valueCallback;
+                openImageChooser();
+            }
+
+            // For Android >= 5.0
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+                mUploadMessageAboveL = filePathCallback;
+                openImageChooser();
+                return true;
             }
         });
         webView.setWebViewClient(new WebViewClient() {
@@ -228,6 +276,98 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 toActivity(CompanySetActivity.class);
                 break;
         }
+    }
+
+    private void openImageChooser() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePictureIntent.resolveActivity(this.getPackageManager()) != null){
+            File photoFile = null;
+            try{
+                photoFile = FileUtils.createTempImageFile();
+            }catch(Exception ex){
+                MLog.e(TAG, "Image file creation failed", ex);
+            }
+            if(photoFile != null){
+                mCameraFielPath = photoFile.getAbsolutePath();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+            }else{
+                takePictureIntent = null;
+            }
+        }
+
+        Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        imageIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        imageIntent.setType("image/*");
+        Intent[] intentArray;
+        if(takePictureIntent != null){
+            intentArray = new Intent[]{takePictureIntent};
+        }else{
+            intentArray = new Intent[0];
+        }
+
+        Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+        chooserIntent.putExtra(Intent.EXTRA_INTENT, imageIntent);
+        chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+        startActivityForResult(chooserIntent, FILE_CHOOSER_RESULT_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (null == mUploadMessage && null == mUploadMessageAboveL) return;
+        if (resultCode != RESULT_OK) {
+            if (mUploadMessageAboveL != null) {
+                mUploadMessageAboveL.onReceiveValue(null);
+                mUploadMessageAboveL = null;
+            }
+            if (mUploadMessage != null) {
+                mUploadMessage.onReceiveValue(null);
+                mUploadMessage = null;
+            }
+            return;
+        }
+        Uri result = null;
+        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
+            if (null != data && null != data.getData()) {
+                result = data.getData();
+            }
+            if (result == null && FileUtils.isExist(mCameraFielPath)) {
+                result = Uri.fromFile(new File(mCameraFielPath));
+            }
+            if (mUploadMessageAboveL != null) {
+                onActivityResultAboveL(data, result);
+            } else if (mUploadMessage != null) {
+                mUploadMessage.onReceiveValue(result);
+                mUploadMessage = null;
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void onActivityResultAboveL(Intent intent, Uri uri) {
+        Uri[] results = null;
+        if (intent != null) {
+            String dataString = intent.getDataString();
+            ClipData clipData = intent.getClipData();
+            if (clipData != null) {
+                results = new Uri[clipData.getItemCount()];
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    ClipData.Item item = clipData.getItemAt(i);
+                    results[i] = item.getUri();
+                }
+            }
+            if (dataString != null)
+                results = new Uri[]{Uri.parse(dataString)};
+        }else {
+            if (uri != null){
+                results = new Uri[]{uri};
+            }
+        }
+
+        mUploadMessageAboveL.onReceiveValue(results);
+        mUploadMessageAboveL = null;
     }
 
     @Override

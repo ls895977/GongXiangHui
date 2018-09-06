@@ -87,6 +87,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     private AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
     private ClipboardManager mClipboardManager;
+    private boolean mIsFirst = true;
 
     @Override
     public int getLayoutId() {
@@ -347,13 +348,15 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        if (requestCode == 0x0011) {
+        if (!mIsFirst && requestCode == 0x0011) {
 //            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
 //            } else {
+//                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
 //                asyncShowToast("\"不好意思，请先开启权限操作...\"");
 //            }
-//        }
+        }
+        mIsFirst = false;
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
