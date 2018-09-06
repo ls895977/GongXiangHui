@@ -67,6 +67,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
     private boolean mIsHasBigPage;
     private boolean mIsBigImg;
     private boolean mIsShopImg;
+    private boolean mIsGoodsImg;
     private boolean mIsBottomClick;
     private AdvertPagerAdapter mPagerAdapter;
     private AdvertChoosePicDialog mChoosePic;
@@ -332,6 +333,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             if (mImages != null && mImages.size() > 0) {
                 String path = mImages.get(0).path;
                 ImagePicker.getInstance().getImageLoader().displayImage(getActivity(), path, getCurrentImageView(path), 0, 0);
+                if (mIsShopImg || mIsGoodsImg) {
+                    mIsShopImg = false;
+                    mIsGoodsImg = false;
+                    ((ViewPager) mViewList.get(mVp.getCurrentItem()).findViewById(R.id.viewPager)).getAdapter().notifyDataSetChanged();
+                }
             }
             //企业素材
         } else if (resultCode == 0x0022) {
@@ -361,6 +367,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
                         .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
                         .into(getCurrentImageView(companyAdvert.images));
+                if (mIsShopImg || mIsGoodsImg) {
+                    mIsShopImg = false;
+                    mIsGoodsImg = false;
+                    ((ViewPager) mViewList.get(mVp.getCurrentItem()).findViewById(R.id.viewPager)).getAdapter().notifyDataSetChanged();
+                }
             }
             EnterpriseMateriaItemFragment.clearData();
             //通用素材
@@ -406,9 +417,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             if (companyAdvert.ad_type == 1 || companyAdvert.ad_type == 3) {
                 settings.pgn_url = path;
             } else if (mIsShopImg) {
-                mIsShopImg = false;
-                companyAdvert.settings.store_url = path;
+                companyAdvert.images = path;
                 return view.findViewById(R.id.ivShop);
+            } else if (mIsGoodsImg) {
+                companyAdvert.settings.store_url = path;
+                return view.findViewById(R.id.ivAd);
             } else {
                 companyAdvert.images = path;
             }
@@ -770,7 +783,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
         });
         ImageView ivGoods = item1.findViewById(R.id.ivAd);
-        ivGoods.setOnClickListener(this);
         EditText etGoodsName = item1.findViewById(R.id.etNickName);
         EditText etGoodsPrice = item1.findViewById(R.id.etPrice);
         EditText etGoodsLink = item1.findViewById(R.id.etLink);
@@ -809,6 +821,19 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 mChoosePic.hideCommonView().show();
             }
         });
+        ivGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIsGoodsImg = true;
+                if (mChoosePic == null && getContext() != null) {
+                    mChoosePic = new AdvertChoosePicDialog(getContext());
+                    mChoosePic.setImgPickListener(AdvertBottomFragment.this);
+                }
+                mIsBigImg = false;
+                mChoosePic.hideCommonView().show();
+            }
+        });
+
         EditText etQQ = item2.findViewById(R.id.etNickName);
         EditText etMobile = item2.findViewById(R.id.etPrice);
         etQQ.setHint("店铺或公司名称");
@@ -856,14 +881,14 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         if (companyAdvert != null) {
             mList.add(companyAdvert);
             sB.setChecked(companyAdvert.is_slide == 1);
-            Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivGoods);
+            Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivShop);
             if (companyAdvert.settings != null) {
                 etGoodsName.setText(companyAdvert.settings.product_name);
                 etGoodsPrice.setText(companyAdvert.settings.product_price);
                 etGoodsLink.setText(companyAdvert.settings.product_url);
                 etQQ.setText(companyAdvert.settings.store_name);
                 etMobile.setText(companyAdvert.settings.mobile);
-                Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.store_url).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivShop);
+                Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.store_url).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivGoods);
             }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert advert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
