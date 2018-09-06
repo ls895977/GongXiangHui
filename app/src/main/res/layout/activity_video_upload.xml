@@ -71,11 +71,6 @@
             android:background="#F5F5F5" />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/textd8" />
-
         <EditText
             android:id="@+id/edit_UpdataVideo_title"
             android:layout_width="match_parent"
