@@ -1,11 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -29,8 +26,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class PersonLocalServiceFragment extends BaseFragment implements Observer {
 
@@ -40,11 +35,12 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     LinearLayout llEmpty;
     @BindView(R.id.bt_myissue_localservice_delete)
     Button btMyissueLocalserviceDelete;
-    Unbinder unbinder;
+
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
     private String data_id = "";
+
     @Override
     protected void onLoadData() {
     }
@@ -88,14 +84,15 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             if (mSkip == 0) {
                 mList.clear();
             }
-            if (data.getData().size()==0) {
+            if (data.getData().size() == 0) {
                 llEmpty.setVisibility(View.VISIBLE);
             }
             mList.addAll(data.getData());
-            mAdapter.notifyDataSetChanged();
-
-
         }
+        if (mSkip == 0 && data.getData().size() == 0) {
+            llEmpty.setVisibility(View.VISIBLE);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -114,7 +111,6 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
 
     @Override
     protected void initListeners() {
-        super.initListeners();
         /**
          * 下拉刷新和上拉加载
          */
@@ -138,11 +134,11 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             @Override
             public void onClick(View view) {
                 deleteServiceData();
-
             }
         });
 
     }
+
     private void deleteServiceData() {
         for (int i = 0; i < mList.size(); i++) {
             if (mList.get(i).isChecked()) {
@@ -178,9 +174,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                         EventManager.getInstance().publishMessage("init");
                     }
                 });
-
     }
-
 
     @Override
     public void update(Observable observable, Object o) {
@@ -197,18 +191,9 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
-        unbinder.unbind();
     }
-
 
 }

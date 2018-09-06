@@ -1,12 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -30,8 +27,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 精选
@@ -44,7 +39,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     Button btnDelete;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
-    Unbinder unbinder;
 
     private int mSkip = 0;
     private List<MyIssueGoodSelectBean.DataBean> mList = new ArrayList<>();
@@ -76,6 +70,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                 mSkip = 0;
                 initData();
             }
+
             @Override
             public void onLoadMore() {
                 mSkip += 10;
@@ -179,7 +174,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
-        unbinder.unbind();
     }
 
     private void parseData(MyIssueGoodSelectBean data) {
@@ -191,25 +185,16 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             if (data.getData().size() < 10) {
                 mRv.setLoadingMoreEnabled(false);
             }
-            if (data.getData().size()==0) {
-                llEmpty.setVisibility(View.VISIBLE);
-            }
             mList.addAll(data.getData());
             mRv.refreshComplete();
-
-
         } else {
             mRv.setLoadingMoreEnabled(false);
+        }
+        if (mSkip == 0 && mList.isEmpty()) {
+            llEmpty.setVisibility(View.VISIBLE);
         }
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 }
 

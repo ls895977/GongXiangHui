@@ -45,6 +45,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     TextView tvMyissueCancel;
     @BindView(R.id.tv_edit)
     TextView mTvEdit;
+
     private String[] mTabTitles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
 
