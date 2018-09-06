@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.ui.activity;
 
+import android.content.Intent;
+
 import com.bumptech.glide.Glide;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
@@ -22,8 +24,16 @@ public class EducationActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        mVideoplayer.setUp(Constant.EDUCATION_VIDEO_URL, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "教学视频");
-        Glide.with(this).load(Constant.EDUCATION_VIDEO_PIC).into(mVideoplayer.thumbImageView);
+        Intent intent = getIntent();
+        int tag = intent.getIntExtra("tag", 0);
+        if (tag==2){
+            mVideoplayer.setUp(Constant.EDUCATION_VIDEO2_URL, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "教学视频");
+            Glide.with(this).load(Constant.EDUCATION_VIDEO_PIC).into(mVideoplayer.thumbImageView);
+        }else {
+            mVideoplayer.setUp(Constant.EDUCATION_VIDEO_URL, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "教学视频");
+            Glide.with(this).load(Constant.EDUCATION_VIDEO_PIC).into(mVideoplayer.thumbImageView);
+        }
+
     }
 
     @Override

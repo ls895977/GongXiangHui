@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -192,12 +190,12 @@ public class GeneraCompanyFragment extends BaseFragment {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 int month = options1 + 1;
-                if (month > Calendar.getInstance().get(Calendar.MONTH) + 1) {
-                    mTvMonth.setSelected(false);
-                    mTvTotal.setSelected(true);
-                    asyncShowToast("当前选择月份过大～～");
-                    return;
-                }
+//                if (month > Calendar.getInstance().get(Calendar.MONTH) + 1) {
+//                    mTvMonth.setSelected(false);
+//                    mTvTotal.setSelected(true);
+//                    asyncShowToast("当前选择月份过大～～");
+//                    return;
+//                }
                 mTvMonth.setText(month + "月");
                 setViewpager(0, month);
                 mTabLayout.setCurrentTab(0);

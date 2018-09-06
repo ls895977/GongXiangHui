@@ -16,9 +16,9 @@ public class Constant {
     public static final String BIANMIN_HUANGLI_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
     //上线环境
-//    private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
+    private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
     //线下问题
-    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
+//    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
@@ -177,8 +177,10 @@ public class Constant {
     public static final String UPLOAD_LOCAL_POST_SORT_SUB_URL = BASE_URL + "Posts/addPosts";
     //上传视频
     public static final String UPLOAD_VIDEO_URL = BASE_URL + "System/uploadVideo";
-    //教学视频
+    //广告教学视频
     public static final String EDUCATION_VIDEO_URL = "http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180831/94b305ee4859ef6054b03b8b5051ae7673818a14.mp4";
+    //贴片教学视频
+    public static final String EDUCATION_VIDEO2_URL="http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180831/94b305ee4859ef6054b03b8b5051ae7673818a1414.mp4";
     //视频截图
     public static final String EDUCATION_VIDEO_PIC="http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/image/20180831/f0086940e285a7229c050850674911b08060f302.png";
     //编辑视频汇分类接口

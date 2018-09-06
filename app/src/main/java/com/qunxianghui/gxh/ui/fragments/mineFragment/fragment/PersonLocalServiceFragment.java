@@ -35,12 +35,10 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     LinearLayout llEmpty;
     @BindView(R.id.bt_myissue_localservice_delete)
     Button btMyissueLocalserviceDelete;
-
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
     private String data_id = "";
-
     @Override
     protected void onLoadData() {
     }

@@ -173,17 +173,17 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                asyncShowToast(platform + " 分享成功啦");
+                asyncShowToast(platform + " 分享成功");
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                asyncShowToast(platform + " 分享失败啦");
+                asyncShowToast(platform + " 分享失败");
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                asyncShowToast(platform + " 分享取消了");
+                asyncShowToast(platform + " 分享取消");
             }
         };
     }

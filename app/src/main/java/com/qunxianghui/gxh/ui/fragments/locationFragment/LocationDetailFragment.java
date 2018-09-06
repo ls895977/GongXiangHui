@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -10,8 +11,10 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -42,12 +45,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
 
     @BindView(R.id.recyclerView_location)
     XRecyclerView mRecyclerView;
-
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
     private List<TestMode.DataBean.ListBean> locationBean = new ArrayList<>();
     private int mSkip = 0;
     private NineGridTest2Adapter mAdapter;
@@ -77,7 +84,16 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public void initData() {
         if (getArguments() != null)
             mCateId = getArguments().getInt("channel_id");
-           requestLocalServiceData();
+        requestLocalServiceData();
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mSkip = 0;
+        requestLocalServiceData();
     }
 
     private void requestLocalServiceData() {
@@ -124,9 +140,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mRecyclerView.refreshComplete();
                 mRecyclerView.setLoadingMoreEnabled(true);
             }
-
+            llEmpty.setVisibility(View.GONE);
             List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
             locationBean.addAll(list);
+            if (list.isEmpty()){
+                llEmpty.setVisibility(View.VISIBLE);
+            }
             if (list.size() < 10) {
                 mRecyclerView.setLoadingMoreEnabled(false);
             }
@@ -136,7 +155,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         }
         if (mRecyclerView.getEmptyView() == null)
             mRecyclerView.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRecyclerView, false));
-//        mRecyclerView.loadMoreComplete();
+        mRecyclerView.loadMoreComplete();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -268,7 +287,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-                //  mAdapter.notifyItemChanged(position);
+                mAdapter.notifyItemChanged(position);
                 OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -489,4 +508,17 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         commentDialog.show(getChildFragmentManager(), "comment");
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
