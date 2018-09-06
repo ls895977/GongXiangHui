@@ -268,32 +268,36 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             Glide.with(AdvertTopFragment.this).load(data.images)
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
 //            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
-            switch (data.settings.operate) {
-                case 1:
-                    tvType.setText("跳转链接");
-                    view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
-                    if (data.settings.is_link == 1) {
-                        cB.setChecked(true);
-                        etLink.setText(data.link);
-                    }
-                    break;
-                case 2:
-                    tvType.setText("拨打电话");
-                    etPhone.setVisibility(View.VISIBLE);
-                    etPhone.setText(data.settings.mobile);
-                    break;
-                case 3:
-                    tvType.setText("跳转活动");
-                    tvChooseActivityLink.setVisibility(View.VISIBLE);
-                    tvChooseActivityLink.setText(data.link);
-                    break;
-                case 4:
-                case 5:
-                    tvType.setText(data.settings.operate == 4 ? "展示海报" : "展示二维码");
-                    rlAddImg.setVisibility(View.VISIBLE);
-                    Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
-                            .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
-                    break;
+            if (data.settings != null) {
+                switch (data.settings.operate) {
+                    case 1:
+                        tvType.setText("跳转链接");
+                        view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
+                        if (data.settings.is_link == 1) {
+                            cB.setChecked(true);
+                            etLink.setText(data.link);
+                        }
+                        break;
+                    case 2:
+                        tvType.setText("拨打电话");
+                        etPhone.setVisibility(View.VISIBLE);
+                        etPhone.setText(data.settings.mobile);
+                        break;
+                    case 3:
+                        tvType.setText("跳转活动");
+                        tvChooseActivityLink.setVisibility(View.VISIBLE);
+                        tvChooseActivityLink.setText(data.link);
+                        break;
+                    case 4:
+                    case 5:
+                        tvType.setText(data.settings.operate == 4 ? "展示海报" : "展示二维码");
+                        rlAddImg.setVisibility(View.VISIBLE);
+                        Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
+                                .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
+                        break;
+                }
+            } else {
+                data.settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
             }
         } else {
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();

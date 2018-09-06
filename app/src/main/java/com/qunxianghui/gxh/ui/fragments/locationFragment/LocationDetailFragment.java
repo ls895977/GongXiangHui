@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -119,26 +118,26 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @SuppressLint("UseSparseArrays")
     private void parseData(TestMode testMode) {
-        if (testMode.getCode() == 0) {
-            if (mSkip == 0) {
-                locationBean.clear();
-                mAdapter.mTextStateList = new SparseArray<>();
-                mRecyclerView.refreshComplete();
-                mRecyclerView.setLoadingMoreEnabled(true);
-            }
-
-            List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
-            locationBean.addAll(list);
-            if (list.size() < 10) {
-                mRecyclerView.setLoadingMoreEnabled(false);
-            }
-        } else {
-            asyncShowToast(testMode.getMessage());
-            mRecyclerView.setLoadingMoreEnabled(false);
-        }
+//        if (testMode.getCode() == 0) {
+//            if (mSkip == 0) {
+//                locationBean.clear();
+//                mAdapter.mTextStateList = new SparseArray<>();
+//                mRecyclerView.refreshComplete();
+//                mRecyclerView.setLoadingMoreEnabled(true);
+//            }
+//
+//            List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
+//            locationBean.addAll(list);
+//            if (list.size() < 10) {
+//                mRecyclerView.setLoadingMoreEnabled(false);
+//            }
+//        } else {
+//            asyncShowToast(testMode.getMessage());
+//            mRecyclerView.setLoadingMoreEnabled(false);
+//        }
         if (mRecyclerView.getEmptyView() == null)
             mRecyclerView.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRecyclerView, false));
-        mRecyclerView.loadMoreComplete();
+//        mRecyclerView.loadMoreComplete();
         mAdapter.notifyDataSetChanged();
     }
 
