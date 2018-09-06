@@ -30,15 +30,12 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.NoScrollViewPager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 
 /**
  * Created by Administrator on 2018/4/2 0002.
@@ -143,7 +140,6 @@ public class AdvertTemplateActivity extends BaseActivity {
                 break;
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -170,10 +166,8 @@ public class AdvertTemplateActivity extends BaseActivity {
 //                asyncShowToast("请完善贴片广告相关信息");
 //                return;
 //            }
-        if (AdvertBottomFragment.mList != null)
-            mList.addAll(AdvertBottomFragment.mList);
-        if (AdvertTopFragment.mList != null)
-            mList.addAll(AdvertTopFragment.mList);
+        mList.addAll(AdvertBottomFragment.mList);
+        mList.addAll(AdvertTopFragment.mList);
         if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
             mList.add(AdvertTiePianFragment.mAdvertBean);
 //        }
@@ -206,7 +200,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
         if (!mList.isEmpty()) {
-            compressImg(mList.get(0), 0);
+            upLoadPic(mList.get(0), 0);
         } else {
             asyncShowToast("保存成功");
             setResult(0x0022);
@@ -214,7 +208,8 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
     }
 
-    private void compressImg(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
+    private void upLoadPic(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
+        mCount++;
         if (companyAdvert.images == null || companyAdvert.images.startsWith("http")) {
             if (index == mList.size() - 1) {
                 uploadSecondImg(mList.get(0), 0);
@@ -223,30 +218,6 @@ public class AdvertTemplateActivity extends BaseActivity {
             }
             return;
         }
-        Luban.with(AdvertTemplateActivity.this)
-                .load(companyAdvert.images)
-                .setCompressListener(new OnCompressListener() {
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onSuccess(File newFile) {
-                        String newPath = newFile.getAbsolutePath();
-                        companyAdvert.images = newPath;
-//                        Log.d("lubanLog", "new/" + "第" + 0 + "个图片的大小为：" + newFile.length() / 1024 + "KB");
-//                        Log.d("lubanLog", "new/" + "第" + 0 + "个图片的路径为：" + newPath);
-                        upLoadPic(companyAdvert, index);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                }).launch();
-    }
-
-    private void upLoadPic(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
-        mCount++;
         OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(companyAdvert.images))
                 .execute(new JsonCallback<UploadImage>() {
@@ -258,7 +229,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                             if (index == mList.size() - 1) {
                                 uploadSecondImg(mList.get(0), 0);
                             } else {
-                                compressImg(mList.get(mCount), mCount);
+                                upLoadPic(mList.get(mCount), mCount);
                             }
                         } else {
                             mLoadView.setVisibility(View.GONE);
