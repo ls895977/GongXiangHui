@@ -228,7 +228,9 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 mFlLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_video:
-                toActivity(EducationActivity.class);
+                Intent intent=new Intent(mActivity,EducationActivity.class);
+                intent.putExtra("tag",2);
+                startActivity(intent);
                 break;
         }
     }
