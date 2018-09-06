@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -71,7 +72,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
-
     @Override
     public void initData() {
         if (getArguments() != null)
@@ -118,26 +118,26 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @SuppressLint("UseSparseArrays")
     private void parseData(TestMode testMode) {
-//        if (testMode.getCode() == 0) {
-//            if (mSkip == 0) {
-//                locationBean.clear();
-//                mAdapter.mTextStateList = new SparseArray<>();
-//                mRecyclerView.refreshComplete();
-//                mRecyclerView.setLoadingMoreEnabled(true);
-//            }
-//
-//            List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
-//            locationBean.addAll(list);
-//            if (list.size() < 10) {
-//                mRecyclerView.setLoadingMoreEnabled(false);
-//            }
-//        } else {
-//            asyncShowToast(testMode.getMessage());
-//            mRecyclerView.setLoadingMoreEnabled(false);
-//        }
+        if (testMode.getCode() == 0) {
+            if (mSkip == 0) {
+                locationBean.clear();
+                mAdapter.mTextStateList = new SparseArray<>();
+                mRecyclerView.refreshComplete();
+                mRecyclerView.setLoadingMoreEnabled(true);
+            }
+
+            List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
+            locationBean.addAll(list);
+            if (list.size() < 10) {
+                mRecyclerView.setLoadingMoreEnabled(false);
+            }
+        } else {
+            asyncShowToast(testMode.getMessage());
+            mRecyclerView.setLoadingMoreEnabled(false);
+        }
         if (mRecyclerView.getEmptyView() == null)
             mRecyclerView.setEmptyView(LayoutInflater.from(mActivity).inflate(R.layout.layout_empty, mRecyclerView, false));
-//        mRecyclerView.loadMoreComplete();
+        mRecyclerView.loadMoreComplete();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -269,7 +269,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-                //  mAdapter.notifyItemChanged(position);
+                  mAdapter.notifyItemChanged(position);
                 OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -280,7 +280,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
-//                                    mRecyclerView.refresh();
+                                    mRecyclerView.refresh();
                                 } else {
                                     asyncShowToast(responseBean.getMsg());
                                 }
