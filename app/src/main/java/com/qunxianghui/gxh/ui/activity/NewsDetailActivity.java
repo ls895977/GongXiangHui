@@ -47,14 +47,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
 /**
  * 新闻详情界面
  * Created by Administrator on 2018/4/9 0009.
  */
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
-
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
     private Dialog mLoadingDialog;

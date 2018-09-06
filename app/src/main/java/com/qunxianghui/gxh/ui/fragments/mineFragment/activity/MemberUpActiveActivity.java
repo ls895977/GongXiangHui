@@ -87,7 +87,7 @@ public class MemberUpActiveActivity extends BaseActivity implements View.OnClick
             SPUtils.saveBoolean(SpConstant.IS_COMPANY, true);
             SharedPreferences companyData = getSharedPreferences("companymessage", Context.MODE_PRIVATE);
             SharedPreferences.Editor spCompanymessageEditor = companyData.edit();
-            spCompanymessageEditor.putString("expire_time", code_endtime);
+            spCompanymessageEditor.putString("member_expire_time", code_endtime);
             spCompanymessageEditor.putString("avatar", avatar);
             spCompanymessageEditor.apply();
             EventManager.getInstance().publishMessage("company");

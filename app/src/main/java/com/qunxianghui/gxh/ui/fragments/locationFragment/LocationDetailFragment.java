@@ -77,7 +77,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public void initData() {
         if (getArguments() != null)
             mCateId = getArguments().getInt("channel_id");
-        requestLocalServiceData();
+           requestLocalServiceData();
+
+
     }
 
     private void requestLocalServiceData() {
@@ -124,6 +126,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mRecyclerView.refreshComplete();
                 mRecyclerView.setLoadingMoreEnabled(true);
             }
+
             List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
             locationBean.addAll(list);
             if (list.size() < 10) {
