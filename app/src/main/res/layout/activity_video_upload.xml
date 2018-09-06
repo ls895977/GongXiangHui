@@ -22,10 +22,11 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/bg_gray_corner"
+                android:background="@drawable/bg_gray_white_selector"
                 android:gravity="center"
+                android:enabled="false"
                 android:text="发布"
-                android:textColor="#7E7E7E"
+                android:textColor="@color/tv_gray_white_selector"
                 android:textSize="14sp" />
 
             <TextView

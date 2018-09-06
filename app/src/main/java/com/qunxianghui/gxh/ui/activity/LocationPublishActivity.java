@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -30,15 +31,19 @@ import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_PREVIEW;
@@ -46,6 +51,8 @@ import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActi
 
 public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
 
+    @BindView(R.id.tv_upload)
+    View mUpload;
     @BindView(R.id.et_title)
     EditText mEtTitle;
     @BindView(R.id.rv)
@@ -104,7 +111,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 Intent intent1 = new Intent(LocationPublishActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent1, REQUEST_CODE_SELECT);
             }
-
+        });
+        mEtTitle.addTextChangedListener(new NewTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mUpload.setEnabled(mTypeId != 0 && (!TextUtils.isEmpty(mEtTitle.getText().toString().trim()) || !mImages.isEmpty()));
+            }
         });
     }
 
@@ -132,6 +144,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 }
             }
         }
+        mUpload.setEnabled(mTypeId != 0 && (!TextUtils.isEmpty(mEtTitle.getText().toString().trim()) || !mImages.isEmpty()));
     }
 
     @Override
@@ -157,20 +170,19 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 onBackPressed();
                 break;
             case R.id.tv_upload:
-                if (TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()) {
-                    asyncShowToast("请填写本地圈内容或者上传图片！");
-                    return;
-                }
-                if (mTypeId == 0) {
-                    asyncShowToast("您尚未选择分类！");
-                    return;
-                }
+//                if (TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()) {
+//                    asyncShowToast("请填写本地圈内容或者上传图片！");
+//                    return;
+//                }
+//                if (mTypeId == 0) {
+//                    asyncShowToast("您尚未选择分类！");
+//                    return;
+//                }
                 mIsUploadIng = true;
                 stringBuilder = new StringBuilder();
                 mLlLoad.setVisibility(View.VISIBLE);
                 if (!mImages.isEmpty()) {
-                    String path = mImages.get(0).path;
-                    uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
+                    compressImg(mImages.get(0).path);
                 } else {
                     uploadInfo();
                 }
@@ -181,6 +193,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 break;
         }
     }
+
     private void chooseVideoType() {
         if (mChooseType != null) {
             mChooseType.show();
@@ -193,6 +206,28 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                         }
                     });
         }
+    }
+
+    private void compressImg(String path) {
+        Luban.with(LocationPublishActivity.this)
+                .load(path)
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onSuccess(File newFile) {
+                        String newPath = newFile.getAbsolutePath();
+//                        Log.d("lubanLog", "new/" + "第" + 0 + "个图片的大小为：" + newFile.length() / 1024 + "KB");
+//                        Log.d("lubanLog", "new/" + "第" + 0 + "个图片的路径为：" + newPath);
+                        uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(newPath));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                }).launch();
     }
 
     private void uploadImages(String path) {
@@ -208,8 +243,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                             if (mImages.size() == mCount) {
                                 uploadInfo();
                             } else {
-                                String path = mImages.get(mCount).path;
-                                uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(path));
+                                compressImg(mImages.get(mCount).path);
                             }
                         } else {
                             uploadFail(uploadImage.message);
@@ -283,6 +317,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     mTypeId = videoSortBeanData.get(options1).getId();
                     mTvType.setText(strings.get(options1));
+                    mUpload.setEnabled(!(TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()));
                 }
             }).setCancelColor(Color.parseColor("#676767"))
                     .setSubmitColor(Color.parseColor("#D81717"))
@@ -294,11 +329,11 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         }
     }
 
-    public static void hideKeyboard(View view){
+    public static void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

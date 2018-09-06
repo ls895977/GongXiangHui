@@ -33,7 +33,6 @@
                 android:scaleType="fitXY"
                 android:src="@mipmap/icon_add_tiepian" />
 
-
             <TextView
                 android:id="@+id/tv_top"
                 android:layout_width="wrap_content"
