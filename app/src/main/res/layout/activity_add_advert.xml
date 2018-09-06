@@ -42,7 +42,7 @@
             android:textColor="@color/white"
             android:textSize="14sp" />
 
-        <com.youth.banner.Banner
+        <com.qunxianghui.gxh.widget.Banner
             android:id="@+id/banner_top"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -91,7 +91,7 @@
                 android:textColor="#000"
                 android:textSize="14sp" />
 
-            <com.youth.banner.Banner
+            <com.qunxianghui.gxh.widget.Banner
                 android:id="@+id/banner_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
