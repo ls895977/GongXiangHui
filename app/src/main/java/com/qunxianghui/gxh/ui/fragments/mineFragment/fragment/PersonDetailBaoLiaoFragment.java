@@ -45,6 +45,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
         return R.layout.fragment_mine_common;
     }
 
+
     @Override
     public void initData() {
         mPersonDetailActivity = (PersonDetailActivity) getActivity();
