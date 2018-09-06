@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
             android:layout_height="100dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:orientation="vertical"
+
             card_view:cardCornerRadius="2dp"
             card_view:cardElevation="0dp">
 
@@ -23,7 +25,7 @@
                 android:id="@+id/iv_item_issue_video_head"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/default_img" />
         </android.support.v7.widget.CardView>
 
