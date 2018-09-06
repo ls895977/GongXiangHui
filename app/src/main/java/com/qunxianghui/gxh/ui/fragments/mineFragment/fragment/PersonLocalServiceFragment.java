@@ -89,7 +89,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             }
             mList.addAll(data.getData());
         }
-        if (mSkip == 0 && data.getData().size() == 0) {
+        if (mSkip == 0 && mList.isEmpty()) {
             llEmpty.setVisibility(View.VISIBLE);
         }
         mAdapter.notifyDataSetChanged();
