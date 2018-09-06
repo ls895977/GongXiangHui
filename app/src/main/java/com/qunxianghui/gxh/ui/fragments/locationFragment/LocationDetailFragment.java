@@ -77,8 +77,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         if (getArguments() != null)
             mCateId = getArguments().getInt("channel_id");
            requestLocalServiceData();
-
-
     }
 
     private void requestLocalServiceData() {
