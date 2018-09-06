@@ -15,12 +15,13 @@
         android:layout_width="62dp"
         android:layout_height="24dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="end"
         android:layout_margin="10dp"
         android:background="@drawable/bg_red_solid_corner"
         android:text="删除"
-        android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/ll_empty"

@@ -28,7 +28,6 @@ import butterknife.BindView;
  */
 
 public class PersonDetailBaoLiaoFragment extends BaseFragment  {
-
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.ll_empty)
@@ -45,7 +44,6 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
     }
-
 
     @Override
     public void initData() {
