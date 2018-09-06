@@ -36,7 +36,6 @@ public class Constant {
 //    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";
 //    //首页上面本地服务的页面
 //    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";
-
     //新闻详情
     public static final String HOME_NEWS_DETAIL_URL = "http://api.qunxianghui.com.cn/theme/new_details/xinwen_/index.html#/";
     //本地发布详情

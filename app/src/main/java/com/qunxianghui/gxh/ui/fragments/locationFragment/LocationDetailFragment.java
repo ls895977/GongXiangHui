@@ -84,7 +84,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public void initData() {
         if (getArguments() != null)
             mCateId = getArguments().getInt("channel_id");
-        requestLocalServiceData();
+           requestLocalServiceData();
+
+
     }
 
     private void requestLocalServiceData() {
@@ -132,7 +134,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mRecyclerView.setLoadingMoreEnabled(true);
             }
 
-            llEmpty.setVisibility(View.GONE);
+//            llEmpty.setVisibility(View.GONE);
             List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
             locationBean.addAll(list);
 
@@ -140,9 +142,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mRecyclerView.setLoadingMoreEnabled(false);
             }
 
-            if (list.size()==0){
-                llEmpty.setVisibility(View.VISIBLE);
-            }
+//            if (list.size()==0){
+//                llEmpty.setVisibility(View.VISIBLE);
+//            }
         } else {
             asyncShowToast(testMode.getMessage());
             mRecyclerView.setLoadingMoreEnabled(false);
