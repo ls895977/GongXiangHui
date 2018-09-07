@@ -504,7 +504,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 1:
                         tvType.setText("跳转链接");
 //                        if (companyAdvert.settings.is_link == 1)
-                            etLink.setText(companyAdvert.link);
+                        etLink.setText(companyAdvert.link);
                         cB.setChecked(companyAdvert.settings.is_link != 0);
                         break;
                     case 2:
@@ -596,6 +596,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         view.findViewById(R.id.tv_choose_type).setOnClickListener(this);
         TextView tvChooseActivityLink = view.findViewById(R.id.tv_choose_activity_link);
         tvChooseActivityLink.setOnClickListener(this);
+        View rlLink = view.findViewById(R.id.rl_link);
         ImageView ivImg = view.findViewById(R.id.ivAd);
         ivImg.setOnClickListener(this);
         ImageView bigImg = view.findViewById(R.id.iv_add_big_img);
@@ -623,6 +624,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             etPhone.setVisibility(View.GONE);
             TextView tvType = view.findViewById(R.id.tv_choose_type);
             sw.setChecked(companyAdvert.is_slide == 1);
+            rlLink.setVisibility(View.GONE);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
 //            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
@@ -630,6 +632,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 switch (companyAdvert.settings.operate) {
                     case 1:
                         tvType.setText("跳转链接");
+                        rlLink.setVisibility(View.VISIBLE);
                         view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
                         etLink.setText(companyAdvert.link);
                         if (companyAdvert.settings.is_link == 1) {
