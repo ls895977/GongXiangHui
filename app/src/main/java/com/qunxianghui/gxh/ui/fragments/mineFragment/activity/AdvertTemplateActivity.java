@@ -140,6 +140,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -200,7 +201,8 @@ public class AdvertTemplateActivity extends BaseActivity {
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
         if (!mList.isEmpty()) {
-            upLoadPic(mList.get(0), 0);
+            uploadSecondImg(mList.get(0), 0);
+//            upLoadPic(mList.get(0), 0);
         } else {
             asyncShowToast("保存成功");
             setResult(0x0022);
@@ -212,7 +214,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         mCount++;
         if (companyAdvert.images == null || companyAdvert.images.startsWith("http")) {
             if (index == mList.size() - 1) {
-                uploadSecondImg(mList.get(0), 0);
+                execute();
             } else {
                 upLoadPic(mList.get(mCount), mCount);
             }
@@ -227,7 +229,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                         if ("0".equals(uploadImage.code)) {
                             companyAdvert.images = uploadImage.data.file;
                             if (index == mList.size() - 1) {
-                                uploadSecondImg(mList.get(0), 0);
+                                execute();
                             } else {
                                 upLoadPic(mList.get(mCount), mCount);
                             }
@@ -247,24 +249,24 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     private void uploadSecondImg(final EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert, final int index) {
         mSeondCount++;
-        if (companyAdvert.settings == null || companyAdvert.settings.pgn_url == null || companyAdvert.settings.pgn_url.startsWith("http")) {
+        if (companyAdvert.settings == null || companyAdvert.settings.store_url == null || companyAdvert.settings.store_url.startsWith("http")) {
             if (index == mList.size() - 1) {
-                execute();
+                upLoadPic(mList.get(0), 0);
             } else {
                 uploadSecondImg(mList.get(mSeondCount), mSeondCount);
             }
             return;
         }
         OkGo.<UploadImage>post(Constant.UP_LOAD_OSS_PIC)
-                .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(companyAdvert.settings.pgn_url))
+                .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(companyAdvert.settings.store_url))
                 .execute(new JsonCallback<UploadImage>() {
                     @Override
                     public void onSuccess(Response<UploadImage> response) {
                         UploadImage uploadImage = response.body();
                         if ("0".equals(uploadImage.code)) {
-                            companyAdvert.settings.pgn_url = uploadImage.data.file;
+                            companyAdvert.settings.store_url = uploadImage.data.file;
                             if (index == mList.size() - 1) {
-                                execute();
+                                upLoadPic(mList.get(0), 0);
                             } else {
                                 uploadSecondImg(mList.get(mSeondCount), mSeondCount);
                             }
