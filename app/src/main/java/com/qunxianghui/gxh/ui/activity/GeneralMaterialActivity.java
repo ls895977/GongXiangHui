@@ -81,7 +81,8 @@ public class GeneralMaterialActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm:
                 if (GeneralMateriaItemFragment.mList.isEmpty()) {
-                    asyncShowToast("请至少选择一个对应素材!");
+//                    asyncShowToast("请至少选择一个对应素材!");
+                    finish();
                     return;
                 }
                 setResult(0x0033);
