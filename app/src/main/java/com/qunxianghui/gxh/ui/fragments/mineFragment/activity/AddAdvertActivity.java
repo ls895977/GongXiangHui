@@ -156,7 +156,6 @@ public class AddAdvertActivity extends BaseActivity {
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
-
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(AddAdvertActivity.this, platform + " 分享成功", Toast.LENGTH_SHORT).show();
