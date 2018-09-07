@@ -25,6 +25,7 @@ public class SplashActivity extends BaseActivity {
         OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
         OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
         String cityCode = SPUtils.getLocation("X-cityId");
+
         if (!TextUtils.isEmpty(cityCode)) {
             String areaId = SPUtils.getLocation("X-areaId");
             OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);

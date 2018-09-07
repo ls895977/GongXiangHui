@@ -383,7 +383,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                         case 5:
                             tvTitle.setText("QQ广告");
                             tvContent.setText(url.settings.slogan);
-                            tv.setText("在线资讯");
+                            tv.setText("在线咨询");
                             break;
                         case 7:
                             tvTitle.setText("店铺");

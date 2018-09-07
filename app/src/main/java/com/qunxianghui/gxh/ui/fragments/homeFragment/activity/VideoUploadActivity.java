@@ -26,6 +26,7 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -120,15 +121,19 @@ public class VideoUploadActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_UpdataVideo_UpLoad:
-//                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
-//                    asyncShowToast("您尚未选择分类！");
-//                    return;
-//                }
-//                if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
-//                    asyncShowToast("您尚未填写视频标题！");
-//                    return;
-//                }
-                uploadVideo();
+                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString())) {
+                    asyncShowToast("您尚未选择分类！");
+                    return;
+                }
+                if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
+                    asyncShowToast("您尚未填写视频标题！");
+                    return;
+                }
+
+                if (Utils.isTwoClick()) {
+                    uploadVideo();
+                }
+
                 break;
             case R.id.tv_UpdataVideo_Cancel:
                 onBackPressed();
