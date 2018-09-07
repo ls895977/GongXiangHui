@@ -418,9 +418,17 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 settings.pgn_url = path;
             } else if (mIsShopImg) {
                 companyAdvert.images = path;
+                Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
+                        .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
+                        .into(((ImageView) view.findViewById(R.id.ivShop)));
+                ((ViewPager) mViewList.get(mVp.getCurrentItem()).findViewById(R.id.viewPager)).getAdapter().notifyDataSetChanged();
                 return view.findViewById(R.id.ivShop);
             } else if (mIsGoodsImg) {
                 companyAdvert.settings.store_url = path;
+                Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
+                        .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img))
+                        .into(((ImageView) view.findViewById(R.id.ivAd)));
+                ((ViewPager) mViewList.get(mVp.getCurrentItem()).findViewById(R.id.viewPager)).getAdapter().notifyDataSetChanged();
                 return view.findViewById(R.id.ivAd);
             } else {
                 companyAdvert.images = path;
