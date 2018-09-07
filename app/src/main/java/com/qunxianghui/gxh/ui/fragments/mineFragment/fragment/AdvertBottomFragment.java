@@ -503,7 +503,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 switch (companyAdvert.settings.operate) {
                     case 1:
                         tvType.setText("跳转链接");
-                        if (companyAdvert.settings.is_link == 1)
+//                        if (companyAdvert.settings.is_link == 1)
                             etLink.setText(companyAdvert.link);
                         cB.setChecked(companyAdvert.settings.is_link != 0);
                         break;
@@ -631,9 +631,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 1:
                         tvType.setText("跳转链接");
                         view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
+                        etLink.setText(companyAdvert.link);
                         if (companyAdvert.settings.is_link == 1) {
                             cB.setChecked(true);
-                            etLink.setText(companyAdvert.link);
                         }
                         break;
                     case 2:
