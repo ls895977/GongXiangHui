@@ -106,8 +106,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     });
             return;
         }
-        if (mRecyclerView == null)
-            return;
         OkGo.<TestMode>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
@@ -133,6 +131,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
     @SuppressLint("UseSparseArrays")
     private void parseData(TestMode testMode) {
+        if (mRecyclerView == null)
+            return;
         if (testMode.getCode() == 0) {
             if (mSkip == 0) {
                 locationBean.clear();
