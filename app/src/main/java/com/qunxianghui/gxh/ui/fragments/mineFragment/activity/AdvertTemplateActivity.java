@@ -236,6 +236,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                         } else {
                             mLoadView.setVisibility(View.GONE);
                             asyncShowToast("保存失败");
+
                         }
                     }
 

@@ -68,7 +68,8 @@ public class EnterpriseMaterialActivity extends BaseActivity {
                 break;
             case R.id.tv_save:
                 if (EnterpriseMateriaItemFragment.mList.isEmpty()) {
-                    asyncShowToast("请至少选择一个对应素材!");
+//                    asyncShowToast("请至少选择一个对应素材!");
+                    finish();
                     return;
                 }
                 setResult(0x0022);
