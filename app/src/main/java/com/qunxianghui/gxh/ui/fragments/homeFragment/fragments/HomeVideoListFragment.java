@@ -63,14 +63,15 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     @Override
     public void initData() {
         mCateId = getArguments().getInt("channel_id");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mSkip = 0;
         requestHomeVideoList();
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        mSkip = 0;
+//        requestHomeVideoList();
+//    }
 
     @Override
     public void onResume() {

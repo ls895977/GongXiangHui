@@ -54,15 +54,29 @@ public class LocationFragment extends BaseFragment {
     SlidingTabLayout mSlidingTabLayout;
     @BindView(R.id.local_view_pager)
     ViewPager mLocalViewPager;
+
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
     private ArrayList<ChannelItem> userChannelList = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
     private String[] mTitles;
     public final static int POST_CHANNELRESULT = 100; // 返回码
+
     @Override
     public int getLayoutId() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return R.layout.fragment_location;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (LocationActivity.sLocationCanChange) {
+            LocationActivity.sLocationCanChange = false;
+            for (int i = 0; i < fragments.size(); i++) {
+                ((LocationDetailFragment) fragments.get(i)).mIsChange = true;
+            }
+        }
+
     }
 
     @Override
@@ -173,6 +187,7 @@ public class LocationFragment extends BaseFragment {
                 break;
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0x0011) {
