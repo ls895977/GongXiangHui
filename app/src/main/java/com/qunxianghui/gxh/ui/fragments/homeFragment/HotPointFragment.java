@@ -56,6 +56,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class HotPointFragment extends BaseFragment {
+
     @BindView(R.id.rv)
     RecyclerView mRv;
     @BindView(R.id.sw)

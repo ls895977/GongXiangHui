@@ -85,8 +85,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         if (getArguments() != null)
             mCateId = getArguments().getInt("channel_id");
         requestLocalServiceData();
-
-
     }
 
     @Override
@@ -108,6 +106,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     });
             return;
         }
+        if (mRecyclerView == null)
+            return;
         OkGo.<TestMode>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
                 .params("limit", 10)
@@ -143,7 +143,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             llEmpty.setVisibility(View.GONE);
             List<TestMode.DataBean.ListBean> list = testMode.getData().getList();
             locationBean.addAll(list);
-            if (list.isEmpty()){
+            if (list.isEmpty()) {
                 llEmpty.setVisibility(View.VISIBLE);
             }
             if (list.size() < 10) {
