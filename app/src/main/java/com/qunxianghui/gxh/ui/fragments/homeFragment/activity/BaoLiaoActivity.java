@@ -19,9 +19,9 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.BaoLiaoBean;
-import com.qunxianghui.gxh.bean.BaoLiaoContentBean;
 import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.UploadImage;
+import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
@@ -65,7 +65,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private EditText mEtContent;
     private int selectImgSize = 0;
 
-    private List<BaoLiaoContentBean> contentBeanList = new ArrayList<>();
+    private List<BaoliaoBean.DataBean.Content> contentBeanList = new ArrayList<>();
 
 
     @Override
@@ -178,7 +178,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         try {
             for (int i = 0; i < mAdapter.mData.size(); i++) {
                 BaoLiaoBean datum = mAdapter.mData.get(i);
-                BaoLiaoContentBean contentBean = new BaoLiaoContentBean();
+                BaoliaoBean.DataBean.Content contentBean = new BaoliaoBean.DataBean.Content();
                 contentBean.text = datum.mEt;
                 if (datum.mList != null && !datum.mList.isEmpty()) {
                     isHasPics = true;
@@ -216,7 +216,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                         if (uploadImage.code.equals("0")) {
                             upLoadPics.add(uploadImage.data.file);
                             if (!contentBeanList.isEmpty()) {
-                                BaoLiaoContentBean contentBean = contentBeanList.get(position);
+                                BaoliaoBean.DataBean.Content contentBean = contentBeanList.get(position);
                                 contentBean.img += uploadImage.data.file + ",";
                             }
 
@@ -250,7 +250,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private void fetchBaoLiaoData() {
         JSONArray arrays = new JSONArray();
         for (int i = 0; i < contentBeanList.size(); i++) {
-            BaoLiaoContentBean contentBean = contentBeanList.get(i);
+            BaoliaoBean.DataBean.Content contentBean = contentBeanList.get(i);
             if(!TextUtils.isEmpty(contentBean.img)){
                 contentBean.img = contentBean.img.substring(0,contentBean.img.length()-1);
             }

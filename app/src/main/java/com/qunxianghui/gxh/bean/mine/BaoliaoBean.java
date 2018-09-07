@@ -39,7 +39,7 @@ public class BaoliaoBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * id : 201
          * member_id : 1000316
@@ -51,14 +51,19 @@ public class BaoliaoBean implements Serializable {
          * images : []
          */
 
-        private int id;
-        private int member_id;
-        private String title;
-        private String content;
-        private String ctime;
-        private String ip;
-        private String status;
-        private List<String> images;
+        public int id;
+        public int member_id;
+        public String title;
+        public List<Content> content;
+        public String ctime;
+        public String ip;
+        public String status;
+        public List<String> images;
+
+        public static class Content {
+            public String text;
+            public String img;
+        }
 
         public boolean isChecked() {
             return isChecked;
@@ -92,14 +97,6 @@ public class BaoliaoBean implements Serializable {
 
         public void setTitle(String title) {
             this.title = title;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
         }
 
         public String getCtime() {

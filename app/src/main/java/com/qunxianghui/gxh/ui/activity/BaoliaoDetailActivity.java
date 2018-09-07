@@ -8,18 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoliaoDetailAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.BaoLiaoContentBean;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.observer.EventManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observer;
 
 import butterknife.BindView;
@@ -43,9 +38,6 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
     TextView tvBaoliaoTime;
     @BindView(R.id.recyclerView)
     XRecyclerView recyclerView;
-    private BaoliaoBean.DataBean dataBean;
-    private List<BaoLiaoContentBean> mList = new ArrayList();
-    private BaoliaoDetailAdapter mAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -58,10 +50,9 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
+        BaoliaoBean.DataBean dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
 
-        mList = new Gson().fromJson(dataBean.getContent(), new TypeToken<List<BaoLiaoContentBean>>(){}.getType());
-        mAdapter = new BaoliaoDetailAdapter(this,mList);
+        BaoliaoDetailAdapter mAdapter = new BaoliaoDetailAdapter(this, dataBean.content);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLoadingMoreEnabled(false);
         recyclerView.setPullRefreshEnabled(false);
