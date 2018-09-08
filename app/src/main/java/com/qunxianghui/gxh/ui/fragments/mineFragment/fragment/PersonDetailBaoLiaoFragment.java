@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -31,7 +32,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.ll_empty)
-    View mEmptyView;
+    LinearLayout mEmptyView;
 
     private MybaoliaoPostAdapter myCollectPostAdapter;
     private List<BaoliaoBean.DataBean> dataList = new ArrayList<>();
@@ -90,9 +91,12 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
                         toActivity(BaoliaoDetailActivity.class,bundle);
                     }
                 });
-                if (dataList.isEmpty()) {
-                    mEmptyView.setVisibility(View.VISIBLE);
-                }
+
+            }
+            if (dataList.isEmpty()) {
+                mEmptyView.setVisibility(View.VISIBLE);
+            }else {
+                mEmptyView.setVisibility(View.GONE);
             }
             xrecycler_mine_collect_news.refreshComplete();
             myCollectPostAdapter.notifyDataSetChanged();

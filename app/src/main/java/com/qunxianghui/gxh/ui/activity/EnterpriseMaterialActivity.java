@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class EnterpriseMaterialActivity extends BaseActivity {
-
     //    @BindView(R.id.segment_tab)
 //    SegmentTabLayout mSegmentTab;
     @BindView(R.id.tv_save)
