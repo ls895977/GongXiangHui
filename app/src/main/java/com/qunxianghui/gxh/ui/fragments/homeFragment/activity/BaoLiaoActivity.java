@@ -54,6 +54,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     @BindView(R.id.ll_load)
     LinearLayout mLlLoad;
 
+
     private List<String> upLoadPics = new ArrayList<>();
     private int maxImgCount = 3;               //允许选择图片最大数
     private BaoLiaoAdapter mAdapter;
@@ -84,7 +85,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
         imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
-
         selImageList = new ArrayList<>();
         mAdapter = new BaoLiaoAdapter(this);
         mAdapter.setOnItemClickListener(this);
@@ -113,6 +113,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
 
         });
     }
+
 
     @OnClick({R.id.tv_cancel, R.id.tv_upload})
     public void onViewClicked(View view) {
@@ -162,6 +163,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         return true;
     }
 
+
     /**
      * 上传爆料的内容
      */
@@ -170,8 +172,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         upLoadPics.clear();
         contentBeanList.clear();
         boolean isHasPics = false;
-
-
         try {
             for (int i = 0; i < mAdapter.mData.size(); i++) {
                 BaoLiaoBean datum = mAdapter.mData.get(i);
@@ -195,7 +195,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             LogUtil.e(TAG, e.getMessage());
         }
     }
-
     /**
      * 上传图片
      *
@@ -316,6 +315,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 break;
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

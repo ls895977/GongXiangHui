@@ -73,6 +73,7 @@ public class AddAdvertActivity extends BaseActivity {
     private Dialog dialog;
     private UMWeb web;
     private ArrayList<String> mImages;
+    private ShareInfo.ShareInfoBean mData;
 
     @Override
     protected int getLayoutId() {
@@ -185,9 +186,9 @@ public class AddAdvertActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<ShareInfo> response) {
                         if (response.body().code == 200) {
-                            ShareInfo.ShareInfoBean data = response.body().data;
-                            if (data != null) {
-                                startThirdShare(data.url, data.title, data.desc);
+                            mData = response.body().data;
+                            if (mData != null) {
+                                startThirdShare(mData.url, mData.title, mData.desc);
                             }
                         } else {
                             asyncShowToast(response.body().message);
@@ -298,7 +299,7 @@ public class AddAdvertActivity extends BaseActivity {
     /*粘贴url*/
     private void ClipContent() {
         ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(String.valueOf(web)));
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(String.valueOf(mData.url)));
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
     }

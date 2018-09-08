@@ -77,7 +77,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
         this.overridePendingTransition(0, R.anim.activity_pop_out);
     }
 
-
     /*图片长按的处理*/
     @Override
     public void PicLongClick(int position, String url) {

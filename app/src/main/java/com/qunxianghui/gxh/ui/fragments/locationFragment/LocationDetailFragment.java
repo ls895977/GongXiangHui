@@ -246,6 +246,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 });
     }
 
+    /*图片的点击*/
     @Override
     public void onPicClick(int position, int picpostion) {
         List<String> imageList = locationBean.get(position).getImages();
