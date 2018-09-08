@@ -273,12 +273,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             }
             objects.put(object);
         }
+
         final String faBuTitle = mEtTitle.getText().toString().trim();
+
         StringBuilder stringBuilder = new StringBuilder("");
         if (!upLoadPics.isEmpty()) {
-            for (int i = 0, length = upLoadPics.size(); i < length; i++) {
-                stringBuilder.append(upLoadPics.get(i));
-            }
+            stringBuilder.append(upLoadPics.get(0));
         }
 
         JSONObject jsonObject = new JSONObject();
