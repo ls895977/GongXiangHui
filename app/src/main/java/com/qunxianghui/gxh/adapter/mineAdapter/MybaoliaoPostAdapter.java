@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -13,7 +12,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
-import com.qunxianghui.gxh.bean.mine.MyCollectPostBean;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ import java.util.List;
  * 我收藏贴子的适配器
  */
 public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.DataBean> {
-    private android.os.Handler handler = new android.os.Handler();
+
     public MybaoliaoPostAdapter(Context context, List<BaoliaoBean.DataBean> datas) {
         super(context, datas);
     }

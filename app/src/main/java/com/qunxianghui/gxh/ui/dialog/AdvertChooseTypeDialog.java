@@ -50,6 +50,7 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
     public void setBigPageType() {
         if (!mIsBigPageType) {
             mIsBigPageType = true;
+            findViewById(R.id.tv_activity).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.tv_activity)).setText("联系QQ");
             findViewById(R.id.tv_poster).setVisibility(View.GONE);
             findViewById(R.id.tv_code).setVisibility(View.GONE);
@@ -59,7 +60,8 @@ public class AdvertChooseTypeDialog extends Dialog implements View.OnClickListen
     public void setTongLangPageType() {
         if (mIsBigPageType) {
             mIsBigPageType = false;
-            ((TextView) findViewById(R.id.tv_activity)).setText("跳转活动");
+            findViewById(R.id.tv_activity).setVisibility(View.GONE);
+//            ((TextView) findViewById(R.id.tv_activity)).setText("跳转活动");
             findViewById(R.id.tv_poster).setVisibility(View.VISIBLE);
             findViewById(R.id.tv_code).setVisibility(View.VISIBLE);
         }
