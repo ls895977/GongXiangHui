@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.lzy.okgo.OkGo;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -32,6 +36,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.VideoUploadActivit
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.SystemUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.util.List;
@@ -94,9 +99,17 @@ public class MainActivity extends BaseActivity {
             PermissionGen.needPermission(MainActivity.this, 105,
                     new String[]{
                             Manifest.permission.CAMERA,
+                            Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     }
             );
+            boolean hasLocationPermission =
+                    ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+            if (hasLocationPermission) {
+                OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+            }
+        } else {
+            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
         }
     }
 
@@ -246,6 +259,13 @@ public class MainActivity extends BaseActivity {
             dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
         }
         dialog.blurBg().show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+        }
     }
 }
 

@@ -1,9 +1,9 @@
 package com.qunxianghui.gxh.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import java.util.Locale;
 
@@ -61,9 +61,13 @@ public class SystemUtil {
      */
     @SuppressLint("MissingPermission")
     public static String getIMEI(Context ctx) {
-        String androidID = Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
-        String id = androidID + Build.SERIAL;
-        return id;
+//        String androidID = Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
+//        return androidID + Build.SERIAL;
+        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Activity.TELEPHONY_SERVICE);
+        if (tm != null) {
+            return tm.getDeviceId();
+        }
+        return null;
     }
 
 
