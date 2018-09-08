@@ -356,7 +356,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     /*粘贴url*/
     private void copyContent() {
         ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(url));
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(mBuffer.toString()));
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
     }

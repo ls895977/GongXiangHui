@@ -91,6 +91,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         rlPersondetailBg.setBackground(ContextCompat.getDrawable(this, mBgs[new Random().nextInt(4) % 5]));
     }
 
+
     @Override
     protected void initData() {
         FetchPersonData();

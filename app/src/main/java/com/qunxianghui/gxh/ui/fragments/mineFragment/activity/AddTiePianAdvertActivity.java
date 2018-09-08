@@ -45,7 +45,6 @@ import butterknife.OnClick;
  * Created by Administrator on 2018/4/2 0002.
  */
 public class AddTiePianAdvertActivity extends BaseActivity {
-
     @BindView(R.id.iv)
     ImageView mIv;
     @BindView(R.id.tv_top)
@@ -64,6 +63,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     private UMWeb mWeb;
     private String mTitle;
     private String mDescrip;
+    private ShareInfo.ShareInfoBean mData;
 
     @Override
     protected int getLayoutId() {
@@ -174,9 +174,9 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<ShareInfo> response) {
                         if (response.body().code == 200) {
-                            ShareInfo.ShareInfoBean data = response.body().data;
-                            if (data != null) {
-                                startThirdShare(data.url, data.title, data.desc);
+                            mData = response.body().data;
+                            if (mData != null) {
+                                startThirdShare(mData.url, mData.title, mData.desc);
                             }
                         } else {
                             asyncShowToast(response.body().message);
@@ -284,7 +284,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     /*粘贴url*/
     private void ClipContent() {
         ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(String.valueOf(mWeb)));
+        ClipData clipData = ClipData.newRawUri(TAG, Uri.parse(mData.url));
         mClipboardManager.setPrimaryClip(clipData);
         asyncShowToast("复制成功");
         mDialog.dismiss();

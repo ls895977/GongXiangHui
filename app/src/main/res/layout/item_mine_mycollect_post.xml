@@ -59,11 +59,26 @@
             android:gravity="left"
             android:paddingBottom="7dp">
 
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="7dp"
+                android:src="@mipmap/mineissue_baoliao_status" />
+
             <TextView
                 android:id="@+id/tv_mine_mycollect_from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
+                android:textSize="13sp"
+                tools:text="科技" />
+
+            <TextView
+                android:id="@+id/tv_mine_mycollect_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:textSize="13sp"
                 tools:text="科技" />
         </LinearLayout>
@@ -80,7 +95,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.7dp"
         android:layout_alignBottom="@+id/rl_picture"
         android:layout_marginTop="1dp"
         android:background="#d3d3d3" />

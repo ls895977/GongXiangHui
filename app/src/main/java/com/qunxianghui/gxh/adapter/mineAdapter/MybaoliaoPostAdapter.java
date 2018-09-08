@@ -27,6 +27,7 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
     @Override
     protected void convert(MyViewHolder holder, final int position, final BaoliaoBean.DataBean dataBean) {
         ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
+
         List<String> images = dataBean.getImages();
 
         if (dataBean != null) {
@@ -34,6 +35,7 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
             String title = dataBean.getTitle();
             holder.setText(R.id.tv_mine_mycollect_from, time);
             holder.setText(R.id.tv_mine_mycollect_title, title);
+            holder.setText(R.id.tv_mine_mycollect_status, dataBean.status);
         }
         if (images.size() >= 1) {
             RequestOptions options = new RequestOptions();
