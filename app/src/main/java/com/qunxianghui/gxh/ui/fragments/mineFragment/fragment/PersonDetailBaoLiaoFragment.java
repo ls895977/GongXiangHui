@@ -73,7 +73,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
                     });
         } else {
             OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
-                    .params("member_id", mPersonDetailActivity.member_id)
+                    .params("user_id", mPersonDetailActivity.member_id)
                     .params("limit", 12)
                     .params("skip", count)
                     .execute(new JsonCallback<BaoliaoBean>() {
