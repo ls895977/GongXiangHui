@@ -170,6 +170,10 @@ public class AdvertTemplateActivity extends BaseActivity {
 
         mList.addAll(AdvertBottomFragment.mList);
         mList.addAll(AdvertTopFragment.mList);
+        if (AdvertBottomFragment.mList != null)
+            mList.addAll(AdvertBottomFragment.mList);
+        if (AdvertTopFragment.mList != null)
+            mList.addAll(AdvertTopFragment.mList);
         if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
             mList.add(AdvertTiePianFragment.mAdvertBean);
 //        }
