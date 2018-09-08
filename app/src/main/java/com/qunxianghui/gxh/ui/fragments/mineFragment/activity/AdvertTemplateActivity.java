@@ -168,8 +168,6 @@ public class AdvertTemplateActivity extends BaseActivity {
 //                return;
 //            }
 
-        mList.addAll(AdvertBottomFragment.mList);
-        mList.addAll(AdvertTopFragment.mList);
         if (AdvertBottomFragment.mList != null)
             mList.addAll(AdvertBottomFragment.mList);
         if (AdvertTopFragment.mList != null)
