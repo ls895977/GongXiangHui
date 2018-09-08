@@ -3,11 +3,12 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -17,6 +18,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoLiaoAdapter;
+import com.qunxianghui.gxh.adapter.BaoLiaoItemAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.BaoLiaoBean;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -32,11 +34,16 @@ import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 import com.sina.weibo.sdk.utils.LogUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.RequestBody;
 
 import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 
@@ -78,7 +85,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
         imagePicker.setShowCamera(true);                      //显示拍照按钮
         imagePicker.setCrop(false);                           //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
-        imagePicker.setMultiMode(true);                       //多选
+        imagePicker.setMultiMode(false);                       //不能多选
         imagePicker.setSelectLimit(maxImgCount);              //选中数量限制
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
         imagePicker.setFocusWidth(800);                       //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
@@ -155,7 +162,15 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 sd = mEtContent.getText().toString();
             }
             int childCount = mChildImgRecview.getChildCount();
-            if (TextUtils.isEmpty(sd) && childCount == 1) {
+
+            BaoLiaoItemAdapter itemAdapter = (BaoLiaoItemAdapter) mChildImgRecview.getAdapter();
+
+            boolean isNoPath = true;
+            if(itemAdapter.getImages()!=null && !itemAdapter.getImages().isEmpty()
+                    && !TextUtils.isEmpty(itemAdapter.getImages().get(0).path)){
+                isNoPath = false;
+            }
+            if (TextUtils.isEmpty(sd) && childCount == 1 && isNoPath) {
                 ToastUtils.showShort("您尚未填写第" + (i + 1) + "条发布内容！");
                 return false;
             }
@@ -180,7 +195,8 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 if (datum.mList != null && !datum.mList.isEmpty()) {
                     isHasPics = true;
                     for (int j = 0; j < datum.mList.size(); j++) {
-                        ImageItem imageItem = datum.mList.get(i);
+                        ImageItem imageItem = datum.mList.get(j);
+                        Log.e("imgUrl:",imageItem.path);
                         if (!imageItem.path.contains("http")) {
                             upLoadPic(i,"data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
                         }
@@ -213,7 +229,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                             upLoadPics.add(uploadImage.data.file);
                             if (!contentBeanList.isEmpty()) {
                                 BaoliaoBean.DataBean.Content contentBean = contentBeanList.get(position);
-                                contentBean.img += uploadImage.data.file + ",";
+                                contentBean.img = uploadImage.data.file;
                             }
 
                             if (selectImgSize == 0) {
@@ -225,6 +241,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                                     selectImgSize += itemSize;
                                 }
                             }
+                            Log.e("imgSize:",""+selectImgSize);
                             if (selectImgSize == upLoadPics.size()) {
                                 fetchBaoLiaoData();
                             }
@@ -244,31 +261,39 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
      * 填充爆料
      */
     private void fetchBaoLiaoData() {
-        JSONArray arrays = new JSONArray();
+        JSONArray objects = new JSONArray();
         for (int i = 0; i < contentBeanList.size(); i++) {
+            JSONObject object = new JSONObject();
             BaoliaoBean.DataBean.Content contentBean = contentBeanList.get(i);
-            if(!TextUtils.isEmpty(contentBean.img)){
-                contentBean.img = contentBean.img.substring(0,contentBean.img.length()-1);
+            try {
+                object.put("img",contentBean.img);
+                object.put("text",contentBean.text);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            arrays.add(contentBean);
+            objects.put(object);
         }
-        final String faBuContent = arrays.toJSONString();
-        LogUtil.e(TAG, faBuContent);
         final String faBuTitle = mEtTitle.getText().toString().trim();
         StringBuilder stringBuilder = new StringBuilder("");
         if (!upLoadPics.isEmpty()) {
             for (int i = 0, length = upLoadPics.size(); i < length; i++) {
-                if (i != upLoadPics.size() - 1) {
-                    stringBuilder.append(upLoadPics.get(i) + ",");
-                } else {
-                    stringBuilder.append(upLoadPics.get(i));
-                }
+                stringBuilder.append(upLoadPics.get(i));
             }
         }
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("title", faBuTitle);
+            jsonObject.putOpt("content", objects);
+            jsonObject.put("images", stringBuilder.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("imgContent",jsonObject.toString());
+
         OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)
-                .params("title", faBuTitle)
-                .params("content", faBuContent)
-                .params("images", stringBuilder.toString())
+                .upJson(jsonObject.toString())
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
@@ -289,6 +314,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 });
     }
 
+    private int addItemPosition = 0;
     @Override
     public void onItemClick(View view, int position, int type) {
         switch (view.getId()) {
@@ -297,6 +323,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 break;
             case R.id.tv_add:
                 mAdapter.addItem(position);
+                addItemPosition = position;
                 break;
             case R.id.rv:
                 selImageList = mAdapter.getImages();
@@ -326,8 +353,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 if (images != null) {
+
+                    selImageList.clear();
                     selImageList.addAll(images);
                     mAdapter.setImages(selImageList);
+
+                    clearAddImg();
                 }
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
@@ -338,9 +369,17 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     selImageList.clear();
                     selImageList.addAll(images);
                     mAdapter.setImages(selImageList);
+
+                    clearAddImg();
                 }
             }
         }
 
+    }
+
+    private void clearAddImg() {
+        RecyclerView recyclerView = ((LinearLayout) mRv.getChildAt(addItemPosition)).findViewById(R.id.rv);
+        BaoLiaoItemAdapter mChildAdapter = (BaoLiaoItemAdapter) recyclerView.getAdapter();
+        mChildAdapter.remove(addItemPosition,1);
     }
 }

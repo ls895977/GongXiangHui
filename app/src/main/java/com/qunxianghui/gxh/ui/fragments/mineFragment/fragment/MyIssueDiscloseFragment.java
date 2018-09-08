@@ -90,6 +90,10 @@ public class MyIssueDiscloseFragment extends BaseFragment implements Observer {
                     public void onSuccess(Response<BaoliaoBean> response) {
                         parseData(response.body());
                     }
+                    @Override
+                    public void onError(Response<BaoliaoBean> response) {
+                        super.onError(response);
+                    }
                 });
     }
 

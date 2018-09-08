@@ -31,11 +31,17 @@ public class BaoliaoDetailAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
 
         LinearLayout llImagLayout = holder.getView(R.id.ll_img_layout);
         String img = dataBean.img;
-        if (!img.isEmpty()) {
+        if (!TextUtils.isEmpty(img)) {
             RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.default_img)
                     .error(R.mipmap.default_img)
                     .centerCrop();
-            String[] imgSplits = img.split(",");
+
+            String[] imgSplits = new String[1];
+            if(img.contains(",")) {
+                imgSplits = img.split(",");
+            } else{
+                imgSplits[0] = img;
+            }
             for (int i = 0; i < imgSplits.length; i++) {
                 ImageView imageView = new ImageView(mContext);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 560);
