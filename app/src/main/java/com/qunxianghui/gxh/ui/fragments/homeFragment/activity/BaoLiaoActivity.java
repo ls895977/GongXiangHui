@@ -64,10 +64,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private String mBaoLiaoContent;
     private EditText mEtContent;
     private int selectImgSize = 0;
-
     private List<BaoliaoBean.DataBean.Content> contentBeanList = new ArrayList<>();
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_baoliao;
