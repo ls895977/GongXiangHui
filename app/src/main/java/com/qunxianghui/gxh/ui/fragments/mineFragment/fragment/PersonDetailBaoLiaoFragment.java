@@ -49,21 +49,44 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment  {
 
     @Override
     public void initData() {
-        mPersonDetailActivity = (PersonDetailActivity) getActivity();
+        if(getActivity() instanceof PersonDetailActivity) {
+            mPersonDetailActivity = (PersonDetailActivity) getActivity();
+        }
         LoadMycolectNews();
     }
 
     private void LoadMycolectNews() {
-        OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
-                .params("member_id", mPersonDetailActivity.member_id)
-                .params("limit", 12)
-                .params("skip", count)
-                .execute(new JsonCallback<BaoliaoBean>() {
-                    @Override
-                    public void onSuccess(Response<BaoliaoBean> response) {
-                        parseCollectPostData(response.body());
-                    }
-                });
+        if(mPersonDetailActivity == null){
+            OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
+                    .params("limit", 12)
+                    .params("skip", count)
+                    .execute(new JsonCallback<BaoliaoBean>() {
+                        @Override
+                        public void onSuccess(Response<BaoliaoBean> response) {
+                            parseCollectPostData(response.body());
+                        }
+
+                        @Override
+                        public void onError(Response<BaoliaoBean> response) {
+                            super.onError(response);
+                        }
+                    });
+        } else {
+            OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
+                    .params("member_id", mPersonDetailActivity.member_id)
+                    .params("limit", 12)
+                    .params("skip", count)
+                    .execute(new JsonCallback<BaoliaoBean>() {
+                        @Override
+                        public void onSuccess(Response<BaoliaoBean> response) {
+                            parseCollectPostData(response.body());
+                        }
+                        @Override
+                        public void onError(Response<BaoliaoBean> response) {
+                            super.onError(response);
+                        }
+                    });
+        }
     }
     /**
      * 解析我的收藏列表

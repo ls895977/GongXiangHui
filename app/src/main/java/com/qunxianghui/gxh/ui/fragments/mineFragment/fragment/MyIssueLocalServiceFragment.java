@@ -123,7 +123,7 @@ public class MyIssueLocalServiceFragment extends BaseFragment implements Observe
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
                     .params("skip", mSkip)
-                    .params("member_id", member_id)
+                    .params("member_id", member_id)//user_id
                     .execute(new JsonCallback<MineIssueLocalServiceBean>() {
                         @Override
                         public void onSuccess(Response<MineIssueLocalServiceBean> response) {

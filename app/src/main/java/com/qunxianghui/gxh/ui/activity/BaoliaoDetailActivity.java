@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoliaoDetailAdapter;
@@ -15,6 +17,7 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.observer.EventManager;
 
+import java.util.List;
 import java.util.Observer;
 
 import butterknife.BindView;
@@ -52,8 +55,13 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
 
         BaoliaoBean.DataBean dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
 
-        BaoliaoDetailAdapter mAdapter = new BaoliaoDetailAdapter(this, dataBean.content);
-        recyclerView.setAdapter(mAdapter);
+        try {
+            //List<BaoliaoBean.DataBean.Content> contentList = JSONObject.parseArray(dataBean.content, BaoliaoBean.DataBean.Content.class);
+            BaoliaoDetailAdapter mAdapter = new BaoliaoDetailAdapter(this, dataBean.content);
+            recyclerView.setAdapter(mAdapter);
+        } catch (Exception e){
+
+        }
         recyclerView.setLoadingMoreEnabled(false);
         recyclerView.setPullRefreshEnabled(false);
 

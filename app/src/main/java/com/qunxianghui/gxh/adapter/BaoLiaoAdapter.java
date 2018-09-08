@@ -36,7 +36,7 @@ public class BaoLiaoAdapter extends RecyclerView.Adapter<BaoLiaoAdapter.BaoLiaoV
 
     public void setImages(ArrayList<ImageItem> images) {
         mData.get(mCurrentPosition).mList = images;
-        mCurrentAdapter.setImages(images);
+        mCurrentAdapter.setImages(mCurrentPosition,images);
     }
 
     public interface OnRecyclerViewItemClickListener {
@@ -79,7 +79,7 @@ public class BaoLiaoAdapter extends RecyclerView.Adapter<BaoLiaoAdapter.BaoLiaoV
     @Override
     public void onBindViewHolder(final BaoLiaoViewHolder holder, int position) {
         BaoLiaoBean baoLiaoBean = mData.get(position);
-        final BaoLiaoItemAdapter adapter = new BaoLiaoItemAdapter(mContext, baoLiaoBean.mList, 3);
+        final BaoLiaoItemAdapter adapter = new BaoLiaoItemAdapter(mContext,position ,baoLiaoBean.mList, 1);
         holder.mRv.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaoLiaoItemAdapter.OnRecyclerViewItemClickListener() {
             @Override

@@ -60,7 +60,7 @@ public class BaoliaoBean implements Serializable {
         public String status;
         public List<String> images;
 
-        public static class Content {
+        public static class Content implements Serializable{
             public String text;
             public String img;
         }

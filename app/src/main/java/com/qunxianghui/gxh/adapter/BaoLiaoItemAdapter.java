@@ -32,7 +32,7 @@ public class BaoLiaoItemAdapter extends RecyclerView.Adapter<BaoLiaoItemAdapter.
         this.listener = listener;
     }
 
-    public void setImages(List<ImageItem> data) {
+    public void setImages(int mCurrentPosition, List<ImageItem> data) {
         mData = new ArrayList<>(data);
         if (getItemCount() < maxImgCount) {
             mData.add(new ImageItem());
@@ -49,11 +49,29 @@ public class BaoLiaoItemAdapter extends RecyclerView.Adapter<BaoLiaoItemAdapter.
         else return mData;
     }
 
-    public BaoLiaoItemAdapter(Context mContext, List<ImageItem> data, int maxImgCount) {
+    public ArrayList<ImageItem> getmData() {
+        return mData;
+    }
+
+    private boolean isAddRemoved = false;
+    private List<Integer> mAddRemovedPositions = new ArrayList<>();
+    public void remove(int itemPosition, int index) {
+        if (mData.size() == 1) {
+            return;
+        }
+        isAddRemoved = true;
+        if(!mAddRemovedPositions.contains(itemPosition)){
+            mAddRemovedPositions.add(itemPosition);
+        }
+        mData.remove(index);
+        notifyDataSetChanged();
+    }
+
+    public BaoLiaoItemAdapter(Context mContext, int position, List<ImageItem> data, int maxImgCount) {
         this.mContext = mContext;
         this.maxImgCount = maxImgCount;
         this.mInflater = LayoutInflater.from(mContext);
-        setImages(data);
+        setImages(position, data);
     }
 
     @Override
@@ -86,12 +104,22 @@ public class BaoLiaoItemAdapter extends RecyclerView.Adapter<BaoLiaoItemAdapter.
             itemView.setOnClickListener(this);
             //根据条目位置设置图片
             ImageItem item = mData.get(position);
-            if (isAdded && position == getItemCount() - 1) {
+
+            boolean isAdd = false;
+            if(((View)iv_img.getParent()).getTag()==null || ((int)((View)iv_img.getParent()).getTag()) == 0){
+                isAdd = true;
+            }
+            if (isAdd && isAdded && position == getItemCount() - 1 && isAddRemoved==false) {
                 iv_img.setImageResource(R.mipmap.icon_biaoliao_add);
+                ((View)iv_img.getParent()).setTag(0);
                 clickPosition = CompanySetActivity.IMAGE_ITEM_ADD;
             } else {
+                ((View)iv_img.getParent()).setTag(1);
                 ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
                 clickPosition = position;
+            }
+            if(isAddRemoved) {
+                isAddRemoved = false;
             }
         }
 
