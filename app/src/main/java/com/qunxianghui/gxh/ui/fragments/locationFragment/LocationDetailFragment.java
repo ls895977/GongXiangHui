@@ -3,7 +3,6 @@ package com.qunxianghui.gxh.ui.fragments.locationFragment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -11,7 +10,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -45,8 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class LocationDetailFragment extends BaseFragment implements View.OnClickListener, NineGridTest2Adapter.CircleOnClickListener {
 
@@ -54,7 +50,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     XRecyclerView mRecyclerView;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
-    Unbinder unbinder;
+
     private List<TestMode.DataBean.ListBean> locationBean = new ArrayList<>();
     private int mSkip = 0;
     private NineGridTest2Adapter mAdapter;
@@ -66,6 +62,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private TextView mTv_inform_sex;
     private int mUuid;
     public int mMemberId;
+    public boolean mIsChange;
 
     @Override
     public int getLayoutId() {
@@ -90,8 +87,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void onStart() {
         super.onStart();
-        mSkip = 0;
-        requestLocalServiceData();
+        if (mIsChange) {
+            mIsChange = false;
+            mSkip = 0;
+            requestLocalServiceData();
+        }
     }
 
     private void requestLocalServiceData() {
@@ -122,7 +122,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        if (mCateId == 0 && LocationActivity.sLocationCanChange) {
+        if (LocationActivity.sLocationCanChange) {
             LocationActivity.sLocationCanChange = false;
             mSkip = 0;
             initData();
@@ -508,17 +508,4 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         commentDialog.show(getChildFragmentManager(), "comment");
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }
