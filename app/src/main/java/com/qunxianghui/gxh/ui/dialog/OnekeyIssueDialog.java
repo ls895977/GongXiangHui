@@ -48,6 +48,7 @@ public class OnekeyIssueDialog extends Dialog {
                         break;
                     case R.id.tv_location:
                         startActivity(LocationPublishActivity.class);
+
                         break;
                     case R.id.tv_baoliao:
                         startActivity(BaoLiaoActivity.class);

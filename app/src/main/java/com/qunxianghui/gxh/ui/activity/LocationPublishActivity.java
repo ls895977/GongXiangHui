@@ -32,6 +32,7 @@ import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
+import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationDetailFragment;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
@@ -70,6 +71,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     private boolean mIsUploadIng;
     private int mCount;
     private StringBuilder stringBuilder;
+    private LocationDetailFragment mLocationDetailFragment;
 
     @Override
     protected int getLayoutId() {
@@ -119,6 +121,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

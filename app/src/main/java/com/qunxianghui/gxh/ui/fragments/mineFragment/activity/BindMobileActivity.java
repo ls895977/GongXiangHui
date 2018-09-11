@@ -109,7 +109,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                                 toActivity(MainActivity.class);
                                 finish();
                             } else {
-                                asyncShowToast("绑定失败" + response.body().toString());
+                                asyncShowToast("绑定失败" + response.body().message);
                             }
                         }
                     });

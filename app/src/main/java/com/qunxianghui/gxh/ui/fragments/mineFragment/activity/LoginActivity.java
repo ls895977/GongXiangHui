@@ -79,10 +79,9 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onStart(SHARE_MEDIA platform) {
             }
-
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-                String url = Constant.QQ_RESPONSE_URL;
+                String url =null;
                 switch (platform) {
                     case QQ:
                         url = Constant.QQ_RESPONSE_URL;
@@ -94,34 +93,66 @@ public class LoginActivity extends BaseActivity {
                         url = Constant.SINA_RESPONSE_URL;
                         break;
                 }
-                OkGo.<String>post(url)
-                        .params("status", true)
-                        .params("accessToken", data.get("accessToken"))
-                        .params("openId", data.get("uid"))
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response.body());
-                                    JSONObject data = jsonObject.getJSONObject("data");
-                                    int code = jsonObject.getInt("code");
-                                    if (code == 0) {
-                                        JsonConvert.sIsShow = true;
-                                        String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                        SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                        SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                        OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                        asyncShowToast("登录成功");
-                                        toActivity(MainActivity.class);
-                                        finish();
-                                    } else if (code == 200) {
-                                        startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                if (url==Constant.QQ_RESPONSE_URL||url==Constant.WEIXIN_RESPONSE_URL){
+                    OkGo.<String>post(url)
+                            .params("status", true)
+                            .params("accessToken", data.get("accessToken"))
+                            .params("openId", data.get("uid"))
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response.body());
+                                        JSONObject data = jsonObject.getJSONObject("data");
+                                        int code = jsonObject.getInt("code");
+                                        if (code == 0) {
+                                            JsonConvert.sIsShow = true;
+                                            String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                            asyncShowToast("登录成功");
+                                            toActivity(MainActivity.class);
+                                            finish();
+                                        } else if (code == 200) {
+                                            startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        });
+                            });
+                }else {
+                    OkGo.<String>post(url)
+                            .params("status", true)
+                            .params("accessToken", data.get("accessToken"))
+                            .params("userId", data.get("uid"))
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response.body());
+                                        JSONObject data = jsonObject.getJSONObject("data");
+                                        int code = jsonObject.getInt("code");
+                                        if (code == 0) {
+                                            JsonConvert.sIsShow = true;
+                                            String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                            asyncShowToast("登录成功");
+                                            toActivity(MainActivity.class);
+                                            finish();
+                                        } else if (code == 200) {
+                                            startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
+
             }
 
             @Override

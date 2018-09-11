@@ -40,7 +40,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CompanyCardActivity extends BaseActivity {
-
     @BindView(R.id.tv_company_card_name)
     TextView mTvCompanyCardName;
     @BindView(R.id.iv_head)
