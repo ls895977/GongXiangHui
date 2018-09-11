@@ -2,7 +2,6 @@ package com.qunxianghui.gxh.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.provider.Settings;
 
 import java.util.Locale;
@@ -62,8 +61,8 @@ public class SystemUtil {
     @SuppressLint("MissingPermission")
     public static String getIMEI(Context ctx) {
         String androidID = Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
-        String id = androidID + Build.SERIAL;
-        return id;
+//        String id = androidID + Build.SERIAL;
+        return androidID;
     }
 
 

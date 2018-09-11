@@ -4,6 +4,9 @@ android {
     aaptOptions {
         cruncherEnabled = false//禁止检查png的合法性
         useNewCruncher = false
+
+
+        
     }
 
     compileSdkVersion 26

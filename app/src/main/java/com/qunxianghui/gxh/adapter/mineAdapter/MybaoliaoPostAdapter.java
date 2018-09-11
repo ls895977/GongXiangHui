@@ -63,7 +63,4 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
         return R.layout.item_mine_mycollect_post;
     }
 
-
-
-
 }
