@@ -3,9 +3,12 @@ package com.qunxianghui.gxh.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -76,9 +79,17 @@ public class WelcomeActivity extends BaseActivity {
             PermissionGen.needPermission(WelcomeActivity.this, 105,
                     new String[]{
                             Manifest.permission.CAMERA,
+                            Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     }
             );
+            boolean hasLocationPermission =
+                    ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+            if (hasLocationPermission) {
+                OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+            }
+        } else {
+            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
         }
     }
 
@@ -124,7 +135,6 @@ public class WelcomeActivity extends BaseActivity {
     protected void initData() {
         OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
         OkGo.getInstance().getCommonHeaders().put("X-deviceModel", SystemUtil.getSystemModel());
-        OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
         OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
         String cityCode = SPUtils.getLocation("X-cityId");
         if (!TextUtils.isEmpty(cityCode)) {
@@ -138,6 +148,13 @@ public class WelcomeActivity extends BaseActivity {
                 requestWelcomeAdvert();
             }
         }, 1000);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+        }
     }
 
     @Override

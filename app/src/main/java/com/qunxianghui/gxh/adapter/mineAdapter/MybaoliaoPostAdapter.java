@@ -19,7 +19,7 @@ import java.util.List;
  * 我收藏贴子的适配器
  */
 public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.DataBean> {
-    private android.os.Handler handler = new android.os.Handler();
+
     public MybaoliaoPostAdapter(Context context, List<BaoliaoBean.DataBean> datas) {
         super(context, datas);
     }

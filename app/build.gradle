@@ -6,7 +6,7 @@ android {
         useNewCruncher = false
 
 
-        
+
     }
 
     compileSdkVersion 26

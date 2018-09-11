@@ -102,13 +102,13 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                                     mLlLink.setVisibility(View.GONE);
                                     mEtOther.setVisibility(View.VISIBLE);
                                     mTvTiePianShowType.setText("拨打电话");
-                                    mEtOther.setText(mAdvertBean.settings.link);
+                                    mEtOther.setText(mAdvertBean.link);
                                     break;
                                 case 3:
                                     mLlLink.setVisibility(View.GONE);
                                     mEtOther.setVisibility(View.VISIBLE);
                                     mTvTiePianShowType.setText("联系QQ");
-                                    mEtOther.setText(mAdvertBean.settings.link);
+                                    mEtOther.setText(mAdvertBean.link);
                                     break;
                             }
                         } else {
@@ -162,7 +162,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
         mEtOther.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mAdvertBean.settings.link = s.toString();
+                mAdvertBean.link = s.toString();
             }
         });
     }

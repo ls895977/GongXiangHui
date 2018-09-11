@@ -168,8 +168,6 @@ public class AdvertTemplateActivity extends BaseActivity {
 //                return;
 //            }
 
-        mList.addAll(AdvertBottomFragment.mList);
-        mList.addAll(AdvertTopFragment.mList);
         if (AdvertBottomFragment.mList != null)
             mList.addAll(AdvertBottomFragment.mList);
         if (AdvertTopFragment.mList != null)
@@ -329,7 +327,7 @@ public class AdvertTemplateActivity extends BaseActivity {
         }
         //贴片广告
         if (companyAdvert.ad_type == 6) {
-            mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
+//            mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
             if (!TextUtils.isEmpty(companyAdvert.settings.time))
                 mPost.params("ad[" + index + "][settings][time]", companyAdvert.settings.time);
             if (companyAdvert.settings.operate != 0) {
@@ -342,8 +340,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                         break;
                     case 2:
                     case 3:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.link))
-                            mPost.params("ad[" + index + "][settings][link]", companyAdvert.settings.link);
+                        if (!TextUtils.isEmpty(companyAdvert.link))
+                            mPost.params("ad[" + index + "][link]", companyAdvert.link);
                         break;
                 }
             }
