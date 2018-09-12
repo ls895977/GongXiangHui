@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 用于访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS "/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS " />
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 new MineAttentionFragment()-->
@@ -329,14 +329,20 @@
         <activity
             android:name=".ui.activity.BaoliaoDetailActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activity.EducationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.fragments.mineFragment.activity.AboutUsActivity"
+        <!--关于我们界面-->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.AboutUsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <!--问题反馈界面-->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.QuestonPostActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

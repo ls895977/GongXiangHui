@@ -56,8 +56,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView tvMineSetVersion;
     @BindView(R.id.rl_set_banben_new)
     RelativeLayout rlSetBanbenNew;
-    @BindView(R.id.rl_setting_aboutus)
-    RelativeLayout rlSettingAboutus;
+//    @BindView(R.id.rl_setting_aboutus)
+//    RelativeLayout rlSettingAboutus;
+//    @BindView(R.id.rl_queston_post)
+//    RelativeLayout rlQuestonPost;
     private Dialog loadingDialog;
 
     @SuppressLint("HandlerLeak")
@@ -109,7 +111,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void initListeners() {
         mTvSettingQuit.setOnClickListener(this);
         rlSetCache.setOnClickListener(this);
-        rlSettingAboutus.setOnClickListener(this);
+//        rlSettingAboutus.setOnClickListener(this);
+//        rlQuestonPost.setOnClickListener(this);
 
 
     }
@@ -149,9 +152,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 handler.sendMessageDelayed(msg, 1000);
                 break;
 
-            case R.id.rl_setting_aboutus:
-                toActivity(AboutUsActivity.class);
-                break;
+//            case R.id.rl_setting_aboutus:
+//                toActivity(AboutUsActivity.class);
+//                break;
+//
+//            case R.id.rl_queston_post:
+//                toActivity(QuestonPostActivity.class);
+//                break;
         }
 
     }

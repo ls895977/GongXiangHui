@@ -88,27 +88,49 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_setting_aboutus"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_queston_post"-->
+        <!--style="@style/RelativeStyle"-->
+        <!--android:layout_marginTop="2dp"-->
+        <!--android:background="@color/white"-->
+        <!--android:gravity="center_vertical">-->
 
-        <TextView
-            style="@style/MineListStyle"
-            android:layout_marginLeft="12dp"
-            android:text="关于我们" />
+        <!--<TextView-->
+            <!--style="@style/MineListStyle"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:text="问题反馈" />-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/right_icon" />
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:src="@mipmap/right_icon" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_setting_aboutus"-->
+        <!--style="@style/RelativeStyle"-->
+        <!--android:layout_marginTop="2dp"-->
+        <!--android:background="@color/white"-->
+        <!--android:gravity="center_vertical">-->
+
+        <!--<TextView-->
+            <!--style="@style/MineListStyle"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:text="关于我们" />-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:src="@mipmap/right_icon" />-->
+
+    <!--</RelativeLayout>-->
 
 
     <TextView
