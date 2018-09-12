@@ -72,7 +72,6 @@ public class MineFragment extends BaseFragment {
     private String mMobile;
     private boolean mIsFirst = true;
 
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine;

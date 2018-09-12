@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +25,7 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
         super(context, datas);
     }
     public boolean isShow = false;
+
     @Override
     protected void convert(MyViewHolder holder, final int position, final BaoliaoBean.DataBean dataBean) {
         ImageView collectHeadImag = holder.getView(R.id.iv_mine_mycollect_head);
@@ -37,6 +39,25 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
             holder.setText(R.id.tv_mine_mycollect_title, title);
             holder.setText(R.id.tv_mine_mycollect_status, dataBean.status);
         }
+        holder.getView(R.id.ch_delete).setVisibility(isShow ? View.VISIBLE : View.GONE);
+        final CheckBox checkBox = holder.getView(R.id.ch_delete);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataBean.setChecked(!dataBean.isChecked());
+            }
+        });
+
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!isShow) {
+//                    if (mCallback != null) mCallback.callback(dataBean.getId());
+//                } else {
+//                    checkBox.performClick();
+//                }
+//            }
+//        });
         if (images.size() >= 1) {
             RequestOptions options = new RequestOptions();
             options.centerCrop();
@@ -45,6 +66,8 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
             Glide.with(mContext).load(images.get(0)).apply(options).into(collectHeadImag);
 
         }
+
+
         if (isShow) {
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
         } else {

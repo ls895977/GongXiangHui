@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.BaoliaoDetailAdapter;
@@ -17,7 +15,6 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.observer.EventManager;
 
-import java.util.List;
 import java.util.Observer;
 
 import butterknife.BindView;
@@ -27,7 +24,6 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/3/26 0026.
  */
 public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickListener, Observer {
-
 
     @BindView(R.id.iv_myissue_back)
     ImageView ivMyissueBack;
