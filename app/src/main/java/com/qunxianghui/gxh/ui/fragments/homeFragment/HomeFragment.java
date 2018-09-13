@@ -162,7 +162,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void initData() {
         //频道列表（用户订阅的频道）
-        if (!LoginMsgHelper.isLogin()) {
+        if (!LoginMsgHelper.isLogin() && Hawk.get("USER_CHANNEL") != null && !TextUtils.isEmpty(Hawk.get("USER_CHANNEL").toString())) {
             ArrayList<ChannelItem> user_channel = Hawk.get("USER_CHANNEL", new ArrayList<ChannelItem>());
             if (!user_channel.isEmpty()) {
                 userChannelList = user_channel;
