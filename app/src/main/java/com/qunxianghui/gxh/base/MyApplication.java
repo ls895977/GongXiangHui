@@ -14,6 +14,7 @@ import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
+import com.orhanobut.hawk.Hawk;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -79,15 +80,12 @@ public class MyApplication extends MultiDexApplication {
     }
 
     private void initOkGo() {
-//        mAccessToken = SPUtils.getString(SpConstant.ACCESS_TOKEN, "");
-        Logger.d("initOkGo-->:" + mAccessToken);
+//        Logger.d("initOkGo-->:" + mAccessToken);
         //全局参数
         HttpHeaders header = new HttpHeaders();
         header.put("X-appkey", "100");
 //        header.put("X-accesstoken", mAccessToken);
         header.put("X-systemType", "android");
-
-
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
@@ -103,6 +101,8 @@ public class MyApplication extends MultiDexApplication {
                 .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)
                 .setRetryCount(3)
                 .addCommonHeaders(header);
+
+        Hawk.init(this).build();
     }
 
     private void initThirdLib() {

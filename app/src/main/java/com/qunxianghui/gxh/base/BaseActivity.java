@@ -13,7 +13,7 @@ import android.view.WindowManager;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.interfaces.PermissionListener;
-import com.qunxianghui.gxh.observer.TokenLose;
+import com.qunxianghui.gxh.observer.TokenLoseEvent;
 import com.qunxianghui.gxh.ui.dialog.LoginDialog;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
@@ -90,8 +90,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(final TokenLose tokenLose) {
-        new LoginDialog(BaseActivity.this, tokenLose.mContent).show();
+    public void Event(final TokenLoseEvent tokenLoseEvent) {
+        new LoginDialog(BaseActivity.this, tokenLoseEvent.mContent).show();
     }
 
     protected void toActivity(Class<?> target) {

@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -33,8 +34,8 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.NewsFragmentPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CityInfo;
@@ -44,7 +45,8 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ChannelActivity;
+import com.qunxianghui.gxh.observer.NewChannelEvent;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeChannelFragment;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
@@ -54,6 +56,10 @@ import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +114,27 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    public void updateChannel(NewChannelEvent event) {
+        if (event != null && event.mList != null) {
+            initData();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void initViews(View view) {
+        mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //定位
@@ -122,27 +148,28 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     }
 
     private void setLocation() {
-        //定位
         mlocationClient = new AMapLocationClient(mActivity);
-        //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
-        //设置返回地址信息，默认为true
         mLocationOption.setNeedAddress(true);
-        //设置定位监听
         mlocationClient.setLocationListener(this);
-        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位间隔,单位毫秒,默认为2000ms
         mLocationOption.setInterval(2000);
-        //设置定位参数
         mlocationClient.setLocationOption(mLocationOption);
         mlocationClient.startLocation();
     }
 
     @Override
     public void initData() {
-        mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         //频道列表（用户订阅的频道）
+        if (!LoginMsgHelper.isLogin()) {
+//            Hawk.put("USER_CHANNEL", event.mList);
+            ArrayList<ChannelItem> user_channel = Hawk.get("USER_CHANNEL", new ArrayList<ChannelItem>());
+            if (!user_channel.isEmpty()) {
+                userChannelList = user_channel;
+                initFragment();
+                return;
+            }
+        }
         OkGo.<String>post(Constant.CHANNEL_GETLIST)
                 .execute(new JsonCallback<String>() {
                     @Override
@@ -228,11 +255,8 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 toActivity(SearchActivity.class);
                 break;
             case R.id.iv_more_columns:
-                Intent intent_channel = new Intent(mActivity.getApplicationContext(), ChannelActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ChannelActivity.USER_CHANNEL, (userChannelList));
-                intent_channel.putExtras(bundle);
-                startActivityForResult(intent_channel, CHANNELREQUEST);
+                HomeChannelFragment homeChannelActivity = HomeChannelFragment.newInstance(userChannelList, null);
+                homeChannelActivity.show(getChildFragmentManager(), "CHANNEL");
                 break;
             case R.id.iv_home_paste_artical:
                 if (!LoginMsgHelper.isLogin()) {
@@ -284,12 +308,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CHANNELREQUEST:
-                if (resultCode == CHANNELRESULT) {
-                    userChannelList = DragAdapter.channelList;
-                    initFragment();
-                }
-                break;
             case CITY_SELECT_RESULT_FRAG:
                 if (resultCode == RESULT_OK) {
                     mTvHomeLocation.setText(SPUtils.getLocation("currcity"));
@@ -349,12 +367,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (!mIsFirst && requestCode == 0x0011) {
-//            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
-//            } else {
-//                startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
-//                asyncShowToast("\"不好意思，请先开启权限操作...\"");
-//            }
+            startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
         }
         mIsFirst = false;
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -366,7 +379,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        setLocation();
                         new PermissionPageUtils(mActivity).jumpPermissionPage();
                     }
                 })

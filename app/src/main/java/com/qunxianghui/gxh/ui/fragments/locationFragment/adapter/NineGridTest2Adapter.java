@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
@@ -126,7 +127,8 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             holder.img.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(imageList.get(0))
-                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop())
+                    .apply(new RequestOptions().placeholder(R.mipmap.default_img)
+                            .error(R.mipmap.default_img).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(holder.img);
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -238,7 +240,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
         holder.iv_location_person_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listener != null) {
+                if (listener != null) {
                     listener.headImageClick(holder.getAdapterPosition() - 1);
                 }
             }

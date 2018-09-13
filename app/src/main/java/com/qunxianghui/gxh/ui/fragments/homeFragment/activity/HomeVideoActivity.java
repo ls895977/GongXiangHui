@@ -107,7 +107,7 @@ public class HomeVideoActivity extends BaseActivity {
             bundle = new Bundle();
             bundle.putInt("channel_id", dataBean.id);
             newFragment.setArguments(bundle);
-            mTitles[i] = dataBean.name;
+            mTitles[i] = dataBean.channelName;
             mFragments.add(newFragment);
         }
     }

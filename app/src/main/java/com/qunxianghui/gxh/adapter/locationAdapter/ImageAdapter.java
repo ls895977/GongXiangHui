@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.qunxianghui.gxh.R;
 
 import java.util.List;
 
@@ -39,18 +39,8 @@ public class ImageAdapter extends PagerAdapter {
         ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width, height);
 
         layout.setMargins(0, 100, 0, 100);
-
-//        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(photoView.getLayoutParams());
-//        int offset = 100;
-//        lp.setMargins(0, offset, 0, offset);
-//        photoView.setLayoutParams(lp);
         photoView.setLayoutParams(layout);
-
-        RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
-        options.centerCrop();
-        Glide.with(activity).load(url).apply(options).into(photoView);
+        Glide.with(activity).load(url).apply(new RequestOptions().centerCrop()).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
 
         container.addView(photoView);
         photoView.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +53,7 @@ public class ImageAdapter extends PagerAdapter {
         photoView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mOnItemClick.PicLongClick(position,url);
+                mOnItemClick.PicLongClick(position, url);
                 return true;
             }
         });
@@ -94,6 +84,6 @@ public class ImageAdapter extends PagerAdapter {
 
 
     public interface OnItemClick {
-        void PicLongClick(int position,String url);
+        void PicLongClick(int position, String url);
     }
 }

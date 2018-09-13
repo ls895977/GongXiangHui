@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdapter.OnItemClick {
+
     private PhotoViewPager mViewPager;
     private int currentPosition;
     private ImageAdapter adapter;
@@ -40,7 +41,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
 
         setContentView(R.layout.activity_photo_browser);
         initViews();
-        initDatas();
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -66,9 +66,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
                 currentPosition = position;
             }
         });
-    }
-
-    protected void initDatas() {
     }
 
     @Override

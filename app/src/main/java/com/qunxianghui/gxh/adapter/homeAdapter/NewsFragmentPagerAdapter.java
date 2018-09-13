@@ -26,7 +26,7 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
     private FragmentManager mFm;
     private List<ChannelItem> mTitleList;
 
-    public NewsFragmentPagerAdapter(FragmentManager mFm,List<ChannelItem> titleList) {
+    public NewsFragmentPagerAdapter(FragmentManager mFm, List<ChannelItem> titleList) {
         super(mFm);
         this.mFm = mFm;
         this.mTitleList = titleList;
@@ -36,8 +36,8 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
         for (int i = 0; i < count; i++) {
             newFragment = new HotPointFragment();
             bundle = new Bundle();
-            bundle.putInt("channel_id", mTitleList.get(i).getId());
-            bundle.putString("channel_name", mTitleList.get(i).getName());
+            bundle.putInt("channel_id", mTitleList.get(i).id);
+            bundle.putString("channel_name", mTitleList.get(i).channelName);
             newFragment.setArguments(bundle);
             mFragments.add(newFragment);
         }
@@ -50,7 +50,6 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         return mFragments.get(position);
     }
 
@@ -76,7 +75,7 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitleList.get(position).name;
+        return mTitleList.get(position).channelName;
     }
 
 }
