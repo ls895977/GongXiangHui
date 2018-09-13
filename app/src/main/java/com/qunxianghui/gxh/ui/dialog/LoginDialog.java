@@ -33,8 +33,6 @@ public class LoginDialog extends Dialog {
         findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginMsgHelper.exitLogin();
-                context.deleteDatabase("SqliteTest.db");
                 dismiss();
             }
         });
@@ -42,12 +40,9 @@ public class LoginDialog extends Dialog {
         findViewById(R.id.tv_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, LoginActivity.class));
                 dismiss();
+                context.startActivity(new Intent(context, LoginActivity.class));
             }
-
         });
-
     }
-
 }

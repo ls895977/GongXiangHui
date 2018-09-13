@@ -149,7 +149,7 @@ public class JsonConvert<T> implements Converter<T> {
 
                 if (LoginMsgHelper.isLogin() && (code == 300 || code == 1000) && sIsShow) {
                     sIsShow = false;
-                    EventBus.getDefault().post(new TokenLoseEvent(commonResponse.message));
+                    EventBus.getDefault().postSticky(new TokenLoseEvent(commonResponse.message));
                 }
                 if (code == 0) {
                     return (T) commonResponse;
@@ -167,7 +167,7 @@ public class JsonConvert<T> implements Converter<T> {
         if (LoginMsgHelper.isLogin() && !TextUtils.isEmpty(str) && (str.contains("\"code\":1000") || str.contains("\"code\":300")) && sIsShow) {
             CommonBean commonBean = GsonUtil.parseJsonWithGson(str, CommonBean.class);
             sIsShow = false;
-            EventBus.getDefault().post(new TokenLoseEvent(commonBean.message));
+            EventBus.getDefault().postSticky(new TokenLoseEvent(commonBean.message));
         }
     }
 }
