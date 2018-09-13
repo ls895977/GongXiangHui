@@ -96,6 +96,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                                     mTvTiePianShowType.setText("跳转链接");
                                     if (mAdvertBean.settings.is_link == 1) {
                                         mEtName.setText(mAdvertBean.link);
+                                        mCbUseSpace.setChecked(true);
                                     }
                                     break;
                                 case 2:
@@ -114,6 +115,8 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                         } else {
                             mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
                             mAdvertBean.ad_type = 6;
+                            mAdvertBean.settings.time = "3S";
+                            mTvTiePianTime.setText("3S");
                             mAdvertBean.settings.operate = 1;
                             mTvTiePianShowType.setText("跳转链接");
                         }
@@ -228,8 +231,8 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 mFlLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_video:
-                Intent intent=new Intent(mActivity,EducationActivity.class);
-                intent.putExtra("tag",2);
+                Intent intent = new Intent(mActivity, EducationActivity.class);
+                intent.putExtra("tag", 2);
                 startActivity(intent);
                 break;
         }
@@ -261,13 +264,14 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
     }
 
     private void clearView() {
-        mTvTiePianTime.setText("");
         mTvTiePianShowType.setText("");
         mLlLink.setVisibility(View.VISIBLE);
         mEtName.setText("");
         mEtOther.setVisibility(View.GONE);
         mCbUseSpace.setChecked(false);
         mSw.setChecked(true);
+        mAdvertBean.settings.time = "3S";
+        mTvTiePianTime.setText("3S");
         mIvAd.setImageResource(R.mipmap.admodle_guige);
         mAdvertBean = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert();
         mAdvertBean.position = 0;

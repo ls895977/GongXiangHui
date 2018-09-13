@@ -28,6 +28,7 @@ public class LoginDialog extends Dialog {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
+        LoginMsgHelper.exitLogin();
 
         findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +40,6 @@ public class LoginDialog extends Dialog {
         findViewById(R.id.tv_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginMsgHelper.exitLogin();
-                context.deleteDatabase("SqliteTest.db");
                 context.startActivity(new Intent(context, LoginActivity.class));
                 dismiss();
             }

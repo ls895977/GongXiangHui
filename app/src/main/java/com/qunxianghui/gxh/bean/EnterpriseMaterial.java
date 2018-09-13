@@ -72,7 +72,7 @@ public class EnterpriseMaterial {
                 //跳转时间(3,4,5)
                 public String time;
                 //是否轮播（0-不轮播 1-轮播)
-                public String is_slide;
+                public String is_slide = "1";
                 public String is_float;
                 public String name;
             }

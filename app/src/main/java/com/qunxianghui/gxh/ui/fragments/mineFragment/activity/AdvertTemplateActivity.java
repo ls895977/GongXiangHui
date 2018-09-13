@@ -149,58 +149,12 @@ public class AdvertTemplateActivity extends BaseActivity {
 
     private void upLoadData() {
         mList = new ArrayList<>();
-//        if (mPosition == 3) {
-//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
-//                if (TextUtils.isEmpty(companyAdvert.images)) {
-//                    asyncShowToast("请完善底部广告相关信息");
-//                    return;
-//                }
-//            }
-//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
-//                if (TextUtils.isEmpty(companyAdvert.images)) {
-//                    asyncShowToast("请完善顶部广告相关信息");
-//                    return;
-//                }
-//            }
-//            if (AdvertTiePianFragment.mAdvertBean != null && (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)
-//            || TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.settings.time))) {
-//                asyncShowToast("请完善贴片广告相关信息");
-//                return;
-//            }
-
         if (AdvertBottomFragment.mList != null)
             mList.addAll(AdvertBottomFragment.mList);
         if (AdvertTopFragment.mList != null)
             mList.addAll(AdvertTopFragment.mList);
         if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
             mList.add(AdvertTiePianFragment.mAdvertBean);
-//        }
-//        else if (mPosition == 0) {
-//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertBottomFragment.mList) {
-//                if (TextUtils.isEmpty(companyAdvert.images)) {
-//                    asyncShowToast("请完善底部广告相关信息");
-//                    return;
-//                }
-//            }
-//            mList.addAll(AdvertBottomFragment.mList);
-//        } else if (mPosition == 1) {
-//            for (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert : AdvertTopFragment.mList) {
-//                if (TextUtils.isEmpty(companyAdvert.images)) {
-//                    asyncShowToast("请完善顶部广告相关信息");
-//                    return;
-//                }
-//            }
-//            mList.addAll(AdvertTopFragment.mList);
-//        } else if (mPosition == 2) {
-//            if (AdvertTiePianFragment.mAdvertBean != null && (AdvertTiePianFragment.mAdvertBean.id != 0 && TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images)
-//                || TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.settings.time))) {
-//                asyncShowToast("请完善贴片广告相关信息");
-//                return;
-//            }
-//
-//            if (AdvertTiePianFragment.mAdvertBean != null && !TextUtils.isEmpty(AdvertTiePianFragment.mAdvertBean.images))
-//                mList.add(AdvertTiePianFragment.mAdvertBean);
-//        }
         mPost = OkGo.post(Constant.EDIT_AD);
         mLoadView.setVisibility(View.VISIBLE);
         if (!mList.isEmpty()) {
