@@ -17,9 +17,11 @@ package com.qunxianghui.gxh.callback;
 
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.request.base.Request;
+import com.qunxianghui.gxh.utils.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.UnknownHostException;
 
 import okhttp3.Response;
 
@@ -72,5 +74,12 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
 
         JsonConvert<T> convert = new JsonConvert<>(type);
         return convert.convertResponse(response);
+    }
+
+    @Override
+    public void onError(com.lzy.okgo.model.Response<T> response) {
+        if (response.getException() instanceof UnknownHostException) {
+            ToastUtils.showShort("网络异常，请检查网络！");
+        }
     }
 }

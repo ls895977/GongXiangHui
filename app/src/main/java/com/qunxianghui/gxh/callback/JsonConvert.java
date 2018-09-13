@@ -91,7 +91,7 @@ public class JsonConvert<T> implements Converter<T> {
         ResponseBody body = response.body();
         if (body == null) return null;
         String string = body.string();
-        isFialure(string);
+        isFailure(string);
         if (rawType == String.class) {
             //noinspection unchecked
             return (T) string;
@@ -163,7 +163,7 @@ public class JsonConvert<T> implements Converter<T> {
         }
     }
 
-    private void isFialure(String str) {
+    private void isFailure(String str) {
         if (LoginMsgHelper.isLogin() && !TextUtils.isEmpty(str) && (str.contains("\"code\":1000") || str.contains("\"code\":300")) && sIsShow) {
             CommonBean commonBean = GsonUtil.parseJsonWithGson(str, CommonBean.class);
             sIsShow = false;
