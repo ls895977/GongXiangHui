@@ -123,7 +123,7 @@ public class LocationFragment extends BaseFragment {
             bundle = new Bundle();
             bundle.putInt("channel_id", dataBean.id);
             locationDetailFragment.setArguments(bundle);
-            mTitles[i] = dataBean.channelName;
+            mTitles[i] = dataBean.getName();
             fragments.add(locationDetailFragment);
         }
     }
