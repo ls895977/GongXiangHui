@@ -98,6 +98,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         if (mMemberId != 0) {
             OkGo.<TestMode>post(Constant.LOCATION_NEWS_LIST_URL)
                     .params("user_id", mMemberId)
+                    .params("limit", 10)
+                    .params("skip", mSkip)
                     .execute(new JsonCallback<TestMode>() {
                         @Override
                         public void onSuccess(Response<TestMode> response) {
@@ -440,9 +442,15 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
      */
     @Override
     public void headImageClick(int position) {
-        Intent intent = new Intent(mActivity, PersonDetailActivity.class);
-        intent.putExtra("member_id", locationBean.get(position).getMember_id());
-        startActivity(intent);
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return;
+        } else {
+            Intent intent = new Intent(mActivity, PersonDetailActivity.class);
+            intent.putExtra("member_id", locationBean.get(position).getMember_id());
+            startActivity(intent);
+        }
+
     }
 
     private View clickContent;

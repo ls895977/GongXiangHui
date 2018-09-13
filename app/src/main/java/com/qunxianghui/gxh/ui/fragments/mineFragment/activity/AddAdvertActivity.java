@@ -159,17 +159,17 @@ public class AddAdvertActivity extends BaseActivity {
             }
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                Toast.makeText(AddAdvertActivity.this, platform + " 分享成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, " 分享成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                Toast.makeText(AddAdvertActivity.this, platform + " 分享失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, " 分享失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                Toast.makeText(AddAdvertActivity.this, platform + " 分享取消", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddAdvertActivity.this, " 分享取消", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -187,8 +187,9 @@ public class AddAdvertActivity extends BaseActivity {
                     public void onSuccess(Response<ShareInfo> response) {
                         if (response.body().code == 200) {
                             mData = response.body().data;
+
                             if (mData != null) {
-                                startThirdShare(mData.url, mData.title, mData.desc);
+                                startThirdShare(mData.imgUrl, mData.title, mData.desc);
                             }
                         } else {
                             asyncShowToast(response.body().message);
@@ -209,13 +210,13 @@ public class AddAdvertActivity extends BaseActivity {
     private void startThirdShare(String url, String title, String descrip) {
         //以下代码是分享示例代码
         UMImage image;
-        if (mImages != null && !mImages.isEmpty()) {
-            image = new UMImage(this, mImages.get(0));//分享图标
+        if (url != null && !url.isEmpty()) {
+            image = new UMImage(this, url);//分享图标
         } else {
             image = new UMImage(this, R.mipmap.logo);
         }
         //切记切记 这里分享的链接必须是http开头
-        web = new UMWeb(url);
+        web = new UMWeb( mData.url);
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
         web.setDescription(descrip);//描述

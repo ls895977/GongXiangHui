@@ -88,7 +88,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
                     });
         } else {
             OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
-                    .params("user_id", mPersonDetailActivity.member_id)
+                    .params("member_id", mPersonDetailActivity.member_id)
                     .params("limit", 12)
                     .params("skip", count)
                     .execute(new JsonCallback<BaoliaoBean>() {
@@ -121,22 +121,17 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
             if (mIsFirst) {
                 mIsFirst = false;
                 myCollectPostAdapter = new MybaoliaoPostAdapter(mActivity, dataList);
-//                myCollectPostAdapter.setCallback(new MybaoliaoPostAdapter.Callback() {
-//                    @Override
-//                    public void callback(int id) {
-//
-//                    }
-//                });
                 myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
+                        if (!myCollectPostAdapter.isShow){
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("baoliao", dataList.get(position - 1));
+                            toActivity(BaoliaoDetailActivity.class, bundle);
+                        }
 
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("baoliao", dataList.get(position - 1));
-                        toActivity(BaoliaoDetailActivity.class, bundle);
                     }
                 });
-
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
             }
             if (dataList.isEmpty()) {

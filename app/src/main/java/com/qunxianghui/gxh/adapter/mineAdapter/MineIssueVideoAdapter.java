@@ -40,10 +40,10 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
         Glide.with(mContext).load(mImage).apply(new RequestOptions()
                 .placeholder(R.mipmap.default_img).error(R.mipmap.default_img).centerCrop()).into(iconMyIssueVideo);
         if (isShow) {
-            //videoImag.setClickable(false);
+            holder.itemView.setClickable(false);
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
         } else {
-            //videoImag.setClickable(true);
+            holder.itemView.setClickable(true);
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
         }
         final CheckBox checkBox = holder.getView(R.id.ch_delete);

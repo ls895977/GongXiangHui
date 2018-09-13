@@ -32,6 +32,8 @@ public class LoginDialog extends Dialog {
         findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LoginMsgHelper.exitLogin();
+                context.deleteDatabase("SqliteTest.db");
                 dismiss();
             }
         });

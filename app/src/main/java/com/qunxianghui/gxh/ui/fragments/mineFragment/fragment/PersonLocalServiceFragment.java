@@ -81,11 +81,12 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
         if (data.getCode() == 200) {
             if (mSkip == 0) {
                 mList.clear();
-            }
-            if (data.getData().size() == 0) {
-                llEmpty.setVisibility(View.VISIBLE);
+                xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
             }
             mList.addAll(data.getData());
+            xrecyclerPersondetailPost.refreshComplete();
+        }else {
+            xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
         }
         if (mSkip == 0 && mList.isEmpty()) {
             llEmpty.setVisibility(View.VISIBLE);

@@ -23,6 +23,7 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,13 +36,22 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
     View mEmptyView;
 
     private PersonDetailActivity personDetailActivity;
-    private List<HomeVideoListBean.DataBean.ListBean> mVideoList;
+    private List<HomeVideoListBean.DataBean.ListBean> mVideoList=new ArrayList<>();
     private PersonDetailVideoAdapter mPersonDetailVideoAdapter;
-
+    private int count;
+    private boolean mIsFirst = true;
+    private boolean mIsRefresh = false;
     @Override
     protected void onLoadData() {
+        RequestPersonDataVideoData();
+
+    }
+
+    private void RequestPersonDataVideoData() {
         OkGo.<HomeVideoListBean>post(Constant.HOME_VIDEO_LIST_URL)
                 .params("user_id", personDetailActivity.member_id)
+                .params("limit", 12)
+                .params("skip", count)
                 .execute(new JsonCallback<HomeVideoListBean>() {
                     @Override
                     public void onSuccess(Response<HomeVideoListBean> response) {
@@ -56,32 +66,43 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
      * @param
      */
     private void parsePersonDetailVideoData(HomeVideoListBean homeVideoListBean) {
-        if (homeVideoListBean.getCode() == 0) {
-            mVideoList = homeVideoListBean.getData().getList();
-            mPersonDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, mVideoList);
-            xrecyclerPersondetailVideo.setAdapter(mPersonDetailVideoAdapter);
-            mPersonDetailVideoAdapter.setVideoListClickListener(this);
-            mPersonDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    int uuid = mVideoList.get(position - 1).getUuid();
-                    String content = mVideoList.get(position - 1).getContent();
-                    String title = mVideoList.get(position - 1).getTitle();
-                    Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                    intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                    intent.putExtra("uuid", uuid);
-                    intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                    intent.putExtra("descrip", content);
-                    intent.putExtra("title", title);
-                    intent.putExtra("position", 4);
-                    startActivity(intent);
-                }
-            });
-            if (mVideoList.isEmpty()){
-                mEmptyView.setVisibility(View.VISIBLE);
-            }
-
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mVideoList.clear();
         }
+        mVideoList.addAll(homeVideoListBean.getData().getList());
+        count=mVideoList.size();
+        if (homeVideoListBean.getCode() == 0) {
+            if (mIsFirst){
+                mIsFirst=false;
+                mPersonDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, mVideoList);
+                xrecyclerPersondetailVideo.setAdapter(mPersonDetailVideoAdapter);
+                mPersonDetailVideoAdapter.setVideoListClickListener(this);
+                mPersonDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        int uuid = mVideoList.get(position - 1).getUuid();
+                        String content = mVideoList.get(position - 1).getContent();
+                        String title = mVideoList.get(position - 1).getTitle();
+                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+                        intent.putExtra("uuid", uuid);
+                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+                        intent.putExtra("descrip", content);
+                        intent.putExtra("title", title);
+                        intent.putExtra("position", 4);
+                        startActivity(intent);
+                    }
+                });
+                if (mVideoList.isEmpty()){
+                    mEmptyView.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }
+        xrecyclerPersondetailVideo.refreshComplete();
+        mPersonDetailVideoAdapter.notifyDataSetChanged();
+        mPersonDetailVideoAdapter.notifyItemRangeChanged(count,homeVideoListBean.getData().getList().size());
     }
 
     @Override
@@ -105,12 +126,14 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
         xrecyclerPersondetailVideo.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                xrecyclerPersondetailVideo.refreshComplete();
+                mIsRefresh = true;
+                count = 0;
+                RequestPersonDataVideoData();
             }
 
             @Override
             public void onLoadMore() {
-                xrecyclerPersondetailVideo.refreshComplete();
+                RequestPersonDataVideoData();
             }
         });
     }
