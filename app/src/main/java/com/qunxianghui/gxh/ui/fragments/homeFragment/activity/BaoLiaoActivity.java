@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -27,6 +26,7 @@ import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.observer.PublishBiaoliao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.ToastUtils;
@@ -34,6 +34,7 @@ import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 import com.sina.weibo.sdk.utils.LogUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +44,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.RequestBody;
 
 import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 
@@ -69,7 +69,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
     private SelectPhotoDialog selectPhotoDialog;
-    private String mBaoLiaoContent;
     private EditText mEtContent;
     private int selectImgSize = 0;
     private List<BaoliaoBean.DataBean.Content> contentBeanList = new ArrayList<>();

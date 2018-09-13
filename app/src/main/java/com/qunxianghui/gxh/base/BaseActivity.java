@@ -7,27 +7,27 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.interfaces.PermissionListener;
-import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.observer.TokenLose;
 import com.qunxianghui.gxh.ui.dialog.LoginDialog;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
 import com.qunxianghui.gxh.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.Observable;
-import java.util.Observer;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements Observer {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static PermissionListener mlistener;
     protected String TAG = this.getClass().getSimpleName();
@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
         setContentView(getLayoutId());
         mContext = this;
         mResources = getResources();
-        EventManager.getInstance().addObserver(this);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         initViews();
         initData();
@@ -56,9 +56,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
-    protected void setStatusBarTextColor(){
+    protected void setStatusBarTextColor() {
         //Log.d(TAG,"setStatusBarTextColor");
-        StatusBarColorUtil.setStatusTextColor(true,this);
+        StatusBarColorUtil.setStatusTextColor(true, this);
     }
 
     @SuppressLint("NewApi")
@@ -72,7 +72,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        Log.d(TAG, "onResume: " + TAG);
     }
 
     @Override
@@ -84,25 +83,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventManager.getInstance().deleteObserver(this);
+        EventBus.getDefault().unregister(this);
         mContext = null;
         mResources = null;
 //        MyApplication.appManager.finishActivity(this);  现在用不到 应该用到地图的时候用到  现在加上的话 报空指针
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof String) {
-            final String arg1 = (String) arg;
-            if (arg1.contains("signout")) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        new LoginDialog(BaseActivity.this, arg1.substring(7)).show();
-                    }
-                });
-            }
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(final TokenLose tokenLose) {
+        new LoginDialog(BaseActivity.this, tokenLose.mContent).show();
     }
 
     protected void toActivity(Class<?> target) {

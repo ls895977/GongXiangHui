@@ -24,10 +24,11 @@ import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.SimpleResponse;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.observer.TokenLose;
 import com.qunxianghui.gxh.utils.Convert;
 import com.qunxianghui.gxh.utils.GsonUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -148,7 +149,7 @@ public class JsonConvert<T> implements Converter<T> {
 
                 if (LoginMsgHelper.isLogin() && (code == 300 || code == 1000) && sIsShow) {
                     sIsShow = false;
-                    EventManager.getInstance().publishMessage("signout" + commonResponse.message);
+                    EventBus.getDefault().post(new TokenLose(commonResponse.message));
                 }
                 if (code == 0) {
                     return (T) commonResponse;
@@ -166,7 +167,7 @@ public class JsonConvert<T> implements Converter<T> {
         if (LoginMsgHelper.isLogin() && !TextUtils.isEmpty(str) && (str.contains("\"code\":1000") || str.contains("\"code\":300")) && sIsShow) {
             CommonBean commonBean = GsonUtil.parseJsonWithGson(str, CommonBean.class);
             sIsShow = false;
-            EventManager.getInstance().publishMessage("signout" + commonBean.message);
+            EventBus.getDefault().post(new TokenLose(commonBean.message));
         }
     }
 }

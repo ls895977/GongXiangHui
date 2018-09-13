@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -28,12 +29,17 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
+import com.qunxianghui.gxh.observer.PublishBiaoliao;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.activity.LocalServiceChannelActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +74,12 @@ public class LocationFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         if (LocationActivity.sLocationCanChange) {
@@ -76,7 +88,11 @@ public class LocationFragment extends BaseFragment {
                 ((LocationDetailFragment) fragments.get(i)).mIsChange = true;
             }
         }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(PublishBiaoliao publishBiaoliao) {
+        initData();
     }
 
     @Override
@@ -107,7 +123,7 @@ public class LocationFragment extends BaseFragment {
             bundle = new Bundle();
             bundle.putInt("channel_id", dataBean.id);
             locationDetailFragment.setArguments(bundle);
-            mTitles[i] = dataBean.name;
+            mTitles[i] = dataBean.channelName;
             fragments.add(locationDetailFragment);
         }
     }
@@ -213,6 +229,12 @@ public class LocationFragment extends BaseFragment {
                 })
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
 

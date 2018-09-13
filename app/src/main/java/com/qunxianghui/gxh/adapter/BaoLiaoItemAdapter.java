@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,7 +116,9 @@ public class BaoLiaoItemAdapter extends RecyclerView.Adapter<BaoLiaoItemAdapter.
                 clickPosition = CompanySetActivity.IMAGE_ITEM_ADD;
             } else {
                 ((View)iv_img.getParent()).setTag(1);
-                ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
+                if (!TextUtils.isEmpty(item.path)) {
+                    ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
+                }
                 clickPosition = position;
             }
             if(isAddRemoved) {

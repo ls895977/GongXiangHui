@@ -38,7 +38,6 @@ public class OnekeyIssueDialog extends Dialog {
         View view = LayoutInflater.from(context).inflate(R.layout.pop_onekey_issue, null);
         View.OnClickListener listener = new View.OnClickListener() {
             Intent intent = null;
-
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -48,7 +47,6 @@ public class OnekeyIssueDialog extends Dialog {
                         break;
                     case R.id.tv_location:
                         startActivity(LocationPublishActivity.class);
-
                         break;
                     case R.id.tv_baoliao:
                         startActivity(BaoLiaoActivity.class);

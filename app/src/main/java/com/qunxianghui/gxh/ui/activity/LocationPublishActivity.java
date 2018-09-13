@@ -32,10 +32,13 @@ import com.qunxianghui.gxh.bean.home.HomeVideoSortBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
+import com.qunxianghui.gxh.observer.PublishBiaoliao;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationDetailFragment;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -273,6 +276,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                         if (commonBean.code == 200) {
                             mIsUploadIng = false;
                             mLlLoad.setVisibility(View.GONE);
+                            EventBus.getDefault().post(new PublishBiaoliao());
                             asyncShowToast("发布成功");
                             finish();
                         } else {

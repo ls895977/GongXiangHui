@@ -4,9 +4,6 @@ android {
     aaptOptions {
         cruncherEnabled = false//禁止检查png的合法性
         useNewCruncher = false
-
-
-
     }
 
     compileSdkVersion 26
@@ -120,6 +117,8 @@ dependencies {
     implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
 //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'

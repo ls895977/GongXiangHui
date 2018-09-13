@@ -248,11 +248,6 @@ public class MainActivity extends BaseActivity {
             } else {
                 System.exit(0);
             }
-
-
-
-
-
             return true;
         }
         return super.onKeyDown(keyCode, event);
