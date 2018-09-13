@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.config;
 import android.text.TextUtils;
 
 import com.lzy.okgo.OkGo;
+import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 
@@ -21,6 +22,7 @@ public class LoginMsgHelper {
 
     //登录退出处理
     public static void exitLogin() {
+        Hawk.put("USER_CHANNEL", "");
         SPUtils.removePreference(SpConstant.ACCESS_TOKEN);
         OkGo.getInstance().getCommonHeaders().remove("X-accesstoken");
     }

@@ -21,6 +21,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.interfaces.OnChannelListener;
 
@@ -146,7 +147,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, BaseV
                                 break;
                             case MotionEvent.ACTION_CANCEL:
                             case MotionEvent.ACTION_UP:
-                                startTime = 0l;
+                                startTime = 0L;
                                 break;
                         }
                         return false;
@@ -193,14 +194,16 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, BaseV
                                     onChannelListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
                                 }
                             }
-                            OkGo.<String>post(Constant.CHANNEL_DELETE_CHANNEL)
-                                    .params("channel_id", channel.id)
-                                    .execute(new JsonCallback<String>() {
-                                        @Override
-                                        public void onSuccess(Response<String> response) {
+                            if (LoginMsgHelper.isLogin()) {
+                                OkGo.<String>post(Constant.CHANNEL_DELETE_CHANNEL)
+                                        .params("channel_id", channel.id)
+                                        .execute(new JsonCallback<String>() {
+                                            @Override
+                                            public void onSuccess(Response<String> response) {
 
-                                        }
-                                    });
+                                            }
+                                        });
+                            }
                         }
                     }
                 });
@@ -259,13 +262,15 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, BaseV
                                 onChannelListener.onMoveToMyChannel(currentPosition, myLastPosition + 1);
                             }
                         }
-                        OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL)
-                                .params("channel_id", channel.id)
-                                .execute(new JsonCallback<String>() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                    }
-                                });
+                        if (LoginMsgHelper.isLogin()) {
+                            OkGo.<String>post(Constant.CHANNEL_ADD_CHANNEL)
+                                    .params("channel_id", channel.id)
+                                    .execute(new JsonCallback<String>() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+                                        }
+                                    });
+                        }
                     }
                 });
                 break;

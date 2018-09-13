@@ -122,7 +122,8 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
     public void updateChannel(NewChannelEvent event) {
         if (event != null && event.mList != null) {
-            initData();
+            userChannelList = event.mList;
+            initFragment();
         }
     }
 
@@ -162,7 +163,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     public void initData() {
         //频道列表（用户订阅的频道）
         if (!LoginMsgHelper.isLogin()) {
-//            Hawk.put("USER_CHANNEL", event.mList);
             ArrayList<ChannelItem> user_channel = Hawk.get("USER_CHANNEL", new ArrayList<ChannelItem>());
             if (!user_channel.isEmpty()) {
                 userChannelList = user_channel;

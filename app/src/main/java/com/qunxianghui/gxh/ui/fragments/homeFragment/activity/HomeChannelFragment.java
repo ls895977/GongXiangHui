@@ -22,7 +22,6 @@ import com.qunxianghui.gxh.adapter.homeAdapter.ChannelAdapter;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.interfaces.OnChannelListener;
 import com.qunxianghui.gxh.listener.ItemDragHelperCallBack;
@@ -85,9 +84,7 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
             public void onClick(View v) {
                 if (isUpdate) {
                     NewChannelEvent event = new NewChannelEvent(mAdapter.getData());
-                    if (!LoginMsgHelper.isLogin()) {
-                        Hawk.put("USER_CHANNEL", event.mList);
-                    }
+                    Hawk.put("USER_CHANNEL", event.mList);
                     EventBus.getDefault().post(event);
                 }
                 dismiss();
@@ -162,14 +159,6 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
         for (ChannelItem datum : data) {
             datum.viewType = type;
         }
-    }
-
-    @Override
-    public void onPause() {
-        if (isUpdate) {
-//            EventBus.getDefault().post(NewChannelEvent(mAdapter ?.data, firstAddChannelName));
-        }
-        super.onPause();
     }
 
     @Override

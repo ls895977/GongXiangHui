@@ -360,7 +360,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     }
                     companyAdvert.id = 0;
                     companyAdvert.position = 2;
-                    companyAdvert.is_slide = 1;
+                    if (companyAdvert.ad_type != 1)
+                        companyAdvert.is_slide = 1;
                     companyAdvert.settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
                     companyAdvert.settings.is_link = 0;
                     addData(companyAdvert);
@@ -392,7 +393,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         break;
                     }
                     companyAdvert.id = 0;
-                    companyAdvert.is_slide = 1;
+                    if (companyAdvert.ad_type != 1)
+                        companyAdvert.is_slide = 1;
                     companyAdvert.ad_type = 3;
                     companyAdvert.position = 2;
                     addData(companyAdvert);
