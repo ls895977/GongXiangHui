@@ -215,7 +215,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, BaseV
 //                baseViewHolder.getView(R.id.tv_sort).setTag(false);
                 break;
             case 4:
-                baseViewHolder.setText(R.id.tv_channelname, channel.channelName)
+                baseViewHolder.setText(R.id.tv_channelname, "+ " + channel.channelName)
                         .setVisible(R.id.img_edit, false);
                 baseViewHolder.getView(R.id.tv_channelname).setOnClickListener(new View.OnClickListener() {
                     @Override
