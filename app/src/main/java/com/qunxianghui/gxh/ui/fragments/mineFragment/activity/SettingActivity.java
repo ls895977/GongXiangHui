@@ -6,13 +6,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +36,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import java.io.File;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/13 0013.
@@ -55,6 +56,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView tvMineSetVersion;
     @BindView(R.id.rl_set_banben_new)
     RelativeLayout rlSetBanbenNew;
+//    @BindView(R.id.rl_setting_aboutus)
+//    RelativeLayout rlSettingAboutus;
+//    @BindView(R.id.rl_queston_post)
+//    RelativeLayout rlQuestonPost;
     private Dialog loadingDialog;
 
     @SuppressLint("HandlerLeak")
@@ -106,16 +111,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void initListeners() {
         mTvSettingQuit.setOnClickListener(this);
         rlSetCache.setOnClickListener(this);
-        switchButtonMineSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String s;
-                if (isChecked) {
-
-                } else {
-                }
-            }
-        });
+//        rlSettingAboutus.setOnClickListener(this);
+//        rlQuestonPost.setOnClickListener(this);
 
 
     }
@@ -154,6 +151,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 }
                 handler.sendMessageDelayed(msg, 1000);
                 break;
+
+//            case R.id.rl_setting_aboutus:
+//                toActivity(AboutUsActivity.class);
+//                break;
+//
+//            case R.id.rl_queston_post:
+//                toActivity(QuestonPostActivity.class);
+//                break;
         }
 
     }
@@ -202,4 +207,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         return loadingDialog;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
