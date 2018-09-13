@@ -67,12 +67,15 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
 
         }
 
-
         if (isShow) {
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(false);
         } else {
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
+            holder.itemView.setClickable(true);
         }
+
+
     }
     public static boolean isInMainThread() {
         Looper myLooper = Looper.myLooper();

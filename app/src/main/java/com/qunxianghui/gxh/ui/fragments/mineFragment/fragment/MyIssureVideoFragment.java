@@ -48,7 +48,6 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
     Unbinder unbinder;
-
     private int mSkip = 0;
     private List<MineIssueVideoBean.DataBean> mList = new ArrayList<>();
     private MineIssueVideoAdapter mAdapter;
@@ -173,7 +172,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
                     public void onSuccess(Response<MyCollectVideoDetailBean> response) {
                         MyCollectVideoDetailBean myCollectVideoDetailBean = response.body();
                         int code = myCollectVideoDetailBean.getCode();
-                        if (code == 0) {
+                        if (code == 200) {
                             int uuid = myCollectVideoDetailBean.getData().getDetail().getUuid();
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                             intent.putExtra("url", Constant.VIDEO_DETAIL_URL);

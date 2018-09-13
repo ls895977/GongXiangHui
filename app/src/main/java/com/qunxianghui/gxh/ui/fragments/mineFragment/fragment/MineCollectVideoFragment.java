@@ -9,7 +9,6 @@ import android.widget.Button;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineCollectVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
@@ -53,7 +52,6 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
                 .execute(new JsonCallback<MineCollectVideoBean>() {
                     @Override
                     public void onSuccess(Response<MineCollectVideoBean> response) {
-                        Logger.d("我爆料的视频+++" + response.body().toString());
                         ParseMineCollectVideo(response.body());
                     }
                 });
