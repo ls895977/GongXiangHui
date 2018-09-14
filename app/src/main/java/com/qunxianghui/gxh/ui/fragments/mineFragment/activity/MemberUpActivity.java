@@ -45,9 +45,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     private String selfcompayname;
     private String expire_time;
     private String avatar;
-
     private List<View> viewList = new ArrayList<>();
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_member_up;

@@ -18,11 +18,9 @@ public class ImageAdapter extends PagerAdapter {
     private List<String> imageUrls;
     private AppCompatActivity activity;
     private OnItemClick mOnItemClick;
-
     public void setOnItemClick(OnItemClick onItemClick) {
         mOnItemClick = onItemClick;
     }
-
     public ImageAdapter(List<String> imageUrls, AppCompatActivity activity) {
         this.imageUrls = imageUrls;
         this.activity = activity;
