@@ -122,7 +122,7 @@ public class HomeVideoChannelActivity extends GestureDetectorActivity implements
                     otherAdapter.setVisible(false);
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.DELETE_VIDEO_TAB_URL)
-                            .params("video_id", channel.getId())
+                            .params("video_id", channel.id)
                             .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -161,7 +161,7 @@ public class HomeVideoChannelActivity extends GestureDetectorActivity implements
                     userAdapter.setVisible(false);
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.ADD_VIDEO_TAB_URL)
-                            .params("video_id", channel.getId())
+                            .params("video_id", channel.id)
                             .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {

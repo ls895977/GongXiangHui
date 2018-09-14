@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 
@@ -64,7 +65,7 @@ public class LocationGridAdapter extends BaseAdapter {
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
         options.centerCrop();
-        Glide.with(context).load(imageList.get(position)).apply(options).into(holder.iv);
+        Glide.with(context).load(imageList.get(position)).apply(options.diskCacheStrategy(DiskCacheStrategy.ALL)).into(holder.iv);
         return convertView;
     }
 

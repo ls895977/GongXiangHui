@@ -88,7 +88,7 @@ public class DragAdapter extends BaseAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.channel_item, null);
         item_text = view.findViewById(R.id.text_item);
         ChannelItem channel = getItem(position);
-        item_text.setText(channel.getName());
+        item_text.setText(channel.channelName);
 //        if ((position == 0) || (position == 1)) {
         // FIXME: 2018/8/13
         if (position == 0) {

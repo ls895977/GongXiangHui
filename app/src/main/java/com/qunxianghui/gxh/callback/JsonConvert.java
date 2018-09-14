@@ -24,7 +24,7 @@ import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.CommonResponse;
 import com.qunxianghui.gxh.bean.SimpleResponse;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.observer.TokenLose;
+import com.qunxianghui.gxh.observer.TokenLoseEvent;
 import com.qunxianghui.gxh.utils.Convert;
 import com.qunxianghui.gxh.utils.GsonUtil;
 
@@ -91,7 +91,7 @@ public class JsonConvert<T> implements Converter<T> {
         ResponseBody body = response.body();
         if (body == null) return null;
         String string = body.string();
-        isFialure(string);
+        isFailure(string);
         if (rawType == String.class) {
             //noinspection unchecked
             return (T) string;
@@ -149,7 +149,7 @@ public class JsonConvert<T> implements Converter<T> {
 
                 if (LoginMsgHelper.isLogin() && (code == 300 || code == 1000) && sIsShow) {
                     sIsShow = false;
-                    EventBus.getDefault().post(new TokenLose(commonResponse.message));
+                    EventBus.getDefault().postSticky(new TokenLoseEvent(commonResponse.message));
                 }
                 if (code == 0) {
                     return (T) commonResponse;
@@ -163,11 +163,11 @@ public class JsonConvert<T> implements Converter<T> {
         }
     }
 
-    private void isFialure(String str) {
+    private void isFailure(String str) {
         if (LoginMsgHelper.isLogin() && !TextUtils.isEmpty(str) && (str.contains("\"code\":1000") || str.contains("\"code\":300")) && sIsShow) {
             CommonBean commonBean = GsonUtil.parseJsonWithGson(str, CommonBean.class);
             sIsShow = false;
-            EventBus.getDefault().post(new TokenLose(commonBean.message));
+            EventBus.getDefault().postSticky(new TokenLoseEvent(commonBean.message));
         }
     }
 }

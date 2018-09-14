@@ -116,7 +116,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                     otherAdapter.setVisible(false);
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.DELETE_LOCAL_POST_SUB_URL)
-                            .params("posts_id", channel.getId())
+                            .params("posts_id", channel.id)
                             .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -155,7 +155,7 @@ public class LocalServiceChannelActivity extends GestureDetectorActivity impleme
                     userAdapter.setVisible(false);
                     //频道列表（用户订阅的频道）
                     OkGo.<String>post(Constant.ADD_LOCAL_POST_SUB_URL)
-                            .params("posts_id", channel.getId())
+                            .params("posts_id", channel.id)
                             .execute(new JsonCallback<String>() {
                                 @Override
                                 public void onSuccess(Response<String> response) {

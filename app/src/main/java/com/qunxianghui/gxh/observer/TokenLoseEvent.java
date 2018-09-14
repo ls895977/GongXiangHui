@@ -1,10 +1,10 @@
 package com.qunxianghui.gxh.observer;
 
-public class TokenLose {
+public class TokenLoseEvent {
 
     public String mContent;
 
-    public TokenLose(String content) {
+    public TokenLoseEvent(String content) {
         this.mContent = content;
     }
 

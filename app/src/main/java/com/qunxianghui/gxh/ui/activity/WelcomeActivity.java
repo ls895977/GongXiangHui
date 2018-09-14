@@ -21,13 +21,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.WelcomeAdvertBean;
-import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.SystemUtil;
 
@@ -105,32 +107,6 @@ public class WelcomeActivity extends BaseActivity {
         return count;
     }
 
-    /**
-     * 请求网络广告
-     */
-    private void requestWelcomeAdvert() {
-        OkGo.<WelcomeAdvertBean>get(Constant.WELCOM_ADVER_URL)
-                .execute(new JsonCallback<WelcomeAdvertBean>() {
-                    @Override
-                    public void onSuccess(Response<WelcomeAdvertBean> response) {
-                        WelcomeAdvertBean welcomeAdvertBean = response.body();
-                        if (welcomeAdvertBean.getCode() == 0) {
-                            WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
-                            String image = data.getImage();
-                            if (mContext == null) {
-                                return;
-                            }
-                            Glide.with(mContext)
-                                    .load(image)
-                                    .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
-                                            .error(R.mipmap.icon_starpage)
-                                            .centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
-                                    .into(mIvWelcomeadver);
-                        }
-                    }
-                });
-    }
-
     @Override
     protected void initData() {
         OkGo.getInstance().getCommonHeaders().put("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
@@ -148,6 +124,34 @@ public class WelcomeActivity extends BaseActivity {
                 requestWelcomeAdvert();
             }
         }, 1000);
+    }
+
+    /**
+     * 请求网络广告
+     */
+    private void requestWelcomeAdvert() {
+        OkGo.<String>get(Constant.WELCOM_ADVER_URL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        WelcomeAdvertBean welcomeAdvertBean = GsonUtil.parseJsonWithGson(response.body(), WelcomeAdvertBean.class);
+                        if (welcomeAdvertBean.getCode() == 0) {
+                            WelcomeAdvertBean.DataBean data = welcomeAdvertBean.getData();
+                            String image = data.getImage();
+                            if (mContext == null) {
+                                return;
+                            }
+                            Glide.with(mContext)
+                                    .load(image)
+                                    .apply(new RequestOptions().placeholder(R.mipmap.icon_starpage)
+                                            .error(R.mipmap.icon_starpage)
+                                            .centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
+                                    .into(mIvWelcomeadver);
+                        } else if (welcomeAdvertBean.getCode() == 1000){
+                            LoginMsgHelper.exitLogin();
+                        }
+                    }
+                });
     }
 
     @Override
