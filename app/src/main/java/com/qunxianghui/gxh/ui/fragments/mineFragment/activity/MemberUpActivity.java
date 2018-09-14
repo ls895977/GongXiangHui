@@ -15,7 +15,6 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.view.CoverFlowViewPager;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
-import com.qunxianghui.gxh.utils.ToastUtils;
 import com.qunxianghui.gxh.widget.RoundImageView;
 
 import java.util.ArrayList;
@@ -116,7 +115,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             options.placeholder(R.mipmap.default_img);
             options.error(R.mipmap.default_img);
             Glide.with(mContext).load(avatar).apply(options).into(roundImageHead);
-
             viewList.add(view);
         }
         viewpager.setViewList(viewList);
@@ -126,7 +124,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         viewpager.setOnPageSelectListener(new CoverFlowViewPager.OnCoverPageSelectListener() {
             @Override
             public void select(int pos) {
-                ToastUtils.showShort("position:" + pos);
                 //todo 1 切换升级的身份后重新设置下面的数据
                 if (pos == 1) {
                     tvMemberupCompanyFive.setVisibility(View.VISIBLE);
