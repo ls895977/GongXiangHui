@@ -46,7 +46,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         mContext = this;
         mResources = getResources();
-        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         initViews();
         initData();
@@ -54,6 +53,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         setStatusBarTextColor();
         //setStatusBarColor();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     protected void setStatusBarTextColor() {
@@ -83,7 +94,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         mContext = null;
         mResources = null;
 //        MyApplication.appManager.finishActivity(this);  现在用不到 应该用到地图的时候用到  现在加上的话 报空指针
