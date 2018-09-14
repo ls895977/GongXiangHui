@@ -47,7 +47,8 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     private String expire_time;
     private String avatar;
 
-    private boolean isActiveBack = false;
+    private List<View> viewList = new ArrayList<>();
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_member_up;
@@ -63,7 +64,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         selfcompayname = companyData.getString("selfcompayname", "");
         expire_time = companyData.getString("member_expire_time", "");
         avatar = companyData.getString("avatar", "");
-        List<View> viewList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             View view = getLayoutInflater().inflate(R.layout.item_card_upgrade_layout, null, false);
             //todo 1 设置数据，两个数据时添加第二个数据循环三次
@@ -120,9 +120,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             viewList.add(view);
         }
         viewpager.setViewList(viewList);
-        if(!isActiveBack) {
-            viewpager.setCurrentItem(1);
-        }
+        viewpager.setCurrentItem(1);
         viewpager.setOnPageSelectListener(new CoverFlowViewPager.OnCoverPageSelectListener() {
             @Override
             public void select(int pos) {
@@ -173,10 +171,13 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0x0022) {
-            isActiveBack = true;
-            initViews();
+            resetCardShow(viewpager.getCurrentItemIndex());
         }
-        isActiveBack = false;
+    }
+
+    private void resetCardShow(int currentItemIndex) {
+        View view = viewList.get(currentItemIndex);
+        //todo 1
     }
 
     @Override

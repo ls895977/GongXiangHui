@@ -112,6 +112,10 @@ public class CoverFlowViewPager extends RelativeLayout implements ViewPager.OnPa
     public void setCurrentItem(int i) {
         mViewPager.setCurrentItem(1,true);
     }
+    public int getCurrentItemIndex() {
+        return mViewPager.getCurrentItem();
+    }
+
 
     public interface OnCoverPageSelectListener{
         void select(int pos);
