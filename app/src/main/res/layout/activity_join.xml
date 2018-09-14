@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_joincall_bg"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/icon_joincall_bg" />
+
+
+    <ImageView
+        android:id="@+id/iv_joincall_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:padding="12dp"
+        android:src="@mipmap/icon_companycard_back" />
+
+    <RelativeLayout
+        android:id="@+id/rl_joincall_qudao"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/iv_joincall_bg"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/iv_joincall_qudao"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/icon_joincall_qudao" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/iv_joincall_qudao"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_joincall_qudao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="渠道合作"
+                android:textColor="#2A2A2A"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_joincall_product_qudao_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="400-110-1214" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_add_advance_complete"
+            android:layout_width="75dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tv_add_advance_delete"
+            android:background="@drawable/shape_button"
+            android:gravity="center"
+            android:text="立即联系"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_joincall_product"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/rl_joincall_qudao"
+        android:layout_marginTop="5dp"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/iv_joincall_product"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/icon_joincall_product" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/iv_joincall_product"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_joincall_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="产品合作"
+                android:textColor="#2A2A2A"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_joincall_product_product_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="400-110-1213" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_joincall_product_quickly"
+            android:layout_width="75dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tv_add_advance_delete"
+            android:background="@drawable/shape_button"
+            android:gravity="center"
+            android:text="立即联系"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

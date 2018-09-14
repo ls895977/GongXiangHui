@@ -343,7 +343,10 @@
         <activity
             android:name=".ui.fragments.mineFragment.activity.QuestonPostActivity"
             android:screenOrientation="portrait" />
-
+        <!--合作热线-->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.JoinCallActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 

@@ -76,9 +76,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                     mTvMemberUpActiviteTime.setVisibility(View.VISIBLE);
                     mTvMemberupStep.setText("会员状态: 已激活");
                     mTvMemberUpActiviteTime.setText(expire_time + " 到期");
-                    mTvMemberupStep.setText("会员状态:正常");
                     ((TextView) view.findViewById(R.id.tv_memberup_company_step)).setText("企业会员");
-
                 }else {
                     mTvMemberUpActiviteActive.setVisibility(View.GONE);
                     mTvMemberUpActiviteTime.setVisibility(View.GONE);
@@ -98,15 +96,9 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                         }
                     });
                 }else {
-                    mTvMemberUpActiviteActive.setVisibility(View.VISIBLE);
+                    mTvMemberUpActiviteActive.setVisibility(View.GONE);
                     mTvMemberupStep.setText("会员状态: 正常");
                     ((TextView) view.findViewById(R.id.tv_memberup_company_step)).setText("注册会员");
-                    view.findViewById(R.id.tv_memberup_quickly_active).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            toActivityWithResult(MemberUpActiveActivity.class, 0x0011);
-                        }
-                    });
                 }
             }
             RequestOptions options = new RequestOptions();
@@ -175,7 +167,23 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     private void resetCardShow(int currentItemIndex) {
         View view = viewList.get(currentItemIndex);
         //todo 1
-    }
+            TextView mTvMemberupStep = view.findViewById(R.id.tv_memberup_company_state);
+            TextView mTvMemberUpActiviteTime = view.findViewById(R.id.tv_memberup_activite_time);
+            TextView mTvMemberUpActiviteActive = view.findViewById(R.id.tv_memberup_quickly_active);
+            if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    mTvMemberUpActiviteActive.setVisibility(View.GONE);
+                    mTvMemberUpActiviteTime.setVisibility(View.VISIBLE);
+                    mTvMemberupStep.setText("会员状态: 已激活");
+                    mTvMemberUpActiviteTime.setText(expire_time + " 到期");
+                    ((TextView) view.findViewById(R.id.tv_memberup_company_step)).setText("企业会员");
+
+                } else {
+                    mTvMemberUpActiviteActive.setVisibility(View.GONE);
+                    mTvMemberUpActiviteTime.setVisibility(View.GONE);
+                    mTvMemberupStep.setText("会员状态:正常");
+                    ((TextView) view.findViewById(R.id.tv_memberup_company_step)).setText("注册会员");
+                }
+            }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -51,7 +51,6 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
     void setOnChannelListener(OnChannelListener onChannelListener) {
         this.onChannelListener = onChannelListener;
     }
-
     public static HomeChannelFragment newInstance(ArrayList<ChannelItem> selectedData, List<ChannelItem> unselectedData) {
         HomeChannelFragment dialogFragment = new HomeChannelFragment();
         Bundle bundle = new Bundle();
