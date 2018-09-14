@@ -46,6 +46,8 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     private String selfcompayname;
     private String expire_time;
     private String avatar;
+
+    private boolean isActiveBack = false;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_member_up;
@@ -118,7 +120,9 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             viewList.add(view);
         }
         viewpager.setViewList(viewList);
-        viewpager.setCurrentItem(1);
+        if(!isActiveBack) {
+            viewpager.setCurrentItem(1);
+        }
         viewpager.setOnPageSelectListener(new CoverFlowViewPager.OnCoverPageSelectListener() {
             @Override
             public void select(int pos) {
@@ -169,8 +173,10 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0x0022) {
+            isActiveBack = true;
             initViews();
         }
+        isActiveBack = false;
     }
 
     @Override
