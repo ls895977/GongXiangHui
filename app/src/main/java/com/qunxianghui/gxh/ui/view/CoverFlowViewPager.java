@@ -88,6 +88,9 @@ public class CoverFlowViewPager extends RelativeLayout implements ViewPager.OnPa
                 int inWidthPadding = (int) ((1 - positionOffset) * sWidthPadding);
                 int inHeightPadding = (int) ((1 - positionOffset) * sHeightPadding);
                 mViewList.get(position + 1).setPadding(inWidthPadding, inHeightPadding, inWidthPadding, inHeightPadding);
+                if(position != 0){
+                    mViewList.get(0).setPadding(inWidthPadding, inHeightPadding, inWidthPadding, inHeightPadding);
+                }
             }
         }
     }
@@ -105,6 +108,10 @@ public class CoverFlowViewPager extends RelativeLayout implements ViewPager.OnPa
     }
 
     OnCoverPageSelectListener onPageSelectListener;
+
+    public void setCurrentItem(int i) {
+        mViewPager.setCurrentItem(1,true);
+    }
 
     public interface OnCoverPageSelectListener{
         void select(int pos);

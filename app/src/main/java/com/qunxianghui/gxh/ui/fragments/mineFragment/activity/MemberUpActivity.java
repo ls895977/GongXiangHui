@@ -93,6 +93,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             viewList.add(view);
         }
         viewpager.setViewList(viewList);
+        viewpager.setCurrentItem(1);
         viewpager.setOnPageSelectListener(new CoverFlowViewPager.OnCoverPageSelectListener() {
             @Override
             public void select(int pos) {
