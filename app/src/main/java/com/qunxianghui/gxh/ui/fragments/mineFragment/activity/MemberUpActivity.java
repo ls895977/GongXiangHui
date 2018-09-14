@@ -3,21 +3,14 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.VipCardAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.view.CoverFlowViewPager;
-import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.utils.ToastUtils;
 
@@ -53,13 +46,11 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     private String selfcompayname;
     private String expire_time;
     private String avatar;
-    private VipCardAdapter cardAdapter;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_member_up;
     }
-
     @Override
     protected void setStatusBarTextColor() {
         StatusBarColorUtil.setStatusTextColor(false, this);
@@ -93,6 +84,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             viewList.add(view);
         }
         viewpager.setViewList(viewList);
+
         viewpager.setOnPageSelectListener(new CoverFlowViewPager.OnCoverPageSelectListener() {
             @Override
             public void select(int pos) {
