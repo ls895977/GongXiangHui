@@ -27,10 +27,11 @@
 
                 <com.qunxianghui.gxh.widget.RoundImageView
                     android:id="@+id/iv_company_head"
-                    android:layout_width="59dp"
-                    android:layout_height="59dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="50dp"
+                    android:layout_margin="10dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:src="@mipmap/user_moren" />
 
                 <TextView
@@ -63,13 +64,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_memberup_company_state"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="32dp"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@+id/iv_company_head"
                     android:text="激活时间"
+                    android:visibility="gone"
                     android:textColor="#4F4F4F"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
