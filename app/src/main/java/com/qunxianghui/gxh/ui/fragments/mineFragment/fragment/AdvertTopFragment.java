@@ -203,7 +203,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     mChoosePic = new AdvertChoosePicDialog(getContext());
                     mChoosePic.setImgPickListener(this);
                 }
-                mChoosePic.showCommonView().show();
+                mChoosePic.showCommonAndCompany().show();
                 break;
             case R.id.tv_choose_type:
                 if (mChooseType == null && getContext() != null) {
@@ -221,7 +221,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     mChoosePic = new AdvertChoosePicDialog(getContext());
                     mChoosePic.setImgPickListener(this);
                 }
-                mChoosePic.hideCommonView().show();
+                mChoosePic.hideCommonAndCompany().show();
                 break;
         }
     }

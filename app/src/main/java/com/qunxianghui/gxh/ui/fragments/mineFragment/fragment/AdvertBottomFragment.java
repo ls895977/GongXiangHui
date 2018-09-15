@@ -234,6 +234,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     mChoosePic.setImgPickListener(this);
                 }
                 mIsBigImg = true;
+                mChoosePic.showCommonAndCompany();
                 if (mList.get(mVp.getCurrentItem()).ad_type == 3) {
                     mChoosePic.showCommonView().show();
                 } else {
@@ -262,7 +263,12 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     mChoosePic.setImgPickListener(this);
                 }
                 mIsBigImg = false;
-                mChoosePic.hideCommonView().show();
+                mChoosePic.showCommonAndCompany();
+                if (mList.get(mVp.getCurrentItem()).ad_type == 3) {
+                    mChoosePic.hideCommonAndCompany().show();
+                } else {
+                    mChoosePic.hideCommonView().show();
+                }
                 break;
         }
     }
@@ -833,6 +839,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     mChoosePic.setImgPickListener(AdvertBottomFragment.this);
                 }
                 mIsBigImg = false;
+                mChoosePic.showCommonAndCompany();
                 mChoosePic.hideCommonView().show();
             }
         });
@@ -845,6 +852,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     mChoosePic.setImgPickListener(AdvertBottomFragment.this);
                 }
                 mIsBigImg = false;
+                mChoosePic.showCommonAndCompany();
                 mChoosePic.hideCommonView().show();
             }
         });
@@ -987,9 +995,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     public void onSuccess(Response<CommonBean> response) {
                         if (response != null && response.body() != null && response.body().code == 200) {
                             removeView();
-                        } else {
-                            asyncShowToast("删除失败");
                         }
+//                        else {
+//                            asyncShowToast("删除失败");
+//                        }
                     }
 
                     @Override

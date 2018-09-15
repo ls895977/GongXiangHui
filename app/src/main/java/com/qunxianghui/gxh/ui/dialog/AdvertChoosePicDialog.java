@@ -37,15 +37,29 @@ public class AdvertChoosePicDialog extends Dialog implements View.OnClickListene
         findViewById(R.id.btnCancel).setOnClickListener(this);
     }
 
-    public AdvertChoosePicDialog showCommonView(){
+    public AdvertChoosePicDialog showCommonView() {
         mIsBigImg = true;
         findViewById(R.id.ll_common).setVisibility(View.VISIBLE);
         return this;
     }
 
-    public AdvertChoosePicDialog hideCommonView(){
+    public AdvertChoosePicDialog hideCommonView() {
         mIsBigImg = false;
         findViewById(R.id.ll_common).setVisibility(View.GONE);
+        return this;
+    }
+
+    public AdvertChoosePicDialog showCommonAndCompany() {
+        mIsBigImg = true;
+        findViewById(R.id.ll_common).setVisibility(View.VISIBLE);
+        findViewById(R.id.btnPicFromLocal).setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    public AdvertChoosePicDialog hideCommonAndCompany() {
+        mIsBigImg = false;
+        findViewById(R.id.ll_common).setVisibility(View.GONE);
+        findViewById(R.id.btnPicFromLocal).setVisibility(View.GONE);
         return this;
     }
 
