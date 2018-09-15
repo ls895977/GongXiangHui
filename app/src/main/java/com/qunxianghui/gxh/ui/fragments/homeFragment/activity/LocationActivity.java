@@ -245,7 +245,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
-
     }
 
     @Override

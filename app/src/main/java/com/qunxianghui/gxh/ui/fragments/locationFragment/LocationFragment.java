@@ -79,16 +79,16 @@ public class LocationFragment extends BaseFragment {
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (LocationActivity.sLocationCanChange) {
-            LocationActivity.sLocationCanChange = false;
-            for (int i = 0; i < fragments.size(); i++) {
-                ((LocationDetailFragment) fragments.get(i)).mIsChange = true;
-            }
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        if (LocationActivity.sLocationCanChange) {
+//            LocationActivity.sLocationCanChange = false;
+//            for (int i = 0; i < fragments.size(); i++) {
+//                ((LocationDetailFragment) fragments.get(i)).mIsChange = true;
+//            }
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(PublishBiaoliao publishBiaoliao) {
@@ -140,6 +140,10 @@ public class LocationFragment extends BaseFragment {
         super.onResume();
         String currcity = SPUtils.getLocation("currcity");
         mTvLocalcircleLocation.setText(currcity);
+        if (LocationActivity.sLocationCanChange) {
+            LocationActivity.sLocationCanChange = false;
+            initData();
+        }
     }
 
     @Override
