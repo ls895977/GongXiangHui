@@ -46,7 +46,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.observer.NewChannelEvent;
-import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeChannelFragment;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeChannelActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.SearchActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
@@ -255,9 +255,9 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 toActivity(SearchActivity.class);
                 break;
             case R.id.iv_more_columns:
-                    HomeChannelFragment homeChannelActivity = HomeChannelFragment.newInstance(userChannelList, null);
-                    homeChannelActivity.show(getChildFragmentManager(), "CHANNEL");
-
+                Intent intent = new Intent(getActivity(), HomeChannelActivity.class);
+                intent.putExtra("dataSelected", userChannelList);
+                startActivity(intent);
                 break;
             case R.id.iv_home_paste_artical:
                 if (!LoginMsgHelper.isLogin()) {

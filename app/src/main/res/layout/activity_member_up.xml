@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/activity_bg"
+                android:background="#f6f6f6"
                 android:padding="@dimen/dp_10"
                 android:layout_marginTop="8dp">
 
