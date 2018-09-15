@@ -53,14 +53,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @BindView(R.id.switchButton_mine_set)
     SwitchButton switchButtonMineSet;
 
-    @BindView(R.id.rl_set_comment_question)
-    RelativeLayout mRlSetCommmentQuestion;
-    @BindView(R.id.rl_setting_aboutus)
-    RelativeLayout rlSettingAboutus;
-    @BindView(R.id.rl_queston_post)
-    RelativeLayout rlQuestonPost;
-    private Dialog loadingDialog;
 
+    private Dialog loadingDialog;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -110,9 +104,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void initListeners() {
         mTvSettingQuit.setOnClickListener(this);
         rlSetCache.setOnClickListener(this);
-        rlSettingAboutus.setOnClickListener(this);
-        rlQuestonPost.setOnClickListener(this);
-        mRlSetCommmentQuestion.setOnClickListener(this);
 
 
     }
@@ -152,16 +143,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 handler.sendMessageDelayed(msg, 1000);
                 break;
 
-            case R.id.rl_setting_aboutus:
-                toActivity(AboutUsActivity.class);
-                break;
 
-            case R.id.rl_queston_post:
-                toActivity(QuestonPostActivity.class);
-                break;
-            case R.id.rl_set_comment_question:
-                asyncShowToast("等待接入h5,敬请期待...");
-                break;
+
+
         }
 
     }
