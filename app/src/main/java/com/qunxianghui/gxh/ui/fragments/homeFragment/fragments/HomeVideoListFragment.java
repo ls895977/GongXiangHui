@@ -1,8 +1,10 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,6 +37,7 @@ import cn.jzvd.JZMediaManager;
 import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerManager;
+import cn.jzvd.JZVideoPlayerStandard;
 
 public class HomeVideoListFragment extends BaseFragment implements PersonDetailVideoAdapter.VideoListClickListener {
 
@@ -47,6 +50,9 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
+    private JZVideoPlayerStandard mVideoPlayerStandard;
+    private int firstVisible = 0, visibleCount = 0, totalCount = 0;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     public int getLayoutId() {
@@ -55,7 +61,9 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void initViews(View view) {
-        mRv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        mLinearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+        mRv.setLayoutManager(mLinearLayoutManager);
+
         personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoDataList);
         mRv.setAdapter(personDetailVideoAdapter);
     }
@@ -137,6 +145,70 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 }
             }
         });
+        /*监听滑动状态*/
+        mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        Log.e("videoTest", "SCROLL_STATE_IDLE");
+                        autoPlayVideo(recyclerView);
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        Log.e("videoTest", "SCROLL_STATE_DRAGGING");
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        Log.e("videoTest", "SCROLL_STATE_SETTLING");
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    int visibleItemCount = mLinearLayoutManager.getChildCount();
+                    int totalItemCount = mLinearLayoutManager.getItemCount();
+                    int firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                    if (firstVisible == firstVisibleItem) {
+                        return;
+                    }
+                    firstVisible = firstVisibleItem;
+                    visibleCount = visibleItemCount;
+                    totalCount = totalItemCount;
+
+                }
+
+            }
+        });
+
+
+    }
+
+    /*监听滚动 自动播放视频*/
+    private void autoPlayVideo(RecyclerView recyclerView) {
+        for (int i = 0; i < videoDataList.size(); i++) {
+            if (recyclerView != null && recyclerView.getChildAt(i) != null && recyclerView.getChildAt(i).findViewById(R.id.videoplayer) != null) {
+                mVideoPlayerStandard = (JZVideoPlayerStandard) recyclerView.getChildAt(i).findViewById(R.id.videoplayer);
+                Rect rect = new Rect();
+                mVideoPlayerStandard.getLocalVisibleRect(rect);
+                int videoheight = mVideoPlayerStandard.getHeight();
+                if (rect.top == 0 && rect.bottom == videoheight) {
+                    if (mVideoPlayerStandard.currentState == JZVideoPlayerStandard.CURRENT_STATE_NORMAL || mVideoPlayerStandard.currentState == JZVideoPlayerStandard.CURRENT_STATE_ERROR) {
+                        Log.e("videoTest", mVideoPlayerStandard.currentState + "======================performClick======================");
+                        mVideoPlayerStandard.startButton.performClick();
+
+                    }
+                    return;
+                }
+
+                JZVideoPlayerStandard.releaseAllVideos();
+                mVideoPlayerStandard = null;
+            }
+        }
+
     }
 
     private void requestHomeVideoList() {
@@ -161,7 +233,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                             }
                             videoDataList.addAll(homeVideoListBean.getData().getList());
 
-                            if (videoDataList.isEmpty()){
+                            if (videoDataList.isEmpty()) {
                                 llEmpty.setVisibility(View.VISIBLE);
                             }
                         }
