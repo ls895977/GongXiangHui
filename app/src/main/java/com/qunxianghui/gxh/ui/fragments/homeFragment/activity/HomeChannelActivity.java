@@ -1,24 +1,18 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.ChannelAdapter;
+import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -34,7 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class HomeChannelFragment extends DialogFragment implements OnChannelListener {
+public class HomeChannelActivity extends BaseActivity implements OnChannelListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -51,33 +45,15 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
     void setOnChannelListener(OnChannelListener onChannelListener) {
         this.onChannelListener = onChannelListener;
     }
-    public static HomeChannelFragment newInstance(ArrayList<ChannelItem> selectedData, List<ChannelItem> unselectedData) {
-        HomeChannelFragment dialogFragment = new HomeChannelFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("dataSelected", selectedData);
-        dialogFragment.setArguments(bundle);
-        return dialogFragment;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.dialog_channel;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Window window = HomeChannelFragment.this.getDialog().getWindow();
-        window.setWindowAnimations(R.style.dialogSlideAnim);
-        window.setBackgroundDrawableResource(R.color.transparent);
-        window.getDecorView().setPadding(0, 0, 0, 0);
-        WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.gravity = Gravity.BOTTOM;
-        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(wlp);
-        return inflater.inflate(R.layout.dialog_channel, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = view.findViewById(R.id.recyclerView);
-        view.findViewById(R.id.icon_collapse).setOnClickListener(new View.OnClickListener() {
+    protected void initViews() {
+        findViewById(R.id.icon_collapse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isUpdate) {
@@ -85,10 +61,9 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
                     Hawk.put("USER_CHANNEL", event.mList);
                     EventBus.getDefault().post(event);
                 }
-                dismiss();
+                finish();
             }
         });
-        //获取全部频道
         OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
                 .execute(new JsonCallback<ChannelGetallBean>() {
                     @Override
@@ -99,8 +74,8 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
     }
 
     private void getAllData(ChannelGetallBean bean) {
-        if (null != bean) {
-            mSelectedData = (ArrayList<ChannelItem>) getArguments().getSerializable("dataSelected");
+        if (bean != null && bean.getCode() == 0) {
+            mSelectedData = (ArrayList<ChannelItem>) getIntent().getSerializableExtra("dataSelected");
             List<ChannelGetallBean.DataBean> datas = bean.getData();
             for (int i = 0; i < datas.size(); i++) {
                 ChannelGetallBean.DataBean dataBean = datas.get(i);
@@ -137,7 +112,7 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
         helper.attachToRecyclerView(mRecyclerView);
 
         mAdapter = new ChannelAdapter(mData, helper);
-        final GridLayoutManager manager = new GridLayoutManager(getActivity(), 4);
+        final GridLayoutManager manager = new GridLayoutManager(HomeChannelActivity.this, 4);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -182,7 +157,7 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
     @Override
     public void onFinish(String selectedChannelName) {
 //        EventBus.getDefault().post(SelectChannelEvent(selectedChannelName));
-        dismiss();
+//        dismiss();
     }
 
     private void onMove(int starPos, int endPos, boolean isAdd) {

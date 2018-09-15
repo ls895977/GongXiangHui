@@ -351,6 +351,9 @@
         <activity
             android:name=".ui.fragments.mineFragment.activity.QunxiangHuiActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.HomeChannelActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 

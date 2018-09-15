@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -121,38 +120,38 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, BaseV
                     baseViewHolder.getView(R.id.tv_channelname).setTag(true);
                 }
 
-                baseViewHolder.getView(R.id.rl_channel).setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        if (mIsEdit && channel.id != 0 && channel.id != -1) {
-                            mItemTouchHelper.startDrag(baseViewHolder);
-                        }
-                        return false;
-                    }
-                });
+//                baseViewHolder.getView(R.id.rl_channel).setOnLongClickListener(new View.OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View v) {
+//                        if (mIsEdit && channel.id != 0 && channel.id != -1) {
+//                            mItemTouchHelper.startDrag(baseViewHolder);
+//                        }
+//                        return false;
+//                    }
+//                });
 
-                baseViewHolder.getView(R.id.rl_channel).setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (!mIsEdit) return false;
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                startTime = System.currentTimeMillis();
-                                break;
-                            case MotionEvent.ACTION_MOVE:
-                                if (System.currentTimeMillis() - startTime > SPACE_TIME && channel.id != 0 && channel.id != -1) {
-                                    //当MOVE事件与DOWN事件的触发的间隔时间大于100ms时，则认为是拖拽starDrag
-                                    mItemTouchHelper.startDrag(baseViewHolder);
-                                }
-                                break;
-                            case MotionEvent.ACTION_CANCEL:
-                            case MotionEvent.ACTION_UP:
-                                startTime = 0L;
-                                break;
-                        }
-                        return false;
-                    }
-                });
+//                baseViewHolder.getView(R.id.rl_channel).setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        if (!mIsEdit) return false;
+//                        switch (event.getAction()) {
+//                            case MotionEvent.ACTION_DOWN:
+//                                startTime = System.currentTimeMillis();
+//                                break;
+//                            case MotionEvent.ACTION_MOVE:
+//                                if (System.currentTimeMillis() - startTime > SPACE_TIME && channel.id != 0 && channel.id != -1) {
+//                                    //当MOVE事件与DOWN事件的触发的间隔时间大于100ms时，则认为是拖拽starDrag
+//                                    mItemTouchHelper.startDrag(baseViewHolder);
+//                                }
+//                                break;
+//                            case MotionEvent.ACTION_CANCEL:
+//                            case MotionEvent.ACTION_UP:
+//                                startTime = 0L;
+//                                break;
+//                        }
+//                        return false;
+//                    }
+//                });
                 baseViewHolder.getView(R.id.rl_channel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
