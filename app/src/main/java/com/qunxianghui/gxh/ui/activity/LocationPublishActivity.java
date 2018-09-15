@@ -120,7 +120,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         mEtTitle.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mUpload.setEnabled(mTypeId != 0 && (!TextUtils.isEmpty(mEtTitle.getText().toString().trim()) || !mImages.isEmpty()));
+                mUpload.setSelected(mTypeId != 0 && (!TextUtils.isEmpty(mEtTitle.getText().toString().trim()) || !mImages.isEmpty()));
             }
         });
     }
@@ -150,7 +150,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 }
             }
         }
-        mUpload.setEnabled(mTypeId != 0 && (!TextUtils.isEmpty(mEtTitle.getText().toString().trim()) || !mImages.isEmpty()));
+        mUpload.setSelected(mTypeId != 0 && (!TextUtils.isEmpty(mEtTitle.getText().toString().trim()) || !mImages.isEmpty()));
     }
 
     @Override
@@ -176,14 +176,14 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 onBackPressed();
                 break;
             case R.id.tv_upload:
-//                if (TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()) {
-//                    asyncShowToast("请填写本地圈内容或者上传图片！");
-//                    return;
-//                }
-//                if (mTypeId == 0) {
-//                    asyncShowToast("您尚未选择分类！");
-//                    return;
-//                }
+                if (TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()) {
+                    asyncShowToast("请填写本地圈内容或者上传图片！");
+                    return;
+                }
+                if (mTypeId == 0) {
+                    asyncShowToast("您尚未选择分类！");
+                    return;
+                }
                 mIsUploadIng = true;
                 stringBuilder = new StringBuilder();
                 mLlLoad.setVisibility(View.VISIBLE);
@@ -324,7 +324,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     mTypeId = videoSortBeanData.get(options1).getId();
                     mTvType.setText(strings.get(options1));
-                    mUpload.setEnabled(!(TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()));
+                    mUpload.setSelected(!(TextUtils.isEmpty(mEtTitle.getText().toString().trim()) && mImages.isEmpty()));
                 }
             }).setCancelColor(Color.parseColor("#676767"))
                     .setSubmitColor(Color.parseColor("#D81717"))
