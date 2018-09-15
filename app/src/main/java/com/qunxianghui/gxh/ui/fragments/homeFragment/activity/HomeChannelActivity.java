@@ -1,6 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -12,25 +15,24 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.homeAdapter.ChannelAdapter;
-import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.interfaces.OnChannelListener;
 import com.qunxianghui.gxh.listener.ItemDragHelperCallBack;
 import com.qunxianghui.gxh.observer.NewChannelEvent;
+import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+public class HomeChannelActivity extends AppCompatActivity implements OnChannelListener {
 
-public class HomeChannelActivity extends BaseActivity implements OnChannelListener {
-
-    @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     private ArrayList<ChannelItem> mData = new ArrayList<>();
@@ -47,12 +49,12 @@ public class HomeChannelActivity extends BaseActivity implements OnChannelListen
     }
 
     @Override
-    protected int getLayoutId() {
-        return R.layout.dialog_channel;
-    }
-
-    @Override
-    protected void initViews() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        StatusBarUtil.setTransparentForImageView(this, null);
+        StatusBarUtil.MIUISetStatusBarLightMode(this, true);
+        StatusBarUtil.FlymeSetStatusBarLightMode(this, true);
+        setContentView(R.layout.dialog_channel);
         findViewById(R.id.icon_collapse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +66,7 @@ public class HomeChannelActivity extends BaseActivity implements OnChannelListen
                 finish();
             }
         });
+        mRecyclerView = findViewById(R.id.recyclerView);
         OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
                 .execute(new JsonCallback<ChannelGetallBean>() {
                     @Override
@@ -89,6 +92,16 @@ public class HomeChannelActivity extends BaseActivity implements OnChannelListen
                 }
             }
             processLogic();
+        } else if (bean != null && bean.getCode() == 1000){
+            SPUtils.removePreference(SpConstant.ACCESS_TOKEN);
+            OkGo.getInstance().getCommonHeaders().remove("X-accesstoken");
+            OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
+                    .execute(new JsonCallback<ChannelGetallBean>() {
+                        @Override
+                        public void onSuccess(Response<ChannelGetallBean> response) {
+                            getAllData(response.body());
+                        }
+                    });
         }
     }
 
