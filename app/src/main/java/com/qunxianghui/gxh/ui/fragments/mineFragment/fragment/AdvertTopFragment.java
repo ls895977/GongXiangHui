@@ -269,14 +269,13 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
 //            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
             if (data.settings != null) {
-                switch (data.settings.operate) {
+                view.findViewById(R.id.rl_link).setVisibility(View.GONE);
+                switch (data.settings.linktype) {
                     case 1:
                         tvType.setText("跳转链接");
                         view.findViewById(R.id.rl_link).setVisibility(View.VISIBLE);
-                        if (data.settings.is_link == 1) {
-                            cB.setChecked(true);
-                            etLink.setText(data.link);
-                        }
+                        etLink.setText(data.link);
+                        cB.setChecked(data.settings.is_link == 1);
                         break;
                     case 2:
                         tvType.setText("拨打电话");
@@ -290,7 +289,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                         break;
                     case 4:
                     case 5:
-                        tvType.setText(data.settings.operate == 4 ? "展示海报" : "展示二维码");
+                        tvType.setText(data.settings.linktype == 4 ? "展示海报" : "展示二维码");
                         rlAddImg.setVisibility(View.VISIBLE);
                         Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
                                 .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
@@ -342,7 +341,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void callback(int type) {
-        mList.get(mVp.getCurrentItem()).settings.operate = type;
+        mList.get(mVp.getCurrentItem()).settings.linktype = type;
     }
 
     @Override

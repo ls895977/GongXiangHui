@@ -132,7 +132,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                             mTvType.setVisibility(View.VISIBLE);
                             mTvSeconds.setVisibility(View.VISIBLE);
                             mTvTop.setVisibility(View.VISIBLE);
-                            switch (companyAdvert.settings.operate) {
+                            switch (companyAdvert.settings.linktype) {
                                 case 1:
                                     mTvType.setText("图片点击效果：跳转链接");
                                     break;

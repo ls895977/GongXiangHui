@@ -89,7 +89,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(mIvAd);
                             mTvTiePianTime.setText(mAdvertBean.settings.time);
                             //1-跳转链接 2-拨打电话 3-联系QQ
-                            switch (mAdvertBean.settings.operate) {
+                            switch (mAdvertBean.settings.linktype) {
                                 case 1:
                                     mLlLink.setVisibility(View.VISIBLE);
                                     mEtOther.setVisibility(View.GONE);
@@ -117,7 +117,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                             mAdvertBean.ad_type = 6;
                             mAdvertBean.settings.time = "3S";
                             mTvTiePianTime.setText("3S");
-                            mAdvertBean.settings.operate = 1;
+                            mAdvertBean.settings.linktype = 1;
                             mTvTiePianShowType.setText("跳转链接");
                         }
                     }
@@ -226,7 +226,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     asyncShowToast("贴片广告只可添加一个!");
                     return;
                 }
-                mAdvertBean.settings.operate = 1;
+                mAdvertBean.settings.linktype = 1;
                 mTvTiePianShowType.setText("跳转链接");
                 mFlLayout.setVisibility(View.VISIBLE);
                 break;
@@ -297,7 +297,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     mAdvertBean.settings.time = "3S";
                     mTvTiePianTime.setText("3S");
                 } else {
-                    mAdvertBean.settings.operate = 1;
+                    mAdvertBean.settings.linktype = 1;
                     mTvTiePianShowType.setText("跳转链接");
                     mEtOther.setText("");
                     mEtOther.setHint("请输入您的链接地址");
@@ -310,7 +310,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     mAdvertBean.settings.time = "4S";
                     mTvTiePianTime.setText("4S");
                 } else {
-                    mAdvertBean.settings.operate = 2;
+                    mAdvertBean.settings.linktype = 2;
                     mEtOther.setText("");
                     mEtOther.setHint("请输入您的联系电话");
                     mTvTiePianShowType.setText("拨打电话");
@@ -323,7 +323,7 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                     mAdvertBean.settings.time = "5S";
                     mTvTiePianTime.setText("5S");
                 } else {
-                    mAdvertBean.settings.operate = 3;
+                    mAdvertBean.settings.linktype = 3;
                     mEtOther.setText("");
                     mEtOther.setHint("请输入您的QQ号码");
                     mTvTiePianShowType.setText("联系QQ");

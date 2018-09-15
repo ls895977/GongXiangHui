@@ -489,9 +489,9 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         etOther.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (getCurrentSettings().operate == 2) {
+                if (getCurrentSettings().linktype == 2) {
                     getCurrentSettings().mobile = s.toString();
-                } else if (getCurrentSettings().operate == 3) {
+                } else if (getCurrentSettings().linktype == 3) {
                     getCurrentSettings().qq = s.toString();
                 }
             }
@@ -504,7 +504,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             sB.setChecked(companyAdvert.is_slide == 1);
             Glide.with(AdvertBottomFragment.this).load(companyAdvert.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
             if (companyAdvert.settings != null) {
-                switch (companyAdvert.settings.operate) {
+                switch (companyAdvert.settings.linktype) {
                     case 1:
                         tvType.setText("跳转链接");
 //                        if (companyAdvert.settings.is_link == 1)
@@ -633,7 +633,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(bigImg);
 //            1-跳转链接 2-拨打电话 3-联系QQ 4-展示海报 5-展示二维码
             if (companyAdvert.settings != null) {
-                switch (companyAdvert.settings.operate) {
+                switch (companyAdvert.settings.linktype) {
                     case 1:
                         tvType.setText("跳转链接");
                         rlLink.setVisibility(View.VISIBLE);
@@ -1018,7 +1018,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void callback(int type) {
-        getCurrentSettings().operate = type;
+        getCurrentSettings().linktype = type;
     }
 
 }
