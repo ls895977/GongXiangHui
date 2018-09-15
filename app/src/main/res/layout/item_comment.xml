@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:textColor="#1E6CA9"
             android:visibility="gone"
+            android:layout_gravity="center_vertical"
             tools:text="aaa" />
 
         <TextView

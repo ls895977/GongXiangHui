@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdapter.OnItemClick {
-
     private PhotoViewPager mViewPager;
     private int currentPosition;
     private ImageAdapter adapter;
@@ -90,7 +89,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
             mDialog = new Dialog(PhotoBrowserActivity.this, R.style.ActionSheetDialogStyle);
             //填充对话框的布局
             View alertView = LayoutInflater.from(this).inflate(R.layout.bottom_piccancel_dialog, null);
-            //初始化控件
+//初始化控件
             alertView.findViewById(R.id.tv_savepicto_colume).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

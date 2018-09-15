@@ -100,7 +100,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, BaseV
         switch (baseViewHolder.getItemViewType()) {
             case 1:
                 baseViewHolder.setText(R.id.tvTitle, channel.channelName);
-                baseViewHolder.setText(R.id.tv_sort, "拖拽可以排序");
+                baseViewHolder.setText(R.id.tv_sort, "点击进入频道");
                 baseViewHolder.getView(R.id.tv_edit).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

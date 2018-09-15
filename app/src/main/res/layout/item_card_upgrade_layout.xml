@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        android:layout_marginBottom="5dp">
+
+        <LinearLayout
+            android:id="@+id/ll_memberup_company_state"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:background="@drawable/shape_white_bg"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.qunxianghui.gxh.widget.RoundImageView
+                    android:id="@+id/iv_company_head"
+                    android:layout_width="50dp"
+                    android:layout_margin="10dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@mipmap/user_moren" />
+
+                <TextView
+                    android:id="@+id/tv_memberup_company_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/iv_company_head"
+                    android:text="企业会员"
+                    android:textColor=" #000000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_memberup_company_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_memberup_company_step"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/iv_company_head"
+                    android:drawableLeft="@mipmap/icon_memberup_diamond"
+                    android:drawablePadding="5dp"
+                    android:text="会员状态:未激活"
+                    android:textColor=" #161616"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_memberup_activite_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_memberup_company_state"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/iv_company_head"
+                    android:text="激活时间"
+                    android:visibility="gone"
+                    android:textColor="#4F4F4F"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_memberup_activite_time"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/iv_company_head"
+                    android:drawableLeft="@mipmap/icon_memberup_ready_active"
+                    android:drawablePadding="5dp"
+                    android:text="激活即可享受企业版会员特权"
+                    android:textColor=" #161616"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/tv_memberup_quickly_active"
+                android:layout_width="120dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_red_solid_corner"
+                android:gravity="center"
+                android:text="立即激活"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

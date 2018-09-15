@@ -343,7 +343,14 @@
         <activity
             android:name=".ui.fragments.mineFragment.activity.QuestonPostActivity"
             android:screenOrientation="portrait" />
-
+        <!--合作热线-->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.JoinCallActivity"
+            android:screenOrientation="portrait" />
+        <!--设置里面关于我们中的群享汇公用界面-->
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.QunxiangHuiActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 

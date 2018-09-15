@@ -24,6 +24,7 @@
         android:layout_marginTop="25dp" />
 
     <RelativeLayout
+        android:id="@+id/rl_aboutus_goto_grade"
         style="@style/RelativeStyle"
         android:layout_marginTop="2dp"
         android:background="@color/white"
@@ -49,6 +50,7 @@
         android:layout_marginTop="5dp" />
 
     <RelativeLayout
+        android:id="@+id/rl_aboutus_newfun_intro"
         style="@style/RelativeStyle"
         android:layout_marginTop="2dp"
         android:background="@color/white"
@@ -74,6 +76,7 @@
         android:layout_marginTop="5dp" />
 
     <RelativeLayout
+        android:id="@+id/rl_aboutus_quxinghui"
         style="@style/RelativeStyle"
         android:layout_marginTop="2dp"
         android:background="@color/white"
@@ -99,6 +102,7 @@
         android:layout_marginTop="5dp" />
 
     <RelativeLayout
+        android:id="@+id/rl_aboutus_quxinghui_platform"
         style="@style/RelativeStyle"
         android:layout_marginTop="2dp"
         android:background="@color/white"
@@ -124,6 +128,7 @@
         android:layout_marginTop="5dp" />
 
     <RelativeLayout
+        android:id="@+id/rl_aboutus_quxinghui_share_cloud"
         style="@style/RelativeStyle"
         android:layout_marginTop="2dp"
         android:background="@color/white"

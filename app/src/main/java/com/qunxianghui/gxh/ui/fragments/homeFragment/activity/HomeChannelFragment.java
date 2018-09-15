@@ -46,13 +46,11 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
     private String firstAddChannelName = "";
     //是否需要更新 主页频道信息
     private boolean isUpdate = false;
-
     private OnChannelListener onChannelListener;
 
     void setOnChannelListener(OnChannelListener onChannelListener) {
         this.onChannelListener = onChannelListener;
     }
-
     public static HomeChannelFragment newInstance(ArrayList<ChannelItem> selectedData, List<ChannelItem> unselectedData) {
         HomeChannelFragment dialogFragment = new HomeChannelFragment();
         Bundle bundle = new Bundle();

@@ -26,7 +26,6 @@ import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
-import com.qunxianghui.gxh.observer.PublishBiaoliao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.ToastUtils;
@@ -34,7 +33,6 @@ import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 import com.sina.weibo.sdk.utils.LogUtil;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -289,7 +287,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             e.printStackTrace();
         }
 
-        Log.e("imgContent",jsonObject.toString());
+        Log.d("imgContent",jsonObject.toString());
 
         OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)
                 .upJson(jsonObject.toString())
@@ -368,7 +366,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     selImageList.clear();
                     selImageList.addAll(images);
                     mAdapter.setImages(selImageList);
-
                     clearAddImg();
                 }
             }

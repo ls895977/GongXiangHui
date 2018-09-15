@@ -33,162 +33,78 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="65dp"
-        android:scrollbars="none">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <com.qunxianghui.gxh.ui.view.CoverFlowViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="会员特权"
+                android:textColor=" #000000"
+                android:textSize="14sp"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/shape_red_vertical_line_bar"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cv_company"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:id="@+id/ll_memberup_company_state"
-                        android:layout_width="270dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/shape_white_bg"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <com.qunxianghui.gxh.widget.RoundImageView
-                                android:id="@+id/iv_company_head"
-                                android:layout_width="59dp"
-                                android:layout_height="59dp"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@mipmap/user_moren" />
-
-                            <TextView
-                                android:id="@+id/tv_memberup_company_step"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_toRightOf="@+id/iv_company_head"
-                                android:text="企业会员"
-                                android:textColor=" #000000"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/tv_memberup_company_state"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_memberup_company_step"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_toRightOf="@+id/iv_company_head"
-                                android:drawableLeft="@mipmap/icon_memberup_diamond"
-                                android:drawablePadding="5dp"
-                                android:text="会员状态:未激活"
-                                android:textColor=" #161616"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/tv_memberup_activite_time"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_memberup_company_state"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@+id/iv_company_head"
-                                android:text="激活时间"
-                                android:textColor="#4F4F4F"
-                                android:textSize="12sp"
-                                android:visibility="gone" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_memberup_activite_time"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_toRightOf="@+id/iv_company_head"
-                                android:drawableLeft="@mipmap/icon_memberup_ready_active"
-                                android:drawablePadding="5dp"
-                                android:text="激活即可享受企业版会员特权"
-                                android:textColor=" #161616"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-
-                        <TextView
-                            android:id="@+id/tv_memberup_quickly_active"
-                            android:layout_width="120dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/bg_red_solid_corner"
-                            android:gravity="center"
-                            android:text="立即激活"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="会员特权"
-                    android:textColor=" #000000"
-                    android:textSize="14sp" />
+                android:orientation="vertical"
+                android:background="@color/activity_bg"
+                android:padding="@dimen/dp_10"
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/tv_memberup_company_one"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     android:drawableLeft="@mipmap/icon_memberup_support"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1.5dp"
                     android:lineSpacingMultiplier="1.2"
-                    android:text=""
+                    android:text="限APP内部文章链接分享"
                     android:textColor="#161616"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:padding="5dp"/>
 
                 <TextView
                     android:id="@+id/tv_memberup_company_two"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:drawableLeft="@mipmap/icon_member_adv_memory"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="顶部广告、底部广告都可编辑"
                     android:textColor="#161616"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:padding="5dp"
+                    android:background="@color/white"/>
 
                 <TextView
                     android:id="@+id/tv_memberup_company_three"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:background="@color/white"
                     android:drawableLeft="@mipmap/icon_member_adv_memory"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
@@ -198,180 +114,32 @@
 
                 <TextView
                     android:id="@+id/tv_memberup_company_four"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:background="@color/white"
                     android:drawableLeft="@mipmap/icon_memberup_commadv"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1.5dp"
                     android:lineSpacingMultiplier="1.2"
                     android:text="顶部通栏广告限10,底部所有广告权限10个
- 贴片广告限1个"
+贴片广告限1个"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tv_memberup_company_five"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:background="@color/white"
                     android:drawableLeft="@mipmap/icon_memberup_muti"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="企业员工排行榜"
-                    android:textColor="#161616"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cv_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:id="@+id/ll_memberup_regist_state"
-                        android:layout_width="270dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/shape_white_bg"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <com.qunxianghui.gxh.widget.RoundImageView
-                                android:id="@+id/iv_regist_head"
-                                android:layout_width="59dp"
-                                android:layout_height="59dp"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@mipmap/user_moren" />
-
-                            <TextView
-                                android:id="@+id/tv_memberup_person_step"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_toRightOf="@+id/iv_regist_head"
-                                android:text="注册会员"
-                                android:textColor=" #000000"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/tv_memberup_person_state"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_memberup_person_step"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_toRightOf="@+id/iv_regist_head"
-                                android:drawableLeft="@mipmap/icon_memberup_diamond"
-                                android:drawablePadding="5dp"
-                                android:textColor=" #161616"
-                                android:text="会员状态:正常"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_memberup_person_state"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_toRightOf="@+id/iv_regist_head"
-                                android:drawableLeft="@mipmap/icon_memberup_ready_active"
-                                android:drawablePadding="5dp"
-                                android:textColor=" #161616"
-                                android:text="激活即可享受企业版会员特权"
-                                android:textSize="12sp" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/tv_memberup_person_active"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="20dp"
-                            android:textColor=" #161616"
-                            android:text="立即激活" />
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="会员特权"
-                    android:textColor=" #000000"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_memberup_regist_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@mipmap/icon_memberup_support"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="限app内部文章植入广告后分享"
-                    android:textColor="#161616"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_memberup_regist_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@mipmap/icon_member_adv_memory"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="仅限底部广告编辑"
-                    android:textColor="#161616"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_memberup_regist_three"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@mipmap/icon_member_adv_memory"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="底部所有广告限2个"
-                    android:textColor="#161616"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_memberup_regist_four"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@mipmap/icon_memberup_commadv"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="广告储存模板限2个（限底部）"
                     android:textColor="#161616"
                     android:textSize="13sp" />
 
@@ -379,6 +147,6 @@
 
         </LinearLayout>
 
-    </HorizontalScrollView>
+    </LinearLayout>
 
 </RelativeLayout>

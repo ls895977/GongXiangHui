@@ -851,8 +851,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
 
         EditText etQQ = item2.findViewById(R.id.etNickName);
         EditText etMobile = item2.findViewById(R.id.etPrice);
+        EditText etLink = item2.findViewById(R.id.etLink);
         etQQ.setHint("店铺或公司名称");
         etMobile.setHint("联系电话");
+        etLink.setVisibility(View.GONE);
         etQQ.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
