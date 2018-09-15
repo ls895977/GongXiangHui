@@ -284,9 +284,9 @@ public class AdvertTemplateActivity extends BaseActivity {
 //            mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
             if (!TextUtils.isEmpty(companyAdvert.settings.time))
                 mPost.params("ad[" + index + "][settings][time]", companyAdvert.settings.time);
-            if (companyAdvert.settings.operate != 0) {
-                mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
-                switch (companyAdvert.settings.operate) {
+            if (companyAdvert.settings.linktype != 0) {
+                mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.linktype);
+                switch (companyAdvert.settings.linktype) {
                     case 1:
                         if (!TextUtils.isEmpty(companyAdvert.link))
                             mPost.params("ad[" + index + "][link]", companyAdvert.link);
@@ -301,11 +301,11 @@ public class AdvertTemplateActivity extends BaseActivity {
             }
             //底部广告
         } else if (companyAdvert.position == 2) {
-            if (companyAdvert.settings.operate == 0) return;
+            if (companyAdvert.settings.linktype == 0) return;
             switch (companyAdvert.ad_type) {
                 case 1:
-                    mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
-                    switch (companyAdvert.settings.operate) {
+                    mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.linktype);
+                    switch (companyAdvert.settings.linktype) {
                         case 1:
                             if (!TextUtils.isEmpty(companyAdvert.link))
                                 mPost.params("ad[" + index + "][link]", companyAdvert.link);
@@ -330,10 +330,10 @@ public class AdvertTemplateActivity extends BaseActivity {
                         mPost.params("ad[" + index + "][settings][intro]", companyAdvert.settings.intro);
                     break;
                 case 3:
-                    mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
-                    if (companyAdvert.settings.operate != 0) {
-                        mPost.params("ad[" + index + "][settings][operate]", companyAdvert.settings.operate);
-                        switch (companyAdvert.settings.operate) {
+                    mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.linktype);
+                    if (companyAdvert.settings.linktype != 0) {
+                        mPost.params("ad[" + index + "][settings][operate]", companyAdvert.settings.linktype);
+                        switch (companyAdvert.settings.linktype) {
                             case 1:
                                 if (!TextUtils.isEmpty(companyAdvert.link))
                                     mPost.params("ad[" + index + "][link]", companyAdvert.link);
@@ -394,9 +394,9 @@ public class AdvertTemplateActivity extends BaseActivity {
             }
             //顶部广告
         } else if (companyAdvert.position == 1) {
-            if (companyAdvert.settings.operate != 0) {
-                mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.operate);
-                switch (companyAdvert.settings.operate) {
+            if (companyAdvert.settings.linktype != 0) {
+                mPost.params("ad[" + index + "][settings][linktype]", companyAdvert.settings.linktype);
+                switch (companyAdvert.settings.linktype) {
                     case 1:
                         if (!TextUtils.isEmpty(companyAdvert.link))
                             mPost.params("ad[" + index + "][link]", companyAdvert.link);
