@@ -29,7 +29,6 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.JoinCallActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
@@ -185,7 +184,7 @@ public class MineFragment extends BaseFragment {
             case R.id.hezuo_call:
                 requestCall(mMobile);
 
-                toActivity(JoinCallActivity.class);
+//                toActivity(JoinCallActivity.class);
                 break;
             case R.id.write_advertise:
                 intent = new Intent(mActivity, AdvertTemplateActivity.class);
@@ -206,7 +205,7 @@ public class MineFragment extends BaseFragment {
         }
     }
 
-    private void requestCall(String mobile) {
+    private void requestCall(final String mobile) {
         if (PermissionsUtil.hasPermission(mActivity, Manifest.permission.CALL_PHONE)) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -215,7 +214,7 @@ public class MineFragment extends BaseFragment {
             PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
                 @Override
                 public void permissionGranted(@NonNull String[] permission) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001884660"));
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }

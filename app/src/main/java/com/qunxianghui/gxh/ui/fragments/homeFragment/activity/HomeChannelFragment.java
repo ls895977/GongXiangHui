@@ -51,6 +51,7 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
     void setOnChannelListener(OnChannelListener onChannelListener) {
         this.onChannelListener = onChannelListener;
     }
+
     public static HomeChannelFragment newInstance(ArrayList<ChannelItem> selectedData, List<ChannelItem> unselectedData) {
         HomeChannelFragment dialogFragment = new HomeChannelFragment();
         Bundle bundle = new Bundle();
@@ -84,6 +85,8 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
                     NewChannelEvent event = new NewChannelEvent(mAdapter.getData());
                     Hawk.put("USER_CHANNEL", event.mList);
                     EventBus.getDefault().post(event);
+
+
                 }
                 dismiss();
             }
@@ -135,7 +138,6 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
         ItemDragHelperCallBack callback = new ItemDragHelperCallBack(this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
-
         mAdapter = new ChannelAdapter(mData, helper);
         final GridLayoutManager manager = new GridLayoutManager(getActivity(), 4);
         mRecyclerView.setLayoutManager(manager);
@@ -152,6 +154,7 @@ public class HomeChannelFragment extends DialogFragment implements OnChannelList
         });
         mAdapter.onChannelListener(this);
     }
+
 
     private void setDataType(List<ChannelItem> data, int type) {
         for (ChannelItem datum : data) {
