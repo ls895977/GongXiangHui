@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -68,7 +69,10 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             case R.id.et_seekPassword_phoneNumber:
                 break;
             case R.id.tv_seekPassword_code:
-                getVertifiCode();
+                if (Utils.isTwoClick()){
+                    getVertifiCode();
+                }
+
                 break;
             case R.id.bt_seek_password_next:
                 RequestNextStep();

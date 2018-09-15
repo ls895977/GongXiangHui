@@ -255,8 +255,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 toActivity(SearchActivity.class);
                 break;
             case R.id.iv_more_columns:
-//                HomeChannelFragment homeChannelActivity = HomeChannelFragment.newInstance(userChannelList, null);
-//                homeChannelActivity.show(getChildFragmentManager(), "CHANNEL");
                 Intent intent = new Intent(getActivity(), HomeChannelActivity.class);
                 intent.putExtra("dataSelected", userChannelList);
                 startActivity(intent);
@@ -357,6 +355,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                     }
                 });
     }
+
     /*sp存储一些信息*/
     private void saveLocationData(String cityCode, String areaId, String cityName) {
         SPUtils.saveLocation("X-cityId", cityCode);

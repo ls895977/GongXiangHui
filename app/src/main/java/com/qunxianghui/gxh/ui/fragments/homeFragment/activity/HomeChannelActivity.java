@@ -48,6 +48,16 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         this.onChannelListener = onChannelListener;
     }
 
+
+//    public static HomeChannelFragment newInstance(ArrayList<ChannelItem> selectedData, List<ChannelItem> unselectedData) {
+//        HomeChannelFragment dialogFragment = new HomeChannelFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("dataSelected", selectedData);
+//        dialogFragment.setArguments(bundle);
+//        return dialogFragment;
+//    }
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +72,8 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
                     NewChannelEvent event = new NewChannelEvent(mAdapter.getData());
                     Hawk.put("USER_CHANNEL", event.mList);
                     EventBus.getDefault().post(event);
+
+
                 }
                 finish();
             }
@@ -123,7 +135,6 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         ItemDragHelperCallBack callback = new ItemDragHelperCallBack(this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
-
         mAdapter = new ChannelAdapter(mData, helper);
         final GridLayoutManager manager = new GridLayoutManager(HomeChannelActivity.this, 4);
         mRecyclerView.setLayoutManager(manager);
@@ -140,6 +151,7 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         });
         mAdapter.onChannelListener(this);
     }
+
 
     private void setDataType(List<ChannelItem> data, int type) {
         for (ChannelItem datum : data) {
@@ -191,5 +203,6 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
             }
         }
     }
+
 
 }

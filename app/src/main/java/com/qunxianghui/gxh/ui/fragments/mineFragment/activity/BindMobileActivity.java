@@ -24,6 +24,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -81,7 +82,10 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 break;
 
             case R.id.tv_bindmobile_getcode:
-                getVertifiCode();
+                if (Utils.isTwoClick()) {
+                    getVertifiCode();
+                }
+
                 break;
         }
     }

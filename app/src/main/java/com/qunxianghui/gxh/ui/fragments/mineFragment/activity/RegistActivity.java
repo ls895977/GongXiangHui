@@ -26,6 +26,7 @@ import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.REGutil;
+import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
@@ -109,7 +110,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.tv_regist_code:
-                getVertifiCode();
+                if (Utils.isTwoClick()) {
+                    getVertifiCode();
+                }
+
                 break;
             case R.id.tv_regist_link:
                 Intent intent = new Intent(mContext, ProtocolActivity.class);
@@ -149,6 +153,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
+
         OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
