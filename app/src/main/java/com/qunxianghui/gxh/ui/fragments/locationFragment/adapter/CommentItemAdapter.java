@@ -100,6 +100,7 @@ public class CommentItemAdapter extends BaseAdapter {
                                         @Override
                                         public void onSuccess(Response<String> response) {
                                             deleteItemView(position);
+
                                         }
                                     });
                         }
