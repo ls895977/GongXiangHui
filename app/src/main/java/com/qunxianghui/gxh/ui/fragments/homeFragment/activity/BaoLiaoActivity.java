@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.qunxianghui.gxh.bean.mine.BaoliaoBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
+import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.ToastUtils;
@@ -58,6 +60,9 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     RecyclerView mRv;
     @BindView(R.id.ll_load)
     LinearLayout mLlLoad;
+    @BindView(R.id.tv_upload)
+    View mTvUpload;
+
     private List<String> upLoadPics = new ArrayList<>();
     private int maxImgCount = 3;               //允许选择图片最大数
     private BaoLiaoAdapter mAdapter;
@@ -68,6 +73,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     private EditText mEtContent;
     private int selectImgSize = 0;
     private List<BaoliaoBean.DataBean.Content> contentBeanList = new ArrayList<>();
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_baoliao;
@@ -96,6 +102,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
 
     @Override
     protected void initListeners() {
+        mEtTitle.addTextChangedListener(new NewTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mTvUpload.setSelected(isCan());
+            }
+        });
         selectPhotoDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
             public void onTakePhoto() {
@@ -161,12 +173,47 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             BaoLiaoItemAdapter itemAdapter = (BaoLiaoItemAdapter) mChildImgRecview.getAdapter();
 
             boolean isNoPath = true;
-            if(itemAdapter.getImages()!=null && !itemAdapter.getImages().isEmpty()
-                    && !TextUtils.isEmpty(itemAdapter.getImages().get(0).path)){
+            if (itemAdapter.getImages() != null && !itemAdapter.getImages().isEmpty()
+                    && !TextUtils.isEmpty(itemAdapter.getImages().get(0).path)) {
                 isNoPath = false;
             }
             if (TextUtils.isEmpty(sd) && childCount == 1 && isNoPath) {
                 ToastUtils.showShort("您尚未填写第" + (i + 1) + "条发布内容！");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isCan() {
+        String mBaoLiaoTitle = mEtTitle.getText().toString().trim();
+        if (TextUtils.isEmpty(mBaoLiaoTitle)) {
+            return false;
+        }
+        for (int i = 0; i < mRv.getChildCount(); i++) {
+            LinearLayout layout = (LinearLayout) mRv.getChildAt(i);  //获得子item的layout
+            mEtContent = layout.findViewById(R.id.et_content);
+            mEtContent.addTextChangedListener(new NewTextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mTvUpload.setSelected(isCan());
+                }
+            });
+            RecyclerView mChildImgRecview = layout.findViewById(R.id.rv);
+            String sd = "";
+            if (null != mEtContent.getText()) {
+                sd = mEtContent.getText().toString();
+            }
+            int childCount = mChildImgRecview.getChildCount();
+
+            BaoLiaoItemAdapter itemAdapter = (BaoLiaoItemAdapter) mChildImgRecview.getAdapter();
+
+            boolean isNoPath = true;
+            if (itemAdapter.getImages() != null && !itemAdapter.getImages().isEmpty()
+                    && !TextUtils.isEmpty(itemAdapter.getImages().get(0).path)) {
+                isNoPath = false;
+            }
+            if (TextUtils.isEmpty(sd) && childCount == 1 && isNoPath) {
                 return false;
             }
         }
@@ -191,9 +238,9 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                     isHasPics = true;
                     for (int j = 0; j < datum.mList.size(); j++) {
                         ImageItem imageItem = datum.mList.get(j);
-                        Log.e("imgUrl:",imageItem.path);
+                        Log.e("imgUrl:", imageItem.path);
                         if (!imageItem.path.contains("http")) {
-                            upLoadPic(i,"data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
+                            upLoadPic(i, "data:image/jpeg;base64," + Utils.imageToBase64(imageItem.path));
                         }
                     }
                 }
@@ -206,6 +253,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             LogUtil.e(TAG, e.getMessage());
         }
     }
+
     /**
      * 上传图片
      *
@@ -236,7 +284,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                                     selectImgSize += itemSize;
                                 }
                             }
-                            Log.e("imgSize:",""+selectImgSize);
+                            Log.e("imgSize:", "" + selectImgSize);
                             if (selectImgSize == upLoadPics.size()) {
                                 fetchBaoLiaoData();
                             }
@@ -261,8 +309,8 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             JSONObject object = new JSONObject();
             BaoliaoBean.DataBean.Content contentBean = contentBeanList.get(i);
             try {
-                object.put("img",contentBean.img);
-                object.put("text",contentBean.text);
+                object.put("img", contentBean.img);
+                object.put("text", contentBean.text);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -285,7 +333,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
             e.printStackTrace();
         }
 
-        Log.d("imgContent",jsonObject.toString());
+        Log.d("imgContent", jsonObject.toString());
 
         OkGo.<CommonBean>post(Constant.HOME_DISCLOSS_URL)
                 .upJson(jsonObject.toString())
@@ -310,6 +358,7 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     }
 
     private int addItemPosition = 0;
+
     @Override
     public void onItemClick(View view, int position, int type) {
         switch (view.getId()) {
@@ -368,12 +417,12 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
                 }
             }
         }
-
+        mTvUpload.setSelected(isCan());
     }
 
     private void clearAddImg() {
         RecyclerView recyclerView = ((LinearLayout) mRv.getChildAt(addItemPosition)).findViewById(R.id.rv);
         BaoLiaoItemAdapter mChildAdapter = (BaoLiaoItemAdapter) recyclerView.getAdapter();
-        mChildAdapter.remove(addItemPosition,1);
+        mChildAdapter.remove(addItemPosition, 1);
     }
 }
