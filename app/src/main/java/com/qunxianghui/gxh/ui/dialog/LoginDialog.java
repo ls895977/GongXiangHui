@@ -16,19 +16,38 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 
 public class LoginDialog extends Dialog {
 
-    public LoginDialog(@NonNull final Context context, String content) {
+    private static LoginDialog mInstance;
+
+    public static LoginDialog getInstance(@NonNull final Context context) {
+        if (mInstance == null) {
+            synchronized (LoginDialog.class) {
+                if (mInstance == null) {
+                    mInstance = new LoginDialog(context);
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    public void setContent(String content) {
+        LoginMsgHelper.exitLogin();
+        if (!TextUtils.isEmpty(content))
+            ((TextView) findViewById(R.id.tv_title)).setText(content);
+        if (!mInstance.isShowing()) {
+            mInstance.show();
+        }
+    }
+
+    private LoginDialog(@NonNull final Context context) {
         super(context, R.style.LOGIN_DIALOG_THEME);
         setCanceledOnTouchOutside(false);
         setCancelable(true);
         setContentView(R.layout.dialog_login);
-        if (!TextUtils.isEmpty(content))
-            ((TextView) findViewById(R.id.tv_title)).setText(content);
         Window window = getWindow();
         android.view.WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-        LoginMsgHelper.exitLogin();
 
         findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
