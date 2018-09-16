@@ -28,6 +28,7 @@ import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.PersonalAds;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.EducationActivity;
 import com.qunxianghui.gxh.ui.activity.EnterpriseMaterialActivity;
@@ -35,6 +36,7 @@ import com.qunxianghui.gxh.ui.activity.GeneralMaterialActivity;
 import com.qunxianghui.gxh.ui.dialog.AdvertChoosePicDialog;
 import com.qunxianghui.gxh.ui.dialog.AdvertChooseTypeDialog;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.widget.CircleIndicatorView;
 
 import java.util.ArrayList;
@@ -117,18 +119,31 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
         Intent intent;
         switch (view.getId()) {
             case R.id.ll_company:
-                mIsBottomClick = true;
-                intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
-                intent.putExtra("type", 9);
-                intent.putExtra("isMultiSelect", true);
-                startActivityForResult(intent, 0x0011);
+
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    asyncShowToast("非企业会员不能添加企业素材");
+                    return;
+                } else {
+                    mIsBottomClick = true;
+                    intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
+                    intent.putExtra("type", 9);
+                    intent.putExtra("isMultiSelect", true);
+                    startActivityForResult(intent, 0x0011);
+                }
+
                 break;
             case R.id.ll_common:
-                mIsBottomClick = true;
-                intent = new Intent(mActivity, GeneralMaterialActivity.class);
-                intent.putExtra("isMultiSelect", true);
-                intent.putExtra("type", 3);
-                startActivityForResult(intent, 0x0011);
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    asyncShowToast("非企业会员不能添加通用素材!");
+                    return;
+                } else {
+                    mIsBottomClick = true;
+                    intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                    intent.putExtra("isMultiSelect", true);
+                    intent.putExtra("type", 3);
+                    startActivityForResult(intent, 0x0011);
+                }
+
                 break;
             case R.id.ll_common_advert:
                 if (mViewList.size() >= 10) {
@@ -159,18 +174,30 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPicFromLocal:
-                mIsBottomClick = false;
-                intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
-                intent.putExtra("type", 9);
-                intent.putExtra("isMultiSelect", false);
-                startActivityForResult(intent, 0x0011);
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    asyncShowToast("亲，非企业会员不能添加企业素材～～");
+                    return;
+                } else {
+                    mIsBottomClick = false;
+                    intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
+                    intent.putExtra("type", 9);
+                    intent.putExtra("isMultiSelect", false);
+                    startActivityForResult(intent, 0x0011);
+                }
+
                 break;
             case R.id.btnCommon:
-                mIsBottomClick = false;
-                intent = new Intent(mActivity, GeneralMaterialActivity.class);
-                intent.putExtra("isMultiSelect", false);
-                intent.putExtra("type", 3);
-                startActivityForResult(intent, 0x0011);
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    asyncShowToast("亲，非企业会员不能添加通用素材～～");
+                    return;
+                } else {
+                    mIsBottomClick = false;
+                    intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                    intent.putExtra("isMultiSelect", false);
+                    intent.putExtra("type", 3);
+                    startActivityForResult(intent, 0x0011);
+                }
+
                 break;
         }
     }

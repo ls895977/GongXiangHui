@@ -141,29 +141,43 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         commonBottomAdverAdapter.setmOnItemClickListener(new AdvertBottomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Intent intent = null;
                 switch (position) {
                     case 0:
-                        if (mList.isEmpty()) {
-                            asyncShowToast("请先添加广告模版");
+                        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                            asyncShowToast("非企业会员不可添加企业素材!");
                             return;
+                        } else {
+                            if (mList.isEmpty()) {
+                                asyncShowToast("请先添加广告模版");
+                                return;
+                            }
+
+                            mIsBottomClick = true;
+                            intent = new Intent();
+                            intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
+                            intent.putExtra("isMultiSelect", true);
+                            intent.setClass(mActivity, EnterpriseMaterialActivity.class);
+                            startActivityForResult(intent, 0x0011);
                         }
-                        mIsBottomClick = true;
-                        Intent intent = new Intent();
-                        intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
-                        intent.putExtra("isMultiSelect", true);
-                        intent.setClass(mActivity, EnterpriseMaterialActivity.class);
-                        startActivityForResult(intent, 0x0011);
+
                         break;
                     case 1:
-                        if (mList.isEmpty()) {
-                            asyncShowToast("请先添加广告模版");
+                        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                            asyncShowToast("非企业会员不可添加通用素材!");
                             return;
+                        } else {
+                            if (mList.isEmpty()) {
+                                asyncShowToast("请先添加广告模版");
+                                return;
+                            }
+                            mIsBottomClick = true;
+                            intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                            intent.putExtra("isMultiSelect", true);
+                            intent.putExtra("type", 3);
+                            startActivityForResult(intent, 0x0011);
                         }
-                        mIsBottomClick = true;
-                        intent = new Intent(mActivity, GeneralMaterialActivity.class);
-                        intent.putExtra("isMultiSelect", true);
-                        intent.putExtra("type", 3);
-                        startActivityForResult(intent, 0x0011);
+
                         break;
                     case 9:
                         toActivity(EducationActivity.class);
@@ -289,18 +303,30 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                 startActivityForResult(intent, 0x0011);
                 break;
             case R.id.btnPicFromLocal:
-                mIsBottomClick = false;
-                intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
-                intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
-                intent.putExtra("isMultiSelect", false);
-                startActivityForResult(intent, 0x0011);
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    asyncShowToast("亲，非企业会员不能添加企业素材～～");
+                    return;
+                } else {
+                    mIsBottomClick = false;
+                    intent = new Intent(mActivity, EnterpriseMaterialActivity.class);
+                    intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
+                    intent.putExtra("isMultiSelect", false);
+                    startActivityForResult(intent, 0x0011);
+                }
+
                 break;
             case R.id.btnCommon:
-                mIsBottomClick = false;
-                intent = new Intent(mActivity, GeneralMaterialActivity.class);
-                intent.putExtra("type", 3);
-                intent.putExtra("isMultiSelect", false);
-                startActivityForResult(intent, 0x0011);
+                if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                    asyncShowToast("亲，非企业会员不能添加通用素材～～");
+                    return;
+                } else {
+                    mIsBottomClick = false;
+                    intent = new Intent(mActivity, GeneralMaterialActivity.class);
+                    intent.putExtra("type", 3);
+                    intent.putExtra("isMultiSelect", false);
+                    startActivityForResult(intent, 0x0011);
+                }
+
                 break;
         }
     }

@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -32,14 +31,12 @@ public class ImageAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         final String url = imageUrls.get(position);
         PhotoView photoView = new PhotoView(container.getContext());
-        photoView.setScaleType(ImageView.ScaleType.FIT_XY);
         Display display = activity.getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
         int height = display.getHeight();
         ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width, height);
-        layout.setMargins(0, 100, 0, 100);
         photoView.setLayoutParams(layout);
-        Glide.with(activity).load(url).apply(new RequestOptions().fitCenter()).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
+        Glide.with(activity).load(url).apply(new RequestOptions()).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
         container.addView(photoView);
         photoView.setOnClickListener(new View.OnClickListener() {
             @Override

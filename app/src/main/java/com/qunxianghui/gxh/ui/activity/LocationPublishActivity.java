@@ -89,6 +89,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         imagePicker.setCrop(false);
         imagePicker.setSaveRectangle(true);
         imagePicker.setSelectLimit(9);
+        imagePicker.setMultiMode(true);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
         imagePicker.setFocusWidth(800);
         imagePicker.setFocusHeight(800);
