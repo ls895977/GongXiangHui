@@ -159,6 +159,8 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0x0022) {
             resetCardShow(viewpager.getCurrentItemIndex());
+        }else  if (resultCode==0x0011){
+            resetCardShow(viewpager.getCurrentItemIndex());
         }
     }
 
