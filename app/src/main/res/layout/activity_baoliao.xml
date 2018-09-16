@@ -37,10 +37,10 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:background="@drawable/bg_gray_white_selector"
+            android:background="@drawable/bg_gray_white_selector1"
             android:gravity="center"
             android:text="发布"
-            android:textColor="#fff"
+            android:textColor="@color/tv_gray_white_selector1"
             android:textSize="14sp" />
 
     </RelativeLayout>
