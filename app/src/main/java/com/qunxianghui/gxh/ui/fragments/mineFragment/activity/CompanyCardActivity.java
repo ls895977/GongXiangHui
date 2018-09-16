@@ -98,8 +98,8 @@ public class CompanyCardActivity extends BaseActivity {
             tvCompanyEmail.setText(data.getEmail());
             tvCompanyAdress.setText(data.getAddress());
             tvCompanyDuty.setText(data.getDuty());
-            Glide.with(mContext).load(data.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.default_img)
-                    .error(R.mipmap.default_img).centerCrop().circleCrop()).into(mIvHead);
+            Glide.with(mContext).load(data.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.user_moren)
+                    .error(R.mipmap.user_moren).centerCrop().circleCrop()).into(mIvHead);
         }
     }
 

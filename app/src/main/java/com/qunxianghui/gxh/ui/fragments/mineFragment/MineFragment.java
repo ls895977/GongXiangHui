@@ -25,10 +25,12 @@ import com.qunxianghui.gxh.bean.home.User;
 import com.qunxianghui.gxh.bean.mine.UserInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
@@ -168,10 +170,22 @@ public class MineFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_mine_message:
-                toActivity(MineMessageActivity.class);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    toActivity(MineMessageActivity.class);
+                }
+
                 break;
             case R.id.mine_fabu:
-                toActivity(MineIssueActivity.class);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    toActivity(MineIssueActivity.class);
+                }
+
                 break;
             case R.id.rl_up_step:
                 toActivity(MemberUpActivity.class);
@@ -194,13 +208,31 @@ public class MineFragment extends BaseFragment {
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-                toActivity(MyFollowActivity.class);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    toActivity(MyFollowActivity.class);
+                }
+
                 break;
             case R.id.ll_mine_fans:
-                toActivity(MyFansActivity.class);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    toActivity(MyFansActivity.class);
+                }
+
                 break;
             case R.id.ll_mine_mycollect:
-                toActivity(MyCollectActivity.class);
+                if (!LoginMsgHelper.isLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                } else {
+                    toActivity(MyCollectActivity.class);
+                }
+
                 break;
         }
     }
