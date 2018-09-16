@@ -143,6 +143,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             public void onItemClick(int position) {
                 switch (position) {
                     case 0:
+                        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                            asyncShowToast("请升级为企业会员使用!");
+                            return;
+                        }
                         if (mList.isEmpty()) {
                             asyncShowToast("请先添加广告模版");
                             return;
@@ -155,6 +159,10 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         startActivityForResult(intent, 0x0011);
                         break;
                     case 1:
+                        if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
+                            asyncShowToast("请升级为企业会员使用!");
+                            return;
+                        }
                         if (mList.isEmpty()) {
                             asyncShowToast("请先添加广告模版");
                             return;
