@@ -4,7 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +28,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommentItemAdapter extends BaseAdapter {
 
@@ -125,7 +133,6 @@ public class CommentItemAdapter extends BaseAdapter {
 
 
     private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
-        holder.name.setText(mList.get(position).getMember_name());
 //        for (int i = 0; i < holder.name.length(); i++) {
 //            if (i == holder.name.length() - 1) {
 //                message += ":";
@@ -136,12 +143,48 @@ public class CommentItemAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())) {
             holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
             holder.tv_item_replyed.setVisibility(View.VISIBLE);
-            holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name());
+            holder.name.setText(mList.get(position).getMember_name());
+            holder.tv_item_reply_lb.setText("回复");
+            holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name()+":");
         } else {
             holder.tv_item_reply_lb.setVisibility(View.GONE);
             holder.tv_item_replyed.setVisibility(View.GONE);
+            holder.name.setText(mList.get(position).getMember_name()+":");
         }
-        holder.content.setText(mList.get(position).getContent());
+
+        String contentTitle ="";
+        if(!TextUtils.isEmpty(mList.get(position).getMember_name())){
+            contentTitle += holder.name.getText().toString();
+        }
+        if(!TextUtils.isEmpty(mList.get(position).getMember_reply_name()) &&
+                !TextUtils.isEmpty(holder.tv_item_reply_lb.getText())){
+            contentTitle += holder.tv_item_reply_lb.getText();
+            contentTitle += holder.tv_item_replyed.getText();
+        }
+        SpannableStringBuilder textBuilder = new SpannableStringBuilder();
+        if(contentTitle.length() > 0){
+            for (int i = 0; i < contentTitle.length(); i++) {
+                Pattern   pa   =   Pattern.compile( "^[\u4e00-\u9fa5]*$ ");
+                Matcher matcher   =   pa.matcher(""+contentTitle.charAt(i));
+                if(matcher.find()) {
+                    textBuilder.append("\t\t");
+                } else{
+                    textBuilder.append("\t");
+                }
+            }
+        }
+
+        if(contentTitle.contains("回复")){
+            contentTitle = contentTitle + "    ";
+        } else{
+            contentTitle+=" ";
+        }
+
+        SpannableStringBuilder span = new SpannableStringBuilder(contentTitle + mList.get(position).getContent());
+        span.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), 0, contentTitle.length(),
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        Log.e("content",contentTitle + mList.get(position).getContent());
+        holder.content.setText(span);
 
     }
 
