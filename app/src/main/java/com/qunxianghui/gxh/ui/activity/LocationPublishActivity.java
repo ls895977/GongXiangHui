@@ -191,7 +191,10 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 if (!mImages.isEmpty()) {
                     compressImg(mImages.get(0).path);
                 } else {
-                    uploadInfo();
+                    if (Utils.isTwoClick()) {
+                        uploadInfo();
+                    }
+
                 }
                 break;
             case R.id.tv_type:

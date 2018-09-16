@@ -104,10 +104,10 @@ public class VideoUploadActivity extends BaseActivity {
         if (JZVideoPlayer.backPress()) {
             return;
         }
-        if (mIsUploadIng) {
-            asyncShowToast("上传中，请稍等...");
-            return;
-        }
+//        if (mIsUploadIng) {
+//            asyncShowToast("上传中，请稍等...");
+//            return;
+//        }
         super.onBackPressed();
     }
 
