@@ -61,12 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
     protected void setStatusBarTextColor() {
         //Log.d(TAG,"setStatusBarTextColor");
         StatusBarColorUtil.setStatusTextColor(true, this);
@@ -89,6 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -101,7 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(final TokenLoseEvent tokenLoseEvent) {
-        new LoginDialog(BaseActivity.this, tokenLoseEvent.mContent).show();
+        LoginDialog.getInstance(BaseActivity.this).setContent(tokenLoseEvent.mContent);
     }
 
     protected void toActivity(Class<?> target) {

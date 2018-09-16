@@ -67,6 +67,7 @@ public class MineFragment extends BaseFragment {
     TextView mTvMineFollow;
     @BindView(R.id.tv_mine_fans)
     TextView mTvMineFans;
+
     private UserDao userDao;
     private UserInfo.DataBean mUserInfo;
     private int userSize;
