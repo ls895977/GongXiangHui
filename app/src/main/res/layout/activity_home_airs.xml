@@ -85,24 +85,25 @@
             android:textColor="#8A1717"
             android:textSize="12sp" />
 
-        <ImageView
-            android:id="@+id/iv_homeair_line"
-            android:layout_width="1dp"
-            android:layout_height="12dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:src="@mipmap/homeair_splite" />
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_homeair_line"-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="12dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:src="@mipmap/homeair_splite" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/iv_homeair_line"
-            tools:text="PM2.5 163 良"
-            android:textColor="#8A1717"
-            android:textSize="12sp" />
+        <!--<TextView-->
+            <!--android:id="@+id/tv_homeair_state"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_toEndOf="@+id/iv_homeair_line"-->
+            <!--tools:text="PM2.5 163 良"-->
+            <!--android:textColor="#8A1717"-->
+            <!--android:textSize="12sp" />-->
     </RelativeLayout>
 
 
