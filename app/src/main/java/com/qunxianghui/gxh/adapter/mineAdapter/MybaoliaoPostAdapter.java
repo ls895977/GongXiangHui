@@ -48,16 +48,18 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
             }
         });
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isShow) {
-//                    if (mCallback != null) mCallback.callback(dataBean.getId());
-//                } else {
-//                    checkBox.performClick();
-//                }
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isShow){
+                    checkBox.setChecked(!checkBox.isChecked());
+                    dataBean.setChecked(!dataBean.isChecked());
+                }else {
+                    mOnAdapterClick.onClick(position);
+                }
+
+            }
+        });
         if (images.size() >= 1) {
             RequestOptions options = new RequestOptions();
             options.centerCrop();
@@ -69,10 +71,10 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
 
         if (isShow) {
             holder.getView(R.id.ch_delete).setVisibility(View.VISIBLE);
-            holder.itemView.setClickable(false);
+//            holder.itemView.setClickable(false);
         } else {
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
-            holder.itemView.setClickable(true);
+//            holder.itemView.setClickable(true);
         }
 
 
@@ -87,6 +89,15 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
     @Override
     protected int getItemView() {
         return R.layout.item_mine_mycollect_post;
+    }
+
+
+    public interface OnAdapterClick{
+        void onClick(int position);
+    }
+    private OnAdapterClick mOnAdapterClick;
+    public void setOnAdapterClick(OnAdapterClick mOnAdapterClick){
+        this.mOnAdapterClick = mOnAdapterClick;
     }
 
 }
