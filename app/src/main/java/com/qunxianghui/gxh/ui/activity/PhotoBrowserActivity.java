@@ -28,7 +28,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements ImageAdap
     private ImageAdapter adapter;
     private List<String> Urls = new ArrayList<>();
     private Dialog mDialog;
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

@@ -85,11 +85,9 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 if (Utils.isTwoClick()) {
                     getVertifiCode();
                 }
-
                 break;
         }
     }
-
     private void BindMobilePhone() {
         mobileCode = etBindmobileCode.getText().toString().trim();
         phoneNumber = EtBindmobilePhone.getText().toString().trim();
@@ -109,7 +107,7 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                                 SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                 SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
                                 OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                asyncShowToast("登录成功");
+                                asyncShowToast(response.body().message);
                                 toActivity(MainActivity.class);
                                 finish();
                             } else {
