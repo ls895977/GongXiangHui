@@ -122,8 +122,17 @@ public class CommentItemAdapter extends BaseAdapter {
         return convertView;
     }
 
+
+
     private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
         holder.name.setText(mList.get(position).getMember_name());
+//        for (int i = 0; i < holder.name.length(); i++) {
+//            if (i == holder.name.length() - 1) {
+//                message += ":";
+//            } else {
+//                message += "  ";
+//            }
+//        }
         if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())) {
             holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
             holder.tv_item_replyed.setVisibility(View.VISIBLE);

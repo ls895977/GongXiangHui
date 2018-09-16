@@ -62,7 +62,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int mUuid;
     public int mMemberId;
     public boolean mIsChange;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_detail_location;

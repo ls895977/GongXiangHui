@@ -58,8 +58,6 @@ public class BaoLiaoActivity extends BaseActivity implements BaoLiaoAdapter.OnRe
     RecyclerView mRv;
     @BindView(R.id.ll_load)
     LinearLayout mLlLoad;
-
-
     private List<String> upLoadPics = new ArrayList<>();
     private int maxImgCount = 3;               //允许选择图片最大数
     private BaoLiaoAdapter mAdapter;

@@ -324,9 +324,9 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             if (aMapLocation.getErrorCode() == 0) {
                 String cityName = aMapLocation.getDistrict();
                 String city = SPUtils.getLocation("currcity");
-                if (!TextUtils.isEmpty(city)) {
-                    mTvHomeLocation.setText(city);
-                } else {
+//                if (!TextUtils.isEmpty(city)) {
+//                    mTvHomeLocation.setText(city);
+//                } else {
                     mTvHomeLocation.setText(cityName);
                     requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
                 }
@@ -336,7 +336,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
             }
-        }
+
         mlocationClient.stopLocation();
     }
 

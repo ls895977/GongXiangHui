@@ -129,19 +129,23 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void RegistUser(String phone, String pass, String registCode) {
-        OkGo.<CommonBean>post(Constant.REGIST_URL).tag(TAG)
-                .cacheKey("cachePostKey")
-                .cacheMode(CacheMode.DEFAULT)
+        OkGo.<CommonBean>post(Constant.REGIST_URL)
                 .params("mobile", phone)
                 .params("password", pass)
                 .params("captcha", registCode)
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
-                        if (response.code() == 0) {
+                        if (response.body().code == 0) {
                             asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<CommonBean> response) {
+                        super.onError(response);
+                        asyncShowToast(response.body().message);
                     }
                 });
     }
@@ -203,7 +207,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     handler.sendEmptyMessage(MSG_TIMER);
                     break;
                 case MSG_SEND_CODE_ERROR:
-                    Toast.makeText(mContext, "用户已存在", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "验证码发送失败", Toast.LENGTH_SHORT).show();
                     break;
                 case MSG_TIMER:
                     startTimer();
