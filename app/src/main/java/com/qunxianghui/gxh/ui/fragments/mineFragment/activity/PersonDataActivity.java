@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.bean.mine.UserInfo;
 import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.utils.Utils;
 
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class PersonDataActivity extends BaseActivity {
     }
     public void saveInfo(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), 0);
-        String nickName = etPersonDataNickName.getText().toString().trim();
+        final String nickName = etPersonDataNickName.getText().toString().trim();
         String mUserName = etPersonDataUserName.getText().toString().trim();
         String mUserEmail = etPersonDataEmail.getText().toString().trim();
         String mUserCompany = etPersonDataCompany.getText().toString().trim();
@@ -161,6 +162,8 @@ public class PersonDataActivity extends BaseActivity {
                             Toast.makeText(mContext, response.body().message, Toast.LENGTH_SHORT).show();
                         } else if (code == 200) {
                             Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
+                            //用户昵称被修改了
+                            UserUtil.getInstance().mNick = nickName;
                             finish();
                         } else {
                             asyncShowToast("保存失败" + response.body().message);
