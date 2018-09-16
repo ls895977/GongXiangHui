@@ -165,6 +165,12 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void resetCardShow(int currentItemIndex) {
+
+        SharedPreferences companyData = getSharedPreferences("companymessage", 0);
+        selfcompayname = companyData.getString("selfcompayname", "");
+        expire_time = companyData.getString("member_expire_time", "");
+        avatar = companyData.getString("avatar", "");
+
         View view = viewList.get(currentItemIndex);
         //todo 1
             TextView mTvMemberupStep = view.findViewById(R.id.tv_memberup_company_state);
@@ -176,7 +182,6 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
                     mTvMemberupStep.setText("会员状态: 已激活");
                     mTvMemberUpActiviteTime.setText(expire_time + " 到期");
                     ((TextView) view.findViewById(R.id.tv_memberup_company_step)).setText("企业会员");
-
                 } else {
                     mTvMemberUpActiviteActive.setVisibility(View.GONE);
                     mTvMemberUpActiviteTime.setVisibility(View.GONE);
