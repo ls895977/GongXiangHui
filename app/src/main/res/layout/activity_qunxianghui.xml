@@ -1,15 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_qunxianghui"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:text="群享汇"
         android:textSize="20sp" />
-</LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_qunxianghui_scan"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/tv_qunxianghui"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/icon_aboutus_scan" />
+
+
+    <TextView
+        android:id="@+id/tv_quxinghui_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_qunxianghui_scan"
+        android:layout_margin="20dp"
+        android:text="描述话语" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/tv_quxinghui_des"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+
+
+        <TextView
+            android:id="@+id/tv_quxianghui_saveto_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_white"
+            android:gravity="center"
+            android:text="保存到手机" />
+
+
+        <TextView
+            android:id="@+id/tv_quxianghui_share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_white"
+            android:gravity="center"
+            android:text="分享" />
+
+
+    </LinearLayout>
+</RelativeLayout>

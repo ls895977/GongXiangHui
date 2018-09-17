@@ -1,12 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,8 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.github.dfqin.grantor.PermissionListener;
-import com.github.dfqin.grantor.PermissionsUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
@@ -30,6 +25,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.JoinCallActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
@@ -197,8 +193,8 @@ public class MineFragment extends BaseFragment {
                 toActivity(PersonDataActivity.class, bundle);
                 break;
             case R.id.hezuo_call:
-                requestCall(mMobile);
-//                toActivity(JoinCallActivity.class);
+//                requestCall(mMobile);
+                toActivity(JoinCallActivity.class);
                 break;
             case R.id.write_advertise:
                 intent = new Intent(mActivity, AdvertTemplateActivity.class);
@@ -237,25 +233,25 @@ public class MineFragment extends BaseFragment {
         }
     }
 
-    private void requestCall(final String mobile) {
-        if (PermissionsUtil.hasPermission(mActivity, Manifest.permission.CALL_PHONE)) {
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        } else {
-            PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
-                @Override
-                public void permissionGranted(@NonNull String[] permission) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void permissionDenied(@NonNull String[] permission) {
-                    asyncShowToast("权限被禁止  设置权限后再试试.");
-                }
-            }, Manifest.permission.CALL_PHONE);
-        }
-    }
+//    private void requestCall(final String mobile) {
+//        if (PermissionsUtil.hasPermission(mActivity, Manifest.permission.CALL_PHONE)) {
+//            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//        } else {
+//            PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
+//                @Override
+//                public void permissionGranted(@NonNull String[] permission) {
+//                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//                }
+//
+//                @Override
+//                public void permissionDenied(@NonNull String[] permission) {
+//                    asyncShowToast("权限被禁止  设置权限后再试试.");
+//                }
+//            }, Manifest.permission.CALL_PHONE);
+//        }
+//    }
 }

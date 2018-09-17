@@ -47,7 +47,7 @@ public class SavePicByUrlUtils {
         }
     }
 
-    private static void savePic2Phone(Context context, Bitmap bmp) {
+    public static void savePic2Phone(Context context, Bitmap bmp) {
         // 首先保存图片
         File appDir = new File(Environment.getExternalStorageDirectory(), "dsh");
         if (!appDir.exists()) {

@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -29,6 +33,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
@@ -40,6 +46,9 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
@@ -89,6 +98,11 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                         skipMycollectNewsDetail(id);
                     }
                 });
+            }
+            if (dataList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            } else {
+                llEmpty.setVisibility(View.GONE);
             }
 
         }
@@ -195,6 +209,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
     }
 
     @Override
@@ -209,5 +224,13 @@ public class MineCommonFragment extends BaseFragment implements Observer {
             myCollectPostAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 }

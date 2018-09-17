@@ -52,12 +52,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     RelativeLayout rlSetCache;
     @BindView(R.id.switchButton_mine_set)
     SwitchButton switchButtonMineSet;
-    @BindView(R.id.tv_mine_set_version)
-    TextView tvMineSetVersion;
-//    @BindView(R.id.rl_setting_aboutus)
-//    RelativeLayout rlSettingAboutus;
-//    @BindView(R.id.rl_queston_post)
-//    RelativeLayout rlQuestonPost;
+
+    @BindView(R.id.rl_setting_aboutus)
+    RelativeLayout rlSettingAboutus;
+    @BindView(R.id.rl_queston_post)
+    RelativeLayout rlQuestonPost;
+    @BindView(R.id.rl_set_comment_question)
+    RelativeLayout rlSetCommentQuestion;
     private Dialog loadingDialog;
 
     @SuppressLint("HandlerLeak")
@@ -109,9 +110,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void initListeners() {
         mTvSettingQuit.setOnClickListener(this);
         rlSetCache.setOnClickListener(this);
-//        rlSettingAboutus.setOnClickListener(this);
-//        rlQuestonPost.setOnClickListener(this);
-
+        rlSettingAboutus.setOnClickListener(this);
+        rlQuestonPost.setOnClickListener(this);
+        rlSetCommentQuestion.setOnClickListener(this);
 
 
     }
@@ -151,16 +152,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 handler.sendMessageDelayed(msg, 1000);
                 break;
 
-//            case R.id.rl_setting_aboutus:
-//                toActivity(AboutUsActivity.class);
-//                break;
-//
-//            case R.id.rl_queston_post:
-//                toActivity(QuestonPostActivity.class);
-//                break;
-//            case R.id.rl_set_comment_question:
-//                asyncShowToast("等待接入h5,敬请期待");
-//                break;
+            case R.id.rl_setting_aboutus:
+                toActivity(AboutUsActivity.class);
+                break;
+
+            case R.id.rl_queston_post:
+                toActivity(QuestonPostActivity.class);
+                break;
+            case R.id.rl_set_comment_question:
+                asyncShowToast("等待接入h5,敬请期待");
+                break;
         }
 
     }
