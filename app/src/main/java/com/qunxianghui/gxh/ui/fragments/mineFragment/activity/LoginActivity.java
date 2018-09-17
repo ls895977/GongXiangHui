@@ -111,6 +111,7 @@ public class LoginActivity extends BaseActivity {
                                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                             OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                            UserUtil.getInstance().mNick =  data.getString("nick");
                                             asyncShowToast("登录成功");
                                             toActivity(MainActivity.class);
                                             finish();
@@ -140,6 +141,7 @@ public class LoginActivity extends BaseActivity {
                                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                             OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                            UserUtil.getInstance().mNick =  data.getString("nick");
                                             asyncShowToast("登录成功");
                                             toActivity(MainActivity.class);
                                             finish();
@@ -240,9 +242,10 @@ public class LoginActivity extends BaseActivity {
                             JsonConvert.sIsShow = true;
                             LoginBean userData = response.body().data;
                             String access_token = userData.getAccessTokenInfo().getAccess_token();
-                            UserUtil.getInstance().mNick = userData.getNick();
-                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, userData.getCompany_id() != 0);
+                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                            UserUtil.getInstance().mNick = userData.getNick();
+
                             if (userData.getCompany_info() != null) {
                                 SharedPreferences.Editor editor = getSharedPreferences("companymessage", 0).edit();
                                 editor.putString("selfcompanyname", userData.getCompany_info().getCompany_name());

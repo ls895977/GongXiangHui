@@ -198,7 +198,6 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.hezuo_call:
                 requestCall(mMobile);
-
 //                toActivity(JoinCallActivity.class);
                 break;
             case R.id.write_advertise:

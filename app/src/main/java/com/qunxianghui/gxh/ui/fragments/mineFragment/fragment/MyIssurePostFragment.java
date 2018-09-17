@@ -105,13 +105,14 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     mineIssurePostAdapter.setListener(this);
                     mRv.setAdapter(mineIssurePostAdapter);
 
-                    if (dataList.isEmpty()) {
-                        llEmpty.setVisibility(View.VISIBLE);
-                    }
                 }
-                mRv.refreshComplete();
-                mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
             }
+            mRv.refreshComplete();
+            if (dataList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
+            mineIssurePostAdapter.notifyDataSetChanged();
+            mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
         } else {
             asyncShowToast("数据出错了  请重新加载");
         }
