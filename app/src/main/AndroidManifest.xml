@@ -354,6 +354,9 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.HomeChannelActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fragments.homeFragment.activity.VideoChannelActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 

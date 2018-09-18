@@ -14,31 +14,28 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.homeAdapter.ChannelAdapter;
-import com.qunxianghui.gxh.bean.home.ChannelGetallBean;
+import com.qunxianghui.gxh.adapter.homeAdapter.VideoChannelAdapter;
+import com.qunxianghui.gxh.bean.home.HomeVideoChannelBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.ChannelItem;
 import com.qunxianghui.gxh.interfaces.OnChannelListener;
 import com.qunxianghui.gxh.listener.ItemDragHelperCallBack;
-import com.qunxianghui.gxh.observer.NewChannelEvent;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeChannelActivity extends AppCompatActivity implements OnChannelListener {
+public class VideoChannelActivity extends AppCompatActivity implements OnChannelListener {
 
     RecyclerView mRecyclerView;
 
     private ArrayList<ChannelItem> mData = new ArrayList<>();
     private ArrayList<ChannelItem> mSelectedData;
     private ArrayList<ChannelItem> mUnSelectedData = new ArrayList<>();
-    private ChannelAdapter mAdapter;
+    private VideoChannelAdapter mAdapter;
     private String firstAddChannelName = "";
     //是否需要更新 主页频道信息
     private boolean isUpdate = false;
@@ -59,46 +56,45 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
             @Override
             public void onClick(View v) {
                 if (isUpdate) {
-                    NewChannelEvent event = new NewChannelEvent(mAdapter.getData());
-                    Hawk.put("USER_CHANNEL", event.mList);
-                    EventBus.getDefault().post(event);
+                    List<ChannelItem> list = new ArrayList<>();
+                    for (ChannelItem channelItem : mAdapter.getData()) {
+                        if (channelItem.viewType == ChannelItem.TYPE_MY_CHANNEL)
+                            list.add(channelItem);
+                    }
+                    Hawk.put("USER_VIDEO_CHANNEL", list);
+                    setResult(0x0022);
                 }
                 finish();
             }
         });
         mRecyclerView = findViewById(R.id.recyclerView);
-        OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
-                .execute(new JsonCallback<ChannelGetallBean>() {
+        OkGo.<HomeVideoChannelBean>post(Constant.EDIT_VIDEO_TAB_URL)
+                .execute(new JsonCallback<HomeVideoChannelBean>() {
                     @Override
-                    public void onSuccess(Response<ChannelGetallBean> response) {
+                    public void onSuccess(Response<HomeVideoChannelBean> response) {
                         getAllData(response.body());
                     }
                 });
     }
 
-    private void getAllData(ChannelGetallBean bean) {
-        if (bean != null && bean.getCode() == 0) {
-            mSelectedData = (ArrayList<ChannelItem>) getIntent().getSerializableExtra("dataSelected");
-            List<ChannelGetallBean.DataBean> datas = bean.getData();
-            for (int i = 0; i < datas.size(); i++) {
-                ChannelGetallBean.DataBean dataBean = datas.get(i);
-                ChannelItem item = new ChannelItem(dataBean.getChannel_id(), dataBean.getChannel_name(), i, 1);
-                mUnSelectedData.add(item);
-                for (ChannelItem channelItem : mSelectedData) {
-                    if (channelItem.channelName.equals(item.channelName)) {
-                        mUnSelectedData.remove(item);
-                        break;
-                    }
-                }
+    private void getAllData(HomeVideoChannelBean channelBean) {
+        if (channelBean != null && channelBean.code == 200) {
+            if (channelBean.data.added != null) {
+                mSelectedData = channelBean.data.added;
+                setDataType(mSelectedData, ChannelItem.TYPE_MY_CHANNEL);
+            }
+            if (channelBean.data.others != null) {
+                mUnSelectedData = channelBean.data.others;
+                setDataType(mUnSelectedData, ChannelItem.TYPE_OTHER_CHANNEL);
             }
             processLogic();
-        } else if (bean != null && bean.getCode() == 1000){
+        } else if (channelBean != null && channelBean.code == 1000) {
             SPUtils.removePreference(SpConstant.ACCESS_TOKEN);
             OkGo.getInstance().getCommonHeaders().remove("X-accesstoken");
-            OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
-                    .execute(new JsonCallback<ChannelGetallBean>() {
+            OkGo.<HomeVideoChannelBean>post(Constant.CHANNEL_GETALL)
+                    .execute(new JsonCallback<HomeVideoChannelBean>() {
                         @Override
-                        public void onSuccess(Response<ChannelGetallBean> response) {
+                        public void onSuccess(Response<HomeVideoChannelBean> response) {
                             getAllData(response.body());
                         }
                     });
@@ -123,8 +119,8 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         ItemDragHelperCallBack callback = new ItemDragHelperCallBack(this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
-        mAdapter = new ChannelAdapter(mData, helper);
-        final GridLayoutManager manager = new GridLayoutManager(HomeChannelActivity.this, 4);
+        mAdapter = new VideoChannelAdapter(mData, helper);
+        final GridLayoutManager manager = new GridLayoutManager(VideoChannelActivity.this, 4);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -150,7 +146,7 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
     @Override
     public void onItemMove(int starPos, int endPos) {
         if (starPos < 0 || endPos < 0) return;
-        if (mData.get(endPos).channelName.equals("热门") || mData.get(endPos).channelName.equals("本地"))
+        if (mData.get(endPos).channelName.equals("实时"))
             return;
         if (onChannelListener != null)
             onChannelListener.onItemMove(starPos - 1, endPos - 1);
@@ -191,6 +187,5 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
             }
         }
     }
-
 
 }

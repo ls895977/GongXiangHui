@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class VideoListActivity extends BaseActivity {
+
     @BindView(R.id.btn_back)
     Button btnBack;
     @BindView(R.id.top)
@@ -51,7 +52,6 @@ public class VideoListActivity extends BaseActivity {
     @Override
     protected void initViews() {
         lastIntent = getIntent();
-
     }
 
     @Override

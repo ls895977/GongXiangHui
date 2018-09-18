@@ -252,8 +252,6 @@ public class HotPointFragment extends BaseFragment {
         homeItemListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-
                 HomeNewListBean homeNewListBean = dataList.get(position);
                 Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.putExtra("url", Constant.HOME_NEWS_DETAIL_URL);
