@@ -189,7 +189,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                 stringBuilder = new StringBuilder();
                 mLlLoad.setVisibility(View.VISIBLE);
                 if (!mImages.isEmpty()) {
-                    compressImg(mImages.get(0).path);
+                    String path = mImages.get(0).path;
+                    if (path.endsWith(".gif")) {
+                        uploadImages("data:image/gif;base64," + Utils.imageToBase64(path));
+                    } else {
+                        compressImg(path);
+                    }
                 } else {
                     if (Utils.isTwoClick()) {
                         uploadInfo();
@@ -229,8 +234,6 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                     @Override
                     public void onSuccess(File newFile) {
                         String newPath = newFile.getAbsolutePath();
-//                        Log.d("lubanLog", "new/" + "第" + 0 + "个图片的大小为：" + newFile.length() / 1024 + "KB");
-//                        Log.d("lubanLog", "new/" + "第" + 0 + "个图片的路径为：" + newPath);
                         uploadImages("data:image/jpeg;base64," + Utils.imageToBase64(newPath));
                     }
 
@@ -253,7 +256,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
                             if (mImages.size() == mCount) {
                                 uploadInfo();
                             } else {
-                                compressImg(mImages.get(mCount).path);
+                                String path1 = mImages.get(mCount).path;
+                                if (path1.endsWith(".gif")) {
+                                    uploadImages("data:image/gif;base64," + Utils.imageToBase64(path1));
+                                } else {
+                                    compressImg(path1);
+                                }
                             }
                         } else {
                             uploadFail(uploadImage.message);
