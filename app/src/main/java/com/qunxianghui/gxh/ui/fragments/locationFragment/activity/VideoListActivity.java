@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ import com.qunxianghui.gxh.utils.CommTools;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class VideoListActivity extends BaseActivity {
 
@@ -63,7 +61,7 @@ public class VideoListActivity extends BaseActivity {
         Cursor cursor = getContentResolver().query(
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI, mediaColumns,
                 null, null, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 VideoInfo info = new VideoInfo();
                 info.setFilePath(cursor.getString(cursor
@@ -88,10 +86,10 @@ public class VideoListActivity extends BaseActivity {
 
             } while (cursor.moveToNext());
         }
-        if (vList.size()==0){
+        if (vList.size() == 0) {
             lvVideo.setVisibility(View.GONE);
             tvNodata.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             VideoListAdapter adapter = new VideoListAdapter(VideoListActivity.this);
             lvVideo.setAdapter(adapter);
         }
@@ -109,21 +107,15 @@ public class VideoListActivity extends BaseActivity {
         lvVideo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               lvVideo.getItemAtPosition(position);
+                lvVideo.getItemAtPosition(position);
                 String filePath = vList.get(position).getFilePath();
-                lastIntent.putExtra("path",filePath);
+                lastIntent.putExtra("path", filePath);
                 setResult(Code.LOCAL_VIDEO_RESULT, lastIntent);
                 finish();
             }
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     class VideoListAdapter extends BaseAdapter {
         private LayoutInflater inflater;
@@ -153,10 +145,10 @@ public class VideoListActivity extends BaseActivity {
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = inflater.inflate(R.layout.item_video_list, null);
-                holder.vImage = (ImageView) convertView.findViewById(R.id.video_img);
-                holder.vTitle = (TextView) convertView.findViewById(R.id.video_title);
-                holder.vSize = (TextView) convertView.findViewById(R.id.video_size);
-                holder.vTime = (TextView) convertView.findViewById(R.id.video_time);
+                holder.vImage = convertView.findViewById(R.id.video_img);
+                holder.vTitle = convertView.findViewById(R.id.video_title);
+                holder.vSize = convertView.findViewById(R.id.video_size);
+                holder.vTime = convertView.findViewById(R.id.video_time);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
