@@ -55,6 +55,10 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
 
     @Override
     protected void onLoadData() {
+            requestCollectVideoData();
+    }
+
+    private void requestCollectVideoData() {
         OkGo.<MineCollectVideoBean>post(Constant.GET_COLLECT_VIDEO_URL)
                 .params("limit", 12)
                 .params("skip", count)
@@ -77,28 +81,31 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
             mIsRefresh = false;
             dataList.clear();
         }
-        dataList.addAll(mineCollectVideoBean.getData());
-        count = dataList.size();
-        if (mineCollectVideoBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                mAdapter = new MineCollectVideoAdapter(mActivity, dataList);
-                mRv.setAdapter(mAdapter);
-                mAdapter.setCallback(new MineCollectVideoAdapter.Callback() {
-                    @Override
-                    public void callback(int id) {
-                        skipMycollectVideoDetail(id);
-                    }
-                });
-            }
-            if (dataList.isEmpty()){
-                llEmpty.setVisibility(View.VISIBLE);
-            }else {
-                llEmpty.setVisibility(View.GONE);
-            }
-            mRv.refreshComplete();
-            mAdapter.notifyDataSetChanged();
-            mAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
+        if (dataList!=null){
+            dataList.addAll(mineCollectVideoBean.getData());
+            count = dataList.size();
+            if (mineCollectVideoBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    mAdapter = new MineCollectVideoAdapter(mActivity, dataList);
+                    mRv.setAdapter(mAdapter);
+                    mAdapter.setCallback(new MineCollectVideoAdapter.Callback() {
+                        @Override
+                        public void callback(int id) {
+                            skipMycollectVideoDetail(id);
+                        }
+                    });
+                }
+                if (dataList.isEmpty()){
+                    llEmpty.setVisibility(View.VISIBLE);
+                }else {
+                    llEmpty.setVisibility(View.GONE);
+                }
+                mRv.refreshComplete();
+                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
+        }
+
         }
     }
 

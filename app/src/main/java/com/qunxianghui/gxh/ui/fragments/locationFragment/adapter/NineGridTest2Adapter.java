@@ -251,7 +251,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 snsPopupWindow.showPopupWindow(v, dataBeanList.get(holder.getAdapterPosition() - 1), mContext);
             }
         });
-        if (dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size() != 0) {
+        if (dataBeanList.get(holder.getAdapterPosition()-1 ).getTem().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
             String content;

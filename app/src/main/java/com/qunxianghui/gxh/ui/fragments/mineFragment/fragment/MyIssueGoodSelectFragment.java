@@ -132,6 +132,10 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
 
     @Override
     public void initData() {
+            requestMyGoodSelectData();
+    }
+
+    private void requestMyGoodSelectData() {
         if (member_id == -1) {
             OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
                     .params("limit", 10)

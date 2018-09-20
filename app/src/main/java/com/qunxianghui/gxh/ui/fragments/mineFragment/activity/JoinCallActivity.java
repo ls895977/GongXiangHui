@@ -12,8 +12,15 @@ import android.widget.TextView;
 
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.config.Constant;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,8 +36,8 @@ public class JoinCallActivity extends BaseActivity implements View.OnClickListen
     TextView tvJoincallProductProductCall;
     @BindView(R.id.iv_joincall_back)
     ImageView ivJoincallBack;
-    private String mTvJoincallProductQudaoCall;
-    private String mTvJoincallProductProductCall;
+    private int mConsult_phone;
+    private int mCooperation_phone;
 
     @Override
     protected int getLayoutId() {
@@ -39,9 +46,27 @@ public class JoinCallActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initViews() {
-        mTvJoincallProductQudaoCall = tvJoincallProductQudaoCall.getText().toString().trim();
-        mTvJoincallProductProductCall = tvJoincallProductProductCall.getText().toString().trim();
+        RequestJoinCallData();
     }
+
+    private void RequestJoinCallData() {
+        OkGo.<String>post(Constant.COOPEREATE_CALL_URL).execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                try {
+                    JSONObject jsonObject=new JSONObject(response.body());
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    mConsult_phone = data.getInt("consult_phone");
+                    mCooperation_phone = data.getInt("cooperation_phone");
+                    tvJoincallProductQudaoCall.setText(String.valueOf(mConsult_phone));
+                    tvJoincallProductProductCall.setText(String.valueOf(mCooperation_phone));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +86,12 @@ public class JoinCallActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_joincall_qudao:
-                initCall(mTvJoincallProductQudaoCall);
+
+                initCall(mCooperation_phone);
                 break;
             case R.id.rl_joincall_product:
-                initCall(mTvJoincallProductProductCall);
+
+                initCall(mConsult_phone);
                 break;
             case R.id.iv_joincall_back:
                 finish();
@@ -72,7 +99,7 @@ public class JoinCallActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void initCall(final String mobile) {
+    private void initCall(final int mobile) {
         if (PermissionsUtil.hasPermission(JoinCallActivity.this, Manifest.permission.CALL_PHONE)) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

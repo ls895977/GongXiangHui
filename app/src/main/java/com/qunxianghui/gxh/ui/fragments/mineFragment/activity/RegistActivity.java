@@ -141,7 +141,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                             toActivity(LoginActivity.class);
                         }
                     }
-
                     @Override
                     public void onError(Response<CommonBean> response) {
                         super.onError(response);

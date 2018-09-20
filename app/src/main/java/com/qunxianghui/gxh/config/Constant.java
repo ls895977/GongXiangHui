@@ -24,7 +24,7 @@ public class Constant {
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
-//    //新闻详情
+    //    //新闻详情
 //    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
 //    //本地发布详情
 //    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
@@ -180,9 +180,9 @@ public class Constant {
     //广告教学视频
     public static final String EDUCATION_VIDEO_URL = "http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180831/94b305ee4859ef6054b03b8b5051ae7673818a14.mp4";
     //贴片教学视频
-    public static final String EDUCATION_VIDEO2_URL="http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180831/94b305ee4859ef6054b03b8b5051ae7673818a1414.mp4";
+    public static final String EDUCATION_VIDEO2_URL = "http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/video/20180831/94b305ee4859ef6054b03b8b5051ae7673818a1414.mp4";
     //视频截图
-    public static final String EDUCATION_VIDEO_PIC="http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/image/20180831/f0086940e285a7229c050850674911b08060f302.png";
+    public static final String EDUCATION_VIDEO_PIC = "http://qunxianghui-upload.oss-cn-hangzhou.aliyuncs.com/uplaod/image/20180831/f0086940e285a7229c050850674911b08060f302.png";
     //编辑视频汇分类接口
     public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";
     //个人添加视频汇分类接口
@@ -219,7 +219,9 @@ public class Constant {
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdTemplates";
     //意见反馈
-    public static final String QUESTION_POST_URL=BASE_URL+"api/Feedback/publish";
+    public static final String QUESTION_POST_URL = BASE_URL + "api/Feedback/publish";
+    //合作热线
+    public static final String COOPEREATE_CALL_URL = BASE_URL + "user/CooperationPhone";
     //查看核心优势或公司产品
     public static final String CHECK_COMPANY_CENTER_ADVANCE = BASE_URL + "Aboutus/selectCore";
     //添加核心优势或公司产品

@@ -78,6 +78,11 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initData() {
+            requestMineIssuePostData();
+
+    }
+
+    private void requestMineIssuePostData() {
         OkGo.<TestMode>post(Constant.GET_ISSURE_POST_URL)
                 .params("limit", 10)
                 .params("skip", count)

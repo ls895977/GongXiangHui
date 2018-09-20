@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.qunxianghui.gxh.R;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ImageAdapter extends PagerAdapter {
         int height = display.getHeight();
         ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width, height);
         photoView.setLayoutParams(layout);
-        Glide.with(activity).load(url).apply(new RequestOptions()).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
+        Glide.with(activity).load(url).apply(new RequestOptions().error(R.mipmap.default_img)).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
         container.addView(photoView);
         photoView.setOnClickListener(new View.OnClickListener() {
             @Override

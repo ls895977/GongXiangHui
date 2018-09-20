@@ -57,7 +57,6 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
             mIsRefresh = false;
             dataList.clear();
         }
-
         dataList.addAll(mineMessageFollowBean.getData());
         count = dataList.size();
         if (mineMessageFollowBean.getCode() == 0) {
@@ -68,9 +67,9 @@ public class MineMessageFollowFragment extends BaseFragment implements MineMessa
                 mineMessageFollewAdapter.setMineMessageResponseListener(this);
             }
 
+
             xrecyclerMineFollowMessage.refreshComplete();
             mineMessageFollewAdapter.notifyDataSetChanged();
-
             mineMessageFollewAdapter.notifyItemChanged(count, mineMessageFollowBean.getData().size());
         }
     }

@@ -64,6 +64,11 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
+        RequestMineCommentData();
+
+    }
+
+    private void RequestMineCommentData() {
         OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 12)
                 .params("skip", count)
@@ -85,30 +90,33 @@ public class MineCommonFragment extends BaseFragment implements Observer {
             mIsRefresh = false;
             dataList.clear();
         }
-        dataList.addAll(myCollectPostBean.getData());
-        count = dataList.size();
-        if (myCollectPostBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-                myCollectPostAdapter.setCallback(new MyCollectPostAdapter.Callback() {
-                    @Override
-                    public void callback(int id) {
-                        skipMycollectNewsDetail(id);
-                    }
-                });
-            }
-            if (dataList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
-            } else {
-                llEmpty.setVisibility(View.GONE);
-            }
+        if (myCollectPostBean.getData() != null) {
+            dataList.addAll(myCollectPostBean.getData());
+            count = dataList.size();
+            if (myCollectPostBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                    myCollectPostAdapter.setCallback(new MyCollectPostAdapter.Callback() {
+                        @Override
+                        public void callback(int id) {
+                            skipMycollectNewsDetail(id);
+                        }
+                    });
+                }
+                if (dataList.isEmpty()) {
+                    llEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    llEmpty.setVisibility(View.GONE);
+                }
 
+            }
+            xrecycler_mine_collect_news.refreshComplete();
+            myCollectPostAdapter.notifyDataSetChanged();
+            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
-        xrecycler_mine_collect_news.refreshComplete();
-        myCollectPostAdapter.notifyDataSetChanged();
-        myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+
     }
 
     /**
