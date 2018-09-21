@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -121,17 +122,18 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
             if (mIsFirst) {
                 mIsFirst = false;
                 myCollectPostAdapter = new MybaoliaoPostAdapter(mActivity, dataList);
-                myCollectPostAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+                myCollectPostAdapter.setOnAdapterClick(new MybaoliaoPostAdapter.OnAdapterClick() {
                     @Override
-                    public void onItemClick(View v, int position) {
-                        if (!myCollectPostAdapter.isShow){
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("baoliao", dataList.get(position - 1));
-                            toActivity(BaoliaoDetailActivity.class, bundle);
-                        }
-
+                    public void onClick(int position) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("baoliao", dataList.get(position));
+                        Intent intent = new Intent(getContext(),BaoliaoDetailActivity.class);
+                        intent.putExtras(bundle);
+                        getActivity().startActivity(intent);
+//                        toActivity(BaoliaoDetailActivity.class, bundle);
                     }
                 });
+
                 xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
             }
             if (dataList.isEmpty()) {
@@ -241,7 +243,10 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
         if (o instanceof String && "baoliao".equals(o)) {
             myCollectPostAdapter.isShow = true;
             myCollectPostAdapter.notifyDataSetChanged();
-            btMycollectDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btMycollectDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "baoliao_c".equals(o)) {
             myCollectPostAdapter.isShow = false;

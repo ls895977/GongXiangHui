@@ -20,8 +20,8 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.home.HomeVideoChannel;
@@ -84,7 +84,7 @@ public class HomeVideoActivity extends BaseActivity {
                     userChannelList.addAll(datas);
                     setViewpager();
                 } else {
-                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().msg));
+                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().message));
                 }
             }
         });
@@ -164,10 +164,20 @@ public class HomeVideoActivity extends BaseActivity {
                 if (!LoginMsgHelper.isLogin()) {
                     toActivity(LoginActivity.class);
                     return;
-                } else {
-                    toActivityWithResult(HomeVideoChannelActivity.class, 0x0011);
                 }
+                toActivityWithResult(VideoChannelActivity.class, 0x0011);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0x0011 && resultCode == 0x0022) {
+            userChannelList = Hawk.get("USER_VIDEO_CHANNEL", new ArrayList<ChannelItem>());
+            mFragments.clear();
+            setFragments(userChannelList);
+            setViewpager();
         }
     }
 
@@ -196,21 +206,6 @@ public class HomeVideoActivity extends BaseActivity {
                 })
                 .create()
                 .show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == VIDEO_CHANNELRESULT) {
-            userChannelList.clear();
-            userChannelList.addAll(DragAdapter.channelList);
-            DragAdapter.channelList.clear();
-            DragAdapter.channelList = null;
-            mFragments.clear();
-            setFragments(userChannelList);
-            setViewpager();
-        } else if (requestCode == 0x0011 && resultCode == 0x0022) {
-
-        }
     }
 
     @Override

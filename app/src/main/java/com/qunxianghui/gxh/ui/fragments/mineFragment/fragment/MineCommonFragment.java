@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -29,6 +33,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/23 0023.
@@ -40,6 +46,9 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
@@ -55,6 +64,11 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
+        RequestMineCommentData();
+
+    }
+
+    private void RequestMineCommentData() {
         OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
                 .params("limit", 12)
                 .params("skip", count)
@@ -76,25 +90,33 @@ public class MineCommonFragment extends BaseFragment implements Observer {
             mIsRefresh = false;
             dataList.clear();
         }
-        dataList.addAll(myCollectPostBean.getData());
-        count = dataList.size();
-        if (myCollectPostBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
-                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-                myCollectPostAdapter.setCallback(new MyCollectPostAdapter.Callback() {
-                    @Override
-                    public void callback(int id) {
-                        skipMycollectNewsDetail(id);
-                    }
-                });
-            }
+        if (myCollectPostBean.getData() != null) {
+            dataList.addAll(myCollectPostBean.getData());
+            count = dataList.size();
+            if (myCollectPostBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    myCollectPostAdapter = new MyCollectPostAdapter(mActivity, dataList);
+                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                    myCollectPostAdapter.setCallback(new MyCollectPostAdapter.Callback() {
+                        @Override
+                        public void callback(int id) {
+                            skipMycollectNewsDetail(id);
+                        }
+                    });
+                }
+                if (dataList.isEmpty()) {
+                    llEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    llEmpty.setVisibility(View.GONE);
+                }
 
+            }
+            xrecycler_mine_collect_news.refreshComplete();
+            myCollectPostAdapter.notifyDataSetChanged();
+            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
         }
-        xrecycler_mine_collect_news.refreshComplete();
-        myCollectPostAdapter.notifyDataSetChanged();
-        myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
+
     }
 
     /**
@@ -195,6 +217,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
     }
 
     @Override
@@ -202,12 +225,22 @@ public class MineCommonFragment extends BaseFragment implements Observer {
         if (o instanceof String && "news".equals(o)) {
             myCollectPostAdapter.isShow = true;
             myCollectPostAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btnDelete.setVisibility(View.VISIBLE);
+            }
         }
         if (o instanceof String && "news_c".equals(o)) {
             myCollectPostAdapter.isShow = false;
             myCollectPostAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 }

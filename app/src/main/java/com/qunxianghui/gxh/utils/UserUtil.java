@@ -41,7 +41,17 @@ public class UserUtil {
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body())) {
                             parseUserData(response.body());
+
+                            Logger.e("测试数据" + response.body().toString());
+
+
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Logger.e(response.body().toString());
                     }
                 });
 

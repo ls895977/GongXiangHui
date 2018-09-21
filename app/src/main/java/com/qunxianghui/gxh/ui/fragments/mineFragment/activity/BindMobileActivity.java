@@ -85,7 +85,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                 if (Utils.isTwoClick()) {
                     getVertifiCode();
                 }
-
                 break;
         }
     }
@@ -104,17 +103,23 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                     .execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
                         @Override
                         public void onSuccess(Response<CommonResponse<LoginBean>> response) {
+                            String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
+                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
+                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                             if (response.body().code == 0) {
-                                String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
-                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                asyncShowToast("登录成功");
+                                asyncShowToast(response.body().message);
                                 toActivity(MainActivity.class);
                                 finish();
                             } else {
-                                asyncShowToast("绑定失败" + response.body().message);
+                                asyncShowToast(response.body().message);
                             }
+                        }
+
+                        @Override
+                        public void onError(Response<CommonResponse<LoginBean>> response) {
+                            super.onError(response);
+                            asyncShowToast(response.body().message);
                         }
                     });
         }

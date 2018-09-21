@@ -79,9 +79,10 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onStart(SHARE_MEDIA platform) {
             }
+
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-                String url =null;
+                String url = null;
                 switch (platform) {
                     case QQ:
                         url = Constant.QQ_RESPONSE_URL;
@@ -93,7 +94,7 @@ public class LoginActivity extends BaseActivity {
                         url = Constant.SINA_RESPONSE_URL;
                         break;
                 }
-                if (url==Constant.QQ_RESPONSE_URL||url==Constant.WEIXIN_RESPONSE_URL){
+                if (url == Constant.QQ_RESPONSE_URL || url == Constant.WEIXIN_RESPONSE_URL) {
                     OkGo.<String>post(url)
                             .params("status", true)
                             .params("accessToken", data.get("accessToken"))
@@ -111,6 +112,11 @@ public class LoginActivity extends BaseActivity {
                                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                             OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                            if (TextUtils.isEmpty(data.getString("nick"))) {
+                                                UserUtil.getInstance().mNick = "" + data.getString("mobile");
+                                            } else {
+                                                UserUtil.getInstance().mNick = data.getString("nick");
+                                            }
                                             asyncShowToast("登录成功");
                                             toActivity(MainActivity.class);
                                             finish();
@@ -122,7 +128,7 @@ public class LoginActivity extends BaseActivity {
                                     }
                                 }
                             });
-                }else {
+                } else {
                     OkGo.<String>post(url)
                             .params("status", true)
                             .params("accessToken", data.get("accessToken"))
@@ -140,6 +146,12 @@ public class LoginActivity extends BaseActivity {
                                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
                                             OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                            if (TextUtils.isEmpty(data.getString("nick"))) {
+                                                UserUtil.getInstance().mNick = "" + data.getString("mobile");
+                                            } else {
+                                                UserUtil.getInstance().mNick = data.getString("nick");
+                                            }
+
                                             asyncShowToast("登录成功");
                                             toActivity(MainActivity.class);
                                             finish();
@@ -240,9 +252,14 @@ public class LoginActivity extends BaseActivity {
                             JsonConvert.sIsShow = true;
                             LoginBean userData = response.body().data;
                             String access_token = userData.getAccessTokenInfo().getAccess_token();
-                            UserUtil.getInstance().mNick = userData.getNick();
-                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, userData.getCompany_id() != 0);
+                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                            if (TextUtils.isEmpty(userData.getNick())) {
+                                UserUtil.getInstance().mNick = "" + userData.getMobile();
+                            } else {
+                                UserUtil.getInstance().mNick = userData.getNick();
+                            }
+
                             if (userData.getCompany_info() != null) {
                                 SharedPreferences.Editor editor = getSharedPreferences("companymessage", 0).edit();
                                 editor.putString("selfcompanyname", userData.getCompany_info().getCompany_name());

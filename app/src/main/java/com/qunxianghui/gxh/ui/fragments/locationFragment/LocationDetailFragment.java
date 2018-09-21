@@ -62,7 +62,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int mUuid;
     public int mMemberId;
     public boolean mIsChange;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_detail_location;
@@ -97,7 +96,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         if (mMemberId != 0) {
             OkGo.<TestMode>post(Constant.LOCATION_NEWS_LIST_URL)
                     .params("user_id", mMemberId)
-                    .params("limit", 10)
+                    .params("limit", 12)
                     .params("skip", mSkip)
                     .execute(new JsonCallback<TestMode>() {
                         @Override
@@ -109,7 +108,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         }
         OkGo.<TestMode>get(Constant.LOCATION_NEWS_LIST_URL)
                 .params("cate_id", mCateId)
-                .params("limit", 10)
+                .params("limit", 12)
                 .params("skip", mSkip)
                 .execute(new JsonCallback<TestMode>() {
                     @SuppressLint("UseSparseArrays")
@@ -147,7 +146,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             if (list.isEmpty()) {
                 llEmpty.setVisibility(View.VISIBLE);
             }
-            if (list.size() < 10) {
+            if (list.size() < 12) {
                 mRecyclerView.setLoadingMoreEnabled(false);
             }
         } else {
@@ -496,6 +495,11 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                                             } else {
                                                                 asyncShowToast(responseBean.getMsg());
                                                             }
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Response<ReplyCommentResponseBean> response) {
+//                                                            asyncShowToast(response.message());
                                                         }
                                                     });
                                         }

@@ -64,6 +64,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     private String mTitle;
     private String mDescrip;
     private ShareInfo.ShareInfoBean mData;
+    private UMImage mImage;
 
     @Override
     protected int getLayoutId() {
@@ -176,7 +177,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
                         if (response.body().code == 200) {
                             mData = response.body().data;
                             if (mData != null) {
-                                startThirdShare(mData.url, mData.title, mData.desc);
+                                startThirdShare(mData.url, mData.title, mData.desc,mData.imgUrl);
                             }
                         } else {
                             asyncShowToast(response.body().message);
@@ -188,17 +189,23 @@ public class AddTiePianAdvertActivity extends BaseActivity {
     /**
      * 三方分享
      */
-    private void startThirdShare(String url, String title, String desc) {
+    private void startThirdShare(String url, String title, String des,String imageUrl) {
         //以下代码是分享示例代码
-        UMImage image = new UMImage(this, R.mipmap.icon_video_share);//分享图标
+        if (imageUrl==null||imageUrl.isEmpty()){
+            //分享图标
+            mImage = new UMImage(this, R.mipmap.icon_video_share);
+        }else {
+            mImage= new UMImage(this, imageUrl);//分享图标
+        }
+
         //切记切记 这里分享的链接必须是http开头
         mWeb = new UMWeb(url);
         mWeb.setTitle(title);//标题
-        mWeb.setThumb(image);  //缩略图
+        mWeb.setThumb(mImage);  //缩略图
         if (TextUtils.isEmpty(mDescrip)) {
             mWeb.setDescription("群享汇-中小微企业成长平台，让创业更容易！");//描述
         } else {
-            mWeb.setDescription(mDescrip);
+            mWeb.setDescription(des);
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
         RelativeLayout rl_share_wx = view.findViewById(R.id.rl_share_wx);

@@ -48,16 +48,6 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         this.onChannelListener = onChannelListener;
     }
 
-
-//    public static HomeChannelFragment newInstance(ArrayList<ChannelItem> selectedData, List<ChannelItem> unselectedData) {
-//        HomeChannelFragment dialogFragment = new HomeChannelFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("dataSelected", selectedData);
-//        dialogFragment.setArguments(bundle);
-//        return dialogFragment;
-//    }
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +62,6 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
                     NewChannelEvent event = new NewChannelEvent(mAdapter.getData());
                     Hawk.put("USER_CHANNEL", event.mList);
                     EventBus.getDefault().post(event);
-
-
                 }
                 finish();
             }

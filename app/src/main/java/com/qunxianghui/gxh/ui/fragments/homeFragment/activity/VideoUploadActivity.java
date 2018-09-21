@@ -90,11 +90,7 @@ public class VideoUploadActivity extends BaseActivity {
         mEditUpdateVideoTitle.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if ("视频分类".equals(mTvVideoTypeChoice.getText().toString()) || TextUtils.isEmpty(s)) {
-                    mUpload.setEnabled(false);
-                } else {
-                    mUpload.setEnabled(true);
-                }
+                mUpload.setSelected(!"视频分类".equals(mTvVideoTypeChoice.getText().toString()) && !TextUtils.isEmpty(s));
             }
         });
     }
@@ -104,10 +100,10 @@ public class VideoUploadActivity extends BaseActivity {
         if (JZVideoPlayer.backPress()) {
             return;
         }
-        if (mIsUploadIng) {
-            asyncShowToast("上传中，请稍等...");
-            return;
-        }
+//        if (mIsUploadIng) {
+//            asyncShowToast("上传中，请稍等...");
+//            return;
+//        }
         super.onBackPressed();
     }
 
@@ -129,7 +125,6 @@ public class VideoUploadActivity extends BaseActivity {
                     asyncShowToast("您尚未填写视频标题！");
                     return;
                 }
-
                 if (Utils.isTwoClick()) {
                     uploadVideo();
                 }
@@ -211,11 +206,7 @@ public class VideoUploadActivity extends BaseActivity {
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     mTypeId = videoSortBeanData.get(options1).getId();
                     mTvVideoTypeChoice.setText(strings.get(options1));
-                    if (TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim())) {
-                        mUpload.setEnabled(false);
-                    } else {
-                        mUpload.setEnabled(true);
-                    }
+                    mUpload.setSelected(!TextUtils.isEmpty(mEditUpdateVideoTitle.getText().toString().trim()));
                 }
             }).setCancelColor(Color.parseColor("#676767"))
                     .setSubmitColor(Color.parseColor("#D81717"))

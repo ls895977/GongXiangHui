@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeAirActivity extends BaseActivity {
@@ -125,4 +127,10 @@ public class HomeAirActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

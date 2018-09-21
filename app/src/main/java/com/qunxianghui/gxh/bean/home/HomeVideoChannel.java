@@ -7,7 +7,7 @@ import java.util.List;
 public class HomeVideoChannel {
 
     public int code;
-    public String msg;
+    public String message;
     public List<ChannelItem> data;
 
 }

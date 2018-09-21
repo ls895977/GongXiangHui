@@ -262,6 +262,7 @@ public class HotPointFragment extends BaseFragment {
                 intent.putExtra("descrip", homeNewListBean.getContent());
                 intent.putStringArrayListExtra("images", homeNewListBean.getImages());
                 startActivity(intent);
+
             }
         });
     }

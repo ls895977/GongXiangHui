@@ -78,6 +78,11 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initData() {
+            requestMineIssuePostData();
+
+    }
+
+    private void requestMineIssuePostData() {
         OkGo.<TestMode>post(Constant.GET_ISSURE_POST_URL)
                 .params("limit", 10)
                 .params("skip", count)
@@ -105,13 +110,14 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                     mineIssurePostAdapter.setListener(this);
                     mRv.setAdapter(mineIssurePostAdapter);
 
-                    if (dataList.isEmpty()) {
-                        llEmpty.setVisibility(View.VISIBLE);
-                    }
                 }
-                mRv.refreshComplete();
-                mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
             }
+            mRv.refreshComplete();
+            if (dataList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
+            mineIssurePostAdapter.notifyDataSetChanged();
+            mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
         } else {
             asyncShowToast("数据出错了  请重新加载");
         }
@@ -448,7 +454,10 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         if (o instanceof String && "localcircle".equals(o)) {
             mineIssurePostAdapter.isShow = true;
             mineIssurePostAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btnDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "localcircle_c".equals(o)) {
             mineIssurePostAdapter.isShow = false;

@@ -2,26 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f8f8f8"
     android:orientation="vertical">
-    >
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/icon_person_detail_bg2" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="群享汇  Version  4.0.1"
-        android:textSize="14sp" />
+        <ImageView
+            android:id="@+id/iv_aboutus_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:padding="12dp"
+            android:src="@mipmap/common_black_back" />
 
-    <View
-        style="@style/dividerStyle"
-        android:layout_marginTop="25dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="关于我们"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:id="@+id/iv_aboutus_logo"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/logo" />
+
+        <TextView
+            android:id="@+id/tv_aboutus_verson_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_aboutus_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="群享汇  Version  4.1.0"
+            android:textColor="#151418"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_aboutus_verson_des"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textSize="12sp"
+            android:text="去更新"
+            android:textColor="#FF0000" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_aboutus_goto_grade"
@@ -45,9 +86,7 @@
 
     </RelativeLayout>
 
-    <View
-        style="@style/dividerStyle"
-        android:layout_marginTop="5dp" />
+
 
     <RelativeLayout
         android:id="@+id/rl_aboutus_newfun_intro"
@@ -71,9 +110,7 @@
 
     </RelativeLayout>
 
-    <View
-        style="@style/dividerStyle"
-        android:layout_marginTop="5dp" />
+
 
     <RelativeLayout
         android:id="@+id/rl_aboutus_quxinghui"
@@ -97,9 +134,7 @@
 
     </RelativeLayout>
 
-    <View
-        style="@style/dividerStyle"
-        android:layout_marginTop="5dp" />
+
 
     <RelativeLayout
         android:id="@+id/rl_aboutus_quxinghui_platform"
@@ -123,10 +158,6 @@
 
     </RelativeLayout>
 
-    <View
-        style="@style/dividerStyle"
-        android:layout_marginTop="5dp" />
-
     <RelativeLayout
         android:id="@+id/rl_aboutus_quxinghui_share_cloud"
         style="@style/RelativeStyle"
@@ -149,7 +180,4 @@
 
     </RelativeLayout>
 
-    <View
-        style="@style/dividerStyle"
-        android:layout_marginTop="5dp" />
 </LinearLayout>

@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -29,6 +33,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MineCollectVideoFragment extends BaseFragment implements Observer {
 
@@ -36,6 +42,9 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     XRecyclerView mRv;
     @BindView(R.id.bt_mycollect_delete)
     Button btnDelete;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    Unbinder unbinder;
 
     private boolean mIsFirst = true;
     private int count;
@@ -46,6 +55,10 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
 
     @Override
     protected void onLoadData() {
+            requestCollectVideoData();
+    }
+
+    private void requestCollectVideoData() {
         OkGo.<MineCollectVideoBean>post(Constant.GET_COLLECT_VIDEO_URL)
                 .params("limit", 12)
                 .params("skip", count)
@@ -68,23 +81,31 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
             mIsRefresh = false;
             dataList.clear();
         }
-        dataList.addAll(mineCollectVideoBean.getData());
-        count = dataList.size();
-        if (mineCollectVideoBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                mAdapter = new MineCollectVideoAdapter(mActivity, dataList);
-                mRv.setAdapter(mAdapter);
-                mAdapter.setCallback(new MineCollectVideoAdapter.Callback() {
-                    @Override
-                    public void callback(int id) {
-                        skipMycollectVideoDetail(id);
-                    }
-                });
-            }
-            mRv.refreshComplete();
-            mAdapter.notifyDataSetChanged();
-            mAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
+        if (dataList!=null){
+            dataList.addAll(mineCollectVideoBean.getData());
+            count = dataList.size();
+            if (mineCollectVideoBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    mAdapter = new MineCollectVideoAdapter(mActivity, dataList);
+                    mRv.setAdapter(mAdapter);
+                    mAdapter.setCallback(new MineCollectVideoAdapter.Callback() {
+                        @Override
+                        public void callback(int id) {
+                            skipMycollectVideoDetail(id);
+                        }
+                    });
+                }
+                if (dataList.isEmpty()){
+                    llEmpty.setVisibility(View.VISIBLE);
+                }else {
+                    llEmpty.setVisibility(View.GONE);
+                }
+                mRv.refreshComplete();
+                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemRangeChanged(count, mineCollectVideoBean.getData().size());
+        }
+
         }
     }
 
@@ -180,6 +201,7 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
     }
 
     @Override
@@ -188,7 +210,10 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
             Constant.MyCollectIsShow = true;
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btnDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "video_c".equals(o)) {
             Constant.MyCollectIsShow = false;
@@ -196,5 +221,13 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
             mAdapter.notifyDataSetChanged();
             btnDelete.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 }
