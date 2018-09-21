@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +29,7 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
+import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.DataCleanManager;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.UMShareAPI;
@@ -160,7 +162,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 toActivity(QuestonPostActivity.class);
                 break;
             case R.id.rl_set_comment_question:
-                asyncShowToast("等待接入h5,敬请期待");
+                Intent intent = new Intent(mContext, ProtocolActivity.class);
+                intent.putExtra("url", Constant.COMMEON_QUESTION_URL);
+                intent.putExtra("tag", 3);
+                startActivity(intent);
                 break;
         }
 

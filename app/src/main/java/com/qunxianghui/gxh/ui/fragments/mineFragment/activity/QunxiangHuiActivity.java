@@ -27,6 +27,8 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
     TextView tvQuxianghuiSavetoPhone;
     @BindView(R.id.tv_quxianghui_share)
     TextView tvQuxianghuiShare;
+    @BindView(R.id.iv_quxnxianghui_back)
+    ImageView ivQuxnxianghuiBack;
     private Bitmap mIcon;
 
     @Override
@@ -38,6 +40,7 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
     protected void initListeners() {
         tvQuxianghuiShare.setOnClickListener(this);
         tvQuxianghuiSavetoPhone.setOnClickListener(this);
+        ivQuxnxianghuiBack.setOnClickListener(this);
     }
 
     @Override
@@ -49,26 +52,28 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
 
 
         if (tag == 1) {
-            tvQunxianghui.setText("群享汇");
-            tvQuxinghuiDes.setText("群享汇(订阅号)\n" +
-                    "区域互联网项目,中小微企业服务平台,让创业更容易");
-            ivQunxianghuiScan.setImageResource(R.mipmap.icon_aboutus_scan);
+            tvQunxianghui.setText("群享汇(订阅号)");
+            tvQuxinghuiDes.setText(
+                    "区域互联网项目,中小微企业服务平台,让创业更容易!");
+            ivQunxianghuiScan.setImageResource(R.mipmap.icon_qunxianghui_dingyue);
 
         } else if (tag == 2) {
             tvQunxianghui.setText("群享汇平台");
-            tvQuxinghuiDes.setText("群享汇平台（服务号）)\n" +
+            tvQuxinghuiDes.setText(
                     "群享汇平台是包含本地资讯、本地服务、本地精选 \n" +
-                    "本地社区的一站式“互联网+本地经济平台”，是为本\n" +
-                    "地商户提供互联网广告、互联网营销、社交电商的\n" +
-                    "一站式解决方案平台。");
+                            "本地社区的一站式“互联网+本地经济平台”，是为本\n" +
+                            "地商户提供互联网广告、互联网营销、社交电商的\n" +
+                            "一站式解决方案平台。");
+            ivQunxianghuiScan.setImageResource(R.mipmap.icon_qunxianghui_platform);
         } else if (tag == 3) {
             tvQunxianghui.setText("群享汇分享云");
 
-            tvQuxinghuiDes.setText("群享汇分享云\n" +
+            tvQuxinghuiDes.setText(
                     "群享汇分享云是社交网络拓客工具，为广大商家解决\n" +
-                    "了以朋友圈为主的社交圈广告智能投放问题，同时也\n" +
-                    "是本地商家异业间的广告互推体系，让推广效果几何\n" +
-                    "倍增。");
+                            "了以朋友圈为主的社交圈广告智能投放问题，同时也\n" +
+                            "是本地商家异业间的广告互推体系，让推广效果几何\n" +
+                            "倍增。");
+            ivQunxianghuiScan.setImageResource(R.mipmap.icon_qun_sharecliude);
         }
     }
 
@@ -99,6 +104,9 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
                         }
                     }).start();
                 }
+                break;
+            case R.id.iv_quxnxianghui_back:
+                finish();
                 break;
         }
     }

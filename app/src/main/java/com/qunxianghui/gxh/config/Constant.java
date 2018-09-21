@@ -48,6 +48,10 @@ public class Constant {
     public static final String HOME_GOOD_SELECT_URL = "http://api.qunxianghui.com.cn/theme/new_details/youxuan_h5/index.html#/";
     //首页上面本地服务的页面
     public static final String HOME_LOCAL_SERVICE_URL = "http://api.qunxianghui.com.cn/theme/new_details/bendi_h5/index.html#/";
+    //设置中的常见问题H5
+    public static final String COMMEON_QUESTION_URL="http://api.qunxianghui.com.cn/theme/new_details/question/index.html";
+    //关于我们新功能H5
+    public static final String NEW_FUNCTION_URL="http://api.qunxianghui.com.cn/theme/new_details/intro/introduce.html";
     //首页视频列表
     public static final String HOME_VIDEO_LIST_URL = BASE_URL + "video/getList";
     //获取省份

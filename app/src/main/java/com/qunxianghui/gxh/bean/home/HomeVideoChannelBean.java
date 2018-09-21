@@ -12,7 +12,7 @@ public class HomeVideoChannelBean {
      */
 
     public int code;
-    public String msg;
+    public String message;
     public DataBean data;
 
     public static class DataBean {

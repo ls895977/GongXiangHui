@@ -20,8 +20,8 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.hawk.Hawk;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.homeAdapter.DragAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MineTabViewPagerAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.HomeVideoChannel;
@@ -107,7 +107,7 @@ public class LocationFragment extends BaseFragment {
                     setViewpager();
                     userChannelList.addAll(datas);
                 } else {
-                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().msg));
+                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().message));
                 }
             }
         });
@@ -166,11 +166,8 @@ public class LocationFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CITY_SELECT_RESULT_FRAG && resultCode == RESULT_OK) {
             mTvLocalcircleLocation.setText(SPUtils.getLocation("currcity"));
-        } else if (resultCode == POST_CHANNELRESULT) {
-            userChannelList.clear();
-            userChannelList.addAll(DragAdapter.channelList);
-            DragAdapter.channelList.clear();
-            DragAdapter.channelList = null;
+        } else if (requestCode == 0x0011 && resultCode == 0x0022) {
+            userChannelList = Hawk.get("USER_VIDEO_CHANNEL", new ArrayList<ChannelItem>());
             fragments.clear();
             setFragments(userChannelList);
             setViewpager();

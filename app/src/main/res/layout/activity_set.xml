@@ -77,7 +77,7 @@
         <TextView
             style="@style/MineListStyle"
             android:layout_marginLeft="12dp"
-            android:text="意见反馈" />
+            android:text="常见问题" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
         <TextView
             style="@style/MineListStyle"
             android:layout_marginLeft="12dp"
-            android:text="问题反馈" />
+            android:text="意见反馈" />
 
         <ImageView
             android:layout_width="wrap_content"

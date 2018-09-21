@@ -121,6 +121,9 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             params.setMargins(0, 25, 0, 0);
         } else if (tag == 2) {
             mBuffer = new StringBuffer(url);
+        }else if (tag==3){
+            mBuffer = new StringBuffer(url);
+            mRlProtocolTitle.setVisibility(View.GONE);
         }
         tvTitle.setText(title);
         webView = new WebView(this);

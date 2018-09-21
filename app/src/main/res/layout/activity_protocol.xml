@@ -3,21 +3,20 @@
     android:id="@+id/ll_protocol_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="23dp">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_protocol_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="43dp">
 
         <ImageView
             android:id="@+id/iv_webback"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
-            android:padding="5dp"
+            android:padding="12dp"
             android:src="@mipmap/common_black_back" />
 
         <TextView
@@ -27,6 +26,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="标题"
+            android:textColor="@color/black"
             android:textSize="17sp" />
 
         <TextView

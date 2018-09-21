@@ -84,7 +84,7 @@ public class HomeVideoActivity extends BaseActivity {
                     userChannelList.addAll(datas);
                     setViewpager();
                 } else {
-                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().msg));
+                    asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().message));
                 }
             }
         });
