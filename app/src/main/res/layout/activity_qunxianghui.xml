@@ -20,6 +20,7 @@
         android:layout_marginLeft="22dp"
         android:layout_marginTop="20dp"
         android:text="群享汇"
+
         android:textColor="#282828"
         android:textSize="18sp" />
 

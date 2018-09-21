@@ -115,8 +115,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         rlSettingAboutus.setOnClickListener(this);
         rlQuestonPost.setOnClickListener(this);
         rlSetCommentQuestion.setOnClickListener(this);
-
-
     }
 
     @Override

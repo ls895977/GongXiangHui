@@ -7,17 +7,18 @@
     android:background="#ececec"
     android:orientation="vertical">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/white">
 
         <ImageView
+            android:id="@+id/tv_question_post_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:padding="12dp"
-            android:id="@+id/tv_question_post_back"
             android:src="@mipmap/common_black_back" />
 
         <TextView
@@ -54,21 +55,32 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
+            <CheckBox
                 android:id="@+id/tv_question_exit"
                 style="@style/QuestionPostTextStyle"
                 android:layout_marginRight="10dp"
-                android:text="闪退" />
+                android:background="@drawable/question_btn_selector"
+                android:button="@null"
+                android:text="闪退"
+                android:textColor="@color/radiobutton_textcolor" />
 
-            <TextView
+
+            <CheckBox
                 android:id="@+id/tv_question_warn_text_error"
                 style="@style/QuestionPostTextStyle"
                 android:layout_marginRight="10dp"
-                android:text="提示文案错误" />
+                android:background="@drawable/question_btn_selector"
+                android:button="@null"
+                android:text="提示文案错误"
+                android:textColor="@color/radiobutton_textcolor" />
 
-            <TextView
+            <CheckBox
+                android:id="@+id/tv_question_adver_add_error"
                 style="@style/QuestionPostTextStyle"
-                android:text="广告植入错误" />
+                android:background="@drawable/question_btn_selector"
+                android:button="@null"
+                android:text="广告植入错误"
+                android:textColor="@color/radiobutton_textcolor" />
 
 
         </LinearLayout>
@@ -90,19 +102,31 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
+            <CheckBox
+                android:id="@+id/tv_question_fun_notuse_error"
                 style="@style/QuestionPostTextStyle"
                 android:layout_marginRight="10dp"
-                android:text="功能无法使用" />
+                android:background="@drawable/question_btn_selector"
+                android:button="@null"
+                android:text="功能无法使用"
+                android:textColor="@color/radiobutton_textcolor" />
 
-            <TextView
+            <CheckBox
+                android:id="@+id/tv_question_accunt_login_error"
                 style="@style/QuestionPostTextStyle"
                 android:layout_marginRight="10dp"
-                android:text="账号登陆失败" />
+                android:background="@drawable/question_btn_selector"
+                android:button="@null"
+                android:text="账号登陆失败"
+                android:textColor="@color/radiobutton_textcolor" />
 
-            <TextView
+            <CheckBox
+                android:id="@+id/tv_question_other_error"
                 style="@style/QuestionPostTextStyle"
-                android:text="其他" />
+                android:background="@drawable/question_btn_selector"
+                android:button="@null"
+                android:text="其他"
+                android:textColor="@color/radiobutton_textcolor" />
 
         </LinearLayout>
     </LinearLayout>
@@ -112,51 +136,87 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@color/white"
             android:orientation="vertical">
 
-
-            <EditText
-                android:id="@+id/et_setting_questiontitle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="请尽情的向我们提出您的宝贵意见!配图说明能让我们尽快为您排查,提高我们的处理效率..."
-                android:maxLength="500"
-                android:padding="10dp"
-                android:textColor="#B4B4BB"
-                android:textColorHint="#848484"
-                android:textSize="12sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_setting_question"
-                android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/et_setting_questiontioncontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="请尽情的向我们提出您的宝贵意见!配图说明能让我们尽快为您排查,提高我们的处理效率..."
+                    android:maxLength="500"
+                    android:padding="10dp"
+                    android:textColor="#B4B4BB"
+                    android:textColorHint="#848484"
+                    android:textSize="12sp" />
+
+                <android.support.v7.widget.RecyclerView
+
+                    android:id="@+id/rv_setting_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#fff"
+                    android:choiceMode="singleChoice"
+                    android:divider="@null"
+                    android:fadingEdge="none"
+                    android:listSelector="@android:color/transparent"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:scrollbarStyle="outsideOverlay"
+                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:listitem="@layout/item_baoliao" />
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_load"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:background="#fff"
-                android:choiceMode="singleChoice"
-                android:divider="@null"
-                android:fadingEdge="none"
-                android:listSelector="@android:color/transparent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/loading_bg"
+                android:orientation="vertical"
                 android:paddingBottom="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:scrollbarStyle="outsideOverlay"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="3"
-                tools:listitem="@layout/item_baoliao" />
+                android:paddingTop="10dp"
+                android:visibility="gone">
 
-            <View
-                android:id="@+id/view1"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/white" />
+                <ProgressBar
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminateBehavior="repeat"
+                    android:indeterminateDrawable="@drawable/dialog_loading"
+                    android:indeterminateOnly="true" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="上传中，请稍等..."
+                    android:textColor="#f0f0f0"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </FrameLayout>
     </ScrollView>
 
 
