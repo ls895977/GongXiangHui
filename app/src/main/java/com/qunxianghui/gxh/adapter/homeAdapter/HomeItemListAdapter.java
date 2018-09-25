@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.adapter.homeAdapter;
 
 import android.annotation.SuppressLint;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -11,6 +12,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.bean.home.HomeNewListBean;
+import com.qunxianghui.gxh.greendao.MyDaoHelper;
+import com.qunxianghui.gxh.greendao.NewsEntity;
 
 import java.util.List;
 
@@ -52,7 +55,6 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
         final int view_cnt = dataBean.getView_cnt();
         final String ctime = dataBean.getCtime();
         images = dataBean.getImages();
-
         switch (dataBean.getItemType()) {
             case 0:
                 //没有图片
@@ -60,6 +62,10 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
                         .setText(R.id.tv_recycler_bottom_science, source)
                         .setText(R.id.tv_recycler_bottom_science2, String.valueOf(view_cnt))
                         .setText(R.id.tv_recycler_bottom_science3, ctime);
+                if (dataBean.isReaded){
+                    TextView tv = baseViewHolder.getView(R.id.tv_homelistItem_text_content);
+                    tv.setTextColor(tv.getResources().getColor(R.color.gray17));
+                }
                 break;
             case 1:
                 //一张图片
@@ -70,6 +76,10 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
 
                 imageView = baseViewHolder.getView(R.id.iv_item_right_iamge);
                 Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
+                if (dataBean.isReaded){
+                    TextView tv = baseViewHolder.getView(R.id.tv_item_right_image_title);
+                    tv.setTextColor(tv.getResources().getColor(R.color.gray17));
+                }
                 break;
             case 2:
                 baseViewHolder.setText(R.id.tv_item_right_image_title, title)
@@ -79,6 +89,11 @@ public class HomeItemListAdapter extends BaseQuickAdapter<HomeNewListBean, BaseV
 
                 imageView = baseViewHolder.getView(R.id.iv_item_right_iamge);
                 Glide.with(mContext).load(images.get(0)).apply(options).into(imageView);
+
+                if (dataBean.isReaded){
+                    TextView tv = baseViewHolder.getView(R.id.tv_item_right_image_title);
+                    tv.setTextColor(tv.getResources().getColor(R.color.gray17));
+                }
                 break;
         }
     }
