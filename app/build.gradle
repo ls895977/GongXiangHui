@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
+
     aaptOptions {
         cruncherEnabled = false//禁止检查png的合法性
         useNewCruncher = false
@@ -45,6 +46,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+    }
+
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.qunxianghui.gxh.greendao.gen'
+        targetGenDir 'src/main/java'
     }
 }
 
@@ -119,4 +126,7 @@ dependencies {
     implementation 'com.orhanobut:hawk:2.0.1'
     //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+//    greendao
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'org.greenrobot:greendao-generator:3.2.2'
 }

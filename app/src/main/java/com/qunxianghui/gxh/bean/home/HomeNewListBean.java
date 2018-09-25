@@ -29,6 +29,7 @@ public class HomeNewListBean implements MultiItemEntity, Serializable {
     private int share_cnt;
     private String url;
     private ArrayList<String> images;
+    public boolean isReaded;
 
 
     public int getId() {

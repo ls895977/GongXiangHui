@@ -29,6 +29,10 @@ import com.qunxianghui.gxh.bean.home.HomeNewListBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
+import com.qunxianghui.gxh.greendao.MyDaoHelper;
+import com.qunxianghui.gxh.greendao.MyDatabaseHelper;
+import com.qunxianghui.gxh.greendao.NewsEntity;
+import com.qunxianghui.gxh.greendao.gen.NewsEntityDao;
 import com.qunxianghui.gxh.ui.activity.BianMinServiceActivity;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.HomeAirActivity;
@@ -105,6 +109,17 @@ public class HotPointFragment extends BaseFragment {
             mChannelId = getArguments().getInt("channel_id");
         }
         homeItemListAdapter = new HomeItemListAdapter();
+        List<NewsEntity> dbList = MyDaoHelper.getInstance(getContext()).getAllData();
+        for (int i = 0; i < dataList.size(); i++) {
+            int id = dataList.get(i).getId();
+            for (int j = 0; j <dbList.size() ; j++) {
+                NewsEntity entity = dbList.get(j);
+                if (entity.getId()==id){
+                    dataList.get(i).isReaded=true;
+                }
+            }
+        }
+
         homeItemListAdapter.setNewData(dataList);
         if (mChannelId == -1) {
             View headerNavigator = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_navigator, mRv, false);
@@ -208,6 +223,16 @@ public class HotPointFragment extends BaseFragment {
                 homeItemListAdapter.loadMoreEnd();
             } else {
                 dataList.addAll(list);
+                List<NewsEntity> dbList = MyDaoHelper.getInstance(getContext()).getAllData();
+                for (int i = 0; i < dataList.size(); i++) {
+                    int id = dataList.get(i).getId();
+                    for (int j = 0; j <dbList.size() ; j++) {
+                        NewsEntity entity = dbList.get(j);
+                        if (entity.getId()==id){
+                            dataList.get(i).isReaded=true;
+                        }
+                    }
+                }
                 mRefreshCount++;
                 int total = dataList.size();
                 if (mCount + 12 <= total) {
@@ -262,7 +287,13 @@ public class HotPointFragment extends BaseFragment {
                 intent.putExtra("descrip", homeNewListBean.getContent());
                 intent.putStringArrayListExtra("images", homeNewListBean.getImages());
                 startActivity(intent);
-
+                NewsEntity entity = new NewsEntity();
+                entity.setId(homeNewListBean.getId());
+                entity.setUrl(homeNewListBean.getUrl());
+                entity.setIsRead(1);
+                MyDaoHelper.getInstance(getContext()).addData(entity);
+                homeNewListBean.isReaded=true;
+                homeItemListAdapter.notifyItemChanged(position);
             }
         });
     }

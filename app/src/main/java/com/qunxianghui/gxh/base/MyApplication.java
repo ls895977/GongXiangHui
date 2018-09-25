@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -21,6 +22,8 @@ import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.greendao.gen.DaoMaster;
+import com.qunxianghui.gxh.greendao.gen.DaoSession;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CrashHandler;
@@ -80,6 +83,7 @@ public class MyApplication extends MultiDexApplication {
         initOkGo();
         initThirdLib();
     }
+
 
     private void initOkGo() {
 //        Logger.d("initOkGo-->:" + mAccessToken);
