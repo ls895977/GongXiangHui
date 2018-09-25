@@ -121,12 +121,16 @@ public class TestMode {
             private List<CommentBean> comment_res;
 
             public List<ClickLikeBean> getClick_like() {
-                if (tem !=null && tem.size()>0){
+                if (tem != null && tem.size() > 0) {
                     return tem;
                 }
-                List<ClickLikeBean>  clickLikeBeanList= ListUtils.getNewArrayObjectList();
-                    if(!TextUtils.isEmpty(click_like.toString())){
-                    clickLikeBeanList= GsonUtils.jsonTypeTokenFromJson(click_like.toString(),new TypeToken<List<ClickLikeBean>>(){}.getType());
+                List<ClickLikeBean> clickLikeBeanList = ListUtils.getNewArrayObjectList();
+                if (!TextUtils.isEmpty(click_like.toString())) {
+                    try {
+                        clickLikeBeanList = GsonUtils.jsonTypeTokenFromJson(click_like.toString(), new TypeToken<List<ClickLikeBean>>() {
+                        }.getType());
+                    } catch (Exception e) {
+                    }
                 }
                 return clickLikeBeanList;
             }
@@ -136,7 +140,7 @@ public class TestMode {
             }
 
             private Object click_like;
-//            private List<ClickLikeBean> click_like;
+            //            private List<ClickLikeBean> click_like;
             private List<ClickLikeBean> tem;
 
             public void setTem(List<ClickLikeBean> tem) {
@@ -144,7 +148,7 @@ public class TestMode {
             }
 
             public List<ClickLikeBean> getTem() {
-                if (tem==null || tem.size()==0) {
+                if (tem == null || tem.size() == 0) {
                     tem = new ArrayList<>();
                     tem.addAll(getClick_like());
                 }
