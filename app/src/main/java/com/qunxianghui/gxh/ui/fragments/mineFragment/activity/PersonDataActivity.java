@@ -80,6 +80,7 @@ public class PersonDataActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_person_data;
     }
+
     @Override
     protected void initViews() {
         imagePicker = new ImagePicker();
@@ -125,6 +126,7 @@ public class PersonDataActivity extends BaseActivity {
                 break;
         }
     }
+
     public void saveInfo(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), 0);
         final String nickName = etPersonDataNickName.getText().toString().trim();

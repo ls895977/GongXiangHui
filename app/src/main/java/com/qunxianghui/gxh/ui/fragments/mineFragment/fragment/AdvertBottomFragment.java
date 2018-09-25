@@ -148,13 +148,13 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                             asyncShowToast("非企业会员不可添加企业素材!");
                             return;
                         }
+                        intent = new Intent();
                         if (mList.isEmpty()) {
-                            asyncShowToast("请先添加广告模版");
-                            return;
+                            intent.putExtra("isEmpty", true);
+                        } else {
+                            intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
                         }
                         mIsBottomClick = true;
-                        intent = new Intent();
-                        intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
                         intent.putExtra("isMultiSelect", true);
                         intent.setClass(mActivity, EnterpriseMaterialActivity.class);
                         startActivityForResult(intent, 0x0011);
@@ -162,10 +162,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 1:
                         if (!SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                             asyncShowToast("非企业会员不可添加通用素材!");
-                            return;
-                        }
-                        if (mList.isEmpty()) {
-                            asyncShowToast("请先添加广告模版");
                             return;
                         }
                         mIsBottomClick = true;

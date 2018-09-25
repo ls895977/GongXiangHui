@@ -51,7 +51,6 @@ public class UserUtil {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Logger.e(response.body().toString());
                     }
                 });
 

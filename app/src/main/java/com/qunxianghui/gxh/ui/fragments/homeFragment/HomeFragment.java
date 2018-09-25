@@ -324,18 +324,19 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             if (aMapLocation.getErrorCode() == 0) {
                 String cityName = aMapLocation.getDistrict();
                 String city = SPUtils.getLocation("currcity");
-//                if (!TextUtils.isEmpty(city)) {
-//                    mTvHomeLocation.setText(city);
-//                } else {
+                if (!TextUtils.isEmpty(city)) {
+                    mTvHomeLocation.setText(city);
+                } else {
                     mTvHomeLocation.setText(cityName);
                     requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
                 }
-            } else {
-                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                Log.e("AmapError", "locations Error, ErrCode:"
-                        + aMapLocation.getErrorCode() + ", errInfo:"
-                        + aMapLocation.getErrorInfo());
             }
+        } else {
+            //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+            Log.e("AmapError", "locations Error, ErrCode:"
+                    + aMapLocation.getErrorCode() + ", errInfo:"
+                    + aMapLocation.getErrorInfo());
+        }
 
         mlocationClient.stopLocation();
     }

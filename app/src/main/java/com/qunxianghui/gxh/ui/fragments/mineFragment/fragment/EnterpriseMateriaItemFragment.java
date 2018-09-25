@@ -99,79 +99,12 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (EnterpriseMaterialActivity.sIsEmpty) {
+                    addData(position);
+                    return;
+                }
                 if ((EnterpriseMaterialActivity.sType == mType) || (EnterpriseMaterialActivity.sType == 9 && mType == 3)) {
-                    EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
-                    View select;
-                    if (EnterpriseMaterialActivity.sIsMultiSelect) {
-                        companyAdvert.isSelect = !companyAdvert.isSelect;
-                        if (companyAdvert.isSelect)
-                            mList.add(companyAdvert);
-                        else
-                            mList.remove(companyAdvert);
-                        switch (mType) {
-                            case 0:
-                                select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
-                                break;
-                            case 1:
-                                select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
-                                break;
-                            case 3:
-                                select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
-                                break;
-                            default:
-                                select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
-                                break;
-                        }
-                        if (select != null) {
-                            select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
-                        }
-                        return;
-                    }
-                    if (mLastPosition != -1 && mLastPosition != position) {
-                        mAdapter.getData().get(mLastPosition).isSelect = false;
-                        switch (mType) {
-                            case 0:
-                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian);
-                                break;
-                            case 1:
-                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_big);
-                                break;
-                            case 3:
-                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tonglang);
-                                break;
-                            default:
-                                select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_other);
-                                break;
-                        }
-                        if (select != null) {
-                            select.setVisibility(View.GONE);
-                        }
-                    }
-                    mList.clear();
-                    mList.add(companyAdvert);
-                    mLastPosition = position;
-                    companyAdvert.isSelect = !companyAdvert.isSelect;
-                    switch (mType) {
-                        case 0:
-                            select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
-                            break;
-                        case 1:
-                            select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
-                            break;
-                        case 3:
-                            select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
-                            break;
-                        default:
-                            select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
-                            break;
-                    }
-                    if (select != null) {
-                        select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
-                    }
-                    mList.clear();
-                    if (companyAdvert.isSelect) {
-                        mList.add(companyAdvert);
-                    }
+                    addData(position);
                 } else {
                     asyncShowToast("当前广告类型不可选择");
                 }
@@ -184,6 +117,81 @@ public class EnterpriseMateriaItemFragment extends BaseFragment {
                 initData();
             }
         });
+    }
+
+    private void addData(int position) {
+        EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert companyAdvert = mAdapter.getData().get(position);
+        View select;
+        if (EnterpriseMaterialActivity.sIsMultiSelect) {
+            companyAdvert.isSelect = !companyAdvert.isSelect;
+            if (companyAdvert.isSelect)
+                mList.add(companyAdvert);
+            else
+                mList.remove(companyAdvert);
+            switch (mType) {
+                case 0:
+                    select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
+                    break;
+                case 1:
+                    select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
+                    break;
+                case 3:
+                    select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
+                    break;
+                default:
+                    select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
+                    break;
+            }
+            if (select != null) {
+                select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+            }
+            return;
+        }
+        if (mLastPosition != -1 && mLastPosition != position) {
+            mAdapter.getData().get(mLastPosition).isSelect = false;
+            switch (mType) {
+                case 0:
+                    select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tiepian);
+                    break;
+                case 1:
+                    select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_big);
+                    break;
+                case 3:
+                    select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_tonglang);
+                    break;
+                default:
+                    select = mAdapter.getViewByPosition(mLastPosition, R.id.iv_select_other);
+                    break;
+            }
+            if (select != null) {
+                select.setVisibility(View.GONE);
+            }
+        }
+        mList.clear();
+        mList.add(companyAdvert);
+        mLastPosition = position;
+        companyAdvert.isSelect = !companyAdvert.isSelect;
+        switch (mType) {
+            case 0:
+                select = mAdapter.getViewByPosition(position, R.id.iv_select_tiepian);
+                break;
+            case 1:
+                select = mAdapter.getViewByPosition(position, R.id.iv_select_big);
+                break;
+            case 3:
+                select = mAdapter.getViewByPosition(position, R.id.iv_select_tonglang);
+                break;
+            default:
+                select = mAdapter.getViewByPosition(position, R.id.iv_select_other);
+                break;
+        }
+        if (select != null) {
+            select.setVisibility(companyAdvert.isSelect ? View.VISIBLE : View.GONE);
+        }
+        mList.clear();
+        if (companyAdvert.isSelect) {
+            mList.add(companyAdvert);
+        }
     }
 
 }

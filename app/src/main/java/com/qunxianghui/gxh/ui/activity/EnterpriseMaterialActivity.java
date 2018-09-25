@@ -30,6 +30,7 @@ public class EnterpriseMaterialActivity extends BaseActivity {
 
     public static int sType;
     public static boolean sIsMultiSelect;
+    public static boolean sIsEmpty;
 
     @Override
     protected int getLayoutId() {
@@ -41,6 +42,7 @@ public class EnterpriseMaterialActivity extends BaseActivity {
         EnterpriseMateriaItemFragment.mList = new ArrayList<>();
         sType = getIntent().getIntExtra("type", 1);
         sIsMultiSelect = getIntent().getBooleanExtra("isMultiSelect", false);
+        sIsEmpty = getIntent().getBooleanExtra("isEmpty", false);
         mTvSave.setText("确定");
         mTvTitle.setVisibility(View.VISIBLE);
 //        mSegmentTab.setTabData(new String[]{"底部", "顶部"});
