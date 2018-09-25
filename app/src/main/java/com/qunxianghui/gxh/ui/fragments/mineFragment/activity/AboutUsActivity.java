@@ -10,6 +10,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
+import com.qunxianghui.gxh.utils.ToMarketUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,7 +85,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
                 break;
             case R.id.rl_aboutus_goto_grade:
-                asyncShowToast("准备跳到应用商店评分");
+                ToMarketUtils.goToMarket(mContext,"com.qunxianghui.gxh");
                 break;
             case R.id.rl_aboutus_newfun_intro:
                 intent = new Intent(mContext, ProtocolActivity.class);

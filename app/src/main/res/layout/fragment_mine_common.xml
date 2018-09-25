@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="20dp"
             android:drawableTop="@mipmap/icon_empty"
-            android:text="他还没发布哦～"
+            android:text="您还没有收藏哦～"
             android:textSize="15sp" />
 
     </LinearLayout>

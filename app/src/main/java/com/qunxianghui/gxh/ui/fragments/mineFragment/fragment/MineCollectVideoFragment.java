@@ -210,7 +210,10 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
             Constant.MyCollectIsShow = true;
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btnDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "video_c".equals(o)) {
             Constant.MyCollectIsShow = false;

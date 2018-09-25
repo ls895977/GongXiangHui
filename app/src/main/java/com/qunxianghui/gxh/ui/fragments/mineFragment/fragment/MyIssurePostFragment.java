@@ -454,7 +454,10 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         if (o instanceof String && "localcircle".equals(o)) {
             mineIssurePostAdapter.isShow = true;
             mineIssurePostAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btnDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "localcircle_c".equals(o)) {
             mineIssurePostAdapter.isShow = false;

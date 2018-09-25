@@ -299,7 +299,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
-//                                    mRecyclerView.refresh();
+                                    mRecyclerView.refresh();
                                 } else {
                                     asyncShowToast(responseBean.getMsg());
                                 }

@@ -191,7 +191,10 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
         if (o instanceof String && "issue_video".equals(o)) {
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.VISIBLE);
+            if (mList.size()>0){
+                btnDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "issue_video_c".equals(o)) {
             mAdapter.isShow = false;

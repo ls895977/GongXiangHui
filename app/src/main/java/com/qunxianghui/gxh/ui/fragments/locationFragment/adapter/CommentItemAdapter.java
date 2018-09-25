@@ -130,20 +130,13 @@ public class CommentItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-
-
     private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
-//        for (int i = 0; i < holder.name.length(); i++) {
-//            if (i == holder.name.length() - 1) {
-//                message += ":";
-//            } else {
-//                message += "  ";
-//            }
-//        }
         if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())) {
             holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
             holder.tv_item_replyed.setVisibility(View.VISIBLE);
             holder.name.setText(mList.get(position).getMember_name());
+
+
             holder.tv_item_reply_lb.setText("回复");
             holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name()+":");
         } else {

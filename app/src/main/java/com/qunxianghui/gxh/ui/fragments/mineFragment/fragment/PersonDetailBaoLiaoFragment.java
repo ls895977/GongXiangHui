@@ -243,7 +243,10 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
         if (o instanceof String && "baoliao".equals(o)) {
             myCollectPostAdapter.isShow = true;
             myCollectPostAdapter.notifyDataSetChanged();
-            btMycollectDelete.setVisibility(View.VISIBLE);
+            if (dataList.size()>0){
+                btMycollectDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "baoliao_c".equals(o)) {
             myCollectPostAdapter.isShow = false;

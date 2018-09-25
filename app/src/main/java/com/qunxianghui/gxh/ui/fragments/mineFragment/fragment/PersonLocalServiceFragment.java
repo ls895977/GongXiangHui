@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -26,6 +30,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class PersonLocalServiceFragment extends BaseFragment implements Observer {
 
@@ -35,10 +41,14 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     LinearLayout llEmpty;
     @BindView(R.id.bt_myissue_localservice_delete)
     Button btMyissueLocalserviceDelete;
+    @BindView(R.id.tv_myissue_empty_des)
+    TextView mTvMyissueEmptyDes;
+    Unbinder unbinder;
     private List<MineIssueLocalServiceBean.DataBean> mList = new ArrayList<>();
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
     private String data_id = "";
+
     @Override
     protected void onLoadData() {
     }
@@ -51,6 +61,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     @Override
     public void initData() {
         if (getActivity() instanceof PersonDetailActivity) {
+            mTvMyissueEmptyDes.setText("他还没发布哦");
             PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
@@ -63,6 +74,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                         }
                     });
         } else {
+            mTvMyissueEmptyDes.setText("您还没发布哦");
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
                     .params("skip", mSkip)
@@ -85,7 +97,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
             }
             mList.addAll(data.getData());
             xrecyclerPersondetailPost.refreshComplete();
-        }else {
+        } else {
             xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
         }
         if (mSkip == 0 && mList.isEmpty()) {
@@ -180,7 +192,10 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
         if (o instanceof String && "localser".equals(o)) {
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
-            btMyissueLocalserviceDelete.setVisibility(View.VISIBLE);
+            if (mList.size() > 0) {
+                btMyissueLocalserviceDelete.setVisibility(View.VISIBLE);
+            }
+
         }
         if (o instanceof String && "localser_c".equals(o)) {
             mAdapter.isShow = false;
@@ -193,6 +208,14 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+        unbinder.unbind();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
 }
