@@ -65,6 +65,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     private List<String> mImages;
     private StringBuffer mBuffer;
     private int mPosition;
+    private String mVideoimage;
 
     @Override
     protected int getLayoutId() {
@@ -83,6 +84,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         mPosition = intent.getIntExtra("position", 0);
         mImages = intent.getStringArrayListExtra("images");
         String mToken = intent.getStringExtra("token");
+        mVideoimage = intent.getStringExtra("videoimage");
         mBuffer = new StringBuffer(url);
         mBuffer.append("?token=").append(mToken).append("&uuid=").append(uuid);
     }
@@ -282,7 +284,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             UMImage image;
             final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
             if (mPosition == 4) {
-                image = new UMImage(this, R.mipmap.icon_video_share);
+                if (mVideoimage==null){
+                    image = new UMImage(this, R.mipmap.icon_video_share);
+                }else {
+                    image = new UMImage(this,mVideoimage);
+                }
+
                 web.setDescription(!TextUtils.isEmpty(mDescrip) ? mDescrip : "群享汇-中小微企业成长平台，让创业更容易！");//描述
             } else {
                 if (mImages != null && !mImages.isEmpty()) {

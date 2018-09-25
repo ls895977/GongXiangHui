@@ -122,7 +122,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
                 intent.putExtra("descrip", videoDataList.get(position - 1).getDescription());
                 intent.putExtra("title", videoDataList.get(position - 1).getTitle());
-                intent.putExtra("image", videoDataList.get(position - 1).getPicurl());
+                intent.putExtra("videoimage", videoDataList.get(position - 1).getPicurl());
                 intent.putExtra("position", 4);
                 HomeVideoListFragment.this.startActivityForResult(intent, 0x0011);
             }
