@@ -78,7 +78,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
 
     @Override
     public void initData() {
-            requestMineIssuePostData();
+        requestMineIssuePostData();
 
     }
 
@@ -101,26 +101,29 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
                 mIsRefresh = false;
                 dataList.clear();
             }
-            dataList.addAll(mineIssurePostBean.getData().getList());
-            count = dataList.size();
-            if (mineIssurePostBean.getCode() == 0) {
-                if (mIsFirst) {
-                    mIsFirst = false;
-                    mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
-                    mineIssurePostAdapter.setListener(this);
-                    mRv.setAdapter(mineIssurePostAdapter);
+            if (mineIssurePostBean.getData().getList() != null) {
+                dataList.addAll(mineIssurePostBean.getData().getList());
+                count = dataList.size();
+                if (mineIssurePostBean.getCode() == 0) {
+                    if (mIsFirst) {
+                        mIsFirst = false;
+                        mineIssurePostAdapter = new MineIssurePostAdapter(mActivity, dataList);
+                        mineIssurePostAdapter.setListener(this);
+                        mRv.setAdapter(mineIssurePostAdapter);
 
+                    }
                 }
+                mRv.refreshComplete();
+                if (dataList.isEmpty()) {
+                    llEmpty.setVisibility(View.VISIBLE);
+                }
+                mineIssurePostAdapter.notifyDataSetChanged();
+                mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
+            } else {
+                asyncShowToast("数据出错了  请重新加载");
             }
-            mRv.refreshComplete();
-            if (dataList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
-            }
-            mineIssurePostAdapter.notifyDataSetChanged();
-            mineIssurePostAdapter.notifyItemRangeChanged(count, mineIssurePostBean.getData().getList().size());
-        } else {
-            asyncShowToast("数据出错了  请重新加载");
         }
+
     }
 
     @Override
@@ -454,7 +457,7 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
         if (o instanceof String && "localcircle".equals(o)) {
             mineIssurePostAdapter.isShow = true;
             mineIssurePostAdapter.notifyDataSetChanged();
-            if (dataList.size()>0){
+            if (dataList.size() > 0) {
                 btnDelete.setVisibility(View.VISIBLE);
             }
 

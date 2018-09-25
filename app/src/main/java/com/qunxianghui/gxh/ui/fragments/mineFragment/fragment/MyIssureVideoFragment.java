@@ -129,6 +129,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
     public void initData() {
         RequestMineIssueVideoData();
     }
+
     private void RequestMineIssueVideoData() {
         OkGo.<MineIssueVideoBean>post(Constant.GET_ISSURE_VIDEO_URL)
                 .params("limit", 12)
@@ -140,6 +141,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
                     }
                 });
     }
+
     private void parseData(MineIssueVideoBean data) {
         if (data.getCode() == 0) {
             if (mSkip == 0) {
@@ -149,16 +151,19 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
             if (data.getData().size() < 12) {
                 mRv.setLoadingMoreEnabled(false);
             }
-            mList.addAll(data.getData());
-            mRv.refreshComplete();
+            if (data.getData() != null) {
+                mList.addAll(data.getData());
+                mRv.refreshComplete();
 
-            if (mList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
+                if (mList.isEmpty()) {
+                    llEmpty.setVisibility(View.VISIBLE);
+                }
+            } else {
+                mRv.setLoadingMoreEnabled(false);
             }
-        } else {
-            mRv.setLoadingMoreEnabled(false);
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter.notifyDataSetChanged();
+
     }
 
     /**
@@ -191,7 +196,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
         if (o instanceof String && "issue_video".equals(o)) {
             mAdapter.isShow = true;
             mAdapter.notifyDataSetChanged();
-            if (mList.size()>0){
+            if (mList.size() > 0) {
                 btnDelete.setVisibility(View.VISIBLE);
             }
 
@@ -202,6 +207,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
             btnDelete.setVisibility(View.GONE);
         }
     }
+
     /*请求接口删除*/
     private void DeleteVideo(final int position) {
         OkGo.<CommonBean>post(Constant.DELETE_MYISSUE_URL)

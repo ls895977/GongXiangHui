@@ -62,6 +62,7 @@
                 android:background="@drawable/question_btn_selector"
                 android:button="@null"
                 android:text="闪退"
+                android:textSize="13sp"
                 android:textColor="@color/radiobutton_textcolor" />
 
 
@@ -72,6 +73,7 @@
                 android:background="@drawable/question_btn_selector"
                 android:button="@null"
                 android:text="提示文案错误"
+                android:textSize="13sp"
                 android:textColor="@color/radiobutton_textcolor" />
 
             <CheckBox
@@ -80,6 +82,7 @@
                 android:background="@drawable/question_btn_selector"
                 android:button="@null"
                 android:text="广告植入错误"
+                android:textSize="13sp"
                 android:textColor="@color/radiobutton_textcolor" />
 
 
@@ -109,6 +112,7 @@
                 android:background="@drawable/question_btn_selector"
                 android:button="@null"
                 android:text="功能无法使用"
+                android:textSize="13sp"
                 android:textColor="@color/radiobutton_textcolor" />
 
             <CheckBox
@@ -118,6 +122,7 @@
                 android:background="@drawable/question_btn_selector"
                 android:button="@null"
                 android:text="账号登陆失败"
+                android:textSize="13sp"
                 android:textColor="@color/radiobutton_textcolor" />
 
             <CheckBox
@@ -126,6 +131,7 @@
                 android:background="@drawable/question_btn_selector"
                 android:button="@null"
                 android:text="其他"
+                android:textSize="13sp"
                 android:textColor="@color/radiobutton_textcolor" />
 
         </LinearLayout>
@@ -151,7 +157,7 @@
                 <EditText
                     android:id="@+id/et_setting_questiontioncontent"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="200dp"
                     android:background="@null"
                     android:gravity="top"
                     android:hint="请尽情的向我们提出您的宝贵意见!配图说明能让我们尽快为您排查,提高我们的处理效率..."

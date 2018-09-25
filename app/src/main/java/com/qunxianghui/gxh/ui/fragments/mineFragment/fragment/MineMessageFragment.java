@@ -55,19 +55,22 @@ public class MineMessageFragment extends BaseFragment implements MineMessageAdap
             mIsRefresh = false;
             dataList.clear();
         }
-        dataList.addAll(mineMessageCommentBean.getData());
-        count = dataList.size();
-        if (mineMessageCommentBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                mineMessageAdapter = new MineMessageAdapter(mActivity, dataList);
-                xrecyclerMineMessage.setAdapter(mineMessageAdapter);
-                mineMessageAdapter.setCommontMeClickListener(this);
+        if (mineMessageCommentBean.getData() != null) {
+            dataList.addAll(mineMessageCommentBean.getData());
+            count = dataList.size();
+            if (mineMessageCommentBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    mineMessageAdapter = new MineMessageAdapter(mActivity, dataList);
+                    xrecyclerMineMessage.setAdapter(mineMessageAdapter);
+                    mineMessageAdapter.setCommontMeClickListener(this);
+                }
+                xrecyclerMineMessage.refreshComplete();
+                mineMessageAdapter.notifyDataSetChanged();
+                mineMessageAdapter.notifyItemChanged(count, mineMessageCommentBean.getData().size());
             }
-            xrecyclerMineMessage.refreshComplete();
-            mineMessageAdapter.notifyDataSetChanged();
-            mineMessageAdapter.notifyItemChanged(count, mineMessageCommentBean.getData().size());
         }
+
     }
 
     @Override

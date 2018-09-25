@@ -14,7 +14,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.mineAdapter.MybaoliaoPostAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -116,37 +115,40 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
             mIsRefresh = false;
             dataList.clear();
         }
-        dataList.addAll(myCollectPostBean.getData());
-        count = dataList.size();
-        if (myCollectPostBean.getCode() == 0) {
-            if (mIsFirst) {
-                mIsFirst = false;
-                myCollectPostAdapter = new MybaoliaoPostAdapter(mActivity, dataList);
-                myCollectPostAdapter.setOnAdapterClick(new MybaoliaoPostAdapter.OnAdapterClick() {
-                    @Override
-                    public void onClick(int position) {
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("baoliao", dataList.get(position));
-                        Intent intent = new Intent(getContext(),BaoliaoDetailActivity.class);
-                        intent.putExtras(bundle);
-                        getActivity().startActivity(intent);
+        if (myCollectPostBean.getData()!=null){
+            dataList.addAll(myCollectPostBean.getData());
+            count = dataList.size();
+            if (myCollectPostBean.getCode() == 0) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    myCollectPostAdapter = new MybaoliaoPostAdapter(mActivity, dataList);
+                    myCollectPostAdapter.setOnAdapterClick(new MybaoliaoPostAdapter.OnAdapterClick() {
+                        @Override
+                        public void onClick(int position) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("baoliao", dataList.get(position));
+                            Intent intent = new Intent(getContext(),BaoliaoDetailActivity.class);
+                            intent.putExtras(bundle);
+                            getActivity().startActivity(intent);
 //                        toActivity(BaoliaoDetailActivity.class, bundle);
-                    }
-                });
+                        }
+                    });
 
-                xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
-            }
-            if (dataList.isEmpty()) {
-                mEmptyView.setVisibility(View.VISIBLE);
+                    xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
+                }
+                if (dataList.isEmpty()) {
+                    mEmptyView.setVisibility(View.VISIBLE);
+                } else {
+                    mEmptyView.setVisibility(View.GONE);
+                }
+                xrecycler_mine_collect_news.refreshComplete();
+                myCollectPostAdapter.notifyDataSetChanged();
+                myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
             } else {
-                mEmptyView.setVisibility(View.GONE);
+                ToastUtils.showShort(myCollectPostBean.getMessage());
             }
-            xrecycler_mine_collect_news.refreshComplete();
-            myCollectPostAdapter.notifyDataSetChanged();
-            myCollectPostAdapter.notifyItemRangeChanged(count, myCollectPostBean.getData().size());
-        } else {
-            ToastUtils.showShort(myCollectPostBean.getMessage());
         }
+
 
     }
 

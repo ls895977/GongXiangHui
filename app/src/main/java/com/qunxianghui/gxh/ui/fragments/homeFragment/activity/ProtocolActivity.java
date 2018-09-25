@@ -113,15 +113,17 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         String mToken = intent.getStringExtra("token");
         int tag = intent.getIntExtra("tag", 0);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.setMargins(0, 120, 0, 0);
+        params.setMargins(0, 150, 0, 0);
         if (tag == 1) {
             mBuffer = new StringBuffer(url);
             mBuffer.append("?token=" + mToken);
+            params.setMargins(0, 30, 0, 0);
             mRlProtocolTitle.setVisibility(View.GONE);
-            params.setMargins(0, 25, 0, 0);
+
         } else if (tag == 2) {
             mBuffer = new StringBuffer(url);
         }else if (tag==3){
+            params.setMargins(0, 30, 0, 0);
             mBuffer = new StringBuffer(url);
             mRlProtocolTitle.setVisibility(View.GONE);
         }

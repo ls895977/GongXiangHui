@@ -70,7 +70,7 @@
     <RelativeLayout
         android:id="@+id/rl_set_comment_question"
         style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:gravity="center_vertical">
 
@@ -114,7 +114,7 @@
     <RelativeLayout
         android:id="@+id/rl_setting_aboutus"
         style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:gravity="center_vertical">
 

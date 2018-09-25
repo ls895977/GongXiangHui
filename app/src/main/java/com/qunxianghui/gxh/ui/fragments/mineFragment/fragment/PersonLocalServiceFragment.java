@@ -95,15 +95,18 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                 mList.clear();
                 xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
             }
-            mList.addAll(data.getData());
-            xrecyclerPersondetailPost.refreshComplete();
-        } else {
-            xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
+            if (data.getData() != null) {
+                mList.addAll(data.getData());
+                xrecyclerPersondetailPost.refreshComplete();
+            } else {
+                xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
+            }
+            if (mSkip == 0 && mList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            }
+            mAdapter.notifyDataSetChanged();
         }
-        if (mSkip == 0 && mList.isEmpty()) {
-            llEmpty.setVisibility(View.VISIBLE);
-        }
-        mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
