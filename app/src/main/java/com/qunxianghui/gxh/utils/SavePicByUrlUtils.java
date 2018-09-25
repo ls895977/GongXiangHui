@@ -72,8 +72,8 @@ public class SavePicByUrlUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        // 最后通知图库更新
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        Uri uri = Uri.fromFile(file);
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
         ToastUtils.showShort("图片保存成功");
     }
 }

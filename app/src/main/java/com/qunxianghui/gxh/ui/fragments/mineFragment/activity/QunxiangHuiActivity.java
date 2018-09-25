@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,9 +26,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class QunxiangHuiActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.tv_qunxianghui)
     TextView tvQunxianghui;
     @BindView(R.id.iv_qunxianghui_scan)
@@ -42,6 +41,7 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
     TextView tvQuxianghuiShare;
     @BindView(R.id.iv_quxnxianghui_back)
     ImageView ivQuxnxianghuiBack;
+
     private Bitmap mIcon;
     private Dialog mDialog;
     private UMWeb mWeb;
@@ -72,7 +72,6 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
             ivQunxianghuiScan.setImageResource(R.mipmap.icon_qunxianghui_dingyue);
             mIcon = BitmapFactory.decodeResource(this.getResources(),
                     R.mipmap.icon_qunxianghui_dingyue);
-
         } else if (tag == 2) {
             tvQunxianghui.setText("群享汇平台");
             tvQuxinghuiDes.setText(
@@ -104,6 +103,7 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
+
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(QunxiangHuiActivity.this, " 分享成功", Toast.LENGTH_SHORT).show();
@@ -122,20 +122,12 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_quxianghui_share:
                 startThirdShare();
                 break;
             case R.id.tv_quxianghui_saveto_phone:
-
                 if (SavePicByUrlUtils.sIsSaving) {
                     ToastUtils.showShort("图片正在保存中，请稍后...");
                     return;

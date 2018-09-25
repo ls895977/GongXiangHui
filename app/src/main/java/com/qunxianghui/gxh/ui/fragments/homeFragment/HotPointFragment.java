@@ -110,10 +110,10 @@ public class HotPointFragment extends BaseFragment {
         List<NewsEntity> dbList = MyDaoHelper.getInstance(getContext()).getAllData();
         for (int i = 0; i < dataList.size(); i++) {
             int id = dataList.get(i).getId();
-            for (int j = 0; j <dbList.size() ; j++) {
+            for (int j = 0; j < dbList.size(); j++) {
                 NewsEntity entity = dbList.get(j);
-                if (entity.getId()==id){
-                    dataList.get(i).isReaded=true;
+                if (entity.getId() == id) {
+                    dataList.get(i).isReaded = true;
                 }
             }
         }
@@ -224,10 +224,10 @@ public class HotPointFragment extends BaseFragment {
                 List<NewsEntity> dbList = MyDaoHelper.getInstance(getContext()).getAllData();
                 for (int i = 0; i < dataList.size(); i++) {
                     int id = dataList.get(i).getId();
-                    for (int j = 0; j <dbList.size() ; j++) {
+                    for (int j = 0; j < dbList.size(); j++) {
                         NewsEntity entity = dbList.get(j);
-                        if (entity.getId()==id){
-                            dataList.get(i).isReaded=true;
+                        if (entity.getId() == id) {
+                            dataList.get(i).isReaded = true;
                         }
                     }
                 }
@@ -290,8 +290,8 @@ public class HotPointFragment extends BaseFragment {
                 entity.setUrl(homeNewListBean.getUrl());
                 entity.setIsRead(1);
                 MyDaoHelper.getInstance(getContext()).addData(entity);
-                homeNewListBean.isReaded=true;
-                homeItemListAdapter.notifyItemChanged(position);
+                homeNewListBean.isReaded = true;
+                homeItemListAdapter.notifyItemChanged(position + 1);
             }
         });
     }
