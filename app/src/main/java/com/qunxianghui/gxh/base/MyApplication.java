@@ -76,7 +76,7 @@ public class MyApplication extends MultiDexApplication {
 //            LeakCanary.install(this);
             CrashHandler.getInstance().init(getApplicationContext());
         }
-        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+//        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();
     }

@@ -55,7 +55,7 @@
             tl:tl_textBold="SELECT"
             tl:tl_textSelectColor="#202020"
             tl:tl_textUnselectColor="#676767"
-            tl:tl_textsize="13sp" />
+            tl:tl_textsize="14sp" />
 
         <ImageView
             android:id="@+id/iv_more_columns"

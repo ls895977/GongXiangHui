@@ -279,6 +279,8 @@ public class QuestonPostActivity extends BaseActivity implements ImagePicker2Ada
             public void onSuccess(Response<CommonBean> response) {
                 if (response.body().code ==200) {
                     asyncShowToast(response.body().message);
+                    mLlLoad.setVisibility(View.GONE);
+                    finish();
                 }
             }
         });

@@ -16,9 +16,9 @@ public class Constant {
     public static final String BIANMIN_HUANGLI_URL = "http://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
     //上线环境
-    private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
+//    private static final String BASE_URL = "http://api.qunxianghui.com.cn/v2/";
     //线下问题
-//    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
+    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
@@ -223,7 +223,7 @@ public class Constant {
     //我的植入广告
     public static final String GET_AD_LIST = BASE_URL + "user/getAdTemplates";
     //意见反馈
-    public static final String QUESTION_POST_URL = BASE_URL + "api/Feedback/publish";
+    public static final String QUESTION_POST_URL = BASE_URL + "Feedback/publish";
     //合作热线
     public static final String COOPEREATE_CALL_URL = BASE_URL + "user/CooperationPhone";
     //查看核心优势或公司产品
