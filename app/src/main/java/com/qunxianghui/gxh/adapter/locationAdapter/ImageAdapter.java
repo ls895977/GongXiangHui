@@ -37,12 +37,7 @@ public class ImageAdapter extends PagerAdapter {
         int height = display.getHeight();
         ViewGroup.MarginLayoutParams layout = new ViewGroup.MarginLayoutParams(width, height);
         photoView.setLayoutParams(layout);
-        if (url.toString().endsWith(".gif")){
-            Glide.with(activity).asGif().load(url).apply(new RequestOptions().error(R.mipmap.default_img)).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
-        }else {
-            Glide.with(activity).load(url).apply(new RequestOptions().error(R.mipmap.default_img)).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
-        }
-
+        Glide.with(activity).load(url).apply(new RequestOptions().error(R.mipmap.default_img)).transition(new DrawableTransitionOptions().crossFade()).into(photoView);
         container.addView(photoView);
         photoView.setOnClickListener(new View.OnClickListener() {
             @Override

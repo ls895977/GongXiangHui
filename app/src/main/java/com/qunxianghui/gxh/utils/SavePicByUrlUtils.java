@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,26 +26,33 @@ public class SavePicByUrlUtils {
     public static void getBitmap(Context context, String imageUrl) {
         try {
             URL url1 = new URL(imageUrl);
-            urlConnection = (HttpURLConnection) url1.openConnection();
-            urlConnection.setReadTimeout(5000);
-            urlConnection.setConnectTimeout(5000);
-            urlConnection.setRequestMethod("GET");
+            if(imageUrl.contains(".gif")){
+                getImageGif(imageUrl,Environment.getExternalStorageDirectory()+"/dsh/"+System.currentTimeMillis() + ".gif",context);
+            }else {
+                urlConnection = (HttpURLConnection) url1.openConnection();
+                urlConnection.setReadTimeout(5000);
+                urlConnection.setConnectTimeout(5000);
+                urlConnection.setRequestMethod("GET");
 
-            if (urlConnection.getResponseCode() == 200) {
-                sIsSaving = true;
-                InputStream inputStream = urlConnection.getInputStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                //将图片保存到本地
-                savePic2Phone(context, bitmap);
-                bitmap.recycle();
+                if (urlConnection.getResponseCode() == 200) {
+                    sIsSaving = true;
+                    InputStream inputStream = urlConnection.getInputStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    //将图片保存到本地
+                    savePic2Phone(context, bitmap);
+                    bitmap.recycle();
+                }
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            urlConnection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+//        finally {
+//            urlConnection.disconnect();
+//        }
     }
 
     public static void savePic2Phone(Context context, Bitmap bmp) {
@@ -75,5 +83,43 @@ public class SavePicByUrlUtils {
         Uri uri = Uri.fromFile(file);
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
         ToastUtils.showShort("图片保存成功");
+    }
+
+    //path为下载路径,saveName是保存名称可以是任何文件
+    public static void getImageGif(String path, String saveName,Context context) throws Exception {
+        URL url = new URL(path);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setConnectTimeout(1000 * 6);
+        if (con.getResponseCode() == 200) {
+            InputStream inputStream = con.getInputStream();
+            byte[] b = getByte(inputStream);
+            File file = new File(saveName);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(b);
+            fileOutputStream.close();
+
+            // 其次把文件插入到系统图库
+            try {
+                MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), saveName, null);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Uri uri = Uri.fromFile(file);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            ToastUtils.showShort("Gif图片保存成功");
+        }
+    }
+
+    private static byte[] getByte(InputStream inputStream) throws Exception {
+        byte[] b = new byte[1024];
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        int len = -1;
+        while ((len = inputStream.read(b)) != -1) {
+            byteArrayOutputStream.write(b, 0, len);
+        }
+        byteArrayOutputStream.close();
+        inputStream.close();
+        return byteArrayOutputStream.toByteArray();
     }
 }
