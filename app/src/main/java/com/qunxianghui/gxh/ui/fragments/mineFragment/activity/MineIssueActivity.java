@@ -127,13 +127,6 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit:
-//                if ("编辑".equals(mTvEdit.getText().toString())) {
-//                    mTvEdit.setText("删除");
-//                    sIsDeletes = true;
-//                } else {
-//                    mTvEdit.setText("编辑");
-//                    sIsDeletes = false;
-//                }
                 MineIssueEditDataState();
                 break;
             case R.id.iv_myissue_back:

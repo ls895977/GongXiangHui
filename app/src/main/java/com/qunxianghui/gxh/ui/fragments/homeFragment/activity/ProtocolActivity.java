@@ -261,6 +261,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -279,6 +280,14 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         tvNewsdetailIssue.setOnClickListener(this);
         if (!NetWorkUtil.isNetWorkAvailable(ProtocolActivity.this)) {
             rlNewsDetailNotnet.setVisibility(View.VISIBLE);
+            mRlProtocolTitle.setVisibility(View.VISIBLE);
+            tvTitle.setText("加载失败");
+            ivWebback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
             tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

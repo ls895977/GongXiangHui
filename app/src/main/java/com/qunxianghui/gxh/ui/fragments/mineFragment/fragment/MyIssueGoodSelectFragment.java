@@ -54,6 +54,8 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     private MyIssueGoodSelectAdapter mAdapter;
     private String data_id = "";
     private int member_id = -1;
+    private boolean mIsFirst = true;
+    private boolean mIsRefresh = false;
 
     @Override
     public int getLayoutId() {
@@ -64,36 +66,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new MyIssueGoodSelectAdapter(getContext(), mList);
-        mAdapter.setCallback(new MyIssueGoodSelectAdapter.Callback() {
-            @Override
-            public void callback(int id) {
-                //SkipMyIssueVideoDetail(uuid, position);
-            }
-        });
 
-        mRv.setAdapter(mAdapter);
-        mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                mSkip = 0;
-                initData();
-            }
-
-            @Override
-            public void onLoadMore() {
-                mSkip += 10;
-                initData();
-            }
-        });
-
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteGoodSelectData();
-            }
-        });
 
         if (getContext() instanceof PersonDetailActivity) {
             member_id = ((PersonDetailActivity) getContext()).member_id;
@@ -196,26 +169,62 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     }
 
     private void parseData(MyIssueGoodSelectBean data) {
-        if (data.getCode() == 200) {
-            if (mSkip == 0) {
-                mList.clear();
-                mRv.setLoadingMoreEnabled(true);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mList.clear();
+        }
+
+        if (data.getData() != null) {
+            mList.addAll(data.getData());
+            mSkip = mList.size();
+            if (data.getCode() == 200) {
+
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    mAdapter = new MyIssueGoodSelectAdapter(getContext(), mList);
+                    mRv.setAdapter(mAdapter);
+//                    mAdapter.setCallback(new MyIssueGoodSelectAdapter.Callback() {
+//                        @Override
+//                        public void callback(int id) {
+//                            //SkipMyIssueVideoDetail(uuid, position);
+//                        }
+//                    });
+                }
             }
-            if (data.getData().size() < 10) {
-                mRv.setLoadingMoreEnabled(false);
-            }
-            if (data.getData()!=null){
-                mList.addAll(data.getData());
-                mRv.refreshComplete();
-            } else {
-                mRv.setLoadingMoreEnabled(false);
-            }
-            if (mSkip == 0 && mList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
-            }
+            mRv.refreshComplete();
             mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemRangeChanged(mSkip, data.getData().size());
+        } else {
+            llEmpty.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
+    @Override
+    protected void initListeners() {
+        super.initListeners();
+        mRv.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                mIsRefresh = true;
+                mSkip = 0;
+                initData();
             }
 
+            @Override
+            public void onLoadMore() {
+                initData();
+            }
+        });
+
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteGoodSelectData();
+            }
+        });
     }
 
     @Override

@@ -123,13 +123,12 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                     });
 
                 }
-                if (mList.isEmpty()) {
-                    llEmpty.setVisibility(View.VISIBLE);
-                }
             }
             xrecyclerPersondetailPost.refreshComplete();
             mAdapter.notifyDataSetChanged();
             mAdapter.notifyItemRangeChanged(mSkip, data.getData().size());
+        }else {
+            llEmpty.setVisibility(View.VISIBLE);
         }
 
     }

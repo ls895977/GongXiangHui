@@ -345,6 +345,12 @@ public class AdvertTiePianFragment extends BaseFragment implements AdvertChooseP
                 mAdvertBean.images = mImages.get(0).path;
             }
         } else if (resultCode == 0x0022) {
+            if (mFlLayout.getVisibility() == View.INVISIBLE) {
+                mFlLayout.setVisibility(View.VISIBLE);
+                mAdvertBean.settings.time = "3S";
+                mAdvertBean.settings.linktype = 1;
+                mTvTiePianShowType.setText("跳转链接");
+            }
             EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert info = (EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert) data.getSerializableExtra("info");
             Glide.with(mActivity).load(info.images).apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(mIvAd);
             mAdvertBean.images = info.images;
