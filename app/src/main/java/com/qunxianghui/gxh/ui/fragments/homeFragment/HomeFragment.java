@@ -145,9 +145,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             }
         } else {
             setLocation();
-
-
-
         }
     }
 
@@ -224,7 +221,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         super.onResume();
         String currcity = SPUtils.getLocation("currcity");
         mTvHomeLocation.setText(currcity);
-        setLocation();
     }
 
     /**
@@ -364,7 +360,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         SPUtils.saveLocation("currcity", cityName);
         OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
         OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
-}
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

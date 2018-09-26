@@ -37,6 +37,7 @@ import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.FileUtils;
+import com.qunxianghui.gxh.utils.NetWorkUtil;
 import com.umeng.commonsdk.statistics.common.MLog;
 
 import java.io.File;
@@ -260,7 +261,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -277,6 +277,17 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         super.initListeners();
         ivWebback.setOnClickListener(this);
         tvNewsdetailIssue.setOnClickListener(this);
+        if (!NetWorkUtil.isNetWorkAvailable(ProtocolActivity.this)) {
+            rlNewsDetailNotnet.setVisibility(View.VISIBLE);
+            tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    webView.reload();
+                }
+            });
+        } else {
+            rlNewsDetailNotnet.setVisibility(View.GONE);
+        }
     }
 
     @Override
