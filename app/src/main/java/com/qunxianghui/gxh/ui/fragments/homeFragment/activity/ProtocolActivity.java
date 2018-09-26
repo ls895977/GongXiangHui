@@ -117,14 +117,15 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
         String mToken = intent.getStringExtra("token");
-        String arera = intent.getStringExtra("token");
+        String arera = intent.getStringExtra("arera");
         int tag = intent.getIntExtra("tag", 0);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         params.setMargins(0, 150, 0, 0);
         if (tag == 1) {
             mBuffer = new StringBuffer(url);
             mBuffer.append("?token=" + mToken);
-//            mBuffer.append("?token="+mToken).append("&shi_id="+ SPUtils.getLocation("X-cityId")).append("&qu_id="+SPUtils.getLocation("X-areaId")).append("&qu="+ URLDecoder.decode(arera, "UTF-8"));
+
+//                mBuffer.append("?token="+mToken).append("&shi_id="+ SPUtils.getLocation("X-cityId")).append("&qu_id="+SPUtils.getLocation("X-areaId")).append("&qu="+ URLDecoder.decode(arera, "UTF-8"));
             params.setMargins(0, 30, 0, 0);
             mRlProtocolTitle.setVisibility(View.GONE);
 

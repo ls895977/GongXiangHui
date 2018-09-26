@@ -298,11 +298,11 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         @Override
                         public void onError(Response<PasteBean> response) {
                             super.onError(response);
-                            asyncShowToast("服务器忙..");
+                            asyncShowToast(response.body().message);
                         }
                     });
         } else {
-            asyncShowToast("您复制的不是文章链接");
+            asyncShowToast("您还没有复制文章链接");
         }
     }
 
