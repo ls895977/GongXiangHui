@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_protocol_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_protocol_main"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -39,6 +39,13 @@
         android:layout_below="@+id/rl_newsdetail_title" />
 
     <ImageView
+        android:id="@+id/iv_no_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/iv_add_advert"
+        android:visibility="gone" />
+
+    <ImageView
         android:id="@+id/iv_news_detail_addAdver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,6 +53,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="70dp"
         android:src="@mipmap/iv_add_advert" />
-
 
 </RelativeLayout>

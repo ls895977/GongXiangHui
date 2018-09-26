@@ -34,6 +34,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.NetWorkUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -53,8 +54,12 @@ import butterknife.OnClick;
  */
 
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
+
     @BindView(R.id.wed_news_detail)
     WebView mWedNewsDetail;
+    @BindView(R.id.iv_no_network)
+    View mIvNoNetwork;
+
     private Dialog mLoadingDialog;
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
@@ -188,6 +193,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 asyncShowToast(platform + " 分享取消");
             }
         };
+        if (!NetWorkUtil.isNetWorkAvailable(NewsDetailActivity.this)) {
+            mIvNoNetwork.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver})
@@ -284,10 +292,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             UMImage image;
             final UMWeb web = new UMWeb(mBuffer.toString()); //切记切记 这里分享的链接必须是http开头
             if (mPosition == 4) {
-                if (mVideoimage==null){
+                if (mVideoimage == null) {
                     image = new UMImage(this, R.mipmap.icon_video_share);
-                }else {
-                    image = new UMImage(this,mVideoimage);
+                } else {
+                    image = new UMImage(this, mVideoimage);
                 }
 
                 web.setDescription(!TextUtils.isEmpty(mDescrip) ? mDescrip : "群享汇-中小微企业成长平台，让创业更容易！");//描述
@@ -334,6 +342,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     }
                     mUmShareDialog.dismiss();
                 }
+
                 private void share(SHARE_MEDIA var1) {
                     new ShareAction(NewsDetailActivity.this).setPlatform(var1)
                             .withMedia(web)

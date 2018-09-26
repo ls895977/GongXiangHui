@@ -291,7 +291,7 @@ public class HotPointFragment extends BaseFragment {
                 entity.setIsRead(1);
                 MyDaoHelper.getInstance(getContext()).addData(entity);
                 homeNewListBean.isReaded = true;
-                homeItemListAdapter.notifyItemChanged(position + 1);
+                homeItemListAdapter.notifyDataSetChanged();
             }
         });
     }
