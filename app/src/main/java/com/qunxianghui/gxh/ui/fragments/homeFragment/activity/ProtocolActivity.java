@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -41,6 +42,7 @@ import com.umeng.commonsdk.statistics.common.MLog;
 import java.io.File;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/24 0024.
@@ -49,9 +51,8 @@ import butterknife.BindView;
 public class ProtocolActivity extends BaseActivity implements View.OnClickListener {
 
     final Activity mact = this;
-
     @BindView(R.id.ll_protocol_main)
-    RelativeLayout llProtocolMain;
+    LinearLayout llProtocolMain;
     @BindView(R.id.iv_webback)
     ImageView ivWebback;
     @BindView(R.id.tv_title)
@@ -60,6 +61,10 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     TextView tvNewsdetailIssue;
     @BindView(R.id.rl_protocol_title)
     RelativeLayout mRlProtocolTitle;
+    @BindView(R.id.rl_news_detail_notnet)
+    RelativeLayout rlNewsDetailNotnet;
+    @BindView(R.id.tv_news_detail_notnet)
+    TextView tvNewsDetailNotnet;
 
     private WebView webView;
     private StringBuffer mBuffer;
@@ -111,19 +116,22 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         final String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
         String mToken = intent.getStringExtra("token");
+        String arera = intent.getStringExtra("token");
         int tag = intent.getIntExtra("tag", 0);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         params.setMargins(0, 150, 0, 0);
         if (tag == 1) {
             mBuffer = new StringBuffer(url);
             mBuffer.append("?token=" + mToken);
+//            mBuffer.append("?token="+mToken).append("&shi_id="+ SPUtils.getLocation("X-cityId")).append("&qu_id="+SPUtils.getLocation("X-areaId")).append("&qu="+ URLDecoder.decode(arera, "UTF-8"));
             params.setMargins(0, 30, 0, 0);
             mRlProtocolTitle.setVisibility(View.GONE);
 
         } else if (tag == 2) {
+            params.setMargins(0, 60, 0, 0);
             mBuffer = new StringBuffer(url);
-        }else if (tag==3){
-            params.setMargins(0, 30, 0, 0);
+        } else if (tag == 3) {
+            params.setMargins(0, 60, 0, 0);
             mBuffer = new StringBuffer(url);
             mRlProtocolTitle.setVisibility(View.GONE);
         }
@@ -176,7 +184,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
             // For Android >= 5.0
             @Override
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 mUploadMessageAboveL = filePathCallback;
                 openImageChooser();
                 return true;
@@ -285,17 +293,17 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     private void openImageChooser() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(takePictureIntent.resolveActivity(this.getPackageManager()) != null){
+        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
             File photoFile = null;
-            try{
+            try {
                 photoFile = FileUtils.createTempImageFile();
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 MLog.e(TAG, "Image file creation failed", ex);
             }
-            if(photoFile != null){
+            if (photoFile != null) {
                 mCameraFielPath = photoFile.getAbsolutePath();
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-            }else{
+            } else {
                 takePictureIntent = null;
             }
         }
@@ -304,9 +312,9 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         imageIntent.addCategory(Intent.CATEGORY_OPENABLE);
         imageIntent.setType("image/*");
         Intent[] intentArray;
-        if(takePictureIntent != null){
+        if (takePictureIntent != null) {
             intentArray = new Intent[]{takePictureIntent};
-        }else{
+        } else {
             intentArray = new Intent[0];
         }
 
@@ -365,8 +373,8 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             }
             if (dataString != null)
                 results = new Uri[]{Uri.parse(dataString)};
-        }else {
-            if (uri != null){
+        } else {
+            if (uri != null) {
                 results = new Uri[]{uri};
             }
         }
@@ -386,4 +394,10 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

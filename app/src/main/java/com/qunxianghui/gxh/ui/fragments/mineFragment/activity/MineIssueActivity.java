@@ -16,7 +16,6 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.TabEntity;
 import com.qunxianghui.gxh.listener.PageChangeListener;
 import com.qunxianghui.gxh.observer.EventManager;
-import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueDiscloseFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssueGoodSelectFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssurePostFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.fragment.MyIssureVideoFragment;

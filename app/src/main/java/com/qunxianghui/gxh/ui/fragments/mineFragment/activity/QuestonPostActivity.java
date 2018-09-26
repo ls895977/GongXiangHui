@@ -65,6 +65,8 @@ public class QuestonPostActivity extends BaseActivity implements ImagePicker2Ada
     EditText etSettingQuestiontioncontent;
     @BindView(R.id.ll_load)
     LinearLayout mLlLoad;
+    @BindView(R.id.tv_question_adver_siji)
+    CheckBox tvQuestionAdverSiji;
     private ArrayList<ImageItem> mImages; //当前选择的所有图片
     private ImagePicker2Adapter mAdapter;
     private Dialog mSelectPhoto;
@@ -129,6 +131,7 @@ public class QuestonPostActivity extends BaseActivity implements ImagePicker2Ada
         checkBoxList.add(tvQuestionExit);
         checkBoxList.add(tvQuestionWarnTextError);
         checkBoxList.add(tvQuestionAdverAddError);
+        checkBoxList.add(tvQuestionAdverSiji);
         checkBoxList.add(tvQuestionFunNotuseError);
         checkBoxList.add(tvQuestionAccuntLoginError);
         checkBoxList.add(tvQuestionOtherError);
@@ -277,7 +280,7 @@ public class QuestonPostActivity extends BaseActivity implements ImagePicker2Ada
                 .params("images", mSb.toString()).execute(new JsonCallback<CommonBean>() {
             @Override
             public void onSuccess(Response<CommonBean> response) {
-                if (response.body().code ==200) {
+                if (response.body().code == 200) {
                     asyncShowToast(response.body().message);
                     mLlLoad.setVisibility(View.GONE);
                     finish();

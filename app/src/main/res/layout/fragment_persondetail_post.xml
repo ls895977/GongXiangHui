@@ -10,18 +10,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bt_myissue_localservice_delete" />
 
-    <Button
-        android:id="@+id/bt_myissue_localservice_delete"
-        android:layout_width="62dp"
-        android:layout_height="24dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"
-        android:layout_margin="10dp"
-        android:background="@drawable/bg_red_solid_corner"
-        android:text="删除"
-        android:visibility="gone"
-        android:textColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/ll_empty"
@@ -40,5 +28,19 @@
             android:text="他还没发布哦～"
             android:textSize="15sp" />
     </LinearLayout>
+    <Button
+        android:id="@+id/bt_myissue_localservice_delete"
+        android:layout_width="62dp"
+        android:layout_height="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_red_solid_corner"
+        android:text="删除"
+        android:visibility="gone"
+        android:textColor="@color/white" />
+
+
 
 </RelativeLayout>

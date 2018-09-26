@@ -58,7 +58,7 @@
                 android:id="@+id/tv_joincall_product_qudao_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="400-110-1214" />
+                android:text="" />
         </LinearLayout>
 
         <TextView
@@ -112,7 +112,7 @@
                 android:id="@+id/tv_joincall_product_product_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="400-110-1213" />
+                android:text="" />
         </LinearLayout>
 
         <TextView

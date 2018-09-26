@@ -38,12 +38,36 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_newsdetail_title" />
 
-    <ImageView
-        android:id="@+id/iv_no_network"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/iv_add_advert"
-        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/ll_news_detail_notnet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_no_network"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/icon_notnet" />
+
+        <TextView
+            android:id="@+id/tv_news_detail_notnet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_network"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingRight="30dp"
+            android:text="刷新"
+
+            android:textColor="#D91717"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/iv_news_detail_addAdver"

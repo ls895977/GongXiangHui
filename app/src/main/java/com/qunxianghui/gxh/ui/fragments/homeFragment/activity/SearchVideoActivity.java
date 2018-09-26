@@ -180,8 +180,6 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
             //清空历史
             case R.id.iv_video_clear_history:
                 updateHistories("", true);
-                v.setVisibility(View.GONE);
-
                 break;
             //搜索按钮
             case R.id.tv_video_search:

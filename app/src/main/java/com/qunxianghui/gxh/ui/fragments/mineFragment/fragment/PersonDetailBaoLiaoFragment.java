@@ -136,7 +136,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
 
                     xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 }
-                if (dataList.isEmpty()) {
+                if (dataList.isEmpty()||dataList.size()==0) {
                     mEmptyView.setVisibility(View.VISIBLE);
                 } else {
                     mEmptyView.setVisibility(View.GONE);

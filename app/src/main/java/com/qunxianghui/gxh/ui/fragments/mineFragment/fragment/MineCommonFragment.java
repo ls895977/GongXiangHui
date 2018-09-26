@@ -41,7 +41,6 @@ import butterknife.Unbinder;
  */
 
 public class MineCommonFragment extends BaseFragment implements Observer {
-
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.bt_mycollect_delete)

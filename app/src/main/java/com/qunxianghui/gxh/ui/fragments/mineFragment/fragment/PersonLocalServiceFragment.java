@@ -49,6 +49,9 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     private MyIssueLocalServiceAdapter mAdapter;
     private String data_id = "";
 
+    private boolean mIsFirst = true;
+    private boolean mIsRefresh = false;
+
     @Override
     protected void onLoadData() {
     }
@@ -72,6 +75,12 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                         public void onSuccess(Response<MineIssueLocalServiceBean> response) {
                             parseData(response.body());
                         }
+
+                        @Override
+                        public void onError(Response<MineIssueLocalServiceBean> response) {
+                            super.onError(response);
+                            asyncShowToast(response.body().getMsg());
+                        }
                     });
         } else {
             mTvMyissueEmptyDes.setText("您还没发布哦");
@@ -83,28 +92,44 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                         public void onSuccess(Response<MineIssueLocalServiceBean> response) {
                             parseData(response.body());
                         }
+
+                        @Override
+                        public void onError(Response<MineIssueLocalServiceBean> response) {
+                            super.onError(response);
+                            asyncShowToast(response.body().getMsg());
+                        }
                     });
         }
     }
 
     private void parseData(MineIssueLocalServiceBean data) {
-        xrecyclerPersondetailPost.refreshComplete();
-        xrecyclerPersondetailPost.loadMoreComplete();
-        if (data.getCode() == 200) {
-            if (mSkip == 0) {
-                mList.clear();
-                xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
+        if (mIsRefresh) {
+            mIsRefresh = false;
+            mList.clear();
+        }
+        if (data.getData() != null) {
+            mList.addAll(data.getData());
+            mSkip = mList.size();
+            if (data.getCode() == 200) {
+                if (mIsFirst) {
+                    mIsFirst = false;
+                    mAdapter = new MyIssueLocalServiceAdapter(getContext(), mList);
+                    xrecyclerPersondetailPost.setAdapter(mAdapter);
+                    mAdapter.setCallback(new MyIssueLocalServiceAdapter.Callback() {
+                        @Override
+                        public void callback(int id) {
+
+                        }
+                    });
+
+                }
+                if (mList.isEmpty()) {
+                    llEmpty.setVisibility(View.VISIBLE);
+                }
             }
-            if (data.getData() != null) {
-                mList.addAll(data.getData());
-                xrecyclerPersondetailPost.refreshComplete();
-            } else {
-                xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
-            }
-            if (mSkip == 0 && mList.isEmpty()) {
-                llEmpty.setVisibility(View.VISIBLE);
-            }
+            xrecyclerPersondetailPost.refreshComplete();
             mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemRangeChanged(mSkip, data.getData().size());
         }
 
     }
@@ -113,14 +138,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
         xrecyclerPersondetailPost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new MyIssueLocalServiceAdapter(getContext(), mList);
-        mAdapter.setCallback(new MyIssueLocalServiceAdapter.Callback() {
-            @Override
-            public void callback(int id) {
 
-            }
-        });
-        xrecyclerPersondetailPost.setAdapter(mAdapter);
     }
 
     @Override
@@ -131,15 +149,13 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
         xrecyclerPersondetailPost.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                //xrecyclerPersondetailPost.refreshComplete();
+                mIsRefresh = true;
                 mSkip = 0;
                 initData();
             }
 
             @Override
             public void onLoadMore() {
-                //xrecyclerPersondetailPost.refreshComplete();
-                mSkip += 10;
                 initData();
             }
 

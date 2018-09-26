@@ -26,6 +26,7 @@ public class Constant {
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
         //新闻详情
     public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
+//    public static final String HOME_NEWS_DETAIL_URL = "https://www.baidu.com/";
     //本地发布详情
     public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
     //精选发布详情
@@ -58,6 +59,7 @@ public class Constant {
     public static final String FETCH_PROVINCE_URL = BASE_URL + "province/getProvince";
     //获取城市
     public static final String FETCH_CITY_URL = BASE_URL + "city/getCity";
+
     public static final String GET_CITY_INFO = BASE_URL + "region/getCityInfo";
     //获取县城
     public static final String FETCH_COUNTRY_URL = BASE_URL + "area/getArea";

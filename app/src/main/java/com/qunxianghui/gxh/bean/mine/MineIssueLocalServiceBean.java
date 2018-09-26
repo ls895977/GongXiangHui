@@ -11,7 +11,7 @@ public class MineIssueLocalServiceBean {
      */
 
     private int code;
-    private String msg;
+    private String message;
     private List<DataBean> data;
 
     public int getCode() {
@@ -23,11 +23,11 @@ public class MineIssueLocalServiceBean {
     }
 
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 
     public List<DataBean> getData() {

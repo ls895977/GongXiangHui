@@ -182,7 +182,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             //清空历史
             case R.id.iv_clear_history:
                 updateHistories("", true);
-                v.setVisibility(View.GONE);
+
                 break;
             //搜索按钮
             case R.id.tv_cancel:

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.Display;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -59,6 +61,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     WebView mWedNewsDetail;
     @BindView(R.id.iv_no_network)
     View mIvNoNetwork;
+    @BindView(R.id.tv_news_detail_notnet)
+    TextView tvNewsDetailNotnet;
+    @BindView(R.id.ll_news_detail_notnet)
+    LinearLayout llNewsDetailNotnet;
 
     private Dialog mLoadingDialog;
     private Dialog mShareDialog;
@@ -194,7 +200,15 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         };
         if (!NetWorkUtil.isNetWorkAvailable(NewsDetailActivity.this)) {
-            mIvNoNetwork.setVisibility(View.VISIBLE);
+            llNewsDetailNotnet.setVisibility(View.VISIBLE);
+            tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWedNewsDetail.reload();
+                }
+            });
+        } else {
+            llNewsDetailNotnet.setVisibility(View.GONE);
         }
     }
 
@@ -202,6 +216,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_newsdetail_back:
+                setResult(0x0077);
                 finish();
                 break;
             case R.id.iv_news_detail_topshare:
@@ -377,4 +392,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         asyncShowToast("复制成功");
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

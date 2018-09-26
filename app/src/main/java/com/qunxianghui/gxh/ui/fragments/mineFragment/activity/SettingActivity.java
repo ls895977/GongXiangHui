@@ -54,7 +54,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     RelativeLayout rlSetCache;
     @BindView(R.id.switchButton_mine_set)
     SwitchButton switchButtonMineSet;
-
     @BindView(R.id.rl_setting_aboutus)
     RelativeLayout rlSettingAboutus;
     @BindView(R.id.rl_queston_post)

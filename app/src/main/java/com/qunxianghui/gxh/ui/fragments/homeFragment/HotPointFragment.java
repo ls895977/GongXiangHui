@@ -325,6 +325,7 @@ public class HotPointFragment extends BaseFragment {
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
                         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+//                        intent.putExtra("arera", SPUtils.getLocation("currcity"));
                         intent.putExtra("tag", 1);
                         mActivity.startActivity(intent);
                         break;
