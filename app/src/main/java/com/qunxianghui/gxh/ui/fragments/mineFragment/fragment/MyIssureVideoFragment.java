@@ -208,24 +208,24 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
         }
     }
 
-    /*请求接口删除*/
-    private void DeleteVideo(final int position) {
-        OkGo.<CommonBean>post(Constant.DELETE_MYISSUE_URL)
-                .params("uuid", mList.get(position).getUuid())
-                .execute(new JsonCallback<CommonBean>() {
-                    @Override
-                    public void onSuccess(Response<CommonBean> response) {
-                        int code = response.body().code;
-                        if (code == 0) {
-                            asyncShowToast("删除成功");
-                            mList.remove(position);
-                            mAdapter.notifyDataSetChanged();
-                        } else {
-                            asyncShowToast("删除失败");
-                        }
-                    }
-                });
-    }
+//    /*请求接口删除*/
+//    private void DeleteVideo(final int position) {
+//        OkGo.<CommonBean>post(Constant.DELETE_MYISSUE_URL)
+//                .params("uuid", mList.get(position).getUuid())
+//                .execute(new JsonCallback<CommonBean>() {
+//                    @Override
+//                    public void onSuccess(Response<CommonBean> response) {
+//                        int code = response.body().code;
+//                        if (code == 0) {
+//                            asyncShowToast("删除成功");
+//                            mList.remove(position);
+//                            mAdapter.notifyDataSetChanged();
+//                        } else {
+//                            asyncShowToast("删除失败");
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     public void onDestroyView() {

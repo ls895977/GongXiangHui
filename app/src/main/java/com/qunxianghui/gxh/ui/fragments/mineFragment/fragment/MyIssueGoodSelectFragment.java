@@ -67,7 +67,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
 
-
         if (getContext() instanceof PersonDetailActivity) {
             member_id = ((PersonDetailActivity) getContext()).member_id;
         }
@@ -147,17 +146,21 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "goodselect".equals(o)) {
-            mAdapter.isShow = true;
-            mAdapter.notifyDataSetChanged();
+
             if (mList.size() > 0) {
+                mAdapter.isShow = true;
+                mAdapter.notifyDataSetChanged();
                 btnDelete.setVisibility(View.VISIBLE);
             }
 
         }
         if (o instanceof String && "goodselect_c".equals(o)) {
-            mAdapter.isShow = false;
-            mAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.GONE);
+            if (mList.size()>0){
+                mAdapter.isShow = false;
+                mAdapter.notifyDataSetChanged();
+                btnDelete.setVisibility(View.GONE);
+            }
+
         }
     }
 
@@ -183,12 +186,12 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                     mIsFirst = false;
                     mAdapter = new MyIssueGoodSelectAdapter(getContext(), mList);
                     mRv.setAdapter(mAdapter);
-//                    mAdapter.setCallback(new MyIssueGoodSelectAdapter.Callback() {
-//                        @Override
-//                        public void callback(int id) {
-//                            //SkipMyIssueVideoDetail(uuid, position);
-//                        }
-//                    });
+                    mAdapter.setCallback(new MyIssueGoodSelectAdapter.Callback() {
+                        @Override
+                        public void callback(int id) {
+//                            SkipMyIssueVideoDetail(uuid, position);
+                        }
+                    });
                 }
             }
             mRv.refreshComplete();

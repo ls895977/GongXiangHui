@@ -208,17 +208,21 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "localser".equals(o)) {
-            mAdapter.isShow = true;
-            mAdapter.notifyDataSetChanged();
+
             if (mList.size() > 0) {
+                mAdapter.isShow = true;
+                mAdapter.notifyDataSetChanged();
                 btMyissueLocalserviceDelete.setVisibility(View.VISIBLE);
             }
 
         }
         if (o instanceof String && "localser_c".equals(o)) {
-            mAdapter.isShow = false;
-            mAdapter.notifyDataSetChanged();
-            btMyissueLocalserviceDelete.setVisibility(View.GONE);
+            if (mList.size()>0){
+                mAdapter.isShow = false;
+                mAdapter.notifyDataSetChanged();
+                btMyissueLocalserviceDelete.setVisibility(View.GONE);
+            }
+
         }
     }
 
