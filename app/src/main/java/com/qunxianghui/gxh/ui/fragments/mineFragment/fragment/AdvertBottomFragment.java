@@ -149,11 +149,11 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                             return;
                         }
                         intent = new Intent();
-                        if (mList.isEmpty()) {
+//                        if (mList.isEmpty()) {
                             intent.putExtra("isEmpty", true);
-                        } else {
-                            intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
-                        }
+//                        } else {
+//                            intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
+//                        }
                         mIsBottomClick = true;
                         intent.putExtra("isMultiSelect", true);
                         intent.setClass(mActivity, EnterpriseMaterialActivity.class);
@@ -317,7 +317,6 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     intent.putExtra("isMultiSelect", false);
                     startActivityForResult(intent, 0x0011);
                 }
-
                 break;
         }
     }

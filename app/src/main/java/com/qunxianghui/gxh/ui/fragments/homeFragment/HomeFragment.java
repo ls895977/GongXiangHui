@@ -147,7 +147,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             setLocation();
 
 
-
         }
     }
 
@@ -328,8 +327,8 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             if (aMapLocation.getErrorCode() == 0) {
                 String cityName = aMapLocation.getDistrict();
                 String city = SPUtils.getLocation("currcity");
-                    mTvHomeLocation.setText(cityName);
-                    requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
+                mTvHomeLocation.setText(cityName);
+                requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
             }
         } else {
             //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -364,7 +363,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         SPUtils.saveLocation("currcity", cityName);
         OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
         OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
-}
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
