@@ -326,7 +326,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 String city = SPUtils.getLocation("currcity");
                 if (cityName.equals(city)) {
                     mTvHomeLocation.setText(city);
-                }else {
+                } else {
                     mTvHomeLocation.setText(cityName);
                     requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
                 }
@@ -348,17 +348,13 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                 .execute(new JsonCallback<CityInfo>() {
                     @Override
                     public void onSuccess(Response<CityInfo> response) {
-                        if (response.body().code == 0) {
-                            String cityId = response.body().data.cityInfo.cityid;
-                            String areaId = response.body().data.cityInfo.areaid;
-                            saveLocationData(cityId, areaId, cityName);
+                        if (response.body().data != null) {
+                            if (response.body().code == 0) {
+                                String cityId = response.body().data.cityInfo.cityid;
+                                String areaId = response.body().data.cityInfo.areaid;
+                                saveLocationData(cityId, areaId, cityName);
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onError(Response<CityInfo> response) {
-                        super.onError(response);
-
                     }
                 });
     }

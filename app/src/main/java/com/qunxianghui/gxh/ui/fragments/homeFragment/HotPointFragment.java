@@ -74,7 +74,6 @@ public class HotPointFragment extends BaseFragment {
     private List<HomeNewListBean> dataList = new ArrayList<>();
     private int mCount = 0;
     private int mRefreshCount = 0;
-
     private int mChannelId = 0;
     public TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
@@ -166,7 +165,10 @@ public class HotPointFragment extends BaseFragment {
                 .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
                     public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
-                        setData(response);
+                        if (response.body().code==0){
+                            setData(response);
+                        }
+
                     }
                 });
     }

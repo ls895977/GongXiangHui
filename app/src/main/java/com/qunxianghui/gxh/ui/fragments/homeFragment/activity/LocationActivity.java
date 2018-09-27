@@ -103,6 +103,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
                 finish();
                 break;
             case R.id.tv_current_address:
+                requestAbleLocation();
                 break;
         }
     }
@@ -170,10 +171,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
         mLocationClient.startLocation();
     }
 
-    @OnClick(R.id.tv_current_address)
-    public void onViewClicked() {
-        requestAbleLocation();
-    }
+
 
     private void requestCityInfo(Double lat, Double lng, final String cityName) {
         OkGo.<CityInfo>get(Constant.GET_CITY_INFO)

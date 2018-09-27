@@ -205,6 +205,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 @Override
                 public void onClick(View view) {
                     mWedNewsDetail.reload();
+                    mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
+                        @Override
+                        public void onProgressChanged(WebView view, int newProgress) {
+                            if (newProgress >= 80) {
+                                llNewsDetailNotnet.setVisibility(View.GONE);
+                            }
+                        }
+                    });
                 }
             });
         } else {

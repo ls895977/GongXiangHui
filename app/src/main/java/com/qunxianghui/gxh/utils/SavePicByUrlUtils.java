@@ -75,12 +75,14 @@ public class SavePicByUrlUtils {
         }
 
         // 其次把文件插入到系统图库
-        try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
+//        try {
+//            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        Uri uri = Uri.fromFile(file);
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
         ToastUtils.showShort("图片保存成功");
     }
 
@@ -99,11 +101,11 @@ public class SavePicByUrlUtils {
             fileOutputStream.close();
 
             // 其次把文件插入到系统图库
-            try {
-                MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), saveName, null);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), saveName, null);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
             Uri uri = Uri.fromFile(file);
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
             ToastUtils.showShort("Gif图片保存成功");
