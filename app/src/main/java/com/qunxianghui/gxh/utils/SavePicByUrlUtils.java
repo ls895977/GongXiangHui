@@ -26,7 +26,7 @@ public class SavePicByUrlUtils {
     public static void getBitmap(Context context, String imageUrl) {
         try {
             URL url1 = new URL(imageUrl);
-            if(imageUrl.contains(".gif")){
+            if(imageUrl.endsWith(".gif")){
                 getImageGif(imageUrl,Environment.getExternalStorageDirectory()+"/dsh/"+System.currentTimeMillis() + ".gif",context);
             }else {
                 urlConnection = (HttpURLConnection) url1.openConnection();
