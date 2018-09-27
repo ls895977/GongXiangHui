@@ -39,6 +39,8 @@
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".base.MyApplication"
@@ -285,9 +287,9 @@
             android:name=".ui.fragments.mineFragment.activity.AddProductActivity"
             android:screenOrientation="portrait" />
         <!--我的视频添加频道的界面-->
-        <activity
-            android:name=".ui.fragments.homeFragment.activity.HomeVideoChannelActivity"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name=".ui.fragments.homeFragment.activity.HomeVideoChannelActivity"-->
+            <!--android:screenOrientation="portrait" />-->
         <!--首页视频汇的搜索界面-->
         <activity
             android:name=".ui.fragments.homeFragment.activity.SearchVideoActivity"

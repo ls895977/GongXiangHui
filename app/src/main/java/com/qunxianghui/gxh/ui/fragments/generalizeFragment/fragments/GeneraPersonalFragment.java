@@ -2,6 +2,7 @@ package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,6 +43,8 @@ public class GeneraPersonalFragment extends BaseFragment {
     @BindView(R.id.ll_bg_load)
     View mLoadView;
     Unbinder unbinder;
+    @BindView(R.id.sweip_refresh_genperson)
+    SwipeRefreshLayout sweipRefreshGenperson;
 
     private MyGeneralizePersonAdapter myGeneralizePersonAdapter;
     private boolean mIsFirst = true;
@@ -132,7 +135,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                         intent.putExtra("position", 4);
                         intent.putExtra("descrip", dataBean.description);
                     }
-                    startActivityForResult(intent,0x0088);
+                    startActivityForResult(intent, 0x0088);
                 }
             });
         }
@@ -150,7 +153,7 @@ public class GeneraPersonalFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==0x0077){
+        if (resultCode == 0x0077) {
             myGeneralizePersonAdapter.notifyDataSetChanged();
 
         }

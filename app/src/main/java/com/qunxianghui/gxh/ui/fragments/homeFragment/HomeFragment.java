@@ -324,7 +324,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             if (aMapLocation.getErrorCode() == 0) {
                 String cityName = aMapLocation.getDistrict();
                 String city = SPUtils.getLocation("currcity");
-                if (!TextUtils.isEmpty(city)) {
+                if (cityName.equals(city)) {
                     mTvHomeLocation.setText(city);
                 }else {
                     mTvHomeLocation.setText(cityName);

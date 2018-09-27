@@ -38,9 +38,12 @@ import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity;
 import com.qunxianghui.gxh.utils.FileUtils;
 import com.qunxianghui.gxh.utils.NetWorkUtil;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.umeng.commonsdk.statistics.common.MLog;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,9 +126,12 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         params.setMargins(0, 150, 0, 0);
         if (tag == 1) {
             mBuffer = new StringBuffer(url);
-            mBuffer.append("?token=" + mToken);
-
-//                mBuffer.append("?token="+mToken).append("&shi_id="+ SPUtils.getLocation("X-cityId")).append("&qu_id="+SPUtils.getLocation("X-areaId")).append("&qu="+ URLDecoder.decode(arera, "UTF-8"));
+//            mBuffer.append("?token=" + mToken);
+            try {
+                mBuffer.append("?token="+mToken).append("&shi_id="+ SPUtils.getLocation("X-cityId")).append("&qu_id="+SPUtils.getLocation("X-areaId")).append("&qu="+ URLDecoder.decode( SPUtils.getLocation("currcity"), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             params.setMargins(0, 30, 0, 0);
             mRlProtocolTitle.setVisibility(View.GONE);
 

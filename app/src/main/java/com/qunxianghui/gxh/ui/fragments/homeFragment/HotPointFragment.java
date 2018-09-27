@@ -181,6 +181,7 @@ public class HotPointFragment extends BaseFragment {
         }
     }
 
+
     /**
      * 首页下拉刷新 新的接口
      */
@@ -210,6 +211,7 @@ public class HotPointFragment extends BaseFragment {
                     }
                 });
     }
+
 
     private void setData(Response<CommonResponse<List<HomeNewListBean>>> response) {
         if (response.body().code == 0) {
@@ -325,7 +327,6 @@ public class HotPointFragment extends BaseFragment {
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
                         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-//                        intent.putExtra("arera", SPUtils.getLocation("currcity"));
                         intent.putExtra("tag", 1);
                         mActivity.startActivity(intent);
                         break;

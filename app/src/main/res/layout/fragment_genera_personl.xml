@@ -6,12 +6,20 @@
     android:orientation="vertical">
 
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/xrecycler_genera_personal_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sweip_refresh_genperson"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/xrecycler_genera_personal_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
     <include
         layout="@layout/common_bg_load_view"
         android:layout_width="wrap_content"
