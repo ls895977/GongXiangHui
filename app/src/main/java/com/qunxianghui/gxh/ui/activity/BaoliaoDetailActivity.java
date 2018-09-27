@@ -50,7 +50,7 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
         BaoliaoBean.DataBean dataBean = (BaoliaoBean.DataBean) getIntent().getSerializableExtra("baoliao");
         Object content = dataBean.content;
         try {
-            //List<BaoliaoBean.DataBean.Content> contentList = JSONObject.parseArray(dataBean.content, BaoliaoBean.DataBean.Content.class);
+            //List<BaoLiaoBean.DataBean.Content> contentList = JSONObject.parseArray(dataBean.content, BaoLiaoBean.DataBean.Content.class);
             if (content != null) {
                 String contentStr = content.toString();
                 if (contentStr.indexOf("\"img\"")==-1){

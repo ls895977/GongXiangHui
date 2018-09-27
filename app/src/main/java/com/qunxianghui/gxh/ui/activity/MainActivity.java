@@ -39,6 +39,8 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SystemUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,8 +74,9 @@ public class MainActivity extends BaseActivity {
     private MainBroadCast receiver;
     private View mCurrentView;
     private Fragment mCurrentFragment;
-    private Fragment[] mFragments = new Fragment[4];
     private FragmentManager mFragmentManager;
+    private List<Fragment> mFragments;
+    private FragmentTransaction mFragmentTransaction;
     private OnekeyIssueDialog dialog;
 
     protected int getLayoutId() {
@@ -83,15 +86,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViews() {
         MyApplication.mMainActivity = this;
+        mFragments = Arrays.asList(new Fragment[]{new HomeFragment(), new LocationFragment(), new GeneralizeFragment(), new MineFragment()});
         mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        mFragments[0] = new HomeFragment();
-        mFragments[1] = new LocationFragment();
-        mFragments[2] = new GeneralizeFragment();
-        mFragments[3] = new MineFragment();
-        mCurrentFragment = mFragments[0];
-        fragmentTransaction.add(R.id.content, mFragments[3]);
-        fragmentTransaction.add(R.id.content, mCurrentFragment).hide(mFragments[3]).commitAllowingStateLoss();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+
+        mCurrentFragment = mFragments.get(0);
+//        hideSavedFragment();
+        if (mCurrentFragment.isAdded()) {
+            mFragmentTransaction.show(mCurrentFragment);
+        } else {
+            mFragmentTransaction.add(R.id.content, mCurrentFragment).commitNowAllowingStateLoss();
+        }
+
+        mFragmentManager.executePendingTransactions();
         mCurrentView = mTvHome;
         mTvHome.setSelected(true);
 
@@ -110,6 +117,12 @@ public class MainActivity extends BaseActivity {
             }
         } else {
             OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+        }
+    }
+
+    private void hideSavedFragment() {
+        for (int i = 0; i < mFragments.size(); i++) {
+            mFragmentTransaction.hide(mFragments.get(i)).commit();
         }
     }
 
@@ -142,15 +155,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        ((BaseFragment) mFragments[0]).initData();
-        if (mFragments[1].isAdded()) {
-            ((BaseFragment) mFragments[1]).initData();
+        ((BaseFragment) mFragments.get(0)).initData();
+        if (mFragments.get(1).isAdded()) {
+            ((BaseFragment) mFragments.get(1)).initData();
         }
         if (!LoginMsgHelper.isLogin()) {
             onViewClicked(mTvHome);
         } else {
-            ((BaseFragment) mFragments[2]).initData();
-            ((BaseFragment) mFragments[3]).initData();
+            ((BaseFragment) mFragments.get(2)).initData();
+            ((BaseFragment) mFragments.get(3)).initData();
         }
     }
 
@@ -181,11 +194,11 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_home:
                 mTvHome.setSelected(true);
-                fragment = mFragments[0];
+                fragment = mFragments.get(0);
                 break;
             case R.id.tv_location:
                 mTvLocation.setSelected(true);
-                fragment = mFragments[1];
+                fragment = mFragments.get(1);
                 break;
             case R.id.ll_issue:
                 fragment = mCurrentFragment;
@@ -193,11 +206,11 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.tv_generation:
                 mTvGeneration.setSelected(true);
-                fragment = mFragments[2];
+                fragment = mFragments.get(2);
                 break;
             case R.id.tv_mine:
                 mTvMine.setSelected(true);
-                fragment = mFragments[3];
+                fragment = mFragments.get(3);
                 break;
         }
         if (fragment != mCurrentFragment) {
