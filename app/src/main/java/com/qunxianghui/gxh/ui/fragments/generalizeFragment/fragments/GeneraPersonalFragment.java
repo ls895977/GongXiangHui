@@ -68,16 +68,6 @@ public class GeneraPersonalFragment extends BaseFragment {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());
         View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
         myGeneralizePersonAdapter.addHeaderView(header);
-//        myGeneralizePersonAdapter.setLoadMoreView(new CustomLoadMoreView());
-//        myGeneralizePersonAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-//            @Override
-//            public void onLoadMoreRequested() {
-//                mCount += 12;
-////                LoadMoreData(mCount);
-//                initLoadMoreListener();
-//            }
-//        }, mXrecyclerGeneraPersonalList);
-//        initLoadMoreListener();
         mPullLoadMoreRecyclerView.setLinearLayout();
         mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
@@ -104,20 +94,14 @@ public class GeneraPersonalFragment extends BaseFragment {
                 }, 1500);
             }
         });
-        sweipRefreshGenperson.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        sweipRefreshGenperson.setColorSchemeResources(R.color.tab_color, R.color.colorPrimary, R.color.colorPrimaryDark);
-        sweipRefreshGenperson.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mCount = 0;
-                data.clear();
-                //下拉刷新
-                requestListInfo();
-            }
-        });
+
         mPullLoadMoreRecyclerView.setAdapter(myGeneralizePersonAdapter);
     }
 
+    /**
+     * 加载数据
+     * @param count
+     */
     private void LoadMoreData(int count) {
         if (mDataList == null || mDataList.size() == 0) {
             //todo
@@ -128,7 +112,6 @@ public class GeneraPersonalFragment extends BaseFragment {
             data.add(mDataList.get(i));
         }
 
-        System.out.println(data.size() + "======data========" + data.get(data.size() - 1).title);
         myGeneralizePersonAdapter.setNewData(data);
         myGeneralizePersonAdapter.notifyDataSetChanged();
     }

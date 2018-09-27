@@ -104,6 +104,7 @@ public class HotPointFragment extends BaseFragment {
 
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
+            mRefreshCount = getArguments().getInt("times");
         }
         homeItemListAdapter = new HomeItemListAdapter();
         List<NewsEntity> dbList = MyDaoHelper.getInstance(getContext()).getAllData();
@@ -235,7 +236,7 @@ public class HotPointFragment extends BaseFragment {
                         }
                     }
                 }
-                mRefreshCount++;
+//                mRefreshCount++;
                 int total = dataList.size();
                 if (mCount + 12 <= total) {
                     mCount += 12;

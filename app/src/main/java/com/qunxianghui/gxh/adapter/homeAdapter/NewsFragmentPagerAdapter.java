@@ -37,6 +37,7 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
             newFragment = new HotPointFragment();
             bundle = new Bundle();
             bundle.putInt("channel_id", mTitleList.get(i).id);
+            bundle.putInt("times", 1);
             bundle.putString("channel_name", mTitleList.get(i).channelName);
             newFragment.setArguments(bundle);
             mFragments.add(newFragment);
