@@ -54,7 +54,7 @@ public class BaoliaoBean implements Serializable {
         public int id;
         public int member_id;
         public String title;
-        public List<Content> content;
+        public Object content;
         public String ctime;
         public String ip;
         public String status;

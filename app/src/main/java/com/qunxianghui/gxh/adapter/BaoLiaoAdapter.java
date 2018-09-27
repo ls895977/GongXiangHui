@@ -19,6 +19,7 @@ import com.qunxianghui.gxh.bean.BaoLiaoBean;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class BaoLiaoAdapter extends RecyclerView.Adapter<BaoLiaoAdapter.BaoLiaoViewHolder> {
 
     private Context mContext;

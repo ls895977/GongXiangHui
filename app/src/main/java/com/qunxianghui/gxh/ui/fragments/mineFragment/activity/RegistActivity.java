@@ -141,6 +141,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                             toActivity(LoginActivity.class);
                         }
                     }
+
                     @Override
                     public void onError(Response<CommonBean> response) {
                         super.onError(response);
@@ -156,8 +157,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
+        OkGo.<String>post(Constant.REFIST_SEND_CODE_URL)
+                .tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
                 .params("mobile", mPhone)
@@ -168,9 +169,12 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                         final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
                         if (responseBean.getCode() == 0) {
                             handler.sendEmptyMessage(MSG_SEND_SUCCESS);
+                            asyncShowToast(responseBean.getMessage());
 
                         } else {
                             handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+
+                            asyncShowToast(responseBean.getMessage());
                         }
                     }
 

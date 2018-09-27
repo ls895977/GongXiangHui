@@ -4,13 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,7 +173,6 @@ public class CommentItemAdapter extends BaseAdapter {
         SpannableStringBuilder span = new SpannableStringBuilder(contentTitle + mList.get(position).getContent());
         span.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), 0, contentTitle.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        Log.e("content",contentTitle + mList.get(position).getContent());
         holder.content.setText(span);
 
     }
