@@ -36,6 +36,7 @@ public class UserUtil {
     private void getUserData() {
         OkGo.<String>post(Constant.CATCH_USERDATA_URL)
                 .headers("X-accesstoken", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""))
+                .headers("X-appkey", String.valueOf(100))
                 .execute(new JsonCallback<String>() {
                     @Override
                     public void onSuccess(Response<String> response) {

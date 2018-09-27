@@ -1,6 +1,7 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -127,6 +128,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         return loadingDialog;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void initListeners() {
         WebSettings settings = mWedNewsDetail.getSettings();
@@ -201,6 +203,9 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         };
         if (!NetWorkUtil.isNetWorkAvailable(NewsDetailActivity.this)) {
             llNewsDetailNotnet.setVisibility(View.VISIBLE);
+            mWedNewsDetail.setBackgroundColor(R.color.white);
+            mWedNewsDetail.setVisibility(View.GONE);
+        } else {
             tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -213,10 +218,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                             }
                         }
                     });
+
+
                 }
             });
-        } else {
-            llNewsDetailNotnet.setVisibility(View.GONE);
         }
     }
 

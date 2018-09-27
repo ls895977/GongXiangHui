@@ -114,12 +114,12 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                             } else {
                                 asyncShowToast(response.body().message);
                             }
+
                         }
 
                         @Override
                         public void onError(Response<CommonResponse<LoginBean>> response) {
                             super.onError(response);
-                            asyncShowToast(response.body().message);
                         }
                     });
         }

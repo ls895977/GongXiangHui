@@ -93,11 +93,6 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                             parseData(response.body());
                         }
 
-                        @Override
-                        public void onError(Response<MineIssueLocalServiceBean> response) {
-                            super.onError(response);
-                            asyncShowToast(response.body().getMsg());
-                        }
                     });
         }
     }
