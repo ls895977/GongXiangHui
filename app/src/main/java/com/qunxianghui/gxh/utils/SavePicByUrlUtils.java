@@ -80,8 +80,7 @@ public class SavePicByUrlUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Uri uri = Uri.fromFile(file);
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+
         ToastUtils.showShort("图片保存成功");
     }
 

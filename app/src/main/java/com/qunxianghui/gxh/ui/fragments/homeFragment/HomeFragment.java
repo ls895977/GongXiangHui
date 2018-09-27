@@ -354,6 +354,12 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                             saveLocationData(cityId, areaId, cityName);
                         }
                     }
+
+                    @Override
+                    public void onError(Response<CityInfo> response) {
+                        super.onError(response);
+
+                    }
                 });
     }
 
