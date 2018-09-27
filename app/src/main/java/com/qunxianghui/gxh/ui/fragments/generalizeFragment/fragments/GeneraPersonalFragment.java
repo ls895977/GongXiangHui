@@ -2,7 +2,9 @@ package com.qunxianghui.gxh.ui.fragments.generalizeFragment.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -24,6 +27,7 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +49,14 @@ public class GeneraPersonalFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.sweip_refresh_genperson)
     SwipeRefreshLayout sweipRefreshGenperson;
+    @BindView(R.id.pullLoadMoreRecyclerView)
+    PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
 
     private MyGeneralizePersonAdapter myGeneralizePersonAdapter;
     private boolean mIsFirst = true;
     private List<GeneraPersonStaticBean.DataBean> mDataList;
+    public int mCount = 0;
+    List<GeneraPersonStaticBean.DataBean> data = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -58,9 +66,71 @@ public class GeneraPersonalFragment extends BaseFragment {
     @Override
     public void initData() {
         myGeneralizePersonAdapter = new MyGeneralizePersonAdapter(new ArrayList<GeneraPersonStaticBean.DataBean>());
-        mXrecyclerGeneraPersonalList.setAdapter(myGeneralizePersonAdapter);
         View header = LayoutInflater.from(getContext()).inflate(R.layout.fragment_genera_personal_header, null);
         myGeneralizePersonAdapter.addHeaderView(header);
+//        myGeneralizePersonAdapter.setLoadMoreView(new CustomLoadMoreView());
+//        myGeneralizePersonAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//            @Override
+//            public void onLoadMoreRequested() {
+//                mCount += 12;
+////                LoadMoreData(mCount);
+//                initLoadMoreListener();
+//            }
+//        }, mXrecyclerGeneraPersonalList);
+//        initLoadMoreListener();
+        mPullLoadMoreRecyclerView.setLinearLayout();
+        mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCount = 0;
+                        data.clear();
+                        requestListInfo();
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCount += 12;
+                        LoadMoreData(mCount);
+                        mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+                    }
+                }, 1500);
+            }
+        });
+        sweipRefreshGenperson.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        sweipRefreshGenperson.setColorSchemeResources(R.color.tab_color, R.color.colorPrimary, R.color.colorPrimaryDark);
+        sweipRefreshGenperson.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mCount = 0;
+                data.clear();
+                //下拉刷新
+                requestListInfo();
+            }
+        });
+        mPullLoadMoreRecyclerView.setAdapter(myGeneralizePersonAdapter);
+    }
+
+    private void LoadMoreData(int count) {
+        if (mDataList == null || mDataList.size() == 0) {
+            //todo
+            return;
+        }
+        for (int i = count; i < count + 12 && i < mDataList.size(); i++) {
+
+            data.add(mDataList.get(i));
+        }
+
+        System.out.println(data.size() + "======data========" + data.get(data.size() - 1).title);
+        myGeneralizePersonAdapter.setNewData(data);
+        myGeneralizePersonAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -107,15 +177,20 @@ public class GeneraPersonalFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Response<GeneraPersonStaticBean> response) {
                         mLoadView.setVisibility(View.GONE);
-                        parseGeneralizePersonData(response.body());
+                        if (response == null)
+                            return;
+                        if (response.body() == null)
+                            return;
+                        else parseGeneralizePersonData(response.body());
                     }
                 });
     }
 
     private void parseGeneralizePersonData(GeneraPersonStaticBean generaPersonStaticBean) {
         if (generaPersonStaticBean.getCode() == 0) {
+            mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
             mDataList = generaPersonStaticBean.getData();
-            myGeneralizePersonAdapter.setNewData(mDataList);
+            LoadMoreData(mCount);
             myGeneralizePersonAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -138,6 +213,8 @@ public class GeneraPersonalFragment extends BaseFragment {
                     startActivityForResult(intent, 0x0088);
                 }
             });
+        } else {
+            myGeneralizePersonAdapter.loadMoreEnd();
         }
     }
 
@@ -155,7 +232,6 @@ public class GeneraPersonalFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0x0077) {
             myGeneralizePersonAdapter.notifyDataSetChanged();
-
         }
     }
 
