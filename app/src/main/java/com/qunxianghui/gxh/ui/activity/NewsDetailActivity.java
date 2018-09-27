@@ -21,12 +21,14 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
@@ -66,7 +68,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     TextView tvNewsDetailNotnet;
     @BindView(R.id.ll_news_detail_notnet)
     LinearLayout llNewsDetailNotnet;
-
+    @BindView(R.id.rl_newsdetail_title)
+    RelativeLayout rlNewsdetailTitle;
+    @BindView(R.id.iv_news_detail_addAdver)
+    ImageView ivNewsDetailAddAdver;
+    @BindView(R.id.ll_protocol_main)
+    RelativeLayout llProtocolMain;
     private Dialog mLoadingDialog;
     private Dialog mShareDialog;
     private Dialog mUmShareDialog;
@@ -138,11 +145,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
-        settings.setSupportZoom(false);
+        settings.setSupportZoom(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setDisplayZoomControls(false);
+        settings.setDisplayZoomControls(true);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setAppCacheEnabled(true);
+        settings.setUseWideViewPort(true);
         mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -150,6 +158,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     mLoadingDialog.dismiss();
                 }
             }
+
         });
         mWedNewsDetail.setWebViewClient(new WebViewClient() {
             @Override
@@ -178,6 +187,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 }
                 return false;
             }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                com.orhanobut.logger.Logger.e("网页加载失败"+error);
+            }
         });
         mWedNewsDetail.loadUrl(String.valueOf(mBuffer));
         umShareListener = new UMShareListener() {
@@ -202,27 +216,23 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             }
         };
         if (!NetWorkUtil.isNetWorkAvailable(NewsDetailActivity.this)) {
-            llNewsDetailNotnet.setVisibility(View.VISIBLE);
-            mWedNewsDetail.setBackgroundColor(R.color.white);
             mWedNewsDetail.setVisibility(View.GONE);
-        } else {
+            llNewsDetailNotnet.setVisibility(View.VISIBLE);
+            tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                }
+            });
+        }else {
             tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mWedNewsDetail.reload();
-                    mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
-                        @Override
-                        public void onProgressChanged(WebView view, int newProgress) {
-                            if (newProgress >= 80) {
-                                llNewsDetailNotnet.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-
-
+                    llNewsDetailNotnet.setVisibility(View.GONE);
                 }
             });
         }
+
     }
 
     @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver})

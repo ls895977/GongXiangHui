@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -79,7 +77,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                         data.clear();
                         requestListInfo();
                     }
-                }, 1500);
+                }, 500);
             }
 
             @Override
@@ -91,7 +89,7 @@ public class GeneraPersonalFragment extends BaseFragment {
                         LoadMoreData(mCount);
                         mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                     }
-                }, 1500);
+                }, 500);
             }
         });
 

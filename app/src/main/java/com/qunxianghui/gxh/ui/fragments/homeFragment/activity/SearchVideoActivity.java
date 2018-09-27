@@ -131,7 +131,7 @@ public class SearchVideoActivity extends BaseActivity implements View.OnClickLis
             historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
         } else {
             historyDatas = new ArrayList<>();
-            ivVideoClearHistory.setVisibility(View.GONE);
+//            ivVideoClearHistory.setVisibility(View.GONE);
         }
         historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
         historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {

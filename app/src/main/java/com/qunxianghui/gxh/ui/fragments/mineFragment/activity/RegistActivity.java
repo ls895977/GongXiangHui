@@ -181,6 +181,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onError(Response<String> response) {
                         handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+
                     }
                 });
     }

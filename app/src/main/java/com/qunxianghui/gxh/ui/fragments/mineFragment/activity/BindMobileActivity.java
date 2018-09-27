@@ -15,15 +15,10 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.CommonResponse;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
-import com.qunxianghui.gxh.bean.mine.LoginBean;
-import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.ui.activity.MainActivity;
-import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -95,34 +90,36 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
         if (TextUtils.isEmpty(mobileCode) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(bindPassword)) {
             asyncShowToast("检查一下手机号 验证码 密码那个没有填");
         } else {
-            OkGo.<CommonResponse<LoginBean>>post(Constant.LOGIN_BINE_MOBILE_URL)
+            OkGo.<CommonBean>post(Constant.LOGIN_BINE_MOBILE_URL)
                     .params("mobile", phoneNumber)
                     .params("captcha", mobileCode)
                     .params("password", bindPassword)
                     .params("connect_id", getIntent().getIntExtra("connect_id", 0))
-                    .execute(new DialogCallback<CommonResponse<LoginBean>>(this) {
+                    .execute(new JsonCallback<CommonBean>() {
                         @Override
-                        public void onSuccess(Response<CommonResponse<LoginBean>> response) {
-                            String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
-                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
-                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                        public void onSuccess(Response<CommonBean> response) {
+//                            String access_token = response.body().data.getAccessTokenInfo().getAccess_token();
+//                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+//                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, response.body().data.getCompany_id() != 0);
+//                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                             if (response.body().code == 0) {
                                 asyncShowToast(response.body().message);
-                                toActivity(MainActivity.class);
+                                toActivity(LoginActivity.class);
                                 finish();
                             } else {
                                 asyncShowToast(response.body().message);
                             }
-
                         }
 
                         @Override
-                        public void onError(Response<CommonResponse<LoginBean>> response) {
+                        public void onError(Response<CommonBean> response) {
                             super.onError(response);
+                            asyncShowToast(response.body().message);
                         }
                     });
         }
+
+
     }
 
     private void getVertifiCode() {
@@ -132,7 +129,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
         OkGo.<GeneralResponseBean>post(Constant.REFIST_SEND_CODE_URL).tag(TAG)
                 .cacheKey("cachePostKey")
                 .cacheMode(CacheMode.DEFAULT)
@@ -144,9 +140,11 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
                         GeneralResponseBean responseBean = response.body();
                         if (responseBean.getCode() == 0) {
                             timerHandler.sendEmptyMessage(MSG_SEND_SUCCESS);
+                            asyncShowToast(responseBean.getMessage());
 
                         } else {
                             timerHandler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                            asyncShowToast(responseBean.getMessage());
                         }
                     }
 

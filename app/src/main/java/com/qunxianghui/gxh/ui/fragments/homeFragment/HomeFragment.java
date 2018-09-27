@@ -56,6 +56,7 @@ import com.qunxianghui.gxh.utils.HttpStatusUtil;
 import com.qunxianghui.gxh.utils.PermissionPageUtils;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
+import com.qunxianghui.gxh.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -264,7 +265,10 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                     toActivity(LoginActivity.class);
                     return;
                 } else {
-                    clipArticalData();
+                    if (Utils.isThreeClick()) {
+                        clipArticalData();
+                    }
+
                 }
                 break;
         }

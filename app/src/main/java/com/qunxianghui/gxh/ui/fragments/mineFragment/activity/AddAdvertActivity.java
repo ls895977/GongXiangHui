@@ -187,7 +187,6 @@ public class AddAdvertActivity extends BaseActivity {
                     public void onSuccess(Response<ShareInfo> response) {
                         if (response.body().code == 200) {
                             mData = response.body().data;
-
                             if (mData != null) {
                                 startThirdShare(mData.imgUrl, mData.title, mData.desc);
                             }
@@ -210,7 +209,7 @@ public class AddAdvertActivity extends BaseActivity {
     private void startThirdShare(String url, String title, String descrip) {
         //以下代码是分享示例代码
         UMImage image;
-        if (url != null && !url.isEmpty()) {
+        if (url != null ) {
             image = new UMImage(this, url);//分享图标
         } else {
             image = new UMImage(this, R.mipmap.logo);

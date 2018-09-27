@@ -155,14 +155,15 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
-        settings.setSupportZoom(false);
+        settings.setSupportZoom(true);
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setDisplayZoomControls(false);
+        settings.setDisplayZoomControls(true);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setAppCacheEnabled(true);
+        settings.setUseWideViewPort(true);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int progress) {

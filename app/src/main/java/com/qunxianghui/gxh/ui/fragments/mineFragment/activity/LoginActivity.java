@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity {
         etLoginPhone.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (etLoginPhone.getText().toString().trim().length() == 11 && etLoginPassword.getText().toString().trim().length() > 5) {
+                if (etLoginPhone.getText().toString().trim().length()>5 && etLoginPassword.getText().toString().trim().length() > 5) {
                     btLoginLogin.setEnabled(true);
                 } else {
                     btLoginLogin.setEnabled(false);
@@ -269,6 +269,7 @@ public class LoginActivity extends BaseActivity {
                             }
                             OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
                             holdReneraCompanyData();
+
                         } else {
                             asyncShowToast(response.body().message);
                         }

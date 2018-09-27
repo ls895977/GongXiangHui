@@ -133,7 +133,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             historyDatas = new ArrayList<>(Arrays.asList(histories.substring(1, histories.length() - 1).split(",")));
         } else {
             historyDatas = new ArrayList<>();
-            ivClearHistory.setVisibility(View.GONE);
+//            ivClearHistory.setVisibility(View.GONE);
         }
         historyAdapter = new SimpleTextAdapter(mContext, historyDatas);
         historyAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
