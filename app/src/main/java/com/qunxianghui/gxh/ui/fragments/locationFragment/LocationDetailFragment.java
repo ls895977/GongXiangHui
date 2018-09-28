@@ -491,13 +491,14 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
                                                         @Override
                                                         public void onError(Response<ReplyCommentResponseBean> response) {
-//                                                            asyncShowToast(response.message());
+//                                                            asyncShowToast(response.body().getMsg());
+//                                                            asyncShowToast(response.body().getMsg());
                                                         }
                                                     });
                                         }
                                     }
                                 } else {
-                                    asyncShowToast(response.message());
+                                    asyncShowToast(commentResponseBean.getMsg());
                                 }
                             }
 

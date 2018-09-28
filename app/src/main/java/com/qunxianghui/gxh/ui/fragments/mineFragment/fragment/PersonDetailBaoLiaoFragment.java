@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -47,6 +48,8 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     @BindView(R.id.bt_mycollect_delete)
     Button btMycollectDelete;
     Unbinder unbinder;
+    @BindView(R.id.tv_myissue_baoliao)
+    TextView tvMyissueBaoliao;
 
     private MybaoliaoPostAdapter myCollectPostAdapter;
     private List<BaoliaoBean.DataBean> dataList = new ArrayList<>();
@@ -55,13 +58,10 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     private boolean mIsRefresh = false;
     private PersonDetailActivity mPersonDetailActivity;
     private String data_id = "";
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
     }
-
-
     @Override
     public void initData() {
         if (getActivity() instanceof PersonDetailActivity) {
@@ -72,6 +72,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
 
     private void LoadMycolectNews() {
         if (mPersonDetailActivity == null) {
+            tvMyissueBaoliao.setText("您还没发布哦～");
             OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                     .params("limit", 12)
                     .params("skip", count)
@@ -87,6 +88,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
                         }
                     });
         } else {
+            tvMyissueBaoliao.setText("他还没发布哦～");
             OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                     .params("member_id", mPersonDetailActivity.member_id)
                     .params("limit", 12)

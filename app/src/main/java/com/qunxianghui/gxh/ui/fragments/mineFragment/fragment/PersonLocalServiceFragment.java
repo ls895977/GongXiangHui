@@ -64,7 +64,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     @Override
     public void initData() {
         if (getActivity() instanceof PersonDetailActivity) {
-            mTvMyissueEmptyDes.setText("他还没发布哦");
+            mTvMyissueEmptyDes.setText("他还没发布哦～");
             PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
@@ -83,7 +83,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                         }
                     });
         } else {
-            mTvMyissueEmptyDes.setText("您还没发布哦");
+            mTvMyissueEmptyDes.setText("您还没发布哦～");
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
                     .params("limit", 10)
                     .params("skip", mSkip)
