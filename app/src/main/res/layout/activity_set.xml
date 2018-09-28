@@ -60,9 +60,19 @@
         <TextView
             android:id="@+id/tv_mine_set_cache"
             style="@style/MineListStyle"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/iv_setting_huancun_right"
             android:text="1.5M" />
+
+        <ImageView
+            android:id="@+id/iv_setting_huancun_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/right_icon" />
 
     </RelativeLayout>
 

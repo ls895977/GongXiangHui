@@ -455,17 +455,20 @@ public class MyIssurePostFragment extends BaseFragment implements MineIssurePost
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "localcircle".equals(o)) {
-            mineIssurePostAdapter.isShow = true;
-            mineIssurePostAdapter.notifyDataSetChanged();
             if (dataList.size() > 0) {
+                mineIssurePostAdapter.isShow = true;
+                mineIssurePostAdapter.notifyDataSetChanged();
                 btnDelete.setVisibility(View.VISIBLE);
             }
 
         }
         if (o instanceof String && "localcircle_c".equals(o)) {
-            mineIssurePostAdapter.isShow = false;
-            mineIssurePostAdapter.notifyDataSetChanged();
-            btnDelete.setVisibility(View.GONE);
+            if (dataList.size() > 0) {
+                mineIssurePostAdapter.isShow = false;
+                mineIssurePostAdapter.notifyDataSetChanged();
+                btnDelete.setVisibility(View.GONE);
+            }
+
         }
     }
 

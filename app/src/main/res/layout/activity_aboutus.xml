@@ -53,15 +53,14 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tv_appversion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_aboutus_verson_des"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:text="去更新"
             android:textColor="#FF0000"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
