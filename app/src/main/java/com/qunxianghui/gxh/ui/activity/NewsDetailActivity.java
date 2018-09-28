@@ -146,11 +146,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(true);
+        settings.setBlockNetworkImage(false); // 解决图片不显示
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setDisplayZoomControls(true);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
+
+
         mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {

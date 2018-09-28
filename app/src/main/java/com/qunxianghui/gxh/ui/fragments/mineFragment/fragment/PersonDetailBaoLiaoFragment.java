@@ -115,7 +115,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
             mIsRefresh = false;
             dataList.clear();
         }
-        if (myCollectPostBean.getData()!=null){
+        if (myCollectPostBean.getData() != null) {
             dataList.addAll(myCollectPostBean.getData());
             count = dataList.size();
             if (myCollectPostBean.getCode() == 0) {
@@ -127,7 +127,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
                         public void onClick(int position) {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("baoliao", dataList.get(position));
-                            Intent intent = new Intent(getContext(),BaoliaoDetailActivity.class);
+                            Intent intent = new Intent(getContext(), BaoliaoDetailActivity.class);
                             intent.putExtras(bundle);
                             getActivity().startActivity(intent);
 //                        toActivity(BaoliaoDetailActivity.class, bundle);
@@ -136,7 +136,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
 
                     xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 }
-                if (dataList.isEmpty()||dataList.size()==0) {
+                if (dataList.isEmpty() || dataList.size() == 0) {
                     mEmptyView.setVisibility(View.VISIBLE);
                 } else {
                     mEmptyView.setVisibility(View.GONE);
@@ -243,17 +243,19 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "baoliao".equals(o)) {
-            myCollectPostAdapter.isShow = true;
-            myCollectPostAdapter.notifyDataSetChanged();
-            if (dataList.size()>0){
+            if (dataList.size() > 0) {
+                myCollectPostAdapter.isShow = true;
+                myCollectPostAdapter.notifyDataSetChanged();
                 btMycollectDelete.setVisibility(View.VISIBLE);
             }
 
         }
         if (o instanceof String && "baoliao_c".equals(o)) {
-            myCollectPostAdapter.isShow = false;
-            myCollectPostAdapter.notifyDataSetChanged();
-            btMycollectDelete.setVisibility(View.GONE);
+            if (dataList.size() > 0) {
+                myCollectPostAdapter.isShow = false;
+                myCollectPostAdapter.notifyDataSetChanged();
+                btMycollectDelete.setVisibility(View.GONE);
+            }
         }
     }
 
