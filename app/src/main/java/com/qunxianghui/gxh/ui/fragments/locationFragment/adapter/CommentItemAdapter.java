@@ -94,7 +94,6 @@ public class CommentItemAdapter extends BaseAdapter {
             holder.ll_comment_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     AlertDialog dialog = new AlertDialog.Builder(v.getContext()).setTitle("是否删除评论").setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -128,53 +127,50 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
     private void showView(final ViewHolder holder, final int position, ViewGroup parent) {
+        String member_name = mList.get(position).getMember_name();
         if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name())) {
             holder.tv_item_reply_lb.setVisibility(View.VISIBLE);
             holder.tv_item_replyed.setVisibility(View.VISIBLE);
-            holder.name.setText(mList.get(position).getMember_name());
-
-
+            holder.name.setText(member_name);
             holder.tv_item_reply_lb.setText("回复");
-            holder.tv_item_replyed.setText(mList.get(position).getMember_reply_name()+":");
+            holder.tv_item_replyed.setText(String.format("%s:", mList.get(position).getMember_reply_name()));
         } else {
             holder.tv_item_reply_lb.setVisibility(View.GONE);
             holder.tv_item_replyed.setVisibility(View.GONE);
-            holder.name.setText(mList.get(position).getMember_name()+":");
+//            if (!TextUtils.isEmpty(member_name))
+            holder.name.setText(String.format("%s:", member_name));
         }
 
-        String contentTitle ="";
-        if(!TextUtils.isEmpty(mList.get(position).getMember_name())){
+        String contentTitle = "";
+        if (!TextUtils.isEmpty(member_name)) {
             contentTitle += holder.name.getText().toString();
         }
-        if(!TextUtils.isEmpty(mList.get(position).getMember_reply_name()) &&
-                !TextUtils.isEmpty(holder.tv_item_reply_lb.getText())){
+        if (!TextUtils.isEmpty(mList.get(position).getMember_reply_name()) &&
+                !TextUtils.isEmpty(holder.tv_item_reply_lb.getText())) {
             contentTitle += holder.tv_item_reply_lb.getText();
             contentTitle += holder.tv_item_replyed.getText();
         }
         SpannableStringBuilder textBuilder = new SpannableStringBuilder();
-        if(contentTitle.length() > 0){
+        if (contentTitle.length() > 0) {
             for (int i = 0; i < contentTitle.length(); i++) {
-                Pattern   pa   =   Pattern.compile( "^[\u4e00-\u9fa5]*$ ");
-                Matcher matcher   =   pa.matcher(""+contentTitle.charAt(i));
-                if(matcher.find()) {
+                Pattern pa = Pattern.compile("^[\u4e00-\u9fa5]*$ ");
+                Matcher matcher = pa.matcher("" + contentTitle.charAt(i));
+                if (matcher.find()) {
                     textBuilder.append("\t\t");
-                } else{
+                } else {
                     textBuilder.append("\t");
                 }
             }
         }
-
-        if(contentTitle.contains("回复")){
+        if (contentTitle.contains("回复")) {
             contentTitle = contentTitle + "    ";
-        } else{
-            contentTitle+=" ";
+        } else {
+            contentTitle += " ";
         }
-
         SpannableStringBuilder span = new SpannableStringBuilder(contentTitle + mList.get(position).getContent());
         span.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), 0, contentTitle.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         holder.content.setText(span);
-
     }
 
     public static class ViewHolder {

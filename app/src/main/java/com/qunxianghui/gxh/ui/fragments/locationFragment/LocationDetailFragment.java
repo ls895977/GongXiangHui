@@ -49,6 +49,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     XRecyclerView mRecyclerView;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
+
     private List<TestMode.DataBean.ListBean> locationBean = new ArrayList<>();
     private int mSkip = 0;
     private NineGridTest2Adapter mAdapter;
@@ -281,7 +282,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-                mAdapter.notifyItemChanged(position);
                 OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -292,7 +292,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
-                                    mRecyclerView.refresh();
+//                                    mRecyclerView.refresh();
                                 } else {
                                     asyncShowToast(responseBean.getMsg());
                                 }
