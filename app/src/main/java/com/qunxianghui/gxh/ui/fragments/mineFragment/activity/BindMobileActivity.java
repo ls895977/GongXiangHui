@@ -44,12 +44,10 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
     private String phoneNumber;
     private String mobileCode;
     private String bindPassword;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_bind_mobile;
     }
-
     @Override
     protected void initViews() {
         super.initViews();

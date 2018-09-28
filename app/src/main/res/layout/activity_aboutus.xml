@@ -58,9 +58,10 @@
             android:layout_below="@+id/tv_aboutus_verson_des"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:textSize="12sp"
             android:text="去更新"
-            android:textColor="#FF0000" />
+            android:textColor="#FF0000"
+            android:textSize="12sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -87,7 +88,6 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rl_aboutus_newfun_intro"
         style="@style/RelativeStyle"
@@ -111,7 +111,6 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rl_aboutus_quxinghui"
         style="@style/RelativeStyle"
@@ -133,7 +132,6 @@
             android:src="@mipmap/right_icon" />
 
     </RelativeLayout>
-
 
 
     <RelativeLayout

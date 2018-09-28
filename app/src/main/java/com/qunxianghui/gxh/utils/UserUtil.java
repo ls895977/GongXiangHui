@@ -56,9 +56,7 @@ public class UserUtil {
                     }
                 });
 
-
     }
-
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);

@@ -49,7 +49,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     XRecyclerView mRecyclerView;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
-
     private List<TestMode.DataBean.ListBean> locationBean = new ArrayList<>();
     private int mSkip = 0;
     private NineGridTest2Adapter mAdapter;
@@ -91,7 +90,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             requestLocalServiceData();
         }
     }
-
     private void requestLocalServiceData() {
         if (mMemberId != 0) {
             OkGo.<TestMode>post(Constant.LOCATION_NEWS_LIST_URL)
@@ -158,7 +156,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         mRecyclerView.loadMoreComplete();
         mAdapter.notifyDataSetChanged();
     }
-
     @Override
     protected void initListeners() {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -167,14 +164,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mSkip = 0;
                 requestLocalServiceData();
             }
-
             @Override
             public void onLoadMore() {
                 mSkip += 10;
                 requestLocalServiceData();
             }
         });
-
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
@@ -185,7 +180,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     mRecyclerView.smoothScrollBy(0, scrollY);
                 }
             }
-
             @Override
             public void keyBoardHide(int height) {
                 if (commentDialog != null) {
@@ -273,7 +267,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             return;
         }
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
-
             @Override
             public void sendComment(String inputText) {
                 final int uuid = locationBean.get(position).getUuid();
@@ -309,7 +302,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         });
         commentDialog.show(getChildFragmentManager(), "comment");
     }
-
 
     //接口回调之 点赞
     @Override
