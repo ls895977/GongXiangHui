@@ -20,6 +20,7 @@ public class UserUtil {
 
     public String mNick;
     public String mAvatar;
+    public String mMobile;
     public int id;
 
     public static UserUtil getInstance() {
@@ -65,7 +66,7 @@ public class UserUtil {
             mNick = data.getString("nick");
             mAvatar = data.getString("avatar");
             id = data.getInt("id");
-//            mMobile = data.getString("mobile");
+            mMobile = data.getString("mobile");
 //            mAddress = data.getString("address");
 //            mSex = data.getInt("sex");
 //

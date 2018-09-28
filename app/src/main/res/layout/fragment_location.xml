@@ -19,7 +19,7 @@
             android:layout_marginLeft="9dp"
             android:drawableLeft="@mipmap/icon_local_location"
             android:drawablePadding="5dp"
-            android:textSize="12sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:layout_width="wrap_content"
