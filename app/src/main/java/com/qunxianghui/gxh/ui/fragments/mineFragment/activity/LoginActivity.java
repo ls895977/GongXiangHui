@@ -103,36 +103,35 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     params.params("userId", data.get("uid"));
                 }
-                params
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response.body());
-                                    JSONObject data = jsonObject.getJSONObject("data");
-                                    int code = jsonObject.getInt("code");
-                                    if (code == 0) {
-                                        JsonConvert.sIsShow = true;
-                                        String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                        SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                        SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                        OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                        if (TextUtils.isEmpty(data.getString("nick"))) {
-                                            UserUtil.getInstance().mNick = "" + data.getString("mobile");
-                                        } else {
-                                            UserUtil.getInstance().mNick = data.getString("nick");
-                                        }
-                                        asyncShowToast("登录成功");
-                                        toActivity(MainActivity.class);
-                                        finish();
-                                    } else if (code == 200) {
-                                        startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                params.execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            int code = jsonObject.getInt("code");
+                            if (code == 0) {
+                                JsonConvert.sIsShow = true;
+                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                if (TextUtils.isEmpty(data.getString("nick"))) {
+                                    UserUtil.getInstance().mNick = "" + data.getString("mobile");
+                                } else {
+                                    UserUtil.getInstance().mNick = data.getString("nick");
                                 }
+                                asyncShowToast("登录成功");
+                                toActivity(MainActivity.class);
+                                finish();
+                            } else if (code == 200) {
+                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
                             }
-                        });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
 
             @Override

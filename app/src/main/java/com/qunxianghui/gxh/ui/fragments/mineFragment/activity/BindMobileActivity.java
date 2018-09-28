@@ -60,7 +60,6 @@ public class BindMobileActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initListeners() {
-        super.initListeners();
         tvBindMobileGetcode.setOnClickListener(this);
         btBindmobileBindmobile.setOnClickListener(this);
     }

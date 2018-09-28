@@ -4,7 +4,6 @@ package com.qunxianghui.gxh.base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -20,13 +19,9 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.greendao.gen.DaoMaster;
-import com.qunxianghui.gxh.greendao.gen.DaoSession;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
-import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
@@ -75,11 +70,11 @@ public class MyApplication extends MultiDexApplication {
 //            // You should not init your app in this process.
 //            return;
 //        }
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
 //            LeakCanary.install(this);
-            CrashHandler.getInstance().init(getApplicationContext());
-        }
-//        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+//            CrashHandler.getInstance().init(getApplicationContext());
+//        }
+        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();
     }
