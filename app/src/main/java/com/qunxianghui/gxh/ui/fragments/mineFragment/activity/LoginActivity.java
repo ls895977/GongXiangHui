@@ -82,7 +82,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            public void onComplete(final SHARE_MEDIA platform, int action, Map<String, String> data) {
                 String url = null;
                 switch (platform) {
                     case QQ:
@@ -127,6 +127,7 @@ public class LoginActivity extends BaseActivity {
                             } else if (code == 200) {
                                 startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
                             }
+                            mShareAPI.deleteOauth(LoginActivity.this, platform, null);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
