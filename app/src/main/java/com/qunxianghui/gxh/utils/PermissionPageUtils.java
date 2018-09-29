@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.utils.L;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +31,6 @@ public class PermissionPageUtils {
 
     public void jumpPermissionPage() {
         String name = Build.MANUFACTURER;
-        L.e(TAG, "jumpPermissionPage --- name : " + name);
         switch (name) {
             case "HUAWEI":
                 goHuaWeiMainager();
@@ -131,7 +129,6 @@ public class PermissionPageUtils {
 
     private void goXiaoMiMainager() {
         String rom = getMiuiVersion();
-        L.e(TAG,"goMiaoMiMainager --- rom : "+rom);
         Intent intent=new Intent();
         if ("V6".equals(rom) || "V7".equals(rom)) {
             intent.setAction("miui.intent.action.APP_PERM_EDITOR");
