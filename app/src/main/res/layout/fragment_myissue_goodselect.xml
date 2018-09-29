@@ -3,13 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/xrecler_myissue_goodselect"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bt_myissue_goodselect_delete" />
-
     <Button
         android:id="@+id/bt_myissue_goodselect_delete"
         android:layout_width="62dp"
@@ -21,6 +14,12 @@
         android:text="删除"
         android:visibility="gone"
         android:textColor="@color/white" />
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/xrecler_myissue_goodselect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bt_myissue_goodselect_delete" />
 
     <LinearLayout
         android:id="@+id/ll_empty"

@@ -66,7 +66,7 @@
             android:layout_marginEnd="10dp"
             android:drawablePadding="10dp"
             android:drawableStart="@mipmap/homeair_location"
-            android:textColor=" #000000"
+            android:textColor="#000000"
             tools:text="杭州西湖" />
 
     </RelativeLayout>

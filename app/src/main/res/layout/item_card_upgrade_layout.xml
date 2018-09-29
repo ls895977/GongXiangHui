@@ -42,7 +42,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/iv_company_head"
                     android:text="企业会员"
-                    android:textColor=" #000000"
+                    android:textColor="#000000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -56,7 +56,7 @@
                     android:drawableLeft="@mipmap/icon_memberup_diamond"
                     android:drawablePadding="5dp"
                     android:text="会员状态:未激活"
-                    android:textColor=" #161616"
+                    android:textColor="#161616"
                     android:textSize="12sp" />
 
                 <TextView
@@ -82,7 +82,7 @@
                     android:drawableLeft="@mipmap/icon_memberup_ready_active"
                     android:drawablePadding="5dp"
                     android:text="激活即可享受企业版会员特权"
-                    android:textColor=" #161616"
+                    android:textColor="#161616"
                     android:textSize="12sp" />
             </RelativeLayout>
 

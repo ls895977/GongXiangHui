@@ -41,6 +41,15 @@ public class HomeVideoListBean implements Serializable {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean {
         private List<ListBean> list;
 
@@ -293,7 +302,38 @@ public class HomeVideoListBean implements Serializable {
                 return follow;
             }
 
+            @Override
+            public String toString() {
+                return "{" +
+                        "id=" + id +
+                        ", uuid=" + uuid +
+                        ", channel_id=" + channel_id +
+                        ", member_id=" + member_id +
+                        ", title='" + title + '\'' +
+                        ", picurl='" + picurl + '\'' +
+                        ", description='" + description + '\'' +
+                        ", video_url='" + video_url + '\'' +
+                        ", content='" + content + '\'' +
+                        ", like_cnt='" + like_cnt + '\'' +
+                        ", comment_cnt='" + comment_cnt + '\'' +
+                        ", ctime=" + ctime +
+                        ", ip='" + ip + '\'' +
+                        ", status=" + status +
+                        ", view_cnt=" + view_cnt +
+                        ", source='" + source + '\'' +
+                        ", images='" + images + '\'' +
+                        ", forward_cnt=" + forward_cnt +
+                        ", share_cnt=" + share_cnt +
+                        ", member_name='" + member_name + '\'' +
+                        ", member_avatar='" + member_avatar + '\'' +
+                        ", url='" + url + '\'' +
+                        ", follow='" + follow + '\'' +
+                        ", is_like=" + is_like +
+                        '}';
+            }
+
             public void setFollow(String follow) {
+
                 this.follow = follow;
             }
         }

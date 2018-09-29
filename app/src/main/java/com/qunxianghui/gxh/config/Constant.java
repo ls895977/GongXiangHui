@@ -16,9 +16,9 @@ public class Constant {
     public static final String BIANMIN_HUANGLI_URL = "https://yun.rili.cn/wnl/m/huangli.html?channel=bttout";
     //欢迎页广告
     //上线环境
-    private static final String BASE_URL = "https://api.qunxianghui.com.cn/v2/";
+//    private static final String BASE_URL = "https://api.qunxianghui.com.cn/v2/";
     //线下问题
-//    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
+    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";
     public static final String WELCOM_ADVER_URL = BASE_URL + "system/getEntry";
     //首页新闻列表
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";

@@ -107,6 +107,8 @@ public class LocationFragment extends BaseFragment {
                     setViewpager();
                     userChannelList.addAll(datas);
                 } else {
+                    HomeVideoChannel body = response.body();
+
                     asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().message));
                 }
             }

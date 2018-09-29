@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="平台咨询热线: 400-188-3310"
-            android:textColor=" #4E4E4E"
+            android:textColor="#4E4E4E"
             android:textSize="12sp" />
 
 
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
-            android:background=" #DBB07C" />
+            android:background="#DBB07C" />
 
         <TextView
             android:id="@+id/tv_member_activite_quickly"

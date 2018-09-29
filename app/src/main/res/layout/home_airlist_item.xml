@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:textColor=" #2E2E2E"
+        android:textColor="#2E2E2E"
         android:textSize="12sp"
         tools:text="19日星期六" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_toEndOf="@+id/tv_airList_days"
-        android:textColor=" #2E2E2E"
+        android:textColor="#2E2E2E"
         android:textSize="12sp"
         tools:text="阵雨" />
 
@@ -31,7 +31,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="15dp"
-        android:textColor=" #2E2E2E"
+        android:textColor="#2E2E2E"
         android:textSize="12sp"
         tools:text="高温26°C/低温21°C" />
 

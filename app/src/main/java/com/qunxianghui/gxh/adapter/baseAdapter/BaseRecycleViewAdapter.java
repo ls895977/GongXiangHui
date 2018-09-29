@@ -75,7 +75,6 @@ abstract public class BaseRecycleViewAdapter<T> extends
 
     /*ViewHolder的基础封装*/
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         SparseArray<View> mViews;
 
         public MyViewHolder(View itemView) {
@@ -101,10 +100,12 @@ abstract public class BaseRecycleViewAdapter<T> extends
             ImageView iv = getView(id);
             iv.setImageResource(imgRes);
         }
+
     }
 
     /*实现的单击事件*/
     public interface OnItemClickListener {
         void onItemClick(View v, int position);
     }
+
 }

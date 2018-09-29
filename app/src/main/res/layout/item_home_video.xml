@@ -5,18 +5,26 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_home_videoimage"
+    <!--<FrameLayout-->
+        <!--android:id="@+id/list_item_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="203dp"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@mipmap/default_img" />-->
+
+    <com.qunxianghui.gxh.video.SampleCoverVideo
+        android:id="@+id/video_item_player"
         android:layout_width="match_parent"
-        android:layout_height="203dp">
+        android:layout_height="203dp"/>
 
-        <cn.jzvd.JZVideoPlayerStandard
-            android:id="@+id/videoplayer"
-            android:layout_width="match_parent"
-            android:layout_height="203dp" />
-
-    </RelativeLayout>
-
+    <!--<ImageView-->
+        <!--android:id="@+id/list_item_btn"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:src="@drawable/video_click_play_selector" />-->
     <com.qunxianghui.gxh.widget.RoundImageView
         android:id="@+id/round_item_collect_video_personhead"
         android:layout_width="47dp"
@@ -29,7 +37,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:layout_below="@+id/rl_home_videoimage">
+        android:layout_below="@id/video_item_player">
 
         <LinearLayout
             android:layout_width="match_parent"
