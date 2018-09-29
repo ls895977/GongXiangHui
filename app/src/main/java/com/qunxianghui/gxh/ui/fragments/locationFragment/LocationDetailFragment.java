@@ -62,6 +62,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int mUuid;
     public int mMemberId;
     public boolean mIsChange;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_detail_location;
@@ -91,6 +92,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             requestLocalServiceData();
         }
     }
+
     private void requestLocalServiceData() {
         if (mMemberId != 0) {
             OkGo.<TestMode>post(Constant.LOCATION_NEWS_LIST_URL)
@@ -157,6 +159,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         mRecyclerView.loadMoreComplete();
         mAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected void initListeners() {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -165,6 +168,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 mSkip = 0;
                 requestLocalServiceData();
             }
+
             @Override
             public void onLoadMore() {
                 mSkip += 10;
@@ -181,6 +185,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     mRecyclerView.smoothScrollBy(0, scrollY);
                 }
             }
+
             @Override
             public void keyBoardHide(int height) {
                 if (commentDialog != null) {
@@ -306,7 +311,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     //接口回调之 点赞
     @Override
     public void onPraiseClick(final int position) {
-        Log.i("fanbo", position + "1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -356,7 +360,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 locationBean.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
-                                asyncShowToast("点赞成功");
+                                asyncShowToast(response.body().message);
                             } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = locationBean.get(position).getTem();
                                 for (int i = 0; i < locationBean.get(position).getTem().size(); i++) {
@@ -372,7 +376,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 locationBean.get(position).setLike_info_res("");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
-                                asyncShowToast("取消点赞");
+                                asyncShowToast(response.body().message);
                             }
                         }
 
@@ -491,8 +495,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
                                                         @Override
                                                         public void onError(Response<ReplyCommentResponseBean> response) {
-//                                                            asyncShowToast(response.body().getMsg());
-//                                                            asyncShowToast(response.body().getMsg());
                                                         }
                                                     });
                                         }
