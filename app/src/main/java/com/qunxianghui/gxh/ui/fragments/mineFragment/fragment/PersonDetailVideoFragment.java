@@ -8,7 +8,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -41,6 +40,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
     private int count;
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
+    private LinearLayoutManager linearLayoutManager;
     @Override
     protected void onLoadData() {
         RequestPersonDataVideoData();
@@ -75,25 +75,10 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
         if (homeVideoListBean.getCode() == 0) {
             if (mIsFirst){
                 mIsFirst=false;
-                mPersonDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, mVideoList);
+                mPersonDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity,linearLayoutManager, mVideoList);
                 xrecyclerPersondetailVideo.setAdapter(mPersonDetailVideoAdapter);
                 mPersonDetailVideoAdapter.setVideoListClickListener(this);
-                mPersonDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        int uuid = mVideoList.get(position - 1).getUuid();
-                        String content = mVideoList.get(position - 1).getContent();
-                        String title = mVideoList.get(position - 1).getTitle();
-                        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                        intent.putExtra("uuid", uuid);
-                        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                        intent.putExtra("descrip", content);
-                        intent.putExtra("title", title);
-                        intent.putExtra("position", 4);
-                        startActivity(intent);
-                    }
-                });
+
                 if (mVideoList.isEmpty()){
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
@@ -117,7 +102,8 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
 
     @Override
     public void initViews(View view) {
-        xrecyclerPersondetailVideo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+        xrecyclerPersondetailVideo.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -207,5 +193,25 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
                 + "&uuid=" + mVideoList.get(position).getUuid());
         startActivity(intent);
     }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        int uuid = mVideoList.get(position - 1).getUuid();
+        String content = mVideoList.get(position - 1).getContent();
+        String title = mVideoList.get(position - 1).getTitle();
+        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+        intent.putExtra("uuid", uuid);
+        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+        intent.putExtra("descrip", content);
+        intent.putExtra("title", title);
+        intent.putExtra("position", 4);
+        startActivity(intent);
     }
+
+    @Override
+    public void onAutoComplete(int position) {
+
+    }
+}
 

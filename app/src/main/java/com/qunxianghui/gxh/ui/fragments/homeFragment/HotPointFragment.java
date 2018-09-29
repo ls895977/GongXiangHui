@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -189,6 +190,7 @@ public class HotPointFragment extends BaseFragment {
      * 首页下拉刷新 新的接口
      */
     private void homePullRefresh() {
+        Log.e("TAG_首页刷新","mChannelId="+mChannelId+";mRefreshCount="+mRefreshCount);
         OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                 .params("channel_id", mChannelId)
                 .params("times", mRefreshCount)
@@ -199,9 +201,12 @@ public class HotPointFragment extends BaseFragment {
                         mSw.setRefreshing(false);
                         if (response.body().code == 0) {
                             if (response.body().data != null) {
+                                Log.e("TAG_首页刷新","data="+response.body().data);
                                 dataList.addAll(0, response.body().data);
                                 homeItemListAdapter.notifyDataSetChanged();
                                 homeItemListAdapter.setEmptyView(R.layout.layout_empty);
+                            }else {
+                                Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
                             }
                             Display display = mActivity.getWindowManager().getDefaultDisplay();
                             int height = display.getHeight();
@@ -330,6 +335,7 @@ public class HotPointFragment extends BaseFragment {
                         intent = new Intent(mActivity, ProtocolActivity.class);
                         intent.putExtra("url", Constant.HOME_GOOD_SELECT_URL);
                         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+//                        intent.putExtra("arera", SPUtils.getLocation("currcity"));
                         intent.putExtra("tag", 1);
                         mActivity.startActivity(intent);
                         break;

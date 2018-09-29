@@ -55,7 +55,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:text="会员特权"
-                android:textColor=" #000000"
+                android:textColor="#000000"
                 android:textSize="14sp"
                 android:drawablePadding="8dp"
                 android:drawableLeft="@drawable/shape_red_vertical_line_bar"/>

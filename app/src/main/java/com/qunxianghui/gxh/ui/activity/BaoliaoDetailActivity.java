@@ -74,10 +74,7 @@ public class BaoliaoDetailActivity extends BaseActivity implements View.OnClickL
                 recyclerView.setAdapter(mAdapter);
             }
         } catch (Exception e) {
-//            if (content != null) {
-//                BaoliaoDetailAdapter mAdapter = new BaoliaoDetailAdapter(this, baoliaoDetailContentBeen);
-//                recyclerView.setAdapter(mAdapter);
-//            }
+
         }
         recyclerView.setLoadingMoreEnabled(false);
         recyclerView.setPullRefreshEnabled(false);

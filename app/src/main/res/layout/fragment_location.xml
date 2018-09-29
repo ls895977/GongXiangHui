@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="fill_parent"--><!--android:layout_height="fill_parent" >-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp">
+        android:layout_height="74dp"
+        android:gravity="center_vertical"
+        android:paddingTop="30dp">
+
+        <ImageView
+            android:id="@+id/iv_local_location"
+            android:layout_width="12dp"
+            android:layout_height="15dp"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/icon_local_location" />
 
         <TextView
             android:id="@+id/tv_localcircle_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="9dp"
-            android:drawableLeft="@mipmap/icon_local_location"
+            android:layout_toRightOf="@+id/iv_local_location"
             android:drawablePadding="5dp"
+            android:text="未定位"
+            android:layout_centerInParent="true"
+            android:textColor="#333333"
             android:textSize="13sp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="25dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="本地圈"
             android:textColor="#282828"
             android:textSize="15sp" />
@@ -35,7 +45,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="37dp"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal">

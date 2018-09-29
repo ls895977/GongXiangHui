@@ -15,7 +15,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="通栏广告"
-            android:textColor=" #282828" />
+            android:textColor="#282828" />
 
         <ImageView
             android:layout_width="12dp"
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="是否展现"
-            android:textColor=" #333333"
+            android:textColor="#333333"
             android:textSize="12sp" />
 
         <com.kyleduo.switchbutton.SwitchButton

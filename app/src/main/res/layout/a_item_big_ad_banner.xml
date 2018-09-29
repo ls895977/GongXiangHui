@@ -10,8 +10,17 @@
         android:layout_width="fill_parent"
         android:layout_height="148.0dip">
 
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/busAdCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15.0dip"
+            android:button="@drawable/my_checkbox_business_ad"
+            android:clickable="false" />
         <ImageView
-            android:id="@id/banner_img"
+            android:id="@+id/banner_img"
             android:layout_width="fill_parent"
             android:layout_height="128.0dip"
             android:layout_marginBottom="10.0dip"
@@ -20,16 +29,6 @@
             android:layout_marginTop="10.0dip"
             android:layout_toLeftOf="@id/busAdCheck"
             android:scaleType="fitXY" />
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@id/busAdCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15.0dip"
-            android:button="@drawable/my_checkbox_business_ad"
-            android:clickable="false" />
     </RelativeLayout>
 
     <View

@@ -1,7 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.fragments;
 
 import android.content.Intent;
-import android.graphics.Rect;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +14,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.PersonDetailVideoAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonBean;
@@ -27,7 +27,12 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.LocationActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
+import com.qunxianghui.gxh.utils.LogUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.video.ScrollCalculatorHelper;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.utils.CommonUtil;
+import com.shuyu.gsyvideoplayer.utils.ListVideoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,11 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     private JZVideoPlayerStandard mVideoPlayerStandard;
     private int firstVisible = 0, visibleCount = 0, totalCount = 0;
     private LinearLayoutManager mLinearLayoutManager;
+    ScrollCalculatorHelper scrollCalculatorHelper;
+    ListVideoUtil listVideoUtil;
+    private int lastVisibleItem;
+    private int firstVisibleItem;
+    boolean mFull = false;
 
     @Override
     public int getLayoutId() {
@@ -63,9 +73,44 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     public void initViews(View view) {
         mLinearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRv.setLayoutManager(mLinearLayoutManager);
+        //限定范围为屏幕一半的上下偏移280
+        int playTop = CommonUtil.getScreenHeight(getActivity()) / 2 - CommonUtil.dip2px(getActivity(), 80);
+        int playBottom = CommonUtil.getScreenHeight(getActivity()) / 2 + CommonUtil.dip2px(getActivity(), 80);
+        //自定播放帮助类
+        scrollCalculatorHelper = new ScrollCalculatorHelper(R.id.video_item_player, playTop, playBottom);
+        personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, mLinearLayoutManager, videoDataList);
 
-        personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, videoDataList);
+
+        listVideoUtil = new ListVideoUtil(getActivity());
+//        listVideoUtil.setFullViewContainer(videoFullContainer);
+        listVideoUtil.setHideStatusBar(true);
+        //listVideoUtil.setHideActionBar(true);
+        listVideoUtil.setNeedLockFull(true);
+//        initFootView();
+
+        personDetailVideoAdapter.setListVideoUtil(listVideoUtil);
         mRv.setAdapter(personDetailVideoAdapter);
+    }
+    boolean isScrollMoveTo = false;
+    //动画定位
+    private void smoothMoveToPosition(int position) {
+        isScrollMoveTo = true;
+        int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+        Log.e("TAG_Scroll", "firstItem=" + firstItem + ";position=" + position + ";lastItem=" + lastItem);
+        if (position <= firstItem) {
+            if (position == 1){
+                mRv.smoothScrollToPosition(position);
+                mRv.smoothScrollBy(0, 10);
+            }else {
+                mRv.smoothScrollToPosition(position);
+            }
+        } else if (position <= lastItem) {
+            int top = mRv.getChildAt(position - firstItem).getTop();
+            mRv.smoothScrollBy(0, top);
+        } else {
+            mRv.smoothScrollToPosition(position);
+        }
     }
 
     @Override
@@ -115,20 +160,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         });
 
         personDetailVideoAdapter.setVideoListClickListener(this);
-        personDetailVideoAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
-                intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-                intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
-                intent.putExtra("descrip", videoDataList.get(position - 1).getDescription());
-                intent.putExtra("title", videoDataList.get(position - 1).getTitle());
-                intent.putExtra("videoimage", videoDataList.get(position - 1).getPicurl());
-                intent.putExtra("position", 4);
-                HomeVideoListFragment.this.startActivityForResult(intent, 0x0011);
-            }
-        });
+
         mRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(View view) {
@@ -150,24 +182,30 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        Log.e("videoTest", "SCROLL_STATE_IDLE");
-                        autoPlayVideo(recyclerView);
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        Log.e("videoTest", "SCROLL_STATE_DRAGGING");
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        Log.e("videoTest", "SCROLL_STATE_SETTLING");
-                        break;
-
+                scrollCalculatorHelper.onScrollStateChanged(recyclerView, newState);
+                if (isScrollMoveTo){
+                    switch (newState) {
+                        case RecyclerView.SCROLL_STATE_IDLE:
+                            mRv.smoothScrollBy(0, 10);
+                            isScrollMoveTo =false;
+                            break;
+                    }
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+
+                //这是滑动自动播放的代码
+                if (!mFull) {
+                    if (!isScrollMoveTo){
+                        Log.e("TAG_播放","isScrollMoveTo="+(!isScrollMoveTo));
+                        scrollCalculatorHelper.onScroll(recyclerView, firstVisibleItem, lastVisibleItem, lastVisibleItem - firstVisibleItem);
+                    }
+                }
                 if (dy > 0) {
                     int visibleItemCount = mLinearLayoutManager.getChildCount();
                     int totalItemCount = mLinearLayoutManager.getItemCount();
@@ -184,29 +222,16 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             }
         });
 
-
     }
 
-    /*监听滚动 自动播放视频*/
-    private void autoPlayVideo(RecyclerView recyclerView) {
-        for (int i = 0; i < videoDataList.size(); i++) {
-            if (recyclerView != null && recyclerView.getChildAt(i) != null && recyclerView.getChildAt(i).findViewById(R.id.videoplayer) != null) {
-                mVideoPlayerStandard = (JZVideoPlayerStandard) recyclerView.getChildAt(i).findViewById(R.id.videoplayer);
-                Rect rect = new Rect();
-                mVideoPlayerStandard.getLocalVisibleRect(rect);
-                int videoheight = mVideoPlayerStandard.getHeight();
-                if (rect.top == 0 && rect.bottom == videoheight) {
-                    if (mVideoPlayerStandard.currentState == JZVideoPlayerStandard.CURRENT_STATE_NORMAL || mVideoPlayerStandard.currentState == JZVideoPlayerStandard.CURRENT_STATE_ERROR) {
-                        Log.e("videoTest", mVideoPlayerStandard.currentState + "======================performClick======================");
-                        mVideoPlayerStandard.startButton.performClick();
-
-                    }
-                    return;
-                }
-
-                JZVideoPlayerStandard.releaseAllVideos();
-                mVideoPlayerStandard = null;
-            }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //如果旋转了就全屏
+        if (newConfig.orientation != ActivityInfo.SCREEN_ORIENTATION_USER) {
+            mFull = false;
+        } else {
+            mFull = true;
         }
 
     }
@@ -232,7 +257,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                                 mRv.setLoadingMoreEnabled(false);
                             }
                             videoDataList.addAll(homeVideoListBean.getData().getList());
-
+                            LogUtil.loge("TAG_視頻播放", "videoDataList=" + videoDataList.toString());
+                            personDetailVideoAdapter.setListData(videoDataList);
                             if (videoDataList.isEmpty()) {
                                 llEmpty.setVisibility(View.VISIBLE);
                             }
@@ -320,4 +346,46 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 + "&uuid=" + videoDataList.get(position).getUuid());
         startActivity(intent);
     }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+        intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
+        intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
+        intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
+        intent.putExtra("descrip", videoDataList.get(position - 1).getDescription());
+        intent.putExtra("title", videoDataList.get(position - 1).getTitle());
+        intent.putExtra("videoimage", videoDataList.get(position - 1).getPicurl());
+        intent.putExtra("position", 4);
+        HomeVideoListFragment.this.startActivityForResult(intent, 0x0011);
+    }
+
+    @Override
+    public void onAutoComplete(int position) {
+        Log.e("TAG_播放完成", "position=" + position);
+        Log.e("TAG_播放完成", "mFull=" + mFull);
+        if (position < videoDataList.size() - 1) {
+//                HomeVideoListBean.DataBean.ListBean listBeanNext = videoDataList.get(position + 1);
+//                String  videoUrlNext = listBeanNext.getVideo_url();
+//                Log.e("TAG_播放下一个","videoUrlNext="+videoUrlNext);
+//                        listVideoUtil.startPlay(videoUrlNext);
+            if (!mFull) {
+                smoothMoveToPosition(position + 1);
+
+//                firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+//                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+//                Log.e("TAG_播放下一个", "firstVisibleItem=" + firstVisibleItem+";lastVisibleItem="+lastVisibleItem);
+//                scrollCalculatorHelper.onScroll(mRv, firstVisibleItem, lastVisibleItem, lastVisibleItem - firstVisibleItem);
+//                scrollCalculatorHelper.onScrollStateChanged(mRv, 0);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        listVideoUtil.releaseVideoPlayer();
+        GSYVideoManager.releaseAllVideos();
+    }
+
 }

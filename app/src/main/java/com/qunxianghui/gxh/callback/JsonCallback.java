@@ -82,4 +82,9 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
             ToastUtils.showShort("网络异常，请检查网络！");
         }
     }
+
+    @Override
+    public void onSuccess(com.lzy.okgo.model.Response<T> response) {
+
+    }
 }
