@@ -4,16 +4,16 @@ buildscript {
         google()
         maven { url "https://maven.google.com"}
         jcenter()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+ mavenCentral()
+maven { url 'https://jitpack.io' }
+maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+}
+dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+}
 }
 
 allprojects {
