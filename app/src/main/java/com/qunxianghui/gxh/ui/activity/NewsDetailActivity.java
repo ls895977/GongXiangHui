@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.Display;
@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -146,11 +145,18 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(true);
+        settings.setBlockNetworkImage(false); // 解决图片不显示
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setDisplayZoomControls(true);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
+
+
         mWedNewsDetail.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -232,7 +238,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 }
             });
         }
-
     }
 
     @OnClick({R.id.iv_newsdetail_back, R.id.iv_news_detail_topshare, R.id.iv_news_detail_addAdver})
@@ -415,10 +420,4 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         asyncShowToast("复制成功");
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

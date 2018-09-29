@@ -139,6 +139,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                         if (response.body().code == 0) {
                             asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
+                        }else {
+                            asyncShowToast(response.body().message);
                         }
                     }
 

@@ -39,7 +39,6 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SystemUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

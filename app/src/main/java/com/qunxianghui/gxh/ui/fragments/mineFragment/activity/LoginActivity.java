@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.PostRequest;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.CommonResponse;
@@ -95,78 +95,43 @@ public class LoginActivity extends BaseActivity {
                         url = Constant.SINA_RESPONSE_URL;
                         break;
                 }
-                if (url == Constant.QQ_RESPONSE_URL || url == Constant.WEIXIN_RESPONSE_URL) {
-                    OkGo.<String>post(url)
-                            .params("status", true)
-                            .params("accessToken", data.get("accessToken"))
-                            .params("openId", data.get("uid"))
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    try {
-                                        Log.e("TAG_登录",""+response.body());
-                                        JSONObject jsonObject = new JSONObject(response.body());
-                                        JSONObject data = jsonObject.getJSONObject("data");
-                                        int code = jsonObject.getInt("code");
-                                        if (code == 0) {
-                                            JsonConvert.sIsShow = true;
-                                            String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                            if (TextUtils.isEmpty(data.getString("nick"))) {
-                                                UserUtil.getInstance().mNick = "" + data.getString("mobile");
-                                            } else {
-                                                UserUtil.getInstance().mNick = data.getString("nick");
-                                            }
-                                            asyncShowToast("登录成功");
-                                            toActivity(MainActivity.class);
-                                            finish();
-                                        } else if (code == 200) {
-                                            startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
+                PostRequest<String> params = OkGo.<String>post(url)
+                        .params("status", true)
+                        .params("accessToken", data.get("accessToken"));
+                if (Constant.QQ_RESPONSE_URL.equals(url) || Constant.WEIXIN_RESPONSE_URL.equals(url)) {
+                    params.params("openId", data.get("uid"));
                 } else {
-                    OkGo.<String>post(url)
-                            .params("status", true)
-                            .params("accessToken", data.get("accessToken"))
-                            .params("userId", data.get("uid"))
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response.body());
-                                        JSONObject data = jsonObject.getJSONObject("data");
-                                        int code = jsonObject.getInt("code");
-                                        if (code == 0) {
-                                            JsonConvert.sIsShow = true;
-                                            String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
-                                            SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                                            SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
-                                            OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
-                                            if (TextUtils.isEmpty(data.getString("nick"))) {
-                                                UserUtil.getInstance().mNick = "" + data.getString("mobile");
-                                            } else {
-                                                UserUtil.getInstance().mNick = data.getString("nick");
-                                            }
-
-                                            asyncShowToast("登录成功");
-                                            toActivity(MainActivity.class);
-                                            finish();
-                                        } else if (code == 200) {
-                                            startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
+                    params.params("userId", data.get("uid"));
                 }
-
+                params.execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body());
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            int code = jsonObject.getInt("code");
+                            if (code == 0) {
+                                JsonConvert.sIsShow = true;
+                                String access_token = data.getJSONObject("accessTokenInfo").getString("access_token");
+                                SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                                SPUtils.saveBoolean(SpConstant.IS_COMPANY, data.getInt("company_id") != 0);
+                                OkGo.getInstance().getCommonHeaders().put("X-accesstoken", access_token);
+                                if (TextUtils.isEmpty(data.getString("nick"))) {
+                                    UserUtil.getInstance().mNick = "" + data.getString("mobile");
+                                } else {
+                                    UserUtil.getInstance().mNick = data.getString("nick");
+                                }
+                                asyncShowToast("登录成功");
+                                toActivity(MainActivity.class);
+                                finish();
+                            } else if (code == 200) {
+                                startActivity(new Intent(LoginActivity.this, BindMobileActivity.class).putExtra("connect_id", data.getInt("connect_id")));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
 
             @Override
@@ -185,7 +150,7 @@ public class LoginActivity extends BaseActivity {
         etLoginPhone.addTextChangedListener(new NewTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (etLoginPhone.getText().toString().trim().length()>5 && etLoginPassword.getText().toString().trim().length() > 5) {
+                if (etLoginPhone.getText().toString().trim().length() > 5 && etLoginPassword.getText().toString().trim().length() > 5) {
                     btLoginLogin.setEnabled(true);
                 } else {
                     btLoginLogin.setEnabled(false);

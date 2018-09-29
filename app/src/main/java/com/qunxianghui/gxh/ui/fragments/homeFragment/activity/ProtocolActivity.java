@@ -56,7 +56,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     final Activity mact = this;
     @BindView(R.id.ll_protocol_main)
-    LinearLayout llProtocolMain;
+    RelativeLayout llProtocolMain;
     @BindView(R.id.iv_webback)
     ImageView ivWebback;
     @BindView(R.id.tv_title)
@@ -69,8 +69,10 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout rlNewsDetailNotnet;
     @BindView(R.id.tv_news_detail_notnet)
     TextView tvNewsDetailNotnet;
+    @BindView(R.id.web_protocol_detail)
+    WebView webProtocolDetail;
 
-    private WebView webView;
+
     private StringBuffer mBuffer;
     private Dialog mMLoadingDialog;
 
@@ -127,11 +129,11 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         if (tag == 1) {
             mBuffer = new StringBuffer(url);
             try {
-                mBuffer.append("?token="+mToken).append("&shi_id="+ SPUtils.getLocation("X-cityId")).append("&qu_id="+SPUtils.getLocation("X-areaId")).append("&qu="+ URLDecoder.decode(SPUtils.getLocation("currcity"), "UTF-8"));
+                mBuffer.append("?token=" + mToken).append("&shi_id=" + SPUtils.getLocation("X-cityId")).append("&qu_id=" + SPUtils.getLocation("X-areaId")).append("&qu=" + URLDecoder.decode(SPUtils.getLocation("currcity"), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            params.setMargins(0, 30, 0, 0);
+            params.setMargins(0, 60, 0, 0);
             mRlProtocolTitle.setVisibility(View.GONE);
 
         } else if (tag == 2) {
@@ -143,12 +145,8 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             mRlProtocolTitle.setVisibility(View.GONE);
         }
         tvTitle.setText(title);
-        webView = new WebView(this);
-        webView.setLayoutParams(params);
-        llProtocolMain.addView(webView);
-        RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        param.addRule(RelativeLayout.CENTER_IN_PARENT);
-        WebSettings settings = webView.getSettings();
+
+        WebSettings settings = webProtocolDetail.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setDomStorageEnabled(true);
@@ -164,7 +162,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         settings.setDefaultTextEncodingName("utf-8");
         settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
-        webView.setWebChromeClient(new WebChromeClient() {
+        webProtocolDetail.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 if (progress == 100) {
@@ -198,7 +196,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
                 return true;
             }
         });
-        webView.setWebViewClient(new WebViewClient() {
+        webProtocolDetail.setWebViewClient(new WebViewClient() {
             private Intent mMIntent;
 
             @Override
@@ -248,23 +246,23 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             }
 
         });
-        webView.loadUrl(String.valueOf(mBuffer));
+        webProtocolDetail.loadUrl(String.valueOf(mBuffer));
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        webView.resumeTimers();
-        webView.onResume();
+        webProtocolDetail.resumeTimers();
+        webProtocolDetail.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            webView.onPause();
-            webView.pauseTimers(); // 暂停网页中正在播放的视频
+            webProtocolDetail.onPause();
+            webProtocolDetail.pauseTimers(); // 暂停网页中正在播放的视频
         }
 
     }
@@ -272,10 +270,10 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webView.removeAllViews();
-        webView.clearHistory();
-        webView.destroy();
-        webView = null;
+        webProtocolDetail.removeAllViews();
+        webProtocolDetail.clearHistory();
+        webProtocolDetail.destroy();
+        webProtocolDetail = null;
         llProtocolMain.removeAllViews();
         llProtocolMain = null;
     }
@@ -300,9 +298,9 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             tvNewsDetailNotnet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    webView.reload();
-                    webView.setVisibility(View.GONE);
-                    webView.setWebChromeClient(new WebChromeClient() {
+                    webProtocolDetail.reload();
+                    webProtocolDetail.setVisibility(View.GONE);
+                    webProtocolDetail.setWebChromeClient(new WebChromeClient() {
                         @Override
                         public void onProgressChanged(WebView view, int newProgress) {
                             if (newProgress >= 80) {
@@ -423,8 +421,8 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (webView.canGoBack()) {
-            webView.goBack();
+        if (webProtocolDetail.canGoBack()) {
+            webProtocolDetail.goBack();
         } else {
             finish();
         }

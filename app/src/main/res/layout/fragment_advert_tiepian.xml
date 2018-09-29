@@ -42,7 +42,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/bg_gray_corner"
             android:drawablePadding="-5dp"
-            android:drawableTop="@mipmap/icon_advert_banner"
+            android:drawableTop="@mipmap/icon_advert_tiepian"
             android:gravity="center"
             android:paddingTop="8dp"
             android:text="贴片广告"

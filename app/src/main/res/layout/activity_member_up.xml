@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:drawableLeft="@mipmap/icon_member_adv_memory"
+                    android:drawableLeft="@mipmap/icon_member_adv_topedit"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="顶部广告、底部广告都可编辑"

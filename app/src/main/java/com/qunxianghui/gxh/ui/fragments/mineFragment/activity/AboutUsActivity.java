@@ -1,17 +1,21 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.ToMarketUtils;
+import com.qunxianghui.gxh.utils.VersonManagerUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AboutUsActivity extends BaseActivity implements View.OnClickListener {
 
@@ -27,10 +31,17 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     RelativeLayout rlAboutusNewfunIntro;
     @BindView(R.id.iv_aboutus_back)
     ImageView ivAboutusBack;
+    @BindView(R.id.tv_appversion)
+    TextView tvAppversion;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_aboutus;
+    }
+
+    @Override
+    protected void initViews() {
+        searchVersionCode();
     }
 
     @Override
@@ -63,7 +74,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.rl_aboutus_goto_grade:
-                ToMarketUtils.goToMarket(mContext,"com.qunxianghui.gxh");
+                ToMarketUtils.goToMarket(mContext, "com.qunxianghui.gxh");
                 break;
             case R.id.rl_aboutus_newfun_intro:
                 intent = new Intent(mContext, ProtocolActivity.class);
@@ -75,6 +86,34 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
             case R.id.iv_aboutus_back:
                 finish();
                 break;
+
         }
+    }
+
+    private void searchVersionCode() {
+        String versonName = VersonManagerUtils.packageName(mContext);
+        int versonCode = VersonManagerUtils.packageCode(mContext);
+
+        if (versonName.equals("4.1.0")&&versonCode==409) {
+            tvAppversion.setText("当前已是最新版本");
+
+        } else {
+            tvAppversion.setText("去更新");
+            tvAppversion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ToMarketUtils.goToMarket(mContext, "com.qunxianghui.gxh");
+                }
+            });
+
+        }
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

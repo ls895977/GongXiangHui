@@ -62,6 +62,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private int mUuid;
     public int mMemberId;
     public boolean mIsChange;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_detail_location;
@@ -174,7 +175,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 requestLocalServiceData();
             }
         });
-
         SoftKeyBoardListener.setListener(getActivity(), new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
@@ -273,7 +273,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             return;
         }
         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
-
             @Override
             public void sendComment(String inputText) {
                 final int uuid = locationBean.get(position).getUuid();
@@ -288,7 +287,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 comment.setMember_name(user.mNick);
                 commentBeanList.add(comment);
                 mAdapter.notifyDataSetChanged();
-                mAdapter.notifyItemChanged(position);
                 OkGo.<ReplyCommentResponseBean>post(Constant.ISSURE_DISUSS_URL)
                         .params("uuid", uuid)
                         .params("content", comment.getContent())
@@ -299,7 +297,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
                                     asyncShowToast(responseBean.getMsg());
-                                    mRecyclerView.refresh();
+//                                    mRecyclerView.refresh();
                                 } else {
                                     asyncShowToast(responseBean.getMsg());
                                 }
@@ -310,11 +308,9 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         commentDialog.show(getChildFragmentManager(), "comment");
     }
 
-
     //接口回调之 点赞
     @Override
     public void onPraiseClick(final int position) {
-        Log.i("fanbo", position + "1");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             mActivity.finish();
@@ -364,7 +360,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 locationBean.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
-                                asyncShowToast("点赞成功");
+                                asyncShowToast(response.body().message);
                             } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = locationBean.get(position).getTem();
                                 for (int i = 0; i < locationBean.get(position).getTem().size(); i++) {
@@ -380,7 +376,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 locationBean.get(position).setLike_info_res("");
                                 mAdapter.notifyDataSetChanged();
                                 mAdapter.notifyItemChanged(position);
-                                asyncShowToast("取消点赞");
+                                asyncShowToast(response.body().message);
                             }
                         }
 
@@ -499,13 +495,12 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
 
                                                         @Override
                                                         public void onError(Response<ReplyCommentResponseBean> response) {
-//                                                            asyncShowToast(response.message());
                                                         }
                                                     });
                                         }
                                     }
                                 } else {
-                                    asyncShowToast(response.message());
+                                    asyncShowToast(commentResponseBean.getMsg());
                                 }
                             }
 
