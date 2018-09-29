@@ -30,6 +30,7 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONObject;
@@ -74,7 +75,10 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(false);
         mShareAPI = UMShareAPI.get(this);
+        mShareAPI.setShareConfig(config);
         //此回调用于三方登录回调
         mUmAuthListener = new UMAuthListener() {
             @Override
