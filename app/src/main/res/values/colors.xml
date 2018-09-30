@@ -8,6 +8,8 @@
     <color name="Gxh_BG">#FFFEFEFE</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="generaCompanyColor">#2B2B2B</color>
+    <color name="generaCompanySortColor">#282828</color>
     <color name="im_line_color">#dadada</color>
     <color name="dialog_bg_color">#80ffffff</color>
     <color name="color_f6">#f6f6f6</color>

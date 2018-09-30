@@ -90,6 +90,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="文章总数"
+                                android:textColor="@color/generaCompanyColor"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -115,6 +116,7 @@
                                 android:singleLine="true"
                                 android:text="0次"
                                 android:textColor="#D81717"
+
                                 android:textSize="15sp" />
 
                             <TextView
@@ -122,6 +124,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="文章点击"
+                                android:textColor="@color/generaCompanyColor"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -154,6 +157,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="文章点击率"
+                                android:textColor="@color/generaCompanyColor"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -192,6 +196,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="文章曝光"
+                                android:textColor="@color/generaCompanyColor"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -222,6 +227,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="文章转发"
+                                android:textColor="@color/generaCompanyColor"
                                 android:textSize="12dp" />
                         </LinearLayout>
 
@@ -251,6 +257,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="广告转发率"
+                                android:textColor="@color/generaCompanyColor"
                                 android:textSize="12dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -301,7 +308,7 @@
                         android:gravity="center"
                         android:paddingEnd="10dp"
                         android:text="7月"
-                        android:textColor="@color/generalize_company_rank_text_color"
+                        android:textColor="@color/generaCompanySortColor"
                         android:textSize="12sp" />
 
                     <TextView
@@ -311,7 +318,7 @@
                         android:background="@drawable/selector_genera_company_rank_total"
                         android:gravity="center"
                         android:text="总榜"
-                        android:textColor="@color/generalize_company_rank_text_color"
+                        android:textColor="@color/generaCompanySortColor"
                         android:textSize="12sp" />
 
                 </LinearLayout>
