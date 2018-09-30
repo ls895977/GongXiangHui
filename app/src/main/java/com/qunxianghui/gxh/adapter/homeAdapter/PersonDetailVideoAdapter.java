@@ -113,6 +113,13 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
                 videoListClickListener.videoAddAdvert(position);
             }
         });
+
+        holder.mLLHomeVideoList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoListClickListener.onItemClick(position);
+            }
+        });
         holder.gsyVideoPlayer.setVideoAllCallBack(new GSYSampleCallBack() {
             @Override
             public void onPrepared(String url, Object... objects) {
@@ -182,7 +189,7 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
 
         void videoAddAdvert(int position);
         /*实现的单击事件*/
-        void onItemClick(View v, int position);
+        void onItemClick( int position);
         //播放完成
         void onAutoComplete(int position,String url);
     }

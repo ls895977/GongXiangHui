@@ -90,6 +90,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
         personDetailVideoAdapter.setListVideoUtil(listVideoUtil);
         mRv.setAdapter(personDetailVideoAdapter);
+
+
     }
 
     boolean isScrollMoveTo = false;
@@ -381,14 +383,14 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     }
 
     @Override
-    public void onItemClick(View v, int position) {
+    public void onItemClick(int position) {
         Intent intent = new Intent(mActivity, NewsDetailActivity.class);
         intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
-        intent.putExtra("uuid", videoDataList.get(position - 1).getUuid());
-        intent.putExtra("descrip", videoDataList.get(position - 1).getDescription());
-        intent.putExtra("title", videoDataList.get(position - 1).getTitle());
-        intent.putExtra("videoimage", videoDataList.get(position - 1).getPicurl());
+        intent.putExtra("uuid", videoDataList.get(position).getUuid());
+        intent.putExtra("descrip", videoDataList.get(position).getDescription());
+        intent.putExtra("title", videoDataList.get(position ).getTitle());
+        intent.putExtra("videoimage", videoDataList.get(position).getPicurl());
         intent.putExtra("position", 4);
         HomeVideoListFragment.this.startActivityForResult(intent, 0x0011);
     }

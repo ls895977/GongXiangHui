@@ -195,7 +195,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
     }
 
     @Override
-    public void onItemClick(View v, int position) {
+    public void onItemClick(int position) {
         int uuid = mVideoList.get(position - 1).getUuid();
         String content = mVideoList.get(position - 1).getContent();
         String title = mVideoList.get(position - 1).getTitle();
@@ -208,6 +208,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
         intent.putExtra("position", 4);
         startActivity(intent);
     }
+
 
     @Override
     public void onAutoComplete(int position,String url) {

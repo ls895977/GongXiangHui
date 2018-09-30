@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
@@ -29,6 +30,8 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
 
     @BindView(R.id.video_item_player)
     public StandardGSYVideoPlayer gsyVideoPlayer;
+    @BindView(R.id.ll_homevideo_list_item)
+    public LinearLayout mLLHomeVideoList;
 
     public @BindView(R.id.round_item_collect_video_personhead)
     RoundImageView roundCollectVideoPersonhead;
@@ -36,10 +39,10 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     TextView tvVideoAttention;
     public @BindView(R.id.tv_item_collect_video_personname)
     TextView tvItemCollectCideoPersonname;
-    public  @BindView(R.id.tv_mycollect_video_paster)
+    public @BindView(R.id.tv_mycollect_video_paster)
     TextView tvVideoPaster;
 
-    public@BindView(R.id.tv_like)
+    public @BindView(R.id.tv_like)
     TextView tvLike;
     public @BindView(R.id.tv_comment)
     TextView tvComment;
@@ -109,7 +112,7 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
                     public void onEnterFullscreen(String url, Object... objects) {
                         super.onEnterFullscreen(url, objects);
                         GSYVideoManager.instance().setNeedMute(false);
-                        gsyVideoPlayer.getCurrentPlayer().getTitleTextView().setText((String)objects[0]);
+                        gsyVideoPlayer.getCurrentPlayer().getTitleTextView().setText((String) objects[0]);
                     }
                 }).build(gsyVideoPlayer);
 
