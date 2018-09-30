@@ -8,12 +8,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -32,12 +31,14 @@ public class OnekeyIssueDialog extends Dialog {
     private Activity mActicity;
     private Bitmap mFinalBlurBg;
 
-    public OnekeyIssueDialog(@NonNull Context context, @StyleRes int themeResId) {
-        super(context, themeResId);
+    public OnekeyIssueDialog(@NonNull Context context) {
+        super(context);
         mActicity = ((Activity) context);
         View view = LayoutInflater.from(context).inflate(R.layout.pop_onekey_issue, null);
+
         View.OnClickListener listener = new View.OnClickListener() {
             Intent intent = null;
+
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -62,17 +63,16 @@ public class OnekeyIssueDialog extends Dialog {
                 }
             }
         };
-        view.findViewById(R.id.tv_video).setOnClickListener(listener);
-        view.findViewById(R.id.tv_location).setOnClickListener(listener);
-        view.findViewById(R.id.tv_baoliao).setOnClickListener(listener);
-        view.findViewById(R.id.tv_local_service).setOnClickListener(listener);
-        view.findViewById(R.id.tv_choice).setOnClickListener(listener);
-        view.findViewById(R.id.iv_onekey_issue_close).setOnClickListener(listener);
-        View rlPop = view.findViewById(R.id.pop_ll);
-        rlPop.setOnClickListener(listener);
         setContentView(view);
+        findViewById(R.id.tv_video).setOnClickListener(listener);
+        findViewById(R.id.tv_location).setOnClickListener(listener);
+        findViewById(R.id.tv_baoliao).setOnClickListener(listener);
+        findViewById(R.id.tv_local_service).setOnClickListener(listener);
+        findViewById(R.id.tv_choice).setOnClickListener(listener);
+        findViewById(R.id.iv_onekey_issue_close).setOnClickListener(listener);
+        findViewById(R.id.pop_ll).setOnClickListener(listener);
         Window dialogWindow = getWindow();
-        dialogWindow.setGravity(Gravity.BOTTOM);
+//        dialogWindow.setGravity(Gravity.BOTTOM);
         //获得窗体的属性
         final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
 //        lp.alpha = 0.9f;
@@ -121,6 +121,10 @@ public class OnekeyIssueDialog extends Dialog {
             bmp.recycle();
         }
         mFinalBlurBg = blurBg;
+
+        findViewById(R.id.pop_ll2).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.one_key_issue_ll2));
+        findViewById(R.id.pop_ll1).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.one_key_issue_ll1));
+
         return this;
     }
 
