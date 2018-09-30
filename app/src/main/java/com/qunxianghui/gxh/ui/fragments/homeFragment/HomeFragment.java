@@ -150,7 +150,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     }
 
     private void setLocation() {
-        mlocationClient = new AMapLocationClient(mActivity);
+        mlocationClient = new AMapLocationClient(mActivity.getApplicationContext());
         mLocationOption = new AMapLocationClientOption();
         mLocationOption.setNeedAddress(true);
         mlocationClient.setLocationListener(this);
@@ -340,6 +340,8 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
             Log.e("AmapError", "locations Error, ErrCode:"
                     + aMapLocation.getErrorCode() + ", errInfo:"
                     + aMapLocation.getErrorInfo());
+            mTvHomeLocation.setText("定位失败");
+
         }
 
         mlocationClient.stopLocation();

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.qunxianghui.gxh"
-    android:largeHeap="true"
-    android:anyDensity="true">
+    android:anyDensity="true"
+    android:largeHeap="true">
 
     <!-- 高德相应权限 -->
     <!-- 用于进行网络定位 -->
@@ -19,7 +19,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 用于访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -41,7 +42,8 @@
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -290,8 +292,8 @@
             android:screenOrientation="portrait" />
         <!--我的视频添加频道的界面-->
         <!--<activity-->
-            <!--android:name=".ui.fragments.homeFragment.activity.HomeVideoChannelActivity"-->
-            <!--android:screenOrientation="portrait" />-->
+        <!--android:name=".ui.fragments.homeFragment.activity.HomeVideoChannelActivity"-->
+        <!--android:screenOrientation="portrait" />-->
         <!--首页视频汇的搜索界面-->
         <activity
             android:name=".ui.fragments.homeFragment.activity.SearchVideoActivity"
@@ -361,6 +363,8 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.VideoChannelActivity"
             android:screenOrientation="portrait" />
+        <!--服务-->
+        <service android:name="com.amap.api.location.APSService" />
     </application>
 
 

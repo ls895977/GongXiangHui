@@ -41,7 +41,6 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     TextView tvItemCollectCideoPersonname;
     public @BindView(R.id.tv_mycollect_video_paster)
     TextView tvVideoPaster;
-
     public @BindView(R.id.tv_like)
     TextView tvLike;
     public @BindView(R.id.tv_comment)
@@ -64,7 +63,7 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     public void onBind(final int position, HomeVideoListBean.DataBean.ListBean videoModel) {
         String video_url = videoModel.getVideo_url();
         //listVideoUtil.setCachePath(new File(FileUtils.getPath()));
-        listVideoUtil.startPlay(video_url);
+//        listVideoUtil.startPlay(video_url);
 //        //增加封面
 //        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //        ENPlayView viewById = gsyVideoPlayer.findViewById(R.id.start);
@@ -117,7 +116,7 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
 
 
         //增加title
-        gsyVideoPlayer.getTitleTextView().setVisibility(View.GONE);
+//        gsyVideoPlayer.getTitleTextView().setVisibility(View.GONE);
 
         //设置返回键
         gsyVideoPlayer.getBackButton().setVisibility(View.GONE);

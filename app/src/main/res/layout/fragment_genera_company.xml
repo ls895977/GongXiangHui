@@ -308,7 +308,7 @@
                         android:gravity="center"
                         android:paddingEnd="10dp"
                         android:text="7月"
-                        android:textColor="@color/generaCompanySortColor"
+                        android:textColor="@color/generalize_company_rank_text_color"
                         android:textSize="12sp" />
 
                     <TextView
@@ -318,7 +318,7 @@
                         android:background="@drawable/selector_genera_company_rank_total"
                         android:gravity="center"
                         android:text="总榜"
-                        android:textColor="@color/generaCompanySortColor"
+                        android:textColor="@color/generalize_company_rank_text_color"
                         android:textSize="12sp" />
 
                 </LinearLayout>

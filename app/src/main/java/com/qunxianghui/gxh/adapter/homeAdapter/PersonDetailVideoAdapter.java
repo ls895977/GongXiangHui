@@ -120,7 +120,10 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
                 videoListClickListener.onItemClick(position);
             }
         });
-        holder.gsyVideoPlayer.setVideoAllCallBack(new GSYSampleCallBack() {
+
+        holder.gsyVideoPlayer.
+                setVideoAllCallBack(new GSYSampleCallBack() {
+
             @Override
             public void onPrepared(String url, Object... objects) {
                 super.onPrepared(url, objects);
