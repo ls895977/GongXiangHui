@@ -283,7 +283,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
                     Log.e("TAG_播放位置", "i=====" + (i+1));
                     View childAt = linearLayoutManager.findViewByPosition(i+1);
                     if (childAt != null && childAt.findViewById(R.id.video_item_player) != null) {
-                        GSYBaseVideoPlayer gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
+                        gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
                         Rect rect = new Rect();
                         gsyBaseVideoPlayer.getLocalVisibleRect(rect);
                         //如果未播放，需要播放
@@ -298,6 +298,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
 
         }
     }
+    GSYBaseVideoPlayer gsyBaseVideoPlayer;
     //动画定位
     private void smoothMoveToPosition(final int position) {
         Log.e("TAG_播放位置", "滚动=====" + position);
@@ -308,6 +309,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
             xrecyclerPersondetailVideo.smoothScrollToPosition(position);
         } else if (position <= lastItem) {
             int top = xrecyclerPersondetailVideo.getChildAt(position - firstItem).getTop();
+//            int top = xrecyclerPersondetailVideo.getChildAt(1).getTop();
             xrecyclerPersondetailVideo.smoothScrollBy(0, top);
         } else {
             xrecyclerPersondetailVideo.smoothScrollToPosition(position);
@@ -344,16 +346,17 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
 //            }
 //        }, 100);
     }
-    private int oldPosition;
-    private View childAt;
-    private int changeX;
-    private int childWidth;
-    int width;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (gsyBaseVideoPlayer !=null)
+        gsyBaseVideoPlayer.onVideoPause();
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        listVideoUtil.releaseVideoPlayer();
         GSYVideoManager.releaseAllVideos();
     }
 }

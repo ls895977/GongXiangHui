@@ -69,8 +69,6 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void initViews(View view) {
-        Rect rect = new Rect();
-        width = rect.bottom / 2;
         mLinearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRv.setLayoutManager(mLinearLayoutManager);
         //限定范围为屏幕一半的上下偏移280
@@ -119,7 +117,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     @Override
     public void onPause() {
         super.onPause();
-//        JZVideoPlayer.releaseAllVideos();
+        if (gsyBaseVideoPlayer !=null)
+            gsyBaseVideoPlayer.onVideoPause();
     }
 
     @Override
@@ -384,7 +383,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                     Log.e("TAG_播放位置", "i=====" + (i+1));
                     View childAt = layoutManagerS.findViewByPosition(i+1);
                     if (childAt != null && childAt.findViewById(R.id.video_item_player) != null) {
-                        GSYBaseVideoPlayer gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
+                        gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
                         Rect rect = new Rect();
                         gsyBaseVideoPlayer.getLocalVisibleRect(rect);
                         //如果未播放，需要播放
@@ -409,52 +408,18 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             mRv.smoothScrollToPosition(position);
         } else if (position <= lastItem) {
             int top = mRv.getChildAt(position - firstItem).getTop();
+//            int top = mRv.getChildAt(1).getTop();
             mRv.smoothScrollBy(0, top);
         } else {
             mRv.smoothScrollToPosition(position);
         }
-
-//        playHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (position > mRv.getChildCount() - 1) {
-//                    if (oldPosition > position) {
-//                        childAt = mRv.getChildAt(0);
-//
-//                    } else {
-//
-//                        childAt = mRv.getChildAt(mRv.getChildCount() - 1);
-//                    }
-//                } else {
-//                    if (oldPosition > position) {
-//                        childAt = mRv.getChildAt(0);
-//                    } else {
-//                        childAt = mRv.getChildAt(position);
-//                    }
-//                }
-//                changeX = (int) childAt.getX();
-//                childWidth = childAt.getWidth() / 2;
-//                mRv.smoothScrollBy(changeX - (width - childWidth), 0);
-//            }
-//        }, 50);
-//        playHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                oldPosition = position;
-//
-//            }
-//        }, 100);
     }
-    private int oldPosition;
-    private View childAt;
-    private int changeX;
-    private int childWidth;
     int width;
+    GSYBaseVideoPlayer gsyBaseVideoPlayer;
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        listVideoUtil.releaseVideoPlayer();
         GSYVideoManager.releaseAllVideos();
     }
 
