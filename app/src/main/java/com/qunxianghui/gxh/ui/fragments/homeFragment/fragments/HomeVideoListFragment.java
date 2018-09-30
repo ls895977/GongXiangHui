@@ -82,11 +82,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
 
         listVideoUtil = new ListVideoUtil(getActivity());
-//        listVideoUtil.setFullViewContainer(videoFullContainer);
         listVideoUtil.setHideStatusBar(true);
-        //listVideoUtil.setHideActionBar(true);
         listVideoUtil.setNeedLockFull(true);
-//        initFootView();
 
         personDetailVideoAdapter.setListVideoUtil(listVideoUtil);
         mRv.setAdapter(personDetailVideoAdapter);
@@ -94,59 +91,8 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     }
 
-    boolean isScrollMoveTo = false;
+//    boolean isScrollMoveTo = false;
 
-    //动画定位
-    private void smoothMoveToPosition(final int position) {
-        isScrollMoveTo = true;
-        int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-        int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
-        Log.e("TAG_Scroll", "firstItem=" + firstItem + ";position=" + position + ";lastItem=" + lastItem);
-        if (position <= firstItem) {
-            mRv.smoothScrollToPosition(position);
-        } else if (position <= lastItem) {
-            int top = mRv.getChildAt(position - firstItem).getTop();
-            mRv.smoothScrollBy(0, top);
-        } else {
-            mRv.smoothScrollToPosition(position);
-        }
-
-        playHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (position > mRv.getChildCount() - 1) {
-                    if (oldPosition > position) {
-                        childAt = mRv.getChildAt(0);
-
-                    } else {
-
-                        childAt = mRv.getChildAt(mRv.getChildCount() - 1);
-                    }
-                } else {
-                    if (oldPosition > position) {
-                        childAt = mRv.getChildAt(0);
-                    } else {
-                        childAt = mRv.getChildAt(position);
-                    }
-                }
-                changeX = (int) childAt.getX();
-                childWidth = childAt.getWidth() / 2;
-                mRv.smoothScrollBy(changeX - (width - childWidth), 0);
-            }
-        }, 50);
-        playHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                oldPosition = position;
-
-            }
-        }, 100);
-    }
-    private int oldPosition;
-    private View childAt;
-    private int changeX;
-    private int childWidth;
-    int width;
     @Override
     public void initData() {
         mCateId = getArguments().getInt("channel_id");
@@ -396,12 +342,22 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     }
 
     @Override
+    public void onStartPrepared(int position, String url) {
+//        if (position < videoDataList.size() - 1) {
+//            if (!mFull) {
+//                smoothMoveToPosition(position);
+//
+//            }
+//        }
+    }
+
+    @Override
     public void onAutoComplete(int position, String url) {
         Log.e("TAG_播放完成", "position=" + position);
         Log.e("TAG_播放完成", "mFull=" + mFull);
         if (position < videoDataList.size() - 1) {
             if (!mFull) {
-                smoothMoveToPosition(position + 1);
+                smoothMoveToPosition(position + 2);
                 PlayRunnable runnable = new PlayRunnable(position,url);
                 //降低频率
                 playHandler.postDelayed(runnable, 2000);
@@ -425,6 +381,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                 String videoUrlNext = listBeanNext.getVideo_url();
                 Log.e("TAG_播放下一个", "videoUrlNext=" + videoUrlNext);
                 if (!url.equals(videoUrlNext)) {
+                    Log.e("TAG_播放位置", "i=====" + (i+1));
                     View childAt = layoutManagerS.findViewByPosition(i+1);
                     if (childAt != null && childAt.findViewById(R.id.video_item_player) != null) {
                         GSYBaseVideoPlayer gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
@@ -442,6 +399,58 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
         }
     }
+    //动画定位
+    private void smoothMoveToPosition(final int position) {
+        Log.e("TAG_播放位置", "滚动=====" + position);
+        int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+        Log.e("TAG_Scroll", "firstItem=" + firstItem + ";position=" + position + ";lastItem=" + lastItem);
+        if (position <= firstItem) {
+            mRv.smoothScrollToPosition(position);
+        } else if (position <= lastItem) {
+            int top = mRv.getChildAt(position - firstItem).getTop();
+            mRv.smoothScrollBy(0, top);
+        } else {
+            mRv.smoothScrollToPosition(position);
+        }
+
+//        playHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (position > mRv.getChildCount() - 1) {
+//                    if (oldPosition > position) {
+//                        childAt = mRv.getChildAt(0);
+//
+//                    } else {
+//
+//                        childAt = mRv.getChildAt(mRv.getChildCount() - 1);
+//                    }
+//                } else {
+//                    if (oldPosition > position) {
+//                        childAt = mRv.getChildAt(0);
+//                    } else {
+//                        childAt = mRv.getChildAt(position);
+//                    }
+//                }
+//                changeX = (int) childAt.getX();
+//                childWidth = childAt.getWidth() / 2;
+//                mRv.smoothScrollBy(changeX - (width - childWidth), 0);
+//            }
+//        }, 50);
+//        playHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                oldPosition = position;
+//
+//            }
+//        }, 100);
+    }
+    private int oldPosition;
+    private View childAt;
+    private int changeX;
+    private int childWidth;
+    int width;
+
     @Override
     public void onDestroy() {
         super.onDestroy();

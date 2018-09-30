@@ -1,7 +1,12 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Rect;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -21,6 +26,10 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AddTiePianAdvertAc
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.video.ScrollCalculatorHelper;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.utils.ListVideoUtil;
+import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +50,11 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
     private LinearLayoutManager linearLayoutManager;
+    ListVideoUtil listVideoUtil;
+    private int playTop;
+    private int playBottom;
+    boolean mFull = false;
+    ScrollCalculatorHelper scrollCalculatorHelper;
     @Override
     protected void onLoadData() {
         RequestPersonDataVideoData();
@@ -75,8 +89,14 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
         if (homeVideoListBean.getCode() == 0) {
             if (mIsFirst){
                 mIsFirst=false;
+                scrollCalculatorHelper = new ScrollCalculatorHelper(R.id.video_item_player, playTop, playBottom);
                 mPersonDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity,linearLayoutManager, mVideoList);
+                listVideoUtil = new ListVideoUtil(getActivity());
+                listVideoUtil.setHideStatusBar(true);
+                listVideoUtil.setNeedLockFull(true);
+                mPersonDetailVideoAdapter.setListVideoUtil(listVideoUtil);
                 xrecyclerPersondetailVideo.setAdapter(mPersonDetailVideoAdapter);
+
                 mPersonDetailVideoAdapter.setVideoListClickListener(this);
 
                 if (mVideoList.isEmpty()){
@@ -211,8 +231,130 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
 
 
     @Override
-    public void onAutoComplete(int position,String url) {
+    public void onStartPrepared(int position, String url) {
+//        if (position < mVideoList.size() - 1) {
+//            if (!mFull) {
+//                smoothMoveToPosition(position);
+//
+//            }
+//        }
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //如果旋转了就全屏
+        if (newConfig.orientation != ActivityInfo.SCREEN_ORIENTATION_USER) {
+            mFull = false;
+        } else {
+            mFull = true;
+        }
+
+    }
+
+    @Override
+    public void onAutoComplete(int position,String url) {
+        if (position < mVideoList.size() - 1) {
+            if (!mFull) {
+                smoothMoveToPosition(position + 2);
+                PlayRunnable runnable = new PlayRunnable(position,url);
+                //降低频率
+                playHandler.postDelayed(runnable, 2000);
+            }
+        }
+    }
+    private Handler playHandler = new Handler();
+    private class PlayRunnable implements Runnable {
+
+        String url;
+        int position;
+        public PlayRunnable(int position,String url) {
+            this.url = url;
+            this.position = position;
+        }
+
+        @Override
+        public void run() {
+            for (int i = position+1; i < mVideoList.size(); i++) {
+                HomeVideoListBean.DataBean.ListBean listBeanNext = mVideoList.get(i);
+                String videoUrlNext = listBeanNext.getVideo_url();
+                Log.e("TAG_播放下一个", "videoUrlNext=" + videoUrlNext);
+                if (!url.equals(videoUrlNext)) {
+                    Log.e("TAG_播放位置", "i=====" + (i+1));
+                    View childAt = linearLayoutManager.findViewByPosition(i+1);
+                    if (childAt != null && childAt.findViewById(R.id.video_item_player) != null) {
+                        GSYBaseVideoPlayer gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
+                        Rect rect = new Rect();
+                        gsyBaseVideoPlayer.getLocalVisibleRect(rect);
+                        //如果未播放，需要播放
+                        if (gsyBaseVideoPlayer != null) {
+                            scrollCalculatorHelper.startPlayLogic(gsyBaseVideoPlayer, gsyBaseVideoPlayer.getContext());
+                            //gsyBaseVideoPlayer.startPlayLogic();
+                        }
+                    }
+                    break;
+                }
+            }
+
+        }
+    }
+    //动画定位
+    private void smoothMoveToPosition(final int position) {
+        Log.e("TAG_播放位置", "滚动=====" + position);
+        int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
+        int lastItem = linearLayoutManager.findLastVisibleItemPosition();
+        Log.e("TAG_Scroll", "firstItem=" + firstItem + ";position=" + position + ";lastItem=" + lastItem);
+        if (position <= firstItem) {
+            xrecyclerPersondetailVideo.smoothScrollToPosition(position);
+        } else if (position <= lastItem) {
+            int top = xrecyclerPersondetailVideo.getChildAt(position - firstItem).getTop();
+            xrecyclerPersondetailVideo.smoothScrollBy(0, top);
+        } else {
+            xrecyclerPersondetailVideo.smoothScrollToPosition(position);
+        }
+
+//        playHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (position > xrecyclerPersondetailVideo.getChildCount() - 1) {
+//                    if (oldPosition > position) {
+//                        childAt = xrecyclerPersondetailVideo.getChildAt(0);
+//
+//                    } else {
+//
+//                        childAt = xrecyclerPersondetailVideo.getChildAt(xrecyclerPersondetailVideo.getChildCount() - 1);
+//                    }
+//                } else {
+//                    if (oldPosition > position) {
+//                        childAt = xrecyclerPersondetailVideo.getChildAt(0);
+//                    } else {
+//                        childAt = xrecyclerPersondetailVideo.getChildAt(position);
+//                    }
+//                }
+//                changeX = (int) childAt.getX();
+//                childWidth = childAt.getWidth() / 2;
+//                xrecyclerPersondetailVideo.smoothScrollBy(changeX - (width - childWidth), 0);
+//            }
+//        }, 50);
+//        playHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                oldPosition = position;
+//
+//            }
+//        }, 100);
+    }
+    private int oldPosition;
+    private View childAt;
+    private int changeX;
+    private int childWidth;
+    int width;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        listVideoUtil.releaseVideoPlayer();
+        GSYVideoManager.releaseAllVideos();
     }
 }
 
