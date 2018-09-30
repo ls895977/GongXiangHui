@@ -62,7 +62,6 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     }
 
     public void onBind(final int position, HomeVideoListBean.DataBean.ListBean videoModel) {
-
         String video_url = videoModel.getVideo_url();
         //listVideoUtil.setCachePath(new File(FileUtils.getPath()));
         listVideoUtil.startPlay(video_url);

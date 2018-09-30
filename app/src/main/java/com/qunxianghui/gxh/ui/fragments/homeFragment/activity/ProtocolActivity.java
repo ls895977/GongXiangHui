@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -233,16 +232,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 super.onReceivedSslError(view, handler, error);
-                Log.d("onReceivedSslError: ", "" + error.getPrimaryError());
-                if (error.getPrimaryError() == SslError.SSL_DATE_INVALID
-                        || error.getPrimaryError() == SslError.SSL_EXPIRED
-                        || error.getPrimaryError() == SslError.SSL_INVALID
-                        || error.getPrimaryError() == SslError.SSL_UNTRUSTED) {
-
                     handler.proceed();
-                } else {
-                    handler.cancel();
-                }
             }
 
         });

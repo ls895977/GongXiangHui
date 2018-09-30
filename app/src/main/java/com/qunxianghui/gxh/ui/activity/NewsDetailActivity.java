@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -197,6 +199,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 com.orhanobut.logger.Logger.e("网页加载失败"+error);
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
+                super.onReceivedSslError(view, handler, error);
             }
         });
         mWedNewsDetail.loadUrl(String.valueOf(mBuffer));
