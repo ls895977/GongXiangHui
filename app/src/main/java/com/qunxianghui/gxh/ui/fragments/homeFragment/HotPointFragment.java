@@ -83,7 +83,6 @@ public class HotPointFragment extends BaseFragment {
     public int getLayoutId() {
         return R.layout.fragment_hot_point;
     }
-
     @SuppressLint("NewApi")
     @Override
     protected void setStatusBarColor() {

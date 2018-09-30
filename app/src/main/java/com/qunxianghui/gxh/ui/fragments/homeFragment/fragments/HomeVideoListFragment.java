@@ -38,11 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JZUtils;
-import cn.jzvd.JZVideoPlayer;
-import cn.jzvd.JZVideoPlayerManager;
-import cn.jzvd.JZVideoPlayerStandard;
 
 public class HomeVideoListFragment extends BaseFragment implements PersonDetailVideoAdapter.VideoListClickListener {
 
@@ -55,7 +50,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
-    private JZVideoPlayerStandard mVideoPlayerStandard;
+//    private JZVideoPlayerStandard mVideoPlayerStandard;
     private int firstVisible = 0, visibleCount = 0, totalCount = 0;
     private LinearLayoutManager mLinearLayoutManager;
     ScrollCalculatorHelper scrollCalculatorHelper;
@@ -139,7 +134,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     @Override
     public void onPause() {
         super.onPause();
-        JZVideoPlayer.releaseAllVideos();
+//        JZVideoPlayer.releaseAllVideos();
     }
 
     @Override
@@ -161,22 +156,22 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
         personDetailVideoAdapter.setVideoListClickListener(this);
 
-        mRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-            @Override
-            public void onChildViewAttachedToWindow(View view) {
-            }
-
-            @Override
-            public void onChildViewDetachedFromWindow(View view) {
-                JZVideoPlayer jzvd = view.findViewById(R.id.videoplayer);
-                if (jzvd != null && JZUtils.dataSourceObjectsContainsUri(jzvd.dataSourceObjects, JZMediaManager.getCurrentDataSource())) {
-                    JZVideoPlayer currentJzvd = JZVideoPlayerManager.getCurrentJzvd();
-                    if (currentJzvd != null && currentJzvd.currentScreen != JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
-                        JZVideoPlayer.releaseAllVideos();
-                    }
-                }
-            }
-        });
+//        mRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+//            @Override
+//            public void onChildViewAttachedToWindow(View view) {
+//            }
+//
+//            @Override
+//            public void onChildViewDetachedFromWindow(View view) {
+//                JZVideoPlayer jzvd = view.findViewById(R.id.videoplayer);
+//                if (jzvd != null && JZUtils.dataSourceObjectsContainsUri(jzvd.dataSourceObjects, JZMediaManager.getCurrentDataSource())) {
+//                    JZVideoPlayer currentJzvd = JZVideoPlayerManager.getCurrentJzvd();
+//                    if (currentJzvd != null && currentJzvd.currentScreen != JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
+//                        JZVideoPlayer.releaseAllVideos();
+//                    }
+//                }
+//            }
+//        });
         /*监听滑动状态*/
         mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="节省广告费(元)"
-                    android:textColor="#2B2B2B" />
+                    android:textColor="@color/generaCompanyColor" />
 
                 <TextView
                     android:id="@+id/tv_generalize_company_des"
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="总曝光"
-                        android:textColor="#2B2B2B"
+                        android:textColor="@color/generaCompanyColor"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="总点击"
-                        android:textColor="#2B2B2B"
+                        android:textColor="@color/generaCompanyColor"
                         android:textSize="12sp" />
 
 
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="总转发"
-                        android:textColor="#2B2B2B"
+                        android:textColor="@color/generaCompanyColor"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -171,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="总点击率"
-                        android:textColor="#2B2B2B"
+                        android:textColor="@color/generaCompanyColor"
                         android:textSize="12sp" />
 
                 </LinearLayout>

@@ -25,8 +25,8 @@ public class Constant {
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
         //新闻详情
-    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
-//    public static final String HOME_NEWS_DETAIL_URL = "https://www.baidu.com/";
+//    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
+    public static final String HOME_NEWS_DETAIL_URL = "https://www.baidu.com/";
     //本地发布详情
     public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
     //精选发布详情
