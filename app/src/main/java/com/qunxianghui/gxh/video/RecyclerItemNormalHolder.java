@@ -65,7 +65,8 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
         listVideoUtil.startPlay(video_url);
 //        //增加封面
 //        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
+//        ENPlayView viewById = gsyVideoPlayer.findViewById(R.id.start);
+//        viewById.setBackgroundResource(R.mipmap.gsy_start);
         if (imageView.getParent() != null) {
             ViewGroup viewGroup = (ViewGroup) imageView.getParent();
             viewGroup.removeView(imageView);

@@ -210,7 +210,7 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
     }
 
     @Override
-    public void onAutoComplete(int position) {
+    public void onAutoComplete(int position,String url) {
 
     }
 }

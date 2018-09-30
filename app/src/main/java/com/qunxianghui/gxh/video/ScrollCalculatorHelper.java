@@ -99,10 +99,11 @@ public class ScrollCalculatorHelper {
                 if (tmpPlayer == gsyBaseVideoPlayer) {
                     return;
                 }
+            }else {
+                runnable = new PlayRunnable(gsyBaseVideoPlayer);
+                //降低频率
+                playHandler.postDelayed(runnable, 400);
             }
-            runnable = new PlayRunnable(gsyBaseVideoPlayer);
-            //降低频率
-            playHandler.postDelayed(runnable, 400);
         }
 
 
@@ -141,7 +142,7 @@ public class ScrollCalculatorHelper {
 
 
     /***************************************自动播放的点击播放确认******************************************/
-    private void startPlayLogic(GSYBaseVideoPlayer gsyBaseVideoPlayer, Context context) {
+    public void startPlayLogic(GSYBaseVideoPlayer gsyBaseVideoPlayer, Context context) {
         if (!CommonUtil.isWifiConnected(context)) {
             //这里判断是否wifi
             showWifiDialog(gsyBaseVideoPlayer, context);
