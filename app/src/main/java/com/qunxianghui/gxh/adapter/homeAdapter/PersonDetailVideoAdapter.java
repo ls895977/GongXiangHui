@@ -141,7 +141,7 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
             @Override
             public void onAutoComplete(String url, Object... objects) {
                 super.onAutoComplete(url, objects);
-                videoListClickListener.onAutoComplete(position);
+                videoListClickListener.onAutoComplete(position,url);
             }
         });
     }
@@ -184,6 +184,6 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
         /*实现的单击事件*/
         void onItemClick(View v, int position);
         //播放完成
-        void onAutoComplete(int position);
+        void onAutoComplete(int position,String url);
     }
 }
