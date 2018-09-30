@@ -268,7 +268,7 @@ public class MainActivity extends BaseActivity {
     /*弹出一键发布的pop*/
     private void showOneKeyIssuePop() {
         if (dialog == null) {
-            dialog = new OnekeyIssueDialog(MainActivity.this, R.style.ActionSheetDialogStyle);
+            dialog = new OnekeyIssueDialog(MainActivity.this);
         }
         dialog.blurBg().show();
     }
