@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
 import android.view.Gravity;
@@ -267,7 +266,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     @Override
     public void onCommentClick(final int position, String content, View itemView) {
         this.clickContent = itemView;
-        Log.v("xxx-yyy", position + "");
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
             return;
@@ -296,6 +294,8 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 ReplyCommentResponseBean responseBean = response.body();
                                 if (responseBean.getCode() == 0) {
                                     commentDialog.dismiss();
+                                    List<CommentBean> comment_res = locationBean.get(position).getComment_res();
+                                    comment_res.get(comment_res.size() - 1).setId(responseBean.getData().getCom_one_res().getId());
                                     asyncShowToast(responseBean.getMsg());
 //                                    mRecyclerView.refresh();
                                 } else {
@@ -438,7 +438,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     public void headImageClick(int position) {
         if (!LoginMsgHelper.isLogin()) {
             toActivity(LoginActivity.class);
-            return;
         } else {
             Intent intent = new Intent(mActivity, PersonDetailActivity.class);
             intent.putExtra("member_id", locationBean.get(position).getMember_id());

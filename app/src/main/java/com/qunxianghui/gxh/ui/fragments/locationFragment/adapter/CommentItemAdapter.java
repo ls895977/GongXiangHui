@@ -100,15 +100,12 @@ public class CommentItemAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             /*删除评论*/
-
                             OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
                                     params("id", mList.get(position).getId())
                                     .execute(new JsonCallback<String>() {
                                         @Override
                                         public void onSuccess(Response<String> response) {
                                             deleteItemView(position);
-
-
                                         }
                                     });
                         }
@@ -116,7 +113,6 @@ public class CommentItemAdapter extends BaseAdapter {
                     dialog.show();
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.GRAY);
                     dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(Color.RED);
-
                 }
             });
         } else {
