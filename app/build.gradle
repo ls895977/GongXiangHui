@@ -112,7 +112,7 @@ dependencies {
     implementation 'com.githang:status-bar-compat:0.7'
     //noinspection GradleDependency 友盟
     implementation 'com.umeng.sdk:share-qq:6.9.1.1'
-    implementation 'com.umeng.sdk:common:1.5.3'
+    implementation 'com.umeng.sdk:common:1.5.1'
     implementation 'com.umeng.analytics:analytics:latest.integration'
     implementation 'com.umeng.sdk:share-core:6.9.1'
     implementation 'com.umeng.sdk:share-wechat:6.9.1'
