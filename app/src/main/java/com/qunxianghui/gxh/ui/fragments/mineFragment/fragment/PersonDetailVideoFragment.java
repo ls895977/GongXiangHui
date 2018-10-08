@@ -216,9 +216,9 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
 
     @Override
     public void onItemClick(int position) {
-        int uuid = mVideoList.get(position - 1).getUuid();
-        String content = mVideoList.get(position - 1).getContent();
-        String title = mVideoList.get(position - 1).getTitle();
+        int uuid = mVideoList.get(position).getUuid();
+        String content = mVideoList.get(position).getContent();
+        String title = mVideoList.get(position).getTitle();
         Intent intent = new Intent(mActivity, NewsDetailActivity.class);
         intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
         intent.putExtra("uuid", uuid);
