@@ -251,23 +251,22 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 snsPopupWindow.showPopupWindow(v, dataBeanList.get(holder.getAdapterPosition() - 1), mContext);
             }
         });
-        if (dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size() != 0) {
+        List<TestMode.DataBean.ListBean.ClickLikeBean> tem = dataBeanList.get(holder.getAdapterPosition() - 1).getTem();
+        if (!tem.isEmpty()) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
-            String content = null;
+            String content;
             stringBuilder = new StringBuilder();
-            for (int i = 0; i < dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size(); i++) {
-                TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(holder.getAdapterPosition() - 1).getTem().get(i);
-                for (int j = 0; j < like.getMember_name().length(); j++) {
-                    if (j == like.getMember_name().length()-1) {
-                        content = like.getMember_name() + " ";
-                    } else {
-                        content = like.getMember_name() + ",";
-                    }
+            for (int i = 0, length = tem.size() - 1; i <= length; i++) {
+                TestMode.DataBean.ListBean.ClickLikeBean like = tem.get(i);
+                if (i == length) {
+                    content = like.getMember_name() + " ";
+                } else {
+                    content = like.getMember_name() + ",";
                 }
                 stringBuilder.append(content);
-                holder.clickusertext.setText(stringBuilder);
             }
+            holder.clickusertext.setText(stringBuilder);
 
         } else {
             holder.clickusertext.setVisibility(View.GONE);
