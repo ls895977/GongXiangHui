@@ -25,11 +25,9 @@ import butterknife.ButterKnife;
 public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
 
     public final static String TAG = "RecyclerView2List";
-
     protected Context context = null;
-
     @BindView(R.id.video_item_player)
-    public StandardGSYVideoPlayer gsyVideoPlayer;
+    public SampleCoverVideo gsyVideoPlayer;
     @BindView(R.id.ll_homevideo_list_item)
     public LinearLayout mLLHomeVideoList;
 
@@ -116,7 +114,8 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
 
 
         //增加title
-//        gsyVideoPlayer.getTitleTextView().setVisibility(View.GONE);
+        gsyVideoPlayer.getTitleTextView().setVisibility(View.VISIBLE);
+        gsyVideoPlayer.setTvTitle(videoModel.getTitle());
 
         //设置返回键
         gsyVideoPlayer.getBackButton().setVisibility(View.GONE);

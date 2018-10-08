@@ -35,7 +35,7 @@ public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean>
         if (follow_type == 0) {
             mMyFansFollow.setText("关注");
         } else {
-            mMyFansFollow.setText("互相关注");
+            mMyFansFollow.setText("⇄互相关注");
         }
         String level_type = dataBean.getLevel_type();
         if (level_type.equals("1")) {
@@ -45,8 +45,8 @@ public class MyFansAdapter extends BaseRecycleViewAdapter<MineFansBean.DataBean>
         }
 
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.default_img);
-        options.placeholder(R.mipmap.default_img);
+        options.placeholder(R.mipmap.user_moren);
+        options.placeholder(R.mipmap.user_moren);
         Glide.with(mContext).load(dataBean.getMember_avatar()).apply(options).into(headImave);
 
         mMyFansFollow.setOnClickListener(new View.OnClickListener() {

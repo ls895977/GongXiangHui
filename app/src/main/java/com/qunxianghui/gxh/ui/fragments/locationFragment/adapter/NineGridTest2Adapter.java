@@ -251,17 +251,24 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
                 snsPopupWindow.showPopupWindow(v, dataBeanList.get(holder.getAdapterPosition() - 1), mContext);
             }
         });
-        if (dataBeanList.get(holder.getAdapterPosition()-1 ).getTem().size() != 0) {
+        if (dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size() != 0) {
             holder.digCommentBody.setVisibility(View.VISIBLE);
             holder.clickusertext.setVisibility(View.VISIBLE);
-            String content;
+            String content = null;
             stringBuilder = new StringBuilder();
             for (int i = 0; i < dataBeanList.get(holder.getAdapterPosition() - 1).getTem().size(); i++) {
                 TestMode.DataBean.ListBean.ClickLikeBean like = dataBeanList.get(holder.getAdapterPosition() - 1).getTem().get(i);
-                content = like.getMember_name() + " ";
+                for (int j = 0; j < like.getMember_name().length(); j++) {
+                    if (j == like.getMember_name().length()-1) {
+                        content = like.getMember_name() + " ";
+                    } else {
+                        content = like.getMember_name() + ",";
+                    }
+                }
                 stringBuilder.append(content);
+                holder.clickusertext.setText(stringBuilder);
             }
-            holder.clickusertext.setText(stringBuilder);
+
         } else {
             holder.clickusertext.setVisibility(View.GONE);
         }

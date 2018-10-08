@@ -32,12 +32,11 @@ public myFocusItemClickListener mMyFocusItemClickListener;
         final ImageView headImave = holder.getView(R.id.iv_mine_focus_head);
         TextView mMyFocusFollow = holder.getView(R.id.tv_myfocus_follow);
         final ImageView mFocusLevelType = holder.getView(R.id.iv_myfocus_leveltype);
-
         int follow_type = dataBean.getFollow_type();
         if (follow_type == 0) {
             mMyFocusFollow.setText("已关注");
         } else {
-            mMyFocusFollow.setText("互相关注");
+            mMyFocusFollow.setText("⇄互相关注");
         }
         String level_type = dataBean.getLevel_type();
         if (level_type.equals("1")) {
@@ -48,8 +47,8 @@ public myFocusItemClickListener mMyFocusItemClickListener;
 
         holder.setText(R.id.tv_mine_focus_title, dataBean.getMember_name());
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.default_img);
-        options.error(R.mipmap.default_img);
+        options.placeholder(R.mipmap.user_moren);
+        options.error(R.mipmap.user_moren);
         options.centerCrop();
         Glide.with(mContext).load(dataBean.getMember_avatar()).apply(options).into(headImave);
 

@@ -7,6 +7,7 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,17 +17,21 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 
 /**
- 带封面
- Created by guoshuyu on 2017/9/3.
+ * 带封面
+ * Created by guoshuyu on 2017/9/3.
  */
 
 public class SampleCoverVideo extends StandardGSYVideoPlayer {
 
     ImageView mCoverImage;
+    TextView tvTitle;
+
 
     String mCoverOriginUrl;
 
     int mDefaultRes;
+
+
 
     public SampleCoverVideo(Context context, Boolean fullFlag) {
         super(context, fullFlag);
@@ -44,6 +49,7 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     protected void init(Context context) {
         super.init(context);
         mCoverImage = (ImageView) findViewById(R.id.thumbImage);
+        tvTitle = (TextView) findViewById(R.id.title);
 
         if (mThumbImageViewLayout != null &&
                 (mCurrentState == -1 || mCurrentState == CURRENT_STATE_NORMAL || mCurrentState == CURRENT_STATE_ERROR)) {
@@ -54,6 +60,10 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     @Override
     public int getLayoutId() {
         return R.layout.video_layout_cover;
+    }
+
+    public void setTvTitle(String title) {
+       tvTitle.setText(title);
     }
 
     public void loadCoverImage(String url, int res) {

@@ -47,8 +47,10 @@ public class CommentItemAdapter extends BaseAdapter {
      * 删除item
      */
     public void deleteItemView(int position) {
-        mList.remove(position);
         notifyDataSetChanged();
+        mList.remove(position);
+
+
     }
 
     public void refreshData(List<CommentBean> cBeans) {
@@ -98,12 +100,14 @@ public class CommentItemAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             /*删除评论*/
+
                             OkGo.<String>post(Constant.DELETE_DISCUSS_URL).
                                     params("id", mList.get(position).getId())
                                     .execute(new JsonCallback<String>() {
                                         @Override
                                         public void onSuccess(Response<String> response) {
                                             deleteItemView(position);
+
 
                                         }
                                     });
