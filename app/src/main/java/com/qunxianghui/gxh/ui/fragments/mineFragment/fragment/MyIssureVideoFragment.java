@@ -25,6 +25,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -78,6 +79,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
                 initData();
             }
         });
+
         mAdapter.setCallback(new MineIssueVideoAdapter.Callback() {
             @Override
             public void callback(int id) {
@@ -127,7 +129,10 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.video_margon);
+        mRv.addItemDecoration(new SpaceItemDecoration(spacingInPixels, spacingInPixels));
         RequestMineIssueVideoData();
+
     }
 
     private void RequestMineIssueVideoData() {
