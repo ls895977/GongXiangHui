@@ -100,12 +100,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 } else if (!chRegist.isChecked()) {
                     asyncShowToast("请勾选用户协议");
                 } else {
-                    if (userDao.dbQueryOneByUsername(phone) == null) {
-                        userDao.dbInsert(phone, pass);
                         RegistUser(phone, pass, registCode);
-                    } else {
-                        asyncShowToast("该用户已经注册");
-                    }
                 }
                 break;
 

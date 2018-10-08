@@ -31,7 +31,6 @@ public class MineIssueVideoAdapter extends BaseRecycleViewAdapter<MineIssueVideo
     protected void convert(MyViewHolder holder, final int position, final MineIssueVideoBean.DataBean dataBean) {
         ImageView iconMyIssueVideo = holder.getView(R.id.iv_item_issue_video_head);
         holder.setText(R.id.tv_item_issue_video_title,dataBean.getTitle());
-
         List<String> images = dataBean.getImages();
         for (int i=0; i<images.size();i++){
             mImage = images.get(i);

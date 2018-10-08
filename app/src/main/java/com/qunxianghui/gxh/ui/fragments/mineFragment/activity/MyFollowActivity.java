@@ -1,8 +1,10 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -21,10 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myFocusItemClickListener {
     @BindView(R.id.recycler_mine_attention)
     XRecyclerView mRecyclerMineAttention;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
 
     private List<MyFocusBean.DataBean> dataList = new ArrayList<>();
     private boolean mIsFirst = true;
@@ -100,21 +105,25 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
                 myFocusAdapter.setMyFocusItemClickListener(this);
                 mRecyclerMineAttention.setAdapter(myFocusAdapter);
             }
-            mRecyclerMineAttention.refreshComplete();
-            myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
 
-                @Override
-                public void onItemClick(View v, int position) {
-                    Intent intent = new Intent(mContext, PersonDetailActivity.class);
-                    intent.putExtra("member_id", dataList.get(position - 1).getBe_member_id());
-                    startActivity(intent);
-
-                }
-            });
-            myFocusAdapter.notifyItemChanged(count, myFocusBean.getData().size());
-
-
+            if (dataList.isEmpty()) {
+                llEmpty.setVisibility(View.VISIBLE);
+            } else {
+                llEmpty.setVisibility(View.GONE);
+            }
         }
+        mRecyclerMineAttention.refreshComplete();
+        myFocusAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(mContext, PersonDetailActivity.class);
+                intent.putExtra("member_id", dataList.get(position - 1).getBe_member_id());
+                startActivity(intent);
+
+            }
+        });
+        myFocusAdapter.notifyItemChanged(count, myFocusBean.getData().size());
     }
 
     /*关注的点击*/
@@ -137,5 +146,11 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
                 });
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
 

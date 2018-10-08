@@ -4,11 +4,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_title" />
+    <include
+        layout="@layout/activity_title" />
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/recycler_mine_fances"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/recycler_mine_fances"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F5F5F5"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_myissue_baoliao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="20dp"
+                android:drawableTop="@mipmap/icon_empty"
+                android:text="您还没有粉丝哦～"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </LinearLayout>

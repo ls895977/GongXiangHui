@@ -10,6 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        app:indicator_drawable_selected="@color/app_style_color"
+        app:indicator_drawable_unselected="@color/dialog_bg_color"
+        app:banner_default_image="@mipmap/default_img" />
 
 </LinearLayout>
