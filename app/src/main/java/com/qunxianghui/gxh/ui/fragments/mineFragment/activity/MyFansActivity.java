@@ -1,9 +1,11 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -22,11 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFansItemClickListener {
     @BindView(R.id.recycler_mine_fances)
     XRecyclerView mRecyclerMineFances;
-
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
     private List<MineFansBean.DataBean> dataList = new ArrayList<>();
     private int count = 0;
     private boolean mIsFirst = true;
@@ -86,18 +90,23 @@ public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFans
                 mRecyclerMineFances.setAdapter(myFansAdapter);
 
             }
-            mRecyclerMineFances.refreshComplete();
-            myFansAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    Intent intent = new Intent(mContext, PersonDetailActivity.class);
-                    intent.putExtra("member_id", dataList.get(position - 1).getMember_id());
-                    startActivity(intent);
-                }
-            });
-
-            myFansAdapter.notifyItemChanged(count, mineFansBean.getData().size());
+            if (dataList.isEmpty()){
+                llEmpty.setVisibility(View.VISIBLE);
+            }else {
+                llEmpty.setVisibility(View.GONE);
+            }
         }
+        mRecyclerMineFances.refreshComplete();
+        myFansAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(mContext, PersonDetailActivity.class);
+                intent.putExtra("member_id", dataList.get(position - 1).getMember_id());
+                startActivity(intent);
+            }
+        });
+
+        myFansAdapter.notifyItemChanged(count, mineFansBean.getData().size());
     }
 
     @Override
@@ -141,5 +150,12 @@ public class MyFansActivity extends BaseActivity implements MyFansAdapter.myFans
 
                     }
                 });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

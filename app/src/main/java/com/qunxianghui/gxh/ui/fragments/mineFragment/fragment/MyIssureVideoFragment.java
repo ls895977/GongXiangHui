@@ -61,7 +61,8 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
 
     @Override
     public void initViews(View view) {
-
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.video_margon);
+        mRv.addItemDecoration(new SpaceItemDecoration(spacingInPixels, spacingInPixels));
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, GridLayoutManager.VERTICAL, false));
         mAdapter = new MineIssueVideoAdapter(getContext(), mList);
@@ -129,8 +130,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
 
     @Override
     public void initData() {
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.video_margon);
-        mRv.addItemDecoration(new SpaceItemDecoration(spacingInPixels, spacingInPixels));
+
         RequestMineIssueVideoData();
 
     }
