@@ -1,7 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -30,7 +29,6 @@ import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/3/12 0012.
@@ -100,7 +98,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 } else if (!chRegist.isChecked()) {
                     asyncShowToast("请勾选用户协议");
                 } else {
-                        RegistUser(phone, pass, registCode);
+                    RegisterUser(phone, pass, registCode);
                 }
                 break;
 
@@ -123,7 +121,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void RegistUser(String phone, String pass, String registCode) {
+    private void RegisterUser(String phone, String pass, String registCode) {
         OkGo.<CommonBean>post(Constant.REGIST_URL)
                 .params("mobile", phone)
                 .params("password", pass)
@@ -131,11 +129,9 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 .execute(new JsonCallback<CommonBean>() {
                     @Override
                     public void onSuccess(Response<CommonBean> response) {
+                        asyncShowToast(response.body().message);
                         if (response.body().code == 0) {
-                            asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
-                        }else {
-                            asyncShowToast(response.body().message);
                         }
                     }
 
@@ -164,21 +160,15 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onSuccess(Response<String> response) {
                         final GeneralResponseBean responseBean = GsonUtil.parseJsonWithGson(response.body(), GeneralResponseBean.class);
+                        asyncShowToast(responseBean.getMessage());
                         if (responseBean.getCode() == 0) {
                             handler.sendEmptyMessage(MSG_SEND_SUCCESS);
-                            asyncShowToast(responseBean.getMessage());
-
-                        } else {
-                            handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
-
-                            asyncShowToast(responseBean.getMessage());
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
-
                     }
                 });
     }
@@ -190,13 +180,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
     private int time = 60;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     public class TimerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -204,11 +187,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             //验证码倒计时
             switch (msg.what) {
                 case MSG_SEND_SUCCESS:
-                    Toast.makeText(mContext, "验证码发送成功", Toast.LENGTH_SHORT).show();
                     handler.sendEmptyMessage(MSG_TIMER);
-                    break;
-                case MSG_SEND_CODE_ERROR:
-                    Toast.makeText(mContext, "验证码发送失败", Toast.LENGTH_SHORT).show();
                     break;
                 case MSG_TIMER:
                     startTimer();
