@@ -354,12 +354,12 @@ public class AddAdvertActivity extends BaseActivity {
         Intent intent = new Intent(this, AdvertTemplateActivity.class);
         intent.putExtra("position", mAddPosition);
         intent.putExtra("addtype", mAddPosition);
-        startActivityForResult(intent, 100);
+        startActivityForResult(intent, 101);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 0x0022) {
+        if (requestCode==101&&resultCode == 0x0022) {
             initData();
         }
     }

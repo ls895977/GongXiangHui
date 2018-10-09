@@ -299,7 +299,7 @@ public class AddTiePianAdvertActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 0x0022) {
+        if (requestCode==100&&resultCode == 0x0022) {
             initData();
         }
     }

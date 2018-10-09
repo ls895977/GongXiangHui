@@ -91,7 +91,7 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
                 });
     }
 
-    private void parseFocusData(MyFocusBean myFocusBean) {
+    private void  parseFocusData(MyFocusBean myFocusBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();

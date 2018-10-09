@@ -100,7 +100,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 } else if (!chRegist.isChecked()) {
                     asyncShowToast("请勾选用户协议");
                 } else {
-                        RegistUser(phone, pass, registCode);
+                    RegistUser(phone, pass, registCode);
                 }
                 break;
 
@@ -118,7 +118,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.ch_regist:
-
                 break;
         }
     }
@@ -134,7 +133,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                         if (response.body().code == 0) {
                             asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
-                        }else {
+                        } else {
                             asyncShowToast(response.body().message);
                         }
                     }

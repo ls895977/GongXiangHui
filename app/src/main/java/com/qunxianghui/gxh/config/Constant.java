@@ -24,7 +24,7 @@ public class Constant {
     public static final String HOME_NEWS_LIST_URL = BASE_URL + "news/getList";
     //首页下拉刷新
     public static final String HOME_PULL_REFRESH_URL = BASE_URL + "news/getRecommendList";
-        //新闻详情`
+//        //新闻详情`
 //    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";
 //    //本地发布详情
 //    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";
@@ -36,7 +36,7 @@ public class Constant {
 //    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";
 //    //首页上面本地服务的页面
 //    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";
-    //新闻详情
+//    //新闻详情
     public static final String HOME_NEWS_DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/xinwen_/index.html#/";
     //本地发布详情
     public static final String LOCAL_SERVICES_ISSUE_URL = "https://api.qunxianghui.com.cn/theme/new_details/bendi_fabu/index.html#/";
