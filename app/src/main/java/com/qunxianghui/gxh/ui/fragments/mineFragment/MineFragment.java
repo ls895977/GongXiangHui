@@ -88,7 +88,6 @@ public class MineFragment extends BaseFragment {
     protected void setStatusBarTextColor() {
         StatusBarColorUtil.setStatusTextColor(false, mActivity);
     }
-
     @Override
     public void initData() {
         if (mMineUserName == null) return;
@@ -99,13 +98,19 @@ public class MineFragment extends BaseFragment {
                 mMineUserName.setText(user.getUsername());
             }
         }
-        fillUserData();
+
     }
 
     @Override
     public void initViews(View view) {
         userDao = new UserDao(mActivity);
         userSize = userDao.dbGetUserSize();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fillUserData();
     }
 
     @Override

@@ -260,12 +260,16 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webProtocolDetail.removeAllViews();
-        webProtocolDetail.clearHistory();
-        webProtocolDetail.destroy();
-        webProtocolDetail = null;
-        llProtocolMain.removeAllViews();
-        llProtocolMain = null;
+        if (webProtocolDetail!=null){
+            webProtocolDetail.clearHistory();
+            webProtocolDetail.clearCache(true);
+            webProtocolDetail.loadUrl("about:blank");
+            webProtocolDetail.freeMemory();
+            webProtocolDetail.pauseTimers();
+            webProtocolDetail.destroy();
+        }
+
+
     }
 
     @Override
@@ -274,6 +278,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         ivWebback.setOnClickListener(this);
         tvNewsdetailIssue.setOnClickListener(this);
         if (!NetWorkUtil.isNetWorkAvailable(ProtocolActivity.this)) {
+            webProtocolDetail.setVisibility(View.GONE);
             rlNewsDetailNotnet.setVisibility(View.VISIBLE);
             mRlProtocolTitle.setVisibility(View.VISIBLE);
             tvTitle.setText("加载失败");

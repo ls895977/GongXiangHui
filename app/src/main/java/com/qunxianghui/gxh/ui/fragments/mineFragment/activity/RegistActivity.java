@@ -98,11 +98,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 } else if (!chRegist.isChecked()) {
                     asyncShowToast("请勾选用户协议");
                 } else {
-<<<<<<< HEAD
-                    RegistUser(phone, pass, registCode);
-=======
+
                     RegisterUser(phone, pass, registCode);
->>>>>>> 645d052065849dc8f0442aebd0d1c0da41465f1f
                 }
                 break;
 
@@ -134,12 +131,11 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     public void onSuccess(Response<CommonBean> response) {
                         asyncShowToast(response.body().message);
                         if (response.body().code == 0) {
+                            asyncShowToast("注册成功");
                             toActivity(LoginActivity.class);
-<<<<<<< HEAD
                         } else {
                             asyncShowToast(response.body().message);
-=======
->>>>>>> 645d052065849dc8f0442aebd0d1c0da41465f1f
+
                         }
                     }
 

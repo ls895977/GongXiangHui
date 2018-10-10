@@ -168,6 +168,7 @@ public class HotPointFragment extends BaseFragment {
                     public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
                         if (response.body().code==0){
                             setData(response);
+                            Log.d("新闻列表",response.body().message.toString());
                         }
 
                     }

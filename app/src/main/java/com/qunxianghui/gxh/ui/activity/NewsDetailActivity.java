@@ -428,4 +428,18 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         asyncShowToast("复制成功");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mWedNewsDetail!=null){
+            mWedNewsDetail.clearHistory();
+            mWedNewsDetail.clearCache(true);
+            mWedNewsDetail.loadUrl("about:blank");
+            mWedNewsDetail.freeMemory();
+            mWedNewsDetail.pauseTimers();
+            mWedNewsDetail.destroy();
+        }
+
+
+    }
 }

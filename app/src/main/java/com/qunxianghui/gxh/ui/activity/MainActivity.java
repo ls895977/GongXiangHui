@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> mFragments;
     private FragmentTransaction mFragmentTransaction;
     private OnekeyIssueDialog dialog;
-
+    private boolean mReceiverTag = false;   //广播接受者标识
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -138,17 +138,23 @@ public class MainActivity extends BaseActivity {
                         mLlMain.setVisibility(View.VISIBLE);
                     }
                 }
-
                 try {
-                    unregisterReceiver(receiver);
+                    if (mReceiverTag){
+                        mReceiverTag = false;   //Tag值 赋值为false 表示该广播已被注销
+                        unregisterReceiver(receiver);
+                    }
                 } catch (Exception e) {
                 }
             }
         };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(INTENT_BROADCAST_HIDE_TAB);
-        registerReceiver(receiver, filter);
-        UserUtil.getInstance();
+        if (!mReceiverTag){
+            IntentFilter filter = new IntentFilter();
+            mReceiverTag = true;    //标识值 赋值为 true 表示广播已被注册
+            filter.addAction(INTENT_BROADCAST_HIDE_TAB);
+            registerReceiver(receiver, filter);
+            UserUtil.getInstance();
+        }
+
     }
 
     @Override
