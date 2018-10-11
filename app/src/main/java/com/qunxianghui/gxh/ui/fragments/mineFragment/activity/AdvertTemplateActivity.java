@@ -350,7 +350,7 @@ public class AdvertTemplateActivity extends BaseActivity {
                             case 4:
                             case 5:
                                 if (!TextUtils.isEmpty(companyAdvert.settings.pgn_url))
-                                    mPost.params("ad[" + index + "][settings][pgn_url]", companyAdvert.settings.pgn_url);
+                                    mPost.params("ad[" + index + "][settings][pgn_url]", companyAdvert.settings.store_url);
                                 break;
                         }
                     }
@@ -412,8 +412,8 @@ public class AdvertTemplateActivity extends BaseActivity {
                         break;
                     case 4:
                     case 5:
-                        if (!TextUtils.isEmpty(companyAdvert.settings.pgn_url))
-                            mPost.params("ad[" + index + "][settings][pgn_url]", companyAdvert.settings.pgn_url);
+                        if (!TextUtils.isEmpty(companyAdvert.settings.store_url))
+                            mPost.params("ad[" + index + "][settings][pgn_url]", companyAdvert.settings.store_url);
                         break;
                 }
             }

@@ -150,7 +150,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         }
                         intent = new Intent();
 //                        if (mList.isEmpty()) {
-                            intent.putExtra("isEmpty", true);
+                        intent.putExtra("isEmpty", true);
 //                        } else {
 //                            intent.putExtra("type", mList.get(mVp.getCurrentItem()).ad_type);
 //                        }
@@ -442,6 +442,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
             }
             if (companyAdvert.ad_type == 1 || companyAdvert.ad_type == 3) {
                 settings.pgn_url = path;
+                if (companyAdvert.ad_type == 3)
+                    companyAdvert.settings.store_url = path;
             } else if (mIsShopImg) {
                 companyAdvert.images = path;
                 Glide.with(AdvertBottomFragment.this).load(companyAdvert.images)
@@ -678,12 +680,14 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                     case 4:
                         tvType.setText("展示海报");
                         rlAddImg.setVisibility(View.VISIBLE);
+                        companyAdvert.settings.store_url = companyAdvert.settings.pgn_url;
                         Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.pgn_url)
                                 .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
                         break;
                     case 5:
                         tvType.setText("展示二维码");
                         rlAddImg.setVisibility(View.VISIBLE);
+                        companyAdvert.settings.store_url = companyAdvert.settings.pgn_url;
                         Glide.with(AdvertBottomFragment.this).load(companyAdvert.settings.pgn_url)
                                 .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
                         break;
