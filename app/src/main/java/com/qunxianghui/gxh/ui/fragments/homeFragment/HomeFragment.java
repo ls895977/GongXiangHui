@@ -18,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -327,24 +326,24 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 String cityName = aMapLocation.getDistrict();
-                String city = SPUtils.getLocation("currcity");
-                if (cityName.equals(city)) {
-                    mTvHomeLocation.setText(city);
-                } else {
-                    mTvHomeLocation.setText(cityName);
-                    requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
-                }
+                mTvHomeLocation.setText(cityName);
+                requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
+            } else {
+                setLocationFailed();
             }
         } else {
-            //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-            Log.e("AmapError", "locations Error, ErrCode:"
-                    + aMapLocation.getErrorCode() + ", errInfo:"
-                    + aMapLocation.getErrorInfo());
-            mTvHomeLocation.setText("定位失败");
-
+            setLocationFailed();
         }
-
         mlocationClient.stopLocation();
+    }
+
+    private void setLocationFailed() {
+        String cityName = SPUtils.getLocation("currcity");
+        mTvHomeLocation.setText(cityName);
+        String cityId = SPUtils.getLocation("X-cityId");
+        String areaId = SPUtils.getLocation("X-areaId");
+        OkGo.getInstance().getCommonHeaders().put("X-cityId", cityId);
+        OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
     }
 
     private void requestCityInfo(Double lat, Double lng, final String cityName) {

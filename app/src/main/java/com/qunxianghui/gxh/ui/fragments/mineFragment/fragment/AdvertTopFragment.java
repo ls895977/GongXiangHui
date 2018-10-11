@@ -318,6 +318,7 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
                     case 5:
                         tvType.setText(data.settings.linktype == 4 ? "展示海报" : "展示二维码");
                         rlAddImg.setVisibility(View.VISIBLE);
+                        data.settings.store_url = data.settings.pgn_url;
                         Glide.with(AdvertTopFragment.this).load(data.settings.pgn_url)
                                 .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivImg);
                         break;
@@ -438,7 +439,8 @@ public class AdvertTopFragment extends BaseFragment implements View.OnClickListe
             if (settings == null) {
                 settings = new EnterpriseMaterial.EnterpriseMaterialBean.CompanyAdvert.Settings();
             }
-            settings.pgn_url = path;
+//            settings.pgn_url = path;
+            settings.store_url = path;
             return view.findViewById(R.id.ivAd);
         }
     }
