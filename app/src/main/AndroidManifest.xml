@@ -365,6 +365,7 @@
             android:screenOrientation="portrait" />
         <!--服务-->
         <service android:name="com.amap.api.location.APSService" />
+        <activity android:name=".ui.activity.RecyclerViewTestActivity"/>
     </application>
 
 

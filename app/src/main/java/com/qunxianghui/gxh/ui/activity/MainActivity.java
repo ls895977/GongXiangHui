@@ -1,9 +1,7 @@
 package com.qunxianghui.gxh.ui.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -37,7 +35,6 @@ import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
 import com.qunxianghui.gxh.utils.SystemUtil;
-import com.qunxianghui.gxh.utils.UserUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -127,33 +124,33 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        receiver = new MainBroadCast() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
-                    boolean hide = intent.getBooleanExtra("hide", false);
-                    if (hide) {
-                        mLlMain.setVisibility(View.GONE);
-                    } else {
-                        mLlMain.setVisibility(View.VISIBLE);
-                    }
-                }
-                try {
-                    if (mReceiverTag){
-                        mReceiverTag = false;   //Tag值 赋值为false 表示该广播已被注销
-                        unregisterReceiver(receiver);
-                    }
-                } catch (Exception e) {
-                }
-            }
-        };
-        if (!mReceiverTag){
-            IntentFilter filter = new IntentFilter();
-            mReceiverTag = true;    //标识值 赋值为 true 表示广播已被注册
-            filter.addAction(INTENT_BROADCAST_HIDE_TAB);
-            registerReceiver(receiver, filter);
-            UserUtil.getInstance();
-        }
+//        receiver = new MainBroadCast() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
+//                    boolean hide = intent.getBooleanExtra("hide", false);
+//                    if (hide) {
+//                        mLlMain.setVisibility(View.GONE);
+//                    } else {
+//                        mLlMain.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//                try {
+//                    if (mReceiverTag){
+//                        mReceiverTag = false;   //Tag值 赋值为false 表示该广播已被注销
+//                        unregisterReceiver(receiver);
+//                    }
+//                } catch (Exception e) {
+//                }
+//            }
+//        };
+//        if (!mReceiverTag){
+//            IntentFilter filter = new IntentFilter();
+//            mReceiverTag = true;    //标识值 赋值为 true 表示广播已被注册
+//            filter.addAction(INTENT_BROADCAST_HIDE_TAB);
+//            registerReceiver(receiver, filter);
+//            UserUtil.getInstance();
+//        }
 
     }
 
