@@ -125,6 +125,7 @@ public class LoginActivity extends BaseActivity {
                                 } else {
                                     UserUtil.getInstance().mNick = data.getString("nick");
                                 }
+                                getH5Url();
                                 asyncShowToast("登录成功");
                                 toActivity(MainActivity.class);
                                 finish();

@@ -23,11 +23,11 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.db.UserDao;
-import com.qunxianghui.gxh.ui.activity.RecyclerViewTestActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.JoinCallActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MemberUpActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineIssueActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MineMessageActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyCollectActivity;
@@ -190,8 +190,7 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.rl_up_step:
-//                toActivity(MemberUpActivity.class);
-                toActivity(RecyclerViewTestActivity.class);
+                toActivity(MemberUpActivity.class);
                 break;
             case R.id.rl_mine_person_data:
                 Bundle bundle = new Bundle();

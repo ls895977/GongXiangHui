@@ -22,7 +22,7 @@ import butterknife.BindView;
 public class BianMinServiceActivity extends BaseActivity {
 
     private int[] images = {R.mipmap.bianmin_call, R.mipmap.bianmin_check_express};
-    private String[] iconName = {"常用电话", "黄历"};
+    private String[] iconName = {"常用电话", "黄历","寄快递","充话费","公交查询","汽车票","火车票","飞机票","酒店住宿","找工作","货币退换"};
     @BindView(R.id.grid_bianmin)
     RecyclerView gridBianmin;
 
