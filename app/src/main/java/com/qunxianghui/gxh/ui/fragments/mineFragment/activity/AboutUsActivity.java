@@ -33,6 +33,14 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     ImageView ivAboutusBack;
     @BindView(R.id.tv_appversion)
     TextView tvAppversion;
+    @BindView(R.id.iv_aboutus_logo)
+    ImageView ivAboutusLogo;
+    @BindView(R.id.tv_aboutus_verson_des)
+    TextView tvAboutusVersonDes;
+    @BindView(R.id.rl_aboutus_quxinghui_business_cloud)
+    RelativeLayout rlAboutusQuxinghuiBusinessCloud;
+    @BindView(R.id.rl_aboutus_quxinghui_gongxiangshare_cloud)
+    RelativeLayout rlAboutusQuxinghuiGongxiangshareCloud;
 
     @Override
     protected int getLayoutId() {
@@ -49,6 +57,8 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         rlAboutusQuxinghui.setOnClickListener(this);
         rlAboutusQuxinghuiPlatform.setOnClickListener(this);
         rlAboutusQuxinghuiShareCloud.setOnClickListener(this);
+        rlAboutusQuxinghuiBusinessCloud.setOnClickListener(this);
+        rlAboutusQuxinghuiGongxiangshareCloud.setOnClickListener(this);
         rlAboutusGotoGrade.setOnClickListener(this);
         rlAboutusNewfunIntro.setOnClickListener(this);
         ivAboutusBack.setOnClickListener(this);
@@ -73,6 +83,16 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 intent.putExtra("tag", 3);
                 startActivity(intent);
                 break;
+                case R.id.rl_aboutus_quxinghui_business_cloud:
+                intent = new Intent(mContext, QunxiangHuiActivity.class);
+                intent.putExtra("tag", 4);
+                startActivity(intent);
+                break;
+                case R.id.rl_aboutus_quxinghui_gongxiangshare_cloud:
+                intent = new Intent(mContext, QunxiangHuiActivity.class);
+                intent.putExtra("tag", 5);
+                startActivity(intent);
+                break;
             case R.id.rl_aboutus_goto_grade:
                 ToMarketUtils.goToMarket(mContext, "com.qunxianghui.gxh");
                 break;
@@ -94,7 +114,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         String versonName = VersonManagerUtils.packageName(mContext);
         int versonCode = VersonManagerUtils.packageCode(mContext);
 
-        if (versonName.equals("4.1.0")&&versonCode==410) {
+        if (versonName.equals("4.1.1") && versonCode == 411) {
             tvAppversion.setText("当前已是最新版本");
 
         } else {

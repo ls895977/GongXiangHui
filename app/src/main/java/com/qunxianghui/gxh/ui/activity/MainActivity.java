@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,11 +22,15 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.base.MyApplication;
+import com.qunxianghui.gxh.bean.mine.NewMessageCountBean;
 import com.qunxianghui.gxh.broadcast.MainBroadCast;
+import com.qunxianghui.gxh.callback.JsonCallback;
+import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.ui.dialog.OnekeyIssueDialog;
 import com.qunxianghui.gxh.ui.fragments.generalizeFragment.GeneralizeFragment;
@@ -34,12 +39,14 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.VideoUploadActivit
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.LogUtil;
 import com.qunxianghui.gxh.utils.SystemUtil;
 
 import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.namee.permissiongen.PermissionGen;
 
@@ -65,6 +72,8 @@ public class MainActivity extends BaseActivity {
     TextView mTvMine;
     @BindView(R.id.ll_main)
     LinearLayout mLlMain;
+    @BindView(R.id.tv_minemessage_count)
+    TextView tvMinemessageCount;
 
     private long exitTime;
     private MainBroadCast receiver;
@@ -74,7 +83,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> mFragments;
     private FragmentTransaction mFragmentTransaction;
     private OnekeyIssueDialog dialog;
-    private boolean mReceiverTag = false;   //广播接受者标识
+
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -151,6 +160,28 @@ public class MainActivity extends BaseActivity {
 //            registerReceiver(receiver, filter);
 //            UserUtil.getInstance();
 //        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RequestMessageCount();
+    }
+
+    /*请求我的消息数量*/
+    private void RequestMessageCount() {
+        OkGo.<NewMessageCountBean>post(Constant.MINE_NEWMESSAGE_COUNT_URL).execute(new JsonCallback<NewMessageCountBean>() {
+            @Override
+            public void onSuccess(Response<NewMessageCountBean> response) {
+              if (response.body().getCode()==200){
+                  asyncShowToast(response.body().getMessage());
+                  tvMinemessageCount.setText(String.valueOf(response.body().getData()));
+                  LogUtil.printJson("输出数据",response.body().getMessage(),"消息的数量");
+              }
+
+            }
+        });
 
     }
 
@@ -281,6 +312,13 @@ public class MainActivity extends BaseActivity {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
 

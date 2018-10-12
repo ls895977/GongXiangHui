@@ -92,7 +92,29 @@ public class QunxiangHuiActivity extends BaseActivity implements View.OnClickLis
             ivQunxianghuiScan.setImageResource(R.mipmap.icon_qun_sharecliude);
             mIcon = BitmapFactory.decodeResource(this.getResources(),
                     R.mipmap.icon_qun_sharecliude);
+        }else if (tag==4){
+            tvQunxianghui.setText("群享汇电商云");
+            tvQuxinghuiDes.setText(
+                    "群享汇电商云是指以小程序、微官网、微商城为入口\n" +
+                            "的全门类电商解决方案，帮助广大中小微企业\n" +
+                            "建立网上展示系统、电商系统及行业解决方案。\n");
+            ivQunxianghuiScan.setImageResource(R.mipmap.icon_qunxianghui_business);
+            mIcon = BitmapFactory.decodeResource(this.getResources(),
+                    R.mipmap.icon_qunxianghui_business);
+
+        }else if (tag==5){
+            tvQunxianghui.setText("群享汇共享云");
+            tvQuxinghuiDes.setText(
+                    "群享汇共享云是广大中小微企业的营销解决方案,\n" +
+                            "为企业提供营销过程中的吸粉拉新、促成交易、\n" +
+                            "留存复购及娱乐购物等各种场景下的\n" +
+                            "营销活动方案，供会员免费使用，目前已开发的\n" +
+                            "营销插件有50余种，全方位解决企业销售问题");
+            ivQunxianghuiScan.setImageResource(R.mipmap.icon_qunxianghui_gongxiang);
+            mIcon = BitmapFactory.decodeResource(this.getResources(),
+                    R.mipmap.icon_qunxianghui_gongxiang);
         }
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,7 +66,6 @@ public class AddAdvertActivity extends BaseActivity {
     Banner mBannerBottom;
     @BindView(R.id.rl_bottom)
     RelativeLayout mRlBottom;
-
     private UMShareListener umShareListener;
     private String url;
     //添加位置0底部，1顶部，2贴片
@@ -117,6 +117,10 @@ public class AddAdvertActivity extends BaseActivity {
         settings.setDefaultTextEncodingName("utf-8");
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(false);
+        settings.setBlockNetworkImage(false); // 解决图片不显示
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){ settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的显示 */
         webViewMineFragmentAdver.setHorizontalScrollBarEnabled(true);
         /* 指定垂直滚动条是否有叠加样式 */

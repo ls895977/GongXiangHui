@@ -48,7 +48,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:text="群享汇  Version  4.1.0"
+            android:text="群享汇  Version  4.1.1"
             android:textColor="#151418"
             android:textSize="12sp" />
 
@@ -64,117 +64,176 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_aboutus_goto_grade"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            style="@style/MineListStyle"
-            android:layout_marginLeft="12dp"
-            android:text="去评分" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_goto_grade"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/right_icon" />
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="去评分" />
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
 
-
-    <RelativeLayout
-        android:id="@+id/rl_aboutus_newfun_intro"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
-
-        <TextView
-            style="@style/MineListStyle"
-            android:layout_marginLeft="12dp"
-            android:text="新功能介绍" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/right_icon" />
-
-    </RelativeLayout>
+            </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/rl_aboutus_quxinghui"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_newfun_intro"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
 
-        <TextView
-            style="@style/MineListStyle"
-            android:layout_marginLeft="12dp"
-            android:text="群享汇" />
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="新功能介绍" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/right_icon" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/rl_aboutus_quxinghui_platform"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_quxinghui"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
 
-        <TextView
-            style="@style/MineListStyle"
-            android:layout_marginLeft="12dp"
-            android:text="群享汇平台" />
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="群享汇" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/right_icon" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_aboutus_quxinghui_share_cloud"
-        style="@style/RelativeStyle"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
 
-        <TextView
-            style="@style/MineListStyle"
-            android:layout_marginLeft="12dp"
-            android:text="群享汇分享云" />
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_quxinghui_platform"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/right_icon" />
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="群享汇平台" />
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_quxinghui_share_cloud"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="群享汇分享云" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_quxinghui_business_cloud"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="群享汇电商云" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_aboutus_quxinghui_gongxiangshare_cloud"
+                style="@style/RelativeStyle"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/MineListStyle"
+                    android:layout_marginLeft="12dp"
+                    android:text="群享汇共享云" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/right_icon" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
 
 </LinearLayout>

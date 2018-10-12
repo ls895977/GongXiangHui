@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -48,6 +49,8 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     @BindView(R.id.bt_mycollect_delete)
     Button btMycollectDelete;
     Unbinder unbinder;
+    @BindView(R.id.tv_myissue_baoliao)
+    TextView tvMyissueBaoliao;
 
     private MybaoliaoPostAdapter myCollectPostAdapter;
     private List<BaoliaoBean.DataBean> dataList = new ArrayList<>();
@@ -72,27 +75,28 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     }
 
     private void LoadMycolectNews() {
-        Log.e("TAG_爆料","skip="+count);
+        Log.e("TAG_爆料", "skip=" + count);
         if (mPersonDetailActivity == null) {
-
+            tvMyissueBaoliao.setText("您还没发布哦～");
             OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                     .params("limit", 12)
                     .params("skip", count)
                     .execute(new JsonCallback<BaoliaoBean>() {
                         @Override
                         public void onSuccess(Response<BaoliaoBean> response) {
-                            Log.e("TAG_爆料1","onSuccess"+response.toString());
+                            Log.e("TAG_爆料1", "onSuccess" + response.toString());
                             parseCollectPostData(response.body());
                         }
 
                         @Override
                         public void onError(Response<BaoliaoBean> response) {
                             super.onError(response);
-                            Log.e("TAG_爆料1","onError="+response.code()+"===="+response.body());
+                            Log.e("TAG_爆料1", "onError=" + response.code() + "====" + response.body());
                         }
                     });
         } else {
-            Log.e("TAG_爆料","member_id="+mPersonDetailActivity.member_id);
+            tvMyissueBaoliao.setText("他还没发布哦～");
+            Log.e("TAG_爆料", "member_id=" + mPersonDetailActivity.member_id);
             OkGo.<BaoliaoBean>post(Constant.GET_ISSURE_DISCLOSS_URL)
                     .params("member_id", mPersonDetailActivity.member_id)
                     .params("limit", 12)
@@ -100,14 +104,14 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
                     .execute(new JsonCallback<BaoliaoBean>() {
                         @Override
                         public void onSuccess(Response<BaoliaoBean> response) {
-                            Log.e("TAG_爆料","onSuccess"+response.toString());
+                            Log.e("TAG_爆料", "onSuccess" + response.toString());
                             parseCollectPostData(response.body());
                         }
 
                         @Override
                         public void onError(Response<BaoliaoBean> response) {
                             super.onError(response);
-                            Log.e("TAG_爆料","onError"+response.toString());
+                            Log.e("TAG_爆料", "onError" + response.toString());
                         }
                     });
         }
@@ -123,10 +127,10 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
             mIsRefresh = false;
             dataList.clear();
         }
-        if (myCollectPostBean.getData()!=null){
+        if (myCollectPostBean.getData() != null) {
             dataList.addAll(myCollectPostBean.getData());
             count = dataList.size();
-            Log.e("TAG_爆料","code"+myCollectPostBean.getCode());
+            Log.e("TAG_爆料", "code" + myCollectPostBean.getCode());
             if (myCollectPostBean.getCode() == 0) {
                 if (mIsFirst) {
                     mIsFirst = false;
@@ -136,7 +140,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
                         public void onClick(int position) {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("baoliao", dataList.get(position));
-                            Intent intent = new Intent(getContext(),BaoliaoDetailActivity.class);
+                            Intent intent = new Intent(getContext(), BaoliaoDetailActivity.class);
                             intent.putExtras(bundle);
                             getActivity().startActivity(intent);
 //                        toActivity(BaoliaoDetailActivity.class, bundle);
@@ -145,7 +149,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
 
                     xrecycler_mine_collect_news.setAdapter(myCollectPostAdapter);
                 }
-                if (dataList.isEmpty()||dataList.size()==0) {
+                if (dataList.isEmpty() || dataList.size() == 0) {
                     mEmptyView.setVisibility(View.VISIBLE);
                 } else {
                     mEmptyView.setVisibility(View.GONE);
@@ -254,7 +258,7 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
         if (o instanceof String && "baoliao".equals(o)) {
             myCollectPostAdapter.isShow = true;
             myCollectPostAdapter.notifyDataSetChanged();
-            if (dataList.size()>0){
+            if (dataList.size() > 0) {
                 btMycollectDelete.setVisibility(View.VISIBLE);
             }
 

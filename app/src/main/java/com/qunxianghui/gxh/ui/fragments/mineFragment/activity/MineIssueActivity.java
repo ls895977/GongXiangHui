@@ -46,7 +46,7 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     @BindView(R.id.tv_edit)
     TextView mTvEdit;
 
-    private String[] mTabTitles = new String[]{"爆料", "视频", "本地圈", "本地服务", "精选"};
+    private String[] mTabTitles = new String[]{"视频", "本地圈","爆料", "本地服务", "精选"};
     private List<Fragment> fragments = new ArrayList<>();
 
     @Override
@@ -68,9 +68,9 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initData() {
         super.initData();
-        fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new MyIssureVideoFragment());
         fragments.add(new MyIssurePostFragment());
+        fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new PersonLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
         MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, null);
@@ -142,14 +142,15 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     private void MineIssueCancelDataState() {
         EventManager.getInstance().publishMessage(false);
 //                isEdit = true;
+
         if (mineMyIssureViewpager.getCurrentItem() == 0) {
-            EventManager.getInstance().publishMessage("baoliao_c");
-        }
-        if (mineMyIssureViewpager.getCurrentItem() == 1) {
             EventManager.getInstance().publishMessage("issue_video_c");
         }
-        if (mineMyIssureViewpager.getCurrentItem() == 2) {
+        if (mineMyIssureViewpager.getCurrentItem() == 1) {
             EventManager.getInstance().publishMessage("localcircle_c");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 2) {
+            EventManager.getInstance().publishMessage("baoliao_c");
         }
         if (mineMyIssureViewpager.getCurrentItem() == 3) {
             EventManager.getInstance().publishMessage("localser_c");
@@ -166,14 +167,15 @@ public class MineIssueActivity extends BaseActivity implements View.OnClickListe
     private void MineIssueEditDataState() {
         EventManager.getInstance().publishMessage(false);
 //                isEdit = true;
+
         if (mineMyIssureViewpager.getCurrentItem() == 0) {
-            EventManager.getInstance().publishMessage("baoliao");
-        }
-        if (mineMyIssureViewpager.getCurrentItem() == 1) {
             EventManager.getInstance().publishMessage("issue_video");
         }
-        if (mineMyIssureViewpager.getCurrentItem() == 2) {
+        if (mineMyIssureViewpager.getCurrentItem() == 1) {
             EventManager.getInstance().publishMessage("localcircle");
+        }
+        if (mineMyIssureViewpager.getCurrentItem() == 2) {
+            EventManager.getInstance().publishMessage("baoliao");
         }
         if (mineMyIssureViewpager.getCurrentItem() == 3) {
             EventManager.getInstance().publishMessage("localser");
