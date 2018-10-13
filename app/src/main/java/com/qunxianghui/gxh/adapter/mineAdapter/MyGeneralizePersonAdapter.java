@@ -35,13 +35,17 @@ public class MyGeneralizePersonAdapter extends BaseQuickAdapter<GeneraPersonStat
     protected void convert(BaseViewHolder helper, GeneraPersonStaticBean.DataBean item) {
         String video_url = item.video_url;
         if (video_url != null) {
-            helper.setText(R.id.tv_generalize_person_time, "群享汇")
+            helper.setText(R.id.tv_generalize_person_time,  item.ctime)
                     .setText(R.id.tv_generalize_person_title, item.title)
-                    .setText(R.id.tv_generalize_seecount, item.view_cnt);
+                    .setText(R.id.tv_generalize_person_baoguang, item.view_cnt)
+                    .setText(R.id.tv_generalize_person_click, item.click_cnt)
+                    .setText(R.id.tv_generalize_person_share, item.forward_cnt);
         } else {
-            helper.setText(R.id.tv_generalize_person_time, item.source)
-                    .setText(R.id.tv_generalize_seecount, item.view_cnt)
-                    .setText(R.id.tv_generalize_person_title, item.title);
+            helper.setText(R.id.tv_generalize_person_time, item.ctime)
+                    .setText(R.id.tv_generalize_person_baoguang, item.view_cnt)
+                    .setText(R.id.tv_generalize_person_title, item.title)
+                    .setText(R.id.tv_generalize_person_click, item.click_cnt)
+                    .setText(R.id.tv_generalize_person_share, item.forward_cnt);
         }
         List<String> images = item.images;
         CardView cardView = helper.getView(R.id.card);

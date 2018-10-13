@@ -22,6 +22,13 @@ android {
             }
         }
         manifestPlaceholders = [qqappid: "1106763297"]
+
+
+        ndk{
+            //APP的build.gradle设置支持的SO库架构
+
+            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+        }
     }
 
     signingConfigs {
@@ -127,5 +134,8 @@ dependencies {
     implementation 'org.greenrobot:greendao-generator:3.2.2'
     //recyclerview
     implementation 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.2'
-    implementation 'com.shuyu:GSYVideoPlayer:6.0.0-beta'
+//    implementation 'com.shuyu:GSYVideoPlayer:6.0.0-beta'
+    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.0-beta'
+    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.0-beta'
+
 }

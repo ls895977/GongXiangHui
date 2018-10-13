@@ -55,21 +55,49 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="0dp"
-
                     android:textSize="11sp"
-                    tools:text="来源" />
+                    tools:text="时间" />
 
                 <TextView
-                    android:id="@+id/tv_generalize_seecount"
+                    android:id="@+id/tv_generalize_person_baoguang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginRight="15dp"
+                    android:drawablePadding="5dp"
+                    android:layout_toLeftOf="@+id/tv_generalize_person_click"
+                    android:drawableStart="@mipmap/icon_generaperson_baoguang"
+                    android:textSize="11sp"
+                    tools:text="曝光量" />
+
+                <TextView
+                    android:id="@+id/tv_generalize_person_click"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/tv_generalize_person_share"
+                    android:drawablePadding="5dp"
+                    android:drawableStart="@mipmap/icon_generaperson_click"
+                    android:textSize="11sp"
+                    tools:text="点击量" />
+
+
+                <TextView
+
+                    android:id="@+id/tv_generalize_person_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
                     android:drawableLeft="@mipmap/eye_test"
                     android:drawablePadding="5dp"
+                    android:drawableStart="@mipmap/icon_generaperson_share"
+                    android:gravity="center_vertical"
                     android:textSize="11sp"
                     tools:text="n次" />
             </RelativeLayout>
