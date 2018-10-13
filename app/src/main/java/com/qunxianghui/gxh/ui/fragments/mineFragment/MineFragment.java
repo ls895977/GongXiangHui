@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.home.User;
+import com.qunxianghui.gxh.bean.mine.NewMessageCountBean;
 import com.qunxianghui.gxh.bean.mine.UserInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
@@ -35,13 +38,16 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFansActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
+import com.qunxianghui.gxh.utils.LogUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -63,6 +69,9 @@ public class MineFragment extends BaseFragment {
     TextView mTvMineFollow;
     @BindView(R.id.tv_mine_fans)
     TextView mTvMineFans;
+    @BindView(R.id.tv_minemesssage_count)
+    TextView tvMinemesssageCount;
+    Unbinder unbinder;
 
     private UserDao userDao;
     private UserInfo.DataBean mUserInfo;
@@ -88,6 +97,7 @@ public class MineFragment extends BaseFragment {
     protected void setStatusBarTextColor() {
         StatusBarColorUtil.setStatusTextColor(false, mActivity);
     }
+
     @Override
     public void initData() {
         if (mMineUserName == null) return;
@@ -111,6 +121,23 @@ public class MineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         fillUserData();
+        RequestMessageCount();
+    }
+    /*请求我的消息数量*/
+    private void RequestMessageCount() {
+        OkGo.<NewMessageCountBean>post(Constant.MINE_NEWMESSAGE_COUNT_URL).execute(new JsonCallback<NewMessageCountBean>() {
+            @Override
+            public void onSuccess(Response<NewMessageCountBean> response) {
+                if (response.body().getCode() == 200) {
+                    asyncShowToast(response.body().getMessage());
+                    int data = response.body().getData();
+                    tvMinemesssageCount.setText(String.valueOf(data));
+                    LogUtil.printJson("输出数据", response.body().getMessage(), "消息的数量");
+
+                }
+
+            }
+        });
     }
 
     @Override
@@ -191,6 +218,8 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_up_step:
                 toActivity(MemberUpActivity.class);
+
+
                 break;
             case R.id.rl_mine_person_data:
                 Bundle bundle = new Bundle();
@@ -236,6 +265,20 @@ public class MineFragment extends BaseFragment {
 
                 break;
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 //    private void requestCall(final String mobile) {

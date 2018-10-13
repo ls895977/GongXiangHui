@@ -174,11 +174,13 @@ public class MainActivity extends BaseActivity {
         OkGo.<NewMessageCountBean>post(Constant.MINE_NEWMESSAGE_COUNT_URL).execute(new JsonCallback<NewMessageCountBean>() {
             @Override
             public void onSuccess(Response<NewMessageCountBean> response) {
-              if (response.body().getCode()==200){
-                  asyncShowToast(response.body().getMessage());
-                  tvMinemessageCount.setText(String.valueOf(response.body().getData()));
-                  LogUtil.printJson("输出数据",response.body().getMessage(),"消息的数量");
-              }
+                if (response.body().getCode() == 200) {
+                    asyncShowToast(response.body().getMessage());
+                    int data = response.body().getData();
+                    tvMinemessageCount.setText(String.valueOf(data));
+                    LogUtil.printJson("输出数据", response.body().getMessage(), "消息的数量");
+
+                }
 
             }
         });

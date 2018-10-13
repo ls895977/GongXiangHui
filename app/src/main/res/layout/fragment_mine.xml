@@ -17,8 +17,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="45dp"
-        app:cardElevation="2dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp">
 
         <RelativeLayout
             android:id="@+id/rl_mine_person_data"
@@ -189,7 +189,16 @@
                     android:drawableStart="@mipmap/mine_add_message"
                     android:text="我的消息" />
 
+                <TextView
+                    android:id="@+id/tv_minemesssage_count"
+                    style="@style/MineListStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/iv_mine_mymessage"
+                    android:text="99+" />
+
                 <ImageView
+                    android:id="@+id/iv_mine_mymessage"
                     style="@style/rightBackStyle"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
