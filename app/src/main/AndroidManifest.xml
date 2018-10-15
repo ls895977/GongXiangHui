@@ -363,6 +363,9 @@
         <activity
             android:name=".ui.fragments.homeFragment.activity.VideoChannelActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fragments.mineFragment.activity.MessageDetailActivity"
+            android:screenOrientation="portrait" />
         <!--服务-->
         <service android:name="com.amap.api.location.APSService" />
     </application>

@@ -125,8 +125,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         requestMessageCount();
     }
 
@@ -137,7 +137,14 @@ public class MainActivity extends BaseActivity {
             public void onSuccess(Response<NewMessageCountBean> response) {
                 if (response.body().getCode() == 200) {
                     sMsgCount = response.body().getData();
-                    tvMinemessageCount.setText(String.valueOf(sMsgCount));
+                    if (sMsgCount == 0) {
+                        tvMinemessageCount.setVisibility(View.GONE);
+                    } else {
+                        tvMinemessageCount.setVisibility(View.VISIBLE);
+                        tvMinemessageCount.setText(String.valueOf(sMsgCount));
+                    }
+                    if (mFragments.get(3).isAdded())
+                        mFragments.get(3).onResume();
                 }
             }
         });

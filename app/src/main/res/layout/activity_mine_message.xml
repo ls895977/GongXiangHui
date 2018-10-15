@@ -10,9 +10,19 @@
     <include layout="@layout/activity_title" />
 
     <View
-        android:background="#E5E5E5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#E5E5E5" />
+
+    <TextView
+        android:id="@+id/tv_early"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:text="查看更早的消息..."
+        android:textColor="#919191"
+        android:textSize="13sp"
+        android:visibility="gone" />
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/rv_msg"

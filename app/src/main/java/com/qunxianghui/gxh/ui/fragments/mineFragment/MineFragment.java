@@ -87,17 +87,13 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        fillUserData();
-        tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount));
+        tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount == 0 ? "" : MainActivity.sMsgCount));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (!mIsFirst) {
-            fillUserData();
-        }
-        mIsFirst = false;
+        fillUserData();
     }
 
     private void fillUserData() {
@@ -149,8 +145,11 @@ public class MineFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_mine_message:
-                if (isLogin())
-                    toActivity(MineMessageActivity.class);
+                if (isLogin()) {
+                    intent = new Intent(getContext(), MineMessageActivity.class);
+                    intent.putExtra("isHasMsg", MainActivity.sMsgCount != 0);
+                    startActivity(intent);
+                }
                 break;
             case R.id.mine_fabu:
                 if (isLogin())

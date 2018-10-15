@@ -65,7 +65,7 @@ public class LocationGridAdapter extends BaseAdapter {
         options.placeholder(R.mipmap.default_img);
         options.error(R.mipmap.default_img);
         options.centerCrop();
-        Glide.with(context).load(imageList.get(position)).apply(options.diskCacheStrategy(DiskCacheStrategy.ALL)).into(holder.iv);
+        Glide.with(context).load(imageList.get(position)).apply(options.diskCacheStrategy(DiskCacheStrategy.ALL).skipMemoryCache(true)).into(holder.iv);
         return convertView;
     }
 

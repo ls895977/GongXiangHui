@@ -163,7 +163,6 @@ public class HotPointFragment extends BaseFragment {
                             setData(response);
                             LogUtil.printJson("新闻列表",response.toString(),"对的");
                         }
-
                     }
                 });
     }

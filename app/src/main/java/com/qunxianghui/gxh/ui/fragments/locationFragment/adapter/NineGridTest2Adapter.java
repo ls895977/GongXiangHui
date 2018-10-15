@@ -128,7 +128,7 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             Glide.with(mContext)
                     .load(imageList.get(0))
                     .apply(new RequestOptions().placeholder(R.mipmap.default_img)
-                            .error(R.mipmap.default_img).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .error(R.mipmap.default_img).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).skipMemoryCache(true))
                     .into(holder.img);
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -223,13 +223,13 @@ public class NineGridTest2Adapter extends RecyclerView.Adapter<NineGridTest2Adap
             @Override
             public void onItemClick(ActionItem item, int p) {
                 switch (p) {
-                    case 0://点赞
+                    case 0:
                         listener.onPraiseClick(holder.getAdapterPosition() - 1);
                         break;
                     case 1:
                         listener.onCollectionClick(holder.getAdapterPosition() - 1);
                         break;
-                    case 2://评论
+                    case 2:
                         if (listener != null) {
                             listener.onCommentClick(holder.getAdapterPosition() - 1, "", holder.itemView);
                         }
