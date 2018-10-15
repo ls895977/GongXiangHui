@@ -189,6 +189,7 @@ public class MyIssureVideoFragment extends BaseFragment implements Observer {
                             Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                             intent.putExtra("url", Constant.VIDEO_DETAIL_URL);
                             intent.putExtra("uuid", uuid);
+                            intent.putExtra("position", 4);
                             intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
                             startActivity(intent);
                         }

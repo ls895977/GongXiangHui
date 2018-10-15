@@ -174,6 +174,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_mine_set:
                 toActivity(SettingActivity.class);
+
                 break;
             case R.id.ll_mine_post:
                 if (isLogin())
