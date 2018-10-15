@@ -21,7 +21,6 @@ import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.mine.GeneralResponseBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
-import com.qunxianghui.gxh.db.UserDao;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.REGutil;
@@ -52,8 +51,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     TextView tvRegistLink;
     @BindView(R.id.ch_regist)
     CheckBox chRegist;
-    private String mPhone;
-    private UserDao userDao;
 
     @Override
     protected int getLayoutId() {
@@ -68,8 +65,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 finish();
             }
         }).setTitleText("用户注册");
-
-        userDao = new UserDao(mContext);
     }
 
     @Override
@@ -149,7 +144,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
     private void getVertifiCode() {
         //同步更新界面显示，倒计时验证码
-        mPhone = etRegistPhone.getText().toString().trim();
+        String mPhone = etRegistPhone.getText().toString().trim();
         if (TextUtils.isEmpty(mPhone)) {
             Toast.makeText(mContext, "手机号为空", Toast.LENGTH_SHORT).show();
             return;

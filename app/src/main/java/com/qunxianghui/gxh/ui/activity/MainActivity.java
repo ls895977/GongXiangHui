@@ -39,7 +39,6 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.VideoUploadActivit
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
-import com.qunxianghui.gxh.utils.LogUtil;
 import com.qunxianghui.gxh.utils.SystemUtil;
 
 import java.util.Arrays;
@@ -81,8 +80,8 @@ public class MainActivity extends BaseActivity {
     private Fragment mCurrentFragment;
     private FragmentManager mFragmentManager;
     private List<Fragment> mFragments;
-    private FragmentTransaction mFragmentTransaction;
     private OnekeyIssueDialog dialog;
+    public static int sMsgCount;
 
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -93,7 +92,7 @@ public class MainActivity extends BaseActivity {
         MyApplication.mMainActivity = this;
         mFragments = Arrays.asList(new Fragment[]{new HomeFragment(), new LocationFragment(), new GeneralizeFragment(), new MineFragment()});
         mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
 
         mCurrentFragment = mFragments.get(0);
 //        hideSavedFragment();
@@ -125,66 +124,23 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void hideSavedFragment() {
-        for (int i = 0; i < mFragments.size(); i++) {
-            mFragmentTransaction.hide(mFragments.get(i)).commit();
-        }
-    }
-
-    @Override
-    protected void initData() {
-//        receiver = new MainBroadCast() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                if (intent.getAction().equalsIgnoreCase(INTENT_BROADCAST_HIDE_TAB)) {
-//                    boolean hide = intent.getBooleanExtra("hide", false);
-//                    if (hide) {
-//                        mLlMain.setVisibility(View.GONE);
-//                    } else {
-//                        mLlMain.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//                try {
-//                    if (mReceiverTag){
-//                        mReceiverTag = false;   //Tag值 赋值为false 表示该广播已被注销
-//                        unregisterReceiver(receiver);
-//                    }
-//                } catch (Exception e) {
-//                }
-//            }
-//        };
-//        if (!mReceiverTag){
-//            IntentFilter filter = new IntentFilter();
-//            mReceiverTag = true;    //标识值 赋值为 true 表示广播已被注册
-//            filter.addAction(INTENT_BROADCAST_HIDE_TAB);
-//            registerReceiver(receiver, filter);
-//            UserUtil.getInstance();
-//        }
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        RequestMessageCount();
+        requestMessageCount();
     }
 
     /*请求我的消息数量*/
-    private void RequestMessageCount() {
-        OkGo.<NewMessageCountBean>post(Constant.MINE_NEWMESSAGE_COUNT_URL).execute(new JsonCallback<NewMessageCountBean>() {
+    private void requestMessageCount() {
+        OkGo.<NewMessageCountBean>get(Constant.MINE_NEWMESSAGE_COUNT_URL).execute(new JsonCallback<NewMessageCountBean>() {
             @Override
             public void onSuccess(Response<NewMessageCountBean> response) {
                 if (response.body().getCode() == 200) {
-                    asyncShowToast(response.body().getMessage());
-                    int data = response.body().getData();
-                    tvMinemessageCount.setText(String.valueOf(data));
-                    LogUtil.printJson("输出数据", response.body().getMessage(), "消息的数量");
-
+                    sMsgCount = response.body().getData();
+                    tvMinemessageCount.setText(String.valueOf(sMsgCount));
                 }
-
             }
         });
-
     }
 
     @Override

@@ -20,11 +20,11 @@ import java.util.List;
  * 我收藏贴子的适配器
  */
 public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.DataBean> {
+    public boolean isShow = false;
 
     public MybaoliaoPostAdapter(Context context, List<BaoliaoBean.DataBean> datas) {
         super(context, datas);
     }
-    public boolean isShow = false;
 
     @Override
     protected void convert(MyViewHolder holder, final int position, final BaoliaoBean.DataBean dataBean) {
@@ -76,9 +76,8 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
             holder.getView(R.id.ch_delete).setVisibility(View.GONE);
 //            holder.itemView.setClickable(true);
         }
-
-
     }
+
     public static boolean isInMainThread() {
         Looper myLooper = Looper.myLooper();
         Looper mainLooper = Looper.getMainLooper();
@@ -90,7 +89,6 @@ public class MybaoliaoPostAdapter extends BaseRecycleViewAdapter<BaoliaoBean.Dat
     protected int getItemView() {
         return R.layout.item_mine_mycollect_post;
     }
-
 
     public interface OnAdapterClick{
         void onClick(int position);

@@ -1,37 +1,29 @@
 package com.qunxianghui.gxh.adapter.mineAdapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.util.MultiTypeDelegate;
 import com.qunxianghui.gxh.R;
+import com.qunxianghui.gxh.adapter.baseAdapter.BaseRecycleViewAdapter;
 import com.qunxianghui.gxh.bean.mine.MineMessageBean;
 
 import java.util.List;
 
-public class MineMessageCommentAdapter extends BaseQuickAdapter<MineMessageBean.DataBean, BaseViewHolder> {
-    private final RequestOptions mOptions;
-    public MineMessageCommentAdapter(@Nullable List<MineMessageBean.DataBean> data) {
-        super(data);
+public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessageBean.DataBean> {
 
-        setMultiTypeDelegate(new MultiTypeDelegate<MineMessageBean.DataBean>() {
-            @Override
-            protected int getItemType(MineMessageBean.DataBean dataBean) {
-                return dataBean.getType();
-            }
-        });
-        getMultiTypeDelegate().registerItemType(0, R.layout.item_minemessage_addlike)
-                .registerItemType(1, R.layout.item_minemessage_addcomment)
-                .registerItemType(2, R.layout.item_minemessage_addcomment)
-                .registerItemType(3, R.layout.item_minemessage_addcomment)
-                .registerItemType(4, R.layout.item_minemessage_addcomment)
-                .registerItemType(5, R.layout.item_minemessage_addcomment)
-                .registerItemType(6, R.layout.item_minemessage_addcomment)
-                .registerItemType(7, R.layout.item_minemessage_addcomment);
+    private final RequestOptions mOptions;
+
+    @SuppressLint("CheckResult")
+    public MineMessageCommentAdapter(Context context, @Nullable List<MineMessageBean.DataBean> data) {
+        super(context, data);
+
         mOptions = new RequestOptions();
         mOptions.placeholder(R.mipmap.default_img)
                 .error(R.mipmap.default_img)
@@ -39,23 +31,76 @@ public class MineMessageCommentAdapter extends BaseQuickAdapter<MineMessageBean.
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, MineMessageBean.DataBean item) {
-        if (item != null) {
-            ImageView imageHead = null;
-            switch (item.getType()) {
-                case 0:
-                    baseViewHolder.setText(R.id.tv_minemessage_like_time, item.getTime());
-                    imageHead = baseViewHolder.getView(R.id.iv_minemessage_head);
-                    Glide.with(mContext).load(item.getMember_avatar()).apply(mOptions).into(imageHead);
-                    break;
-                case 1:
-                    baseViewHolder.setText(R.id.tv_minemessage_comment_time, item.getTime());
-                    baseViewHolder.setText(R.id.tv_minemessage_title, item.getDetail().getTitle());
-                    Glide.with(mContext).load(item.getMember_avatar()).apply(mOptions).into(imageHead);
-                    break;
-            }
+    protected void convert(MyViewHolder holder, int position, MineMessageBean.DataBean dataBean) {
+        ImageView ivAvatar = holder.getView(R.id.iv_user_avatar);
+        if (TextUtils.isEmpty(dataBean.member_avatar)) {
+            ivAvatar.setImageResource(R.mipmap.user_moren);
+        } else {
+            Glide.with(mContext).load(dataBean.member_avatar).apply(mOptions).into(ivAvatar);
+        }
+        holder.setText(R.id.tv_user_name, dataBean.member_nick);
+        holder.setText(R.id.tv_time, dataBean.time);
+        TextView tvContent = holder.getView(R.id.tv_content);
+        TextView tvDetail = holder.getView(R.id.tv_detail);
+        ImageView ivDetail = holder.getView(R.id.iv_detail);
+        tvContent.setBackgroundResource(0);
+        tvContent.setText("");
+        tvDetail.setText("");
+        ivDetail.setImageResource(0);
+//        0：事件已删除或不存在；1：本地圈点赞；2：视频汇点赞；3：本地圈评论；4：视频汇评论；5：本地圈评论被回复；6：视频汇评论被回复；7：新闻评论被回复
+        switch (holder.getItemViewType()) {
+//            0：事件已删除或不存在；
+            case 0:
+                setDetail(dataBean, tvDetail, ivDetail);
+                tvContent.setText("该评论已删除");
+                tvContent.setBackgroundColor(Color.parseColor("#DCDCDC"));
+                break;
+//            1：本地圈点赞；
+//            2：视频汇点赞；
+//            3：本地圈评论；
+//            4：视频汇评论；
+//            5：本地圈评论被回复；
+//            6：视频汇评论被回复；
+//            7：新闻评论被回复
+            case 1:
+                setDetail(dataBean, tvDetail, ivDetail);
+                tvContent.setBackgroundResource(R.mipmap.icon_local_good_select);
+                break;
+            case 3:
+            case 5:
+                setDetail(dataBean, tvDetail, ivDetail);
+                tvContent.setText(dataBean.comment_reply);
+                break;
+            case 2:
+                setDetail(dataBean, tvDetail, ivDetail);
+                tvContent.setBackgroundResource(R.mipmap.home_video_collect_select);
+                break;
+            case 4:
+            case 6:
+                if (!TextUtils.isEmpty(dataBean.detail.images))
+                    Glide.with(mContext).load(dataBean.detail.images).apply(mOptions).into(ivDetail);
+                tvContent.setText(dataBean.comment_reply);
+                break;
+            case 7:
+                tvContent.setText(dataBean.comment_reply);
+                break;
         }
     }
 
+    private void setDetail(MineMessageBean.DataBean dataBean, TextView tvDetail, ImageView ivDetail) {
+        if (TextUtils.isEmpty(dataBean.detail.images))
+            tvDetail.setText(dataBean.detail.content);
+        else
+            Glide.with(mContext).load(dataBean.detail.images).apply(mOptions).into(ivDetail);
+    }
 
+    @Override
+    protected int getItemView() {
+        return R.layout.item_minemessage_addcomment;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mDatas.get(position).type;
+    }
 }

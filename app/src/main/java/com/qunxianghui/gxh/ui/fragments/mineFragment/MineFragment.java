@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,14 +16,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
-import com.qunxianghui.gxh.bean.home.User;
-import com.qunxianghui.gxh.bean.mine.NewMessageCountBean;
 import com.qunxianghui.gxh.bean.mine.UserInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
 import com.qunxianghui.gxh.config.SpConstant;
-import com.qunxianghui.gxh.db.UserDao;
+import com.qunxianghui.gxh.ui.activity.MainActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.AdvertTemplateActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanyCardActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.JoinCallActivity;
@@ -38,16 +34,11 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFansActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.MyFollowActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
-import com.qunxianghui.gxh.utils.LogUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -70,14 +61,9 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.tv_mine_fans)
     TextView mTvMineFans;
     @BindView(R.id.tv_minemesssage_count)
-    TextView tvMinemesssageCount;
-    Unbinder unbinder;
+    TextView tvMineMesssageCount;
 
-    private UserDao userDao;
     private UserInfo.DataBean mUserInfo;
-    private int userSize;
-    private int code;
-    private String mMobile;
     private boolean mIsFirst = true;
 
     @Override
@@ -99,45 +85,10 @@ public class MineFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
-        if (mMineUserName == null) return;
-        if (userSize > 0) {
-            ArrayList<User> userList = userDao.dbQueryAll();
-            for (int i = 0; i < userSize; i++) {
-                User user = userList.get(i);
-                mMineUserName.setText(user.getUsername());
-            }
-        }
-
-    }
-
-    @Override
-    public void initViews(View view) {
-        userDao = new UserDao(mActivity);
-        userSize = userDao.dbGetUserSize();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         fillUserData();
-        RequestMessageCount();
-    }
-    /*请求我的消息数量*/
-    private void RequestMessageCount() {
-        OkGo.<NewMessageCountBean>post(Constant.MINE_NEWMESSAGE_COUNT_URL).execute(new JsonCallback<NewMessageCountBean>() {
-            @Override
-            public void onSuccess(Response<NewMessageCountBean> response) {
-                if (response.body().getCode() == 200) {
-                    asyncShowToast(response.body().getMessage());
-                    int data = response.body().getData();
-                    tvMinemesssageCount.setText(String.valueOf(data));
-                    LogUtil.printJson("输出数据", response.body().getMessage(), "消息的数量");
-
-                }
-
-            }
-        });
+        tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount));
     }
 
     @Override
@@ -160,10 +111,9 @@ public class MineFragment extends BaseFragment {
     }
 
     private void parseUserData(UserInfo userInfo) {
-        code = userInfo.code;
         if (userInfo.code == 0) {
             mUserInfo = userInfo.data;
-            mMobile = mUserInfo.agency_info.mobile;
+//            String mMobile = mUserInfo.agency_info.mobile;
             if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
                 mTvMineCompanyName.setText(mUserInfo.company_info.company_name);
             } else {
@@ -187,7 +137,7 @@ public class MineFragment extends BaseFragment {
     @OnClick({R.id.rl_company_card, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
             R.id.ll_mine_fans, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
     public void onViewClicked(View view) {
-        Intent intent = null;
+        Intent intent;
         switch (view.getId()) {
             case R.id.rl_company_card:
                 if (SPUtils.getSp().getBoolean(SpConstant.IS_COMPANY, false)) {
@@ -199,27 +149,15 @@ public class MineFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_mine_message:
-                if (!LoginMsgHelper.isLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                } else {
+                if (isLogin())
                     toActivity(MineMessageActivity.class);
-                }
-
                 break;
             case R.id.mine_fabu:
-                if (!LoginMsgHelper.isLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                } else {
+                if (isLogin())
                     toActivity(MineIssueActivity.class);
-                }
-
                 break;
             case R.id.rl_up_step:
                 toActivity(MemberUpActivity.class);
-
-
                 break;
             case R.id.rl_mine_person_data:
                 Bundle bundle = new Bundle();
@@ -238,47 +176,26 @@ public class MineFragment extends BaseFragment {
                 toActivity(SettingActivity.class);
                 break;
             case R.id.ll_mine_post:
-                if (!LoginMsgHelper.isLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                } else {
+                if (isLogin())
                     toActivity(MyFollowActivity.class);
-                }
-
                 break;
             case R.id.ll_mine_fans:
-                if (!LoginMsgHelper.isLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                } else {
+                if (isLogin())
                     toActivity(MyFansActivity.class);
-                }
-
                 break;
             case R.id.ll_mine_mycollect:
-                if (!LoginMsgHelper.isLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                } else {
+                if (isLogin())
                     toActivity(MyCollectActivity.class);
-                }
-
                 break;
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    private boolean isLogin() {
+        if (!LoginMsgHelper.isLogin()) {
+            toActivity(LoginActivity.class);
+            return false;
+        }
+        return true;
     }
 
 //    private void requestCall(final String mobile) {

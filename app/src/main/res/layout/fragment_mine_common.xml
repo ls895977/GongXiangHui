@@ -40,7 +40,7 @@
         android:layout_margin="15dp"
         android:background="@drawable/bg_red_solid_corner"
         android:text="删除"
-        android:visibility="gone"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>

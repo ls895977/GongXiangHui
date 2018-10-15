@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,7 +32,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
@@ -42,6 +39,7 @@ import butterknife.Unbinder;
  */
 
 public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observer {
+
     @BindView(R.id.xrecycler_mine_collect_news)
     XRecyclerView xrecycler_mine_collect_news;
     @BindView(R.id.ll_empty)
@@ -64,7 +62,6 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     public int getLayoutId() {
         return R.layout.fragment_mine_common;
     }
-
 
     @Override
     public void initData() {
@@ -161,8 +158,6 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
                 ToastUtils.showShort(myCollectPostBean.getMessage());
             }
         }
-
-
     }
 
     @Override
@@ -173,7 +168,6 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
 
     @Override
     protected void initListeners() {
-        super.initListeners();
         xrecycler_mine_collect_news.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -237,20 +231,6 @@ public class PersonDetailBaoLiaoFragment extends BaseFragment implements Observe
     @Override
     protected void onLoadData() {
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override

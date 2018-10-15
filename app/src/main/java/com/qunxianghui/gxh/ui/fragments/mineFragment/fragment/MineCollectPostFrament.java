@@ -3,11 +3,8 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -25,14 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class MineCollectPostFrament extends BaseFragment implements MineCollectPostAdapter.MycollectPostListener {
 
     @BindView(R.id.recycler_mycollect_post)
     XRecyclerView recyclerMycollectPost;
-    Unbinder unbinder;
+
     private List<MineCollectPostBean.DataBean> dataList = new ArrayList<>();
     private boolean mIsRefresh = false;
     private boolean mIsFirst = true;
@@ -87,14 +82,6 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
     protected void initListeners() {
         super.initListeners();
         recyclerMycollectPost.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -110,12 +97,6 @@ public class MineCollectPostFrament extends BaseFragment implements MineCollectP
                 RequestMyCollectPost();
             }
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override

@@ -63,6 +63,7 @@ abstract public class BaseRecycleViewAdapter<T> extends
     }
 
     public void add(List<T> newDatas) {
+        if (newDatas == null) return;
         mDatas.addAll(newDatas);
         notifyDataSetChanged();
     }
