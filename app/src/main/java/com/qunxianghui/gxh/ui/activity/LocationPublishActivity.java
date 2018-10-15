@@ -83,6 +83,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     @Override
     protected void initViews() {
+
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new NewGlideImageLoader());
         imagePicker.setShowCamera(true);

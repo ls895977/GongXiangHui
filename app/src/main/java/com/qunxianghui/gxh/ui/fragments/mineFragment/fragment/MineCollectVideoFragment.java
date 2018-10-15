@@ -25,6 +25,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.qunxianghui.gxh.utils.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,6 +53,8 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
     private List<MineCollectVideoBean.DataBean> dataList = new ArrayList<>();
     private MineCollectVideoAdapter mAdapter;
     private String data_id = "";
+
+
 
     @Override
     protected void onLoadData() {
@@ -155,6 +158,8 @@ public class MineCollectVideoFragment extends BaseFragment implements Observer {
 
     @Override
     public void initViews(View view) {
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.video_margon);
+        mRv.addItemDecoration(new SpaceItemDecoration(spacingInPixels, spacingInPixels));
         EventManager.getInstance().addObserver(this);
         mRv.setLayoutManager(new GridLayoutManager(mActivity, 2, GridLayoutManager.VERTICAL, false));
         btnDelete.setOnClickListener(new View.OnClickListener() {
