@@ -21,7 +21,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
-import com.qunxianghui.gxh.adapter.homeAdapter.BianMinGridAdapter;
+import com.qunxianghui.gxh.adapter.homeAdapter.HomeGridAdapter;
 import com.qunxianghui.gxh.adapter.homeAdapter.HomeItemListAdapter;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.CommonResponse;
@@ -297,9 +297,9 @@ public class HotPointFragment extends BaseFragment {
     }
 
     private void initGuideAndBanner() {
-        BianMinGridAdapter homegridNavigator = new BianMinGridAdapter(mActivity, images, iconName);
+        HomeGridAdapter homegridNavigator = new HomeGridAdapter(mActivity, images, iconName);
         grid_home_navigator.setAdapter(homegridNavigator);
-        homegridNavigator.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
+        homegridNavigator.setOnClickListener(new HomeGridAdapter.OnItemClickListener() {
             @Override
             public void onpicItemClick(int position) {
                 Intent intent = null;

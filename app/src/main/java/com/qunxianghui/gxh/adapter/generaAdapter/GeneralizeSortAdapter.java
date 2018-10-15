@@ -24,7 +24,7 @@ public class GeneralizeSortAdapter extends BaseQuickAdapter<EmployeePaiHangBean.
 
     public GeneralizeSortAdapter(@Nullable List<EmployeePaiHangBean.EmployeePaiHang.DataBean> data) {
         super(R.layout.item_generalize_sort, data);
-        mOptions.placeholder(R.mipmap.default_img)
+        mOptions.placeholder(R.mipmap.user_moren)
                 .error(R.mipmap.default_img)
                 .centerCrop();
     }

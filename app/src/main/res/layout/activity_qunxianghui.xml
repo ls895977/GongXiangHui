@@ -24,8 +24,8 @@
         android:textSize="18sp" />
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="327dp"
+        android:layout_height="422dp"
         android:layout_margin="20dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="2dp"
@@ -40,15 +40,15 @@
                 android:id="@+id/tv_quxinghui_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+              android:layout_margin="8dp"
                 android:text="描述话语"
                 android:textColor="#282828"
                 android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/iv_qunxianghui_scan"
-                android:layout_width="218dp"
-                android:layout_height="218dp"
+                android:layout_width="315dp"
+                android:layout_height="315dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@mipmap/icon_qun_sharecliude" />
 

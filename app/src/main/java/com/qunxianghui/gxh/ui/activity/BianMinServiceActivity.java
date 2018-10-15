@@ -21,10 +21,10 @@ import butterknife.BindView;
 
 public class BianMinServiceActivity extends BaseActivity {
 
-    private int[] images = {R.mipmap.bianmin_call, R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express,
-            R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express,
-            R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express, R.mipmap.bianmin_check_express};
-    private String[] iconName = {"常用电话", "黄历", "寄快递", "充话费", "公交查询", "汽车票", "火车票", "飞机票", "酒店住宿", "找工作", "货币退换"};
+    private int[] images = {R.mipmap.bianmin_phone, R.mipmap.bianmin_calendar, R.mipmap.bianmin_chakuaidi, R.mipmap.bianmin_send_kuaidi,
+            R.mipmap.bianmin_check_bus_ticket, R.mipmap.bianmin_car_ticket, R.mipmap.bianmin_check_train_ticket,
+            R.mipmap.bianmin_air, R.mipmap.bianmin_hotel, R.mipmap.bianmin_seekjob};
+    private String[] iconName = {"常用电话", "黄历", "寄快递", "充话费", "公交查询", "汽车票", "火车票", "飞机票", "酒店住宿", "找工作"};
     @BindView(R.id.grid_bianmin)
     RecyclerView gridBianmin;
 
@@ -46,10 +46,10 @@ public class BianMinServiceActivity extends BaseActivity {
         bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
             public void onpicItemClick(int position) {
-                Intent intent=null;
+                Intent intent = null;
                 switch (position) {
                     case 0:
-                        toActivity(CommoentCallActivity.class);
+                        intent = new Intent(BianMinServiceActivity.this, CommoentCallActivity.class);
                         break;
                     case 1:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
@@ -104,12 +104,6 @@ public class BianMinServiceActivity extends BaseActivity {
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
                         intent.putExtra("url", Constant.HOME_SEE_JOB_URL);
-                        intent.putExtra("tag", 2);
-                        break;
-                    case 10:
-                        intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
-                        intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_HHUOBI_DUIHUAN_URL);
                         intent.putExtra("tag", 2);
                         break;
 

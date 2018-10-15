@@ -1,10 +1,18 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
@@ -36,12 +44,12 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
     private int count = 0;
     private MyFocusAdapter myFocusAdapter;
     private boolean mIsRefresh = false;
+    private Dialog mFollowDialog;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_myfollow;
     }
-
 
     @Override
     protected void initViews() {
@@ -91,7 +99,7 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
                 });
     }
 
-    private void  parseFocusData(MyFocusBean myFocusBean) {
+    private void parseFocusData(MyFocusBean myFocusBean) {
         if (mIsRefresh) {
             mIsRefresh = false;
             dataList.clear();
@@ -129,21 +137,66 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
     /*关注的点击*/
     @Override
     public void FocusClick(final int position) {
-        int be_member_id = dataList.get(position).getBe_member_id();
-        OkGo.<CommonBean>post(Constant.ATTENTION_URL)
-                .params("be_member_id", be_member_id)
-                .execute(new JsonCallback<CommonBean>() {
-                    @Override
-                    public void onSuccess(Response<CommonBean> response) {
-                        int code = response.body().code;
-                        if (code == 202) {
-                            asyncShowToast(response.body().message);
-                            dataList.get(position).setFollow_type(0);
-                            dataList.remove(position);
-                            myFocusAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
+
+        showBottomDialog(position);
+
+    }
+
+    /*弹出底部*/
+    private void showBottomDialog(final int position) {
+        if (mFollowDialog == null) {
+            mFollowDialog = new Dialog(mContext, R.style.ActionSheetDialogStyle);
+            View alertView = LayoutInflater.from(mContext).inflate(R.layout.bottom_alertdialog, null);
+            TextView mFollowSuremessage = alertView.findViewById(R.id.tv_addAdver_share);
+            mFollowSuremessage.setText("确定不再关注此人?");
+            mFollowSuremessage.setTextSize(12);
+            mFollowSuremessage.setTextColor(Color.GRAY);
+            TextView mFollowsure = alertView.findViewById(R.id.tv_article_share);
+            mFollowsure.setText("确定");
+            mFollowsure.setTextColor(Color.BLACK);
+            mFollowsure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int be_member_id = dataList.get(position).getBe_member_id();
+                    OkGo.<CommonBean>post(Constant.ATTENTION_URL)
+                            .params("be_member_id", be_member_id)
+                            .execute(new JsonCallback<CommonBean>() {
+                                @Override
+                                public void onSuccess(Response<CommonBean> response) {
+                                    int code = response.body().code;
+                                    if (code == 202) {
+                                        asyncShowToast(response.body().message);
+                                        dataList.get(position).setFollow_type(0);
+                                        dataList.remove(position);
+                                        myFocusAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                            });
+                    mFollowDialog.dismiss();
+                }
+            });
+            TextView mFollowCancel = alertView.findViewById(R.id.tv_bottom_alertdialog_cancle);
+            mFollowCancel.setText("取消");
+            mFollowCancel.setTextColor(Color.BLACK);
+            mFollowCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFollowDialog.dismiss();
+                }
+            });
+
+            mFollowDialog.setContentView(alertView);
+            Window dialogWindow = mFollowDialog.getWindow();
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            WindowManager windowManager = getWindowManager();
+            Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 5;  //设置dialog距离底部的距离
+            dialogWindow.setAttributes(lp);
+        }
+        mFollowDialog.show();
+
     }
 
     @Override
@@ -152,5 +205,6 @@ public class MyFollowActivity extends BaseActivity implements MyFocusAdapter.myF
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
 }
 
