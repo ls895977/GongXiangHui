@@ -76,6 +76,7 @@ public class PersonDataActivity extends BaseActivity {
     private List<String> upLoadPics = new ArrayList<>();
     private ImagePicker imagePicker;
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_person_data;
