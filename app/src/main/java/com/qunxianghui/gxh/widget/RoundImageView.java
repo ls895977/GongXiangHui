@@ -4,6 +4,7 @@ package com.qunxianghui.gxh.widget;
  * Created by 怪蜀黍 on 2016/12/3.
  */
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import com.qunxianghui.gxh.R;
  * 设置颜色在xml布局文件中由自定义属性配置参数指定
  */
 
+@SuppressLint("AppCompatCustomView")
 public class RoundImageView extends ImageView {
     private int mBorderThickness = 0;
     private Context mContext;
