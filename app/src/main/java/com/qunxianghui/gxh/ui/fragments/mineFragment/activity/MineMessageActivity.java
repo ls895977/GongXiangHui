@@ -131,6 +131,7 @@ public class MineMessageActivity extends BaseActivity {
         });
     }
 
+
     /*请求我的消息*/
     private void requestMineMessageData() {
         OkGo.<CommonResponse<List<MineMessageBean.DataBean>>>get(Constant.MINE_NEWMESSAGE_LIST_URL)
