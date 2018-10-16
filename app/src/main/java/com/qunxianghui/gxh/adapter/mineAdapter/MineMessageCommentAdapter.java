@@ -51,6 +51,8 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
         TextView tvContent = holder.getView(R.id.tv_content);
         TextView tvDetail = holder.getView(R.id.tv_detail);
         ImageView ivDetail = holder.getView(R.id.iv_detail);
+        View ivVideo = holder.getView(R.id.iv_detail_video);
+        ivVideo.setVisibility(View.GONE);
         tvContent.setBackgroundResource(0);
         tvContent.setText("");
         tvDetail.setText("");
@@ -77,15 +79,18 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
             case 2:
                 setDetail(dataBean, tvDetail, ivDetail);
                 tvContent.setBackgroundResource(R.mipmap.home_video_collect_select);
+                ivVideo.setVisibility(View.VISIBLE);
                 break;
             case 4:
             case 6:
-                if (!TextUtils.isEmpty(dataBean.detail.images))
-                    Glide.with(mContext).load(dataBean.detail.images).apply(mOptions).into(ivDetail);
                 setContentView(dataBean, tvContent);
+                setDetail(dataBean, tvDetail, ivDetail);
+                ivVideo.setVisibility(View.VISIBLE);
                 break;
             case 7:
                 setContentView(dataBean, tvContent);
+                if (dataBean.comment_deleted == 0)
+                    tvDetail.setText(dataBean.detail.title);
                 break;
         }
 
