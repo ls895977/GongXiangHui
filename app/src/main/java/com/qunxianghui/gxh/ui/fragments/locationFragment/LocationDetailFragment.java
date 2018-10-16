@@ -208,15 +208,15 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                 break;
             case R.id.tv_inform_sex:
                 String TvInformSex = mTv_inform_sex.getText().toString().trim();
-                RestInformData(TvInformSex);
+                restInformData(TvInformSex);
                 break;
             case R.id.tv_inform_harass:
                 String TvInformHarass = mTv_inform_harass.getText().toString().trim();
-                RestInformData(TvInformHarass);
+                restInformData(TvInformHarass);
                 break;
             case R.id.tv_inform_tort:
                 String TvInformTort = mTv_inform_tort.getText().toString().trim();
-                RestInformData(TvInformTort);
+                restInformData(TvInformTort);
                 break;
             case R.id.tv_bottom_ainform_cancle:
                 mShareDialog.dismiss();
@@ -225,7 +225,7 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     }
 
     /*举报信息*/
-    private void RestInformData(String informData) {
+    private void restInformData(String informData) {
         OkGo.<CommonBean>post(Constant.ADD_REPORT_URL)
                 .params("content", informData)
                 .params("model", "Posts")

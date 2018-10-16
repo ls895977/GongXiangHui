@@ -1,7 +1,14 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -16,15 +23,19 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.adapter.locationAdapter.LocationGridAdapter;
 import com.qunxianghui.gxh.base.BaseActivity;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.location.ActionItem;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.ReplyCommentResponseBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
 import com.qunxianghui.gxh.bean.mine.MessageDetailBean;
+import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.activity.PhotoBrowserActivity;
 import com.qunxianghui.gxh.ui.dialog.CommentDialog;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.adapter.CommentItemAdapter;
+import com.qunxianghui.gxh.utils.GsonUtil;
 import com.qunxianghui.gxh.utils.UserUtil;
 import com.qunxianghui.gxh.widget.BigListView;
 import com.qunxianghui.gxh.widget.RoundImageView;
@@ -40,7 +51,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/3/26 0026.
  */
 
-public class MessageDetailActivity extends BaseActivity {
+public class MessageDetailActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.layout_nine_grid)
     GridView gridLayout;
@@ -87,6 +98,10 @@ public class MessageDetailActivity extends BaseActivity {
     private boolean mFlag = false;
     private TestMode.DataBean.ListBean dataBean;
     private CommentDialog commentDialog;
+    private Dialog mReportDialog;
+    private TextView mTv_inform_tort;
+    private TextView mTv_inform_sex;
+    private TextView mTv_inform_harass;
 
 
     @Override
@@ -181,7 +196,7 @@ public class MessageDetailActivity extends BaseActivity {
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    listener.onPicClick(getAdapterPosition() - 1, 0);
+                    onPicClick(0);
                 }
             });
         } else {
@@ -192,7 +207,7 @@ public class MessageDetailActivity extends BaseActivity {
             adapter.setListener(new LocationGridAdapter.ImageOnClickListener() {
                 @Override
                 public void onClick(View v, int p) {
-//                    listener.onPicClick(getAdapterPosition() - 1, p);
+                    onPicClick(p);
                 }
             });
         }
@@ -215,10 +230,74 @@ public class MessageDetailActivity extends BaseActivity {
             public void onItemClick(ActionItem item, int p) {
                 switch (p) {
                     case 0://点赞
-//                        listener.onPraiseClick(getAdapterPosition() - 1);
+                        if (dataBean.getClick_like() != null && dataBean.getClick_like().toString().length() == 0) {
+                            if (dataBean.getClick_like().size() <= 0) {
+                                dataBean.setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
+                            }
+                            TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
+                            UserUtil user = UserUtil.getInstance();
+                            like.setMember_name(user.mNick);
+                            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = dataBean.getClick_like();
+                            likeBeanList.add(like);
+                            OkGo.<String>post(Constant.LIKE_URL)
+                                    .params("data_uuid", dataBean.getUuid()).execute(new DialogCallback<String>(MessageDetailActivity.this) {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                                    UserUtil user = UserUtil.getInstance();
+                                    like.setMember_name(user.mNick);
+                                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = dataBean.getClick_like();
+                                    likeBeanList.add(like);
+                                    setLikeView();
+                                }
+
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    asyncShowToast("登陆账号异常");
+                                }
+                            });
+                        } else {
+                            OkGo.<CommonBean>post(Constant.LIKE_URL)
+                                    .params("data_uuid", dataBean.getUuid())
+                                    .execute(new JsonCallback<CommonBean>() {
+                                        @Override
+                                        public void onSuccess(Response<CommonBean> response) {
+                                            UserUtil user = UserUtil.getInstance();
+                                            TestMode.DataBean.ListBean.ClickLikeBean clickLikeBean = new TestMode.DataBean.ListBean.ClickLikeBean();
+                                            clickLikeBean.setMember_name(user.mNick);
+                                            if ("点赞成功".equals(response.body().message)) {
+                                                dataBean.getTem().add(clickLikeBean);
+                                                dataBean.setLike_info_res("true");
+                                                asyncShowToast(response.body().message);
+                                            } else if ("取消点赞成功".equals(response.body().message)) {
+                                                List<TestMode.DataBean.ListBean.ClickLikeBean> list = dataBean.getTem();
+                                                for (int i = 0; i < dataBean.getTem().size(); i++) {
+                                                    TestMode.DataBean.ListBean.ClickLikeBean tem = dataBean.getTem().get(i);
+                                                    if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
+                                                        if (dataBean.getClick_like().size() == 1 && dataBean.getTem().size() == 1) {
+                                                            dataBean.setClick_like("");
+                                                        }
+                                                        dataBean.getTem().remove(tem);
+                                                        break;
+                                                    }
+                                                }
+                                                dataBean.setLike_info_res("");
+                                                asyncShowToast(response.body().message);
+                                            }
+                                            setLikeView();
+                                        }
+
+                                        @Override
+                                        public void onError(Response<CommonBean> response) {
+                                            super.onError(response);
+                                            asyncShowToast("登陆账号异常");
+                                        }
+                                    });
+                        }
                         break;
                     case 1:
-//                        listener.onCollectionClick(getAdapterPosition() - 1);
+                        showBottomDialog();
                         break;
                     case 2://评论
                         commentDialog = new CommentDialog("请输入评论内容", new CommentDialog.SendListener() {
@@ -274,6 +353,10 @@ public class MessageDetailActivity extends BaseActivity {
                 finalSnsPopupWindow.showPopupWindow(v, dataBean, mContext);
             }
         });
+        setLikeView();
+    }
+
+    private void setLikeView() {
         List<TestMode.DataBean.ListBean.ClickLikeBean> tem = dataBean.getTem();
         if (!tem.isEmpty()) {
             digCommentBody.setVisibility(View.VISIBLE);
@@ -411,4 +494,88 @@ public class MessageDetailActivity extends BaseActivity {
         });
     }
 
+    public void onPicClick(int picpostion) {
+        List<String> imageList = dataBean.getImages();
+        ArrayList<String> arrayList = new ArrayList<>(imageList);
+        Intent intent = new Intent(MessageDetailActivity.this, PhotoBrowserActivity.class);
+        intent.putStringArrayListExtra("url", arrayList);
+        intent.putExtra("position", picpostion);
+        startActivity(intent);
+        overridePendingTransition(R.anim.activity_pop_in, R.anim.pop_out);
+    }
+
+    /*弹出底部弹出框*/
+    private void showBottomDialog() {
+        if (mReportDialog == null) {
+            mReportDialog = new Dialog(MessageDetailActivity.this, R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View alertView = LayoutInflater.from(MessageDetailActivity.this).inflate(R.layout.bottom_alertdialog_inform, null);
+            //初始化控件
+            mTv_inform_tort = alertView.findViewById(R.id.tv_inform_tort);
+            mTv_inform_harass = alertView.findViewById(R.id.tv_inform_harass);
+            mTv_inform_sex = alertView.findViewById(R.id.tv_inform_sex);
+
+            mTv_inform_tort.setOnClickListener(this);
+            mTv_inform_harass.setOnClickListener(this);
+            mTv_inform_sex.setOnClickListener(this);
+            alertView.findViewById(R.id.tv_bottom_ainform_cancle).setOnClickListener(this);
+            //将布局设置给dialog
+            mReportDialog.setContentView(alertView);
+            //获取当前activity所在的窗体
+            Window dialogWindow = mReportDialog.getWindow();
+            //设置dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            //获得窗体的属性
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            WindowManager windowManager = getWindowManager();
+            Display display = windowManager.getDefaultDisplay();
+            lp.width = (int) display.getWidth();  //设置宽度
+            lp.y = 5;  //设置dialog距离底部的距离
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
+        mReportDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_inform_sex:
+                String TvInformSex = mTv_inform_sex.getText().toString().trim();
+                restInformData(TvInformSex);
+                break;
+            case R.id.tv_inform_harass:
+                String TvInformHarass = mTv_inform_harass.getText().toString().trim();
+                restInformData(TvInformHarass);
+                break;
+            case R.id.tv_inform_tort:
+                String TvInformTort = mTv_inform_tort.getText().toString().trim();
+                restInformData(TvInformTort);
+                break;
+            case R.id.tv_bottom_ainform_cancle:
+                mReportDialog.dismiss();
+                break;
+        }
+    }
+
+    /*举报信息*/
+    private void restInformData(String informData) {
+        OkGo.<CommonBean>post(Constant.ADD_REPORT_URL)
+                .params("content", informData)
+                .params("model", "Posts")
+                .params("data_uuid", dataBean.getUuid())
+                .execute(new JsonCallback<CommonBean>() {
+                    @Override
+                    public void onSuccess(Response<CommonBean> response) {
+                        int code = response.body().code;
+                        String msg = response.body().message;
+                        if (code == 200) {
+                            asyncShowToast("举报成功");
+                            mReportDialog.dismiss();
+                        } else {
+                            asyncShowToast(msg);
+                        }
+                    }
+                });
+    }
 }
