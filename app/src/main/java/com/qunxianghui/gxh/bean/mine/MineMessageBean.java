@@ -35,6 +35,8 @@ public class MineMessageBean {
          */
 
         public int id;
+        public int detail_deleted;
+        public int comment_deleted;
         public int type;
         public String time;
         public String member_avatar;

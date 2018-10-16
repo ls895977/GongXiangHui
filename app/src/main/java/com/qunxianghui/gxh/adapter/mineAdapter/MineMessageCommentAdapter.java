@@ -55,15 +55,9 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
         tvContent.setText("");
         tvDetail.setText("");
         ivDetail.setImageResource(0);
-//        0：事件已删除或不存在；1：本地圈点赞；2：视频汇点赞；3：本地圈评论；4：视频汇评论；5：本地圈评论被回复；6：视频汇评论被回复；7：新闻评论被回复
+//       1：本地圈点赞；2：视频汇点赞；3：本地圈评论；4：视频汇评论；5：本地圈评论被回复；6：视频汇评论被回复；7：新闻评论被回复
         final int itemViewType = dataBean.type;
         switch (itemViewType) {
-//            0：事件已删除或不存在；
-            case 0:
-                setDetail(dataBean, tvDetail, ivDetail);
-                tvContent.setText("该评论已删除");
-                tvContent.setBackgroundColor(Color.parseColor("#DCDCDC"));
-                break;
 //            1：本地圈点赞；
 //            2：视频汇点赞；
 //            3：本地圈评论；
@@ -78,7 +72,7 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
             case 3:
             case 5:
                 setDetail(dataBean, tvDetail, ivDetail);
-                tvContent.setText(dataBean.comment_reply);
+                setContentView(dataBean, tvContent);
                 break;
             case 2:
                 setDetail(dataBean, tvDetail, ivDetail);
@@ -88,10 +82,10 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
             case 6:
                 if (!TextUtils.isEmpty(dataBean.detail.images))
                     Glide.with(mContext).load(dataBean.detail.images).apply(mOptions).into(ivDetail);
-                tvContent.setText(dataBean.comment_reply);
+                setContentView(dataBean, tvContent);
                 break;
             case 7:
-                tvContent.setText(dataBean.comment_reply);
+                setContentView(dataBean, tvContent);
                 break;
         }
 
@@ -109,10 +103,11 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (dataBean.detail_deleted == 1) {
+                    ToastUtils.showShort("该内容已被删除");
+                    return;
+                }
                 switch (itemViewType) {
-                    case 0:
-                        ToastUtils.showShort("该评论已删除");
-                        break;
                     case 1:
                     case 3:
                     case 5:
@@ -131,7 +126,20 @@ public class MineMessageCommentAdapter extends BaseRecycleViewAdapter<MineMessag
         });
     }
 
+    private void setContentView(MineMessageBean.DataBean dataBean, TextView tvContent) {
+        if (dataBean.comment_deleted == 0)
+            tvContent.setText(dataBean.comment_reply);
+        else {
+            tvContent.setText("该评论已删除");
+            tvContent.setBackgroundColor(Color.parseColor("#DCDCDC"));
+        }
+    }
+
     private void setDetail(MineMessageBean.DataBean dataBean, TextView tvDetail, ImageView ivDetail) {
+        if (dataBean.detail_deleted == 1) {
+            tvDetail.setText("该内容已删除");
+            return;
+        }
         if (TextUtils.isEmpty(dataBean.detail.images))
             tvDetail.setText(dataBean.detail.content);
         else
