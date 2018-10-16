@@ -1,10 +1,14 @@
 package com.qunxianghui.gxh.video;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -13,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.qunxianghui.gxh.R;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
+import com.shuyu.gsyvideoplayer.utils.NetworkUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 
@@ -25,12 +30,8 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
 
     ImageView mCoverImage;
     TextView tvTitle;
-
-
     String mCoverOriginUrl;
-
     int mDefaultRes;
-
 
 
     public SampleCoverVideo(Context context, Boolean fullFlag) {
@@ -48,8 +49,8 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     @Override
     protected void init(Context context) {
         super.init(context);
-        mCoverImage = (ImageView) findViewById(R.id.thumbImage);
-        tvTitle = (TextView) findViewById(R.id.title);
+        mCoverImage = findViewById(R.id.thumbImage);
+        tvTitle = findViewById(R.id.title);
 
         if (mThumbImageViewLayout != null &&
                 (mCurrentState == -1 || mCurrentState == CURRENT_STATE_NORMAL || mCurrentState == CURRENT_STATE_ERROR)) {
@@ -63,7 +64,7 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     }
 
     public void setTvTitle(String title) {
-       tvTitle.setText(title);
+        tvTitle.setText(title);
     }
 
     public void loadCoverImage(String url, int res) {
@@ -163,6 +164,35 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
         if (!byStartedClick) {
             setViewShowState(mBottomContainer, INVISIBLE);
             setViewShowState(mStartButton, INVISIBLE);
+        }
+    }
+
+    @Override
+    protected void showWifiDialog() {
+        if (!NetworkUtils.isAvailable(this.mContext)) {
+            this.startPlayLogic();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivityContext());
+            builder.setMessage(this.getResources().getString(R.string.tips_not_wifi));
+            builder.setPositiveButton(this.getResources().getString(R.string.tips_not_wifi_confirm), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    startPlayLogic();
+                }
+            });
+            builder.setNegativeButton(this.getResources().getString(R.string.tips_not_wifi_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            Button button = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (builder != null) {
+                button.setTextColor(Color.parseColor("#D81717"));
+            }
         }
     }
 

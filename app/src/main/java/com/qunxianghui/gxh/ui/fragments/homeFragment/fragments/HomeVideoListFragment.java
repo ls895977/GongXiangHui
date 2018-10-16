@@ -53,7 +53,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     private int mCateId;
     private PersonDetailVideoAdapter personDetailVideoAdapter;
     private List<HomeVideoListBean.DataBean.ListBean> videoDataList = new ArrayList<>();
-//    private JZVideoPlayerStandard mVideoPlayerStandard;
+    //    private JZVideoPlayerStandard mVideoPlayerStandard;
     private int firstVisible = 0, visibleCount = 0, totalCount = 0;
     private LinearLayoutManager mLinearLayoutManager;
     ScrollCalculatorHelper scrollCalculatorHelper;
@@ -89,20 +89,11 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     }
 
-//    boolean isScrollMoveTo = false;
-
     @Override
     public void initData() {
         mCateId = getArguments().getInt("channel_id");
         requestHomeVideoList();
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mSkip = 0;
-//        requestHomeVideoList();
-//    }
 
     @Override
     public void onResume() {
@@ -117,7 +108,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     @Override
     public void onPause() {
         super.onPause();
-        if (gsyBaseVideoPlayer !=null)
+        if (gsyBaseVideoPlayer != null)
             gsyBaseVideoPlayer.onVideoPause();
     }
 
@@ -140,52 +131,17 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
         personDetailVideoAdapter.setVideoListClickListener(this);
 
-//        mRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-//            @Override
-//            public void onChildViewAttachedToWindow(View view) {
-//            }
-//
-//            @Override
-//            public void onChildViewDetachedFromWindow(View view) {
-//                JZVideoPlayer jzvd = view.findViewById(R.id.videoplayer);
-//                if (jzvd != null && JZUtils.dataSourceObjectsContainsUri(jzvd.dataSourceObjects, JZMediaManager.getCurrentDataSource())) {
-//                    JZVideoPlayer currentJzvd = JZVideoPlayerManager.getCurrentJzvd();
-//                    if (currentJzvd != null && currentJzvd.currentScreen != JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
-//                        JZVideoPlayer.releaseAllVideos();
-//                    }
-//                }
-//            }
-//        });
         /*监听滑动状态*/
         mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-//                scrollCalculatorHelper.onScrollStateChanged(recyclerView, newState);
-//                if (isScrollMoveTo){
-//                    switch (newState) {
-//                        case RecyclerView.SCROLL_STATE_IDLE:
-//                            mRv.smoothScrollBy(0, 10);
-//                            isScrollMoveTo =false;
-//                            break;
-//                    }
-//                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 layoutManagerS = recyclerView.getLayoutManager();
-//                firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-//                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
-
-                //这是滑动自动播放的代码
-//                if (!mFull) {
-//                    if (!isScrollMoveTo){
-//                        Log.e("TAG_播放","isScrollMoveTo="+(!isScrollMoveTo));
-//                        scrollCalculatorHelper.onScroll(recyclerView, firstVisibleItem, lastVisibleItem, lastVisibleItem - firstVisibleItem);
-//                    }
-//                }
                 if (dy > 0) {
                     int visibleItemCount = mLinearLayoutManager.getChildCount();
                     int totalItemCount = mLinearLayoutManager.getItemCount();
@@ -203,17 +159,14 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         });
 
     }
+
     RecyclerView.LayoutManager layoutManagerS;
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //如果旋转了就全屏
-        if (newConfig.orientation != ActivityInfo.SCREEN_ORIENTATION_USER) {
-            mFull = false;
-        } else {
-            mFull = true;
-        }
-
+        mFull = newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_USER;
     }
 
     private void requestHomeVideoList() {
@@ -334,7 +287,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         intent.putExtra("token", SPUtils.getString(SpConstant.ACCESS_TOKEN, ""));
         intent.putExtra("uuid", videoDataList.get(position).getUuid());
         intent.putExtra("descrip", videoDataList.get(position).getDescription());
-        intent.putExtra("title", videoDataList.get(position ).getTitle());
+        intent.putExtra("title", videoDataList.get(position).getTitle());
         intent.putExtra("videoimage", videoDataList.get(position).getPicurl());
         intent.putExtra("position", 4);
         HomeVideoListFragment.this.startActivityForResult(intent, 0x0011);
@@ -342,12 +295,6 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
 
     @Override
     public void onStartPrepared(int position, String url) {
-//        if (position < videoDataList.size() - 1) {
-//            if (!mFull) {
-//                smoothMoveToPosition(position);
-//
-//            }
-//        }
     }
 
     @Override
@@ -357,31 +304,34 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         if (position < videoDataList.size() - 1) {
             if (!mFull) {
                 smoothMoveToPosition(position + 2);
-                PlayRunnable runnable = new PlayRunnable(position,url);
+                PlayRunnable runnable = new PlayRunnable(position, url);
                 //降低频率
                 playHandler.postDelayed(runnable, 2000);
             }
         }
     }
+
     private Handler playHandler = new Handler();
+
     private class PlayRunnable implements Runnable {
 
         String url;
         int position;
-        public PlayRunnable(int position,String url) {
+
+        PlayRunnable(int position, String url) {
             this.url = url;
             this.position = position;
         }
 
         @Override
         public void run() {
-            for (int i = position+1; i < videoDataList.size(); i++) {
+            for (int i = position + 1; i < videoDataList.size(); i++) {
                 HomeVideoListBean.DataBean.ListBean listBeanNext = videoDataList.get(i);
                 String videoUrlNext = listBeanNext.getVideo_url();
                 Log.e("TAG_播放下一个", "videoUrlNext=" + videoUrlNext);
                 if (!url.equals(videoUrlNext)) {
-                    Log.e("TAG_播放位置", "i=====" + (i+1));
-                    View childAt = layoutManagerS.findViewByPosition(i+1);
+                    Log.e("TAG_播放位置", "i=====" + (i + 1));
+                    View childAt = layoutManagerS.findViewByPosition(i + 1);
                     if (childAt != null && childAt.findViewById(R.id.video_item_player) != null) {
                         gsyBaseVideoPlayer = (GSYBaseVideoPlayer) childAt.findViewById(R.id.video_item_player);
                         Rect rect = new Rect();
@@ -392,12 +342,11 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
                             //gsyBaseVideoPlayer.startPlayLogic();
                         }
                     }
-                    break;
                 }
             }
-
         }
     }
+
     //动画定位
     private void smoothMoveToPosition(final int position) {
         Log.e("TAG_播放位置", "滚动=====" + position);
@@ -414,7 +363,7 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
             mRv.smoothScrollToPosition(position);
         }
     }
-    int width;
+
     GSYBaseVideoPlayer gsyBaseVideoPlayer;
 
     @Override

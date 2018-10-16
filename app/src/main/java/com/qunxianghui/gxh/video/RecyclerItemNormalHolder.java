@@ -30,7 +30,6 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     public SampleCoverVideo gsyVideoPlayer;
     @BindView(R.id.ll_homevideo_list_item)
     public LinearLayout mLLHomeVideoList;
-
     public @BindView(R.id.round_item_collect_video_personhead)
     RoundImageView roundCollectVideoPersonhead;
     public @BindView(R.id.tv_mycollect_video_attention)
@@ -47,7 +46,6 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     ImageView ivItemCollectCideoLike;
 
     public ImageView imageView;
-
     GSYVideoOptionBuilder gsyVideoOptionBuilder;
 
     public RecyclerItemNormalHolder(Context context, View v) {

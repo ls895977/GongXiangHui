@@ -22,13 +22,14 @@ import com.shuyu.gsyvideoplayer.utils.ListVideoUtil;
 import java.util.List;
 
 
-public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItemNormalHolder> {
+public class PersonDetailVideoAdapter extends RecyclerView.Adapter<RecyclerItemNormalHolder> {
 
     private List<HomeVideoListBean.DataBean.ListBean> itemDataList = null;
     private Context context = null;
     private ListVideoUtil listVideoUtil;
-    LinearLayoutManager mLinearLayoutManager;
-    public PersonDetailVideoAdapter(Context context, LinearLayoutManager mLinearLayoutManager , List<HomeVideoListBean.DataBean.ListBean> itemDataList) {
+    private LinearLayoutManager mLinearLayoutManager;
+
+    public PersonDetailVideoAdapter(Context context, LinearLayoutManager mLinearLayoutManager, List<HomeVideoListBean.DataBean.ListBean> itemDataList) {
         this.itemDataList = itemDataList;
         this.context = context;
         this.mLinearLayoutManager = mLinearLayoutManager;
@@ -36,16 +37,18 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
 
     private VideoListClickListener videoListClickListener;
     private MeVideo.PlayCompleteLister playCompleteLister;
+
     public void setVideoListClickListener(VideoListClickListener videoListClickListener) {
         this.videoListClickListener = videoListClickListener;
     }
+
     public void setPlayCompleteListener(MeVideo.PlayCompleteLister playCompleteLister) {
         this.playCompleteLister = playCompleteLister;
     }
 
     @Override
     public RecyclerItemNormalHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+                                                       int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_home_video, parent, false);
         RecyclerItemNormalHolder holder = new RecyclerItemNormalHolder(context, v);
         return holder;
@@ -54,17 +57,16 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
 
     @Override
     public void onBindViewHolder(final RecyclerItemNormalHolder holder, final int position) {
-        RecyclerItemNormalHolder recyclerItemViewHolder = (RecyclerItemNormalHolder) holder;
-        recyclerItemViewHolder.setListVideoUtil(listVideoUtil);
-        recyclerItemViewHolder.setRecyclerBaseAdapter(this);
+        holder.setListVideoUtil(listVideoUtil);
+        holder.setRecyclerBaseAdapter(this);
         HomeVideoListBean.DataBean.ListBean listBean = itemDataList.get(position);
-        recyclerItemViewHolder.onBind(position, listBean);
+        holder.onBind(position, listBean);
 
         int is_like = listBean.getIs_like();
         String follow = listBean.getFollow();
-        if (TextUtils.isEmpty(follow)){
+        if (TextUtils.isEmpty(follow)) {
             holder.tvVideoAttention.setText("关注");
-        }else {
+        } else {
             holder.tvVideoAttention.setVisibility(View.GONE);
         }
 
@@ -124,44 +126,45 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
         holder.gsyVideoPlayer.
                 setVideoAllCallBack(new GSYSampleCallBack() {
 
-            @Override
-            public void onPrepared(String url, Object... objects) {
-                super.onPrepared(url, objects);
-                Log.e("TAG_播放完成","onPrepared"+listVideoUtil.getDuration());
-                Debuger.printfLog("Duration " + listVideoUtil.getDuration() + " CurrentPosition " + listVideoUtil.getCurrentPositionWhenPlaying());
-            }
-
-            @Override
-            public void onQuitSmallWidget(String url, Object... objects) {
-                super.onQuitSmallWidget(url, objects);
-                //大于0说明有播放,//对应的播放列表TAG
-                //当前播放的位置
-                int position = listVideoUtil.getPlayPosition();
-                if (position >= 0 && listVideoUtil.getPlayTAG().equals(RecyclerItemNormalHolder.TAG)) {
-                    //不可视的时候
-                    int firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-                    int lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
-                    if ((position < firstVisibleItem || position > lastVisibleItem)) {
-                        //释放掉视频
-                        listVideoUtil.releaseVideoPlayer();
-
+                    @Override
+                    public void onPrepared(String url, Object... objects) {
+                        super.onPrepared(url, objects);
+                        Log.e("TAG_播放完成", "onPrepared" + listVideoUtil.getDuration());
+                        Debuger.printfLog("Duration " + listVideoUtil.getDuration() + " CurrentPosition " + listVideoUtil.getCurrentPositionWhenPlaying());
                     }
-                }
-            }
-            @Override
-            public void onAutoComplete(String url, Object... objects) {
-                super.onAutoComplete(url, objects);
-                Log.e("TAG_視頻完成","position="+position+"=====url="+url);
-                videoListClickListener.onAutoComplete(position,url);
-            }
 
-            @Override
-            public void onStartPrepared(String url, Object... objects) {
-                super.onStartPrepared(url, objects);
-                Log.e("TAG_視頻開始","position="+position+"=====url="+url);
-                videoListClickListener.onStartPrepared(position,url);
-            }
-        });
+                    @Override
+                    public void onQuitSmallWidget(String url, Object... objects) {
+                        super.onQuitSmallWidget(url, objects);
+                        //大于0说明有播放,//对应的播放列表TAG
+                        //当前播放的位置
+                        int position = listVideoUtil.getPlayPosition();
+                        if (position >= 0 && listVideoUtil.getPlayTAG().equals(RecyclerItemNormalHolder.TAG)) {
+                            //不可视的时候
+                            int firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                            int lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                            if ((position < firstVisibleItem || position > lastVisibleItem)) {
+                                //释放掉视频
+                                listVideoUtil.releaseVideoPlayer();
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onAutoComplete(String url, Object... objects) {
+                        super.onAutoComplete(url, objects);
+                        Log.e("TAG_視頻完成", "position=" + position + "=====url=" + url);
+                        videoListClickListener.onAutoComplete(position, url);
+                    }
+
+                    @Override
+                    public void onStartPrepared(String url, Object... objects) {
+                        super.onStartPrepared(url, objects);
+                        Log.e("TAG_視頻開始", "position=" + position + "=====url=" + url);
+                        videoListClickListener.onStartPrepared(position, url);
+                    }
+                });
     }
 
     @Override
@@ -199,11 +202,14 @@ public class PersonDetailVideoAdapter  extends RecyclerView.Adapter<RecyclerItem
         void videoLikeItemClick(int position);
 
         void videoAddAdvert(int position);
+
         /*实现的单击事件*/
-        void onItemClick( int position);
+        void onItemClick(int position);
+
         //播放完成
-        void onStartPrepared(int position,String url);
+        void onStartPrepared(int position, String url);
+
         //播放完成
-        void onAutoComplete(int position,String url);
+        void onAutoComplete(int position, String url);
     }
 }
