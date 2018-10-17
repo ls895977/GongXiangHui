@@ -195,7 +195,12 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/iv_mine_mymessage"
-                    android:text="99+" />
+                    android:background="@drawable/shape_message_count"
+                    android:gravity="center"
+                    android:text="99+"
+
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/iv_mine_mymessage"

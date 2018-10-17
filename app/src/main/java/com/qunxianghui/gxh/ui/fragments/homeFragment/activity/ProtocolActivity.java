@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.SslErrorHandler;
@@ -232,7 +233,7 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 super.onReceivedSslError(view, handler, error);
-                    handler.proceed();
+                handler.proceed();
             }
 
         });
@@ -257,20 +258,6 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (webProtocolDetail!=null){
-            webProtocolDetail.clearHistory();
-            webProtocolDetail.clearCache(true);
-            webProtocolDetail.loadUrl("about:blank");
-            webProtocolDetail.freeMemory();
-            webProtocolDetail.pauseTimers();
-            webProtocolDetail.destroy();
-        }
-
-
-    }
 
     @Override
     protected void initListeners() {
@@ -429,5 +416,28 @@ public class ProtocolActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (webProtocolDetail != null) {
+            webProtocolDetail.clearHistory();
+            webProtocolDetail.clearCache(true);
+            webProtocolDetail.loadUrl("about:blank");
+            webProtocolDetail.freeMemory();
+            webProtocolDetail.pauseTimers();
+            webProtocolDetail.destroy();
+        }
+
+
+    }
+
+    @Override
+    public void finish() {
+        ViewGroup view = (ViewGroup) getWindow().getDecorView();
+        view.removeAllViews();
+        super.finish();
+
     }
 }

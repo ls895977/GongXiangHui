@@ -2,9 +2,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval"
     android:useLevel="false">
-<solid android:color="@color/new_red"/>
+<solid android:color="#E31616"/>
 
     <!--这里设置badge的大小-->
-    <size android:width="25dp"
-        android:height="25dp"/>
+    <size android:width="20dp"
+        android:height="20dp"/>
 </shape>

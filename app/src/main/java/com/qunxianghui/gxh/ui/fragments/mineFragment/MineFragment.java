@@ -87,7 +87,13 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount == 0 ? "" : MainActivity.sMsgCount));
+        if (MainActivity.sMsgCount == 0) {
+            tvMineMesssageCount.setVisibility(View.GONE);
+        } else {
+            tvMineMesssageCount.setVisibility(View.VISIBLE);
+            tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount));
+        }
+
     }
 
     @Override

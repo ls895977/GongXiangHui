@@ -351,15 +351,19 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
                 web.setDescription(!TextUtils.isEmpty(mDescrip) ? mDescrip : "群享汇-中小微企业成长平台，让创业更容易！");//描述
             } else {
-                if (mImages != null && !mImages.isEmpty()) {
+                if (mImages.size()>0) {
                     image = new UMImage(this, mImages.get(0));
                 } else {
                     image = new UMImage(this, R.mipmap.logo);
                 }
-                web.setDescription(mDescrip.substring(0, 70));//描述
+                if (mDescrip.length()>=70){
+                    web.setDescription(mDescrip.substring(0, 70));//描述
+                }
+
             }
             web.setTitle(title);//标题
             web.setThumb(image);  //缩略图
+            web.setDescription(mDescrip);
             View view = LayoutInflater.from(mContext).inflate(R.layout.third_share_self, null);
             mUmShareDialog.setContentView(view);
             View.OnClickListener listener = new View.OnClickListener() {
@@ -437,9 +441,12 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
             mWedNewsDetail.loadUrl("about:blank");
             mWedNewsDetail.freeMemory();
             mWedNewsDetail.pauseTimers();
+            mWedNewsDetail.setVisibility(View.GONE); //将整个WebView隐藏
             mWedNewsDetail.destroy();
+
         }
 
 
     }
+
 }
