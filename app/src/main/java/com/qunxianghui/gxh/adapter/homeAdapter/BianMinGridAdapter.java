@@ -39,8 +39,7 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final TabViewHolder holde = (TabViewHolder) holder;
-        holde.iv .setImageResource(images[position]);
-        holde.name.setText(text[position]);
+        holde.iv .setImageResource(images[position]);        holde.name.setText(text[position]);
         holde.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,3 +76,4 @@ public class BianMinGridAdapter extends RecyclerView.Adapter {
     }
 
 }
+

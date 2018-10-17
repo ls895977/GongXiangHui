@@ -210,7 +210,10 @@ public class MainActivity extends BaseActivity {
                 mTvMine.setSelected(true);
                 fragment = mFragments.get(3);
                 break;
+
         }
+        requestMessageCount();
+
         if (fragment != mCurrentFragment) {
             if (fragment != null && fragment.isAdded()) {
                 fragmentTransaction.show(fragment).hide(mCurrentFragment);

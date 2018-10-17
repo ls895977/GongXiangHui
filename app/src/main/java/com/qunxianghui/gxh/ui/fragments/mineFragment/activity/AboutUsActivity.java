@@ -114,7 +114,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         String versonName = VersonManagerUtils.packageName(mContext);
         int versonCode = VersonManagerUtils.packageCode(mContext);
 
-        if (versonName.equals("4.1.1") && versonCode == 411) {
+        if (versonName.equals("4.2.0") && versonCode == 420) {
             tvAppversion.setText("当前已是最新版本");
 
         } else {

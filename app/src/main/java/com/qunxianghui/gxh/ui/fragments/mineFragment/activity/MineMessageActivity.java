@@ -53,6 +53,20 @@ public class MineMessageActivity extends BaseActivity {
                 finish();
             }
         });
+        mIsHasMsg = getIntent().getBooleanExtra("isHasMsg", false);
+        if (mIsHasMsg) {
+            mSkip = 0;
+            requestMineMessageData();
+            mRvMsg.setLoadingMoreEnabled(false);
+        } else {
+            mTvEarly.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    protected void initData() {
+
         mRvMsg.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MineMessageCommentAdapter(this, new ArrayList<MineMessageBean.DataBean>());
         mAdapter.setCallback(new MineMessageCommentAdapter.Callback() {
@@ -93,18 +107,6 @@ public class MineMessageActivity extends BaseActivity {
             }
         });
         mRvMsg.setAdapter(mAdapter);
-    }
-
-    @Override
-    protected void initData() {
-        mIsHasMsg = getIntent().getBooleanExtra("isHasMsg", false);
-        if (mIsHasMsg) {
-            mSkip = 0;
-            requestMineMessageData();
-            mRvMsg.setLoadingMoreEnabled(false);
-        } else {
-            mTvEarly.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
