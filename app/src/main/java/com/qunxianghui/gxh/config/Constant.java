@@ -19,9 +19,9 @@ public class Constant {
 
     public static final String BIANMIN_HUANGLI_URL = "https://yun.rili.cn/wnl/m/huangli.html?channel=bttout";    //便民服务中的黄历
 
-    public static final String HOME_CHECK_KUAIDI_URL = "https://m.kuaidi100.com/courier/?openid=ofaKJvxgdNh3kD14hfR47R6EMdZc";    //寄快递
+    public static final String HOME_CHECK_KUAIDI_URL = "https://m.kuaidi100.com/";    //查快递
 
-    public static final String HOME_ADD_HUAFEI_URL = "https://market.m.taobao.com/apps/market/recharge/index.html?wh_weex=true&subSource=$$tb_weex_card_header$$stcz_1&spm=a2141.8277929.202.d100";    //充话费
+    public static final String HOME_SEND_KUAIDI_URL = "https://m.kuaidi100.com/courier/?openid=ofaKJvxgdNh3kD14hfR47R6EMdZc";    //寄快递
 
     public static final String HOME_BUS_CHECK_URL = "http://m.8684.cn/";    //公交查询
 
@@ -35,7 +35,7 @@ public class Constant {
 
     public static final String HOME_SEE_JOB_URL = "http://m.58.com/hz/job.shtml?from=benditoutiao";    //找工作
 
-    public static final String HOME_HHUOBI_DUIHUAN_URL = "https://huobiduihuan.51240.com/ ";    //货币兑换
+
 
     public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";    //新闻详情`
 

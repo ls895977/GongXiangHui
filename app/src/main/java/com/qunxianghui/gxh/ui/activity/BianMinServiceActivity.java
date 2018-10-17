@@ -22,9 +22,11 @@ import butterknife.BindView;
 public class BianMinServiceActivity extends BaseActivity {
 
     private int[] images = {R.mipmap.bianmin_phone, R.mipmap.bianmin_calendar, R.mipmap.bianmin_chakuaidi, R.mipmap.bianmin_send_kuaidi,
-            R.mipmap.bianmin_check_bus_ticket, R.mipmap.bianmin_car_ticket, R.mipmap.bianmin_check_train_ticket,
-            R.mipmap.bianmin_air, R.mipmap.bianmin_hotel, R.mipmap.bianmin_seekjob};
-    private String[] iconName = {"常用电话", "黄历", "寄快递", "充话费", "公交查询", "汽车票", "火车票", "飞机票", "酒店住宿", "找工作"};
+            R.mipmap.bianmin_check_bus_ticket, R.mipmap.bianmin_seekjob, R.mipmap.bianmin_car_ticket,
+            R.mipmap.bianmin_check_train_ticket, R.mipmap.bianmin_air, R.mipmap.bianmin_hotel};
+
+
+    private String[] iconName = {"常用电话", "农历黄历", "查快递", "寄快递", "公交查询", "找工作", "汽车票", "火车票", "飞机票", "酒店住宿"};
     @BindView(R.id.grid_bianmin)
     RecyclerView gridBianmin;
 
@@ -46,6 +48,8 @@ public class BianMinServiceActivity extends BaseActivity {
         bianMinGridAdapter.setOnClickListener(new BianMinGridAdapter.OnItemClickListener() {
             @Override
             public void onpicItemClick(int position) {
+
+
                 Intent intent = null;
                 switch (position) {
                     case 0:
@@ -61,13 +65,13 @@ public class BianMinServiceActivity extends BaseActivity {
                     case 2:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_CHECK_KUAIDI_URL);
+                        intent.putExtra("url", Constant.HOME_SEND_KUAIDI_URL);
                         intent.putExtra("tag", 2);
                         break;
                     case 3:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_ADD_HUAFEI_URL);
+                        intent.putExtra("url", Constant.HOME_CHECK_KUAIDI_URL);
                         intent.putExtra("tag", 2);
                         break;
                     case 4:
@@ -79,31 +83,31 @@ public class BianMinServiceActivity extends BaseActivity {
                     case 5:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_CAR_POCKET_URL);
+                        intent.putExtra("url", Constant.HOME_SEE_JOB_URL);
                         intent.putExtra("tag", 2);
                         break;
                     case 6:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_TRAIN_POCKET_URL);
+                        intent.putExtra("url", Constant.HOME_CAR_POCKET_URL);
                         intent.putExtra("tag", 2);
                         break;
                     case 7:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_AIR_POCKET_URL);
+                        intent.putExtra("url", Constant.HOME_TRAIN_POCKET_URL);
                         intent.putExtra("tag", 2);
                         break;
                     case 8:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_HOTEL_ZHUSU_URL);
+                        intent.putExtra("url", Constant.HOME_AIR_POCKET_URL);
                         intent.putExtra("tag", 2);
                         break;
                     case 9:
                         intent = new Intent(BianMinServiceActivity.this, ProtocolActivity.class);
                         intent.putExtra("title", iconName[position]);
-                        intent.putExtra("url", Constant.HOME_SEE_JOB_URL);
+                        intent.putExtra("url", Constant.HOME_HOTEL_ZHUSU_URL);
                         intent.putExtra("tag", 2);
                         break;
 

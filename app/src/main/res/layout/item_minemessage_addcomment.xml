@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingStart="10dp">
 
-    <ImageView
+    <com.qunxianghui.gxh.widget.RoundImageView
         android:id="@+id/iv_user_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -52,7 +52,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:src="@mipmap/logo" />
 

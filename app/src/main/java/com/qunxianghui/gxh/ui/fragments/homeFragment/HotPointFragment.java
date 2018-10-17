@@ -216,6 +216,7 @@ public class HotPointFragment extends BaseFragment {
     private void setData(Response<CommonResponse<List<HomeNewListBean>>> response) {
         if (response.body().code == 0) {
             List<HomeNewListBean> list = response.body().data;
+            LogUtil.printJson("新闻数据",list.toString(),"首页新闻列表");
             if (mCount == 0) {
                 dataList.clear();
             }
