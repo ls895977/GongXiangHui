@@ -110,21 +110,22 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                     mIsFirst = false;
                     mAdapter = new MyIssueLocalServiceAdapter(getContext(), mList);
                     xrecyclerPersondetailPost.setAdapter(mAdapter);
-                    mAdapter.setCallback(new MyIssueLocalServiceAdapter.Callback() {
-                        @Override
-                        public void callback(int id) {
-
-                        }
-                    });
-
+//                    mAdapter.setCallback(new MyIssueLocalServiceAdapter.Callback() {
+//                    @Override
+//                    public void callback(int id) {
+//
+//                    }
+//                });
                 }
+
             }
             xrecyclerPersondetailPost.refreshComplete();
             mAdapter.notifyDataSetChanged();
             mAdapter.notifyItemRangeChanged(mSkip, data.getData().size());
-        }else {
-            llEmpty.setVisibility(View.VISIBLE);
+        }else {llEmpty.setVisibility(View.VISIBLE);
+
         }
+
 
     }
 
@@ -211,7 +212,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
 
         }
         if (o instanceof String && "localser_c".equals(o)) {
-            if (mList.size()>0){
+            if (mList.size() > 0) {
                 mAdapter.isShow = false;
                 mAdapter.notifyDataSetChanged();
                 btMyissueLocalserviceDelete.setVisibility(View.GONE);
