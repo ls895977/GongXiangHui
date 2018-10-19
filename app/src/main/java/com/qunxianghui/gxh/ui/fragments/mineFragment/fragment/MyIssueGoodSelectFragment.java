@@ -1,12 +1,9 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +28,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
@@ -113,10 +109,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
 
     @Override
     public void initData() {
-        requestMyGoodSelectData();
-    }
-
-    private void requestMyGoodSelectData() {
         if (member_id == -1) {
             mTvMyissueGoodselectEmptyDes.setText("您还没发布哦～");
             OkGo.<MyIssueGoodSelectBean>post(Constant.MYISSURE_GOOD_SELECT_URL)
@@ -146,7 +138,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "goodselect".equals(o)) {
-
             if (mList.size() > 0) {
                 mAdapter.isShow = true;
                 mAdapter.notifyDataSetChanged();
@@ -155,12 +146,11 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
 
         }
         if (o instanceof String && "goodselect_c".equals(o)) {
-            if (mList.size()>0){
+            if (mList.size() > 0) {
                 mAdapter.isShow = false;
                 mAdapter.notifyDataSetChanged();
                 btnDelete.setVisibility(View.GONE);
             }
-
         }
     }
 
@@ -168,7 +158,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
-        unbinder.unbind();
     }
 
     private void parseData(MyIssueGoodSelectBean data) {
@@ -176,8 +165,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             mIsRefresh = false;
             mList.clear();
         }
-
-        if (data.getData()!=null) {
+        if (data.getData() != null) {
             mList.addAll(data.getData());
             mSkip = mList.size();
             if (data.getCode() == 200) {
@@ -192,10 +180,10 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             mAdapter.notifyDataSetChanged();
             mAdapter.notifyItemRangeChanged(mSkip, data.getData().size());
         } else {
-            llEmpty.setVisibility(View.VISIBLE);
+            if (mIsFirst)
+                llEmpty.setVisibility(View.VISIBLE);
+            mRv.setLoadingMoreEnabled(false);
         }
-
-
     }
 
     @Override
@@ -214,8 +202,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                 initData();
             }
         });
-
-
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -224,12 +210,5 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 }
 

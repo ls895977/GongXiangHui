@@ -43,6 +43,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     private int mSkip = 0;
     private MyIssueLocalServiceAdapter mAdapter;
     private String data_id = "";
+    private int mMemberId = 0;
 
     private boolean mIsFirst = true;
     private boolean mIsRefresh = false;
@@ -60,23 +61,8 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     public void initData() {
         if (getActivity() instanceof PersonDetailActivity) {
             mTvMyissueEmptyDes.setText("他还没发布哦～");
-            PersonDetailActivity personDetailActivity = (PersonDetailActivity) getActivity();
-            OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
-                    .params("limit", 10)
-                    .params("skip", mSkip)
-                    .params("member_id", personDetailActivity.member_id)
-                    .execute(new JsonCallback<MineIssueLocalServiceBean>() {
-                        @Override
-                        public void onSuccess(Response<MineIssueLocalServiceBean> response) {
-                            parseData(response.body());
-                        }
-
-                        @Override
-                        public void onError(Response<MineIssueLocalServiceBean> response) {
-                            super.onError(response);
-                            asyncShowToast(response.body().getMsg());
-                        }
-                    });
+            mMemberId = ((PersonDetailActivity) getActivity()).member_id;
+            requestData();
         } else {
             mTvMyissueEmptyDes.setText("您还没发布哦～");
             OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
@@ -90,6 +76,25 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
 
                     });
         }
+    }
+
+    private void requestData() {
+        OkGo.<MineIssueLocalServiceBean>post(Constant.MYISSURE_LOCAL_SERVICE_URL)
+                .params("limit", 10)
+                .params("skip", mSkip)
+                .params("member_id", mMemberId)
+                .execute(new JsonCallback<MineIssueLocalServiceBean>() {
+                    @Override
+                    public void onSuccess(Response<MineIssueLocalServiceBean> response) {
+                        parseData(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<MineIssueLocalServiceBean> response) {
+                        super.onError(response);
+                        asyncShowToast(response.body().getMsg());
+                    }
+                });
     }
 
     private void parseData(MineIssueLocalServiceBean data) {
@@ -112,23 +117,21 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
 //                    }
 //                });
                 }
-
             }
             xrecyclerPersondetailPost.refreshComplete();
             mAdapter.notifyDataSetChanged();
             mAdapter.notifyItemRangeChanged(mSkip, data.getData().size());
-        }else {llEmpty.setVisibility(View.VISIBLE);
-
+        } else {
+            if (mIsFirst)
+                llEmpty.setVisibility(View.VISIBLE);
+            xrecyclerPersondetailPost.setLoadingMoreEnabled(false);
         }
-
-
     }
 
     @Override
     public void initViews(View view) {
         EventManager.getInstance().addObserver(this);
         xrecyclerPersondetailPost.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-
     }
 
     @Override
@@ -146,7 +149,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
 
             @Override
             public void onLoadMore() {
-                initData();
+                requestData();
             }
 
         });
@@ -212,7 +215,6 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                 mAdapter.notifyDataSetChanged();
                 btMyissueLocalserviceDelete.setVisibility(View.GONE);
             }
-
         }
     }
 
