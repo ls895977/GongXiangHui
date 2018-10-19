@@ -160,7 +160,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                 mAdapter.notifyDataSetChanged();
                 btnDelete.setVisibility(View.GONE);
             }
-
         }
     }
 
@@ -176,7 +175,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             mIsRefresh = false;
             mList.clear();
         }
-
         if (data.getData()!=null) {
             mList.addAll(data.getData());
             mSkip = mList.size();

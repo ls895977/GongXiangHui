@@ -5,27 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!--<FrameLayout-->
-    <!--android:id="@+id/list_item_container"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="203dp"-->
-    <!--android:scaleType="centerCrop"-->
-    <!--android:src="@mipmap/default_img" />-->
-
     <com.qunxianghui.gxh.video.SampleCoverVideo
         android:id="@+id/video_item_player"
         android:layout_width="match_parent"
         android:layout_height="203dp" />
-
-    <!--<ImageView-->
-    <!--android:id="@+id/list_item_btn"-->
-    <!--android:layout_width="60dp"-->
-    <!--android:layout_height="60dp"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:src="@drawable/video_click_play_selector" />-->
-
 
 
     <com.qunxianghui.gxh.widget.RoundImageView
@@ -37,7 +20,9 @@
         android:layout_marginTop="165dp"
         android:src="@mipmap/default_img" />
 
+
     <RelativeLayout
+        android:id="@+id/rl_videolist_item_click"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_below="@id/video_item_player">
@@ -46,10 +31,11 @@
             android:id="@+id/ll_homevideo_list_item"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_mycollect_video_attention"
                 android:layout_width="50dp"
@@ -57,7 +43,6 @@
                 android:background="@drawable/shape_button"
                 android:gravity="center"
                 android:text="+关注"
-                android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:textSize="11sp" />
 
@@ -65,7 +50,7 @@
                 android:id="@+id/tv_item_collect_video_personname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:text="香馍馍"
                 android:textColor="#2D2D2D"

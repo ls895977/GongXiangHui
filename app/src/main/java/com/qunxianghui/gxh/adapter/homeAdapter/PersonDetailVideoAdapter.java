@@ -87,10 +87,16 @@ public class PersonDetailVideoAdapter extends RecyclerView.Adapter<RecyclerItemN
 
         RequestOptions options = new RequestOptions();
 
-        Glide.with(context).load(listBean.getPicurl()).apply(options.placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(holder.imageView);
+        Glide.with(context).load(listBean.getPicurl()).apply(options.placeholder(R.mipmap.user_moren).error(R.mipmap.default_img)).into(holder.imageView);
 
         Glide.with(context).load(listBean.getMember_avatar()).apply(options.centerCrop().circleCrop()).into(holder.roundCollectVideoPersonhead);
 
+        holder.rl_videolist_item_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoListClickListener.onItemClick(position);
+            }
+        });
         holder.roundCollectVideoPersonhead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,12 +122,6 @@ public class PersonDetailVideoAdapter extends RecyclerView.Adapter<RecyclerItemN
             }
         });
 
-        holder.mLLHomeVideoList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                videoListClickListener.onItemClick(position);
-            }
-        });
 
         holder.gsyVideoPlayer.
                 setVideoAllCallBack(new GSYSampleCallBack() {

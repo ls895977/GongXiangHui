@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.qunxianghui.gxh.R;
@@ -44,6 +45,8 @@ public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
     TextView tvComment;
     public @BindView(R.id.iv_item_collect_video_like)
     ImageView ivItemCollectCideoLike;
+    public @BindView(R.id.rl_videolist_item_click)
+    RelativeLayout rl_videolist_item_click;
 
     public ImageView imageView;
     GSYVideoOptionBuilder gsyVideoOptionBuilder;
