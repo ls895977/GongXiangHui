@@ -165,11 +165,8 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             mIsRefresh = false;
             mList.clear();
         }
-<<<<<<< HEAD
-        if (data.getData()!=null) {
-=======
         if (data.getData() != null) {
->>>>>>> 304a51bfb2c2f2b6200f2efc98a06dd688e3d22c
+
             mList.addAll(data.getData());
             mSkip = mList.size();
             if (data.getCode() == 200) {
