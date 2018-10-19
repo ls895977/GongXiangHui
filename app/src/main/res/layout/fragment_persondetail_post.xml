@@ -28,6 +28,7 @@
             android:text="他还没发布哦～"
             android:textSize="15sp" />
     </LinearLayout>
+
     <Button
         android:id="@+id/bt_myissue_localservice_delete"
         android:layout_width="62dp"
@@ -38,9 +39,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/bg_red_solid_corner"
         android:text="删除"
-        android:visibility="gone"
-        android:textColor="@color/white" />
-
-
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>

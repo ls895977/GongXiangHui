@@ -114,14 +114,14 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
 
     public void initItemData() {
 
-        if ( click_like == null || click_like.length()==0){
+        if (click_like == null || click_like.length() == 0) {
             addAction(new ActionItem("点赞"));
             digBtn.setText("点赞");
-        }else {
+        } else {
             digBtn.setText("取消赞");
             addAction(new ActionItem("取消赞"));
         }
-        if (collect == null || collect.length()==0){
+        if (collect == null || collect.length() == 0) {
             addAction(new ActionItem("举报"));
             //colletBtn.setText("取消");
             colletBtn.setText("举报");
@@ -129,38 +129,38 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         addAction(new ActionItem("评论"));
         //addAction(new ActionItem("取消收藏"));
     }
+
     public void showPopupWindow(View parent, TestMode.DataBean.ListBean listBean, Context context) {
         parent.getLocationOnScreen(mLocation);
         // 设置矩形的大小
         mRect.set(mLocation[0], mLocation[1], mLocation[0] + parent.getWidth(), mLocation[1] + parent.getHeight());
         //Log.v("xxxx-yyyy",mRect.toString());
 
-       // digBtn.setText(mActionItems.get(0).mTitle);
+        // digBtn.setText(mActionItems.get(0).mTitle);
         //判断当前状态
         Drawable like = parent.getResources().getDrawable(R.mipmap.icon_local_good_normal);
-        like.setBounds(0,0, like.getIntrinsicWidth(), like.getMinimumHeight());
+        like.setBounds(0, 0, like.getIntrinsicWidth(), like.getMinimumHeight());
         Drawable collection = parent.getResources().getDrawable(R.mipmap.icon_local_report);
-        collection.setBounds(0,0,collection.getIntrinsicWidth(),collection.getIntrinsicHeight());
-        if (listBean.getCollect().equals("true")&&listBean.getLike_info_res().equalsIgnoreCase("true")){
-
-            colletBtn.setCompoundDrawables(null,null,null,null);
-            digBtn.setCompoundDrawables(null,null,null,null);
+        collection.setBounds(0, 0, collection.getIntrinsicWidth(), collection.getIntrinsicHeight());
+        if (listBean.getCollect().equals("true") && listBean.getLike_info_res().equalsIgnoreCase("true")) {
+            colletBtn.setCompoundDrawables(null, null, null, null);
+            digBtn.setCompoundDrawables(null, null, null, null);
             this.setWidth(DensityUtil.dip2px(context, 250));
-        }else if (listBean.getCollect().equals("true")) {
-            colletBtn.setCompoundDrawables(null,null,null,null);
-            digBtn.setCompoundDrawables(like,null,null,null);
+        } else if (listBean.getCollect().equals("true")) {
+            colletBtn.setCompoundDrawables(null, null, null, null);
+            digBtn.setCompoundDrawables(like, null, null, null);
             this.setWidth(DensityUtil.dip2px(context, 230));
-        }else if (listBean.getLike_info_res().equalsIgnoreCase("true")) {
+        } else if (listBean.getLike_info_res().equalsIgnoreCase("true")) {
 
-            colletBtn.setCompoundDrawables(collection,null,null,null);
-            digBtn.setCompoundDrawables(null,null,null,null);
+            colletBtn.setCompoundDrawables(collection, null, null, null);
+            digBtn.setCompoundDrawables(null, null, null, null);
             this.setWidth(DensityUtil.dip2px(context, 220));
-        }else {
+        } else {
 
             this.setWidth(DensityUtil.dip2px(context, 200));
 
-            digBtn.setCompoundDrawables(like,null,null,null);
-            colletBtn.setCompoundDrawables(collection,null,null,null);
+            digBtn.setCompoundDrawables(like, null, null, null);
+            colletBtn.setCompoundDrawables(collection, null, null, null);
         }
         if (!this.isShowing()) {
             showAtLocation(parent, Gravity.NO_GRAVITY, mLocation[0] - this.getWidth()
@@ -175,19 +175,20 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         dismiss();
         switch (view.getId()) {
             case R.id.digBtn:
-               mItemClickListener.onItemClick(mActionItems.get(0), 0);
+                mItemClickListener.onItemClick(mActionItems.get(0), 0);
                 break;
             case R.id.colletBtn:
-              mItemClickListener.onItemClick(mActionItems.get(1), 1);
+                mItemClickListener.onItemClick(mActionItems.get(1), 1);
                 break;
             case R.id.commentBtn:
-              mItemClickListener.onItemClick(mActionItems.get(2), 2);
+                mItemClickListener.onItemClick(mActionItems.get(2), 2);
                 break;
 
             default:
                 break;
         }
     }
+
     /**
      * 添加子类项
      */

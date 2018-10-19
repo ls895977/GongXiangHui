@@ -177,7 +177,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
             mList.clear();
         }
 
-        if (data.getData() != null) {
+        if (data.getData()!=null) {
             mList.addAll(data.getData());
             mSkip = mList.size();
             if (data.getCode() == 200) {
@@ -186,12 +186,6 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                     mIsFirst = false;
                     mAdapter = new MyIssueGoodSelectAdapter(getContext(), mList);
                     mRv.setAdapter(mAdapter);
-                    mAdapter.setCallback(new MyIssueGoodSelectAdapter.Callback() {
-                        @Override
-                        public void callback(int id) {
-//                            SkipMyIssueVideoDetail(uuid, position);
-                        }
-                    });
                 }
             }
             mRv.refreshComplete();
