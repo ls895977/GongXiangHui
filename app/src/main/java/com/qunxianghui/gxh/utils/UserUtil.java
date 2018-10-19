@@ -43,10 +43,6 @@ public class UserUtil {
                     public void onSuccess(Response<String> response) {
                         if (HttpStatusUtil.getStatus(response.body())) {
                             parseUserData(response.body());
-
-                            Logger.e("测试数据" + response.body().toString());
-
-
                         }
                     }
 
