@@ -348,7 +348,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                 } else {
                     image = new UMImage(this, mVideoimage);
                 }
-
                 web.setDescription(!TextUtils.isEmpty(mDescrip) ? mDescrip : "群享汇-中小微企业成长平台，让创业更容易！");//描述
             } else {
                 if (mImages.size()>0) {
