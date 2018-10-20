@@ -366,6 +366,8 @@
         <activity
             android:name=".ui.fragments.mineFragment.activity.MessageDetailActivity"
             android:screenOrientation="portrait" />
+        <!--本地服务的详情页-->
+        <activity android:name=".ui.fragments.mineFragment.activity.LocalServiceDetailActivity"/>
         <!--服务-->
         <service android:name="com.amap.api.location.APSService" />
     </application>

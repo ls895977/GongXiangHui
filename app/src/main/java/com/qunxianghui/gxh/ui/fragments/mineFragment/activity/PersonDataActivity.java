@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -125,6 +127,33 @@ public class PersonDataActivity extends BaseActivity {
                 openPhoto();
                 break;
         }
+    }
+
+    @Override
+    protected void initListeners() {
+        etPersonDataIntroduce.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int len = charSequence.length();
+                if (len > 20) {
+                    etPersonDataIntroduce.setText(charSequence.toString().substring(0, 20)); //设置EditText只显示前面6位字符
+                    etPersonDataIntroduce.setSelection(20);//让光标移至末端
+                    asyncShowToast("个人介绍不能大于20个字符");
+                }
+                return;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
 
     public void saveInfo(View view) {

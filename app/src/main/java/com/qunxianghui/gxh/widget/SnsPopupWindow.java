@@ -118,8 +118,8 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
             addAction(new ActionItem("点赞"));
             digBtn.setText("点赞");
         } else {
-            digBtn.setText("取消赞");
-            addAction(new ActionItem("取消赞"));
+            addAction(new ActionItem("取消"));
+            digBtn.setText("取消");
         }
         if (collect == null || collect.length() == 0) {
             addAction(new ActionItem("举报"));
@@ -144,21 +144,18 @@ public class SnsPopupWindow extends PopupWindow implements OnClickListener {
         collection.setBounds(0, 0, collection.getIntrinsicWidth(), collection.getIntrinsicHeight());
         if (listBean.getCollect().equals("true") && listBean.getLike_info_res().equalsIgnoreCase("true")) {
             colletBtn.setCompoundDrawables(null, null, null, null);
-            digBtn.setCompoundDrawables(null, null, null, null);
+            digBtn.setCompoundDrawables(like, null, null, null);
             this.setWidth(DensityUtil.dip2px(context, 250));
         } else if (listBean.getCollect().equals("true")) {
             colletBtn.setCompoundDrawables(null, null, null, null);
             digBtn.setCompoundDrawables(like, null, null, null);
             this.setWidth(DensityUtil.dip2px(context, 230));
         } else if (listBean.getLike_info_res().equalsIgnoreCase("true")) {
-
             colletBtn.setCompoundDrawables(collection, null, null, null);
-            digBtn.setCompoundDrawables(null, null, null, null);
+            digBtn.setCompoundDrawables(like, null, null, null);
             this.setWidth(DensityUtil.dip2px(context, 220));
         } else {
-
             this.setWidth(DensityUtil.dip2px(context, 200));
-
             digBtn.setCompoundDrawables(like, null, null, null);
             colletBtn.setCompoundDrawables(collection, null, null, null);
         }

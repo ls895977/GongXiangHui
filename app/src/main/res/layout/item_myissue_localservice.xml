@@ -10,7 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/icon_advert_image_text" />
+        android:src="@mipmap/default_img" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,8 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="5dp"
-            android:text="$99.00"
-            android:textColor="#f00"
+            android:drawableLeft="@mipmap/icon_list_localservice_phone"
+            android:drawablePadding="5dp"
+            android:text="99.00"
             android:textSize="12sp" />
 
         <TextView
@@ -46,6 +47,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/tv_myissue_doller"
+            android:drawableLeft="@mipmap/icon_list_localservice_call"
+            android:drawablePadding="5dp"
             android:gravity="right"
             android:text="电话:0571-26352364"
             android:textSize="12sp" />

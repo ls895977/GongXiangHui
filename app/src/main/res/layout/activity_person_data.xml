@@ -94,8 +94,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1"
-                android:focusable="true"
                 android:background="@null"
+                android:focusable="true"
                 android:gravity="right"
                 android:hint="请设置昵称"
                 android:textSize="13sp" />
@@ -123,8 +123,8 @@
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:gravity="right"
                 android:focusable="true"
+                android:gravity="right"
 
                 android:hint="请设置姓名"
 
@@ -209,9 +209,9 @@
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:focusable="true"
                 android:gravity="right"
                 android:hint="请填写邮箱"
-                android:focusable="true"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
@@ -238,9 +238,9 @@
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:focusable="true"
                 android:gravity="right"
                 android:hint="请填写公司名"
-                android:focusable="true"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
@@ -266,9 +266,9 @@
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:focusable="true"
                 android:gravity="right"
                 android:hint="请填写职位"
-                android:focusable="true"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
 
@@ -295,10 +295,10 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:focusable="true"
                 android:gravity="end|center_vertical"
                 android:hint="请输入具体的街道,楼盘号等"
                 android:lines="3"
-                android:focusable="true"
                 android:paddingEnd="5dp"
                 android:textColor="#C1C1C1"
                 android:textSize="13sp" />
@@ -331,8 +331,10 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="5dp"
                 android:background="@null"
+                android:gravity="top"
                 android:hint="请填写个人介绍(最多20字)"
                 android:lines="3"
+                android:padding="8dp"
                 android:paddingBottom="25dp"
                 android:paddingStart="15dp"
                 android:textSize="13sp"

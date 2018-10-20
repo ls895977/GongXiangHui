@@ -27,7 +27,7 @@ public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssue
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, final MineIssueLocalServiceBean.DataBean dataBean) {
+    protected void convert(MyViewHolder holder, final int position, final MineIssueLocalServiceBean.DataBean dataBean) {
         holder.setText(R.id.tv_myissue_localservice_title, dataBean.getCompany_name());
         holder.setText(R.id.tv_myissue_localservice_phone, dataBean.getMobile());
         holder.setText(R.id.tv_myissue_localservice_call, dataBean.getTel());
@@ -49,7 +49,7 @@ public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssue
             public void onClick(View v) {
                 if (!isShow) {
                     if (mCallback != null) mCallback.callback(dataBean.getId());
-
+                    mCallback.onItemClick(position);
                 } else {
                     checkBox.performClick();
                 }
@@ -64,7 +64,11 @@ public class MyIssueLocalServiceAdapter extends BaseRecycleViewAdapter<MineIssue
 
     public interface Callback {
         void callback(int id);
+        void onItemClick(int position);
+
     }
+
+
 
 
 }

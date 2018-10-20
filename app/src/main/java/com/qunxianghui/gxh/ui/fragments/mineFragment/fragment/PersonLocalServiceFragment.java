@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.qunxianghui.gxh.bean.mine.MineIssueLocalServiceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LocalServiceDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ import java.util.Observer;
 
 import butterknife.BindView;
 
-public class PersonLocalServiceFragment extends BaseFragment implements Observer {
+public class PersonLocalServiceFragment extends BaseFragment implements Observer, MyIssueLocalServiceAdapter.Callback {
 
     @BindView(R.id.xrecycler_persondetail_post)
     XRecyclerView xrecyclerPersondetailPost;
@@ -109,6 +112,7 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
                 if (mIsFirst) {
                     mIsFirst = false;
                     mAdapter = new MyIssueLocalServiceAdapter(getContext(), mList);
+                    mAdapter.setCallback(this);
                     xrecyclerPersondetailPost.setAdapter(mAdapter);
 //                    mAdapter.setCallback(new MyIssueLocalServiceAdapter.Callback() {
 //                    @Override
@@ -222,5 +226,20 @@ public class PersonLocalServiceFragment extends BaseFragment implements Observer
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
+    }
+
+    @Override
+    public void callback(int id) {
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("localservice", mList.get(position));
+        bundle.putInt("position",1);
+        Intent intent = new Intent(getContext(), LocalServiceDetailActivity.class);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
     }
 }

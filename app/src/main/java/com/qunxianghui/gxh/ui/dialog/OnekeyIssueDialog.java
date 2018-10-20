@@ -35,10 +35,8 @@ public class OnekeyIssueDialog extends Dialog {
         super(context);
         mActicity = ((Activity) context);
         View view = LayoutInflater.from(context).inflate(R.layout.pop_onekey_issue, null);
-
         View.OnClickListener listener = new View.OnClickListener() {
             Intent intent = null;
-
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -121,7 +119,6 @@ public class OnekeyIssueDialog extends Dialog {
             bmp.recycle();
         }
         mFinalBlurBg = blurBg;
-
         findViewById(R.id.pop_ll2).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.one_key_issue_ll2));
         findViewById(R.id.pop_ll1).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.one_key_issue_ll1));
 

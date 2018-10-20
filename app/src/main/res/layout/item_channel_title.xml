@@ -20,10 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="点击进入频道"
+        android:text="点击编辑修改频道"
         android:textColor="@android:color/darker_gray"
-        android:textSize="14sp"
-        android:visibility="gone" />
+        android:textSize="14sp" />
 
     <View
         android:layout_width="0dp"

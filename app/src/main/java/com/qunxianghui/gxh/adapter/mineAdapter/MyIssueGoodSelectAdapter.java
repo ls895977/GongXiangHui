@@ -27,7 +27,7 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
     }
 
     @Override
-    protected void convert(MyViewHolder holder, int position, final MyIssueGoodSelectBean.DataBean dataBean) {
+    protected void convert(MyViewHolder holder, final int position, final MyIssueGoodSelectBean.DataBean dataBean) {
         holder.setText(R.id.tv_myissue_title, dataBean.getTitle());
         holder.setText(R.id.tv_myissue_doller, "￥" + dataBean.getPrice());
         ImageView mMyIssueGoodSelect = holder.getView(R.id.iv_myissue_goodselect_pic);
@@ -47,6 +47,7 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
             public void onClick(View v) {
                 if (!isShow) {
                     if (mCallback != null) mCallback.callback(dataBean.getId());
+                    mCallback.onItemClickListener(position);
                 } else {
                     checkBox.performClick();
                 }
@@ -61,6 +62,8 @@ public class MyIssueGoodSelectAdapter extends BaseRecycleViewAdapter<MyIssueGood
 
     public interface Callback {
         void callback(int id);
+        void onItemClickListener(int position);
+
     }
 
 }
