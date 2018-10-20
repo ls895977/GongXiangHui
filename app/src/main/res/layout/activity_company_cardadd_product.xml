@@ -106,8 +106,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@null"
+                    android:gravity="top"
                     android:hint="请填写产品介绍(必填)"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:textColor="#B2B2B2"
                     android:textSize="13sp" />
             </LinearLayout>

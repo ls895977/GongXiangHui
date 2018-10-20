@@ -1,5 +1,7 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import com.qunxianghui.gxh.bean.mine.MyIssueGoodSelectBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.observer.EventManager;
+import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LocalServiceDetailActivity;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDetailActivity;
 
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import butterknife.Unbinder;
 /**
  * 精选
  */
-public class MyIssueGoodSelectFragment extends BaseFragment implements Observer {
+public class MyIssueGoodSelectFragment extends BaseFragment implements Observer, MyIssueGoodSelectAdapter.Callback {
 
     @BindView(R.id.xrecler_myissue_goodselect)
     XRecyclerView mRv;
@@ -174,6 +177,7 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
                 if (mIsFirst) {
                     mIsFirst = false;
                     mAdapter = new MyIssueGoodSelectAdapter(getContext(), mList);
+                    mAdapter.setCallback(this);
                     mRv.setAdapter(mAdapter);
                 }
             }
@@ -211,5 +215,20 @@ public class MyIssueGoodSelectFragment extends BaseFragment implements Observer 
         });
     }
 
+    @Override
+    public void callback(int id) {
+
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("goodselect", mList.get(position));
+        bundle.putInt("position",2);
+        Intent intent = new Intent(getContext(), LocalServiceDetailActivity.class);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
+
+    }
 }
 

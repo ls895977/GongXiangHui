@@ -91,10 +91,11 @@
                     android:textSize="14sp" />
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:hint="点击加入导航"
+                    android:hint="点击编辑,可添加频道"
                     android:textSize="11sp" />
 
             </LinearLayout>

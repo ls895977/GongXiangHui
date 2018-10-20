@@ -154,7 +154,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
 
 

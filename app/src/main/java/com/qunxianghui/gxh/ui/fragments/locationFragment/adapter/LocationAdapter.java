@@ -99,7 +99,7 @@ public class LocationAdapter  extends BaseMultiItemQuickAdapter<ChannelItem, Bas
         switch (baseViewHolder.getItemViewType()) {
             case 1:
                 baseViewHolder.setText(R.id.tvTitle, channel.channelName);
-                baseViewHolder.setText(R.id.tv_sort, "点击进入频道");
+                baseViewHolder.setText(R.id.tv_sort, "");
                 baseViewHolder.getView(R.id.tv_edit).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -209,7 +209,7 @@ public class LocationAdapter  extends BaseMultiItemQuickAdapter<ChannelItem, Bas
                 break;
             case 2:
                 baseViewHolder.setText(R.id.tvTitle, channel.channelName)
-                        .setText(R.id.tv_sort, "点击添加频道")
+                        .setText(R.id.tv_sort, "(点击编辑,可添加频道)")
                         .setVisible(R.id.tv_edit, false);
 //                baseViewHolder.getView(R.id.tv_sort).setTag(false);
                 break;

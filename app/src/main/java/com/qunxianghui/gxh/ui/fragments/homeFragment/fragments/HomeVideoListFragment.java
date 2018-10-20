@@ -61,7 +61,6 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
     private int playTop;
     private int playBottom;
     boolean mFull = false;
-
     @Override
     public int getLayoutId() {
         return R.layout.fragment_homevideo_list;
@@ -77,12 +76,9 @@ public class HomeVideoListFragment extends BaseFragment implements PersonDetailV
         //自定播放帮助类
         scrollCalculatorHelper = new ScrollCalculatorHelper(R.id.video_item_player, playTop, playBottom);
         personDetailVideoAdapter = new PersonDetailVideoAdapter(mActivity, mLinearLayoutManager, videoDataList);
-
-
         listVideoUtil = new ListVideoUtil(getActivity());
         listVideoUtil.setHideStatusBar(true);
         listVideoUtil.setNeedLockFull(true);
-
         personDetailVideoAdapter.setListVideoUtil(listVideoUtil);
         mRv.setAdapter(personDetailVideoAdapter);
 

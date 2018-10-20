@@ -177,6 +177,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
         } else {
             mIsUploadIng = true;
             mLlLoad.setVisibility(View.VISIBLE);
+            mTvAddProductSave.setClickable(false);
             upLoadPic(mAdapter.getImages().get(0).path);
         }
     }

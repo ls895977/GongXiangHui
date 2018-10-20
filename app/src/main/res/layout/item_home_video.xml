@@ -18,7 +18,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="10dp"
         android:layout_marginTop="165dp"
-        android:src="@mipmap/default_img" />
+        android:src="@mipmap/user_moren" />
 
 
     <RelativeLayout
@@ -40,6 +40,7 @@
                 android:id="@+id/tv_mycollect_video_attention"
                 android:layout_width="50dp"
                 android:layout_height="20dp"
+
                 android:background="@drawable/shape_button"
                 android:gravity="center"
                 android:text="+关注"
@@ -50,7 +51,7 @@
                 android:id="@+id/tv_item_collect_video_personname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
+                android:layout_marginLeft="5dp"
                 android:gravity="center"
                 android:text="香馍馍"
                 android:textColor="#2D2D2D"

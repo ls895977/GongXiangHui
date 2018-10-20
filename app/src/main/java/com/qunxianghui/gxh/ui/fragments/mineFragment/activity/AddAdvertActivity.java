@@ -118,7 +118,7 @@ public class AddAdvertActivity extends BaseActivity {
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(false);
         settings.setBlockNetworkImage(false); // 解决图片不显示
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){ settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){ settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
 
         /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的显示 */

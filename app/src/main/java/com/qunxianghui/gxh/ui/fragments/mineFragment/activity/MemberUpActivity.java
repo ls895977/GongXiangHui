@@ -102,7 +102,7 @@ public class MemberUpActivity extends BaseActivity implements View.OnClickListen
             RequestOptions options = new RequestOptions();
             options.circleCrop();
             options.centerCrop();
-            options.placeholder(R.mipmap.default_img);
+            options.placeholder(R.mipmap.user_moren);
             options.error(R.mipmap.default_img);
             Glide.with(mContext).load(avatar).apply(options).into(roundImageHead);
             viewList.add(view);

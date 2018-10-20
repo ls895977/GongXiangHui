@@ -2,7 +2,9 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -113,6 +115,54 @@ public class AddAdvanceActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void initListeners() {
+        mEtAddAdvanceIntroduce.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int len = charSequence.length();
+                if (len > 50) {
+                    mEtAddAdvanceIntroduce.setText(charSequence.toString().substring(0, 50)); //设置EditText只显示前面6位字符
+                    asyncShowToast("优势介绍不能大于50个字符");
+                }
+                return;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mEtAddAdvanceTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int len = charSequence.length();
+                if (len > 15) {
+                    mEtAddAdvanceTitle.setText(charSequence.toString().substring(0, 15)); //设置EditText只显示前面6位字符
+                    mEtAddAdvanceTitle.setSelection(15);//让光标移至末端
+                    asyncShowToast("标题不能大于15个字符");
+                }
+                return;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
     @OnClick({R.id.iv_add_advance_back, R.id.tv_add_advance_save, R.id.iv_add_advance_pic, R.id.tv_add_advance_delete, R.id.tv_add_advance_complete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -148,8 +198,10 @@ public class AddAdvanceActivity extends BaseActivity {
     private void saveAdvanceData() {
         String title = mEtAddAdvanceTitle.getText().toString().trim();
         String des = mEtAddAdvanceIntroduce.getText().toString().trim();
-        if (TextUtils.isEmpty(mPath) || TextUtils.isEmpty(title) || TextUtils.isEmpty(des)) {
+        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(des)) {
             asyncShowToast("标题或者简介为空,请检查一下");
+        } else if (TextUtils.isEmpty(mPath)) {
+            asyncShowToast("图片不能为空");
         } else {
             upLoadPic();
         }
@@ -176,6 +228,7 @@ public class AddAdvanceActivity extends BaseActivity {
 
     private void upLoadPic() {
         mLlLoad.setVisibility(View.VISIBLE);
+        mTvAddAdvanceSave.setClickable(false);
         OkGo.<CommonResponse<ImageBean>>post(Constant.UP_LOAD_OSS_PIC)
                 .params("base64", "data:image/jpeg;base64," + Utils.imageToBase64(mPath))
                 .execute(new DialogCallback<CommonResponse<ImageBean>>(this) {
@@ -266,4 +319,5 @@ public class AddAdvanceActivity extends BaseActivity {
                     }
                 });
     }
+
 }

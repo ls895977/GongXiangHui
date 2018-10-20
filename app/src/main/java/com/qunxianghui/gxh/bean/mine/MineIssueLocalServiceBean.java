@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.bean.mine;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class MineIssueLocalServiceBean {
@@ -38,7 +39,7 @@ public class MineIssueLocalServiceBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * id : 19
          * member_id : 1000038
