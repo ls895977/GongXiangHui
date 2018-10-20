@@ -1,12 +1,12 @@
 package com.qunxianghui.gxh.bean.location;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.qunxianghui.gxh.utils.GsonUtils;
 import com.qunxianghui.gxh.utils.ListUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -121,18 +121,19 @@ public class TestMode {
             private List<CommentBean> comment_res;
 
             public List<ClickLikeBean> getClick_like() {
-                if (tem != null && tem.size() > 0) {
+                if (tem != null) {
                     return tem;
                 }
-                List<ClickLikeBean> clickLikeBeanList = ListUtils.getNewArrayObjectList();
+                tem = ListUtils.getNewArrayObjectList();
                 if (!TextUtils.isEmpty(click_like.toString())) {
                     try {
-                        clickLikeBeanList = GsonUtils.jsonTypeTokenFromJson(click_like.toString(), new TypeToken<List<ClickLikeBean>>() {
-                        }.getType());
+                        tem =new Gson().fromJson(click_like.toString(), new TypeToken<List<ClickLikeBean>>() {}.getType());
                     } catch (Exception e) {
+//                        tem =new Gson().fromJson(click_like.toString(), new TypeToken<List<ClickLikeBean>>() {}.getType());
+                        Log.e("gson error", "gson error");
                     }
                 }
-                return clickLikeBeanList;
+                return tem;
             }
 
             public void setClick_like(Object click_like) {
@@ -148,11 +149,12 @@ public class TestMode {
             }
 
             public List<ClickLikeBean> getTem() {
-                if (tem == null || tem.size() == 0) {
-                    tem = new ArrayList<>();
-                    tem.addAll(getClick_like());
-                }
-                return tem;
+//                if (tem == null || tem.size() == 0) {
+//                    tem = new ArrayList<>();
+//                    tem.addAll(getClick_like());
+//                }
+//                return tem;
+                return getClick_like();
             }
 
             public int getId() {
