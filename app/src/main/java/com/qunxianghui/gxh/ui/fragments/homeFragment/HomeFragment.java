@@ -324,13 +324,13 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public void onLocationChanged(final AMapLocation aMapLocation) {
         if (aMapLocation != null) {
-            if (aMapLocation.getErrorCode() == 0) {
-                String cityName = aMapLocation.getDistrict();
-                mTvHomeLocation.setText(cityName);
-                requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
-            } else {
+//            if (aMapLocation.getErrorCode() == 0) {
+//                String cityName = aMapLocation.getDistrict();
+//                mTvHomeLocation.setText(cityName);
+//                requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
+//            } else {
                 setLocationFailed();
-            }
+//            }
         } else {
             setLocationFailed();
         }

@@ -23,7 +23,6 @@ import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.location.CommentBean;
 import com.qunxianghui.gxh.bean.location.ReplyCommentResponseBean;
 import com.qunxianghui.gxh.bean.location.TestMode;
-import com.qunxianghui.gxh.callback.DialogCallback;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.LoginMsgHelper;
@@ -316,36 +315,34 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
             mActivity.finish();
             return;
         }
-        if (locationBean.get(position).getClick_like() != null && locationBean.get(position).getClick_like().toString().length() == 0) {
-            if (locationBean.get(position).getClick_like().size() <= 0) {
-                locationBean.get(position).setClick_like(new ArrayList<TestMode.DataBean.ListBean.ClickLikeBean>());
-            }
-            TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
-            UserUtil user = UserUtil.getInstance();
-            like.setMember_name(user.mNick);
-            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = locationBean.get(position).getClick_like();
-            likeBeanList.add(like);
-            mAdapter.notifyDataSetChanged();
-            mAdapter.notifyItemChanged(position);
+        if (locationBean.get(position).getClick_like() != null && locationBean.get(position).getClick_like().size() == 0) {
+//            TestMode.DataBean.ListBean.ClickLikeBean like = new TestMode.DataBean.ListBean.ClickLikeBean();
+//            UserUtil user = UserUtil.getInstance();
+//            like.setMember_name(user.mNick);
+//            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = locationBean.get(position).getClick_like();
+//            likeBeanList.add(like);
+//            mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyItemChanged(position);
             OkGo.<String>post(Constant.LIKE_URL)
-                    .params("data_uuid", locationBean.get(position).getUuid()).execute(new DialogCallback<String>(getActivity()) {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
-                    UserUtil user = UserUtil.getInstance();
-                    like.setMember_name(user.mNick);
-                    List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = locationBean.get(position).getClick_like();
-                    likeBeanList.add(like);
-                    mAdapter.notifyDataSetChanged();
-                    mAdapter.notifyItemChanged(position);
-                }
+                    .params("data_uuid", locationBean.get(position).getUuid())
+                    .execute(new JsonCallback<String>() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            TestMode.DataBean.ListBean.ClickLikeBean like = GsonUtil.parseJsonWithGson(response.body(), TestMode.DataBean.ListBean.ClickLikeBean.class);
+                            UserUtil user = UserUtil.getInstance();
+                            like.setMember_name(user.mNick);
+                            locationBean.get(position).setLike_info_res("true");
+                            List<TestMode.DataBean.ListBean.ClickLikeBean> likeBeanList = locationBean.get(position).getClick_like();
+                            likeBeanList.add(like);
+                            mAdapter.notifyDataSetChanged();
+                        }
 
-                @Override
-                public void onError(Response<String> response) {
-                    super.onError(response);
-                    asyncShowToast("登陆账号异常");
-                }
-            });
+                        @Override
+                        public void onError(Response<String> response) {
+                            super.onError(response);
+                            asyncShowToast("登陆账号异常");
+                        }
+                    });
         } else {
             OkGo.<CommonBean>post(Constant.LIKE_URL)
                     .params("data_uuid", locationBean.get(position).getUuid())
@@ -359,23 +356,21 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                                 locationBean.get(position).getTem().add(clickLikeBean);
                                 locationBean.get(position).setLike_info_res("true");
                                 mAdapter.notifyDataSetChanged();
-                                mAdapter.notifyItemChanged(position);
                                 asyncShowToast(response.body().message);
                             } else if ("取消点赞成功".equals(response.body().message)) {
                                 List<TestMode.DataBean.ListBean.ClickLikeBean> list = locationBean.get(position).getTem();
                                 for (int i = 0; i < locationBean.get(position).getTem().size(); i++) {
                                     TestMode.DataBean.ListBean.ClickLikeBean tem = locationBean.get(position).getTem().get(i);
                                     if (tem.getMember_name().equalsIgnoreCase(user.mNick)) {
-                                        if (locationBean.get(position).getClick_like().size() == 1 && locationBean.get(position).getTem().size() == 1) {
-                                            locationBean.get(position).setClick_like("");
-                                        }
+//                                        if (locationBean.get(position).getClick_like().size() == 1 && locationBean.get(position).getTem().size() == 1) {
+//                                            locationBean.get(position).setClick_like("");
+//                                        }
                                         locationBean.get(position).getTem().remove(tem);
                                         break;
                                     }
                                 }
                                 locationBean.get(position).setLike_info_res("");
                                 mAdapter.notifyDataSetChanged();
-                                mAdapter.notifyItemChanged(position);
                                 asyncShowToast(response.body().message);
                             }
                         }
