@@ -102,6 +102,7 @@ public class HotPointFragment extends BaseFragment {
     public void initViews(View view) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int mHeight = dm.heightPixels;
+        int mWidth= dm.widthPixels;
 
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
@@ -126,7 +127,7 @@ public class HotPointFragment extends BaseFragment {
             View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, mRv, false);
             viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpagerHome.getLayoutParams();
-            layoutParams.height = mHeight * 7 / 30;
+            layoutParams.height = mWidth * 2/ 5;
             viewpagerHome.setLayoutParams(layoutParams);
 
             //加載首頁那个导航图//加载首页轮播图

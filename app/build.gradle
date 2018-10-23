@@ -21,13 +21,23 @@ android {
                 includeCompileClasspath false
             }
         }
-        manifestPlaceholders = [qqappid: "1106763297"]
+        manifestPlaceholders = [qqappid: "1106763297",
+                                JPUSH_PKGNAME: applicationId,
+                                JPUSH_APPKEY : "8ed279dd2708d3957b57a445", //JPush 上注册的包名对应的 Appkey.
+                                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
         ndk {
 
             //APP的build.gradle设置支持的SO库架构
-
-            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
         }
+
+        packagingOptions {
+            doNotStrip '*/mips/*.so'
+            doNotStrip '*/mips64/*.so'
+        }
+
     }
 
     signingConfigs {
@@ -61,7 +71,7 @@ android {
 }
 
 dependencies {
-     fileTree(include: ['*.jar'], dir: 'libs')
+    fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -125,5 +135,8 @@ dependencies {
     implementation 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.2'/*三方上拉加载*/
     implementation 'com.shuyu:gsyVideoPlayer-java:6.0.0-beta'
     implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.0-beta'
+/*极光推送*/
+    implementation 'cn.jiguang.sdk:jpush:3.1.6'  // 此处以JPush 3.1.6 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:1.2.5'  // 此处以JCore 1.2.5 版本为例。
 
 }

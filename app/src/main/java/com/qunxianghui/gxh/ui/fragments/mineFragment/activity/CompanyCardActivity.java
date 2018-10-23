@@ -57,6 +57,7 @@ public class CompanyCardActivity extends BaseActivity {
     private Dialog mDialog;
     private UMWeb mWeb;
     private UMShareListener umShareListener;
+    private CompanyCardBean.DataBean mData;
 
     @Override
     protected int getLayoutId() {
@@ -65,18 +66,26 @@ public class CompanyCardActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
     @Override
-    protected void setStatusBarColor(){
+    protected void setStatusBarColor() {
         //Window window = getWindow();
         //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         //window.setStatusBarColor(getResources().getColor(R.color.company_card_top_color));
     }
+
     @Override
-    protected void setStatusBarTextColor(){
-        StatusBarColorUtil.setStatusTextColor(false,this);
+    protected void setStatusBarTextColor() {
+        StatusBarColorUtil.setStatusTextColor(false, this);
     }
+
     @Override
-    protected void initData() {
-        super.initData();
+    protected void onStart() {
+        super.onStart();
+        RequestCompanyCardData();
+
+    }
+
+    /*请求企业名片的数据*/
+    private void RequestCompanyCardData() {
         OkGo.<CompanyCardBean>post(Constant.MINE_COMPANY_CARD_URL)
                 .execute(new JsonCallback<CompanyCardBean>() {
                     @Override
@@ -88,17 +97,23 @@ public class CompanyCardActivity extends BaseActivity {
 
     }
 
-    private void parseCompanyCardData( CompanyCardBean companyCardBean) {
+    @Override
+    protected void initData() {
+        super.initData();
+
+    }
+
+    private void parseCompanyCardData(CompanyCardBean companyCardBean) {
         int code = companyCardBean.getCode();
         if (code == 200) {
-            CompanyCardBean.DataBean data = companyCardBean.getData();
-            tvCompanyMobile.setText(data.getMobile());
-            mTvCompanyCardName.setText(data.getCompany_name());
-            mTvCompanyCardUsername.setText(data.getUsername());
-            tvCompanyEmail.setText(data.getEmail());
-            tvCompanyAdress.setText(data.getAddress());
-            tvCompanyDuty.setText(data.getDuty());
-            Glide.with(mContext).load(data.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.user_moren)
+            mData = companyCardBean.getData();
+            tvCompanyMobile.setText(mData.getMobile());
+            mTvCompanyCardName.setText(mData.getCompany_name());
+            mTvCompanyCardUsername.setText(mData.getUsername());
+            tvCompanyEmail.setText(mData.getEmail());
+            tvCompanyAdress.setText(mData.getAddress());
+            tvCompanyDuty.setText(mData.getDuty());
+            Glide.with(mContext).load(mData.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.user_moren)
                     .error(R.mipmap.user_moren).centerCrop().circleCrop()).into(mIvHead);
         }
     }
@@ -170,7 +185,7 @@ public class CompanyCardActivity extends BaseActivity {
                                 String content = mCompanyCardData.getString("content");
                                 String url = mCompanyCardData.getString("url");
                                 shareCompanyCardInfo(avatar, title, content, url);
-                            }else {
+                            } else {
                                 asyncShowToast(message);
                             }
                         } catch (Exception e) {

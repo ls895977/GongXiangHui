@@ -28,9 +28,12 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 public class MyApplication extends MultiDexApplication {
@@ -62,8 +65,11 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        JPushInterface.setDebugMode(true);
+        initJPush();
         SINSTANCE = this;
         appManager = AppManager.getAppManager();
+        //TODO: 设置开启日志,发布时请关闭日志
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
@@ -77,6 +83,15 @@ public class MyApplication extends MultiDexApplication {
         Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();
+    }
+
+    private void initJPush() {
+        //初始化极光推送
+        JPushInterface.init(this);
+        Set<String> set = new HashSet<>();
+        set.add("群享汇");//名字任意，可多添加几个,能区别就好了
+        JPushInterface.setTags(this, set, null);//设置标签
+
     }
 
     private void initOkGo() {

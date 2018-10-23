@@ -1,6 +1,8 @@
 package com.qunxianghui.gxh.bean.mine;
 
-public class CompanyCardBean {
+import java.io.Serializable;
+
+public class CompanyCardBean implements Serializable{
 
     /**
      * code : 200
@@ -36,7 +38,7 @@ public class CompanyCardBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * username : 共享云
          * duty :
@@ -109,5 +111,7 @@ public class CompanyCardBean {
         public void setAddress(String address) {
             this.address = address;
         }
+
+
     }
 }
