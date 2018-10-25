@@ -47,6 +47,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2018/3/10 0010.
  */
 public class PersonDataActivity extends BaseActivity {
+
     @BindView(R.id.et_person_data_nickName)
     EditText etPersonDataNickName;
     @BindView(R.id.tv_person_data_sex)
@@ -144,7 +145,6 @@ public class PersonDataActivity extends BaseActivity {
                     etPersonDataIntroduce.setSelection(20);//让光标移至末端
                     asyncShowToast("个人介绍不能大于20个字符");
                 }
-                return;
             }
 
             @Override
@@ -194,6 +194,7 @@ public class PersonDataActivity extends BaseActivity {
                             Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
                             //用户昵称被修改了
                             UserUtil.getInstance().mNick = nickName;
+                            setResult(0x0077);
                             finish();
                         } else {
                             asyncShowToast("保存失败" + response.body().message);
