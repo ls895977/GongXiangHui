@@ -24,7 +24,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
-import com.qunxianghui.gxh.bean.mine.CompanyCardBean;
+import com.qunxianghui.gxh.bean.mine.UserInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
@@ -57,7 +57,7 @@ public class CompanyCardActivity extends BaseActivity {
     private Dialog mDialog;
     private UMWeb mWeb;
     private UMShareListener umShareListener;
-    private CompanyCardBean.DataBean mData;
+    private UserInfo.DataBean mData;
 
     @Override
     protected int getLayoutId() {
@@ -79,27 +79,34 @@ public class CompanyCardActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        OkGo.<CompanyCardBean>post(Constant.MINE_COMPANY_CARD_URL)
-                .execute(new JsonCallback<CompanyCardBean>() {
+//        OkGo.<CompanyCardBean>post(Constant.MINE_COMPANY_CARD_URL)
+//                .execute(new JsonCallback<CompanyCardBean>() {
+//                    @Override
+//                    public void onSuccess(Response<CompanyCardBean> response) {
+//                        parseCompanyCardData(response.body());
+//                    }
+//
+//                });
+        OkGo.<UserInfo>post(Constant.CATCH_USERDATA_URL).
+                execute(new JsonCallback<UserInfo>() {
                     @Override
-                    public void onSuccess(Response<CompanyCardBean> response) {
+                    public void onSuccess(Response<UserInfo> response) {
                         parseCompanyCardData(response.body());
                     }
-
                 });
     }
 
-    private void parseCompanyCardData(CompanyCardBean companyCardBean) {
-        int code = companyCardBean.getCode();
-        if (code == 200) {
-            mData = companyCardBean.getData();
-            tvCompanyMobile.setText(mData.getMobile());
-            mTvCompanyCardName.setText(mData.getCompany_name());
-            mTvCompanyCardUsername.setText(mData.getUsername());
-            tvCompanyEmail.setText(mData.getEmail());
-            tvCompanyAdress.setText(mData.getAddress());
-            tvCompanyDuty.setText(mData.getDuty());
-            Glide.with(mContext).load(mData.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.user_moren)
+    private void parseCompanyCardData(UserInfo userInfo) {
+        int code = userInfo.code;
+        if (code == 0) {
+            mData = userInfo.data;
+            tvCompanyMobile.setText(mData.mobile);
+            mTvCompanyCardName.setText(mData.company_name);
+            mTvCompanyCardUsername.setText(mData.username);
+            tvCompanyEmail.setText(mData.email);
+            tvCompanyAdress.setText(mData.address);
+            tvCompanyDuty.setText(mData.duty);
+            Glide.with(mContext).load(mData.avatar).apply(new RequestOptions().placeholder(R.mipmap.user_moren)
                     .error(R.mipmap.user_moren).centerCrop().circleCrop()).into(mIvHead);
         }
     }
@@ -146,7 +153,9 @@ public class CompanyCardActivity extends BaseActivity {
                 toActivity(ComPanyProductActivity.class);
                 break;
             case R.id.rl_company_card_adress_edit:
+                if (mData == null) return;
                 Intent intent = getIntent();
+                intent.putExtra("userinfo", mData);
                 intent.setClass(CompanyCardActivity.this, PersonDataActivity.class);
                 startActivityForResult(intent, 0x888);
                 break;

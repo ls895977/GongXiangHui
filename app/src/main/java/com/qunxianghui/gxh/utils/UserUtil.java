@@ -51,8 +51,8 @@ public class UserUtil {
                         super.onError(response);
                     }
                 });
-
     }
+
     private void parseUserData(String body) {
         try {
             JSONObject jsonObject = new JSONObject(body);
