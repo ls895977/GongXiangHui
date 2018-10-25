@@ -10,6 +10,7 @@
         style="@style/AdEditTextStyle"
         android:hint="产品名称"
         android:inputType="text"
+        android:maxLength="15"
         android:maxLines="2" />
 
     <include layout="@layout/ad_view_divider" />
@@ -38,8 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
-        android:visibility="gone"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/ivShop"

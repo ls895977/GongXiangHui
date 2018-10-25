@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -881,6 +882,8 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
         EditText etMobile = item2.findViewById(R.id.etPrice);
         EditText etLink = item2.findViewById(R.id.etLink);
         etQQ.setHint("店铺或公司名称");
+        etQQ.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
+        etQQ.setMaxLines(2);
         etMobile.setHint("联系电话");
         etLink.setVisibility(View.GONE);
         etQQ.addTextChangedListener(new NewTextWatcher() {

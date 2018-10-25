@@ -21,6 +21,7 @@
                 style="@style/AdEditTextStyle"
                 android:layout_marginTop="10dp"
                 android:hint="广告标语"
+                android:maxLength="15"
                 android:singleLine="true" />
 
             <include layout="@layout/ad_view_divider" />
@@ -41,6 +42,7 @@
                 style="@style/AdEditTextStyle"
                 android:ellipsize="end"
                 android:hint="请填写广告介绍"
+                android:maxLength="30"
                 android:lines="1" />
 
             <include layout="@layout/ad_view_divider" />

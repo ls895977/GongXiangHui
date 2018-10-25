@@ -27,6 +27,7 @@
                 android:id="@+id/etDes"
                 style="@style/AdEditTextStyle"
                 android:hint="广告介绍"
+                android:maxLength="30"
                 android:maxLines="2" />
 
             <include layout="@layout/ad_view_divider" />

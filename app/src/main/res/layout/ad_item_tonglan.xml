@@ -39,7 +39,7 @@
                 style="@style/AdEditTextStyle"
                 android:hint="请填写联系电话"
                 android:inputType="phone"
-                android:maxLength="15"
+                android:maxLength="11"
                 android:singleLine="true"
                 android:visibility="gone" />
 
