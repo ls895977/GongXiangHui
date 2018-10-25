@@ -47,7 +47,6 @@ import butterknife.OnClick;
  * Created by Administrator on 2018/3/10 0010.
  */
 public class PersonDataActivity extends BaseActivity {
-
     @BindView(R.id.et_person_data_nickName)
     EditText etPersonDataNickName;
     @BindView(R.id.tv_person_data_sex)

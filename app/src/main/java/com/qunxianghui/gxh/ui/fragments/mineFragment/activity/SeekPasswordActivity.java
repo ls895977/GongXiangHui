@@ -69,7 +69,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             case R.id.et_seekPassword_phoneNumber:
                 break;
             case R.id.tv_seekPassword_code:
-                if (Utils.isTwoClick()){
+                if (Utils.isTwoClick()) {
                     getVertifiCode();
                 }
 
@@ -123,13 +123,13 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
                         if (responseBean.getCode() == 0) {
                             handler.sendEmptyMessage(MSG_SEND_SUCCESS);
                         } else {
-                            handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                            asyncShowToast(responseBean.getMessage());
                         }
                     }
 
                     @Override
                     public void onError(Response<GeneralResponseBean> response) {
-                        handler.sendEmptyMessage(MSG_SEND_CODE_ERROR);
+                        asyncShowToast(response.body().getMessage());
                     }
                 });
 

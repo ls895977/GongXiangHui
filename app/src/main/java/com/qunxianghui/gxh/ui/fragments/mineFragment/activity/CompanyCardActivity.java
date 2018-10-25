@@ -77,12 +77,7 @@ public class CompanyCardActivity extends BaseActivity {
         StatusBarColorUtil.setStatusTextColor(false, this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        RequestCompanyCardData();
 
-    }
 
     /*请求企业名片的数据*/
     private void RequestCompanyCardData() {
@@ -100,6 +95,7 @@ public class CompanyCardActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        RequestCompanyCardData();
 
     }
 
@@ -162,7 +158,7 @@ public class CompanyCardActivity extends BaseActivity {
             case R.id.rl_company_card_adress_edit:
                 Intent intent = getIntent();
                 intent.setClass(CompanyCardActivity.this, PersonDataActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,0x888);
                 break;
         }
     }
@@ -298,4 +294,11 @@ public class CompanyCardActivity extends BaseActivity {
         asyncShowToast("复制成功");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==0x888&&resultCode == 0x0077) {
+            RequestCompanyCardData();
+        }
+    }
 }

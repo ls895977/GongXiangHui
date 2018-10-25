@@ -390,6 +390,19 @@
         <!--服务-->
         <service android:name="com.amap.api.location.APSService" />
         <!-- 替换原生极光推送接收器 -->
+
+
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
         <receiver
             android:name=".widget.MyJPushReceiver"
             android:enabled="true"
@@ -404,19 +417,6 @@
                 <category android:name="com.qunxianghui.gxh" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name="cn.jpush.android.service.PushService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-
     </application>
 
 </manifest>

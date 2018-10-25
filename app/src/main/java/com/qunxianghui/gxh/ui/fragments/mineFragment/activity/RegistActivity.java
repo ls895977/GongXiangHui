@@ -88,8 +88,6 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 final String registCode = etRegistCode.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pass)) {
                     asyncShowToast("手机号和密码不能为空");
-                } else if (!REGutil.checkCellphone(phone)) {
-                    asyncShowToast("手机号格式不对");
                 } else if (!chRegist.isChecked()) {
                     asyncShowToast("请勾选用户协议");
                 } else {

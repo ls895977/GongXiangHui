@@ -25,7 +25,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.ui.activity.MainActivity;
-import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.UserUtil;
 import com.umeng.socialize.UMAuthListener;
@@ -183,8 +182,6 @@ public class LoginActivity extends BaseActivity {
                 String password = etLoginPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
                     asyncShowToast("手机号和密码不能为空");
-                } else if (!REGutil.checkCellphone(phone)) {
-                    asyncShowToast("手机号格式不正确");
                 } else {
                     doLogin(phone, password);
                 }

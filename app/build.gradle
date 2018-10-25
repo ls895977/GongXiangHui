@@ -21,7 +21,7 @@ android {
                 includeCompileClasspath false
             }
         }
-        manifestPlaceholders = [qqappid: "1106763297",
+        manifestPlaceholders = [qqappid      : "1106763297",
                                 JPUSH_PKGNAME: applicationId,
                                 JPUSH_APPKEY : "8ed279dd2708d3957b57a445", //JPush 上注册的包名对应的 Appkey.
                                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
@@ -49,6 +49,10 @@ android {
             v2SigningEnabled true
         }
     }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
 
     buildTypes {
         debug {
@@ -75,6 +79,8 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    implementation project(':AlibabaSDK')
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'

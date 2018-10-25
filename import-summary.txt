@@ -33,3 +33,18 @@ Component-Tools.
 
 (This import summary is for your information only, and can be deleted
 after import once you are satisfied with the results.)
+-keepattributes Signature
+-keep class sun.misc.Unsafe { *; }
+-keep class com.taobao.** {*;}
+-keep class com.alibaba.** {*;}
+-keep class com.alipay.** {*;}
+-dontwarn com.taobao.**
+-dontwarn com.alibaba.**
+-dontwarn com.alipay.**
+-keep class com.ut.** {*;}
+-dontwarn com.ut.**
+-keep class com.ta.** {*;}
+-dontwarn com.ta.**
+---------------------
+
+

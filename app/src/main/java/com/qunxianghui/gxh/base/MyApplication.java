@@ -67,6 +67,7 @@ public class MyApplication extends MultiDexApplication {
         super.onCreate();
         JPushInterface.setDebugMode(true);
         initJPush();
+        initAliBaba();
         SINSTANCE = this;
         appManager = AppManager.getAppManager();
         //TODO: 设置开启日志,发布时请关闭日志
@@ -84,6 +85,23 @@ public class MyApplication extends MultiDexApplication {
         initOkGo();
         initThirdLib();
     }
+
+    /*阿里百川*/
+    private void initAliBaba() {
+//        AlibabaSDK.asyncInit(this, new InitResultCallback() {
+//            @Override
+//            public void onSuccess() {
+//                Log.d("阿里百川", "AlibabaSDK init success.");
+//            }
+//
+//            @Override
+//            public void onFailure(int i, String s) {
+//                Log.i("阿里百川", "AlibabaSDK init failure");
+//            }
+//
+//        });
+    }
+
 
     private void initJPush() {
         //初始化极光推送
