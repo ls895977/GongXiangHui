@@ -299,13 +299,32 @@
                 android:background="#F7F7F7" />
 
             <RelativeLayout
+                android:id="@+id/ll_mine_services_center"
+                style="@style/MineRelativeStyle">
+
+                <TextView
+                    style="@style/MineListStyle"
+
+                    android:drawableStart="@mipmap/mine_add_call"
+                    android:text="客服中心" />
+
+                <ImageView
+                    style="@style/rightBackStyle"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <View style="@style/MinedividerStyle" />
+
+
+            <RelativeLayout
                 android:id="@+id/ll_mine_set"
                 style="@style/MineRelativeStyle">
 
                 <TextView
                     style="@style/MineListStyle"
+
                     android:drawableStart="@mipmap/system_set"
-                    android:text="设置" />
+                    android:text="系统设置" />
 
                 <ImageView
                     style="@style/rightBackStyle"

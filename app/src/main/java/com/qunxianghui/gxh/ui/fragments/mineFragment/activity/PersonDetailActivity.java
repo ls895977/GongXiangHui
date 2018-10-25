@@ -81,6 +81,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        mTv0.setSelected(true);
         final Intent intent = getIntent();
         member_id = intent.getIntExtra("member_id", 1);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -89,18 +90,18 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
         params.height = height / 3;
         rlPersondetailBg.setLayoutParams(params);
         rlPersondetailBg.setBackground(ContextCompat.getDrawable(this, mBgs[new Random().nextInt(4) % 5]));
-    }
 
+    }
 
     @Override
     protected void initData() {
         FetchPersonData();
-        mTv0.setSelected(true);
-        fragments.add(new PersonDetailBaoLiaoFragment());
+
         fragments.add(new PersonDetailVideoFragment());
         LocationDetailFragment locationDetailFragment = new LocationDetailFragment();
         locationDetailFragment.mMemberId = member_id;
         fragments.add(locationDetailFragment);
+        fragments.add(new PersonDetailBaoLiaoFragment());
         fragments.add(new PersonLocalServiceFragment());
         fragments.add(new MyIssueGoodSelectFragment());
         MineTabViewPagerAdapter mineTabViewPagerAdapter = new MineTabViewPagerAdapter(getSupportFragmentManager(), fragments, null);
@@ -111,6 +112,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
                 setAllSelect();
@@ -153,6 +155,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                 });
     }
+
     //解析用户的详情资料
     private void parseUserDetailInfo(UserDetailInfoBean userDetailInfoBean) {
         if (userDetailInfoBean.getCode() == 200) {
@@ -165,7 +168,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             } else {
                 tvPersonDetailAttention.setText("已关注");
             }
-            if (nick!=null) {
+            if (nick != null) {
                 tvPersonDetailName.setText(dataList.getNick());
                 tvPersonDetailName.setVisibility(View.VISIBLE);
             }

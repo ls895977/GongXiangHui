@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +41,9 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -62,6 +67,9 @@ public class MineFragment extends BaseFragment {
     TextView mTvMineFans;
     @BindView(R.id.tv_minemesssage_count)
     TextView tvMineMesssageCount;
+    @BindView(R.id.ll_mine_services_center)
+    RelativeLayout llMineServicesCenter;
+    Unbinder unbinder;
 
     private UserInfo.DataBean mUserInfo;
     private boolean mIsFirst = true;
@@ -137,7 +145,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick({R.id.rl_company_card, R.id.rl_mine_message, R.id.mine_fabu, R.id.hezuo_call, R.id.rl_up_step, R.id.write_advertise, R.id.ll_mine_post,
-            R.id.ll_mine_fans, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect})
+            R.id.ll_mine_fans, R.id.ll_mine_set, R.id.rl_mine_person_data, R.id.ll_mine_mycollect, R.id.ll_mine_services_center})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -193,6 +201,10 @@ public class MineFragment extends BaseFragment {
                 if (isLogin())
                     toActivity(MyCollectActivity.class);
                 break;
+
+            case R.id.ll_mine_services_center:
+                asyncShowToast("点击了客服中心");
+                break;
         }
     }
 
@@ -202,6 +214,20 @@ public class MineFragment extends BaseFragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 //    private void requestCall(final String mobile) {
