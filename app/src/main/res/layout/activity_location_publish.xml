@@ -114,7 +114,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#F5F5F5" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -129,7 +128,6 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:visibility="gone">
-
         <ProgressBar
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -137,7 +135,6 @@
             android:indeterminateBehavior="repeat"
             android:indeterminateDrawable="@drawable/dialog_loading"
             android:indeterminateOnly="true" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

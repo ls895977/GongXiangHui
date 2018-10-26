@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation fileTree(include: '*.jar', dir: 'libs')
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 8

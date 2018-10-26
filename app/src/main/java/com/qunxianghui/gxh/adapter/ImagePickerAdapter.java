@@ -19,10 +19,14 @@ import java.util.List;
 public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.SelectedPicViewHolder> {
     private int maxImgCount;
     private Context mContext;
-    private List<ImageItem> mData;
+    public List<ImageItem> mData;
     private LayoutInflater mInflater;
     private OnRecyclerViewItemClickListener listener;
     private boolean isAdded;   //是否额外添加了最后一个图片
+    private OnImageBack onImageBack;
+    public void setOnImageBack(OnImageBack onImageBack) {
+        this.onImageBack = onImageBack;
+    }
 
     public interface OnRecyclerViewItemClickListener {
         void onItemClick(View view, int position);
@@ -73,15 +77,16 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
 
     public class SelectedPicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView iv_img;
+        private ImageView iv_img, delete;
         private int clickPosition;
 
         public SelectedPicViewHolder(View itemView) {
             super(itemView);
-            iv_img = (ImageView) itemView.findViewById(R.id.iv_img);
+            iv_img = itemView.findViewById(R.id.iv_img);
+            delete = itemView.findViewById(R.id.iv_delete);
         }
 
-        public void bind(int position) {
+        public void bind(final int position) {
             //设置条目的点击事件
             itemView.setOnClickListener(this);
             //根据条目位置设置图片
@@ -89,15 +94,27 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
             if (isAdded && position == getItemCount() - 1) {
                 iv_img.setImageResource(R.mipmap.icon_biaoliao_add);
                 clickPosition = CompanySetActivity.IMAGE_ITEM_ADD;
+                delete.setVisibility(View.GONE);
             } else {
+                delete.setVisibility(View.VISIBLE);
                 ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
                 clickPosition = position;
             }
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onImageBack.OnBackItem(position);
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
             if (listener != null) listener.onItemClick(v, clickPosition);
         }
+    }
+
+    public interface OnImageBack {
+        void OnBackItem(int position);
     }
 }
