@@ -203,7 +203,13 @@ public class MineFragment extends BaseFragment {
                 break;
 
             case R.id.ll_mine_services_center:
-                asyncShowToast("点击了客服中心");
+//                //userid是客服帐号，第一个参数是客服帐号，第二个是组ID，如果没有，传0
+//                EServiceContact contact = new EServiceContact("kf@qunxianghui.cn", 0);
+//   //如果需要发给指定的客服帐号，不需要Server进行分流(默认Server会分流)，请调用EServiceContact对象
+//    //的setNeedByPass方法，参数为false。
+////contact.setNeedByPass(false);
+//                intent = mIMKit.getChattingActivityIntent(contact);
+//                startActivity(intent);
                 break;
         }
     }

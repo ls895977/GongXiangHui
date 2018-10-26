@@ -73,6 +73,39 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
+    protected void initViews() {
+        super.initViews();
+
+        LoginAiliBaiChuan();
+    }
+
+    /*登录阿里百川*/
+    private void LoginAiliBaiChuan() {
+////开始登录
+//        String userid = "kf@qunxianghui.cn";
+//        String password = "GONGxiang_12";
+//
+//        IYWLoginService loginService = mIMKit.getLoginService();
+//        YWLoginParam loginParam = YWLoginParam.createLoginParam(userid, password);
+//        loginService.login(loginParam, new IWxCallback() {
+//
+//            @Override
+//            public void onSuccess(Object... arg0) {
+//            }
+//
+//            @Override
+//            public void onProgress(int arg0) {
+//                // TODO Auto-generated method stub
+//            }
+//
+//            @Override
+//            public void onError(int errCode, String description) {
+//                //如果登录失败，errCode为错误码,description是错误的具体描述信息
+//            }
+//        });
+    }
+
+    @Override
     protected void initData() {
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(false);
@@ -126,6 +159,7 @@ public class LoginActivity extends BaseActivity {
                                 }
                                 getH5Url();
                                 asyncShowToast("登录成功");
+
                                 toActivity(MainActivity.class);
                                 finish();
                             } else if (code == 200) {

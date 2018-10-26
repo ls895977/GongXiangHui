@@ -301,7 +301,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                         @Override
                         public void onError(Response<PasteBean> response) {
                             super.onError(response);
-                            asyncShowToast(response.body().message);
+                            asyncShowToast("粘贴失败了");
                         }
                     });
         } else {
@@ -329,7 +329,7 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
 //                mTvHomeLocation.setText(cityName);
 //                requestCityInfo(aMapLocation.getLatitude(), aMapLocation.getLongitude(), cityName);
 //            } else {
-                setLocationFailed();
+            setLocationFailed();
 //            }
         } else {
             setLocationFailed();

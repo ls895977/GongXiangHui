@@ -90,20 +90,24 @@ public class MyApplication extends MultiDexApplication {
 
     /*阿里百川*/
     private void initAliBaba() {
-//        AlibabaSDK.asyncInit(this, new InitResultCallback() {
-//            @Override
-//            public void onSuccess() {
-//                Log.d("阿里百川", "AlibabaSDK init success.");
-//            }
+//        final String APP_KEY = "25103034";
+////必须首先执行这部分代码, 如果在":TCMSSevice"进程中，无需进行云旺（OpenIM）和app业务的初始化，以节省内存;
+//        SysUtil.setApplication(this);
+//        if (SysUtil.isTCMSServiceProcess(this)) {
+//            return;
+//        }
+////第一个参数是Application Context
+////这里的APP_KEY即应用创建时申请的APP_KEY，同时初始化必须是在主进程中
+//        if (SysUtil.isMainProcess()) {
+//            YWAPI.init(new MyApplication(), APP_KEY);
+//        }
 //
-//            @Override
-//            public void onFailure(int i, String s) {
-//                Log.i("阿里百川", "AlibabaSDK init failure");
-//            }
-//
-//        });
+//        //此实现不一定要放在Application onCreate中
+//        final String userid = "testpro1";
+////此对象获取到后，保存为全局对象，供APP使用
+////此对象跟用户相关，如果切换了用户，需要重新获取
+//        YWIMKit mIMKit = YWAPI.getIMKitInstance(userid, APP_KEY);
     }
-
 
     private void initJPush() {
         //初始化极光推送
