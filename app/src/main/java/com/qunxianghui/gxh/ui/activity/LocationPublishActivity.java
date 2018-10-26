@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,7 +61,7 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_PREVIEW;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_SELECT;
 
-public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack {
+public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack, RecyItemTouchHelperCallback.OnBackonSwiped {
 
     @BindView(R.id.tv_upload)
     View mUpload;
@@ -74,7 +76,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     private Dialog mSelectPhoto;
     private ImagePickerAdapter mAdapter;
-    private ArrayList<ImageItem> mImages; //当前选择的所有图片
+    private List<ImageItem> mImages; //当前选择的所有图片
     private OptionsPickerView mChooseType;
     private int mTypeId;
     private boolean mIsUploadIng;
@@ -111,11 +113,13 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         mRv.addItemDecoration(new DividerGridItemDecoration(this));
         mRv.setHasFixedSize(true);
         RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+        itemTouchHelperCallback.setOnBackonSwiped(this);
         final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRv);
         mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
             @Override
             public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+
 
             }
 
@@ -387,5 +391,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     public void OnBackItem(int position) {
         mImages.remove(position);
         mAdapter.setImages(mImages);
+    }
+
+    @Override
+    public void backItemMoved(int fromPosition, int toPosition) {
+        Log.e("aa", "------fromPosition--" + fromPosition + "------toPosition---" + toPosition);
+//        Collections.swap(mImages, fromPosition, toPosition);
+//        mAdapter.notifyDataSetChanged();、
     }
 }

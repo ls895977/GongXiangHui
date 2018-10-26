@@ -4,8 +4,11 @@ import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
+
 import java.util.Collections;
+
 /*******************************************************************
  *    * * * *   * * * *   *     *       Created by OCN.Yang
  *    *     *   *         * *   *       Time:2017/8/2 11:37.
@@ -18,11 +21,18 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     RecyclerView.Adapter mAdapter;
     boolean isSwipeEnable;
     boolean isFirstDragUnable;
+    private OnBackonSwiped onBackonSwiped;
+
+    public void setOnBackonSwiped(OnBackonSwiped onBackonSwiped) {
+        this.onBackonSwiped = onBackonSwiped;
+    }
+
     public RecyItemTouchHelperCallback(RecyclerView.Adapter adapter) {
         mAdapter = adapter;
         isSwipeEnable = true;
         isFirstDragUnable = false;
     }
+
     public RecyItemTouchHelperCallback(RecyclerView.Adapter adapter, boolean isSwipeEnable, boolean isFirstDragUnable) {
         mAdapter = adapter;
         this.isSwipeEnable = isSwipeEnable;
@@ -47,7 +57,7 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         int fromPosition = viewHolder.getAdapterPosition();
         int toPosition = target.getAdapterPosition();
-        if ((toPosition+1) == mAdapter.getItemCount()) {
+        if ((toPosition + 1) == mAdapter.getItemCount()) {
             return false;
         }
         if (fromPosition < toPosition) {
@@ -60,6 +70,7 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
             }
         }
         mAdapter.notifyItemMoved(fromPosition, toPosition);
+        onBackonSwiped.backItemMoved(fromPosition, toPosition);
         return true;
     }
 
@@ -92,5 +103,9 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean isItemViewSwipeEnabled() {
         return isSwipeEnable;
+    }
+
+  public   interface OnBackonSwiped {
+        void backItemMoved(int fromPosition, int toPosition);
     }
 }
