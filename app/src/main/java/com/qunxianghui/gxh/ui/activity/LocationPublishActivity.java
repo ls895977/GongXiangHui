@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -33,6 +36,9 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.observer.PublishBiaoliao;
+import com.qunxianghui.gxh.ui.activity.locationitem.DividerGridItemDecoration;
+import com.qunxianghui.gxh.ui.activity.locationitem.OnRecyclerItemClickListener;
+import com.qunxianghui.gxh.ui.activity.locationitem.RecyItemTouchHelperCallback;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationDetailFragment;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
@@ -53,7 +59,7 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_PREVIEW;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_SELECT;
 
-public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
+public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack {
 
     @BindView(R.id.tv_upload)
     View mUpload;
@@ -100,6 +106,26 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         mImages = new ArrayList<>();
         mAdapter = new ImagePickerAdapter(this, mImages, 9);
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnImageBack(this);
+        mRv.setLayoutManager(new GridLayoutManager(this, 3));
+        mRv.addItemDecoration(new DividerGridItemDecoration(this));
+        mRv.setHasFixedSize(true);
+        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(mRv);
+        mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+
+            }
+
+            @Override
+            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder.getLayoutPosition() != mImages.size()) {
+                    itemTouchHelper.startDrag(viewHolder);
+                }
+            }
+        });
         mRv.setAdapter(mAdapter);
 
         mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
@@ -355,5 +381,11 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void OnBackItem(int position) {
+        mImages.remove(position);
+        mAdapter.setImages(mImages);
     }
 }
