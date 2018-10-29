@@ -19,11 +19,9 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
-import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
@@ -68,7 +66,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         JPushInterface.setDebugMode(true);
-        initJPush();
+//        initJPush();
         initAliBaba();
         SINSTANCE = this;
         appManager = AppManager.getAppManager();
@@ -79,34 +77,18 @@ public class MyApplication extends MultiDexApplication {
 //            // You should not init your app in this process.
 //            return;
 //        }
-        if (BuildConfig.DEBUG) {
-//            LeakCanary.install(this);
-            CrashHandler.getInstance().init(getApplicationContext());
-        }
-//        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+//        if (BuildConfig.DEBUG) {
+////            LeakCanary.install(this);
+//            CrashHandler.getInstance().init(getApplicationContext());
+//        }
+        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();
     }
 
     /*阿里百川*/
     private void initAliBaba() {
-//        final String APP_KEY = "25103034";
-////必须首先执行这部分代码, 如果在":TCMSSevice"进程中，无需进行云旺（OpenIM）和app业务的初始化，以节省内存;
-//        SysUtil.setApplication(this);
-//        if (SysUtil.isTCMSServiceProcess(this)) {
-//            return;
-//        }
-////第一个参数是Application Context
-////这里的APP_KEY即应用创建时申请的APP_KEY，同时初始化必须是在主进程中
-//        if (SysUtil.isMainProcess()) {
-//            YWAPI.init(new MyApplication(), APP_KEY);
-//        }
-//
-//        //此实现不一定要放在Application onCreate中
-//        final String userid = "testpro1";
-////此对象获取到后，保存为全局对象，供APP使用
-////此对象跟用户相关，如果切换了用户，需要重新获取
-//        YWIMKit mIMKit = YWAPI.getIMKitInstance(userid, APP_KEY);
+
     }
 
     private void initJPush() {

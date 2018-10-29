@@ -69,7 +69,7 @@ public class SeekPasswordActivity extends BaseActivity implements View.OnClickLi
             case R.id.et_seekPassword_phoneNumber:
                 break;
             case R.id.tv_seekPassword_code:
-                if (Utils.isTwoClick()) {
+                if (Utils.isFastClick()) {
                     getVertifiCode();
                 }
 

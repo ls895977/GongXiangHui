@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -37,8 +35,6 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.observer.PublishBiaoliao;
 import com.qunxianghui.gxh.ui.activity.locationitem.DividerGridItemDecoration;
-import com.qunxianghui.gxh.ui.activity.locationitem.OnRecyclerItemClickListener;
-import com.qunxianghui.gxh.ui.activity.locationitem.RecyItemTouchHelperCallback;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationDetailFragment;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
@@ -110,22 +106,22 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         mRv.setLayoutManager(new GridLayoutManager(this, 3));
         mRv.addItemDecoration(new DividerGridItemDecoration(this));
         mRv.setHasFixedSize(true);
-        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
-        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
-        itemTouchHelper.attachToRecyclerView(mRv);
-        mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
-            @Override
-            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-
-            }
-
-            @Override
-            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder.getLayoutPosition() != mImages.size()) {
-                    itemTouchHelper.startDrag(viewHolder);
-                }
-            }
-        });
+//        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+//        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+//        itemTouchHelper.attachToRecyclerView(mRv);
+//        mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
+//            @Override
+//            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+//
+//            }
+//
+//            @Override
+//            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
+//                if (viewHolder.getLayoutPosition() != mImages.size()) {
+//                    itemTouchHelper.startDrag(viewHolder);
+//                }
+//            }
+//        });
         mRv.setAdapter(mAdapter);
 
         mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {

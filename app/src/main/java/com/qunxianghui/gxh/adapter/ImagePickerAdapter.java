@@ -83,7 +83,7 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
         public SelectedPicViewHolder(View itemView) {
             super(itemView);
             iv_img = itemView.findViewById(R.id.iv_img);
-            delete = itemView.findViewById(R.id.iv_delete);
+//            delete = itemView.findViewById(R.id.iv_delete);
         }
 
         public void bind(final int position) {
@@ -94,18 +94,18 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
             if (isAdded && position == getItemCount() - 1) {
                 iv_img.setImageResource(R.mipmap.icon_biaoliao_add);
                 clickPosition = CompanySetActivity.IMAGE_ITEM_ADD;
-                delete.setVisibility(View.GONE);
+//                delete.setVisibility(View.GONE);
             } else {
-                delete.setVisibility(View.VISIBLE);
+//                delete.setVisibility(View.VISIBLE);
                 ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
                 clickPosition = position;
             }
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onImageBack.OnBackItem(position);
-                }
-            });
+//            delete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onImageBack.OnBackItem(position);
+//                }
+//            });
         }
 
         @Override

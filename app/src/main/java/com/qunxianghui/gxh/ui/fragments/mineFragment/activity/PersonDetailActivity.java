@@ -96,7 +96,6 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initData() {
         FetchPersonData();
-
         fragments.add(new PersonDetailVideoFragment());
         LocationDetailFragment locationDetailFragment = new LocationDetailFragment();
         locationDetailFragment.mMemberId = member_id;

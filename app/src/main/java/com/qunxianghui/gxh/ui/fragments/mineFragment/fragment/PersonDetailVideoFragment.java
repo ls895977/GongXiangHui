@@ -57,9 +57,10 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
     ScrollCalculatorHelper scrollCalculatorHelper;
     @Override
     protected void onLoadData() {
-        RequestPersonDataVideoData();
+
 
     }
+
 
     private void RequestPersonDataVideoData() {
         OkGo.<HomeVideoListBean>post(Constant.HOME_VIDEO_LIST_URL)
@@ -117,11 +118,14 @@ public class PersonDetailVideoFragment extends BaseFragment implements PersonDet
 
     @Override
     public void initData() {
+
         personDetailActivity = (PersonDetailActivity) getActivity();
+        RequestPersonDataVideoData();
     }
 
     @Override
     public void initViews(View view) {
+
         linearLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         xrecyclerPersondetailVideo.setLayoutManager(linearLayoutManager);
     }

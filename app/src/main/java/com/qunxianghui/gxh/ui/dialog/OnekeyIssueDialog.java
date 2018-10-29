@@ -27,10 +27,8 @@ import com.qunxianghui.gxh.utils.FastBlurUtility;
 import com.qunxianghui.gxh.utils.SPUtils;
 
 public class OnekeyIssueDialog extends Dialog {
-
     private Activity mActicity;
     private Bitmap mFinalBlurBg;
-
     public OnekeyIssueDialog(@NonNull Context context) {
         super(context);
         mActicity = ((Activity) context);
@@ -121,7 +119,6 @@ public class OnekeyIssueDialog extends Dialog {
         mFinalBlurBg = blurBg;
         findViewById(R.id.pop_ll2).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.one_key_issue_ll2));
         findViewById(R.id.pop_ll1).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.one_key_issue_ll1));
-
         return this;
     }
 

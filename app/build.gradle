@@ -12,8 +12,8 @@ android {
         applicationId "com.qunxianghui.gxh"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 420
-        versionName "4.2.0"
+        versionCode 421
+        versionName "4.2.1"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -142,7 +142,4 @@ dependencies {
     implementation 'cn.jiguang.sdk:jpush:3.1.6'  // 此处以JPush 3.1.6 版本为例。
     implementation 'cn.jiguang.sdk:jcore:1.2.5'  // 此处以JCore 1.2.5 版本为例。
     /*阿里百川*/
-
-
-
 }

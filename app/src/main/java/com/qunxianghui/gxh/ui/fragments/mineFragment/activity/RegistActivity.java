@@ -23,7 +23,6 @@ import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.ProtocolActivity;
 import com.qunxianghui.gxh.utils.GsonUtil;
-import com.qunxianghui.gxh.utils.REGutil;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 
@@ -128,10 +127,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                             toActivity(LoginActivity.class);
                         } else {
                             asyncShowToast(response.body().message);
-
                         }
                     }
-
                     @Override
                     public void onError(Response<CommonBean> response) {
                         super.onError(response);
