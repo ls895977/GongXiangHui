@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.qiyukf.unicorn.api.ConsultSource;
+import com.qiyukf.unicorn.api.Unicorn;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseFragment;
 import com.qunxianghui.gxh.bean.mine.UserInfo;
@@ -203,15 +205,32 @@ public class MineFragment extends BaseFragment {
                 break;
 
             case R.id.ll_mine_services_center:
-//                //userid是客服帐号，第一个参数是客服帐号，第二个是组ID，如果没有，传0
-//                EServiceContact contact = new EServiceContact("kf@qunxianghui.cn", 0);
-//   //如果需要发给指定的客服帐号，不需要Server进行分流(默认Server会分流)，请调用EServiceContact对象
-//    //的setNeedByPass方法，参数为false。
-////contact.setNeedByPass(false);
-//                intent = mIMKit.getChattingActivityIntent(contact);
-//                startActivity(intent);
+                if (Unicorn.isServiceAvailable()){
+                    ClickServiceCenter();
+                }
+
                 break;
         }
+    }
+
+    /*联系客服*/
+    private void ClickServiceCenter() {
+        String title = "群享汇客服";
+        /**
+         * 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入。
+         * 三个参数分别为：来源页面的url，来源页面标题，来源页面额外信息（保留字段，暂时无用）。
+         * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
+         */
+        ConsultSource source = new ConsultSource("https://www.baid.com", "聊天", "custom information string");
+        /**
+         * 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable()，
+         * 如果返回为false，该接口不会有任何动作
+         *
+         * @param context 上下文
+         * @param title   聊天窗口的标题
+         * @param source  咨询的发起来源，包括发起咨询的url，title，描述信息等
+         */
+        Unicorn.openServiceActivity(mActivity, title, source);
     }
 
     private boolean isLogin() {
@@ -236,25 +255,4 @@ public class MineFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-//    private void requestCall(final String mobile) {
-//        if (PermissionsUtil.hasPermission(mActivity, Manifest.permission.CALL_PHONE)) {
-//            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        } else {
-//            PermissionsUtil.requestPermission(mActivity, new PermissionListener() {
-//                @Override
-//                public void permissionGranted(@NonNull String[] permission) {
-//                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
-//                }
-//
-//                @Override
-//                public void permissionDenied(@NonNull String[] permission) {
-//                    asyncShowToast("权限被禁止  设置权限后再试试.");
-//                }
-//            }, Manifest.permission.CALL_PHONE);
-//        }
-//    }
 }

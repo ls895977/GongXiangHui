@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="47dp"
+    android:layout_marginLeft="8dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="5dp"
+        android:drawableRight="@mipmap/home_laba"
+        android:text="本地头条"
+        android:layout_marginLeft="8dp"
+        android:textColor="#DC4844"
+        android:textSize="13sp" />
+
+    <com.superluo.textbannerlibrary.TextBannerView
+        android:id="@+id/tv_banner_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        app:setDirection="bottom_to_top"
+        app:setGravity="left"
+        app:setSingleLine="true"
+        app:setTextSize="13sp"
+        app:setTextColor="#000" />
+
+
+</LinearLayout>

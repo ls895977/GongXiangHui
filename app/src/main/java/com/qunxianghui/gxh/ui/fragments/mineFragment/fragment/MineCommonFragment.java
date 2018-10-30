@@ -25,6 +25,7 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
+import com.superluo.textbannerlibrary.TextBannerView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,6 +49,8 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
     Unbinder unbinder;
+    @BindView(R.id.tv_banner_text)
+    TextBannerView tvBannerText;
 
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
@@ -65,6 +68,12 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     public void initData() {
         RequestMineCommentData();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvBannerText.startViewAnimator();
     }
 
     private void RequestMineCommentData() {
@@ -105,7 +114,7 @@ public class MineCommonFragment extends BaseFragment implements Observer {
                     });
                 }
                 if (dataList.isEmpty()) {
-                    llEmpty.setVisibility(View.VISIBLE);
+                    llEmpty.setVisibility(View.GONE);
                 } else {
                     llEmpty.setVisibility(View.GONE);
                 }
@@ -213,18 +222,25 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        tvBannerText.stopViewAnimator();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventManager.getInstance().deleteObserver(this);
         unbinder.unbind();
     }
 
+
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof String && "news".equals(o)) {
             myCollectPostAdapter.isShow = true;
             myCollectPostAdapter.notifyDataSetChanged();
-            if (dataList.size()>0){
+            if (dataList.size() > 0) {
                 btnDelete.setVisibility(View.VISIBLE);
             }
         }

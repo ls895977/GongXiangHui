@@ -43,6 +43,8 @@ import com.qunxianghui.gxh.utils.LogUtil;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import com.qunxianghui.gxh.widget.CustomLoadMoreView;
+import com.superluo.textbannerlibrary.ITextBannerItemClickListener;
+import com.superluo.textbannerlibrary.TextBannerView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -79,11 +81,13 @@ public class HotPointFragment extends BaseFragment {
     private int mChannelId = 0;
     public TextView mhomeLocalLocation;
     public static final int CITY_SELECT_RESULT_FRAG = 0x0000032;
+    private TextBannerView mTvBannerText;
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_hot_point;
     }
+
     @SuppressLint("NewApi")
     @Override
     protected void setStatusBarColor() {
@@ -102,7 +106,7 @@ public class HotPointFragment extends BaseFragment {
     public void initViews(View view) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int mHeight = dm.heightPixels;
-        int mWidth= dm.widthPixels;
+        int mWidth = dm.widthPixels;
 
         if (getArguments() != null) {
             mChannelId = getArguments().getInt("channel_id");
@@ -127,13 +131,34 @@ public class HotPointFragment extends BaseFragment {
             View headerVp = LayoutInflater.from(mActivity).inflate(R.layout.layout_header_viewpager, mRv, false);
             viewpagerHome = headerVp.findViewById(R.id.viewpager_home);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpagerHome.getLayoutParams();
-            layoutParams.height = mWidth * 2/ 5;
+            layoutParams.height = mWidth * 2 / 5;
             viewpagerHome.setLayoutParams(layoutParams);
 
             //加載首頁那个导航图//加载首页轮播图
             initGuideAndBanner();
             homeItemListAdapter.addHeaderView(headerNavigator);
             homeItemListAdapter.addHeaderView(headerVp, 1);
+        } else if (mChannelId == 0) {
+            View headerBanner= LayoutInflater.from(mActivity).inflate(R.layout.home_banner_text, mRv, false);
+            mTvBannerText = headerBanner.findViewById(R.id.tv_banner_text);
+            List<String> list = new ArrayList<>();
+            list.add("学好Java、Android、C#、C、ios、html+css+js");
+            list.add("走遍天下都不怕！！！！！");
+            list.add("不是我吹，就怕你做不到，哈哈");
+            list.add("superluo");
+            list.add("你是最棒的，奔跑吧孩子！");
+            mTvBannerText.setDatas(list);
+            mTvBannerText.setGravity(Gravity.CENTER);
+
+            mTvBannerText.setItemOnClickListener(new ITextBannerItemClickListener() {
+                @Override
+                public void onItemClick(String data, int position) {
+                    asyncShowToast("点击了"+position);
+                }
+            });
+
+
+            homeItemListAdapter.addHeaderView(headerBanner);
         }
         homeItemListAdapter.setLoadMoreView(new CustomLoadMoreView());
         homeItemListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -160,9 +185,9 @@ public class HotPointFragment extends BaseFragment {
                 .execute(new JsonCallback<CommonResponse<List<HomeNewListBean>>>() {
                     @Override
                     public void onSuccess(Response<CommonResponse<List<HomeNewListBean>>> response) {
-                        if (response.body().code==0){
+                        if (response.body().code == 0) {
                             setData(response);
-                            LogUtil.printJson("新闻列表",response.toString(),"对的");
+                            LogUtil.printJson("新闻列表", response.toString(), "对的");
                         }
                     }
                 });
@@ -176,6 +201,7 @@ public class HotPointFragment extends BaseFragment {
             mCount = 0;
             initData();
         }
+//        mTvBannerText.startViewAnimator();
     }
 
 
@@ -183,7 +209,7 @@ public class HotPointFragment extends BaseFragment {
      * 首页下拉刷新 新的接口
      */
     private void homePullRefresh() {
-        Log.e("TAG_首页刷新","mChannelId="+mChannelId+";mRefreshCount="+mRefreshCount);
+        Log.e("TAG_首页刷新", "mChannelId=" + mChannelId + ";mRefreshCount=" + mRefreshCount);
         OkGo.<CommonResponse<List<HomeNewListBean>>>post(Constant.HOME_PULL_REFRESH_URL)
                 .params("channel_id", mChannelId)
                 .params("times", mRefreshCount)
@@ -194,12 +220,12 @@ public class HotPointFragment extends BaseFragment {
                         mSw.setRefreshing(false);
                         if (response.body().code == 0) {
                             if (response.body().data != null) {
-                                Log.e("TAG_首页刷新","data="+response.body().data);
+                                Log.e("TAG_首页刷新", "data=" + response.body().data);
                                 dataList.addAll(0, response.body().data);
                                 homeItemListAdapter.notifyDataSetChanged();
                                 homeItemListAdapter.setEmptyView(R.layout.layout_empty);
-                            }else {
-                                Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
                             }
                             Display display = mActivity.getWindowManager().getDefaultDisplay();
                             int height = display.getHeight();
@@ -217,7 +243,7 @@ public class HotPointFragment extends BaseFragment {
     private void setData(Response<CommonResponse<List<HomeNewListBean>>> response) {
         if (response.body().code == 0) {
             List<HomeNewListBean> list = response.body().data;
-            LogUtil.printJson("新闻数据",list.toString(),"首页新闻列表");
+            LogUtil.printJson("新闻数据", list.toString(), "首页新闻列表");
             if (mCount == 0) {
                 dataList.clear();
             }
@@ -348,6 +374,7 @@ public class HotPointFragment extends BaseFragment {
                 });
     }
 
+    /*解析轮播图*/
     private void parseHomeLunBoPager(HomeLunBoBean homeLunBoBean) {
         if (homeLunBoBean.getCode() == 0) {
             final List<HomeLunBoBean.DataBean> lunboData = homeLunBoBean.getData();
@@ -376,6 +403,11 @@ public class HotPointFragment extends BaseFragment {
                     })
                     .start();
         }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+//        mTvBannerText.stopViewAnimator();
     }
 
     @Override

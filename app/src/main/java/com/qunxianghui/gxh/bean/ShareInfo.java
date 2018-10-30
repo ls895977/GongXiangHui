@@ -12,6 +12,7 @@ public class ShareInfo {
         public String imgUrl;
         public String url;
         public String desc;
+        public String data_uuid;
 
     }
 }

@@ -227,44 +227,44 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
      * 初始化Fragment
      */
     private void initFragment() {
-        mViewPager.setAdapter(new NewsFragmentPagerAdapter(getChildFragmentManager(), userChannelList));
-        mTopSlidingLayout.setViewPager(mViewPager);
-    }
-
-    @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns, R.id.iv_home_paste_artical})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.ll_home_location:
-                if (Build.VERSION.SDK_INT >= 23) {
-                    boolean hasLocationPermission =
-                            ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-                    if (!hasLocationPermission) {
-                        if (HomeFragment.this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
-                            HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
-                        } else {//没有权限
-                            showMessageOKCancel();
-                        }
-                    } else {
-                        startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                        mViewPager.setAdapter(new NewsFragmentPagerAdapter(getChildFragmentManager(), userChannelList));
+                        mTopSlidingLayout.setViewPager(mViewPager);
                     }
-                } else {
-                    startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
-                }
-                break;
-            case R.id.ll_home_search:
-                toActivity(SearchActivity.class);
-                break;
-            case R.id.iv_more_columns:
-                Intent intent = new Intent(getActivity(), HomeChannelActivity.class);
-                intent.putExtra("dataSelected", userChannelList);
-                startActivity(intent);
-                break;
-            case R.id.iv_home_paste_artical:
-                if (!LoginMsgHelper.isLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                } else {
-                    if (Utils.isThreeClick()) {
+
+                        @OnClick({R.id.ll_home_location, R.id.ll_home_search, R.id.iv_more_columns, R.id.iv_home_paste_artical})
+                        public void onViewClicked(View view) {
+                            switch (view.getId()) {
+                                case R.id.ll_home_location:
+                                    if (Build.VERSION.SDK_INT >= 23) {
+                                        boolean hasLocationPermission =
+                                                ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                                        if (!hasLocationPermission) {
+                                            if (HomeFragment.this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {//说明被拒绝过，需要解释原因
+                                                HomeFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x0011);
+                                            } else {//没有权限
+                                                showMessageOKCancel();
+                                            }
+                                        } else {
+                                            startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                                        }
+                                    } else {
+                                        startActivityForResult(new Intent(mActivity, LocationActivity.class), CITY_SELECT_RESULT_FRAG);
+                                    }
+                                    break;
+                                case R.id.ll_home_search:
+                                    toActivity(SearchActivity.class);
+                                    break;
+                                case R.id.iv_more_columns:
+                                    Intent intent = new Intent(getActivity(), HomeChannelActivity.class);
+                                    intent.putExtra("dataSelected", userChannelList);
+                                    startActivity(intent);
+                                    break;
+                                case R.id.iv_home_paste_artical:
+                                    if (!LoginMsgHelper.isLogin()) {
+                                        toActivity(LoginActivity.class);
+                                        return;
+                                    } else {
+                                        if (Utils.isThreeClick()) {
                         clipArticalData();
                     }
 

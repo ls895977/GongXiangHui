@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -35,6 +37,8 @@ import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.listener.NewTextWatcher;
 import com.qunxianghui.gxh.observer.PublishBiaoliao;
 import com.qunxianghui.gxh.ui.activity.locationitem.DividerGridItemDecoration;
+import com.qunxianghui.gxh.ui.activity.locationitem.OnRecyclerItemClickListener;
+import com.qunxianghui.gxh.ui.activity.locationitem.RecyItemTouchHelperCallback;
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationDetailFragment;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
@@ -44,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,7 +60,7 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_PREVIEW;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_SELECT;
 
-public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack {
+public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack, RecyItemTouchHelperCallback.OnBackonSwiped {
 
     @BindView(R.id.tv_upload)
     View mUpload;
@@ -70,13 +75,14 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     private Dialog mSelectPhoto;
     private ImagePickerAdapter mAdapter;
-    private ArrayList<ImageItem> mImages; //当前选择的所有图片
+    private List<ImageItem> mImages; //当前选择的所有图片
     private OptionsPickerView mChooseType;
     private int mTypeId;
     private boolean mIsUploadIng;
     private int mCount;
     private StringBuilder stringBuilder;
     private LocationDetailFragment mLocationDetailFragment;
+    private HashMap<Object, Object> mHashMap;
 
     @Override
     protected int getLayoutId() {
@@ -106,22 +112,25 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
         mRv.setLayoutManager(new GridLayoutManager(this, 3));
         mRv.addItemDecoration(new DividerGridItemDecoration(this));
         mRv.setHasFixedSize(true);
-//        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
-//        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
-//        itemTouchHelper.attachToRecyclerView(mRv);
-//        mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
-//            @Override
-//            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-//
-//            }
-//
-//            @Override
-//            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
-//                if (viewHolder.getLayoutPosition() != mImages.size()) {
-//                    itemTouchHelper.startDrag(viewHolder);
-//                }
-//            }
-//        });
+        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+        itemTouchHelperCallback.setOnBackonSwiped(this);
+        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(mRv);
+        mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+
+
+            }
+
+            @Override
+            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder.getLayoutPosition() != mImages.size()) {
+                    itemTouchHelper.startDrag(viewHolder);
+                }
+            }
+        });
+
         mRv.setAdapter(mAdapter);
 
         mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
@@ -154,7 +163,9 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ArrayList<ImageItem> images;
+
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
@@ -383,5 +394,12 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     public void OnBackItem(int position) {
         mImages.remove(position);
         mAdapter.setImages(mImages);
+    }
+
+    @Override
+    public void backItemMoved(int fromPosition, int toPosition) {
+
+        Log.e("aa", "------fromPosition--" + fromPosition + "------toPosition---" + toPosition);
+
     }
 }

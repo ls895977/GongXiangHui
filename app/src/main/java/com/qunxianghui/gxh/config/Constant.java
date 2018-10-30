@@ -8,7 +8,7 @@ public class Constant {
     public static boolean MyCollectIsShow = false;
     public static final long TIME_OUT = 3000;//网络请求超时时//     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";间
     private static final String BASE_URL = "https://api.qunxianghui.com.cn/v2/";     //上线环境
-//    private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";     //线下问题
+//        private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";     //线下问题
     /*app嵌入H5链接*/
     public static final String YouXuan = "https://www.qunxianghui.com/optimization";   //首页精选链接的跳转
     public static final String BenDiService = "https://fx.qunxianghui.com.cn/register/index.html";    //群享汇服务协议链接的跳转
@@ -30,7 +30,7 @@ public class Constant {
 
     public static final String HOME_SEE_JOB_URL = "http://m.58.com/hz/job.shtml?from=benditoutiao";    //找工作
 
-//
+
 //    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";    //新闻详情`
 //
 //    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";    //本地发布详情
@@ -59,8 +59,6 @@ public class Constant {
     public static final String COMMEON_QUESTION_URL = "https://api.qunxianghui.com.cn/theme/new_details/question/index.html";
 
     public static final String NEW_FUNCTION_URL = "https://api.qunxianghui.com.cn/theme/new_details/intro/introduce.html";    //关于我们新功能H5
-
-
 
 
     /*首页全部接口*/
@@ -144,9 +142,11 @@ public class Constant {
 
     public static final String GENERALIZE_RERSON_STATIS_URL = BASE_URL + "promote/getStatistics";    // 推广统计个人上面的头部
 
+    public static final String GENERALIZE_PERSON_SHARE_URL = BASE_URL + "detail/share";    //新闻视频资讯分享的界面
 
-/*上传和频道管理接口接口*/
-public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";    //编辑视频汇分类接口
+
+    /*上传和频道管理接口接口*/
+    public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate";    //编辑视频汇分类接口
 
     public static final String ADD_VIDEO_TAB_URL = BASE_URL + "Video/addVideoCate";    //个人添加视频汇分类接口
 
@@ -290,7 +290,7 @@ public static final String EDIT_VIDEO_TAB_URL = BASE_URL + "Video/editVideoCate"
 
     public static final String GET_DISCLOSS_INFO_URL = BASE_URL + "user/getMyInfo";    //获取我的爆料信息
 
-    public static final String GET_SHARE_INFO = BASE_URL + "user/shareInfoV2";    //获取分享信息
+    public static final String GET_SHARE_INFO = BASE_URL + "user/shareInfoV3";    //获取分享信息
 
     public static final String PERSON_UPGRADE_URL = BASE_URL + "user/upgrade";    //用户升级
 }

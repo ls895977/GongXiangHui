@@ -180,7 +180,7 @@ public class PersonDetailActivity extends BaseActivity implements View.OnClickLi
             tvPersondetailFollow.setText(String.valueOf("关注 " + dataList.getFollow_num()));
             tvPersondetailFans.setText(String.valueOf(" 粉丝 " + dataList.getFans_num()));
             Glide.with(mContext).load(dataList.getMember_avatar())
-                    .apply(new RequestOptions().placeholder(R.mipmap.default_img).error(R.mipmap.default_img)).into(ivPersonDetailHead);
+                    .apply(new RequestOptions().placeholder(R.mipmap.user_moren).error(R.mipmap.user_moren)).into(ivPersonDetailHead);
 
         }
     }

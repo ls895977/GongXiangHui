@@ -10,11 +10,11 @@ android:layout_marginTop="5dp"
         android:layout_height="95dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_biaoliao_add" />
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_delete"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:padding="@dimen/dp_10"-->
-        <!--android:src="@mipmap/common_delete" />-->
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/dp_10"
+        android:src="@mipmap/common_delete" />
 </RelativeLayout>

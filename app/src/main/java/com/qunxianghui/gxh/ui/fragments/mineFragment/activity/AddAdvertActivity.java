@@ -1,5 +1,6 @@
 package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import com.lzy.okgo.model.Response;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.bean.AddAdvert;
+import com.qunxianghui.gxh.bean.CommonBean;
 import com.qunxianghui.gxh.bean.EnterpriseMaterial;
 import com.qunxianghui.gxh.bean.ShareInfo;
 import com.qunxianghui.gxh.callback.JsonCallback;
@@ -40,6 +43,7 @@ import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.qunxianghui.gxh.widget.Banner;
 import com.qunxianghui.gxh.widget.TitleBuilder;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -118,7 +122,8 @@ public class AddAdvertActivity extends BaseActivity {
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(false);
         settings.setBlockNetworkImage(false); // 解决图片不显示
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){ settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
 
         /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的显示 */
@@ -161,9 +166,13 @@ public class AddAdvertActivity extends BaseActivity {
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
             }
+
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 Toast.makeText(AddAdvertActivity.this, " 分享成功", Toast.LENGTH_SHORT).show();
+
+                GetShareNewsMessageData();
+
             }
 
             @Override
@@ -176,6 +185,39 @@ public class AddAdvertActivity extends BaseActivity {
                 Toast.makeText(AddAdvertActivity.this, " 分享取消", Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(AddAdvertActivity.this, mPermissionList, 123);
+
+        }
+    }
+
+    /*分享成功后的回调*/
+    private void GetShareNewsMessageData() {
+        OkGo.<CommonBean>post(Constant.GENERALIZE_PERSON_SHARE_URL)
+                .params("id", mData.data_uuid).execute(new JsonCallback<CommonBean>() {
+            @Override
+            public void onSuccess(Response<CommonBean> response) {
+                super.onSuccess(response);
+                if (response.body().code == 200) {
+                    asyncShowToast(response.body().message);
+                } else {
+                    asyncShowToast(response.body().message);
+                }
+            }
+
+            @Override
+            public void onError(Response<CommonBean> response) {
+                super.onError(response);
+                asyncShowToast(response.body().message);
+            }
+        });
+
     }
 
     private void getShareInfo() {
@@ -191,6 +233,7 @@ public class AddAdvertActivity extends BaseActivity {
                     public void onSuccess(Response<ShareInfo> response) {
                         if (response.body().code == 200) {
                             mData = response.body().data;
+
                             if (mData != null) {
                                 startThirdShare(mData.imgUrl, mData.title, mData.desc);
                             }
@@ -213,13 +256,13 @@ public class AddAdvertActivity extends BaseActivity {
     private void startThirdShare(String url, String title, String descrip) {
         //以下代码是分享示例代码
         UMImage image;
-        if (url != null ) {
+        if (url != null) {
             image = new UMImage(this, url);//分享图标
         } else {
             image = new UMImage(this, R.mipmap.logo);
         }
         //切记切记 这里分享的链接必须是http开头
-        web = new UMWeb( mData.url);
+        web = new UMWeb(mData.url);
         web.setTitle(title);//标题
         web.setThumb(image);  //缩略图
         web.setDescription(descrip);//描述
@@ -363,7 +406,8 @@ public class AddAdvertActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==101&&resultCode == 0x0022) {
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == 0x0022) {
             initData();
         }
     }

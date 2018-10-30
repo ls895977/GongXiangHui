@@ -4,9 +4,11 @@ package com.qunxianghui.gxh.base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 
 import com.lzy.okgo.OkGo;
@@ -19,9 +21,16 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+import com.qiyukf.unicorn.api.ImageLoaderListener;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.UnicornImageLoader;
+import com.qiyukf.unicorn.api.YSFOptions;
+import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
+import com.qunxianghui.gxh.utils.CrashHandler;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
@@ -66,8 +75,8 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         JPushInterface.setDebugMode(true);
-//        initJPush();
-        initAliBaba();
+        initJPush();
+        initQIYu();
         SINSTANCE = this;
         appManager = AppManager.getAppManager();
         //TODO: 设置开启日志,发布时请关闭日志
@@ -77,26 +86,43 @@ public class MyApplication extends MultiDexApplication {
 //            // You should not init your app in this process.
 //            return;
 //        }
-//        if (BuildConfig.DEBUG) {
-////            LeakCanary.install(this);
-//            CrashHandler.getInstance().init(getApplicationContext());
-//        }
-        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+        if (BuildConfig.DEBUG) {
+//            LeakCanary.install(this);
+            CrashHandler.getInstance().init(getApplicationContext());
+        }
+//        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         initOkGo();
         initThirdLib();
-    }
-
-    /*阿里百川*/
-    private void initAliBaba() {
 
     }
+
+    /*网易七鱼*/
+    private void initQIYu() {
+        // appKey 可以在七鱼管理系统->设置->APP接入 页面找到
+        Unicorn.init(getApplicationContext(), "2a52b51b4d3f95414ef08409878c6fbe ", options(), new UnicornImageLoader() {
+
+            @Nullable
+            @Override
+            public Bitmap loadImageSync(String uri, int width, int height) {
+                return null;
+            }
+
+            @Override
+            public void loadImage(String uri, int width, int height, ImageLoaderListener listener) {
+
+            }
+        });
+    }
+
 
     private void initJPush() {
         //初始化极光推送
         JPushInterface.init(this);
         Set<String> set = new HashSet<>();
         set.add("群享汇");//名字任意，可多添加几个,能区别就好了
+        set.add("创业");//名字任意，可多添加几个,能区别就好了
         JPushInterface.setTags(this, set, null);//设置标签
+
 
     }
 
@@ -169,4 +195,11 @@ public class MyApplication extends MultiDexApplication {
         }
     };
 
+
+    // 如果返回值为null，则全部使用默认参数。
+    private YSFOptions options() {
+        YSFOptions options = new YSFOptions();
+        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        return options;
+    }
 }
