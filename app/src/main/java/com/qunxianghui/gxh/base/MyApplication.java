@@ -20,8 +20,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
-import com.qiyukf.unicorn.api.YSFOptions;
 import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
@@ -173,11 +171,4 @@ public class MyApplication extends MultiDexApplication {
         }
     };
 
-
-    // 如果返回值为null，则全部使用默认参数。
-    private YSFOptions options() {
-        YSFOptions options = new YSFOptions();
-        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
-        return options;
-    }
 }

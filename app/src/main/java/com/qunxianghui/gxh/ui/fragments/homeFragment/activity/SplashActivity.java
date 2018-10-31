@@ -1,12 +1,8 @@
 package com.qunxianghui.gxh.ui.fragments.homeFragment.activity;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
 import com.lzy.okgo.OkGo;
-import com.qiyukf.nimlib.sdk.NimIntent;
-import com.qiyukf.unicorn.api.ConsultSource;
-import com.qiyukf.unicorn.api.Unicorn;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.config.SpConstant;
@@ -34,14 +30,6 @@ public class SplashActivity extends BaseActivity {
             OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
         }
 
-
-        Intent intent = getIntent();
-        if (intent.hasExtra(NimIntent.EXTRA_NOTIFY_CONTENT)) {
-            // 打开客服窗口
-            Unicorn.openServiceActivity(mContext, "群享汇客服", new ConsultSource("https://www.baidu.com/","客服","ssss"));
-            // 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
-            setIntent(new Intent());
-        }
     }
 
     @Override
