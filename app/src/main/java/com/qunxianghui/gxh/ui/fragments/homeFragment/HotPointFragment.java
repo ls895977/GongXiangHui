@@ -139,7 +139,7 @@ public class HotPointFragment extends BaseFragment {
             homeItemListAdapter.addHeaderView(headerNavigator);
             homeItemListAdapter.addHeaderView(headerVp, 1);
         } else if (mChannelId == 0) {
-            View headerBanner= LayoutInflater.from(mActivity).inflate(R.layout.home_banner_text, mRv, false);
+            View headerBanner = LayoutInflater.from(mActivity).inflate(R.layout.home_banner_text, mRv, false);
             mTvBannerText = headerBanner.findViewById(R.id.tv_banner_text);
             List<String> list = new ArrayList<>();
             list.add("学好Java、Android、C#、C、ios、html+css+js");
@@ -153,7 +153,7 @@ public class HotPointFragment extends BaseFragment {
             mTvBannerText.setItemOnClickListener(new ITextBannerItemClickListener() {
                 @Override
                 public void onItemClick(String data, int position) {
-                    asyncShowToast("点击了"+position);
+                    asyncShowToast("点击了" + position);
                 }
             });
 
@@ -196,9 +196,11 @@ public class HotPointFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mChannelId == 0 && LocationActivity.sIsChangeArea) {
+        if ((mChannelId == -1 || mChannelId == 0) && LocationActivity.sIsChangeArea) {
             LocationActivity.sIsChangeArea = false;
             mCount = 0;
+            if (mChannelId == -1) 
+                getLunBoData();
             initData();
         }
 //        mTvBannerText.startViewAnimator();
@@ -364,7 +366,10 @@ public class HotPointFragment extends BaseFragment {
                 }
             }
         });
+        getLunBoData();
+    }
 
+    private void getLunBoData() {
         OkGo.<HomeLunBoBean>get(Constant.HOME_PAGE_LUNBO_URL)
                 .execute(new JsonCallback<HomeLunBoBean>() {
                     @Override
@@ -404,6 +409,7 @@ public class HotPointFragment extends BaseFragment {
                     .start();
         }
     }
+
     @Override
     public void onStop() {
         super.onStop();
