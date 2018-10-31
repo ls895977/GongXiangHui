@@ -199,7 +199,7 @@ public class HotPointFragment extends BaseFragment {
         if ((mChannelId == -1 || mChannelId == 0) && LocationActivity.sIsChangeArea) {
             LocationActivity.sIsChangeArea = false;
             mCount = 0;
-            if (mChannelId == -1) 
+            if (mChannelId == -1)
                 getLunBoData();
             initData();
         }

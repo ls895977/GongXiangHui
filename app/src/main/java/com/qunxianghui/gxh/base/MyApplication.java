@@ -39,8 +39,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -133,6 +131,8 @@ public class MyApplication extends MultiDexApplication {
         header.put("X-appkey", "100");
 //        header.put("X-accesstoken", mAccessToken);
         header.put("X-systemType", "android");
+        header.put("X-cityId", SPUtils.getLocation("x-cityId"));
+        header.put("X-areaId", SPUtils.getLocation("x-areaId"));
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //log相关
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
@@ -148,6 +148,7 @@ public class MyApplication extends MultiDexApplication {
                 .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)
                 .setRetryCount(3)
                 .addCommonHeaders(header);
+
 
         Hawk.init(this).build();
     }

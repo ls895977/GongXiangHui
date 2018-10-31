@@ -367,7 +367,9 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
     /*sp存储一些信息*/
     private void saveLocationData(String cityCode, String areaId, String cityName) {
         SPUtils.saveLocation("X-cityId", cityCode);
+        SPUtils.saveLocation("x-cityId", cityCode);
         SPUtils.saveLocation("X-areaId", areaId);
+        SPUtils.saveLocation("x-areaId", areaId);
         SPUtils.saveLocation("currcity", cityName);
         OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
         OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
