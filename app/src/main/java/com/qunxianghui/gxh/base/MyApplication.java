@@ -46,7 +46,6 @@ import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 public class MyApplication extends MultiDexApplication {
-
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
     private static MyApplication SINSTANCE;
