@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,10 +43,11 @@ import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.SystemUtil;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import kr.co.namee.permissiongen.PermissionGen;
@@ -120,10 +120,10 @@ public class MainActivity extends BaseActivity {
             boolean hasLocationPermission =
                     ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
             if (hasLocationPermission) {
-                OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+                setImei();
             }
         } else {
-            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+            setImei();
         }
     }
 
@@ -136,10 +136,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (String.valueOf(SPUtils.getInt("id",0))!=null){
-            JPushInterface.setAlias(getApplicationContext(),0, String.valueOf(SPUtils.getInt("id",0)));
+        if (String.valueOf(SPUtils.getInt("id", 0)) != null) {
+            JPushInterface.setAlias(getApplicationContext(), 0, String.valueOf(SPUtils.getInt("id", 0)));
 
-            Log.i("用户的id",String.valueOf(SPUtils.getInt("id",0)));
+            Log.i("用户的id", String.valueOf(SPUtils.getInt("id", 0)));
         }
 
     }
@@ -292,15 +292,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+            setImei();
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    private void setImei() {
+        String imei = SystemUtil.getIMEI(getApplicationContext());
+        Set<String> set = new HashSet<>();
+        set.add(imei);
+        JPushInterface.setTags(MainActivity.this, 1, set);
+        OkGo.getInstance().getCommonHeaders().put("X-deviceId", imei);
     }
 }
 

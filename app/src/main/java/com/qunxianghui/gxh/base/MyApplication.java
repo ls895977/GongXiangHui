@@ -28,9 +28,11 @@ import com.qiyukf.unicorn.api.UnicornImageLoader;
 import com.qiyukf.unicorn.api.YSFOptions;
 import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.AppManager;
 import com.qunxianghui.gxh.utils.CrashHandler;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.ScreenUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
@@ -75,9 +77,9 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         JPushInterface.setDebugMode(true);
+        SINSTANCE = this;
         initJPush();
         initQIYu();
-        SINSTANCE = this;
         appManager = AppManager.getAppManager();
         //TODO: 设置开启日志,发布时请关闭日志
 
@@ -118,10 +120,9 @@ public class MyApplication extends MultiDexApplication {
     private void initJPush() {
         //初始化极光推送
         JPushInterface.init(this);
-        Set<String> set = new HashSet<>();
-        set.add("群享汇");//名字任意，可多添加几个,能区别就好了
-        set.add("创业");//名字任意，可多添加几个,能区别就好了
-        JPushInterface.setTags(this, set, null);//设置标签
+        int userId = SPUtils.getInt(SpConstant.USER_ID, 0);
+        if (userId != 0)
+            JPushInterface.setAlias(SINSTANCE, 1, String.valueOf(userId));
 
     }
 

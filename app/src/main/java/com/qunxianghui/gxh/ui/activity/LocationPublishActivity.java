@@ -48,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +61,9 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_PREVIEW;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_SELECT;
 
-public class LocationPublishActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack, RecyItemTouchHelperCallback.OnBackonSwiped {
+public class LocationPublishActivity extends BaseActivity
+        implements ImagePickerAdapter.OnRecyclerViewItemClickListener,
+        ImagePickerAdapter.OnImageBack, RecyItemTouchHelperCallback.OnBackonSwiped {
 
     @BindView(R.id.tv_upload)
     View mUpload;
@@ -399,14 +402,6 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     @Override
     public void backItemMoved(int fromPosition, int toPosition) {
-        Log.e("aa", "------fromPosition--" + fromPosition + "------toPosition---" + toPosition);
-//        List imagLinkList = new LinkedList<>();
-//        imagLinkList.set(fromPosition, 0);
-//        imagLinkList.set(toPosition, 1);
-//        imagLinkList.clear();
-//        for (int i = 0; i < images.size(); i++) {
-//            imagLinkList.add(images.get(i));
-//        }
-
+        Collections.swap(mImages,fromPosition,toPosition);
     }
 }

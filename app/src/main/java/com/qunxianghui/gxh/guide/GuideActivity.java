@@ -11,9 +11,14 @@ import com.lzy.okgo.OkGo;
 import com.qunxianghui.gxh.R;
 import com.qunxianghui.gxh.base.BaseActivity;
 import com.qunxianghui.gxh.guide.view.IndicatorView;
+import com.qunxianghui.gxh.ui.activity.WelcomeActivity;
 import com.qunxianghui.gxh.utils.SystemUtil;
 import com.youth.banner.transformer.DepthPageTransformer;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 import kr.co.namee.permissiongen.PermissionGen;
 
 public class GuideActivity extends BaseActivity {
@@ -37,10 +42,10 @@ public class GuideActivity extends BaseActivity {
             boolean hasLocationPermission =
                     ContextCompat.checkSelfPermission(GuideActivity.this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
             if (hasLocationPermission) {
-                OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+                setImei();
             }
         } else {
-            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+            setImei();
         }
 
         ViewPager viewPager = findViewById(R.id.guide_vp_container);
@@ -54,7 +59,15 @@ public class GuideActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            OkGo.getInstance().getCommonHeaders().put("X-deviceId", SystemUtil.getIMEI(getApplicationContext()));
+            setImei();
         }
+    }
+
+    private void setImei() {
+        String imei = SystemUtil.getIMEI(getApplicationContext());
+        Set<String> set = new HashSet<>();
+        set.add(imei);
+        JPushInterface.setTags(GuideActivity.this, 1, set);
+        OkGo.getInstance().getCommonHeaders().put("X-deviceId", imei);
     }
 }

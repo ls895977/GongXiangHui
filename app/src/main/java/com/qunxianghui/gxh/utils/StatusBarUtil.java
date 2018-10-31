@@ -690,7 +690,7 @@ public class StatusBarUtil {
         return 0xff << 24 | red << 16 | green << 8 | blue;
     }
 
-    public static boolean FlymeSetStatusBarLightMode(Activity activity, boolean dark) {
+    public static void FlymeSetStatusBarLightMode(Activity activity, boolean dark) {
         boolean result = false;
         Window window = activity.getWindow();
         if (window != null) {
@@ -716,7 +716,6 @@ public class StatusBarUtil {
 
             }
         }
-        return result;
     }
 
     /**
@@ -726,7 +725,7 @@ public class StatusBarUtil {
      * @param dark     是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
-    public static boolean MIUISetStatusBarLightMode(Activity activity, boolean dark) {
+    public static void MIUISetStatusBarLightMode(Activity activity, boolean dark) {
         boolean result = false;
         Window window = activity.getWindow();
         if (window != null) {
@@ -756,7 +755,6 @@ public class StatusBarUtil {
 
             }
         }
-        return result;
     }
 
 }
