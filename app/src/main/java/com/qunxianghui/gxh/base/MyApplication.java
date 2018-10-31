@@ -4,12 +4,11 @@ package com.qunxianghui.gxh.base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -21,11 +20,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qiyukf.unicorn.api.ImageLoaderListener;
-import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
-import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.UnicornImageLoader;
-import com.qiyukf.unicorn.api.YSFOptions;
 import com.qunxianghui.gxh.BuildConfig;
 import com.qunxianghui.gxh.config.Constant;
 import com.qunxianghui.gxh.config.SpConstant;
@@ -46,7 +40,6 @@ import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 public class MyApplication extends MultiDexApplication {
-
     public static Class<?> next = null;
     public static Bundle nextBundle = null;
     private static MyApplication SINSTANCE;
@@ -77,7 +70,7 @@ public class MyApplication extends MultiDexApplication {
         JPushInterface.setDebugMode(true);
         SINSTANCE = this;
         initJPush();
-        initQIYu();
+
         appManager = AppManager.getAppManager();
         //TODO: 设置开启日志,发布时请关闭日志
 
@@ -96,23 +89,6 @@ public class MyApplication extends MultiDexApplication {
 
     }
 
-    /*网易七鱼*/
-    private void initQIYu() {
-        // appKey 可以在七鱼管理系统->设置->APP接入 页面找到
-        Unicorn.init(getApplicationContext(), "2a52b51b4d3f95414ef08409878c6fbe ", options(), new UnicornImageLoader() {
-
-            @Nullable
-            @Override
-            public Bitmap loadImageSync(String uri, int width, int height) {
-                return null;
-            }
-
-            @Override
-            public void loadImage(String uri, int width, int height, ImageLoaderListener listener) {
-
-            }
-        });
-    }
 
 
     private void initJPush() {
@@ -121,6 +97,8 @@ public class MyApplication extends MultiDexApplication {
         int userId = SPUtils.getInt(SpConstant.USER_ID, 0);
         if (userId != 0)
             JPushInterface.setAlias(SINSTANCE, 1, String.valueOf(userId));
+
+        Log.d("用户的id", String.valueOf(userId));
 
     }
 
@@ -196,11 +174,4 @@ public class MyApplication extends MultiDexApplication {
         }
     };
 
-
-    // 如果返回值为null，则全部使用默认参数。
-    private YSFOptions options() {
-        YSFOptions options = new YSFOptions();
-        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
-        return options;
-    }
 }
