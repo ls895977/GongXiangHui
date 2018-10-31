@@ -23,11 +23,11 @@
             android:id="@+id/tv_localcircle_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/iv_local_location"
             android:drawablePadding="5dp"
             android:text="未定位"
-            android:layout_centerInParent="true"
             android:textColor="#333333"
             android:textSize="13sp" />
 

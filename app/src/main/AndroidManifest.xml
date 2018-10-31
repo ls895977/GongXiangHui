@@ -13,7 +13,8 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在 6.0 系统上的层叠窗口权限 -->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_APN_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
 
@@ -63,7 +64,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <!-- app的入口 -->
         <activity
             android:name=".ui.fragments.homeFragment.activity.SplashActivity"
@@ -405,18 +407,18 @@
             </intent-filter>
         </service>
         <!--<receiver-->
-            <!--android:name=".widget.MyJPushReceiver"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="false"-->
-            <!--tools:node="replace">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="cn.jpush.android.intent.REGISTRATION" /> &lt;!&ndash; Required  用户注册SDK的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> &lt;!&ndash; Required  用户接收SDK消息的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> &lt;!&ndash; Required  用户接收SDK通知栏信息的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> &lt;!&ndash; Required  用户打开自定义通知栏的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.CONNECTION" /> &lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt;-->
-                <!--<category android:name="com.qunxianghui.gxh" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".widget.MyJPushReceiver"-->
+        <!--android:enabled="true"-->
+        <!--android:exported="false"-->
+        <!--tools:node="replace">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="cn.jpush.android.intent.REGISTRATION" /> &lt;!&ndash; Required  用户注册SDK的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> &lt;!&ndash; Required  用户接收SDK消息的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> &lt;!&ndash; Required  用户接收SDK通知栏信息的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> &lt;!&ndash; Required  用户打开自定义通知栏的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.CONNECTION" /> &lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt;-->
+        <!--<category android:name="com.qunxianghui.gxh" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
     </application>
 
