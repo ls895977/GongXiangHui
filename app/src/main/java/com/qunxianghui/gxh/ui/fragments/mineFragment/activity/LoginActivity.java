@@ -38,6 +38,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -259,7 +260,8 @@ public class LoginActivity extends BaseActivity {
                             int id = userData.getId();
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, userData.getCompany_id() != 0);
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
-                            SPUtils.saveInt(SpConstant.USER_ID, id );
+                            SPUtils.saveInt(SpConstant.USER_ID, id);
+                            JPushInterface.setAlias(LoginActivity.this, 1, String.valueOf(id));
                             if (TextUtils.isEmpty(userData.getNick())) {
                                 UserUtil.getInstance().mNick = "" + userData.getMobile();
                             } else {
