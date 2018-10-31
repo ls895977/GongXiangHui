@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -123,7 +122,6 @@ public class LocationPublishActivity extends BaseActivity
         mRv.addOnItemTouchListener(new OnRecyclerItemClickListener(mRv) {
             @Override
             public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-
 
             }
 

@@ -89,8 +89,6 @@ public class MyApplication extends MultiDexApplication {
 
     }
 
-
-
     private void initJPush() {
         //初始化极光推送
         JPushInterface.init(this);
