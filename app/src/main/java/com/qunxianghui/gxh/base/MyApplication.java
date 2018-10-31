@@ -123,7 +123,6 @@ public class MyApplication extends MultiDexApplication {
         set.add("创业");//名字任意，可多添加几个,能区别就好了
         JPushInterface.setTags(this, set, null);//设置标签
 
-
     }
 
     private void initOkGo() {

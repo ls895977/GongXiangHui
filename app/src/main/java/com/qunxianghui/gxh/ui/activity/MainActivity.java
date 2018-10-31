@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -39,6 +40,7 @@ import com.qunxianghui.gxh.ui.fragments.homeFragment.activity.VideoUploadActivit
 import com.qunxianghui.gxh.ui.fragments.locationFragment.LocationFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.MineFragment;
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.LoginActivity;
+import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.SystemUtil;
 
 import java.util.Arrays;
@@ -47,6 +49,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import kr.co.namee.permissiongen.PermissionGen;
 
 public class MainActivity extends BaseActivity {
@@ -128,6 +131,17 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         requestMessageCount();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (String.valueOf(SPUtils.getInt("id",0))!=null){
+            JPushInterface.setAlias(getApplicationContext(),0, String.valueOf(SPUtils.getInt("id",0)));
+
+            Log.i("用户的id",String.valueOf(SPUtils.getInt("id",0)));
+        }
+
     }
 
     /*请求我的消息数量*/
