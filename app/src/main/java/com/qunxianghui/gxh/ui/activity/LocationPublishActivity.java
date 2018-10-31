@@ -83,6 +83,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     private StringBuilder stringBuilder;
     private LocationDetailFragment mLocationDetailFragment;
     private HashMap<Object, Object> mHashMap;
+    private ArrayList<ImageItem> images;
 
     @Override
     protected int getLayoutId() {
@@ -162,7 +163,7 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<ImageItem> images;
+
 
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
 
@@ -398,8 +399,14 @@ public class LocationPublishActivity extends BaseActivity implements ImagePicker
 
     @Override
     public void backItemMoved(int fromPosition, int toPosition) {
-
         Log.e("aa", "------fromPosition--" + fromPosition + "------toPosition---" + toPosition);
+//        List imagLinkList = new LinkedList<>();
+//        imagLinkList.set(fromPosition, 0);
+//        imagLinkList.set(toPosition, 1);
+//        imagLinkList.clear();
+//        for (int i = 0; i < images.size(); i++) {
+//            imagLinkList.add(images.get(i));
+//        }
 
     }
 }

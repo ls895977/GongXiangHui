@@ -256,8 +256,10 @@ public class LoginActivity extends BaseActivity {
                             JsonConvert.sIsShow = true;
                             LoginBean userData = response.body().data;
                             String access_token = userData.getAccessTokenInfo().getAccess_token();
+                            int id = userData.getId();
                             SPUtils.saveBoolean(SpConstant.IS_COMPANY, userData.getCompany_id() != 0);
                             SPUtils.saveString(SpConstant.ACCESS_TOKEN, access_token);
+                            SPUtils.saveInt(SpConstant.USER_ID, id );
                             if (TextUtils.isEmpty(userData.getNick())) {
                                 UserUtil.getInstance().mNick = "" + userData.getMobile();
                             } else {

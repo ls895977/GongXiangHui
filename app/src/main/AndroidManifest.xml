@@ -404,6 +404,7 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
+
         <!--<receiver-->
             <!--android:name=".widget.MyJPushReceiver"-->
             <!--android:enabled="true"-->

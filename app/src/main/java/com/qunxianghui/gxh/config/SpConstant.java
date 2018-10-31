@@ -10,6 +10,7 @@ public class SpConstant {
     public final static String LOGIN_MSG = "login_message";//登录信息
 
     public static final String ACCESS_TOKEN = "access_token";//用户登录凭证
+    public static final String USER_ID="id";//用户登录凭证
 
     public static final String IS_COMPANY = "is_company";//是否是企业会员
 
