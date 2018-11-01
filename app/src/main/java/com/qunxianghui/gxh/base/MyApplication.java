@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.udesk.UdeskSDKManager;
 import okhttp3.OkHttpClient;
 
 public class MyApplication extends MultiDexApplication {
@@ -70,7 +71,7 @@ public class MyApplication extends MultiDexApplication {
         JPushInterface.setDebugMode(true);
         SINSTANCE = this;
         initJPush();
-
+        initServiceCenter();
         appManager = AppManager.getAppManager();
         //TODO: 设置开启日志,发布时请关闭日志
 
@@ -87,6 +88,25 @@ public class MyApplication extends MultiDexApplication {
         initOkGo();
         initThirdLib();
 
+    }
+/*客服中心*/
+    private void initServiceCenter() {
+        UdeskSDKManager.getInstance().initApiKey(getApplicationContext(), "13867485151.udesk.cn","c25c72dda8198c7e054687a4f6a2af49","5fb97fb4bbcf877d");
+
+//        String sdktoken = "用户唯一的标识";
+//        Map<String, String> info = new HashMap<String, String>();
+////sdktoken 必填
+//        info.put(UdeskConst.UdeskUserInfo.USER_SDK_TOKEN, sdktoken);
+//        //以下信息是可选
+//        info.put(UdeskConst.UdeskUserInfo.NICK_NAME,"昵称");
+//        info.put(UdeskConst.UdeskUserInfo.EMAIL,"0631@163.com");
+//        info.put(UdeskConst.UdeskUserInfo.CELLPHONE,"15651818750");
+//        info.put(UdeskConst.UdeskUserInfo.DESCRIPTION,"描述信息");
+//
+//        只设置用户基本信息的配置
+//        UdeskConfig.Builder builder = new UdeskConfig.Builder();
+//        builder.setDefualtUserInfo(info)
+//        UdeskSDKManager.getInstance().entryChat(getApplicationContext(), builder.build(), sdkToken);
     }
 
     private void initJPush() {

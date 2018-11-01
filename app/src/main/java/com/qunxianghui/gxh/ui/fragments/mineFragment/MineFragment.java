@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +41,15 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 
+import java.util.UUID;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.udesk.PreferenceHelper;
+import cn.udesk.UdeskSDKManager;
+import cn.udesk.config.UdeskConfig;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -210,6 +216,12 @@ public class MineFragment extends BaseFragment {
 
     /*联系客服*/
     private void CollectServiceCenter() {
+        String sdkToken = PreferenceHelper.readString(mActivity.getApplicationContext(), "init_base_name", "sdktoken");
+        if (TextUtils.isEmpty(sdkToken)) {
+            sdkToken = UUID.randomUUID().toString();
+        }
+//       //咨询会话
+        UdeskSDKManager.getInstance().entryChat(mActivity.getApplicationContext(), UdeskConfig.createDefualt(), sdkToken);
 
     }
 
