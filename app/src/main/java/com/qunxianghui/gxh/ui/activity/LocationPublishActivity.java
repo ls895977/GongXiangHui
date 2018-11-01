@@ -123,7 +123,6 @@ public class LocationPublishActivity extends BaseActivity
             @Override
             public void onItemClick(RecyclerView.ViewHolder viewHolder) {
 
-
             }
 
             @Override
