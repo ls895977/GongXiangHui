@@ -77,7 +77,7 @@ public class LocationPublishActivity extends BaseActivity
 
     private Dialog mSelectPhoto;
     private ImagePickerAdapter mAdapter;
-    private List<ImageItem> mImages; //当前选择的所有图片
+    private ArrayList<ImageItem> mImages; //当前选择的所有图片
     private OptionsPickerView mChooseType;
     private int mTypeId;
     private boolean mIsUploadIng;
@@ -164,8 +164,6 @@ public class LocationPublishActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
 
             //添加图片返回
@@ -198,7 +196,7 @@ public class LocationPublishActivity extends BaseActivity
                 break;
             default:
                 Intent intentPreview = new Intent(this, ImagePreviewDelActivity.class);
-                intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, (ArrayList<ImageItem>) mAdapter.getImages());
+                intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, mImages);
                 intentPreview.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
                 intentPreview.putExtra(ImagePicker.EXTRA_FROM_ITEMS, true);
                 startActivityForResult(intentPreview, REQUEST_CODE_PREVIEW);
@@ -400,6 +398,14 @@ public class LocationPublishActivity extends BaseActivity
 
     @Override
     public void backItemMoved(int fromPosition, int toPosition) {
-        Collections.swap(mImages,fromPosition,toPosition);
+        if (Math.abs(fromPosition - toPosition) == 1) {
+            Collections.swap(mImages, fromPosition, toPosition);
+            return;
+        }
+        mImages.add(toPosition, mImages.get(fromPosition));
+        if (fromPosition < toPosition)
+            mImages.remove(fromPosition);
+        else
+            mImages.remove(fromPosition + 1);
     }
 }
