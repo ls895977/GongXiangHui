@@ -57,20 +57,23 @@ public class EnterpriseMaterialAdapter extends BaseQuickAdapter<EnterpriseMateri
 
     @Override
     protected BaseViewHolder createBaseViewHolder(View view) {
+        View viewById;
         switch (mType) {
             case 0:
-                view.findViewById(R.id.rl_tiepian).setVisibility(View.VISIBLE);
+                viewById = view.findViewById(R.id.rl_tiepian);
                 break;
             case 1:
-                view.findViewById(R.id.rl_big).setVisibility(View.VISIBLE);
+                viewById = view.findViewById(R.id.rl_big);
                 break;
             case 3:
-                view.findViewById(R.id.rl_tonglang).setVisibility(View.VISIBLE);
+                viewById = view.findViewById(R.id.rl_tonglang);
                 break;
             default:
-                view.findViewById(R.id.rl_other).setVisibility(View.VISIBLE);
+                viewById = view.findViewById(R.id.rl_other);
                 break;
         }
+        if (viewById != null)
+            viewById.setVisibility(View.VISIBLE);
         return super.createBaseViewHolder(view);
     }
 }
