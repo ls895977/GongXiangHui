@@ -67,7 +67,6 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        JPushInterface.setDebugMode(true);
         SINSTANCE = this;
         initJPush();
 
@@ -93,6 +92,7 @@ public class MyApplication extends MultiDexApplication {
 
     private void initJPush() {
         //初始化极光推送
+        JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         int userId = SPUtils.getInt(SpConstant.USER_ID, 0);
         if (userId != 0)
