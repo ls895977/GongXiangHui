@@ -8,7 +8,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -40,6 +42,7 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
     private ArrayList<ChannelItem> mUnSelectedData = new ArrayList<>();
     private ChannelAdapter mAdapter;
     private String firstAddChannelName = "";
+    private TextView edit;
     //是否需要更新 主页频道信息
     private boolean isUpdate = false;
     private OnChannelListener onChannelListener;
@@ -64,6 +67,22 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
                     EventBus.getDefault().post(event);
                 }
                 finish();
+            }
+        });
+        //编辑点击事件
+        edit = findViewById(R.id.tv_edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAdapter != null) {
+                    if (edit.getText().toString().equals("编辑")) {
+                        mAdapter.setTvEdit();
+                        edit.setText("完成");
+                    } else {
+                        mAdapter.setTvEdit();
+                        edit.setText("编辑");
+                    }
+                }
             }
         });
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -92,7 +111,7 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
                 }
             }
             processLogic();
-        } else if (bean != null && bean.getCode() == 1000){
+        } else if (bean != null && bean.getCode() == 1000) {
             SPUtils.removePreference(SpConstant.ACCESS_TOKEN);
             OkGo.getInstance().getCommonHeaders().remove("X-accesstoken");
             OkGo.<ChannelGetallBean>post(Constant.CHANNEL_GETALL)
@@ -113,12 +132,14 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         setDataType(mSelectedData, ChannelItem.TYPE_MY_CHANNEL);
         mData.addAll(mSelectedData);
 
+
         ChannelItem moreChannel = new ChannelItem();
         moreChannel.viewType = ChannelItem.TYPE_OTHER;
         moreChannel.channelName = "频道推荐";
         mData.add(moreChannel);
         setDataType(mUnSelectedData, ChannelItem.TYPE_OTHER_CHANNEL);
         mData.addAll(mUnSelectedData);
+
 
         ItemDragHelperCallBack callback = new ItemDragHelperCallBack(this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -157,14 +178,16 @@ public class HomeChannelActivity extends AppCompatActivity implements OnChannelL
         onMove(starPos, endPos, false);
     }
 
+    //往上移入
     @Override
     public void onMoveToMyChannel(int starPos, int endPos) {
-        onMove(starPos, endPos, false);
+            onMove(starPos, endPos, false);
     }
 
+    //往下移动
     @Override
     public void onMoveToOtherChannel(int starPos, int endPos) {
-        onMove(starPos, endPos, true);
+            onMove(starPos, endPos, true);
     }
 
     @Override
