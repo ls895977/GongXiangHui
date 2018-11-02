@@ -93,6 +93,12 @@ public class VideoChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, 
         }
         return -1;
     }
+    private boolean up=false;
+    public void setEdit() {
+        mIsEdit = !mIsEdit;
+        up=!up;
+        startEditMode(mIsEdit);
+    }
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final ChannelItem channel) {
@@ -156,7 +162,9 @@ public class VideoChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, 
                     @Override
                     public void onClick(View v) {
                         //执行删除，移动到推荐频道列表
-                        if (mIsEdit) {
+                        if (!mIsEdit && !up) {
+                            return;
+                        }
                             if (channel.id == 0 || channel.id == -1) return;
                             int otherFirstPosition = getOtherFirstPosition();
                             int currentPosition = baseViewHolder.getAdapterPosition();
@@ -203,7 +211,6 @@ public class VideoChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, 
                                             }
                                         });
                             }
-                        }
                     }
                 });
                 break;
@@ -219,7 +226,9 @@ public class VideoChannelAdapter extends BaseMultiItemQuickAdapter<ChannelItem, 
                 baseViewHolder.getView(R.id.tv_channelname).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!mIsEdit) return;
+                        if (!mIsEdit && up) {
+                            return;
+                        }
                         int myLastPosition = getMyLastPosition();
                         int currentPosition = baseViewHolder.getAdapterPosition();
                         //获取到目标View
