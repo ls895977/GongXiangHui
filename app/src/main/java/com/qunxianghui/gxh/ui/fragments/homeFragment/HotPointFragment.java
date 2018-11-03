@@ -196,11 +196,12 @@ public class HotPointFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if ((mChannelId == -1 || mChannelId == 0) && LocationActivity.sIsChangeArea) {
+        if (mChannelId == -1 && LocationActivity.sISChangeLunbo) {
+            LocationActivity.sISChangeLunbo = false;
+            getLunBoData();
+        } else if (mChannelId == 0 && LocationActivity.sIsChangeArea) {
             LocationActivity.sIsChangeArea = false;
             mCount = 0;
-            if (mChannelId == -1)
-                getLunBoData();
             initData();
         }
 //        mTvBannerText.startViewAnimator();

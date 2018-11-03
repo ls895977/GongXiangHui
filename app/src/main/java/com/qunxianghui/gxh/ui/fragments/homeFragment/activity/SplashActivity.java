@@ -26,8 +26,8 @@ public class SplashActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(cityCode)) {
             String areaId = SPUtils.getLocation("x-areaId");
-            OkGo.getInstance().getCommonHeaders().put("x-cityId", cityCode);
-            OkGo.getInstance().getCommonHeaders().put("x-areaId", areaId);
+            OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);
+            OkGo.getInstance().getCommonHeaders().put("X-areaId", areaId);
         }
 
     }
