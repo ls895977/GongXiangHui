@@ -59,6 +59,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     private AMapLocationClient mLocationClient;
     AMapLocationClientOption mLocationOption = null;
     public static boolean sIsChangeArea;
+    public static boolean sISChangeLunbo;
     public static boolean sLocationCanChange;
     public static boolean sVideoCanChange;
 
@@ -172,7 +173,6 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     }
 
 
-
     private void requestCityInfo(Double lat, Double lng, final String cityName) {
         OkGo.<CityInfo>get(Constant.GET_CITY_INFO)
                 .params("lat", lat)
@@ -193,6 +193,7 @@ public class LocationActivity extends BaseActivity implements AMapLocationListen
     /*sp存储一些信息*/
     private void saveLocationData(String cityCode, String areaId, String cityName) {
         sIsChangeArea = true;
+        sISChangeLunbo = true;
         sLocationCanChange = true;
         sVideoCanChange = true;
         OkGo.getInstance().getCommonHeaders().put("X-cityId", cityCode);

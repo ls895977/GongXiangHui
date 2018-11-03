@@ -79,17 +79,6 @@ public class LocationFragment extends BaseFragment {
         EventBus.getDefault().register(this);
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        if (LocationActivity.sLocationCanChange) {
-//            LocationActivity.sLocationCanChange = false;
-//            for (int i = 0; i < fragments.size(); i++) {
-//                ((LocationDetailFragment) fragments.get(i)).mIsChange = true;
-//            }
-//        }
-//    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(PublishBiaoliao publishBiaoliao) {
         initData();
@@ -108,11 +97,21 @@ public class LocationFragment extends BaseFragment {
                     userChannelList.addAll(datas);
                 } else {
                     HomeVideoChannel body = response.body();
-
                     asyncShowToast(HttpStatusUtil.getStatusMsg(response.body().message));
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String currcity = SPUtils.getLocation("currcity");
+        mTvLocalcircleLocation.setText(currcity);
+        if (LocationActivity.sLocationCanChange) {
+            LocationActivity.sLocationCanChange = false;
+            initData();
+        }
     }
 
     private void setFragments(List<ChannelItem> datas) {
@@ -135,17 +134,6 @@ public class LocationFragment extends BaseFragment {
         mLocalViewPager.setAdapter(mineTabViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mLocalViewPager);
         mLocalViewPager.setOffscreenPageLimit(fragments.size() - 1);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        String currcity = SPUtils.getLocation("currcity");
-        mTvLocalcircleLocation.setText(currcity);
-        if (LocationActivity.sLocationCanChange) {
-            LocationActivity.sLocationCanChange = false;
-            initData();
-        }
     }
 
     @Override
@@ -173,7 +161,6 @@ public class LocationFragment extends BaseFragment {
             fragments.clear();
             setFragments(userChannelList);
             setViewpager();
-
         }
     }
 

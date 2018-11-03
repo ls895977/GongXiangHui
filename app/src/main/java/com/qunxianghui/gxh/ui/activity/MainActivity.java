@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -122,9 +121,8 @@ public class MainActivity extends BaseActivity {
             if (hasLocationPermission) {
                 setImei();
             }
-        } else {
+        } else
             setImei();
-        }
     }
 
     @Override
@@ -136,12 +134,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (String.valueOf(SPUtils.getInt("id", 0)) != null) {
-            JPushInterface.setAlias(getApplicationContext(), 0, String.valueOf(SPUtils.getInt("id", 0)));
-
-            Log.i("用户的id", String.valueOf(SPUtils.getInt("id", 0)));
-        }
-
+        JPushInterface.setAlias(getApplicationContext(), 0, String.valueOf(SPUtils.getInt("id", 0)));
     }
 
     /*请求我的消息数量*/
@@ -291,9 +284,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             setImei();
-        }
     }
 
     private void setImei() {

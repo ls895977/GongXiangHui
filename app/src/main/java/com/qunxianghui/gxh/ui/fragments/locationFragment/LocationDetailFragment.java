@@ -59,7 +59,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
     private TextView mTv_inform_sex;
     private int mUuid;
     public int mMemberId;
-    public boolean mIsChange;
 
     @Override
     public int getLayoutId() {
@@ -79,16 +78,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
         if (getArguments() != null)
             mCateId = getArguments().getInt("channel_id");
         requestLocalServiceData();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (mIsChange) {
-            mIsChange = false;
-            mSkip = 0;
-            requestLocalServiceData();
-        }
     }
 
     private void requestLocalServiceData() {
@@ -117,16 +106,6 @@ public class LocationDetailFragment extends BaseFragment implements View.OnClick
                     }
                 });
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (LocationActivity.sLocationCanChange) {
-//            LocationActivity.sLocationCanChange = false;
-//            mSkip = 0;
-//            initData();
-//        }
-//    }
 
     @SuppressLint("UseSparseArrays")
     private void parseData(TestMode testMode) {
