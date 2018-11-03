@@ -4,9 +4,12 @@ import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
+import com.lzy.imagepicker.bean.ImageItem;
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 /*******************************************************************
@@ -22,6 +25,7 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     boolean isSwipeEnable;
     boolean isFirstDragUnable;
     private OnBackonSwiped onBackonSwiped;
+    private ArrayList<ImageItem> imageItems;
 
     public void setOnBackonSwiped(OnBackonSwiped onBackonSwiped) {
         this.onBackonSwiped = onBackonSwiped;
@@ -33,7 +37,8 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         isFirstDragUnable = false;
     }
 
-    public RecyItemTouchHelperCallback(RecyclerView.Adapter adapter, boolean isSwipeEnable, boolean isFirstDragUnable) {
+    public RecyItemTouchHelperCallback(ArrayList<ImageItem> imageItems1, RecyclerView.Adapter adapter, boolean isSwipeEnable, boolean isFirstDragUnable) {
+        imageItems = imageItems1;
         mAdapter = adapter;
         this.isSwipeEnable = isSwipeEnable;
         this.isFirstDragUnable = isFirstDragUnable;
@@ -57,7 +62,7 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         int fromPosition = viewHolder.getAdapterPosition();
         int toPosition = target.getAdapterPosition();
-        if ((toPosition + 1) == mAdapter.getItemCount()) {
+        if (imageItems.size() != 9) {
             return false;
         }
         if (fromPosition < toPosition) {
@@ -105,7 +110,7 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         return isSwipeEnable;
     }
 
-  public   interface OnBackonSwiped {
+    public interface OnBackonSwiped {
         void backItemMoved(int fromPosition, int toPosition);
     }
 }
