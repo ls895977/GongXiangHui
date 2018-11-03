@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 ;
@@ -74,6 +76,9 @@ public class PersonDataActivity extends BaseActivity {
     EditText etPersonDataAdress;
     @BindView(R.id.et_person_data_introduce)
     EditText etPersonDataIntroduce;
+    @BindView(R.id.iv_persondata_nick_delete)
+    ImageView ivPersondataNickDelete;
+
     private String[] sexArray = new String[]{"男", "女"};
     private List<String> upLoadPics = new ArrayList<>();
     private ImagePicker imagePicker;
@@ -152,7 +157,9 @@ public class PersonDataActivity extends BaseActivity {
 
             }
         });
-
+        if (etPersonDataUserName.isClickable()&&etPersonDataNickName.getText().toString().length()>0) {
+            ivPersondataNickDelete.setVisibility(View.VISIBLE);
+        }
     }
 
     public void saveInfo(View view) {
@@ -272,6 +279,13 @@ public class PersonDataActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         imagePicker.onActivityResult(PersonDataActivity.this, requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
 

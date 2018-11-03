@@ -184,7 +184,6 @@ public class HomeFragment extends BaseFragment implements AMapLocationListener {
                     }
                 });
     }
-
     @Override
     protected void initListeners() {
         mTopSlidingLayout.setOnTabSelectListener(new OnTabSelectListener() {

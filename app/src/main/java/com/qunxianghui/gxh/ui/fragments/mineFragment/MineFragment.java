@@ -110,7 +110,23 @@ public class MineFragment extends BaseFragment {
             tvMineMesssageCount.setVisibility(View.VISIBLE);
             tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount));
         }
-
+//
+//
+///*        默认系统字段是Udesk已定义好的字段，开发者可以直接传入这些用户信息，供客服查看。*/
+//        String sdktoken = "用户唯一的标识";
+//        Map<String, String> info = new HashMap<String, String>();
+////   sdktoken 必填
+//        info.put(UdeskConst.UdeskUserInfo.USER_SDK_TOKEN, sdktoken);
+//        //以下信息是可选
+//        info.put(UdeskConst.UdeskUserInfo.NICK_NAME,"昵称");
+//        info.put(UdeskConst.UdeskUserInfo.EMAIL,"0631@163.com");
+//        info.put(UdeskConst.UdeskUserInfo.CELLPHONE,"15651818750");
+//        info.put(UdeskConst.UdeskUserInfo.DESCRIPTION,"描述信息");
+//
+////        只设置用户基本信息的配置
+//        UdeskConfig.Builder builder = new UdeskConfig.Builder();
+//        builder.setDefualtUserInfo(info);
+//        UdeskSDKManager.getInstance().entryChat(mActivity, builder.build(), sdktoken);
     }
 
     @Override
@@ -236,6 +252,27 @@ public class MineFragment extends BaseFragment {
         }
         return true;
     }
+
+    private UdeskConfig.Builder makeBuilder() {
+        UdeskConfig.Builder builder = new UdeskConfig.Builder();
+        builder.setUdeskTitlebarBgResId(R.color.udesk_titlebar_bg1) //设置标题栏TitleBar的背景色
+                .setUdeskTitlebarTextLeftRightResId(R.color.udesk_color_navi_text1) //设置标题栏TitleBar，左右两侧文字的颜色
+                .setUdeskIMLeftTextColorResId(R.color.udesk_color_im_text_left1) //设置IM界面，左侧文字的字体颜色
+                .setUdeskIMRightTextColorResId(R.color.udesk_color_im_text_right1) // 设置IM界面，右侧文字的字体颜色
+                .setUdeskIMAgentNickNameColorResId(R.color.udesk_color_im_left_nickname1) //设置IM界面，左侧客服昵称文字的字体颜色
+                .setUdeskIMTimeTextColorResId(R.color.udesk_color_im_time_text1) // 设置IM界面，时间文字的字体颜色
+                .setUdeskIMTipTextColorResId(R.color.udesk_color_im_tip_text1) //设置IM界面，提示语文字的字体颜色，比如客服转移
+                .setUdeskbackArrowIconResId(R.drawable.udesk_titlebar_back) // 设置返回箭头图标资源id
+                .setUdeskCommityBgResId(R.color.udesk_color_im_commondity_bg1) //咨询商品item的背景颜色
+                .setUdeskCommityTitleColorResId(R.color.udesk_color_im_commondity_title1) // 商品介绍Title的字样颜色
+                .setUdeskCommitysubtitleColorResId(R.color.udesk_color_im_commondity_subtitle1)// 商品咨询页面中，商品介绍子Title的字样颜色
+                .setUdeskCommityLinkColorResId(R.color.udesk_color_im_commondity_link1);//商品咨询页面中，发送链接的字样颜色
+        return builder;
+    }
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
