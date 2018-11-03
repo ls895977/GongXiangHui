@@ -540,6 +540,7 @@ public class AdvertBottomFragment extends BaseFragment implements View.OnClickLi
                         tvType.setText("拨打电话");
                         rlLink.setVisibility(View.GONE);
                         etOther.setVisibility(View.VISIBLE);
+                        etOther.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)}); //最大输入长度
                         etOther.setText(companyAdvert.settings.mobile);
                         break;
                     case 3:

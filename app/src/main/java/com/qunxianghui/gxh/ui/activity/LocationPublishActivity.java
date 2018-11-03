@@ -134,7 +134,6 @@ public class LocationPublishActivity extends BaseActivity
         });
 
         mRv.setAdapter(mAdapter);
-
         mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
             public void onTakePhoto() {

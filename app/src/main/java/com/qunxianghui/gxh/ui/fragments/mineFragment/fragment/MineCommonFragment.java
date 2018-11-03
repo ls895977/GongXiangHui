@@ -25,7 +25,6 @@ import com.qunxianghui.gxh.config.SpConstant;
 import com.qunxianghui.gxh.observer.EventManager;
 import com.qunxianghui.gxh.ui.activity.NewsDetailActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
-import com.superluo.textbannerlibrary.TextBannerView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,9 +48,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
     Unbinder unbinder;
-    @BindView(R.id.tv_banner_text)
-    TextBannerView tvBannerText;
-
     private MyCollectPostAdapter myCollectPostAdapter;
     private List<MyCollectPostBean.DataBean> dataList = new ArrayList<>();
     private boolean mIsFirst = true;
@@ -70,11 +66,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        tvBannerText.startViewAnimator();
-    }
 
     private void RequestMineCommentData() {
         OkGo.<MyCollectPostBean>post(Constant.GET_COLLECT_NEWS_URL)
@@ -219,12 +210,6 @@ public class MineCommonFragment extends BaseFragment implements Observer {
     @Override
     protected void onLoadData() {
 
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        tvBannerText.stopViewAnimator();
     }
 
     @Override

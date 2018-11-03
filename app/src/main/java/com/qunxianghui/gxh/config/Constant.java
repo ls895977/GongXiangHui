@@ -7,8 +7,8 @@ public class Constant {
 
     public static boolean MyCollectIsShow = false;
     public static final long TIME_OUT = 3000;//网络请求超时时//     public static final String BASE_URL = "http://api.qunxianghui.com/v2/";间
-    private static final String BASE_URL = "https://api.qunxianghui.com.cn/v2/";     //上线环境
-//        private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";     //线下问题
+//    private static final String BASE_URL = "https://api.qunxianghui.com.cn/v2/";     //上线环境
+        private static final String BASE_URL = "http://api.test.gongxianghui.net/v2/";     //线下问题
     /*app嵌入H5链接*/
     public static final String YouXuan = "https://www.qunxianghui.com/optimization";   //首页精选链接的跳转
     public static final String BenDiService = "https://fx.qunxianghui.com.cn/register/index.html";    //群享汇服务协议链接的跳转
@@ -31,30 +31,30 @@ public class Constant {
     public static final String HOME_SEE_JOB_URL = "http://m.58.com/hz/job.shtml?from=benditoutiao";    //找工作
 
 
-//    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";    //新闻详情`
+    public static final String HOME_NEWS_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/xinwen_/index.html#/";    //新闻详情`
+
+    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";    //本地发布详情
+
+    public static final String GOOD_SELECT__DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/jingxuan_fabu/index.html#/";    //精选发布详情
+
+    public static final String VIDEO_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/shipin_/index.html#/";    //视频详情
+
+    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";    //首页上面优选的页面
+
+    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";  //首页上面本地服务的页面
+
+//    /*线上环境的详情页*/
+//    public static final String HOME_NEWS_DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/xinwen_/index.html#/";    //新闻详情
 //
-//    public static final String LOCAL_SERVICES_ISSUE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_fabu/index.html#/";    //本地发布详情
+//    public static final String LOCAL_SERVICES_ISSUE_URL = "https://api.qunxianghui.com.cn/theme/new_details/bendi_fabu/index.html#/";  //本地发布详情
 //
-//    public static final String GOOD_SELECT__DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/jingxuan_fabu/index.html#/";    //精选发布详情
+//    public static final String GOOD_SELECT__DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/jingxuan_fabu/index.html#/";   //精选发布详情
 //
-//    public static final String VIDEO_DETAIL_URL = "http://api.test.gongxianghui.net/theme/new_details/shipin_/index.html#/";    //视频详情
+//    public static final String VIDEO_DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/shipin_/index.html#/";   //视频详情
 //
-//    public static final String HOME_GOOD_SELECT_URL = "http://api.test.gongxianghui.net/theme/new_details/youxuan_h5/index.html#/";    //首页上面优选的页面
+//    public static final String HOME_GOOD_SELECT_URL = "https://api.qunxianghui.com.cn/theme/new_details/youxuan_h5/index.html#/";  //首页上面优选的页面
 //
-//    public static final String HOME_LOCAL_SERVICE_URL = "http://api.test.gongxianghui.net/theme/new_details/bendi_h5/index.html#/";  //首页上面本地服务的页面
-
-    /*线上环境的详情页*/
-    public static final String HOME_NEWS_DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/xinwen_/index.html#/";    //新闻详情
-
-    public static final String LOCAL_SERVICES_ISSUE_URL = "https://api.qunxianghui.com.cn/theme/new_details/bendi_fabu/index.html#/";  //本地发布详情
-
-    public static final String GOOD_SELECT__DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/jingxuan_fabu/index.html#/";   //精选发布详情
-
-    public static final String VIDEO_DETAIL_URL = "https://api.qunxianghui.com.cn/theme/new_details/shipin_/index.html#/";   //视频详情
-
-    public static final String HOME_GOOD_SELECT_URL = "https://api.qunxianghui.com.cn/theme/new_details/youxuan_h5/index.html#/";  //首页上面优选的页面
-
-    public static final String HOME_LOCAL_SERVICE_URL = "https://api.qunxianghui.com.cn/theme/new_details/bendi_h5/index.html#/";
+//    public static final String HOME_LOCAL_SERVICE_URL = "https://api.qunxianghui.com.cn/theme/new_details/bendi_h5/index.html#/";
 
     public static final String COMMEON_QUESTION_URL = "https://api.qunxianghui.com.cn/theme/new_details/question/index.html";
 

@@ -3,6 +3,7 @@ package com.qunxianghui.gxh.ui.fragments.mineFragment.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -25,11 +26,15 @@ import com.qunxianghui.gxh.bean.UploadImage;
 import com.qunxianghui.gxh.bean.mine.AddAdvanceBean;
 import com.qunxianghui.gxh.callback.JsonCallback;
 import com.qunxianghui.gxh.config.Constant;
+import com.qunxianghui.gxh.ui.activity.locationitem.DividerGridItemDecoration;
+import com.qunxianghui.gxh.ui.activity.locationitem.OnRecyclerItemClickListener;
+import com.qunxianghui.gxh.ui.activity.locationitem.RecyItemTouchHelperCallback;
 import com.qunxianghui.gxh.utils.NewGlideImageLoader;
 import com.qunxianghui.gxh.utils.Utils;
 import com.qunxianghui.gxh.widget.SelectPhotoDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +43,7 @@ import static com.qunxianghui.gxh.ui.activity.PublishActivity.IMAGE_ITEM_ADD;
 import static com.qunxianghui.gxh.ui.fragments.homeFragment.activity.BaoLiaoActivity.REQUEST_CODE_SELECT;
 import static com.qunxianghui.gxh.ui.fragments.mineFragment.activity.CompanySetActivity.REQUEST_CODE_PREVIEW;
 
-public class AddProductActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
+public class AddProductActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, ImagePickerAdapter.OnImageBack, RecyItemTouchHelperCallback.OnBackonSwiped{
 
     @BindView(R.id.tv_add_product_save)
     TextView mTvAddProductSave;
@@ -84,6 +89,26 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
         mImages = new ArrayList<>();
         mAdapter = new ImagePickerAdapter(this, mImages, mSelectCount);
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnImageBack(this);
+        mRecyclerViewAddProductPic.addItemDecoration(new DividerGridItemDecoration(this));
+        mRecyclerViewAddProductPic.setHasFixedSize(true);
+        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+        itemTouchHelperCallback.setOnBackonSwiped(this);
+        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerViewAddProductPic);
+        mRecyclerViewAddProductPic.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerViewAddProductPic) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+
+            }
+
+            @Override
+            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder.getLayoutPosition() != mImages.size()) {
+                    itemTouchHelper.startDrag(viewHolder);
+                }
+            }
+        });
         mRecyclerViewAddProductPic.setAdapter(mAdapter);
         mSelectPhoto = new SelectPhotoDialog(this, new SelectPhotoDialog.SelectPhotoListener() {
             @Override
@@ -331,5 +356,24 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void OnBackItem(int position) {
+        mImages.remove(position);
+        mAdapter.setImages(mImages);
+    }
+
+    @Override
+    public void backItemMoved(int fromPosition, int toPosition) {
+        if (Math.abs(fromPosition - toPosition) == 1) {
+            Collections.swap(mImages, fromPosition, toPosition);
+            return;
+        }
+        mImages.add(toPosition, mImages.get(fromPosition));
+        if (fromPosition < toPosition)
+            mImages.remove(fromPosition);
+        else
+            mImages.remove(fromPosition + 1);
     }
 }
