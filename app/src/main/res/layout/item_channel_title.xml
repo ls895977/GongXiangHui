@@ -36,6 +36,7 @@
         android:paddingBottom="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="5dp"
+        android:visibility="gone"
         android:paddingTop="15dp"
         android:text="编辑"
         android:textColor="@color/app_style_color"

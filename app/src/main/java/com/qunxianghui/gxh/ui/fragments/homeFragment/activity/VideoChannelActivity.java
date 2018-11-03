@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -40,6 +41,7 @@ public class VideoChannelActivity extends AppCompatActivity implements OnChannel
     //是否需要更新 主页频道信息
     private boolean isUpdate = false;
     private OnChannelListener onChannelListener;
+    private TextView tv_edit;
 
     void setOnChannelListener(OnChannelListener onChannelListener) {
         this.onChannelListener = onChannelListener;
@@ -75,6 +77,13 @@ public class VideoChannelActivity extends AppCompatActivity implements OnChannel
                         getAllData(response.body());
                     }
                 });
+        tv_edit = findViewById(R.id.tv_edit);
+        tv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAdapter.setEdit();
+            }
+        });
     }
 
     private void getAllData(HomeVideoChannelBean channelBean) {

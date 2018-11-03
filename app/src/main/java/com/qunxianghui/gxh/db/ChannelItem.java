@@ -17,7 +17,7 @@ public class ChannelItem implements Serializable, MultiItemEntity {
     public static int TYPE_MY_CHANNEL = 3;
     public static int TYPE_OTHER_CHANNEL = 4;
 
-    public int viewType = 0;
+    public int viewType = 3;
 
     public int id;
     @SerializedName("cate_name")

@@ -5,18 +5,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/dialog_channel_bg"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="23dp">
-
         <ImageView
             android:id="@+id/icon_collapse"
             android:layout_width="40dp"
             android:layout_height="40dp"
-
             android:contentDescription="@string/app_name"
             android:scaleType="center"
             android:src="@mipmap/ic_channel_close" />
@@ -29,7 +26,19 @@
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:text="频道管理" />
-
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="编辑"
+            android:layout_marginRight="@dimen/dp_10"
+            android:textColor="@color/app_style_color"
+            android:textSize="15sp" />
     </RelativeLayout>
 
 
@@ -38,7 +47,6 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -46,9 +54,7 @@
             android:clipToPadding="false"
             android:paddingLeft="8dp"
             android:paddingRight="8dp" />
-
     </FrameLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
