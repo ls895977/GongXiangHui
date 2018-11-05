@@ -76,8 +76,7 @@ public class PersonDataActivity extends BaseActivity {
     EditText etPersonDataAdress;
     @BindView(R.id.et_person_data_introduce)
     EditText etPersonDataIntroduce;
-    @BindView(R.id.iv_persondata_nick_delete)
-    ImageView ivPersondataNickDelete;
+
 
     private String[] sexArray = new String[]{"男", "女"};
     private List<String> upLoadPics = new ArrayList<>();
@@ -158,7 +157,6 @@ public class PersonDataActivity extends BaseActivity {
             }
         });
         if (etPersonDataUserName.isClickable()&&etPersonDataNickName.getText().toString().length()>0) {
-            ivPersondataNickDelete.setVisibility(View.VISIBLE);
         }
     }
 

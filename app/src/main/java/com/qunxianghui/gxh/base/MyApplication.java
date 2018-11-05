@@ -90,7 +90,7 @@ public class MyApplication extends MultiDexApplication {
     }
 /*客服中心*/
     private void initServiceCenter() {
-        UdeskSDKManager.getInstance().initApiKey(getApplicationContext(), "13867485151.udesk.cn","c25c72dda8198c7e054687a4f6a2af49","5fb97fb4bbcf877d");
+        UdeskSDKManager.getInstance().initApiKey(getApplicationContext(), "gongxianghui.udesk.cn","c25c72dda8198c7e054687a4f6a2af49","5fb97fb4bbcf877d");
 
 //        String sdktoken = "用户唯一的标识";
 //        Map<String, String> info = new HashMap<String, String>();

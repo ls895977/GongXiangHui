@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 
 import com.lzy.imagepicker.bean.ImageItem;
 import com.qunxianghui.gxh.adapter.ImagePickerAdapter;
@@ -62,8 +61,11 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         int fromPosition = viewHolder.getAdapterPosition();
         int toPosition = target.getAdapterPosition();
-        if (imageItems.size() != 9) {
-            return false;
+        if (imageItems.size() == 9) {
+        }else {
+            if (toPosition == (imageItems.size() + 1)){
+                return  false;
+            }
         }
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
