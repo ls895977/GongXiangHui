@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import cn.udesk.StatusBarUtil;
 import udesk.core.LocalManageUtil;
 import cn.udesk.PreferenceHelper;
 import cn.udesk.R;
@@ -518,6 +519,9 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IChatActivit
         if (!Fresco.hasBeenInitialized()) {
             UdeskUtil.frescoInit(this);
         }
+        StatusBarUtil.setTransparentForImageView(this, null);
+        StatusBarUtil.MIUISetStatusBarLightMode(this, true);
+        StatusBarUtil.FlymeSetStatusBarLightMode(this, true);
         try {
             setContentView(R.layout.udesk_activity_im);
             mHandler = new MyHandler(UdeskChatActivity.this);

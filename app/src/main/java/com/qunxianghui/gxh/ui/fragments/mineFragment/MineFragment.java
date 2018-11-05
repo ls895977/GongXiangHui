@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -44,9 +42,7 @@ import com.qunxianghui.gxh.utils.StatusBarColorUtil;
 import java.util.UUID;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.udesk.PreferenceHelper;
 import cn.udesk.UdeskSDKManager;
 import cn.udesk.config.UdeskConfig;
@@ -78,7 +74,6 @@ public class MineFragment extends BaseFragment {
     TextView tvMineMesssageCount;
     @BindView(R.id.ll_mine_services_center)
     RelativeLayout llMineServicesCenter;
-    Unbinder unbinder;
 
     private UserInfo.DataBean mUserInfo;
     private boolean mIsFirst = true;
@@ -210,7 +205,6 @@ public class MineFragment extends BaseFragment {
                 if (isLogin())
                     toActivity(MyCollectActivity.class);
                 break;
-
             case R.id.ll_mine_services_center:
                 CollectServiceCenter();
                 break;
@@ -223,7 +217,7 @@ public class MineFragment extends BaseFragment {
         if (TextUtils.isEmpty(sdkToken)) {
             sdkToken = UUID.randomUUID().toString();
         }
-       //咨询会话
+        //咨询会话
         UdeskSDKManager.getInstance().entryChat(mActivity.getApplicationContext(), UdeskConfig.createDefualt(), sdkToken);
 
     }
@@ -235,20 +229,6 @@ public class MineFragment extends BaseFragment {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
 }
