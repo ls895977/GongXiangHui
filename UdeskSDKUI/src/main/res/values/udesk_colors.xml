@@ -3,9 +3,10 @@
 
 
     <!-- 顶部TitleBar的背景色 -->
-    <color name="udesk_titlebar_bg1">#0093FF</color>
+    <color name="udesk_titlebar_bg1">#FFF</color>
+    <!--<color name="udesk_titlebar_bg1">#0093FF</color>-->
     <!-- 顶部TitleBar，左右两侧文字的颜色 -->
-    <color name="udesk_color_navi_text1">#FFFFFF</color>
+    <color name="udesk_color_navi_text1">#000000</color>
     <!-- IM界面，左侧文字的字体颜色 -->
     <color name="udesk_color_im_text_left1">#313F48</color>
     <!-- IM界面，右侧文字的字体颜色 -->

@@ -92,7 +92,7 @@ public class AddProductActivity extends BaseActivity implements ImagePickerAdapt
         mAdapter.setOnImageBack(this);
         mRecyclerViewAddProductPic.addItemDecoration(new DividerGridItemDecoration(this));
         mRecyclerViewAddProductPic.setHasFixedSize(true);
-        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mImages,mAdapter, false, true);
         itemTouchHelperCallback.setOnBackonSwiped(this);
         final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerViewAddProductPic);

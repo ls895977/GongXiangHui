@@ -3,6 +3,7 @@
     android:id="@+id/udesk_im_content"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingTop="23dp"
     android:background="@color/udesk_color_fof2f2"
     android:layoutDirection="ltr"
     android:orientation="vertical">
@@ -108,9 +109,9 @@
                 android:id="@+id/udesk_img_audio"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginBottom="@dimen/udesk_5"
-                android:layout_marginRight="@dimen/udesk_5"
                 android:layout_marginTop="@dimen/udesk_5"
+                android:layout_marginRight="@dimen/udesk_5"
+                android:layout_marginBottom="@dimen/udesk_5"
                 android:src="@drawable/udesk_ic_cheat_voice" />
 
             <RelativeLayout

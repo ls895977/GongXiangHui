@@ -78,10 +78,10 @@ public class MineFragment extends BaseFragment {
     TextView tvMineMesssageCount;
     @BindView(R.id.ll_mine_services_center)
     RelativeLayout llMineServicesCenter;
-    Unbinder unbinder;
 
     private UserInfo.DataBean mUserInfo;
     private boolean mIsFirst = true;
+    private Unbinder mUnbinder;
 
     @Override
     public int getLayoutId() {
@@ -226,7 +226,6 @@ public class MineFragment extends BaseFragment {
                 if (isLogin())
                     toActivity(MyCollectActivity.class);
                 break;
-
             case R.id.ll_mine_services_center:
                 CollectServiceCenter();
                 break;
@@ -239,11 +238,10 @@ public class MineFragment extends BaseFragment {
         if (TextUtils.isEmpty(sdkToken)) {
             sdkToken = UUID.randomUUID().toString();
         }
-       //咨询会话
+        //咨询会话
         UdeskSDKManager.getInstance().entryChat(mActivity.getApplicationContext(), UdeskConfig.createDefualt(), sdkToken);
 
     }
-
 
     private boolean isLogin() {
         if (!LoginMsgHelper.isLogin()) {
@@ -253,39 +251,19 @@ public class MineFragment extends BaseFragment {
         return true;
     }
 
-    private UdeskConfig.Builder makeBuilder() {
-        UdeskConfig.Builder builder = new UdeskConfig.Builder();
-        builder.setUdeskTitlebarBgResId(R.color.udesk_titlebar_bg1) //设置标题栏TitleBar的背景色
-                .setUdeskTitlebarTextLeftRightResId(R.color.udesk_color_navi_text1) //设置标题栏TitleBar，左右两侧文字的颜色
-                .setUdeskIMLeftTextColorResId(R.color.udesk_color_im_text_left1) //设置IM界面，左侧文字的字体颜色
-                .setUdeskIMRightTextColorResId(R.color.udesk_color_im_text_right1) // 设置IM界面，右侧文字的字体颜色
-                .setUdeskIMAgentNickNameColorResId(R.color.udesk_color_im_left_nickname1) //设置IM界面，左侧客服昵称文字的字体颜色
-                .setUdeskIMTimeTextColorResId(R.color.udesk_color_im_time_text1) // 设置IM界面，时间文字的字体颜色
-                .setUdeskIMTipTextColorResId(R.color.udesk_color_im_tip_text1) //设置IM界面，提示语文字的字体颜色，比如客服转移
-                .setUdeskbackArrowIconResId(R.drawable.udesk_titlebar_back) // 设置返回箭头图标资源id
-                .setUdeskCommityBgResId(R.color.udesk_color_im_commondity_bg1) //咨询商品item的背景颜色
-                .setUdeskCommityTitleColorResId(R.color.udesk_color_im_commondity_title1) // 商品介绍Title的字样颜色
-                .setUdeskCommitysubtitleColorResId(R.color.udesk_color_im_commondity_subtitle1)// 商品咨询页面中，商品介绍子Title的字样颜色
-                .setUdeskCommityLinkColorResId(R.color.udesk_color_im_commondity_link1);//商品咨询页面中，发送链接的字样颜色
-        return builder;
-    }
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        mUnbinder.unbind();
     }
-
 }
+
