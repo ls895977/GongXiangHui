@@ -198,7 +198,6 @@
                     android:background="@drawable/shape_message_count"
                     android:gravity="center"
                     android:text="99+"
-
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
@@ -304,11 +303,23 @@
 
                 <TextView
                     style="@style/MineListStyle"
-
                     android:drawableStart="@mipmap/mine_add_call"
                     android:text="客服中心" />
 
+                <TextView
+                    android:id="@+id/tv_msg"
+                    style="@style/MineListStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/iv_msg"
+                    android:background="@drawable/shape_message_count"
+                    android:gravity="center"
+                    android:text="99+"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
                 <ImageView
+                    android:id="@+id/iv_msg"
                     style="@style/rightBackStyle"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>

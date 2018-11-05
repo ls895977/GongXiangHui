@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -40,19 +38,16 @@ import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.PersonDataActivity
 import com.qunxianghui.gxh.ui.fragments.mineFragment.activity.SettingActivity;
 import com.qunxianghui.gxh.utils.SPUtils;
 import com.qunxianghui.gxh.utils.StatusBarColorUtil;
+import com.qunxianghui.gxh.utils.UserUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
-import cn.udesk.PreferenceHelper;
 import cn.udesk.UdeskSDKManager;
 import cn.udesk.config.UdeskConfig;
-//import cn.udesk.PreferenceHelper;
-//import cn.udesk.UdeskSDKManager;
-//import cn.udesk.config.UdeskConfig;
 
 /**
  * Created by Administrator on 2018/3/9 0009.
@@ -76,12 +71,12 @@ public class MineFragment extends BaseFragment {
     TextView mTvMineFans;
     @BindView(R.id.tv_minemesssage_count)
     TextView tvMineMesssageCount;
+    @BindView(R.id.tv_msg)
+    TextView tvMsg;
     @BindView(R.id.ll_mine_services_center)
     RelativeLayout llMineServicesCenter;
 
     private UserInfo.DataBean mUserInfo;
-    private boolean mIsFirst = true;
-    private Unbinder mUnbinder;
 
     @Override
     public int getLayoutId() {
@@ -110,23 +105,13 @@ public class MineFragment extends BaseFragment {
             tvMineMesssageCount.setVisibility(View.VISIBLE);
             tvMineMesssageCount.setText(String.valueOf(MainActivity.sMsgCount));
         }
-//
-//
-///*        默认系统字段是Udesk已定义好的字段，开发者可以直接传入这些用户信息，供客服查看。*/
-//        String sdktoken = "用户唯一的标识";
-//        Map<String, String> info = new HashMap<String, String>();
-////   sdktoken 必填
-//        info.put(UdeskConst.UdeskUserInfo.USER_SDK_TOKEN, sdktoken);
-//        //以下信息是可选
-//        info.put(UdeskConst.UdeskUserInfo.NICK_NAME,"昵称");
-//        info.put(UdeskConst.UdeskUserInfo.EMAIL,"0631@163.com");
-//        info.put(UdeskConst.UdeskUserInfo.CELLPHONE,"15651818750");
-//        info.put(UdeskConst.UdeskUserInfo.DESCRIPTION,"描述信息");
-//
-////        只设置用户基本信息的配置
-//        UdeskConfig.Builder builder = new UdeskConfig.Builder();
-//        builder.setDefualtUserInfo(info);
-//        UdeskSDKManager.getInstance().entryChat(mActivity, builder.build(), sdktoken);
+        int currentConnectUnReadMsgCount = UdeskSDKManager.getInstance().getCurrentConnectUnReadMsgCount(getContext(), String.valueOf(UserUtil.getInstance().id));
+        if (currentConnectUnReadMsgCount > 0) {
+            tvMsg.setVisibility(View.VISIBLE);
+            tvMsg.setText(String.valueOf(currentConnectUnReadMsgCount));
+        } else {
+            tvMsg.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -234,13 +219,18 @@ public class MineFragment extends BaseFragment {
 
     /*联系客服*/
     private void CollectServiceCenter() {
-        String sdkToken = PreferenceHelper.readString(mActivity.getApplicationContext(), "init_base_name", "sdktoken");
+        String sdkToken = String.valueOf(UserUtil.getInstance().id);
         if (TextUtils.isEmpty(sdkToken)) {
             sdkToken = UUID.randomUUID().toString();
         }
+        Map<String, String> info = new HashMap<>();
+        info.put("sdk_token", sdkToken);
+        info.put("nick_name", UserUtil.getInstance().mNick);
+        info.put("cellphone", UserUtil.getInstance().mMobile);
+        UdeskConfig.Builder builder = new UdeskConfig.Builder();
+        builder.setDefualtUserInfo(info);
         //咨询会话
-        UdeskSDKManager.getInstance().entryChat(mActivity.getApplicationContext(), UdeskConfig.createDefualt(), sdkToken);
-
+        UdeskSDKManager.getInstance().entryChat(mActivity.getApplicationContext(), builder.build(), sdkToken);
     }
 
     private boolean isLogin() {
@@ -251,19 +241,5 @@ public class MineFragment extends BaseFragment {
         return true;
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        mUnbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
-    }
 }
 
