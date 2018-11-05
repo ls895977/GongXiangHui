@@ -3,10 +3,11 @@
     android:id="@+id/udesk_im_content"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingTop="23dp"
-    android:background="@color/udesk_color_fof2f2"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     android:layoutDirection="ltr"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="23dp">
 
     <cn.udesk.widget.UdeskTitleBar
         android:id="@+id/udesktitlebar"

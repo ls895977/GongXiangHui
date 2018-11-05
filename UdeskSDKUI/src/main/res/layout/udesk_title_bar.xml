@@ -48,6 +48,7 @@
             android:id="@+id/udesk_status"
             android:layout_width="@dimen/udesk_8"
             android:layout_height="@dimen/udesk_8"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/udesk_2"
             android:src="@drawable/udesk_online_status"
             android:visibility="gone" />
