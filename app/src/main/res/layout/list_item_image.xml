@@ -20,5 +20,5 @@
         android:paddingBottom="15dp"
         android:paddingRight="-12dp"
         android:visibility="gone"
-        android:src="@mipmap/delete_img" />
+        android:src="@mipmap/icon_img_delete" />
 </RelativeLayout>
