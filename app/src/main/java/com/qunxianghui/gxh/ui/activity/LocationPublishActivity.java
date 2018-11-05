@@ -107,7 +107,6 @@ public class LocationPublishActivity extends BaseActivity
         imagePicker.setFocusHeight(800);
         imagePicker.setOutPutX(500);
         imagePicker.setOutPutY(500);
-
         mImages = new ArrayList<>();
         mAdapter = new ImagePickerAdapter(this, mImages, 9);
         mAdapter.setOnItemClickListener(this);
@@ -115,7 +114,7 @@ public class LocationPublishActivity extends BaseActivity
         mRv.setLayoutManager(new GridLayoutManager(this, 3));
         mRv.addItemDecoration(new DividerGridItemDecoration(this));
         mRv.setHasFixedSize(true);
-        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mAdapter, false, true);
+        RecyItemTouchHelperCallback itemTouchHelperCallback = new RecyItemTouchHelperCallback(mImages,mAdapter, false, true);
         itemTouchHelperCallback.setOnBackonSwiped(this);
         final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRv);
@@ -124,7 +123,6 @@ public class LocationPublishActivity extends BaseActivity
             public void onItemClick(RecyclerView.ViewHolder viewHolder) {
 
             }
-
             @Override
             public void onLongClick(RecyclerView.ViewHolder viewHolder) {
                 if (viewHolder.getLayoutPosition() != mImages.size()) {
@@ -164,7 +162,6 @@ public class LocationPublishActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
