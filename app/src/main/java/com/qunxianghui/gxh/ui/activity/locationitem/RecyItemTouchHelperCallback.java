@@ -63,7 +63,7 @@ public class RecyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         int toPosition = target.getAdapterPosition();
         if (imageItems.size() == 9) {
         }else {
-            if (toPosition == (imageItems.size() + 1)){
+            if (toPosition == (imageItems.size())){
                 return  false;
             }
         }
